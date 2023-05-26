@@ -91,9 +91,21 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View view) {
                     Log.v("node", "isMultiChoice - " + mParentNode.isMultiChoice());
                     Log.v("node", "isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                    Log.v("node", "enableExclusiveOption - " + node.isEnableExclusiveOption());
+                    Log.v("node", "isExclusiveOption - " + node.isExclusiveOption());
                     if (!mParentNode.isMultiChoice()) {
-                        for (int i = 0; i < mItemList.size(); i++) {
-                            mItemList.get(i).setSelected(i == index);
+                        if (mParentNode.isEnableExclusiveOption()) {
+                            if (!node.isExclusiveOption()) {
+                                for (int i = 0; i < mItemList.size(); i++) {
+                                    if (!mItemList.get(i).isExclusiveOption())
+                                        mItemList.get(i).setSelected(false);
+                                }
+                            }
+                            mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
+                        } else {
+                            for (int i = 0; i < mItemList.size(); i++) {
+                                mItemList.get(i).setSelected(i == index);
+                            }
                         }
                     } else {
                         if (node.isExcludedFromMultiChoice()) {

@@ -65,6 +65,8 @@ import java.util.Locale;
 public class Node implements Serializable {
 
 
+    private boolean enableExclusiveOption;
+    private boolean isExclusiveOption;
     private boolean havingNestedQuestion;
     private boolean isDataCaptured;
     private boolean optional;
@@ -342,6 +344,8 @@ public class Node implements Serializable {
             this.required = jsonNode.optBoolean("isRequired");
             this.optional = jsonNode.optBoolean("optional");
             this.havingNestedQuestion = jsonNode.optBoolean("havingNestedQuestion");
+            this.enableExclusiveOption = jsonNode.optBoolean("enable-exclusive-option");
+            this.isExclusiveOption = jsonNode.optBoolean("is-exclusive-option");
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -397,6 +401,8 @@ public class Node implements Serializable {
         this.optional = source.optional;
         this.isDataCaptured = source.isDataCaptured;
         this.havingNestedQuestion = source.havingNestedQuestion;
+        this.enableExclusiveOption = source.enableExclusiveOption;
+        this.isExclusiveOption = source.isExclusiveOption;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -3200,5 +3206,20 @@ public class Node implements Serializable {
         this.havingNestedQuestion = havingNestedQuestion;
     }
 
+    public boolean isEnableExclusiveOption() {
+        return enableExclusiveOption;
+    }
+
+    public void setEnableExclusiveOption(boolean enableExclusiveOption) {
+        this.enableExclusiveOption = enableExclusiveOption;
+    }
+
+    public boolean isExclusiveOption() {
+        return isExclusiveOption;
+    }
+
+    public void setExclusiveOption(boolean exclusiveOption) {
+        isExclusiveOption = exclusiveOption;
+    }
 }
 

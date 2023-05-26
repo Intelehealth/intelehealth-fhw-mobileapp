@@ -311,6 +311,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
                 mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -392,6 +393,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
                 mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -644,12 +646,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onSelect(Node node, int indexSelected, boolean isSkipped) {
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + indexSelected);
-                    if(isSkipped){
-                        mItemList.get(index).setSelected(false);
-                        mItemList.get(index).setDataCaptured(false);
-                        selectedNode.setSelected(false);
-                        selectedNode.setDataCaptured(false);
-                        notifyItemChanged(index);
+                    if (isSkipped) {
+                        if (options.size() == 1) {
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                            selectedNode.setSelected(false);
+                            selectedNode.setDataCaptured(false);
+                            notifyItemChanged(index);
+                        }else {
+                            return;
+                        }
                     }
                     mOnItemSelection.onSelect(node, indexSelected, isSkipped);
                 }
@@ -840,6 +846,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
                 mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -1018,6 +1025,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setDataCaptured(false);
 
                 mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -1104,6 +1112,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
                 mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -1199,6 +1208,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
                 mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -1308,6 +1318,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     mItemList.get(index).setSelected(false);
                     mItemList.get(index).setDataCaptured(false);
                     mOnItemSelection.onSelect(node, mRootIndex, true);
+                    notifyItemChanged(index);
 
                 }
             });

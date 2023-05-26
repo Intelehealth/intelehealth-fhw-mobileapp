@@ -166,48 +166,56 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_bmi_lbl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:lineSpacingExtra="1sp"
-                android:text="@string/bmi_index_auto_calculated"
-                android:textColor="@color/gray_3"
-                android:textSize="@dimen/common_label_text_size"
-                android:textStyle="normal" />
-
             <LinearLayout
+                android:id="@+id/ll_bmi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:background="@drawable/edittext_border"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_10"
-                android:weightSum="2">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_bmi_value"
-                    style="@style/edittext_textcolor"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_bmi_lbl"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/auto_calculate"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:lineSpacingExtra="1sp"
-                    android:text=""
+                    android:text="@string/bmi_index_auto_calculated"
+                    android:textColor="@color/gray_3"
                     android:textSize="@dimen/common_label_text_size"
                     android:textStyle="normal" />
 
-                <TextView
-                    android:id="@+id/tv_bmi_status"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_10"
-                    android:lineSpacingExtra="1sp"
-                    android:text=""
-                    android:textSize="@dimen/common_label_text_size"
-                    android:textStyle="normal" />
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:background="@drawable/edittext_border"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/padding_10"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tv_bmi_value"
+                        style="@style/edittext_textcolor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auto_calculate"
+                        android:lineSpacingExtra="1sp"
+                        android:text=""
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/tv_bmi_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_10"
+                        android:lineSpacingExtra="1sp"
+                        android:text=""
+                        android:textSize="@dimen/common_label_text_size"
+                        android:textStyle="normal" />
+                </LinearLayout>
             </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_sub_title_vital_info"
@@ -374,7 +382,7 @@
                 android:layout_marginTop="@dimen/hamburger_margin_start"
                 android:background="@drawable/edittext_border"
                 android:hint="@string/temp_eg"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:maxLength="3"
                 android:padding="@dimen/padding_10"
                 android:textColorHint="@color/edittext_hint_color"

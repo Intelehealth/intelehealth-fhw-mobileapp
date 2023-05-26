@@ -74,12 +74,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public void addImageInLastNode(String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
-        Log.v("showCameraView", "ImageCaptured mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
-        Log.v("showCameraView", "ImageCaptured - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
+        Log.v("showCameraView", "addImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
+        Log.v("showCameraView", "addImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
     }
 
     public void removeImageInLastNode(int index, String image) {
+        Log.v("showCameraView", "removeImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
+        Log.v("showCameraView", "removeImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
     }
@@ -130,8 +132,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void addItem(Node node) {
         Log.v(TAG, "addItem()");
         mItemList.add(node);
-        mIndexMappingHashMap.put(mItemList.size() - 1, mRootIndex);
-        notifyItemInserted(mItemList.size() - 1);
+        int key = mItemList.size() - 1;
+        if (!mIndexMappingHashMap.containsKey(key))
+            mIndexMappingHashMap.put(key, mRootIndex);
+        Log.v(TAG, "mIndexMappingHashMap - " + new Gson().toJson(mIndexMappingHashMap));
+        notifyItemInserted(key);
     }
 
     public void addItemAll(List<Node> nodes) {
@@ -175,125 +180,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.recyclerView.setVisibility(View.GONE);
             genericViewHolder.nestedRecyclerView.setVisibility(View.GONE);
             //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
-            if (genericViewHolder.node.getPop_up() != null && !genericViewHolder.node.getPop_up().isEmpty()) {
-                genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
 
-            } else {
-                genericViewHolder.knowMoreTextView.setVisibility(View.GONE);
-            }
-
-           /* if (genericViewHolder.node.isDataCaptured() && genericViewHolder.node.isDataCaptured()) {
-                genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
-            } else {
-                genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            }*/
             if (mIsForPhysicalExam) {
+                genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
-                Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
-                final String parent_name = mPhysicalExam.getExamParentNodeName(position);
-                String nodeText = parent_name + " : " + _mNode.findDisplay();
-
-                genericViewHolder.tvQuestion.setText(nodeText);
-                genericViewHolder.tvQuestionCounter.setText((position + 1) + " " + mContext.getString(R.string.of) + " " + mPhysicalExam.getTotalNumberOfExams() + " " + mContext.getString(R.string.questions)); //"1 of 10 questions"
-
-                if (genericViewHolder.node.getJobAidFile() != null && !genericViewHolder.node.getJobAidFile().isEmpty()) {
-                    genericViewHolder.referenceContainerLinearLayout.setVisibility(View.VISIBLE);
-                    genericViewHolder.tvReferenceDesc.setVisibility(View.VISIBLE);
-                } else {
-                    genericViewHolder.referenceContainerLinearLayout.setVisibility(View.GONE);
-                    genericViewHolder.tvReferenceDesc.setVisibility(View.GONE);
-                }
-                genericViewHolder.referenceContainerLinearLayout.removeAllViews();
-                String[] imgs = genericViewHolder.node.getJobAidFile().split(",");
-                for (int i = 0; i < imgs.length; i++) {
-                    View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
-                    ImageView imageView = v2.findViewById(R.id.image);
-                    if (genericViewHolder.node.getJobAidFile() != null || !genericViewHolder.node.getJobAidFile().isEmpty()) {
-                        String drawableName = "physicalExamAssets/" + genericViewHolder.node.getJobAidFile() + ".jpg";
-                        try {
-                            // get input stream
-                            InputStream ims = mContext.getAssets().open(drawableName);
-                            // load image as Drawable
-                            Drawable d = Drawable.createFromStream(ims, null);
-                            // set image to ImageView
-                            imageView.setImageDrawable(d);
-                            imageView.setMinimumHeight(150);
-                            imageView.setMinimumWidth(300);
-                            genericViewHolder.referenceContainerLinearLayout.addView(v2);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-
-                        }
-                    }
-                }
             } else {
-                genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
-                genericViewHolder.tvQuestionCounter.setText(getCount(genericViewHolder.index, genericViewHolder.rootIndex) + " " + mContext.getString(R.string.of) + " " + mRootComplainBasicInfoHashMap.get(mRootIndex).getOptionSize() + " " + mContext.getString(R.string.questions)); //"1 of 10 questions"
+                genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
             }
-            mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainName());
-
-            if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
-                //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
-                showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
-                genericViewHolder.tvQuestionCounter.setText("");
-            } else {
-                //mOnItemSelection.needTitleChange("");
-
-
-                String type = genericViewHolder.node.getInputType();
-                Log.v(TAG, "onBindViewHolder Type - " + type);
-                Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
-                if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
-                    type = "options";
-                }
-                switch (type) {
-                    case "text":
-                        // askText(questionNode, context, adapter);
-                        addTextEnterView(mItemList.get(position), genericViewHolder, position);
-                        break;
-                    case "date":
-                        //askDate(questionNode, context, adapter);
-                        addDateView(mItemList.get(position), genericViewHolder, position);
-                        break;
-                    case "location":
-                        //askLocation(questionNode, context, adapter);
-                        break;
-                    case "number":
-                        // askNumber(questionNode, context, adapter);
-                        addNumberView(mItemList.get(position), genericViewHolder, position);
-                        break;
-                    case "area":
-                        // askArea(questionNode, context, adapter);
-                        break;
-                    case "duration":
-                        // askDuration(questionNode, context, adapter);
-                        addDurationView(mItemList.get(position), genericViewHolder, position);
-                        break;
-                    case "range":
-                        // askRange(questionNode, context, adapter);
-                        addRangeView(mItemList.get(position), genericViewHolder, position);
-                        break;
-                    case "frequency":
-                        //askFrequency(questionNode, context, adapter);
-                        addFrequencyView(mItemList.get(position), genericViewHolder, position);
-                        break;
-                    case "camera":
-                        // openCamera(context, imagePath, imageName);
-                        Log.v("showCameraView", "onBindViewHolder 2");
-                        showCameraView(mItemList.get(position), genericViewHolder, position);
-                        break;
-
-                    case "options":
-                        // openCamera(context, imagePath, imageName);
-                        //if (mIsForPhysicalExam)
-                        //    showOptionsData(genericViewHolder, mPhysicalExam.getExamNode(position).getOption(0).getOptionsList(), position);
-                        //else
-                        showOptionsData(mItemList.get(position), genericViewHolder, mItemList.get(position).getOptionsList(), position, false);
-                        break;
-                }
-            }
-
             if (position == mItemList.size() - 1) {
                 genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
                 genericViewHolder.bodyLayout.setVisibility(View.GONE);
@@ -304,18 +198,140 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         genericViewHolder.spinKitView.setVisibility(View.GONE);
                         genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
                         //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
-
+                        setData(position, genericViewHolder);
                     }
                 }, 1000);
             } else {
                 genericViewHolder.spinKitView.setVisibility(View.GONE);
                 genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
+                setData(position, genericViewHolder);
             }
 
-            if (!mItemList.get(position).getImagePathList().isEmpty()) {
-                Log.v("showCameraView", "onBindViewHolder 1");
-                showCameraView(mItemList.get(position), genericViewHolder, position);
+
+        }
+    }
+
+    private void setData(int position, GenericViewHolder genericViewHolder) {
+        Log.v(TAG, "setData");
+        if (genericViewHolder.node.getPop_up() != null && !genericViewHolder.node.getPop_up().isEmpty()) {
+            genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
+
+        } else {
+            genericViewHolder.knowMoreTextView.setVisibility(View.GONE);
+        }
+
+           /* if (genericViewHolder.node.isDataCaptured() && genericViewHolder.node.isDataCaptured()) {
+                genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+            } else {
+                genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }*/
+        if (mIsForPhysicalExam) {
+
+            Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
+            final String parent_name = mPhysicalExam.getExamParentNodeName(position);
+            String nodeText = parent_name + " : " + _mNode.findDisplay();
+
+            genericViewHolder.tvQuestion.setText(nodeText);
+
+            if (genericViewHolder.node.getJobAidFile() != null && !genericViewHolder.node.getJobAidFile().isEmpty()) {
+                genericViewHolder.referenceContainerLinearLayout.setVisibility(View.VISIBLE);
+                genericViewHolder.tvReferenceDesc.setVisibility(View.VISIBLE);
+            } else {
+                genericViewHolder.referenceContainerLinearLayout.setVisibility(View.GONE);
+                genericViewHolder.tvReferenceDesc.setVisibility(View.GONE);
             }
+            genericViewHolder.referenceContainerLinearLayout.removeAllViews();
+            String[] imgs = genericViewHolder.node.getJobAidFile().split(",");
+            for (int i = 0; i < imgs.length; i++) {
+                View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
+                ImageView imageView = v2.findViewById(R.id.image);
+                if (genericViewHolder.node.getJobAidFile() != null || !genericViewHolder.node.getJobAidFile().isEmpty()) {
+                    String drawableName = "physicalExamAssets/" + genericViewHolder.node.getJobAidFile() + ".jpg";
+                    try {
+                        // get input stream
+                        InputStream ims = mContext.getAssets().open(drawableName);
+                        // load image as Drawable
+                        Drawable d = Drawable.createFromStream(ims, null);
+                        // set image to ImageView
+                        imageView.setImageDrawable(d);
+                        imageView.setMinimumHeight(150);
+                        imageView.setMinimumWidth(300);
+                        genericViewHolder.referenceContainerLinearLayout.addView(v2);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+
+                    }
+                }
+            }
+        } else {
+            genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
+
+        }
+        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainName());
+
+        if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
+            //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
+            showAssociateSymptoms(genericViewHolder.node, genericViewHolder, position);
+            genericViewHolder.tvQuestionCounter.setText("");
+        } else {
+            //mOnItemSelection.needTitleChange("");
+
+
+            String type = genericViewHolder.node.getInputType();
+            Log.v(TAG, "onBindViewHolder Type - " + type);
+            Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(genericViewHolder.node));
+            if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
+                type = "options";
+            }
+            switch (type) {
+                case "text":
+                    // askText(questionNode, context, adapter);
+                    addTextEnterView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "date":
+                    //askDate(questionNode, context, adapter);
+                    addDateView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "location":
+                    //askLocation(questionNode, context, adapter);
+                    break;
+                case "number":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "area":
+                    // askArea(questionNode, context, adapter);
+                    break;
+                case "duration":
+                    // askDuration(questionNode, context, adapter);
+                    addDurationView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "range":
+                    // askRange(questionNode, context, adapter);
+                    addRangeView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "frequency":
+                    //askFrequency(questionNode, context, adapter);
+                    addFrequencyView(mItemList.get(position), genericViewHolder, position);
+                    break;
+                case "camera":
+                    // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "onBindViewHolder 2");
+                    showCameraView(mItemList.get(position), genericViewHolder, position);
+                    break;
+
+                case "options":
+                    // openCamera(context, imagePath, imageName);
+                    //if (mIsForPhysicalExam)
+                    //    showOptionsData(genericViewHolder, mPhysicalExam.getExamNode(position).getOption(0).getOptionsList(), position);
+                    //else
+                    showOptionsData(mItemList.get(position), genericViewHolder, mItemList.get(position).getOptionsList(), position, false);
+                    break;
+            }
+        }
+        if (!mItemList.get(position).getImagePathList().isEmpty()) {
+            Log.v(TAG, "found images");
+            showCameraView(mItemList.get(position), genericViewHolder, position);
         }
     }
 
@@ -828,15 +844,22 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getText());
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.getText());
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
                     if (isSkipped) {
-                        mItemList.get(index).setSelected(false);
-                        mItemList.get(index).setDataCaptured(false);
-                        selectedNode.setSelected(false);
-                        selectedNode.setDataCaptured(false);
-                        notifyItemChanged(index);
-                        if (selectedNode.isRequired()) return;
-                    }
+                        if (options.size() == 1) {
+                            Log.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                            selectedNode.setSelected(false);
+                            selectedNode.setDataCaptured(false);
+                            notifyItemChanged(index);
+                            if (selectedNode.isRequired()) return;
+                        } else {
+                            return;
+                        }
 
+                    }
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect ");
                     mOnItemSelection.onSelect(node, index, isSkipped);
                 }
 
@@ -931,6 +954,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             } else {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                                 holder.submitButton.setVisibility(View.GONE);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        notifyItemChanged(index);
+                                    }
+                                }, 100);
                                 mOnItemSelection.onSelect(node, index, false);
                             }
 
@@ -1081,6 +1111,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             imagesRcv.setAdapter(imageGridAdapter);
             imageGridAdapter.addNull();
             Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
+            if (node.getImagePathList().size() >= 4) {
+                imagesRcv.smoothScrollToPosition(imagesRcv.getAdapter().getItemCount() - 1);
+            }
         }
 
 
@@ -1099,8 +1132,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
      * @param index
      */
     private void addDurationView(Node node, GenericViewHolder holder, int index) {
-        Log.v("addDurationView", new Gson().toJson(node));
+        Log.v(TAG, "addDurationView - " + new Gson().toJson(node));
         holder.singleComponentContainer.removeAllViews();
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
         final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
         final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
@@ -1214,6 +1248,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }*/
 
         holder.singleComponentContainer.addView(view);
+        Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
+        Log.v(TAG, "addDurationView holder.singleComponentContainer VISIBLE - " + (holder.singleComponentContainer.getVisibility() == View.VISIBLE));
     }
 
     private void showNumberListing(final TextView textView, String title, int i, int max) {
@@ -1570,7 +1606,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).getOptionsList().get(i).setSelected(false);
                             mItemList.get(index).getOptionsList().get(i).setDataCaptured(false);
                         }
-
+                    notifyItemChanged(index);
                     mOnItemSelection.onSelect(node, index, true);
 
                 }

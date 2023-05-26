@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,13 +116,23 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 if(isSkipped){
                     mQuestionsListingAdapter.geItems().get(index).setSelected(false);
                     mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
-                    mQuestionsListingAdapter.notifyItemChanged(index);
+
                     if (mQuestionsListingAdapter.geItems().get(index).getOptionsList() != null && mQuestionsListingAdapter.geItems().get(index).getOptionsList().size() > 0)
                         for (int i = 0; i < mQuestionsListingAdapter.geItems().get(index).getOptionsList().size(); i++) {
                             mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
                             mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
                         }
-                    if (mQuestionsListingAdapter.geItems().get(index).isRequired()) return;
+                    if (mQuestionsListingAdapter.geItems().get(index).isRequired()) {
+                        mQuestionsListingAdapter.notifyItemChanged(index);
+                        return;
+                    }else{
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mQuestionsListingAdapter.notifyItemChanged(index);
+                            }
+                        }, 1000);
+                    }
                 }
 
                 if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
