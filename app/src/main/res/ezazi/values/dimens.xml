@@ -185,4 +185,6 @@
     <dimen name="std_106dp">106dp</dimen>
     <dimen name="mic_off_indicator_size">@dimen/std_16dp</dimen>
     <dimen name="checkbox_size">@dimen/std_18dp</dimen>
+    <dimen name="forgot_password_label_size">@dimen/std_16sp</dimen>
+    <dimen name="forgot_password_instruction_size">@dimen/std_14sp</dimen>
 </resources>

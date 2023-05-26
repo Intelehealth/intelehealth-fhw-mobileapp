@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/tvEnterMobileNumber"
+        style="@style/Theme.EZazi.Heading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_verification_code"
+        android:textColor="@color/font_black_0"
+        android:textSize="@dimen/forgot_password_label_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvOtpInstruction"
+        style="@style/Theme.EZazi.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding"
+        android:text="@string/content_verification_code"
+        android:textColor="@color/darkGray"
+        android:textSize="@dimen/forgot_password_instruction_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEnterMobileNumber" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etNewPasswordLayout"
+        style="@style/Theme.EZazi.Input.Login.Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_padding"
+        app:errorEnabled="false"
+        app:layout_constraintTop_toBottomOf="@id/tvOtpInstruction">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_new_password"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:maxLength="100"
+            android:minHeight="@dimen/max_input_height"
+            android:textSize="@dimen/input_inner_size" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvNotReceived"
+        style="@style/Theme.EZazi.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding"
+        android:text="@string/lbl_did_not_receive_otp"
+        android:textColor="@color/darkGray"
+        android:textSize="@dimen/forgot_password_instruction_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNewPasswordLayout" />
+
+    <TextView
+        android:id="@+id/tvResend"
+        style="@style/Theme.EZazi.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_container_padding"
+        android:text="@string/lbl_resend"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/forgot_password_instruction_size"
+        app:layout_constraintBottom_toBottomOf="@id/tvNotReceived"
+        app:layout_constraintStart_toEndOf="@id/tvNotReceived"
+        app:layout_constraintTop_toTopOf="@id/tvNotReceived" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,4 +24,18 @@
     <string name="observations">Observations</string>
     <string name="follow_the_instruction">Follow the instructions below to use\nyou account again.</string>
     <string name="type_message_here">Type message here</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="lbl_continue">Continue</string>
+    <string name="enter_registered_mobile_number">Please enter the mobile number registered with Intelehealth</string>
+    <string name="lbl_reset_password">Reset password</string>
+    <string name="content_reset_password">Please reset new password for your account.</string>
+    <string name="lbl_enter_new_password">Enter your new password</string>
+    <string name="lbl_new_password">New password</string>
+    <string name="lbl_confirm_password">Confirm new password</string>
+    <string name="hint_confirm_password">Confirm password</string>
+    <string name="hint_new_password">Enter new password</string>
+    <string name="lbl_verification_code">Enter Verification code</string>
+    <string name="content_verification_code">6-digit OTP sent on your registered number and email. Please check and enter the OTP.</string>
+    <string name="lbl_did_not_receive_otp">Didn\'t receive OTP?</string>
+    <string name="lbl_resend">Resend</string>
 </resources>
