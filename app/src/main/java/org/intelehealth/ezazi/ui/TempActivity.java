@@ -20,6 +20,7 @@ public class TempActivity extends AppCompatActivity {
         setContentView(R.layout.activity_temp);
         new ThemeTimePickerDialog.Builder(this)
                 .title(R.string.current_time)
+                .positiveButtonLabel(R.string.ok)
                 .build().show(getSupportFragmentManager(), "ThemeTimePickerDialog");
     }
 }

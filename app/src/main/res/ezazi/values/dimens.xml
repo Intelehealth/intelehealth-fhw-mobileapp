@@ -5,7 +5,7 @@
 
     <dimen name="std_135dp">135dp</dimen>
     <dimen name="negative_vector_margin">-200dp</dimen>
-    <dimen name="screen_title_size">@dimen/std_18sp</dimen>
+    <dimen name="screen_title_size">@dimen/std_24sp</dimen>
     <dimen name="screen_padding">@dimen/std_16dp</dimen>
     <dimen name="screen_container_padding">@dimen/std_8dp</dimen>
     <dimen name="list_container_padding">4dp</dimen>

@@ -19,6 +19,8 @@
         <item name="actionMenuTextAppearance">@style/Theme.EZazi.MenuText</item>
         <item name="actionMenuTextColor">@color/font_black_0</item>
         <item name="checkboxStyle">@style/Theme.EZazi.CheckBox</item>
+        <item name="android:textColorPrimaryInverse">@color/colorPrimary</item>
+        <item name="android:textColorSecondaryInverse">@color/darkGray</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

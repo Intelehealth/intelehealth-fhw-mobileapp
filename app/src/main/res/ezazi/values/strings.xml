@@ -38,4 +38,6 @@
     <string name="content_verification_code">6-digit OTP sent on your registered number and email. Please check and enter the OTP.</string>
     <string name="lbl_did_not_receive_otp">Didn\'t receive OTP?</string>
     <string name="lbl_resend">Resend</string>
+    <string name="lbl_am">AM</string>
+    <string name="lbl_pm">PM</string>
 </resources>

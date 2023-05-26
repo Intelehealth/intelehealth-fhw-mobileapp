@@ -394,14 +394,15 @@
     </style>
 
 
-    <style name="TimePickerDialogStyle" parent="Widget.MaterialComponents.TimePicker">
-        <item name="keyboardIcon">@null</item>
-        <item name="clockHandColor">?attr/colorPrimary</item>
-        <item name="headerLayout">@layout/simple_appbar</item>
-        <item name="clockNumberTextColor">#ff2d6073</item>
-        <item name="colorAccent">#ff2d6073</item> <!-- colorAccent here seems to work just fine? -->
-
-        <item name="android:headerBackground">#ff2d6073</item>
+    <style name="Theme.EZazi.TimePicker" parent="Widget.MaterialComponents.TimePicker.Display">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/heading2</item>
+        <item name="android:headerBackground">@drawable/timepicker_timer_bg</item>
+        <!--        <item name="android:numbersTextColor">?android:attr/textColorPrimaryActivated</item>-->
+        <!--        <item name="android:numbersInnerTextColor">?android:attr/textColorSecondaryActivated</item>-->
+        <!--        <item name="android:numbersSelectorColor">?android:attr/colorControlActivated</item>-->
+        <!--        <item name="android:numbersBackgroundColor">#ff555555</item>-->
+        <!--        <item name="android:amPmTextColor">?android:attr/textColorSecondary</item>-->
     </style>
 
     <style name="Theme.EZazi.Button.Icon.Activate.State" parent="Theme.EZazi.Button.Icon.Blue">
@@ -416,5 +417,11 @@
 
     <style name="Theme.EZazi.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_checkbox</item>
+    </style>
+
+    <style name="Theme.EZazi.TimePicker.Header.Text" parent="Theme.EZazi.Screen.Title">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/body</item>
     </style>
 </resources>
