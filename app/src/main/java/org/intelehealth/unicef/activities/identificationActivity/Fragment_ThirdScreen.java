@@ -623,7 +623,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NationalID"));
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Citizen Id"));
         patientAttributesDTO.setValue(StringUtils.getValue(mNationalIDEditText.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -660,34 +660,34 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicstatusSpinner));
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        // createdDate
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("createdDate"));
-        if (patientDTO.getCreatedDate() != null) {
-            patientAttributesDTO.setValue(patientDTO.getCreatedDate());
-        } else {
-            patientAttributesDTO.setValue(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy"));
-        }
-        patientAttributesDTOList.add(patientAttributesDTO);
+//        // createdDate
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("createdDate"));
+//        if (patientDTO.getCreatedDate() != null) {
+//            patientAttributesDTO.setValue(patientDTO.getCreatedDate());
+//        } else {
+//            patientAttributesDTO.setValue(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy"));
+//        }
+//        patientAttributesDTOList.add(patientAttributesDTO);
 
         //providerUUID
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("providerUUID"));
-        if (patientDTO.getProviderUUID() != null) {
-            patientAttributesDTO.setValue(patientDTO.getProviderUUID());
-        } else {
-            patientAttributesDTO.setValue(sessionManager.getProviderID());
-        }
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
-        patientDTO.setSyncd(false);
-        //  patientDTO.setSyncd(true);
-        Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("providerUUID"));
+//        if (patientDTO.getProviderUUID() != null) {
+//            patientAttributesDTO.setValue(patientDTO.getProviderUUID());
+//        } else {
+//            patientAttributesDTO.setValue(sessionManager.getProviderID());
+//        }
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//
+//        patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
+//        patientDTO.setSyncd(false);
+//        //  patientDTO.setSyncd(true);
+//        Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
 
 
         // inserting data in db and uploading to server...

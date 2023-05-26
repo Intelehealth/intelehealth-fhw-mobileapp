@@ -2116,4 +2116,5 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="production">Production</string>
     <string name="testing">Testing</string>
     <string name="server">Server</string>
+    <string name="citizen_id">Citizen ID</string>
 </resources>

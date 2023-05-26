@@ -240,7 +240,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="2">
 
                     <RadioButton
                         android:id="@+id/gender_male"
@@ -265,16 +265,16 @@
                         android:textSize="@dimen/select_language"
                         android:theme="@style/RadioButtonStyleSelection" />
 
-                    <RadioButton
-                        android:id="@+id/gender_other"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_weight="1"
-                        android:drawableEnd="@drawable/gender_other_svg"
-                        android:text="@string/other"
-                        android:textSize="@dimen/select_language"
-                        android:theme="@style/RadioButtonStyleSelection" />
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/gender_other"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_gravity="end"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:drawableEnd="@drawable/gender_other_svg"-->
+<!--                        android:text="@string/other"-->
+<!--                        android:textSize="@dimen/select_language"-->
+<!--                        android:theme="@style/RadioButtonStyleSelection" />-->
 
                 </RadioGroup>
 

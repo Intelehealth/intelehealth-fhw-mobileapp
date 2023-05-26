@@ -79,7 +79,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     private String mGender;
     String uuid = "", dobToDb;
     private String mCurrentPhotoPath;
-    RadioButton mGenderMaleRadioButton, mGenderFemaleRadioButton, mGenderOthersRadioButton;
+    RadioButton mGenderMaleRadioButton, mGenderFemaleRadioButton /*, mGenderOthersRadioButton*/;
     private static final String TAG = Fragment_FirstScreen.class.getSimpleName();
     private DatePickerDialog mDOBPicker;
     private MaterialAlertDialogBuilder mAgePicker;
@@ -122,7 +122,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
         mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
-        mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
+//        mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
         mDOBEditText = view.findViewById(R.id.dob_edittext);
         mAgeEditText = view.findViewById(R.id.age_edittext);
         mCountryCodePicker = view.findViewById(R.id.countrycode_spinner);
@@ -194,18 +194,18 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mGenderMaleRadioButton.setChecked(true);
                 if (mGenderFemaleRadioButton.isChecked())
                     mGenderFemaleRadioButton.setChecked(false);
-                if (mGenderOthersRadioButton.isChecked())
-                    mGenderOthersRadioButton.setChecked(false);
+//                if (mGenderOthersRadioButton.isChecked())
+//                    mGenderOthersRadioButton.setChecked(false);
                 Log.v(TAG, "yes");
             } else if (patientdto.getGender().equals("F")) {
                 mGenderFemaleRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
                     mGenderMaleRadioButton.setChecked(false);
-                if (mGenderOthersRadioButton.isChecked())
-                    mGenderOthersRadioButton.setChecked(false);
+//                if (mGenderOthersRadioButton.isChecked())
+//                    mGenderOthersRadioButton.setChecked(false);
                 Log.v(TAG, "yes");
             } else {
-                mGenderOthersRadioButton.setChecked(true);
+//                mGenderOthersRadioButton.setChecked(true);
                 if (mGenderMaleRadioButton.isChecked())
                     mGenderMaleRadioButton.setChecked(false);
                 if (mGenderFemaleRadioButton.isChecked())
@@ -425,12 +425,12 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 onRadioButtonClicked(v);
             }
         });
-        mGenderOthersRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
+//        mGenderOthersRadioButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onRadioButtonClicked(v);
+//            }
+//        });
 
         mDOBEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -675,11 +675,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
-            case R.id.gender_other:
-                if (checked)
-                    mGender = "Other";
-                Log.v(TAG, "gender: " + mGender);
-                break;
         }
         mGenderErrorTextView.setVisibility(View.GONE);
     }
@@ -747,7 +742,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             mLastNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
         // gender valid - start
-        if (!mGenderFemaleRadioButton.isChecked() && !mGenderMaleRadioButton.isChecked() && !mGenderOthersRadioButton.isChecked()) {
+        if (!mGenderFemaleRadioButton.isChecked() && !mGenderMaleRadioButton.isChecked() /*&& !mGenderOthersRadioButton.isChecked()*/) {
             mGenderErrorTextView.setVisibility(View.VISIBLE);
             return;
         } else {
