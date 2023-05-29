@@ -5,7 +5,7 @@
 
     <dimen name="std_135dp">135dp</dimen>
     <dimen name="negative_vector_margin">-200dp</dimen>
-    <dimen name="screen_title_size">@dimen/std_24sp</dimen>
+    <dimen name="screen_title_size">@dimen/std_18sp</dimen>
     <dimen name="screen_padding">@dimen/std_16dp</dimen>
     <dimen name="screen_container_padding">@dimen/std_8dp</dimen>
     <dimen name="list_container_padding">4dp</dimen>
@@ -189,5 +189,6 @@
     <dimen name="forgot_password_instruction_size">@dimen/std_14sp</dimen>
     <dimen name="timepicker_header_width">180dp</dimen>
     <dimen name="pin_input_size">@dimen/std_20sp</dimen>
-    <dimen name="pin_bottom_padding">@dimen/std_16dp</dimen>
+    <dimen name="pin_bottom_padding">@dimen/std_12dp</dimen>
+    <dimen name="line_spacing">@dimen/std_2dp</dimen>
 </resources>

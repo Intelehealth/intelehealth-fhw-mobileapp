@@ -188,5 +188,6 @@
     <dimen name="forgot_password_instruction_size">@dimen/std_24sp</dimen>
     <dimen name="timepicker_header_width">262dp</dimen>
     <dimen name="pin_input_size">@dimen/std_26sp</dimen>
-    <dimen name="pin_bottom_padding">26dp</dimen>
+    <dimen name="pin_bottom_padding">@dimen/std_36dp</dimen>
+    <dimen name="line_spacing">@dimen/std_4dp</dimen>
 </resources>

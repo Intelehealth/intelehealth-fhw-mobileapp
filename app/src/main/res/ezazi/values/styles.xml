@@ -44,7 +44,7 @@
         <item name="android:textSize">@dimen/splash_bottom_text_size</item>
         <item name="android:textColor">?android:attr/colorPrimary</item>
         <item name="android:gravity">center</item>
-        <item name="android:lineSpacingExtra">@dimen/std_4dp</item>
+        <item name="android:lineSpacingExtra">@dimen/line_spacing</item>
         <item name="android:layout_marginBottom">@dimen/splash_bottom_text_margin</item>
     </style>
 
@@ -424,4 +424,5 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textSize">@dimen/body</item>
     </style>
+
 </resources>
