@@ -43,17 +43,21 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".PatientSummaryActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.addNewPatient.AddNewPatientActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing|adjustPan">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-
         </activity>
-
         <activity
             android:name=".activities.epartogramActivity.EpartogramViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -72,16 +76,13 @@
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
-
         <activity
             android:name="org.intelehealth.ezazi.appointment.AppointmentListingActivity"
             android:exported="true"
@@ -119,7 +120,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-
             android:name=".activities.physcialExamActivity.PhysicalExamActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_physical_exam"
@@ -280,19 +280,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--        <activity-->
-        <!--            android:name=".ui.TempActivity"-->
-        <!--            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"-->
-        <!--            android:screenOrientation="portrait"-->
-        <!--            android:theme="@style/AppTheme.NoActionBar">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+        </activity> <!-- <activity -->
+        <!-- android:name=".ui.TempActivity" -->
+        <!-- android:configChanges="orientation|keyboardHidden|screenSize|uiMode" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".activities.setupActivity.SetupActivity"
             android:configChanges="uiMode"
