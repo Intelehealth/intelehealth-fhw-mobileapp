@@ -32,18 +32,23 @@
         android:id="@+id/pinEntryEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/screen_padding"
+        android:layout_marginTop="@dimen/screen_container_padding"
         android:cursorVisible="false"
+        android:gravity="center_vertical"
         android:digits="1234567890"
         android:inputType="number"
         android:maxLength="6"
+        android:text="123466"
         android:textIsSelectable="false"
         android:textSize="@dimen/pin_input_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvOtpInstruction"
         app:pinAnimationType="popIn"
-        app:pinBackgroundDrawable="@drawable/selector_pin_input" />
+        app:pinBackgroundDrawable="@drawable/selector_pin_input"
+        app:pinBackgroundIsSquare="true"
+        app:pinTextBottomPadding="@dimen/pin_bottom_padding"
+        app:pinCharacterSpacing="@dimen/screen_container_padding" />
 
     <TextView
         android:id="@+id/tvNotReceived"
