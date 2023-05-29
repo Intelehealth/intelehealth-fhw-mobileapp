@@ -14,6 +14,7 @@ buildscript {
         // Add the following line:
         classpath 'com.google.gms:google-services:4.3.4'  // Google Services plugin
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.3.0'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.2"
     }
 }
 

@@ -283,7 +283,7 @@
         <!--        </activity>-->
 
         <activity
-            android:name=".ui.TempActivity"
+            android:name=".ui.password.activity.ForgotPasswordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

@@ -186,4 +186,6 @@
     <dimen name="checkbox_size">@dimen/std_22dp</dimen>
     <dimen name="forgot_password_label_size">@dimen/std_26sp</dimen>
     <dimen name="forgot_password_instruction_size">@dimen/std_24sp</dimen>
+    <dimen name="timepicker_header_width">262dp</dimen>
+    <dimen name="pin_input_size">@dimen/std_26sp</dimen>
 </resources>

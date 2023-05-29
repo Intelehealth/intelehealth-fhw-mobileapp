@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'androidx.navigation.safeargs'
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -11,6 +12,7 @@ static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
 }
+
 android {
     compileSdkVersion 30
     dataBinding {
@@ -59,7 +61,7 @@ android {
             enableSplit = false
         }
         density {
-           enableSplit = true
+            enableSplit = true
         }
         abi {
             enableSplit = true
@@ -140,5 +142,11 @@ dependencies {
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    implementation('com.alimuzaffar.lib:pinentryedittext:2.0.6') {
+        // Exclude is only needed if you already have
+        // androidx.appcompat as a dependency in your app.
+        exclude group: 'androidx.appcompat', module: 'appcompat'
+    }
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

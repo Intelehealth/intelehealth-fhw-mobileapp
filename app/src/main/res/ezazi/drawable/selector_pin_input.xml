@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Space contains text -->
+    <item android:state_checked="true" android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="?attr/colorPrimary" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+        </shape>
+    </item>
+    <!--Space is the next space for character input -->
+    <item android:state_focused="true" android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="?attr/colorPrimary" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+        </shape>
+    </item>
+    <!-- PinEntryEditText is focused -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="@color/colorEmergencyBg" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+        </shape>
+    </item>
+    <!-- PinEntryEditText is not focused -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorLoginInputBg" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="@color/gray_5_trans" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+        </shape>
+    </item>
+</selector>

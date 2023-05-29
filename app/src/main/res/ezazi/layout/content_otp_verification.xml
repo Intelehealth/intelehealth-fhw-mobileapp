@@ -28,27 +28,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvEnterMobileNumber" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/etNewPasswordLayout"
-        style="@style/Theme.EZazi.Input.Login.Password"
+    <com.alimuzaffar.lib.pin.PinEntryEditText
+        android:id="@+id/pinEntryEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/screen_padding"
-        app:errorEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/tvOtpInstruction">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_new_password"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:maxLength="100"
-            android:minHeight="@dimen/max_input_height"
-            android:textSize="@dimen/input_inner_size" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:inputType="number"
+        android:maxLength="6"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/pin_input_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOtpInstruction"
+        app:pinAnimationType="popIn"
+        app:pinBackgroundDrawable="@drawable/selector_pin_input" />
 
     <TextView
         android:id="@+id/tvNotReceived"
@@ -60,7 +55,7 @@
         android:textColor="@color/darkGray"
         android:textSize="@dimen/forgot_password_instruction_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etNewPasswordLayout" />
+        app:layout_constraintTop_toBottomOf="@id/pinEntryEditText" />
 
     <TextView
         android:id="@+id/tvResend"

@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.ActivityForgotPasswordBinding;
 
+import java.util.Objects;
+
 /**
  * Created by Vaghela Mithun R. on 26-05-2023 - 11:20.
  * Email : mithun@intelehealth.org
@@ -27,6 +29,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         setSupportActionBar(binding.actionBarView.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
         binding.actionBarView.toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 }
