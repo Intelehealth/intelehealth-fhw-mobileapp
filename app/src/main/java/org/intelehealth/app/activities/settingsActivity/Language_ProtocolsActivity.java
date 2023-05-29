@@ -405,7 +405,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         Intent refresh = new Intent(this, Language_ProtocolsActivity.class);
         refresh.putExtra("intentType", "refresh");
         startActivity(refresh);
-        finish();
+//        finish();
         // show snackbar view
         showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed) + " " + language + "!");
 
@@ -523,9 +523,14 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(this, HomeScreenActivity_New.class);
+        startActivity(intent);
+        finish();
     }
 
     public void backPress(View view) {
+        Intent intent = new Intent(this, HomeScreenActivity_New.class);
+        startActivity(intent);
         finish();
     }
 }

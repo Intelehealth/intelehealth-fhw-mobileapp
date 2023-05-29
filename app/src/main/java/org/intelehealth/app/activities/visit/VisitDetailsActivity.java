@@ -266,7 +266,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
                 String modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
-                presc_time.setText("Received " + modifiedDate);
+                presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
                 icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_icon));
             }
 

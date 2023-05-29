@@ -379,18 +379,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                 checkNetworkConnectionAndPerformSync();
-                //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
-//                            deleteCache(getApplicationContext());
-/*
-                        new Handler(Looper.getMainLooper())
-                                .postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        resetDialog.dismiss();
-                                        deleteCache(getApplicationContext());
-                                    }
-                                }, 2000);
-*/
             }
         });
     }
@@ -585,15 +573,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
                 } else {
-//                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                     if (!tipWindow.isTooltipShown())
                         tipWindow.showToolTip(imageViewIsInternet, getResources().getString(R.string.no_network_tooltip));
-//                    showRefreshFailedDialog();
                 }
-//                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
-//                }
+
             }
         });
         //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -930,6 +913,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             case R.id.menu_change_language:
                 Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.menu_about_us:
                 Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
@@ -957,13 +941,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     @Override
     protected void onRestart() {
-        Log.d("onRestart: ", "I m called! " + sessionManager.getAppLanguage());
         super.onRestart();
+        setLocale("onRestart");
     }
 
     @Override
     protected void onResume() {
-        Log.d("onResume: ", "I m called! " + sessionManager.getAppLanguage());
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
         }
@@ -984,27 +967,28 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             showLoggingInDialog();
 
         }
-
-
-        //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-
+        setLocale("onResume");
         super.onResume();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setLocale("onConfigurationChanged");
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("onStart: ", "I m called! " + sessionManager.getAppLanguage());
+        setLocale("onStart");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         requestPermission();
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
-
-        //showBadge();
     }
 
     private void checkAppVer() {
@@ -1516,14 +1500,19 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
     }
 
-    public void setLocale(String locale_code) {
-        sessionManager.setAppLanguage(locale_code);
-        // here comes en, hi, mr
-        Locale locale = new Locale(locale_code);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+    public void setLocale(String tag) {
+        sessionManager = new SessionManager(this);
+        Log.d(tag, ": I m called! " + sessionManager.getAppLanguage());
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
     }
+
+
 
 }
