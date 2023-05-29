@@ -53,14 +53,22 @@ public class ConfirmationDialogFragment extends BaseDialogFragment<String> imple
 
     public static final class Builder extends BaseBuilder<String, ConfirmationDialogFragment> {
 
+        private OnConfirmationActionListener listener;
+
         public Builder(Context context) {
             super(context);
+        }
+
+        public Builder listener(OnConfirmationActionListener listener) {
+            this.listener = listener;
+            return this;
         }
 
         @Override
         public ConfirmationDialogFragment build() {
             ConfirmationDialogFragment fragment = new ConfirmationDialogFragment();
             fragment.setArguments(bundle());
+            fragment.setListener(listener);
             return fragment;
         }
     }

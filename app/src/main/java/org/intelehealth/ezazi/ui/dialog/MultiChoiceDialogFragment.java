@@ -53,14 +53,22 @@ public class MultiChoiceDialogFragment<T> extends ListDialogFragment<List<T>> {
 
     public static final class Builder<T> extends BaseBuilder<List<T>, MultiChoiceDialogFragment<T>> {
 
+        private OnChoiceListener<T> listener;
+
         public Builder(Context context) {
             super(context);
+        }
+
+        public Builder<T> listener(OnChoiceListener<T> listener) {
+            this.listener = listener;
+            return this;
         }
 
         @Override
         public MultiChoiceDialogFragment<T> build() {
             MultiChoiceDialogFragment<T> fragment = new MultiChoiceDialogFragment<>();
             fragment.setArguments(bundle());
+            fragment.setListener(listener);
             return fragment;
         }
     }

@@ -109,6 +109,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
 
     /**
      * To set container child layout params to match with container height and width
+     *
      * @return LayoutParams
      */
     private LayoutParams getConstraintLayoutParams() {

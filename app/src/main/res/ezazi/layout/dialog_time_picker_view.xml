@@ -35,9 +35,11 @@
 
             <TextView
                 android:id="@+id/separator"
+                style="@style/Theme.EZazi.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=":"
+                android:textSize="@dimen/screen_title_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/hours"
@@ -63,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/screen_container_padding"
                 android:text="@string/lbl_am"
-                android:textAppearance="@style/Theme.EZazi.Screen.Title"
+                android:textColor="@color/color_am_pm_selector"
                 android:textSize="@dimen/input_label_size"
                 app:layout_constraintBottom_toTopOf="@id/btnPm"
                 app:layout_constraintStart_toEndOf="@id/minutes"
@@ -72,13 +74,14 @@
 
             <TextView
                 android:id="@+id/btnPm"
-                style="@style/Theme.EZazi.Screen.Title"
+                style="@style/Theme.EZazi.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/screen_container_padding"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
                 android:text="@string/lbl_pm"
+                android:textColor="@color/color_am_pm_selector"
                 android:textSize="@dimen/input_label_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/minutes"

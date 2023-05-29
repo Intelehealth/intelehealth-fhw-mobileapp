@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +19,13 @@ public class TempActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temp);
-        new ThemeTimePickerDialog.Builder(this)
+        ThemeTimePickerDialog dialog = new ThemeTimePickerDialog.Builder(this)
                 .title(R.string.current_time)
                 .positiveButtonLabel(R.string.ok)
-                .build().show(getSupportFragmentManager(), "ThemeTimePickerDialog");
+                .build();
+        dialog.setListener((hours, minutes, amPm, value) -> {
+            Log.d("ThemeTimePickerDialog", "value : " + value);
+        });
+        dialog.show(getSupportFragmentManager(), "ThemeTimePickerDialog");
     }
 }

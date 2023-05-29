@@ -58,14 +58,22 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
 
     public static class Builder extends BaseBuilder<List<String>, SingleChoiceDialogFragment> {
 
+        private OnChoiceListener listener;
+
         public Builder(Context context) {
             super(context);
+        }
+
+        public Builder listener(OnChoiceListener listener) {
+            this.listener = listener;
+            return this;
         }
 
         @Override
         public SingleChoiceDialogFragment build() {
             SingleChoiceDialogFragment fragment = new SingleChoiceDialogFragment();
             fragment.setArguments(bundle());
+            fragment.setListener(listener);
             return fragment;
         }
     }

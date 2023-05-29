@@ -2,16 +2,11 @@ package org.intelehealth.ezazi.ui.dialog;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.databinding.DialogConfirmationViewBinding;
-import org.intelehealth.ezazi.ui.dialog.model.DialogArg;
-
-import java.util.Objects;
 
 /**
  * Created by Vaghela Mithun R. on 15-05-2023 - 16:14.
@@ -44,7 +39,7 @@ public class CustomViewDialogFragment extends BaseDialogFragment<String> impleme
 
     @Override
     public Drawable getDialogBackground() {
-        return ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.container_bg_rounded);
+        return ContextCompat.getDrawable(requireContext(), R.drawable.container_bg_rounded);
     }
 
     @Override
@@ -64,8 +59,15 @@ public class CustomViewDialogFragment extends BaseDialogFragment<String> impleme
 
     public static final class Builder extends BaseBuilder<String, CustomViewDialogFragment> {
 
+        private OnConfirmationActionListener listener;
+
         public Builder(Context context) {
             super(context);
+        }
+
+        public Builder listener(OnConfirmationActionListener listener) {
+            this.listener = listener;
+            return this;
         }
 
         @Override
@@ -73,6 +75,7 @@ public class CustomViewDialogFragment extends BaseDialogFragment<String> impleme
             CustomViewDialogFragment fragment = new CustomViewDialogFragment();
             fragment.setCustomView(getView());
             fragment.setArguments(bundle());
+            fragment.setListener(listener);
             return fragment;
         }
     }
