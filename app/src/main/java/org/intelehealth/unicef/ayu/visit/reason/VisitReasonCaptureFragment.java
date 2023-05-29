@@ -127,13 +127,13 @@ public class VisitReasonCaptureFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false,null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
             }
         });
 
         // TODO: we are adding this below string array for keeping these two protocol enable for search also
         mFinalEnabledMMList.clear();
-        String[] mindmapsNames = new String[]{"Abdominal Pain", "Diarrhea", "Fever", "Hypertension", "Menstrual disorder"};//getVisitReasonFilesNamesOnly();
+        String[] mindmapsNames = new String[]{"Neonatal jaundice", "Screening for cerebral palsy", "Screening Pediatric HIV", "ведение здорового новорожденного", "Диагностика и ведение детей с синдромом Дауна (СД) (до 5 лет)", "Сахарный диабет 1 типа", "Тестирование детей на ВИЧ", "Уход за маловесным", "Эпилепсия"};//getVisitReasonFilesNamesOnly();
 
         for (String mindmapsName : mindmapsNames) {
             String fileLocation = "engines/" + mindmapsName + ".json";
@@ -214,7 +214,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION,false, mSelectedComplains); // send the selected mms
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, false, mSelectedComplains); // send the selected mms
                 }
             }
         });
