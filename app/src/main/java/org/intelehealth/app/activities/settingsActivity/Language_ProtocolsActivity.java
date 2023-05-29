@@ -95,13 +95,23 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
+        sessionManager = new SessionManager(this);
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+
         initUI();
         clickListeners();
     }
 
     private void initUI() {
         context = Language_ProtocolsActivity.this;
-        sessionManager = new SessionManager(context);
         lang_spinner = findViewById(R.id.lang_spinner);
         reset_btn = findViewById(R.id.reset_btn);
         snackbar_cv = findViewById(R.id.snackbar_cv);
@@ -112,8 +122,6 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.getStringExtra("intentType")!= null && intent.getStringExtra("intentType").equalsIgnoreCase("refresh"))
             showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed));
-
-        setLocale();
     }
 
     private void setLocale() {

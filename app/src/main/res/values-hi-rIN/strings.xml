@@ -1211,6 +1211,7 @@
     <string name="max_5_image">एक केस के लिए आप अधिकतम 5 इमेज भेज सकते हैं</string>
     <string name="max_2_image">एक केस के लिए आप अधिकतम 2 इमेज भेज सकते हैं</string>
     <string name="select">चुनें</string>
+    <string name="select_spinner">चयन करें</string>
     <string name="camera_permission_denied">कैमरा परमिशन अस्वीकार हुआ!</string>
     <string name="max_doc_size_toast_mb">अधिकतम डॉक साइज़ 1 MB है।</string>
     <string name="disconnected">डिस्कनेक्ट हुआ!</string>
@@ -1422,4 +1423,12 @@
     <string name="open_prescription">प्रिस्क्रिप्शन खोलो</string>
     <string name="reset">रीसेट</string>
     <string name="update_button">अपडेट</string>
+    <string name="underweight">अल्प-भार</string>
+    <string name="normal">सामान्य</string>
+    <string name="overweight">अधिक भार</string>
+    <string name="obese">स्थूल</string>
+    <string name="severely_obese">गंभीर रूप से स्थूल</string>
+    <string name="morbidly_obese">बहुत अधिक स्थूल</string>
+    <string name="select_height">ऊँचाई चुनिए</string>
+    <string name="select_weight">वजन चुनिए</string>
 </resources>

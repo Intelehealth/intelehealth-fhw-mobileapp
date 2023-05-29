@@ -1992,24 +1992,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         TextView t = (TextView) speciality_spinner.getSelectedView();
         t.setError(getString(R.string.please_select_specialization_msg));
         t.setTextColor(Color.RED);
+        showSpecialisationDialog();
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this)
-                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.generic_ok),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
+    private void showSpecialisationDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.please_select_specialization_msg), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            }
+        });
     }
 
     // Permission - start

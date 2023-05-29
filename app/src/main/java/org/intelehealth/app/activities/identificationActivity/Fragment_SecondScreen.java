@@ -38,6 +38,7 @@ import org.intelehealth.app.activities.identificationActivity.model.StateDistMas
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -67,6 +68,7 @@ public class Fragment_SecondScreen extends Fragment {
     Context context;
     private String country1, state;
     ArrayAdapter<String> districtAdapter, stateAdapter;
+    ArrayAdapter<CharSequence> countryAdapter;
     EditText mDistrictET, mCityVillageET;
     private PatientDTO patientDTO;
     private Fragment_ThirdScreen fragment_thirdScreen;
@@ -77,7 +79,6 @@ public class Fragment_SecondScreen extends Fragment {
     String city_village;
     String patientID_edit;
     boolean patient_detail = false;
-
     private StateDistMaster mStateDistMaster;
     private EditText mStateEditText;
 
@@ -295,34 +296,23 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         Resources res = getResources();
-
         // country
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_spinner_item_1, getResources().getStringArray(R.array.countries));
-        countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-//        country_spinner.setSelection(countryAdapter.getPosition(country1));
-        mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
-        mCountryNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
-        mCountryNameSpinner.setSelection(countryAdapter.getPosition("India"));
-       /* ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.states_india, android.R.layout.simple_spinner_dropdown_item);
-        state_spinner.setSelection(stateAdapter.getPosition(state));
-*/
+        try {
+            String countriesLanguage = "countries_" + sessionManager.getAppLanguage();
+            int countries = res.getIdentifier(countriesLanguage, "array", getActivity().getApplicationContext().getPackageName());
+            if (countries != 0) {
+               countryAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        countries, R.layout.simple_spinner_item_1);
+                countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+            }
+            mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
+            mCountryNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+            mCountryNameSpinner.setSelection(countryAdapter.getPosition("India"));
+        } catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
 
-        //state
-        /*ArrayAdapter<String> stateAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states_india));
-        mStateNameSpinner.setAdapter(stateAdapter);
 
-        //district
-        districtAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.district));
-        mDistrictNameSpinner.setAdapter(districtAdapter);*/
-
-        //city
-        //cityAdapter = new ArrayAdapter<String>(getActivity(),
-        //      android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.navi_mumbai_city));
-        //mCityNameSpinner.setAdapter(cityAdapter);
 
         // Setting up the screen when user came from SEcond screen.
         if (fromThirdScreen || fromFirstScreen) {
@@ -481,7 +471,7 @@ public class Fragment_SecondScreen extends Fragment {
                         if (fromThirdScreen || fromFirstScreen)
                             mDistrictNameSpinner.setSelection(districtAdapter.getPosition(String.valueOf(district)));
                         else
-                            mDistrictNameSpinner.setSelection(districtAdapter.getPosition("Select"));
+                            mDistrictNameSpinner.setSelection(districtAdapter.getPosition(getResources().getString(R.string.select_spinner)));
 
 
                     } else {
@@ -553,7 +543,7 @@ public class Fragment_SecondScreen extends Fragment {
                         if (fromThirdScreen || fromFirstScreen)
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
                         else
-                            mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
+                            mStateNameSpinner.setSelection(stateAdapter.getPosition(getResources().getString(R.string.select_spinner)));
 
 
                     } else {
@@ -586,7 +576,7 @@ public class Fragment_SecondScreen extends Fragment {
 
     private void setStateAdapter(String countryName) {
         String[] stateList = new String[mStateDistMaster.getStateDataList().size() + 1];
-        stateList[0] = "Select";
+        stateList[0] = getResources().getString(R.string.select_spinner);
         for (int i = 1; i <= mStateDistMaster.getStateDataList().size(); i++) {
             stateList[i] = mStateDistMaster.getStateDataList().get(i - 1).getState();
         }
@@ -611,7 +601,7 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         String[] distList = new String[distDataList.size() + 1];
-        distList[0] = "Select";
+        distList[0] = getResources().getString(R.string.select_spinner);
         for (int i = 1; i <= distDataList.size(); i++) {
             distList[i] = distDataList.get(i - 1).getName();
             Log.v(TAG, "distList[i] - " + distList[i]);

@@ -64,6 +64,7 @@
     <string name="max_5_image">Maximum 5 Images you can send per one case</string>
     <string name="max_2_image">Maximum 2 Images you can send per one case</string>
     <string name="select">Select</string>
+    <string name="select_spinner">चयन करें</string>
     <string name="camera_permission_denied">Camera permission denied!</string>
     <string name="unable_to_pick_data">Unable to pick the gallery data!</string>
     <string name="max_doc_size_toast_mb">Max doc size is 1 MB</string>
