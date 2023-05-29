@@ -501,7 +501,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mSecondaryDoctorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mPrimaryDoctorUUIDString.isEmpty()) {
+                if (mPrimaryDoctorUUIDString.isEmpty()) {
                     Toast.makeText(context, "Please select the primary doctor", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -1681,8 +1681,8 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
         //primaryDoctor
-        Log.v(TAG, "getPrimaryDoctor"+patient.getPrimaryDoctor());
-        Log.v(TAG, "getPrimaryDoctor"+patient.getPrimaryDoctor());
+        Log.v(TAG, "getPrimaryDoctor" + patient.getPrimaryDoctor());
+        Log.v(TAG, "getPrimaryDoctor" + patient.getPrimaryDoctor());
         if (patient.getPrimaryDoctor() != null) {
             mPrimaryDoctorUUIDString = patient.getPrimaryDoctor().split("@#@")[0];
             mPrimaryDoctorTextView.setText(patient.getPrimaryDoctor().split("@#@")[1]);
@@ -2215,7 +2215,8 @@ public class IdentificationActivity extends AppCompatActivity {
         if (mPrimaryDoctorUUIDString.isEmpty()) {
             Toast.makeText(this, getString(R.string.primary_doct_val_txt), Toast.LENGTH_SHORT).show();
             return;
-        }if (mSecondaryDoctorUUIDString.isEmpty()) {
+        }
+        if (mSecondaryDoctorUUIDString.isEmpty()) {
             Toast.makeText(this, getString(R.string.seconday_doct_val_txt), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -2362,7 +2363,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryDoctor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mPrimaryDoctorUUIDString)+"@#@"+mPrimaryDoctorTextView.getText());
+            patientAttributesDTO.setValue(StringUtils.getValue(mPrimaryDoctorUUIDString) + "@#@" + mPrimaryDoctorTextView.getText());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //SecondaryDoctor
@@ -2370,16 +2371,16 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SecondaryDoctor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString)+"@#@"+mSecondaryDoctorTextView.getText());
+            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString) + "@#@" + mSecondaryDoctorTextView.getText());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //Ezazi Registration Number
-            int number = (int)(Math.random()*(99999999-100+1)+100);
+            int number = (int) (Math.random() * (99999999 - 100 + 1) + 100);
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Ezazi Registration Number"));
-            patientAttributesDTO.setValue(patientdto.getCountry().substring(0,2)+"/"+patientdto.getStateprovince().substring(0,2)+"/"+patientdto.getCityvillage().substring(0,2)+"/"+String.valueOf(number));
+            patientAttributesDTO.setValue(patientdto.getCountry().substring(0, 2) + "/" + patientdto.getStateprovince().substring(0, 2) + "/" + patientdto.getCityvillage().substring(0, 2) + "/" + String.valueOf(number));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             /*end*/
@@ -2724,7 +2725,8 @@ public class IdentificationActivity extends AppCompatActivity {
         if (mPrimaryDoctorUUIDString.isEmpty()) {
             Toast.makeText(this, getString(R.string.primary_doct_val_txt), Toast.LENGTH_SHORT).show();
             return;
-        }if (mSecondaryDoctorUUIDString.isEmpty()) {
+        }
+        if (mSecondaryDoctorUUIDString.isEmpty()) {
             Toast.makeText(this, getString(R.string.seconday_doct_val_txt), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -2909,7 +2911,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryDoctor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mPrimaryDoctorUUIDString)+"@#@"+mPrimaryDoctorTextView.getText());
+            patientAttributesDTO.setValue(StringUtils.getValue(mPrimaryDoctorUUIDString) + "@#@" + mPrimaryDoctorTextView.getText());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //SecondaryDoctor
@@ -2917,7 +2919,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SecondaryDoctor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString)+"@#@"+mSecondaryDoctorTextView.getText());
+            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString) + "@#@" + mSecondaryDoctorTextView.getText());
             patientAttributesDTOList.add(patientAttributesDTO);
 
 

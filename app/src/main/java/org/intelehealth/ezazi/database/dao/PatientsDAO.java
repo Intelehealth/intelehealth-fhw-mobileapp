@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -81,6 +82,7 @@ public class PatientsDAO {
     }
 
     public boolean insertPatientToDB(PatientDTO patientDTO, String uuid) throws DAOException {
+        Log.d("Patientsdao", "insertPatientToDB: uuid :"+uuid);
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = null;

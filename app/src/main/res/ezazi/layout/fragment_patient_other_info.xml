@@ -768,7 +768,6 @@
             android:layout_weight="1"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:drawableTint="@color/white"
-            android:enabled="false"
             android:text="@string/next">
 
         </com.google.android.material.button.MaterialButton>

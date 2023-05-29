@@ -893,7 +893,7 @@
     <string name="don_t_have_any_active_visit">Don\'t have any active visit!</string>
     <string name="active_cases">Active Cases (%1$d)</string>
     <!-- TODO: Remove or change this placeholder text -->
-<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
 
     <!-- Add Patient -->
     <string name="add_patient">Add New Patient</string>
@@ -937,6 +937,12 @@
     <string name="stage_1">Stage 1</string>
     <string name="stage_2">Stage 2</string>
     <string name="select_risk_factors">Select Risk Factors</string>
+    <string name="age_title">Age</string>
+    <string name="dob_title">Date of Birth</string>
+    <string name="start_obs">Start Recording Observations</string>
+    <string name="bed_number_title">Bed Number</string>
+    <string name="patient_info">Patient Information</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

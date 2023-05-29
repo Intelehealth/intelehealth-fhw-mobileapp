@@ -34,15 +34,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -118,7 +115,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
-    ImageButton editbtn;
+    ImageView editbtn;
     //    ImageButton ib_addFamilyMember;
     Button newVisit;
     IntentFilter filter;
@@ -153,12 +150,21 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        setContentView(R.layout.activity_patient_detail);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_patient_summary);
+
+        View toolbar = findViewById(R.id.toolbar_common);
+        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
+        tvTitle.setText(getResources().getString(R.string.patient_info));
+        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PatientDetailActivity.this, HomeActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+        });
+
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         reMyreceive = new Myreceiver();
@@ -521,9 +527,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 //    }
 
 
-
-
-
     public void setDisplay(String dataString) {
 
         String patientSelection = "uuid = ?";
@@ -603,23 +606,23 @@ public class PatientDetailActivity extends AppCompatActivity {
         idView = findViewById(R.id.textView_ID);
         TextView patinetName = findViewById(R.id.textView_name);
         TextView dobView = findViewById(R.id.textView_DOB);
-        TextView genderView = findViewById(R.id.textView_Gender);
+        // TextView genderView = findViewById(R.id.textView_Gender);
         TextView ageView = findViewById(R.id.textView_age);
         TextView addr1View = findViewById(R.id.textView_address_1);
-        TableRow addr2Row = findViewById(R.id.tableRow_addr2);
-        TextView addr2View = findViewById(R.id.textView_address2);
+       /* TableRow addr2Row = findViewById(R.id.tableRow_addr2);
+        TextView addr2View = findViewById(R.id.textView_address2);*/
         TextView addrFinalView = findViewById(R.id.textView_address_final);
-        TextView casteView = findViewById(R.id.textView_caste);
+     /*   TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
-        TextView education_statusView = findViewById(R.id.textView_education_status);
+        TextView education_statusView = findViewById(R.id.textView_education_status);*/
         phoneView = findViewById(R.id.textView_phone);
-        TextView sdwView = findViewById(R.id.textView_SDW);
+      /*  TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
         TableRow occuRow = findViewById(R.id.tableRow_Occupation);
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
-        TableRow casteRow = findViewById(R.id.tableRow_Caste);
+        TableRow casteRow = findViewById(R.id.tableRow_Caste);*/
         ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
         ImageView calling = findViewById(R.id.calling);
 
@@ -627,7 +630,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView famHistView = findViewById(R.id.textView_famHist);
 
         //unique Ezazi registration number
-        TextView textView_UER_No=findViewById(R.id.textView_UER_No);
+        TextView textView_UER_No = findViewById(R.id.textView_UER_No);
 
         textView_UER_No.setText(patient_new.geteZaziRegNumber());
 
@@ -734,7 +737,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         //Log.d("IDEA","IDEA"+id);
 
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
-        ageView.setText(age);
+        ageView.setText(age.trim());
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
@@ -775,7 +778,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             dobView.setText(dob);
         }
         //dobView.setText(dob);
-        mGender = patient_new.getGender();
+       /* mGender = patient_new.getGender();
         if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
             genderView.setVisibility(View.GONE);
         } else {
@@ -883,7 +886,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else {
             addr2View.setText(patient_new.getAddress2());
         }
-        String city_village;
+     String city_village;
         if (patient_new.getCity_village() != null) {
             city_village = patient_new.getCity_village().trim();
         } else {
@@ -909,6 +912,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             addrFinalView.setText(addrFinalLine);
         }
 
+*/
+
+        String addrFinalLine = String.format("%s, %s", patient_new.getState_province(),
+                patient_new.getCountry());
+        addrFinalView.setText(addrFinalLine);
 
         phoneView.setText(patient_new.getPhone_number());
         if (patient_new.getPhone_number() == null || patient_new.getPhone_number().isEmpty()) {

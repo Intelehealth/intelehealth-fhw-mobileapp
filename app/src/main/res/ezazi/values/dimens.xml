@@ -170,4 +170,16 @@
     <dimen name="splash_logo_height">100dp</dimen>
     <dimen name="search_icon_width">@dimen/std_16dp</dimen>
     <dimen name="search_icon_height">14.4dp</dimen>
+    <dimen name="input_label_size_values">@dimen/std_14sp</dimen>
+    <dimen name="padding_card_summary">20dp</dimen>
+    <dimen name="margin_top_summary_views">10dp</dimen>
+    <dimen name="layout_summary_padding_top_bt">16dp</dimen>
+    <dimen name="tv_summary_title_text_size">20sp</dimen>
+    <dimen name="tv_summary_layout_margin_top">22dp</dimen>
+    <dimen name="ib_edit_details_size">20dp</dimen>
+    <dimen name="ib_edit_details_padding">5dp</dimen>
+    <dimen name="ib_edit_margin_end">15dp</dimen>
+    <dimen name="ib_edit_height_width">20dp</dimen>
+
+
 </resources>
