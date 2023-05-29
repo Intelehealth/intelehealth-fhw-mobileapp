@@ -113,7 +113,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     SessionManager sessionManager = null;
     Context mContext;
     private List<ProviderDTO> mProviderDoctorList = new ArrayList<ProviderDTO>();
-    TextInputEditText etFirstName, etMiddleName, etLastName, etDob, etAge, etMobileNumber, etAlternateNumber;
+    TextInputEditText mFirstName, mMiddleName, mLastName, mDOB, mAge, mMobileNumber, mAlternateNumber;
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     private boolean mIsEditMode = false;
@@ -148,6 +148,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     ImageView ivPersonal, ivAddress, ivOther;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     FloatingActionButton fab;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -187,23 +188,23 @@ public class PatientPersonalInfoFragment extends Fragment {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-         fab = view.findViewById(R.id.fab_update_photo);
+        fab = view.findViewById(R.id.fab_update_photo);
         ImageView ivProfilePhoto = view.findViewById(R.id.iv_profile_photo);
-        etFirstName = view.findViewById(R.id.et_first_name);
-        etMiddleName = view.findViewById(R.id.et_middle_name);
-        etLastName = view.findViewById(R.id.et_last_name);
-        etDob = view.findViewById(R.id.et_dob);
-        etAge = view.findViewById(R.id.et_age);
-        etMobileNumber = view.findViewById(R.id.et_mobile_no);
-        etAlternateNumber = view.findViewById(R.id.et_alternate_mobile);
+        mFirstName = view.findViewById(R.id.et_first_name);
+        mMiddleName = view.findViewById(R.id.et_middle_name);
+        mLastName = view.findViewById(R.id.et_last_name);
+        mDOB = view.findViewById(R.id.et_dob);
+        mAge = view.findViewById(R.id.et_age);
+        mMobileNumber = view.findViewById(R.id.et_mobile_no);
+        mAlternateNumber = view.findViewById(R.id.et_alternate_mobile);
         btnSaveUpdate = view.findViewById(R.id.btn_save_update_first);
         i_privacy = getActivity().getIntent();
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
 
-        etFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-        etMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-        etLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
 
         //Initialize the local database to store patient information
@@ -240,50 +241,50 @@ public class PatientPersonalInfoFragment extends Fragment {
 */
         // Setting up the screen when user came from Second screen.
         if (fromSecondScreen) {
-            etFirstName.setText(patientDTO.getFirstname());
-            etMiddleName.setText(patientDTO.getMiddlename());
-            etLastName.setText(patientDTO.getLastname());
-            etMobileNumber.setText(patientDTO.getPhonenumber());
-            //etAlternateNumber.setText(patientDTO.getPhonenumber());
+            mFirstName.setText(patientDTO.getFirstname());
+            mMiddleName.setText(patientDTO.getMiddlename());
+            mLastName.setText(patientDTO.getLastname());
+            mMobileNumber.setText(patientDTO.getPhonenumber());
+            //mAlternateNumber.setText(patientDTO.getPhonenumber());
 
             //if patient update then age will be set
             //dob to be displayed based on translation...
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-                etLastName.setText(dob_text);
+                mLastName.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 String dob_text = en__te_dob(dob); //to show text of English into Telugu...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String dob_text = en__mr_dob(dob); //to show text of English into marathi...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into assame...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                 String dob_text = en__kn_dob(dob); //to show text of English into kannada...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 String dob_text = en__ru_dob(dob); //to show text of English into kannada...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                 String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else {
-                etDob.setText(dob);
+                mDOB.setText(dob);
             }
 
             // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
@@ -297,7 +298,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                     mAgeDays + getResources().getString(R.string.days);
-            etAge.setText(age);
+            mAge.setText(age);
 
 /*temp
             mCountryCodePicker.setFullNumber(patientDTO.getPhonenumber()); // automatically assigns cc to spinner and number to edittext field.
@@ -367,37 +368,37 @@ public class PatientPersonalInfoFragment extends Fragment {
 
             //Display the fields on the Add Patient screen as per the config file
             if (obj.getBoolean("mFirstName")) {
-                etFirstName.setVisibility(View.VISIBLE);
+                mFirstName.setVisibility(View.VISIBLE);
             } else {
-                etFirstName.setVisibility(View.GONE);
+                mFirstName.setVisibility(View.GONE);
             }
 
             if (obj.getBoolean("mMiddleName")) {
-                etMiddleName.setVisibility(View.VISIBLE);
+                mMiddleName.setVisibility(View.VISIBLE);
             } else {
-                etMiddleName.setVisibility(View.GONE);
+                mMiddleName.setVisibility(View.GONE);
             }
 
             if (obj.getBoolean("mLastName")) {
-                etLastName.setVisibility(View.VISIBLE);
+                mLastName.setVisibility(View.VISIBLE);
             } else {
-                etLastName.setVisibility(View.GONE);
+                mLastName.setVisibility(View.GONE);
             }
 
             if (obj.getBoolean("mDOB")) {
-                etDob.setVisibility(View.VISIBLE);
+                mDOB.setVisibility(View.VISIBLE);
             } else {
-                etDob.setVisibility(View.GONE);
+                mDOB.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mPhoneNum")) {
-                etMobileNumber.setVisibility(View.VISIBLE);
+                mMobileNumber.setVisibility(View.VISIBLE);
             } else {
-                etMobileNumber.setVisibility(View.GONE);
+                mMobileNumber.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mAge")) {
-                etAge.setVisibility(View.VISIBLE);
+                mAge.setVisibility(View.VISIBLE);
             } else {
-                etAge.setVisibility(View.GONE);
+                mAge.setVisibility(View.GONE);
             }
            /*
 
@@ -563,10 +564,10 @@ public class PatientPersonalInfoFragment extends Fragment {
         }
 */
 
-        getDOBAndAge();
+        gmDOBAndAge();
     }
 
-    private void getDOBAndAge() {
+    private void gmDOBAndAge() {
         mDOBYear = today.get(Calendar.YEAR);
         mDOBMonth = today.get(Calendar.MONTH);
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
@@ -580,8 +581,8 @@ public class PatientPersonalInfoFragment extends Fragment {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //Set the DOB calendar to the date selected by the user
                 dob.set(year, monthOfYear, dayOfMonth);
-                etDob.setError(null);
-                etAge.setError(null);
+                mDOB.setError(null);
+                mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 //  mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                 mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
@@ -594,42 +595,42 @@ public class PatientPersonalInfoFragment extends Fragment {
 
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                     String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String dob_text = en__as_dob(dobString); //to show text of English into telugu...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
-                    etDob.setText(dob_text);
+                    mDOB.setText(dob_text);
                 } else {
-                    etDob.setText(dobString);
+                    mDOB.setText(dobString);
                 }
 
-                //  etDob.setText(dobString);
+                //  mDOB.setText(dobString);
                 mDOBYear = year;
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
@@ -648,7 +649,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                 String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                         mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                         mAgeDays + getResources().getString(R.string.days);
-                etAge.setText(ageS);
+                mAge.setText(ageS);
 
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -656,7 +657,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         //DOB Picker is shown when clicked
         // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
         mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        etDob.setOnClickListener(new View.OnClickListener() {
+        mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDOBPicker.show();
@@ -668,42 +669,42 @@ public class PatientPersonalInfoFragment extends Fragment {
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 String dob_text = en__te_dob(dob); //to show text of English into Telugu...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String dob_text = en__mr_dob(dob); //to show text of English into marathi...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into assame...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                 String dob_text = en__kn_dob(dob); //to show text of English into kannada...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 String dob_text = en__ru_dob(dob); //to show text of English into kannada...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                 String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-                etDob.setText(dob_text);
+                mDOB.setText(dob_text);
             } else {
-                etDob.setText(dob);
+                mDOB.setText(dob);
             }
 
-            // etDob.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+            // mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), mContext);
 
@@ -714,9 +715,9 @@ public class PatientPersonalInfoFragment extends Fragment {
             String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                     mAgeDays + getResources().getString(R.string.days);
-            etAge.setText(age);
+            mAge.setText(age);
         }
-        etAge.setOnClickListener(new View.OnClickListener() {
+        mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -784,7 +785,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                     String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                             mAgeDays + getString(R.string.days);
-                    etAge.setText(ageString);
+                    mAge.setText(ageString);
 
 
                     Calendar calendar = Calendar.getInstance();
@@ -821,42 +822,42 @@ public class PatientPersonalInfoFragment extends Fragment {
                     String dobString = simpleDateFormat.format(dob.getTime());
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String dob_text = en__mr_dob(dobString); //to show text of English into marathi...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String dob_text = en__as_dob(dobString); //to show text of English into assame...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String dob_text = en__ml_dob(dobString);
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else {
-                        etDob.setText(dobString);
+                        mDOB.setText(dobString);
                     }
 
-//                    etDob.setText(dobString);
+//                    mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                     dialog.dismiss();
                 });
@@ -875,7 +876,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private void handleClickListeners() {
-        etDob.setOnClickListener(new View.OnClickListener() {
+        mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //add it
@@ -1046,10 +1047,10 @@ public class PatientPersonalInfoFragment extends Fragment {
             }
         }
 
-        if (etMobileNumber.getText().toString().trim().length() > 0) {
-            if (etMobileNumber.getText().toString().trim().length() < 10) {
-                etMobileNumber.requestFocus();
-                etMobileNumber.setError("Enter 10 digits");
+        if (mMobileNumber.getText().toString().trim().length() > 0) {
+            if (mMobileNumber.getText().toString().trim().length() < 10) {
+                mMobileNumber.requestFocus();
+                mMobileNumber.setError("Enter 10 digits");
                 return;
             }
         }
@@ -1089,26 +1090,26 @@ public class PatientPersonalInfoFragment extends Fragment {
         }
 */
 
-        if (!etFirstName.getText().toString().equals("") && !etLastName.getText().toString().equals("")
-                && !etDob.getText().toString().equals("") && !etAge.getText().toString().equals("")) {
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+                && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
 
             Log.v(TAG, "Result");
 
         } else {
-            if (etFirstName.getText().toString().equals("")) {
-                etFirstName.setError(getString(R.string.error_field_required));
+            if (mFirstName.getText().toString().equals("")) {
+                mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (etLastName.getText().toString().equals("")) {
-                etLastName.setError(getString(R.string.error_field_required));
+            if (mLastName.getText().toString().equals("")) {
+                mLastName.setError(getString(R.string.error_field_required));
             }
 
-            if (etDob.getText().toString().equals("")) {
-                etDob.setError(getString(R.string.error_field_required));
+            if (mDOB.getText().toString().equals("")) {
+                mDOB.setError(getString(R.string.error_field_required));
             }
 
-            if (etAge.getText().toString().equals("")) {
-                etAge.setError(getString(R.string.error_field_required));
+            if (mAge.getText().toString().equals("")) {
+                mAge.setError(getString(R.string.error_field_required));
             }
 
             Toast.makeText(mContext, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
@@ -1130,13 +1131,13 @@ public class PatientPersonalInfoFragment extends Fragment {
             if (mCurrentPhotoPath == null)
                 mCurrentPhotoPath = patientDTO.getPatient_photo();
 
-            patientDTO.setFirst_name(StringUtils.getValue(etFirstName.getText().toString()));
-            patientDTO.setMiddle_name(StringUtils.getValue(etMiddleName.getText().toString()));
-            patientDTO.setLast_name(StringUtils.getValue(etLastName.getText().toString()));
-            patientDTO.setPhone_number(StringUtils.getValue(etMobileNumber.getText().toString()));
+            patientDTO.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
+            patientDTO.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
+            patientDTO.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
+            patientDTO.setPhone_number(StringUtils.getValue(mMobileNumber.getText().toString()));
             //  patientDTO.setGender(StringUtils.getValue(mGender));
 
-            String[] dob_array = etDob.getText().toString().split(" ");
+            String[] dob_array = mDOB.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
             Log.d("dob_array", "0: " + dob_array[1]);
             Log.d("dob_array", "0: " + dob_array[2]);
@@ -1144,7 +1145,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
                 String dob = StringUtils.hi_or_bn_en_noEdit
-                        (etDob.getText().toString(), sessionManager.getAppLanguage());
+                        (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientDTO.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
@@ -1180,7 +1181,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(etMobileNumber.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValue(mMobileNumber.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             /*patientAttributesDTO = new PatientAttributesDTO();
@@ -1398,7 +1399,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         //AlternateNo
         if (patient.getAlternateNo() != null) {
             mAlternateNumberString = patient.getAlternateNo();
-            etAlternateNumber.setText(mAlternateNumberString);
+            mAlternateNumber.setText(mAlternateNumberString);
         }
     /*
      Commented as per new flow
@@ -1685,8 +1686,8 @@ public class PatientPersonalInfoFragment extends Fragment {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         //Set the DOB calendar to the date selected by the user
                         dob.set(year, monthOfYear, dayOfMonth);
-                        etDob.setError(null);
-                        etAge.setError(null);
+                        mDOB.setError(null);
+                        mAge.setError(null);
 
                         // mDOBErrorTextView.setVisibility(View.GONE);
                         //  mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -1705,39 +1706,39 @@ public class PatientPersonalInfoFragment extends Fragment {
 
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                             String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                             String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                             String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                             String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                             String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                             String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                             String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                             String dob_text = en__as_dob(dobString); //to show text of English into telugu...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                             String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                             String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                             String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
-                            etDob.setText(dob_text);
+                            mDOB.setText(dob_text);
                         } else {
-                            etDob.setText(dobString);
+                            mDOB.setText(dobString);
                         }
 
                         //  dob_edittext.setText(dobString);
@@ -1760,14 +1761,14 @@ public class PatientPersonalInfoFragment extends Fragment {
                         String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                                 mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                                 mAgeDays + getResources().getString(R.string.days);
-                        etAge.setText(ageS);
+                        mAge.setText(ageS);
 
                     }
                 }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE)); // so that todays date as shown as default selection.
 
         //DOB Picker is shown when clicked
         mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-        etDob.setOnClickListener(new View.OnClickListener() {
+        mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDOBPicker.show();
@@ -1776,7 +1777,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         // DOB - end
 
         // Age - start
-        etAge.setOnClickListener(new View.OnClickListener() {
+        mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAgePicker = new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogStyle);
@@ -1846,7 +1847,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                     String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                             mAgeDays + getString(R.string.days);
-                    etAge.setText(ageString);
+                    mAge.setText(ageString);
 
                     //mDOBErrorTextView.setVisibility(View.GONE);
                     // mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -1869,39 +1870,39 @@ public class PatientPersonalInfoFragment extends Fragment {
                     String dobString = simpleDateFormat.format(dob.getTime());
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String dob_text = en__mr_dob(dobString); //to show text of English into marathi...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String dob_text = en__as_dob(dobString); //to show text of English into assame...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String dob_text = en__ml_dob(dobString);
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                        etDob.setText(dob_text);
+                        mDOB.setText(dob_text);
                     } else {
-                        etDob.setText(dobString);
+                        mDOB.setText(dobString);
                     }
 
 //                    dob_edittext.setText(dobString);
@@ -1969,7 +1970,35 @@ public class PatientPersonalInfoFragment extends Fragment {
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString());
         startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
     }
+
     private void onPatientCreateClicked() {
+
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+                && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
+
+            Log.v(TAG, "Result");
+
+        } else {
+            if (mFirstName.getText().toString().equals("")) {
+                mFirstName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mLastName.getText().toString().equals("")) {
+                mLastName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mDOB.getText().toString().equals("")) {
+                mDOB.setError(getString(R.string.error_field_required));
+            }
+
+            if (mAge.getText().toString().equals("")) {
+                mAge.setError(getString(R.string.error_field_required));
+            }
+
+            Toast.makeText(mContext, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         uuid = UUID.randomUUID().toString();
 
         Log.v(TAG, "reltion: " + patientID_edit);
@@ -1991,7 +2020,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 /*
 
         //frag1_nxt_btn_main.setBackground(getResources().getDrawable(R.drawable.disabled_patient_reg_btn));
-        if (etFirstName.getText().toString().equals("")) {
+        if (mFirstName.getText().toString().equals("")) {
             mFirstNameErrorTextView.setVisibility(View.VISIBLE);
             mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
             mFirstNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -2102,10 +2131,10 @@ public class PatientPersonalInfoFragment extends Fragment {
         else
             patientDTO.setPatientPhoto(patientDTO.getPatientPhoto());
 
-        patientDTO.setFirstname(etFirstName.getText().toString());
-        patientDTO.setMiddlename(etMiddleName.getText().toString());
-        patientDTO.setLastname(etLastName.getText().toString());
-        patientDTO.setPhonenumber(etMobileNumber.getText().toString());
+        patientDTO.setFirstname(mFirstName.getText().toString());
+        patientDTO.setMiddlename(mMiddleName.getText().toString());
+        patientDTO.setLastname(mLastName.getText().toString());
+        patientDTO.setPhonenumber(mMobileNumber.getText().toString());
 
         // patientDTO.setGender(StringUtils.getValue(mGender));
 
@@ -2113,9 +2142,9 @@ public class PatientPersonalInfoFragment extends Fragment {
         //   patientDTO.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
 
 
-       ///////////// patientDTO.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
+        ///////////// patientDTO.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
 
-        String[] dob_array = etDob.getText().toString().split(" ");
+        String[] dob_array = mDOB.getText().toString().split(" ");
         Log.d("dob_array", "0: " + dob_array[0]);
         Log.d("dob_array", "0: " + dob_array[1]);
         Log.d("dob_array", "0: " + dob_array[2]);
@@ -2123,7 +2152,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         //get month index and return English value for month.
         if (dob_indexValue == 15) {
             String dob = StringUtils.hi_or_bn_en_noEdit
-                    (etDob.getText().toString(), sessionManager.getAppLanguage());
+                    (mDOB.getText().toString(), sessionManager.getAppLanguage());
             patientDTO.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                     (StringUtils.getValue(dob)));
         } else {
@@ -2132,12 +2161,12 @@ public class PatientPersonalInfoFragment extends Fragment {
             String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
             patientDTO.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                     (StringUtils.getValue(dob_value)));
-            Log.d(TAG, "onPatientCreateClicked: dob : "+DateAndTimeUtils.getFormatedDateOfBirth
+            Log.d(TAG, "onPatientCreateClicked: dob : " + DateAndTimeUtils.getFormatedDateOfBirth
                     (StringUtils.getValue(dob_value)));
 
         }
 
-        if(patientDTO!=null){
+        if (patientDTO != null) {
             Log.d(TAG, "onPatientCreateClicked: not null");
 
 
@@ -2162,7 +2191,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                     .replace(R.id.frame_add_patient, fragment_secondScreen)
                     .commit();
             // end
-        }else{
+        } else {
             Log.d(TAG, "onPatientCreateClicked: patientdao is null");
         }
 
