@@ -4,94 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/padding_20"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/screen_padding">
 
-    <RelativeLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="5dp"
-        android:orientation="horizontal"
-        android:weightSum="4">
+        android:background="@drawable/white_child_container_bg"
+        android:maxHeight="@dimen/dialog_max_height"
+        android:minWidth="@dimen/dialog_max_width"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
 
-        <ImageView
-            android:id="@+id/iv_prev_month2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="8dp"
-            android:layout_weight="0.3"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ui2_ic_calendar_previous"
-            app:tint="@color/colorPrimary" />
-
-        <Spinner
-            android:id="@+id/spinner_months_caleview"
-            style="@style/CalendarSpinnerTheme"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_toEndOf="@+id/iv_prev_month2"
-            android:layout_weight="1.7"
-            android:dropDownVerticalOffset="56dp"
-            android:gravity="center_vertical"
-            android:paddingStart="-10dp"
-            android:paddingTop="@dimen/margin_10"
-            android:paddingEnd="@dimen/margin_16dp"
-            android:paddingBottom="@dimen/margin_10"
-            android:spinnerMode="dropdown"
-            android:textAlignment="viewStart"
-            android:textSize="@dimen/edittext_textsize_16sp" />
-
-        <Spinner
-            android:id="@+id/spinner_year_caleview"
-            style="@style/CalendarSpinnerTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-10dp"
-            android:layout_toStartOf="@+id/iv_next_month2"
-            android:layout_toEndOf="@+id/spinner_months_caleview"
-            android:layout_weight="1.7"
-            android:dropDownVerticalOffset="56dp"
-            android:gravity="center_vertical"
-            android:paddingStart="-10dp"
-            android:paddingTop="@dimen/margin_10"
-            android:paddingEnd="@dimen/margin_16dp"
-            android:paddingBottom="@dimen/margin_10"
-            android:spinnerMode="dropdown"
-            android:textAlignment="center"
-            android:textSize="@dimen/edittext_textsize_16sp" />
-
-        <ImageView
-            android:id="@+id/iv_next_month2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="8dp"
-            android:layout_weight="0.3"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ui2_ic_calendar_next"
-            app:tint="@color/colorPrimary" />
-    </RelativeLayout>
-
-    <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/activity_vertical_margin"
             android:weightSum="4">
 
             <ImageView
                 android:id="@+id/iv_prev_month2"
-                android:layout_width="0dp"
+                android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_alignParentStart="true"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="8dp"
                 android:layout_weight="0.3"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ui2_ic_calendar_previous"
@@ -100,132 +38,197 @@
             <Spinner
                 android:id="@+id/spinner_months_caleview"
                 style="@style/CalendarSpinnerTheme"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:textAlignment="center"
+                android:layout_toEndOf="@+id/iv_prev_month2"
                 android:layout_weight="1.7"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/fu_margin_start"
+                android:dropDownVerticalOffset="56dp"
                 android:paddingTop="@dimen/margin_10"
                 android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10"
                 android:spinnerMode="dropdown"
+                android:textAlignment="viewStart"
                 android:textSize="@dimen/edittext_textsize_16sp" />
 
             <Spinner
                 android:id="@+id/spinner_year_caleview"
                 style="@style/CalendarSpinnerTheme"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/iv_next_month2"
+                android:layout_toEndOf="@+id/spinner_months_caleview"
                 android:layout_weight="1.7"
-                android:textAlignment="center"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/fu_margin_start"
+                android:dropDownVerticalOffset="56dp"
+                android:paddingStart="-10dp"
                 android:paddingTop="@dimen/margin_10"
                 android:paddingEnd="@dimen/margin_16dp"
                 android:paddingBottom="@dimen/margin_10"
                 android:spinnerMode="dropdown"
+                android:textAlignment="center"
                 android:textSize="@dimen/edittext_textsize_16sp" />
 
             <ImageView
                 android:id="@+id/iv_next_month2"
-                android:layout_width="0dp"
+                android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="8dp"
                 android:layout_weight="0.3"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ui2_ic_calendar_next"
                 app:tint="@color/colorPrimary" />
+        </RelativeLayout>
+
+        <!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:weightSum="4">
+
+                <ImageView
+                    android:id="@+id/iv_prev_month2"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.3"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ui2_ic_calendar_previous"
+                    app:tint="@color/colorPrimary" />
+
+                <Spinner
+                    android:id="@+id/spinner_months_caleview"
+                    style="@style/CalendarSpinnerTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:textAlignment="center"
+                    android:layout_weight="1.7"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_year_caleview"
+                    style="@style/CalendarSpinnerTheme"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.7"
+                    android:textAlignment="center"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
+
+                <ImageView
+                    android:id="@+id/iv_next_month2"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.3"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ui2_ic_calendar_next"
+                    app:tint="@color/colorPrimary" />
+            </LinearLayout>
+        -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineHeight="24dp"
+                android:text="@string/mo"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineHeight="24dp"
+                android:text="@string/tu"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineHeight="24dp"
+                android:text="@string/we"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineHeight="24dp"
+                android:text="@string/th"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineHeight="24dp"
+                android:text="@string/fr"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineHeight="24dp"
+                android:text="@string/sa"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineHeight="24dp"
+                android:text="@string/su"
+                android:textSize="13sp"
+                android:textStyle="bold" />
         </LinearLayout>
-    -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="7">
-
-        <TextView
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_calendarview_new"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:lineHeight="24dp"
-            android:text="@string/mo"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:lineHeight="24dp"
-            android:text="@string/tu"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:lineHeight="24dp"
-            android:text="@string/we"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:lineHeight="24dp"
-            android:text="@string/th"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:lineHeight="24dp"
-            android:text="@string/fr"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:lineHeight="24dp"
-            android:text="@string/sa"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:lineHeight="24dp"
-            android:text="@string/su"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_calendarview_new"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        tools:itemCount="7"
-        tools:listitem="@layout/layout_item_calendarview_ui2" />
+            android:layout_marginTop="22dp"
+            tools:itemCount="7"
+            tools:listitem="@layout/layout_item_calendarview_ui2" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -238,8 +241,8 @@
         android:weightSum="2">
 
         <Button
-            style="@style/Theme.EZazi.Button.White"
             android:id="@+id/btn_cancel_calendar"
+            style="@style/Theme.EZazi.Dialog.Button.Cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_privacy_notice_link"
@@ -255,8 +258,8 @@
             android:textSize="@dimen/common_button_text_size" />
 
         <Button
-            style="@style/Theme.EZazi.Button"
             android:id="@+id/btn_okay_calendar"
+            style="@style/Theme.EZazi.Dialog.Button.Next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_privacy_notice_link"
