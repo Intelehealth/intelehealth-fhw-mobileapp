@@ -315,13 +315,18 @@ public class Fragment_SecondScreen extends Fragment {
                 mCountryName = "India";
             }
             mCountryNameSpinner.setSelection(countryIndex);
+//            if (patientDTO.getCityvillage() != null && !patientDTO.getCityvillage().isEmpty()) {
+//                String[] district_city = patientDTO.getCityvillage().trim().split(":");
+//                if (district_city.length == 2) {
+//                    district = mDistName = district_city[0];
+//                    city_village = mCityVillageName = district_city[1];
+//                    mCityVillageET.setText(city_village);
+//                }
+//            }
+
             if (patientDTO.getCityvillage() != null && !patientDTO.getCityvillage().isEmpty()) {
-                String[] district_city = patientDTO.getCityvillage().trim().split(":");
-                if (district_city.length == 2) {
-                    district = mDistName = district_city[0];
-                    city_village = mCityVillageName = district_city[1];
-                    mCityVillageET.setText(city_village);
-                }
+                city_village = patientDTO.getCityvillage();
+                mCityVillageET.setText(city_village);
             }
 
             if (mCountryName.equalsIgnoreCase("India")) {

@@ -134,8 +134,8 @@ import okhttp3.ResponseBody;
 public class PatientDetailActivity2 extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
-            postalcode, patientcountry, patientstate, patientdistrict, village, address1,
-            son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
+            postalcode, patientcountry, patientstate, /*patientdistrict,*/
+            village, address1, son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -483,7 +483,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
         patientstate = findViewById(R.id.state);
-        patientdistrict = findViewById(R.id.district);
+//        patientdistrict = findViewById(R.id.district);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
 
@@ -721,7 +721,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patientDTO.setSon_dau_wife(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("NationalID")) {
+                if (name.equalsIgnoreCase("Citizen Id")) {
                     patientDTO.setNationalID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
@@ -1025,26 +1025,28 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         patientstate.setText(state);
 
         // setting district and city
-        String[] district_city = patientDTO.getCityvillage().trim().split(":");
-        String district = null;
-        String city_village = null;
-        if (district_city.length == 2) {
-            district = district_city[0];
-            city_village = district_city[1];
-        }
-
-        if (district != null) {
-            patientdistrict.setText(district);
-        } else {
-            patientdistrict.setText(getResources().getString(R.string.no_district_added));
-        }
-
+//        String[] district_city = patientDTO.getCityvillage().trim().split(":");
+//        String district = null;
+//        String city_village = null;
+//        if (district_city.length == 2) {
+//            district = district_city[0];
+//            city_village = district_city[1];
+//        }
+//
+//        if (district != null) {
+//            patientdistrict.setText(district);
+//        } else {
+//            patientdistrict.setText(getResources().getString(R.string.no_district_added));
+//        }
+//
+        String city_village = patientDTO.getCityvillage();
         if (city_village != null) {
             village.setText(city_village);
         } else {
             village.setText(getResources().getString(R.string.no_city_added));
         }
-        // end - city and district
+//         end - city and district
+
 
         // setting postal code
         if (patientDTO.getPostalcode() != null) {
@@ -1298,7 +1300,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().equals("")) {
             patientNationalID.setText(patientDTO.getNationalID());
         } else {
-            patientNationalID.setText("Not Provided");
+            patientNationalID.setText(getString(R.string.not_provided));
         }
 
         // setting occupation value
