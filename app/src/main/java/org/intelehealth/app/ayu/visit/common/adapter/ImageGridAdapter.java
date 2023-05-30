@@ -41,26 +41,30 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Log.v("ImageGridAdapter", "itemList.size - " + mItemList.size());
     }
 
+    public void addNull() {
+        //mItemList.add(null);
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ui2_image_item_vire, parent, false);
-        /**
-         * First item's entrance animations.
-         */
-        //mAnimator.onCreateViewHolder(itemView);
-
         return new GenericViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position1) {
-        int position = holder.getAbsoluteAdapterPosition();
-        Log.v("ImageGridAdapter", "onBindViewHolder - " + position);
+
         if (holder instanceof GenericViewHolder) {
+
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
+            int position = holder.getAbsoluteAdapterPosition();
+            Log.v("ImageGridAdapter", "onBindViewHolder - " + position);
             if (position < mItemList.size()) {
                 genericViewHolder.image = mItemList.get(position);
+            } else {
+                genericViewHolder.image = null;
             }
             genericViewHolder.index = position;
             Log.v("ImageGridAdapter", "genericViewHolder.image - " + genericViewHolder.image);
@@ -87,8 +91,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        //return mItemList.size() + 1;
-        return mItemList.size();
+        return mItemList.size() + 1;
     }
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {

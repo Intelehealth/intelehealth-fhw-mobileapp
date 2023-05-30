@@ -72,6 +72,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -437,6 +438,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private String mLastChiefComplainPhysicalString = "";
 
     private List<Node> loadPhysicalExam() {
+        ArrayList<String> physicalExams = new ArrayList<>();
+        ArrayList<String> childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
+        if (!childNodeSelectedPhysicalExams.isEmpty())
+            physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
+
+        ArrayList<String> rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
+        if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
+            physicalExams.addAll(rootNodePhysicalExams); //For Root Node
+        Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
         mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
         String[] exm = mLastChiefComplainPhysicalString.split(";");
         HashMap<String, List<String>> map = new HashMap<String, List<String>>();
@@ -455,7 +465,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
         String fileLocation = "physExam.json";
         Node filterNode = loadFileToNode(fileLocation);
-        physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), null);
+        ArrayList<String> selectedExamsList = new ArrayList<>(selectedExams);
+        Log.v(TAG, "selectedExamsList- " + new Gson().toJson(selectedExamsList));
+        physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), selectedExamsList);
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
             /*if (i == 0) {

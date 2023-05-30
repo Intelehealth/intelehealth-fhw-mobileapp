@@ -65,6 +65,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
     private List<Node> mItemList = new ArrayList<Node>();
+    private List<Node> mSuperItemList = new ArrayList<Node>();
     //private int mTotalQuery = 0;
     RecyclerView mRecyclerView;
     private int mLastImageCaptureSelectedNodeIndex = 0;
@@ -79,6 +80,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     public void removeImageInLastNode(int index, String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
+    }
+
+    public void setSuperNodeList(List<Node> nodes) {
+        mSuperItemList = nodes;
     }
 
     public boolean isIsAssociateSymptomsLoaded() {
@@ -310,7 +315,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -344,7 +350,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     parentNode.setSelected(true);
                     parentNode.setDataCaptured(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, mRootIndex);
+                    mOnItemSelection.onSelect(node, mRootIndex, false);
                 }
             }
         });
@@ -391,7 +397,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -420,7 +427,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     parentNode.setSelected(true);
                     parentNode.setDataCaptured(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, mRootIndex);
+                    mOnItemSelection.onSelect(node, mRootIndex, false);
                 }
             }
         });
@@ -642,9 +649,20 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             int nestedLevel = mNestedLevel + 1;
             NestedQuestionsListingAdapter nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, new OnItemSelection() {
                 @Override
-                public void onSelect(Node node, int index) {
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index);
-                    mOnItemSelection.onSelect(node, index);
+                public void onSelect(Node node, int indexSelected, boolean isSkipped) {
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + indexSelected);
+                    if (isSkipped) {
+                        if (options.size() == 1) {
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                            selectedNode.setSelected(false);
+                            selectedNode.setDataCaptured(false);
+                            notifyItemChanged(index);
+                        }else {
+                            return;
+                        }
+                    }
+                    mOnItemSelection.onSelect(node, indexSelected, isSkipped);
                 }
 
                 @Override
@@ -669,6 +687,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             });
             holder.superNestedRecyclerView.setAdapter(nestedQuestionsListingAdapter);
             nestedQuestionsListingAdapter.addItemAll(options);
+            nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
             holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
             holder.submitButton.setVisibility(View.GONE);
             holder.skipButton.setVisibility(View.GONE);
@@ -678,7 +697,27 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
             holder.optionRecyclerView.setLayoutManager(layoutManager);
+            //**********
+            // Avoid the duplicate options asking to user in connected questions
+            //**************
+            String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
+            Log.v(TAG, "duplicateCheckNodeNames - "+duplicateCheckNodeNames);
+            if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+                int sourceIndex = 0;
+                Node toCompareWithNode = null;
+                for (int i = 0; i < mSuperItemList.size(); i++) {
+                    Log.v(TAG, "toCompareWithNode - "+mSuperItemList.get(i).getText());
+                    if (mSuperItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
+                        toCompareWithNode = mSuperItemList.get(i);
+                        Log.v(TAG, "toCompareWithNode - "+new Gson().toJson(toCompareWithNode));
+                        break;
+                    }
+                }
+                NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
+            }
+            // *****************
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node) {
@@ -708,7 +747,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         } else {
                             //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                             holder.submitButton.setVisibility(View.GONE);
-                            mOnItemSelection.onSelect(node, mRootIndex);
+                            mOnItemSelection.onSelect(node, mRootIndex, false);
                         }
 
                         if (mItemList.get(index).isRequired()) {
@@ -737,7 +776,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     }
 
-    private synchronized void showCameraView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void showCameraView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
         Log.v("showCameraView", "Start method - " + new Gson().toJson(node));
         Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         containerLayout.removeAllViews();
@@ -766,7 +805,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onClick(View view) {
 
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, false);
             }
         });
 
@@ -787,11 +826,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 }
             });
             imagesRcv.setAdapter(imageGridAdapter);
+            imageGridAdapter.addNull();
             Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
         }
 
 
-        if (imagesRcv.getAdapter() == null || imagesRcv.getAdapter().getItemCount() < 1) {
+        if (node.getImagePathList().isEmpty()) {
             newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.GONE);
             imagesRcv.setVisibility(View.GONE);
@@ -831,7 +871,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -925,7 +966,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setDataCaptured(true);
 
                 //notifyDataSetChanged();
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, false);
             }
         });
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
@@ -1009,7 +1050,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
 
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -1057,7 +1099,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, mRootIndex);
+                    mOnItemSelection.onSelect(node, mRootIndex, false);
                 }
             }
         });
@@ -1095,7 +1137,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -1142,7 +1185,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, mRootIndex);
+                    mOnItemSelection.onSelect(node, mRootIndex, false);
                 }
             }
         });
@@ -1190,7 +1233,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex);
+                mOnItemSelection.onSelect(node, mRootIndex, true);
+                notifyItemChanged(index);
             }
         });
 
@@ -1239,7 +1283,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         }
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, mRootIndex);
+                    mOnItemSelection.onSelect(node, mRootIndex, false);
                 }
             }
         });
@@ -1288,7 +1332,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onClick(View view) {
                     if (mItemList.get(index).isSelected())
-                        mOnItemSelection.onSelect(node, mRootIndex);
+                        mOnItemSelection.onSelect(node, mRootIndex, false);
                     else
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
@@ -1299,7 +1343,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 public void onClick(View view) {
                     mItemList.get(index).setSelected(false);
                     mItemList.get(index).setDataCaptured(false);
-                    mOnItemSelection.onSelect(node, mRootIndex);
+                    mOnItemSelection.onSelect(node, mRootIndex, true);
+                    notifyItemChanged(index);
 
                 }
             });

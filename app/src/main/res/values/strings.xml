@@ -1835,4 +1835,6 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="select_height">Select Height</string>
     <string name="select_weight">Select Weight</string>
 
+    <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
+    <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
 </resources>

@@ -98,10 +98,15 @@ public class PhysicalExaminationFragment extends Fragment {
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int index) {
+            public void onSelect(Node node, int index, boolean isSkipped) {
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
+                }
+                if(isSkipped){
+                    mQuestionsListingAdapter.geItems().get(index).setSelected(false);
+                    mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
+                    mQuestionsListingAdapter.notifyItemChanged(index);
                 }
                 Log.v("onSelect", "node - " + node.getText());
                 if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {

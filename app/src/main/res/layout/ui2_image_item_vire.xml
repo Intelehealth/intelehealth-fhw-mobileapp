@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="8dip">
+    android:layout_marginEnd="16dip">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_image"
-        android:layout_width="72dip"
+        android:layout_width="52dip"
         android:layout_height="72dip"
         android:background="@drawable/edittext_border_blue_dotted"
         android:scaleType="centerCrop"

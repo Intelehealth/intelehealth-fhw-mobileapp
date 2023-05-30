@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,6 +35,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -54,7 +57,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private float float_ageYear_Month;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     private Spinner mHeightSpinner, mWeightSpinner;
-    TextView mBMITextView, mBmiStatusTextView;
+    private TextView mBMITextView, mBmiStatusTextView;
+    private LinearLayout mBMILinearLayout;
     TextView mHeightErrorTextView, mWeightErrorTextView, mPulseErrorTextView, mSpo2ErrorTextView, mRespErrorTextView, mBpSysErrorTextView, mBpDiaErrorTextView, mTemperatureErrorTextView;
     EditText mPulseEditText, mBpSysEditText, mBpDiaEditText, mTemperatureEditText, mSpo2EditText, mRespEditText;
     private Button mSubmitButton;
@@ -136,6 +140,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         /*mHeightTextView.setOnClickListener(this);
         mWeightTextView.setOnClickListener(this);*/
 
+        mBMILinearLayout = view.findViewById(R.id.ll_bmi);
+        if (float_ageYear_Month < 19)
+            mBMILinearLayout.setVisibility(View.GONE);
         mBMITextView = view.findViewById(R.id.tv_bmi_value);
         mBmiStatusTextView = view.findViewById(R.id.tv_bmi_status);
 
@@ -146,7 +153,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mPulseEditText = view.findViewById(R.id.etv_pulse);
         mRespEditText = view.findViewById(R.id.etv_respiratory_rate);
         mTemperatureEditText = view.findViewById(R.id.etv_temperature);
-
+        mTemperatureEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 2)});
         // errors
         mHeightErrorTextView = view.findViewById(R.id.tv_height_error);
         mWeightErrorTextView = view.findViewById(R.id.tv_weight_error);
@@ -220,8 +227,22 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mBpSysErrorTextView.setText(getString(R.string.error_field_required));
                     mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 } else {
-                    mBpSysErrorTextView.setVisibility(View.GONE);
-                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    String bpDia = mBpDiaEditText.getText().toString().trim();
+                    if (bpDia.isEmpty()) {
+                        mBpSysErrorTextView.setVisibility(View.GONE);
+                        mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    } else {
+                        int bpSysInt = Integer.parseInt(val);
+                        int bpDiaInt = Integer.parseInt(bpDia);
+                        if (bpDiaInt >= bpSysInt) {
+                            mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                            mBpSysErrorTextView.setText(getString(R.string.bp_validation_sys));
+                            mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        } else {
+                            mBpSysErrorTextView.setVisibility(View.GONE);
+                            mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                        }
+                    }
                 }
             } else if (this.editText.getId() == R.id.etv_bp_dia) {
                 if (val.isEmpty()) {
@@ -229,8 +250,22 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
                     mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 } else {
-                    mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    String bpSys = mBpSysEditText.getText().toString().trim();
+                    if (bpSys.isEmpty()) {
+                        mBpDiaErrorTextView.setVisibility(View.GONE);
+                        mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    } else {
+                        int bpSysInt = Integer.parseInt(bpSys);
+                        int bpDiaInt = Integer.parseInt(val);
+                        if (bpDiaInt >= bpSysInt) {
+                            mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                            mBpDiaErrorTextView.setText(getString(R.string.bp_validation_dia));
+                            mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        } else {
+                            mBpDiaErrorTextView.setVisibility(View.GONE);
+                            mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                        }
+                    }
                 }
             }
         }
@@ -472,7 +507,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
 
 
-
                 break;
             case UuidDictionary.WEIGHT: //Weight
                 weightvalue = value;
@@ -632,8 +666,26 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         cancel = true;
                         break;
                     } else {
-                        mBpSysErrorTextView.setVisibility(View.GONE);
-                        mBpSysEditText.setBackgroundResource(R.drawable.edittext_border);
+                        //mBpSysErrorTextView.setVisibility(View.GONE);
+                        //mBpSysEditText.setBackgroundResource(R.drawable.edittext_border);
+                        String bpDia = mBpDiaEditText.getText().toString().trim();
+                        if (bpDia.isEmpty()) {
+                            mBpSysErrorTextView.setVisibility(View.GONE);
+                            mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                        } else {
+                            int bpSysInt = Integer.parseInt(abc1);
+                            int bpDiaInt = Integer.parseInt(bpDia);
+                            if (bpDiaInt >= bpSysInt) {
+                                mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                                mBpSysErrorTextView.setText(getString(R.string.bp_validation_sys));
+                                mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                                cancel = true;
+                                break;
+                            } else {
+                                mBpSysErrorTextView.setVisibility(View.GONE);
+                                mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                            }
+                        }
                     }
 //       }
                 } else {
@@ -655,8 +707,26 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         cancel = true;
                         break;
                     } else {
-                        mBpDiaErrorTextView.setVisibility(View.GONE);
-                        mBpDiaEditText.setBackgroundResource(R.drawable.edittext_border);
+                        //mBpDiaErrorTextView.setVisibility(View.GONE);
+                        //mBpDiaEditText.setBackgroundResource(R.drawable.edittext_border);
+                        String bpSys = mBpSysEditText.getText().toString().trim();
+                        if (bpSys.isEmpty()) {
+                            mBpDiaErrorTextView.setVisibility(View.GONE);
+                            mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                        } else {
+                            int bpSysInt = Integer.parseInt(bpSys);
+                            int bpDiaInt = Integer.parseInt(abc1);
+                            if (bpDiaInt >= bpSysInt) {
+                                mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                                mBpDiaErrorTextView.setText(getString(R.string.bp_validation_dia));
+                                mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                                cancel = true;
+                                break;
+                            } else {
+                                mBpDiaErrorTextView.setVisibility(View.GONE);
+                                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                            }
+                        }
                     }
 //       }
                 } else {

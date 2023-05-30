@@ -143,7 +143,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         rootComplainBasicInfoHashMap.put(0, complainBasicInfo);
                         genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, new OnItemSelection() {
                             @Override
-                            public void onSelect(Node node, int index) {
+                            public void onSelect(Node node, int index, boolean isSkipped) {
                                 Log.v(TAG, "currentComplainNodeOptionsIndex - " + genericViewHolder.currentComplainNodeOptionsIndex);
                                 Log.v(TAG, "mItemList.get(position).getOptionsList().size() - " + mItemList.get(position).getOptionsList().size());
                                 Log.v(TAG, "index - " + index);
@@ -152,6 +152,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                     return;
                                 if (genericViewHolder.currentComplainNodeOptionsIndex - index >= 1) {
                                     return;
+                                }
+                                if(isSkipped){
+                                    genericViewHolder.questionsListingAdapter.geItems().get(index).setSelected(false);
+                                    genericViewHolder.questionsListingAdapter.geItems().get(index).setDataCaptured(false);
+                                    genericViewHolder.questionsListingAdapter.notifyItemChanged(index);
                                 }
                                 //Log.v("onSelect", "node - " + node.getText());
                                 if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {

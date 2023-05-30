@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,15 +104,37 @@ public class VisitReasonQuestionsFragment extends Fragment {
         }
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int index) {
-                Log.v("onSelect", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
+            public void onSelect(Node node, int index, boolean isSkipped) {
+                Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
+                Log.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     Log.v("onSelect", "Scrolling index - " + index);
                     VisitUtils.scrollNow(recyclerView, 100, 0, 1000);
                     return;
                 }
-                //Log.v("onSelect", "node - " + node.getText());
+                if(isSkipped){
+                    mQuestionsListingAdapter.geItems().get(index).setSelected(false);
+                    mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
+
+                    if (mQuestionsListingAdapter.geItems().get(index).getOptionsList() != null && mQuestionsListingAdapter.geItems().get(index).getOptionsList().size() > 0)
+                        for (int i = 0; i < mQuestionsListingAdapter.geItems().get(index).getOptionsList().size(); i++) {
+                            mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setSelected(false);
+                            mQuestionsListingAdapter.geItems().get(index).getOptionsList().get(i).setDataCaptured(false);
+                        }
+                    if (mQuestionsListingAdapter.geItems().get(index).isRequired()) {
+                        mQuestionsListingAdapter.notifyItemChanged(index);
+                        return;
+                    }else{
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mQuestionsListingAdapter.notifyItemChanged(index);
+                            }
+                        }, 1000);
+                    }
+                }
+
                 if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
                     mCurrentComplainNodeOptionsIndex++;
                 else {

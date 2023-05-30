@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.reason.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.node = mItemList.get(position);
@@ -61,13 +62,25 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             //Log.v("node", String.valueOf(genericViewHolder.node.isSelected()));
 
+
+
             if (genericViewHolder.node.isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+
+                if (genericViewHolder.node.isNeedToHide()) {
+                    genericViewHolder.tvName.setEnabled(false);
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
+                }else{
+                    genericViewHolder.tvName.setEnabled(true);
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
+                }
             }
+
+
 
         }
     }
@@ -90,9 +103,21 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View view) {
                     Log.v("node", "isMultiChoice - " + mParentNode.isMultiChoice());
                     Log.v("node", "isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+                    Log.v("node", "enableExclusiveOption - " + node.isEnableExclusiveOption());
+                    Log.v("node", "isExclusiveOption - " + node.isExclusiveOption());
                     if (!mParentNode.isMultiChoice()) {
-                        for (int i = 0; i < mItemList.size(); i++) {
-                            mItemList.get(i).setSelected(i == index);
+                        if (mParentNode.isEnableExclusiveOption()) {
+                            if (!node.isExclusiveOption()) {
+                                for (int i = 0; i < mItemList.size(); i++) {
+                                    if (!mItemList.get(i).isExclusiveOption())
+                                        mItemList.get(i).setSelected(false);
+                                }
+                            }
+                            mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
+                        } else {
+                            for (int i = 0; i < mItemList.size(); i++) {
+                                mItemList.get(i).setSelected(i == index);
+                            }
                         }
                     } else {
                         if (node.isExcludedFromMultiChoice()) {
