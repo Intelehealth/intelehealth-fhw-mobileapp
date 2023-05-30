@@ -273,6 +273,7 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/margin_top_summary_views">
 
             <LinearLayout

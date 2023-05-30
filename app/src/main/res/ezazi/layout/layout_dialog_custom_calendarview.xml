@@ -238,6 +238,7 @@
         android:weightSum="2">
 
         <Button
+            style="@style/Theme.EZazi.Button.White"
             android:id="@+id/btn_cancel_calendar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -251,10 +252,10 @@
             android:paddingEnd="@dimen/common_button_padding_right"
             android:paddingBottom="@dimen/common_button_padding_bottom"
             android:text="@string/cancel"
-            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/common_button_text_size" />
 
         <Button
+            style="@style/Theme.EZazi.Button"
             android:id="@+id/btn_okay_calendar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -266,7 +267,7 @@
             android:paddingTop="@dimen/common_button_padding_top"
             android:paddingEnd="@dimen/common_button_padding_right"
             android:paddingBottom="@dimen/common_button_padding_bottom"
-            android:text="@string/okay"
+            android:text="@string/save_button"
             android:textSize="@dimen/common_button_text_size" />
 
     </LinearLayout>

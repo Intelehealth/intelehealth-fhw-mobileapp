@@ -98,7 +98,6 @@
                         android:backgroundTint="@color/white"
                         android:gravity="center_vertical"
                         android:hint="@string/time"
-
                         android:imeOptions="actionNext"
                         android:importantForAutofill="no"
                         android:maxLines="1"
@@ -150,6 +149,7 @@
                             android:backgroundTint="@color/white"
                             android:gravity="center_vertical"
                             android:hint="@string/total_birth"
+                            android:inputType="number"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:maxLines="1"
@@ -185,6 +185,7 @@
                             android:hint="@string/total_miscarriage"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
+                            android:inputType="number"
                             android:maxLines="1"
                             android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true" />
@@ -219,7 +220,7 @@
                 <TextView
                     android:id="@+id/et_spontaneous"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/input_add_patient_height"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_bg_rounded_corners"
@@ -230,79 +231,12 @@
                 <TextView
                     android:id="@+id/et_induced"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="@dimen/input_add_patient_height"
                     android:layout_weight="1"
                     android:background="@drawable/button_bg_rounded_corners"
                     android:gravity="center"
                     android:text="@string/induced"
                     android:textSize="@dimen/std_12sp" />
-
-<!--
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/date_margin_end"
-                    android:layout_weight="1">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Theme.EZazi.Input.Add.Patient"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_spontaneous"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
-                            android:gravity="center_vertical"
-                            android:hint="@string/spontaneous"
-                            android:imeOptions="actionNext"
-                            android:importantForAutofill="no"
-                            android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
-                            android:singleLine="true" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/time_margin_start"
-                    android:layout_weight="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/card_date"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Theme.EZazi.Input.Add.Patient"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_induced"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
-                            android:gravity="center_vertical"
-                            android:hint="@string/induced"
-                            android:imeOptions="actionNext"
-                            android:importantForAutofill="no"
-                            android:inputType="number"
-                            android:maxLength="25"
-                            android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
-                            android:singleLine="true" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </com.google.android.material.card.MaterialCardView>
--->
 
             </LinearLayout>
 
@@ -323,20 +257,21 @@
                     android:text="@string/when_diagnosed"
                     android:textColor="@color/colorBlack" />
 
-                <CheckBox
+
+                <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/mUnknownMembraneRupturedCheckBox"
                     android:layout_width="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     android:layout_height="@dimen/input_add_patient_height"
                     android:layout_alignParentEnd="true"
-                    android:button="@drawable/ic_checkbox"
-                    android:buttonTint="@color/blinkCardColor"
-                    android:layoutDirection="rtl"
                     android:padding="5dp"
-                    android:text="Unknown"
-                    android:textColor="@color/colorHighAlert"
+                    android:layoutDirection="rtl"
                     android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    android:text="@string/unknown"
+                    android:textColor="@color/colorHighAlert"
+                    android:fontFamily="@font/dm_sans_medium"
+                    android:textAppearance="@style/Theme.EZazi.Caption" />
 
             </RelativeLayout>
 
@@ -369,7 +304,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
-                            android:drawablePadding="30dp"
+                            
                             android:gravity="center_vertical"
                             android:hint="@string/date"
                             android:imeOptions="actionNext"
@@ -407,7 +342,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
-                            android:drawablePadding="30dp"
+                            
                             android:gravity="center_vertical"
                             android:hint="@string/time"
                             android:imeOptions="actionNext"
@@ -464,7 +399,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
-                            android:drawablePadding="30dp"
+                            
                             android:gravity="center_vertical"
                             android:hint="@string/date"
                             android:imeOptions="actionNext"
@@ -502,7 +437,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
-                            android:drawablePadding="30dp"
+                            
                             android:gravity="center_vertical"
                             android:hint="@string/time"
                             android:imeOptions="actionNext"
@@ -535,7 +470,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spinners_add_patient_height"
                 android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9">
@@ -635,7 +569,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spinners_add_patient_height"
                 android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11">
@@ -677,7 +610,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spinners_add_patient_height"
                 android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12">

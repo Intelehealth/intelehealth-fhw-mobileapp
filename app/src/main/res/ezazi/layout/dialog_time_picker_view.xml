@@ -108,7 +108,7 @@
             android:headerBackground="@drawable/timepicker_timer_bg"
             android:numbersBackgroundColor="@color/colorContainer"
             android:numbersSelectorColor="@color/colorEmergencyBg"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/clTimerView"
