@@ -7,7 +7,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
+import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Vaghela Mithun R. on 23-05-2023 - 16:04.
@@ -27,5 +34,25 @@ public class TempActivity extends AppCompatActivity {
             Log.d("ThemeTimePickerDialog", "value : " + value);
         });
         dialog.show(getSupportFragmentManager(), "ThemeTimePickerDialog");
+
+
+
+     /*   MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(this)
+                .title(R.string.select_risk_factors)
+                .positiveButtonLabel(R.string.save_button)
+                .build();
+
+        final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
+                "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+        List<String> items = Arrays.asList(itemsArray);
+
+        dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(this, new ArrayList<>(items)));
+        dialog1.setListener(selectedItems -> {
+            // Todo get all selected item here
+        });
+
+        dialog1.show(getSupportFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());*/
+
+
     }
 }

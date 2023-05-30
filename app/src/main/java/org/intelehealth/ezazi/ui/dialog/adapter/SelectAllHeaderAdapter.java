@@ -74,6 +74,8 @@ class SelectAllViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(SelectAllMultiChoice item) {
         binding.setHeader(item.getHeader());
+        binding.setHeader("Select All");
+
     }
 
     public void setCheckedAll(boolean isCheckedAll) {

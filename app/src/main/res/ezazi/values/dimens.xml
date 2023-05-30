@@ -217,5 +217,6 @@
     <dimen name="padding_20">20dp</dimen>
     <dimen name="dialog_custom_cal_width">350dp</dimen>
     <dimen name="edittext_text_size">16sp</dimen>
+    <dimen name="time_picker_dialog_text_size">@dimen/std_24sp</dimen>
 
 </resources>

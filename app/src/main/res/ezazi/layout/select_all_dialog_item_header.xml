@@ -40,7 +40,9 @@
             android:layoutDirection="rtl"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:text="@string/select_all"
+            android:paddingVertical="@dimen/list_container_padding"
+            android:paddingStart="@dimen/screen_container_padding"
+            android:text="@{header}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

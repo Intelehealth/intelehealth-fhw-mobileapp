@@ -46,6 +46,7 @@ import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Address;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
+import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -61,6 +62,7 @@ import org.w3c.dom.Text;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -470,7 +472,35 @@ public class PatientOtherInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                final String[] items = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
+                MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext)
+                        .title(R.string.select_risk_factors)
+                        .positiveButtonLabel(R.string.save_button)
+                        .build();
+
+                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
+                        "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+                List<String> items = Arrays.asList(itemsArray);
+
+                dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
+                dialog1.setListener(selectedItems -> {
+                    if (selectedItems.size() > 0) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < selectedItems.size(); i++) {
+                            if (!stringBuilder.toString().isEmpty())
+                                stringBuilder.append(",");
+                            stringBuilder.append(selectedItems.get(i));
+
+                        }
+                        mRiskFactorsString = stringBuilder.toString();
+                        mRiskFactorsTextView.setText(mRiskFactorsString);
+                    }
+
+                });
+
+                assert getFragmentManager() != null;
+                dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
+
+            /*    final String[] items = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
                         "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
                 boolean[] selectedItems = new boolean[items.length];
                 for (int i = 0; i < items.length; i++) {
@@ -513,7 +543,7 @@ public class PatientOtherInfoFragment extends Fragment {
                         });
 
 
-                builder.create().show();
+                builder.create().show();*/
             }
         });
 

@@ -943,6 +943,8 @@
     <string name="bed_number_title">Bed Number</string>
     <string name="patient_info">Patient Information</string>
     <string name="unknown">Unknown</string>
+    <string name="select_primary_doctor">Select Primary Doctor</string>
+    <string name="select_secondary_doctor">Select Secondary Doctor</string>
 
 
     <string name="mo">Mo</string>
