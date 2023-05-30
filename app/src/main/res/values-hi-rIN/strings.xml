@@ -1431,9 +1431,7 @@
     <string name="morbidly_obese">बहुत अधिक स्थूल</string>
     <string name="select_height">ऊँचाई चुनिए</string>
     <string name="select_weight">वजन चुनिए</string>
-    <string name="describe_lbl">Describe</string>
-    <string name="patinet_history">4/4. Medical history: Patient history</string>
-    <string name="_1_4_vitals">1/4 Vitals</string>
+
     <string name="bp_validation_sys"><![CDATA[BP Sys always should be > BP Dia]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia always should be < BP Sys]]></string>
 </resources>
