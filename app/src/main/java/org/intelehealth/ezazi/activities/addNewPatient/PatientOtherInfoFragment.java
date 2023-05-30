@@ -106,7 +106,7 @@ public class PatientOtherInfoFragment extends Fragment {
     private PatientAddressInfoFragment secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
     ImageView ivPersonal, ivAddress, ivOther;
-    TextView tvSpontaneous, tvInduced,tvSacRuptured;
+    TextView tvSpontaneous, tvInduced, tvSacRuptured;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -330,7 +330,7 @@ public class PatientOtherInfoFragment extends Fragment {
         mUnknownMembraneRupturedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d(TAG, "onCheckedChanged: isChecked : "+isChecked);
+                Log.d(TAG, "onCheckedChanged: isChecked : " + isChecked);
                 if (isChecked) {
                     etLayoutSacRupturedDate.setVisibility(View.GONE);
                     etLayoutSacRupturedTime.setVisibility(View.GONE);
@@ -979,13 +979,11 @@ public class PatientOtherInfoFragment extends Fragment {
 //                        getString(R.string.uploading) + patientDTO.getFirstname() + "" + patientDTO.getLastname() +
 //                                "'s data", 2, getApplication());
 
-            /*
-            temp commit
-            SyncDAO syncDAO = new SyncDAO();
+
+                SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
-*/
 //                if (push)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirstname() + "" + patientDTO.getLastname() + "'s data upload complete.", 2, getApplication());
 //                else
