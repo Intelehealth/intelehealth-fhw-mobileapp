@@ -3,17 +3,24 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,11 +38,13 @@ import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Prajwal Waingankar on 3/11/22.
@@ -64,6 +73,7 @@ public class VisitReceivedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_visit_received, container, false);
         initUI(view);
+        setLocale(getContext());
         mlistener = (VisitCountInterface) getActivity();
         return view;
     }
@@ -76,6 +86,25 @@ public class VisitReceivedFragment extends Fragment {
         visitData();
     }
 
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -85,7 +114,7 @@ public class VisitReceivedFragment extends Fragment {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
-        TextView addPatientTV = view.findViewById(R.id.add_new_patientTV);
+        LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override

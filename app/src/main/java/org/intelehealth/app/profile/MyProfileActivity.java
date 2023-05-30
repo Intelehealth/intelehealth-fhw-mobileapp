@@ -1,6 +1,7 @@
 package org.intelehealth.app.profile;
 
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
+import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -10,6 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.LocaleList;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -28,6 +32,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -97,6 +102,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -454,6 +460,30 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                 checkInternetAndUpdateProfile();
             });
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     private void updateDetails() {
@@ -989,6 +1019,13 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
     private void fetchUserDetails() {
         String uuid = new SessionManager(MyProfileActivity.this).getCreatorID();
+        ProviderDAO providerDAO = new ProviderDAO();
+        ProviderDTO providerDTO = null;
+        try {
+            providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
         String url = new UrlModifiers().getHWProfileDetails(uuid);
         Log.d(TAG, "profilePicDownloaded:: url : " + url);
 
@@ -1011,6 +1048,11 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     String[] split = dob.split("T");
                     tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(split[0]));
                     prevDOB = DateAndTimeUtils.getDisplayDateForApp(split[0]);
+
+                    if(sessionManager.getAppLanguage()!= null && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        tvDob.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(split[0])));
+                        prevDOB = en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(split[0]));
+                    }
                     String age = DateAndTimeUtils.getAge_FollowUp(split[0], MyProfileActivity.this);
                     tvAge.setText(age);
                     gender = profile.getResults().get(0).getPerson().getGender();
@@ -1072,6 +1114,28 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
 
+
+        if (providerDTO!=null && providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
+            Glide.with(this)
+                    .load(providerDTO.getImagePath())
+                    .thumbnail(0.3f)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(ivProfileImage);
+        } else {
+            ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+        }
+
+        Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
+        if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
+            if (NetworkConnection.isOnline(this)) {
+                try {
+                    profilePicDownloaded(providerDTO);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public static boolean isInteger(String s) {
@@ -1161,6 +1225,9 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             if (age != null && !age.isEmpty() && Integer.parseInt(age) >= 18) {
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
+                if(sessionManager.getAppLanguage()!= null && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    tvDob.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
+                }
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
                 if(tvErrorDob.getVisibility()==View.VISIBLE)
                     tvErrorDob.setVisibility(View.GONE);

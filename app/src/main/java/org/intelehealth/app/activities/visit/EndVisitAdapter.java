@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -145,7 +146,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview;
         private ImageView profile_image;
-        private ImageButton shareicon;
+        private LinearLayout shareicon;
 
 
         public Myholder(@NonNull View itemView) {
@@ -155,7 +156,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             name = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
-            shareicon = itemView.findViewById(R.id.shareicon);
+            shareicon = itemView.findViewById(R.id.shareiconLL);
 
             end_visit_btn.setVisibility(View.VISIBLE);
         }

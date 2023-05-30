@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -94,13 +95,17 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
             //  5. Prescription received/pending tag display.
             if (model.getVisit_startdate() != null) {
-                holder.presc_tag_imgview.setVisibility(View.VISIBLE);
-                if (model.isPrescription_exists())
-                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
-                else
-                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
+                if (model.isPrescription_exists()) {
+                    holder.presc_receivingCV.setVisibility(View.VISIBLE);
+                    holder.presc_pendingCV.setVisibility(View.GONE);
+                }
+                else {
+                    holder.presc_pendingCV.setVisibility(View.VISIBLE);
+                    holder.presc_receivingCV.setVisibility(View.GONE);
+                }
             } else {
-                holder.presc_tag_imgview.setVisibility(View.GONE);
+                holder.presc_pendingCV.setVisibility(View.GONE);
+                holder.presc_receivingCV.setVisibility(View.GONE);
             }
 
             //  6. Patient Profile Pic
@@ -145,8 +150,9 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
         TextView search_gender, search_name, search_date_relative;
-        ImageView priority_tag_imgview, fu_item_calendar, presc_tag_imgview, profile_imgview;
+        ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
         PatientDTO patientDTO;
+        CardView presc_pendingCV, presc_receivingCV;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
@@ -156,8 +162,9 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
-            presc_tag_imgview = itemView.findViewById(R.id.presc_tag_imgview);
             profile_imgview = itemView.findViewById(R.id.profile_imgview);
+            presc_pendingCV = itemView.findViewById(R.id.presc_pending_CV);
+            presc_receivingCV = itemView.findViewById(R.id.presc_received_CV);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

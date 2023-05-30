@@ -10,12 +10,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -28,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +64,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Language_ProtocolsActivity extends AppCompatActivity {
     private Spinner lang_spinner;
-    private ImageButton reset_btn, update_protocols_btn, btRefresh;
+    private ImageButton btRefresh;
+    private RelativeLayout reset_btn, update_protocols_btn;
     private String selected_language = "English";
     private Context context;
     private ArrayAdapter<String> langAdapter;
@@ -90,19 +95,77 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
+        sessionManager = new SessionManager(this);
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+
         initUI();
         clickListeners();
     }
 
     private void initUI() {
         context = Language_ProtocolsActivity.this;
-        sessionManager = new SessionManager(context);
         lang_spinner = findViewById(R.id.lang_spinner);
         reset_btn = findViewById(R.id.reset_btn);
         snackbar_cv = findViewById(R.id.snackbar_cv);
         snackbar_text = findViewById(R.id.snackbar_text);
         update_protocols_btn = findViewById(R.id.update_protocols_btn);
         btRefresh = findViewById(R.id.refresh);
+
+        Intent intent = getIntent();
+        if(intent.getStringExtra("intentType")!= null && intent.getStringExtra("intentType").equalsIgnoreCase("refresh"))
+            showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed));
+    }
+
+    private void setLocale() {
+        SessionManager sessionManager1 = new SessionManager(Language_ProtocolsActivity.this);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = Language_ProtocolsActivity.this.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        Language_ProtocolsActivity.this.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return;
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     private void clickListeners() {
@@ -111,7 +174,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_names));
         lang_spinner.setAdapter(langAdapter); // setting up language spinners.
 
-        String l = sessionManager.getCurrentLang();
+        String l = sessionManager.getAppLanguage();
         if (l.equalsIgnoreCase("en"))
             l = "English";
         if (l.equalsIgnoreCase("hi"))
@@ -147,7 +210,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         reset_btn.setOnClickListener(v -> {
             sessionManager.setAppLanguage("en");
             lang_spinner.setSelection(0, false);
-            //  showSnackBarAndRemoveLater("Language successfully changed to English!");
+            setLocale("en", "English");
         });
 
         // language spinner - end
@@ -347,8 +410,13 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
+        Intent refresh = new Intent(this, Language_ProtocolsActivity.class);
+        refresh.putExtra("intentType", "refresh");
+        startActivity(refresh);
+//        finish();
         // show snackbar view
         showSnackBarAndRemoveLater(getResources().getString(R.string.language_successfully_changed) + " " + language + "!");
+
     }
 
     // show snackbar
@@ -463,9 +531,14 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(this, HomeScreenActivity_New.class);
+        startActivity(intent);
+        finish();
     }
 
     public void backPress(View view) {
+        Intent intent = new Intent(this, HomeScreenActivity_New.class);
+        startActivity(intent);
         finish();
     }
 }

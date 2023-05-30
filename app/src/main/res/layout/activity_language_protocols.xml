@@ -204,13 +204,40 @@
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
-                    <ImageButton
+                    <RelativeLayout
                         android:id="@+id/reset_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:background="@null"
-                        android:src="@drawable/reset_lang_icon" />
+                        android:background="@drawable/reset_lang_icon">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true">
+
+                            <ImageView
+                                android:id="@+id/refresh_icon"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_baseline_refresh_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:fontFamily="@font/dm_sans"
+                                android:text="@string/reset"
+                                android:textAlignment="center"
+                                android:textColor="#2e1e91"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
                 </RelativeLayout>
                 <!--Language Relative - End-->
 
@@ -310,13 +337,27 @@
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
-                    <ImageButton
+                    <RelativeLayout
                         android:id="@+id/update_protocols_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:background="@null"
-                        android:src="@drawable/update_protocols_icon" />
+                        android:background="@drawable/reset_lang_icon">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/update_button"
+                            android:textSize="16sp"
+                            android:layout_centerInParent="true"
+                            android:textColor="#2e1e91"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/dm_sans"
+                            android:textStyle="bold"
+                            android:textAlignment="center"/>
+
+                    </RelativeLayout>
+
                 </RelativeLayout>
                 <!--Protocols Relative - End-->
 

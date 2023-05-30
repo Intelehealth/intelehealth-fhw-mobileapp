@@ -31,6 +31,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SessionManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -442,10 +443,13 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
     }
 
-    private void fillMonthsSpinner() {
+    private void fillMonthsSpinner(Context context) {
 
         List<CalendarViewMonthModel> monthsList = new ArrayList<>();
         String[] monthsArray = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        SessionManager sessionManager = new SessionManager(context);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            monthsArray = new String[]{"जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"};
         int[] monthsNoArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         for (int i = 0; i < monthsArray.length; i++) {
             CalendarViewMonthModel model1 = new CalendarViewMonthModel(monthsArray[i], monthsNoArray[i], false);
@@ -716,7 +720,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         spinnerSelectedMonthModel = new CalendarViewMonthModel("", currentMonth, true);
 
 
-        fillMonthsSpinner();
+        fillMonthsSpinner(context);
         fillYearSpinner();
         setValuesToTheMonthSpinnerForDefault(currentMonth);
         setValuesToTheYearSpinnerForDefault(currentYear);

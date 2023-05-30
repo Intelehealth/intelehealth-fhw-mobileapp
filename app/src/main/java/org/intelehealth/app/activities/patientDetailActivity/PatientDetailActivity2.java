@@ -53,12 +53,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,7 +151,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     String patientName, mGender;
     ImagesDAO imagesDAO = new ImagesDAO();
     float float_ageYear_Month;
-    ImageView profile_image, personal_edit, address_edit, others_edit;
+    ImageView profile_image;
+    LinearLayout personal_edit, address_edit, others_edit;
     Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn;
@@ -349,6 +353,30 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     @Override
@@ -1292,7 +1320,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (patientDTO.getNationalID() != null && !patientDTO.getNationalID().equals("")) {
             patientNationalID.setText(patientDTO.getNationalID());
         } else {
-            patientNationalID.setText("Not Provided");
+            patientNationalID.setText(getResources().getString(R.string.not_provided));
         }
 
         // setting occupation value

@@ -54,13 +54,46 @@
                 android:textColor="@color/header_subtitle_color"
                 android:textSize="@dimen/fu_male_textsize" />
 
-            <ImageView
-                android:id="@+id/open_presc_btn"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/presc_pending_CV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/search_name"
-                android:layout_marginTop="@dimen/fu_vs_margin_start"
-                android:src="@drawable/ic_open_presc_icon" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginHorizontal="2dp"
+                app:cardCornerRadius="3dp">
+
+                <LinearLayout
+                    android:id="@+id/open_presc_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#EFE8FF"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/open_prescription"
+                        android:fontFamily="@font/dm_sans"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="6dp"
+                        android:textColor="#1B163A"
+                        android:textSize="11sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/arrow_forward_blue" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
 

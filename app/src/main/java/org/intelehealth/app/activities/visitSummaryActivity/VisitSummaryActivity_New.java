@@ -169,7 +169,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
-            btn_up_phyexam_header, btn_up_medhist_header, openall_btn, btn_up_addnotes_vd_header;
+            btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative,
             pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
     private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview,
@@ -281,11 +281,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private List<DocumentObject> rowListItem;
     String sign_url;
 
-    ImageButton editVitals;
-    ImageButton editComplaint, cc_details_edit, ass_symp_edit;
-    ImageButton editPhysical;
-    ImageButton editFamHist;
-    ImageButton editMedHist;
+    LinearLayout editVitals, editPhysical, editFamHist, editMedHist, editComplaint, cc_details_edit, ass_symp_edit;
     ImageButton editAddDocs;
     ImageButton btn_up_special_vd_header;
 
@@ -304,7 +300,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     private static final int DIALOG_CAMERA_PERMISSION_REQUEST = 3000;
     private static final int DIALOG_GALLERY_PERMISSION_REQUEST = 4000;
-    Button btnAppointment;
+    Button btnAppointment, openall_btn;
     private FrameLayout filter_framelayout;
     private View hl_2;
 
@@ -343,6 +339,30 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             Toast.makeText(this, getResources().getString(R.string.wait_for_the_doctor_message), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     public void startVideoChat(View view) {
@@ -607,9 +627,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void expandableCardVisibilityHandling() {
         openall_btn.setOnClickListener(v -> {
 
-            Drawable drawable = openall_btn.getDrawable();
+//            Drawable drawable = openall_btn.getDrawable();
             if (mOpenCount == 0) {
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
                 vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
                 vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
@@ -618,7 +639,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
                 mOpenCount = 6;
             } else {
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                openall_btn.setText(getResources().getString(R.string.open_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 vs_vitals_header_expandview.setVisibility(View.GONE);
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
@@ -650,12 +672,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_vitals_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
                 if (mOpenCount == 0) {
-                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 }
             } else {
                 mOpenCount++;
                 vs_vitals_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
@@ -672,12 +696,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_visitreason_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
                 if (mOpenCount == 0) {
-                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 }
             } else {
                 mOpenCount++;
                 vs_visitreason_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
@@ -694,12 +720,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
                 if (mOpenCount == 0) {
-                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 }
             } else {
                 mOpenCount++;
                 vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
@@ -716,12 +744,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
                 if (mOpenCount == 0) {
-                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 }
             } else {
                 mOpenCount++;
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
@@ -738,12 +768,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vd_special_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
                 if (mOpenCount == 0) {
-                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 }
             } else {
                 mOpenCount++;
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
 
@@ -760,12 +792,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
                 mOpenCount--;
                 if (mOpenCount == 0) {
-                    openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.open_all_btn));
+                    openall_btn.setText(getResources().getString(R.string.open_all));
+                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
                 }
             } else {
                 mOpenCount++;
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
-                openall_btn.setImageDrawable(getResources().getDrawable(R.drawable.close_all_btn));
+                openall_btn.setText(getResources().getString(R.string.close_all));
+                openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
             }
         });
     }
@@ -926,8 +960,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
             cc_recyclerview.setAdapter(cc_adapter);
 
-            String patientReports = "No data added.";
-            String patientDenies = "No data added.";
+            String patientReports = getResources().getString(R.string.no_data_added);
+            String patientDenies = getResources().getString(R.string.no_data_added);
 
             if (valueArray[0] != null)
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
@@ -1958,24 +1992,17 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         TextView t = (TextView) speciality_spinner.getSelectedView();
         t.setError(getString(R.string.please_select_specialization_msg));
         t.setTextColor(Color.RED);
+        showSpecialisationDialog();
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this)
-                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.generic_ok),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
+    private void showSpecialisationDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.please_select_specialization_msg), "", true, getResources().getString(R.string.okay), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            }
+        });
     }
 
     // Permission - start

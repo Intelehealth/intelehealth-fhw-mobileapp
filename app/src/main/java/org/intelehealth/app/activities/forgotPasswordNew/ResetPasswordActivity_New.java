@@ -2,12 +2,17 @@ package org.intelehealth.app.activities.forgotPasswordNew;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +45,7 @@ import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.security.SecureRandom;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -110,6 +116,29 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         manageErrorFields();
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
 
     @Override
     public void onBackPressed() {

@@ -7,11 +7,15 @@ import static org.intelehealth.app.database.dao.NotificationDAO.insertNotificati
 import static org.intelehealth.app.database.dao.NotificationDAO.showOnly_NonDeletedNotification;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -96,6 +100,30 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         }
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
+
     private void showNotifications() {
         try {
             todays_Presc_notification();
@@ -114,7 +142,8 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
         //  int total_presc_count = todayPresc_list.size() + yesterdayPresc_list.size();
         int total_presc_count = 0;
         total_presc_count = adapter != null ? adapter.getItemCount() : total_presc_count;
-        notifi_header_title.setText(getString(R.string.five_presc_received, total_presc_count));
+        String prescCount = String.format(getString(R.string.five_presc_received, String.valueOf(total_presc_count)));
+        notifi_header_title.setText(prescCount);
     }
 
     private void initViews() {

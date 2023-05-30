@@ -255,9 +255,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private void showHeightListing() {
         // add a list
         final String[] data = new String[mHeightMasterList.size() + 1];
-        data[0] = "Select Height";
+        data[0] = getResources().getString(R.string.select_height);
         for (int i = 1; i < data.length; i++) {
-            data[i] = String.valueOf(mHeightMasterList.get(i - 1)) + " cm";
+            data[i] = String.valueOf(mHeightMasterList.get(i - 1)) + " " + getResources().getString(R.string.cm);
         }
 
         mHeightArrayAdapter = new ArrayAdapter<String>(getActivity(),
@@ -291,9 +291,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         // add a list
         final String[] data = new String[mWeightMasterList.size() + 1];
-        data[0] = "Select Weight";
+        data[0] = getResources().getString(R.string.select_weight);
         for (int i = 1; i < data.length; i++) {
-            data[i] = String.valueOf(mWeightMasterList.get(i - 1)) + " kg";
+            data[i] = String.valueOf(mWeightMasterList.get(i - 1)) + " " + getResources().getString(R.string.kg);
         }
         mWeightArrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_spinner_item_1, data);
@@ -334,12 +334,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             if (results.getHeight() != null && !results.getHeight().isEmpty() && !results.getHeight().equalsIgnoreCase("0")) {
                 Log.v(TAG, "getHeight - " + results.getHeight());
                 Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
-                mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight() + " cm"), true);
+                mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight() + " " + getResources().getString(R.string.cm)), true);
             }
 
 
             if (results.getWeight() != null && !results.getWeight().isEmpty())
-                mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(results.getWeight() + " kg"), true);
+                mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(results.getWeight() + " " + getResources().getString(R.string.kg)), true);
 
             /*if (results.getBmi() != null && !results.getBmi().isEmpty())
               pass*/
@@ -378,22 +378,22 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private BMIStatus getBmiStatus(double bmi) {
         BMIStatus bmiStatus = new BMIStatus();
         if (bmi < 18.5) {
-            bmiStatus.setStatus("Underweight");
+            bmiStatus.setStatus(getResources().getString(R.string.underweight));
             bmiStatus.setColor(R.color.ui2_bmi1);
         } else if (bmi > 18.5 && bmi <= 24.9) {
-            bmiStatus.setStatus("Normal");
+            bmiStatus.setStatus(getResources().getString(R.string.normal));
             bmiStatus.setColor(R.color.ui2_bmi2);
         } else if (bmi > 24.9 && bmi <= 29.9) {
-            bmiStatus.setStatus("Overweight");
+            bmiStatus.setStatus(getResources().getString(R.string.overweight));
             bmiStatus.setColor(R.color.ui2_bmi3);
         } else if (bmi > 29.9 && bmi <= 34.9) {
-            bmiStatus.setStatus("Obese");
+            bmiStatus.setStatus(getResources().getString(R.string.obese));
             bmiStatus.setColor(R.color.ui2_bmi4);
         } else if (bmi > 34.9 && bmi <= 39.9) {
-            bmiStatus.setStatus("Severely Obese");
+            bmiStatus.setStatus(getResources().getString(R.string.severely_obese));
             bmiStatus.setColor(R.color.ui2_bmi5);
         } else {
-            bmiStatus.setStatus("Morbidly Obese");
+            bmiStatus.setStatus(getResources().getString(R.string.morbidly_obese));
             bmiStatus.setColor(R.color.ui2_bmi6);
         }
         return bmiStatus;
@@ -468,7 +468,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if (heightvalue != null && !heightvalue.isEmpty() && !heightvalue.equalsIgnoreCase("0")) {
                     Log.v(TAG, "getHeight - " + results.getHeight());
                     Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
-                    mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(heightvalue + " cm"), true);
+                    mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(heightvalue + " " + getResources().getString(R.string.cm)), true);
                 }
 
 
@@ -477,7 +477,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             case UuidDictionary.WEIGHT: //Weight
                 weightvalue = value;
                 if (weightvalue != null && !weightvalue.isEmpty())
-                    mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(weightvalue + " kg"), true);
+                    mWeightSpinner.setSelection(mWeightArrayAdapter.getPosition(weightvalue + " " + getResources().getString(R.string.kg)), true);
                 //mWeightTextView.setText(value);
                 break;
             case UuidDictionary.PULSE: //Pulse

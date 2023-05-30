@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="five_presc_received">%1$d prescriptions received</string>
+    <string name="five_presc_received">%1$s prescriptions received</string>
     <string name="no_visit_created">No visit created</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Height (cm)</string>

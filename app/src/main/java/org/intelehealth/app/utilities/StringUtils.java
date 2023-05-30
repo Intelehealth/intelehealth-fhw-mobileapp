@@ -1640,6 +1640,24 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en_hi_dob_updated(String dob) { //English dob is replaced to Hindi text.
+        String mdob_text = dob
+                .replace("Jan", "जनवरी")
+                .replace("Feb", "फ़रवरी")
+                .replace("March", "मार्च")
+                .replace("April", "अप्रैल")
+                .replace("May", "मई")
+                .replace("June", "जून")
+                .replace("July", "जुलाई")
+                .replace("Aug", "अगस्त")
+                .replace("Sept", "सितंबर")
+                .replace("Oct", "अक्टूबर")
+                .replace("Nov", "नवंबर")
+                .replace("Dec", "दिसंबर");
+
+        return mdob_text;
+    }
+
     public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
         String mdob_text = dob
                 .replace("January", "જાન્યુઆરી")

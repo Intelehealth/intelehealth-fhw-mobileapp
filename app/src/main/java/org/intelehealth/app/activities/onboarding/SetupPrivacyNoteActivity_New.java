@@ -2,16 +2,21 @@ package org.intelehealth.app.activities.onboarding;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Looper;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,6 +40,9 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.utilities.SessionManager;
+
+import java.util.Locale;
 
 public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
     private static final String TAG = "SetupPrivacyNoteActivit";
@@ -46,15 +54,16 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_privacy_note_ui2);
-        //tvTermsAndPrivacy = findViewById(R.id.tv_privacy_notice_link);
+        tvTermsAndPrivacy = findViewById(R.id.tv_privacy_notice_link_1);
+        termsAndPrivacyPolicy();
         Button btnSetup = findViewById(R.id.btn_setup);
         cardNoteSnack = findViewById(R.id.card_note_snack_policy);
 
-        TextView tcTextView = (TextView) findViewById(R.id.tv_privacy_notice_link_2);
+        /*TextView tcTextView = (TextView) findViewById(R.id.tv_privacy_notice_link_2);
         tcTextView.setPaintFlags(tcTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         TextView ppTextView = (TextView) findViewById(R.id.tv_privacy_notice_link_4);
-        ppTextView.setPaintFlags(ppTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        ppTextView.setPaintFlags(ppTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);*/
 
         ImageView ivBack = findViewById(R.id.iv_setup_privacy_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -122,11 +131,9 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
 
     public void termsAndPrivacyPolicy() {
         SpannableString SpanString = new SpannableString(getResources().getString(R.string.agree_to_terms));
-
-        ClickableSpan teremsAndCondition = new ClickableSpan() {
+        ClickableSpan termsAndCondition = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-
 
                 Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, TermsAndConditionsActivity_New.class);
                 mIntent.putExtra("isTermsAndCondition", true);
@@ -136,28 +143,25 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
 
             }
         };
-
-        // Character starting from 9 - 27 is Terms and condition.
-        // Character starting from 32 - 46 is privacy policy.
-
         ClickableSpan privacy = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-
                 Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, PrivacyPolicyActivity_New.class);
                 mIntent.putExtra("isPrivacyPolicy", true);
                 startActivity(mIntent);
-                //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
-
             }
         };
 
-        SpanString.setSpan(teremsAndCondition, 9, 27, 0);
-        SpanString.setSpan(privacy, 32, 46, 0);
-        SpanString.setSpan(new ForegroundColorSpan(Color.BLUE), 9, 27, 0);
+        int startingPositionTC = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.terms_and_conditions));
+        int endingPositionTC = startingPositionTC + getResources().getString(R.string.terms_and_conditions).length();
+        int startingPositionPP = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.privacy_policy));
+        int endingPositionPP = startingPositionPP + getResources().getString(R.string.privacy_policy).length();
+        SpanString.setSpan(termsAndCondition, startingPositionTC, endingPositionTC, 0);
+        SpanString.setSpan(privacy, startingPositionPP, endingPositionPP, 0);
+        /*SpanString.setSpan(new ForegroundColorSpan(Color.BLUE), 9, 27, 0);
         SpanString.setSpan(new ForegroundColorSpan(Color.BLUE), 32, 46, 0);
         SpanString.setSpan(new UnderlineSpan(), 9, 27, 0);
-        SpanString.setSpan(new UnderlineSpan(), 32, 46, 0);
+        SpanString.setSpan(new UnderlineSpan(), 32, 46, 0);*/
 
         tvTermsAndPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
@@ -247,5 +251,29 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                 cardNoteSnack.setVisibility(View.GONE);
             }
         }, 3000);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 }

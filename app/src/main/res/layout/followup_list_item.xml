@@ -126,6 +126,33 @@
                     />
 
             </FrameLayout>
+            <LinearLayout
+                android:id="@+id/shareiconLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_gravity="bottom">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/prescription_icon_green" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="5dp"
+                    android:text="@string/share"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/dm_sans"
+                    android:textColor="#0FD197"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/shareicon"

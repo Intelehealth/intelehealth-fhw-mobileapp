@@ -14,11 +14,16 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -131,9 +136,9 @@ public class PrescriptionActivity extends AppCompatActivity {
     Base64Utils base64Utils = new Base64Utils();
     boolean isuploadPrescription = false;
     Button btnFollowUp;
-
-
     TextView txtDignosisHeading;
+
+
     @Override
     protected void attachBaseContext(Context newBase) {
         mContext = newBase;
@@ -145,7 +150,6 @@ public class PrescriptionActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager = new SessionManager(this);
         appLanguage = sessionManager.getAppLanguage();
-
         OBSURL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/obs";
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -156,18 +160,13 @@ public class PrescriptionActivity extends AppCompatActivity {
             encounterVisitNote = intent.getStringExtra("startVisitNoteApiEncounterResponse"); // this is needed for the obs api for sending each data.
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
-//            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-//            mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
-
             intentTag = intent.getStringExtra("tag");
         }
 
-//        setTitle(patientName + ": " + getTitle());
         setTitle(R.string.prescription);
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -178,7 +177,6 @@ public class PrescriptionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         context = getApplicationContext();
         presContext = PrescriptionActivity.this;
-
         txtDignosisHeading=findViewById(R.id.txtDignosisHeading);
         txtDignosisHeading.setText(getString(R.string.diagnosis));
         initUI();

@@ -6,9 +6,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.se.omapi.Session;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -27,7 +32,10 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
+
+import java.util.Locale;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
@@ -40,7 +48,7 @@ public class VisitActivity extends FragmentActivity implements
     private NetworkUtils networkUtils;
     TabLayout tabLayout;
     ViewPager2 viewPager;
-
+    SessionManager sessionManager;
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
 
@@ -48,7 +56,7 @@ public class VisitActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
-
+        sessionManager = new SessionManager(this);
         networkUtils = new NetworkUtils(this, this);
         ibBack = findViewById(R.id.vector);
         refresh = findViewById(R.id.refresh);
@@ -82,6 +90,30 @@ public class VisitActivity extends FragmentActivity implements
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     @Override
@@ -130,6 +162,15 @@ public class VisitActivity extends FragmentActivity implements
             }
 
         });
+
+        String language = sessionManager.getAppLanguage();
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config,getResources().getDisplayMetrics());
+        }
     }
 
     @Override

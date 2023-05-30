@@ -30,15 +30,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Looper;
 import android.provider.Settings;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -120,6 +124,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -285,23 +290,25 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         DeviceInfoUtils.saveDeviceInfo(this);
         catchFCMMessageData();
 
-
         loadFragment(new HomeFragment_New(), TAG_HOME);
-        // FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        // tx.replace(R.id.fragment_container, new HomeFragment_New());
-        // tx.commit();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         }
         sessionManager = new SessionManager(this);
-        initUI();
-        //}
-        clickListeners();
-//        awsAuth();
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
 
+        Log.d("onCreate: ", "I m called! " + sessionManager.getAppLanguage());
+        initUI();
+        clickListeners();
     }
 
     private void clickListeners() {
@@ -313,19 +320,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
+
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            //drawer is open
-            //  getWindow().setStatusBarColor(Color.CYAN);
         }
-
-
-        /*tvTitleHomeScreenCommon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeScreenActivity_New.this, MyAppointmentActivity.class);
-                startActivity(intent);
-            }
-        });*/
 
         imageViewIsNotification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,7 +350,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 startActivity(intent);
             }
         });
-
 
         ivCloseDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -383,18 +379,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         patientRegistrationDialog(context, getResources().getDrawable(R.drawable.ui2_ic_warning_internet), getString(R.string.reset_app_new_title), getString(R.string.sure_to_reset_app), getString(R.string.generic_yes), getString(R.string.no), action -> {
             if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                 checkNetworkConnectionAndPerformSync();
-                //  showSimpleDialog(getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset));
-//                            deleteCache(getApplicationContext());
-/*
-                        new Handler(Looper.getMainLooper())
-                                .postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        resetDialog.dismiss();
-                                        deleteCache(getApplicationContext());
-                                    }
-                                }, 2000);
-*/
             }
         });
     }
@@ -544,15 +528,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         tvAppVersion = findViewById(R.id.tv_app_version);
         menuResetApp = findViewById(R.id.layout_reset_app);
         imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
-
         toolbarHome = findViewById(R.id.toolbar_home);
-
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
         tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
-
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
-
         ivHamburger = toolbarHome.findViewById(R.id.iv_hamburger);
         ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
 
@@ -593,15 +573,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
                 } else {
-//                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                     if (!tipWindow.isTooltipShown())
                         tipWindow.showToolTip(imageViewIsInternet, getResources().getString(R.string.no_network_tooltip));
-//                    showRefreshFailedDialog();
                 }
-//                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
-//                }
+
             }
         });
         //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -684,6 +659,30 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
         String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         return getSupportFragmentManager().findFragmentByTag(fragmentTag);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     private String getTopFragmentTag() {
@@ -914,6 +913,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             case R.id.menu_change_language:
                 Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.menu_about_us:
                 Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
@@ -940,6 +940,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        setLocale("onRestart");
+    }
+
+    @Override
     protected void onResume() {
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
@@ -961,26 +967,28 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             showLoggingInDialog();
 
         }
-
-
-        //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-
+        setLocale("onResume");
         super.onResume();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setLocale("onConfigurationChanged");
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
+        setLocale("onStart");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         requestPermission();
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
-
-        //showBadge();
     }
 
     private void checkAppVer() {
@@ -1491,4 +1499,20 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             }
         }
     }
+
+    public void setLocale(String tag) {
+        sessionManager = new SessionManager(this);
+        Log.d(tag, ": I m called! " + sessionManager.getAppLanguage());
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+    }
+
+
+
 }
