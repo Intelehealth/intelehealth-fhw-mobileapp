@@ -970,12 +970,26 @@ public class Node implements Serializable {
 */
         // for rest other than physexam screen the maxdate will be todays date so that future dates isnt allowed.
       //  if (!context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
-        if (!node.getText().contains("follow-up"))
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        if (!node.getDisplay().contains("follow-up")) {
+            try {
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            }
+            catch (Exception e) {
+                Log.v("ddd", "askdate 978line: " + e.toString());
+            }
+        }
 
       //  if (context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
-        if (node.getText().contains("follow-up"))
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        if (node.getDisplay().contains("follow-up")) {
+            try {
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            }
+            catch (Exception e) {
+                Log.v("ddd", "askdate 999line: " + e.toString());
+            }
+        }
+
+        Log.v("ddd", "dddd: " + node.getText());
 
 
         datePickerDialog.setOnCancelListener(dialog -> {
@@ -1638,13 +1652,26 @@ public class Node implements Serializable {
 
         // for rest other than physexam screen the maxdate will be todays date so that future dates isnt allowed.
         //  if (!context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
-        if (!node.getText().contains("follow-up"))
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        if (!node.getDisplay().contains("follow-up")) {
+            try {
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            }
+            catch (Exception e) {
+                Log.v("ddd", "askdate 1660line: " + e.toString());
+            }
+        }
 
         //  if (context.getClass().getSimpleName().equalsIgnoreCase("PhysicalExamActivity"))
-        if (node.getText().contains("follow-up"))
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        if (node.getDisplay().contains("follow-up")) {
+            try {
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            }
+            catch (Exception e) {
+                Log.v("ddd", "askdate 1670line: " + e.toString());
+            }
+        }
 
+        Log.v("ddd", "dddd subdate: " + node.getText());
         datePickerDialog.show();
     }
 
