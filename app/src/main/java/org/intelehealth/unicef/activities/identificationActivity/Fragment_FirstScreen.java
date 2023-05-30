@@ -234,18 +234,24 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
 
+        mCountryCodePicker.setOnCountryChangeListener(this::setMobileNumberLimit);
         setMobileNumberLimit();
-
-
     }
 
     private int mSelectedMobileNumberValidationLength = 0;
     private String mSelectedCountryCode = "";
 
     private void setMobileNumberLimit() {
+        if (mPhoneNumberErrorTextView.getVisibility() == View.VISIBLE) {
+            mPhoneNumberErrorTextView.setVisibility(View.GONE);
+        }
+
         mSelectedCountryCode = mCountryCodePicker.getSelectedCountryCode();
         if (mSelectedCountryCode.equals("91")) {
             mSelectedMobileNumberValidationLength = 10;
+        }
+        if (mSelectedCountryCode.equalsIgnoreCase("996")) {
+            mSelectedMobileNumberValidationLength = 9;
         }
         mPhoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
         InputFilter inputFilter = new InputFilter() {
@@ -777,16 +783,17 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         if (!mPhoneNumberEditText.getText().toString().equals("")) {
             String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
             Log.v("phone", "phone: " + s);
-            if (s.length() < mSelectedMobileNumberValidationLength) {
+//            if (s.length() < mSelectedMobileNumberValidationLength) {
+//                mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
+//                mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
+//                mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+//                mPhoneNumberEditText.requestFocus();
+//                return;
+//            }
+
+            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("996") && s.length() < 9) {
                 mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
-                mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                mPhoneNumberEditText.requestFocus();
-                return;
-            }
-            if (!mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() < 15) {
-                mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                mPhoneNumberErrorTextView.setText(getString(R.string.enter_15_digits));
+                mPhoneNumberErrorTextView.setText(getString(R.string.enter_9_digits));
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 mPhoneNumberEditText.requestFocus();
                 return;
@@ -795,10 +802,9 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
             }
 
-            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
-                    && s.length() != mSelectedMobileNumberValidationLength) {
+            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91") && s.length() != mSelectedMobileNumberValidationLength) {
                 mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                mPhoneNumberErrorTextView.setText(R.string.invalid_mobile_no);
+                mPhoneNumberErrorTextView.setText(R.string.enter_10_digits);
                 mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 mPhoneNumberEditText.requestFocus();
                 return;

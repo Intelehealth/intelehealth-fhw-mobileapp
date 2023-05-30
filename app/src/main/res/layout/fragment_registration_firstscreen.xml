@@ -424,7 +424,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/edittext_border"
                         android:gravity="center_vertical"
-                        app:ccp_countryPreference="us,in"
+                        app:ccp_customMasterCountries="kg,in"
                         app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
 
                     <EditText
