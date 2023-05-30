@@ -1,6 +1,7 @@
 package org.intelehealth.app.profile;
 
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
+import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -1047,6 +1048,11 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     String[] split = dob.split("T");
                     tvDob.setText(DateAndTimeUtils.getDisplayDateForApp(split[0]));
                     prevDOB = DateAndTimeUtils.getDisplayDateForApp(split[0]);
+
+                    if(sessionManager.getAppLanguage()!= null && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        tvDob.setText(en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(split[0])));
+                        prevDOB = en_hi_dob_updated(DateAndTimeUtils.getDisplayDateForApp(split[0]));
+                    }
                     String age = DateAndTimeUtils.getAge_FollowUp(split[0], MyProfileActivity.this);
                     tvAge.setText(age);
                     gender = profile.getResults().get(0).getPerson().getGender();
@@ -1219,6 +1225,9 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             if (age != null && !age.isEmpty() && Integer.parseInt(age) >= 18) {
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
+                if(sessionManager.getAppLanguage()!= null && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    tvDob.setText(en_hi_dob_updated(dateToshow1) + ", " + splitedDate[2]);
+                }
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
                 if(tvErrorDob.getVisibility()==View.VISIBLE)
                     tvErrorDob.setVisibility(View.GONE);
