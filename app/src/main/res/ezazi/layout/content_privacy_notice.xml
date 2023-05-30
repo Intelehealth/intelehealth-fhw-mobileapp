@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/actionbar_vertical_padding"
                 android:fontFamily="@font/dm_sans_medium"
+                android:paddingStart="@dimen/screen_container_padding"
                 android:text="@string/i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient"
                 android:textAppearance="@style/Theme.EZazi.Caption" />
 

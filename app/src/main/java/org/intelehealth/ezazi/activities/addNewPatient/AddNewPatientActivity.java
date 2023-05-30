@@ -21,6 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 
 import java.io.Serializable;
 
@@ -111,29 +112,41 @@ public class AddNewPatientActivity extends AppCompatActivity {
     */
     @Override
     public void onBackPressed() {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertdialogBuilder.setMessage(R.string.are_you_want_go_back);
-        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(i_back);
-            }
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(R.string.are_you_want_go_back))
+                .positiveButtonLabel(R.string.yes)
+                .build();
+
+        dialog.setListener(() -> {
+            Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(i_back);
         });
-        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
 
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+//        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+//        alertdialogBuilder.setMessage();
+//        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
+//                startActivity(i_back);
+//            }
+//        });
+//        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+//
+//        AlertDialog alertDialog = alertdialogBuilder.create();
+//        alertDialog.show();
+//
+//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+//
+//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
 }

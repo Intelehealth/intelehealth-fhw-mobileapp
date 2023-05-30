@@ -14,6 +14,7 @@ import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -43,6 +44,7 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.Base64Utils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
@@ -54,6 +56,7 @@ import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             "username:password", "admin:nimda"
     };
     private final String TAG = LoginActivity.class.getSimpleName();
-//    protected AccountManager manager;
+    //    protected AccountManager manager;
 //    Account Manager is commented....
 //    ProgressDialog progress;
     Context context;
@@ -87,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     String encoded = null;
     // UI references.
     private EditText mUsernameView;
-//    private AutoCompleteTextView mUsernameView;
+    //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private ImageView icLogo;
 
@@ -185,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
             icLogo.setImageBitmap(bitmap);
         } else {
-            Log.e("SetLogo","No Logo Found in Mindmap Folder");
+            Log.e("SetLogo", "No Logo Found in Mindmap Folder");
         }
     }
 
@@ -246,39 +249,60 @@ public class LoginActivity extends AppCompatActivity {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
-      MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
-                .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
-                .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //finish();
-//                        Intent intent = new Intent(Intent.ACTION_SENDTO); //to get only the list of e-mail clients
-//                        intent.setType("text/plain");
-//                        intent.setData(Uri.parse("mailto:support@intelehealth.io"));
-//                        // intent.putExtra(Intent.EXTRA_EMAIL, "support@intelehealth.io");
-//                        // intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-//                        //  intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(R.string.contact_whatsapp))
+                .positiveButtonLabel(R.string.contact)
+                .negativeButtonLabel(R.string.close_button)
+                .build();
+
+        dialog.setListener(() -> {
+            String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
+            String message =
+                    getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+                            /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(
+                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                    phoneNumberWithCountryCode, message))));
+        });
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+
+
+//      MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
+//                .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
+//                .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //finish();
+////                        Intent intent = new Intent(Intent.ACTION_SENDTO); //to get only the list of e-mail clients
+////                        intent.setType("text/plain");
+////                        intent.setData(Uri.parse("mailto:support@intelehealth.io"));
+////                        // intent.putExtra(Intent.EXTRA_EMAIL, "support@intelehealth.io");
+////                        // intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+////                        //  intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+////
+////                        startActivity(Intent.createChooser(intent, "Send Email"));
+////                        //add email function here !
 //
-//                        startActivity(Intent.createChooser(intent, "Send Email"));
-//                        //add email function here !
-
-                        String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
-                        String message =
-                                getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
-                                        /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
-
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(
-                                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                                phoneNumberWithCountryCode, message))));
-
-                    }
-
-                })
-                .setPositiveButton(R.string.close_button, null);
-
-      AlertDialog alertDialog = builder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+//                        String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
+//                        String message =
+//                                getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+//                                        /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+//
+//                        startActivity(new Intent(Intent.ACTION_VIEW,
+//                                Uri.parse(
+//                                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+//                                                phoneNumberWithCountryCode, message))));
+//
+//                    }
+//
+//                })
+//                .setPositiveButton(R.string.close_button, null);
+//
+//      AlertDialog alertDialog = builder.show();
+//        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
 
         //prajwal_changes
     }
@@ -312,12 +336,12 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                Log.d("SESSOO","SESSOO_creator: "+loginModel.getUser().getUuid());
+                Log.d("SESSOO", "SESSOO_creator: " + loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
-                Log.d("SESSOO","SESSOO: "+sessionManager.getSessionID());
+                Log.d("SESSOO", "SESSOO: " + sessionManager.getSessionID());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
+                Log.d("SESSOO", "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                Log.d("SESSOO", "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
@@ -342,8 +366,6 @@ public class LoginActivity extends AppCompatActivity {
                                             //offlineLogin.invalidateLoginCredentials();
 
 
-
-
                                         }
                                     }
                                     SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -366,7 +388,8 @@ public class LoginActivity extends AppCompatActivity {
                                     try {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 
@@ -374,7 +397,7 @@ public class LoginActivity extends AppCompatActivity {
                                         values.put("username", mEmail);
                                         values.put("password", hash_password);
                                         values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                        values.put("chwname",loginModel.getUser().getDisplay());
+                                        values.put("chwname", loginModel.getUser().getDisplay());
                                         values.put("provider_uuid_cred", sessionManager.getProviderID());
                                         createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                         sqLiteDatabase.setTransactionSuccessful();
@@ -395,7 +418,7 @@ public class LoginActivity extends AppCompatActivity {
 //                startJobDispatcherService(LoginActivity.this);
                                     startActivity(intent);
                                     finish();
-                                  //  showProgress(false);
+                                    //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
                                     sessionManager.setLogout(false);
