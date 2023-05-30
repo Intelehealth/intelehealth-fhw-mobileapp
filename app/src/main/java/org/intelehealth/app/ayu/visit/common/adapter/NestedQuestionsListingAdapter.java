@@ -65,6 +65,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
     private List<Node> mItemList = new ArrayList<Node>();
+    private List<Node> mSuperItemList = new ArrayList<Node>();
     //private int mTotalQuery = 0;
     RecyclerView mRecyclerView;
     private int mLastImageCaptureSelectedNodeIndex = 0;
@@ -79,6 +80,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     public void removeImageInLastNode(int index, String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
+    }
+
+    public void setSuperNodeList(List<Node> nodes) {
+        mSuperItemList = nodes;
     }
 
     public boolean isIsAssociateSymptomsLoaded() {
@@ -682,6 +687,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             });
             holder.superNestedRecyclerView.setAdapter(nestedQuestionsListingAdapter);
             nestedQuestionsListingAdapter.addItemAll(options);
+            nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
             holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
             holder.submitButton.setVisibility(View.GONE);
             holder.skipButton.setVisibility(View.GONE);
@@ -691,7 +697,27 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
             holder.optionRecyclerView.setLayoutManager(layoutManager);
+            //**********
+            // Avoid the duplicate options asking to user in connected questions
+            //**************
+            String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
+            Log.v(TAG, "duplicateCheckNodeNames - "+duplicateCheckNodeNames);
+            if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+                int sourceIndex = 0;
+                Node toCompareWithNode = null;
+                for (int i = 0; i < mSuperItemList.size(); i++) {
+                    Log.v(TAG, "toCompareWithNode - "+mSuperItemList.get(i).getText());
+                    if (mSuperItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
+                        toCompareWithNode = mSuperItemList.get(i);
+                        Log.v(TAG, "toCompareWithNode - "+new Gson().toJson(toCompareWithNode));
+                        break;
+                    }
+                }
+                NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
+            }
+            // *****************
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node) {

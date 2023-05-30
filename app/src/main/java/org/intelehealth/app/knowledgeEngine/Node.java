@@ -65,6 +65,16 @@ import java.util.Locale;
 public class Node implements Serializable {
 
 
+    public boolean isNeedToHide() {
+        return needToHide;
+    }
+
+    public void setNeedToHide(boolean needToHide) {
+        this.needToHide = needToHide;
+    }
+
+    private boolean needToHide;
+    private String compareDuplicateNode;
     private boolean enableExclusiveOption;
     private boolean isExclusiveOption;
     private boolean havingNestedQuestion;
@@ -346,6 +356,7 @@ public class Node implements Serializable {
             this.havingNestedQuestion = jsonNode.optBoolean("havingNestedQuestion");
             this.enableExclusiveOption = jsonNode.optBoolean("enable-exclusive-option");
             this.isExclusiveOption = jsonNode.optBoolean("is-exclusive-option");
+            this.compareDuplicateNode = jsonNode.optString("compare-duplicate-node");
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -403,6 +414,8 @@ public class Node implements Serializable {
         this.havingNestedQuestion = source.havingNestedQuestion;
         this.enableExclusiveOption = source.enableExclusiveOption;
         this.isExclusiveOption = source.isExclusiveOption;
+        this.compareDuplicateNode = source.compareDuplicateNode;
+        this.needToHide = source.needToHide;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
@@ -3220,6 +3233,14 @@ public class Node implements Serializable {
 
     public void setExclusiveOption(boolean exclusiveOption) {
         isExclusiveOption = exclusiveOption;
+    }
+
+    public String getCompareDuplicateNode() {
+        return compareDuplicateNode;
+    }
+
+    public void setCompareDuplicateNode(String compareDuplicateNode) {
+        this.compareDuplicateNode = compareDuplicateNode;
     }
 }
 

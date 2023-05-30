@@ -885,7 +885,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             });
             holder.nestedRecyclerView.setAdapter(nestedQuestionsListingAdapter);
             // }
-
+            nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
 
             //if (havingNestedQuestion) {
             if (isSuperNested) {
@@ -925,6 +925,25 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 layoutManager.setFlexDirection(FlexDirection.ROW);
                 layoutManager.setJustifyContent(JustifyContent.FLEX_START);
                 holder.recyclerView.setLayoutManager(layoutManager);
+
+                //**********
+                // Avoid the duplicate options asking to user in connected questions
+                //**************
+                String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
+                Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
+                if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+                    int sourceIndex = 0;
+                    Node toCompareWithNode = null;
+                    for (int i = 0; i < mItemList.size(); i++) {
+                        if (mItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
+                            toCompareWithNode = mItemList.get(i);
+                            Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
+                            break;
+                        }
+                    }
+                    NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
+                }
+                // *****************
                 OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                     @Override
                     public void onSelect(Node node) {

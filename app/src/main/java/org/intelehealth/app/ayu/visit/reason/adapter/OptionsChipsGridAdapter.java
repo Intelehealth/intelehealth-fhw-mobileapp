@@ -62,13 +62,25 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             //Log.v("node", String.valueOf(genericViewHolder.node.isSelected()));
 
+
+
             if (genericViewHolder.node.isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
+
+                if (genericViewHolder.node.isNeedToHide()) {
+                    genericViewHolder.tvName.setEnabled(false);
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
+                }else{
+                    genericViewHolder.tvName.setEnabled(true);
+                    genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
+                }
             }
+
+
 
         }
     }

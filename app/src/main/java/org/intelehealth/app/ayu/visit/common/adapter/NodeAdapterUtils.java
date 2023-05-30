@@ -1,21 +1,16 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.Toast;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.DialogUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 public class NodeAdapterUtils {
+    public static final String TAG = NodeAdapterUtils.class.getSimpleName();
     /**
      * @param context
      * @param title
@@ -29,6 +24,27 @@ public class NodeAdapterUtils {
 
             }
         });
+    }
+
+    /**
+     * @param context
+     * @param targetNode
+     * @param toCompareWithNode
+     */
+    public static void updateForHideShowFlag(Context context, Node targetNode, Node toCompareWithNode) {
+        Log.v(TAG, "updateForHideShowFlag - "+new Gson().toJson(toCompareWithNode));
+        if (targetNode == null || toCompareWithNode == null) return;
+        for (int i = 0; i < toCompareWithNode.getOptionsList().size(); i++) {
+            boolean isSelected = toCompareWithNode.getOptionsList().get(i).isSelected();
+            String text = toCompareWithNode.getOptionsList().get(i).getText();
+            Log.v(TAG, "updateForHideShowFlag text   - "+text+" - isSelected - "+isSelected);
+            for (int j = 0; j < targetNode.getOptionsList().size(); j++) {
+                if (text.equals(targetNode.getOptionsList().get(j).getText())) {
+                    Log.v(TAG, "updateForHideShowFlag match found!");
+                    targetNode.getOptionsList().get(j).setNeedToHide(isSelected);
+                }
+            }
+        }
     }
 
 

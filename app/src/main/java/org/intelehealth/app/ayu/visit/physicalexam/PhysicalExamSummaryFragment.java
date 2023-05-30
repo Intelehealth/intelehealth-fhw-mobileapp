@@ -25,6 +25,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -107,18 +108,23 @@ public class PhysicalExamSummaryFragment extends Fragment {
         String str = mSummaryString;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
         str = str.replaceAll("<.*?>", "");
         System.out.println("prepareSummary - " + str);
-        String[] spt = str.split("•");
+        String[] spt = str.split("►");
         List<String> list = new ArrayList<>();
-        TreeMap<String, List<String>> mapData = new TreeMap<>();
-        String complainName = "";
+        LinkedHashMap<String, List<String>> mapData = new LinkedHashMap<String, List<String>>();
+
         for (String s : spt) {
             System.out.println(s);
-            if (s.trim().endsWith(":")) {
-                complainName = s;
-                list = new ArrayList<>();
-                mapData.put(s, list);
-            } else {
-                mapData.get(complainName).add(s);
+            if (s.isEmpty()) continue;
+            String[] spt1 = s.split("•");
+            String complainName = "";
+            for (String s1 : spt1) {
+                if (s1.trim().endsWith(":")) {
+                    complainName = s1;
+                    list = new ArrayList<>();
+                    mapData.put(s1, list);
+                } else {
+                    mapData.get(complainName).add(s1);
+                }
             }
 
         }
@@ -130,7 +136,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
-                complainLabelTextView.setText(complainName);
+                complainLabelTextView.setText(_complain);
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
