@@ -1018,6 +1018,13 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
     private void fetchUserDetails() {
         String uuid = new SessionManager(MyProfileActivity.this).getCreatorID();
+        ProviderDAO providerDAO = new ProviderDAO();
+        ProviderDTO providerDTO = null;
+        try {
+            providerDTO = providerDAO.getLoginUserDetails(sessionManager.getProviderID());
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
         String url = new UrlModifiers().getHWProfileDetails(uuid);
         Log.d(TAG, "profilePicDownloaded:: url : " + url);
 
@@ -1101,6 +1108,28 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
 
+
+        if (providerDTO!=null && providerDTO.getImagePath() != null && !providerDTO.getImagePath().isEmpty()) {
+            Glide.with(this)
+                    .load(providerDTO.getImagePath())
+                    .thumbnail(0.3f)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(ivProfileImage);
+        } else {
+            ivProfileImage.setImageDrawable(getResources().getDrawable(R.drawable.avatar1));
+        }
+
+        Log.d(TAG, "fetchUserDetailsIfAdded: path : " + providerDTO.getImagePath());
+        if (providerDTO.getImagePath() == null || providerDTO.getImagePath().equalsIgnoreCase("")) {
+            if (NetworkConnection.isOnline(this)) {
+                try {
+                    profilePicDownloaded(providerDTO);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public static boolean isInteger(String s) {
