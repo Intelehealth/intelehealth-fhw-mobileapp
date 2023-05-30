@@ -1,6 +1,7 @@
 package org.intelehealth.apprtc.adapter;
 
 import android.content.Context;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,24 +95,24 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    private String visibleDate;
+
     private void setDateVisibility(int position, String date, TextView textView) {
         try {
             String displayDateTime = parseDate(date);
             textView.setVisibility(View.GONE);
             if (position == 0) {
+                visibleDate = displayDateTime;
                 textView.setVisibility(View.VISIBLE);
                 textView.setText(displayDateTime);
-            } else if (position > 0) {
-                JSONObject object = mItemList.get(position - 1);
-                String prevDate = parseDate(object.getString("createdAt"));
-                if (!displayDateTime.equalsIgnoreCase(prevDate)) {
-                    textView.setVisibility(View.VISIBLE);
-                    textView.setText(displayDateTime);
-                }
+            } else if (position > 0 && !displayDateTime.equalsIgnoreCase(visibleDate)) {
+                Log.d("ChatListAdapter", "Visible =>" + visibleDate);
+                Log.d("ChatListAdapter", "Current[" + position + "] =>" + visibleDate);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(displayDateTime);
+                visibleDate = displayDateTime;
             }
         } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }
