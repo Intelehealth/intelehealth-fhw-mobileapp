@@ -15,15 +15,18 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -39,6 +42,7 @@ import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
+import org.intelehealth.ezazi.models.pushRequestApiCall.Address;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -48,6 +52,7 @@ import org.intelehealth.ezazi.utilities.UuidGenerator;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -64,10 +69,10 @@ public class PatientOtherInfoFragment extends Fragment {
     View view;
     AutoCompleteTextView mRiskFactorsTextView, mPrimaryDoctorTextView, mSecondaryDoctorTextView;
     Context mContext;
-    TextInputEditText mAdmissionDateTextView, mAdmissionTimeTextView, mTotalBirthEditText, mTotalMiscarriageEditText, etSpontaneous, etInduced, mActiveLaborDiagnosedDateTextView,
+    TextInputEditText mAdmissionDateTextView, mAdmissionTimeTextView, mTotalBirthEditText, mTotalMiscarriageEditText, mActiveLaborDiagnosedDateTextView,
             mActiveLaborDiagnosedTimeTextView, mMembraneRupturedDateTextView, mMembraneRupturedTimeTextView, etBedNumber;
     MaterialButton btnBack, btnNext;
-    //MaterialButton optionHospital, optionMaternity, optionOther;
+    TextView optionHospital, optionMaternity, optionOther;
     Intent i_privacy;
     private String mAdmissionDateString = "", mAdmissionTimeString = "";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -98,9 +103,10 @@ public class PatientOtherInfoFragment extends Fragment {
     CheckBox mUnknownMembraneRupturedCheckBox;
     ImagesDAO imagesDAO = new ImagesDAO();
     boolean patient_detail = false;
-    private PatientOtherInfoFragment secondScreen;
+    private PatientAddressInfoFragment secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
     ImageView ivPersonal, ivAddress, ivOther;
+    TextView tvSpontaneous, tvInduced,tvSacRuptured;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -121,29 +127,30 @@ public class PatientOtherInfoFragment extends Fragment {
         mAdmissionTimeTextView = view.findViewById(R.id.et_admission_time);
         mTotalBirthEditText = view.findViewById(R.id.et_total_birth);
         mTotalMiscarriageEditText = view.findViewById(R.id.et_total_miscarriage);
-        etSpontaneous = view.findViewById(R.id.et_spontaneous);
-        etInduced = view.findViewById(R.id.et_induced);
+        tvSpontaneous = view.findViewById(R.id.et_spontaneous);
+        tvInduced = view.findViewById(R.id.et_induced);
         mActiveLaborDiagnosedDateTextView = view.findViewById(R.id.et_labor_diagnosed_date);
         mActiveLaborDiagnosedTimeTextView = view.findViewById(R.id.et_labor_diagnosed_time);
         mMembraneRupturedDateTextView = view.findViewById(R.id.et_sac_ruptured_date);
         mMembraneRupturedTimeTextView = view.findViewById(R.id.et_sac_ruptured_time);
-        // optionHospital = view.findViewById(R.id.option_hospital);
-        // optionMaternity = view.findViewById(R.id.option_maternity);
-        //optionOther = view.findViewById(R.id.option_other);
+        optionHospital = view.findViewById(R.id.option_hospital);
+        optionMaternity = view.findViewById(R.id.option_maternity);
+        optionOther = view.findViewById(R.id.option_other);
         mPrimaryDoctorTextView = view.findViewById(R.id.autotv_primary_doctor);
         mSecondaryDoctorTextView = view.findViewById(R.id.autotv_secondary_doctor);
         etBedNumber = view.findViewById(R.id.et_bed_number);
         btnBack = view.findViewById(R.id.btn_back_other);
         btnNext = view.findViewById(R.id.btn_next_other);
         mUnknownMembraneRupturedCheckBox = view.findViewById(R.id.mUnknownMembraneRupturedCheckBox);
-
-
         mRiskFactorsTextView = view.findViewById(R.id.autotv_risk_factors);
-        mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // showRiskFactorsDialog();
-            }
+        tvSacRuptured = view.findViewById(R.id.textView8);
+
+
+        handleOptionsForMaternity();
+
+
+        mRiskFactorsTextView.setOnClickListener(v -> {
+            // showRiskFactorsDialog();
         });
         /*new*/
         ProviderDAO providerDAO = new ProviderDAO();
@@ -154,7 +161,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         handleAllClickListeners();
 
-        secondScreen = new PatientOtherInfoFragment();
+        secondScreen = new PatientAddressInfoFragment();
         if (getArguments() != null) {
             Log.d(TAG, "initUI: other");
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
@@ -206,155 +213,213 @@ public class PatientOtherInfoFragment extends Fragment {
 
     }
 
-    private void handleAllClickListeners() {
-        mAdmissionDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mCalendar = Calendar.getInstance();
-                int year = mCalendar.get(Calendar.YEAR);
-                int month = mCalendar.get(Calendar.MONTH);
-                int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTimeInMillis(0);
-                        cal.set(year, month, dayOfMonth);
-                        Date date = cal.getTime();
+    private void handleOptionsForMaternity() {
+        //mLaborOnsetString = "Spontaneous";
+        ///mHospitalMaternityString = "Hospital";
+        //maternity/hospital selectors
+        optionHospital.setOnClickListener(v -> {
+            optionHospital.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+            optionMaternity.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            optionOther.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            optionHospital.setTextColor(getResources().getColor(R.color.white));
+            optionMaternity.setTextColor(getResources().getColor(R.color.gray));
+            optionOther.setTextColor(getResources().getColor(R.color.gray));
+            mLaborOnsetString = optionHospital.getText().toString();
+        });
+        optionMaternity.setOnClickListener(v -> {
+            optionHospital.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            optionMaternity.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+            optionOther.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            optionHospital.setTextColor(getResources().getColor(R.color.gray));
+            optionMaternity.setTextColor(getResources().getColor(R.color.white));
+            optionOther.setTextColor(getResources().getColor(R.color.gray));
+            mLaborOnsetString = optionMaternity.getText().toString();
 
-                        mAdmissionDateString = simpleDateFormat.format(date);
-                        mAdmissionDateTextView.setText(mAdmissionDateString);
-                    }
-                }, year, month, dayOfMonth);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.show();
-            }
+        });
+        optionOther.setOnClickListener(v -> {
+            optionHospital.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            optionMaternity.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            optionOther.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+            optionHospital.setTextColor(getResources().getColor(R.color.gray));
+            optionMaternity.setTextColor(getResources().getColor(R.color.gray));
+            optionOther.setTextColor(getResources().getColor(R.color.white));
+            mLaborOnsetString = optionOther.getText().toString();
+
         });
 
-        mAdmissionTimeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get Current Time
-                final Calendar c = Calendar.getInstance();
-                int hour = c.get(Calendar.HOUR_OF_DAY);
-                int minute = c.get(Calendar.MINUTE);
+        tvSpontaneous.setOnClickListener(v -> {
+            tvSpontaneous.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+            tvInduced.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            tvSpontaneous.setTextColor(getResources().getColor(R.color.white));
+            tvInduced.setTextColor(getResources().getColor(R.color.gray));
+            mLaborOnsetString = tvSpontaneous.getText().toString();
+        });
+        tvInduced.setOnClickListener(v -> {
+            tvSpontaneous.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+            tvInduced.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+            tvSpontaneous.setTextColor(getResources().getColor(R.color.gray));
+            tvInduced.setTextColor(getResources().getColor(R.color.white));
+            mLaborOnsetString = tvInduced.getText().toString();
 
-                // Launch Time Picker Dialog
-                TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                boolean isPM = (hourOfDay >= 12);
-                                mAdmissionTimeString = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
-                                mAdmissionTimeTextView.setText(mAdmissionTimeString);
-                            }
-                        }, hour, minute, false);
-                timePickerDialog.show();
+        });
+
+     /*   mUnknownMembraneRupturedCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (((CompoundButton) view).isChecked()) {
+                    mUnknownMembraneRupturedCheckBox.setButtonDrawable(getResources().getDrawable(R.drawable.cb_selected));
+
+                } else {
+                    mUnknownMembraneRupturedCheckBox.setButtonDrawable(getResources().getDrawable(R.drawable.ic_checkbox));
+                }
             }
+        });*/
+    }
+
+    private void handleAllClickListeners() {
+
+        TextInputLayout etLayoutAdmissionDate, etLayoutAdmissionTime,
+                etLabourDiagnosedDate, etLabourDiagnosedTime, etLayoutSacRupturedDate, etLayoutSacRupturedTime;
+        etLayoutAdmissionDate = view.findViewById(R.id.etLayout_admission_date);
+        etLayoutAdmissionTime = view.findViewById(R.id.etLayout_admission_time);
+        etLabourDiagnosedDate = view.findViewById(R.id.etLayout_labor_diagnosed_date);
+        etLabourDiagnosedTime = view.findViewById(R.id.etLayout_labor_diagnosed_time);
+        etLayoutSacRupturedDate = view.findViewById(R.id.etLayout_sac_ruptured_date);
+        etLayoutSacRupturedTime = view.findViewById(R.id.etLayout_sac_ruptured_time);
+
+        etLayoutAdmissionDate.setEndIconOnClickListener(v -> {
+            Calendar mCalendar = Calendar.getInstance();
+            int year = mCalendar.get(Calendar.YEAR);
+            int month = mCalendar.get(Calendar.MONTH);
+            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(year, month, dayOfMonth);
+                    Date date = cal.getTime();
+
+                    mAdmissionDateString = simpleDateFormat.format(date);
+                    mAdmissionDateTextView.setText(mAdmissionDateString);
+                }
+            }, year, month, dayOfMonth);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.show();
+        });
+
+        etLayoutAdmissionTime.setEndIconOnClickListener(v -> {
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            boolean isPM = (hourOfDay >= 12);
+                            mAdmissionTimeString = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
+                            mAdmissionTimeTextView.setText(mAdmissionTimeString);
+                        }
+                    }, hour, minute, false);
+            timePickerDialog.show();
         });
 
         mUnknownMembraneRupturedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d(TAG, "onCheckedChanged: isChecked : "+isChecked);
                 if (isChecked) {
-                    mMembraneRupturedDateTextView.setVisibility(View.GONE);
-                    mMembraneRupturedTimeTextView.setVisibility(View.GONE);
+                    etLayoutSacRupturedDate.setVisibility(View.GONE);
+                    etLayoutSacRupturedTime.setVisibility(View.GONE);
+                    tvSacRuptured.setVisibility(View.GONE);
                 } else {
-                    mMembraneRupturedDateTextView.setVisibility(View.VISIBLE);
-                    mMembraneRupturedTimeTextView.setVisibility(View.VISIBLE);
+                    etLayoutSacRupturedDate.setVisibility(View.VISIBLE);
+                    etLayoutSacRupturedTime.setVisibility(View.VISIBLE);
+                    tvSacRuptured.setVisibility(View.VISIBLE);
+
                 }
             }
         });
-        mActiveLaborDiagnosedDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mCalendar = Calendar.getInstance();
-                int year = mCalendar.get(Calendar.YEAR);
-                int month = mCalendar.get(Calendar.MONTH);
-                int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTimeInMillis(0);
-                        cal.set(year, month, dayOfMonth);
-                        Date date = cal.getTime();
+        etLabourDiagnosedDate.setEndIconOnClickListener(v -> {
+            Calendar mCalendar = Calendar.getInstance();
+            int year = mCalendar.get(Calendar.YEAR);
+            int month = mCalendar.get(Calendar.MONTH);
+            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(year, month, dayOfMonth);
+                    Date date = cal.getTime();
 
-                        mActiveLaborDiagnosedDate = simpleDateFormat.format(date);
-                        mActiveLaborDiagnosedDateTextView.setText(mActiveLaborDiagnosedDate);
-                    }
-                }, year, month, dayOfMonth);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.show();
-            }
+                    mActiveLaborDiagnosedDate = simpleDateFormat.format(date);
+                    mActiveLaborDiagnosedDateTextView.setText(mActiveLaborDiagnosedDate);
+                }
+            }, year, month, dayOfMonth);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.show();
         });
-        mActiveLaborDiagnosedTimeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get Current Time
-                final Calendar c = Calendar.getInstance();
-                int hour = c.get(Calendar.HOUR_OF_DAY);
-                int minute = c.get(Calendar.MINUTE);
+        etLabourDiagnosedTime.setEndIconOnClickListener(v -> {
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
 
-                // Launch Time Picker Dialog
-                TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                boolean isPM = (hourOfDay >= 12);
-                                mActiveLaborDiagnosedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
-                                mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
-                            }
-                        }, hour, minute, false);
-                timePickerDialog.show();
-            }
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            boolean isPM = (hourOfDay >= 12);
+                            mActiveLaborDiagnosedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
+                            mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
+                        }
+                    }, hour, minute, false);
+            timePickerDialog.show();
         });
 
-        mMembraneRupturedDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar mCalendar = Calendar.getInstance();
-                int year = mCalendar.get(Calendar.YEAR);
-                int month = mCalendar.get(Calendar.MONTH);
-                int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTimeInMillis(0);
-                        cal.set(year, month, dayOfMonth);
-                        Date date = cal.getTime();
+        etLayoutSacRupturedDate.setEndIconOnClickListener(v -> {
+            Calendar mCalendar = Calendar.getInstance();
+            int year = mCalendar.get(Calendar.YEAR);
+            int month = mCalendar.get(Calendar.MONTH);
+            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(year, month, dayOfMonth);
+                    Date date = cal.getTime();
 
-                        mMembraneRupturedDate = simpleDateFormat.format(date);
-                        mMembraneRupturedDateTextView.setText(mMembraneRupturedDate);
-                    }
-                }, year, month, dayOfMonth);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.show();
-            }
+                    mMembraneRupturedDate = simpleDateFormat.format(date);
+                    mMembraneRupturedDateTextView.setText(mMembraneRupturedDate);
+                }
+            }, year, month, dayOfMonth);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.show();
         });
-        mMembraneRupturedTimeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
+        etLayoutSacRupturedTime.setEndIconOnClickListener(v -> {
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
 
-            public void onClick(View v) {
-                // Get Current Time
-                final Calendar c = Calendar.getInstance();
-                int hour = c.get(Calendar.HOUR_OF_DAY);
-                int minute = c.get(Calendar.MINUTE);
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            boolean isPM = (hourOfDay >= 12);
+                            mMembraneRupturedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
+                            mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
 
-                // Launch Time Picker Dialog
-                TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                boolean isPM = (hourOfDay >= 12);
-                                mMembraneRupturedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
-                                mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
-
-                            }
-                        }, hour, minute, false);
-                timePickerDialog.show();
-            }
+                        }
+                    }, hour, minute, false);
+            timePickerDialog.show();
         });
         mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -658,8 +723,8 @@ public class PatientOtherInfoFragment extends Fragment {
 
         boolean cancel = false;
         View focusView = null;
-        mLaborOnsetString = "Spontaneous";
-        mHospitalMaternityString = "Hospital";
+        //mLaborOnsetString = "Spontaneous";
+        ///mHospitalMaternityString = "Hospital";
         if (mAdmissionDateString.isEmpty()) {
             Toast.makeText(mContext, "Please select admission date", Toast.LENGTH_SHORT).show();
 
@@ -914,11 +979,13 @@ public class PatientOtherInfoFragment extends Fragment {
 //                        getString(R.string.uploading) + patientDTO.getFirstname() + "" + patientDTO.getLastname() +
 //                                "'s data", 2, getApplication());
 
-                SyncDAO syncDAO = new SyncDAO();
+            /*
+            temp commit
+            SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
-
+*/
 //                if (push)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirstname() + "" + patientDTO.getLastname() + "'s data upload complete.", 2, getApplication());
 //                else

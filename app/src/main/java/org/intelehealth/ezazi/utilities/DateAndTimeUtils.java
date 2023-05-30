@@ -20,7 +20,7 @@ import org.intelehealth.ezazi.R;
 
 
 public class DateAndTimeUtils {
-
+    private static final String TAG = "DateAndTimeUtils";
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;
 
@@ -349,5 +349,123 @@ public class DateAndTimeUtils {
         }
         return result;
     }
+    public static String[] getMonthAndYearFromGivenDate(String date) {
+        String[] result = new String[0];
+        if (date != null && !date.isEmpty()) {
+
+            String[] dateSplit = date.split("/");
+            String month = dateSplit[1];
+            String day = dateSplit[0];
+            String year = dateSplit[2];
+
+
+            String monthString = "";
+            switch (month) {
+                case "01":
+                    monthString = "January";
+                    break;
+                case "02":
+                    monthString = "February";
+                    break;
+                case "03":
+                    monthString = "March";
+                    break;
+                case "04":
+                    monthString = "April";
+                    break;
+                case "05":
+                    monthString = "May";
+                    break;
+                case "06":
+                    monthString = "June";
+                    break;
+                case "07":
+                    monthString = "July";
+                    break;
+                case "08":
+                    monthString = "August";
+                    break;
+                case "09":
+                    monthString = "September";
+                    break;
+                case "10":
+                    monthString = "October";
+                    break;
+                case "11":
+                    monthString = "November";
+                    break;
+                case "12":
+                    monthString = "December";
+                    break;
+
+            }
+            result = new String[]{monthString, year};
+        }
+        return result;
+
+
+    }
+    public static String getDateWithDayAndMonthFromDDMMFormat(String date) {
+        Log.d(TAG, "getDateWithDayAndMonthFromDDMMFormat: date : " + date);
+        String finalDate = "";
+        if (date != null && !date.isEmpty()) {
+            String[] dateSplit = date.split("/");
+            String month = dateSplit[1];
+            String day = dateSplit[0];
+            if (!month.isEmpty() && month.length() == 1) {
+                month = "0" + month;
+            }
+
+
+            String monthString = "";
+            switch (month) {
+                case "01":
+                    monthString = "Jan";
+                    break;
+                case "02":
+                    monthString = "Feb";
+                    break;
+                case "03":
+                    monthString = "March";
+                    break;
+                case "04":
+                    monthString = "April";
+                    break;
+                case "05":
+                    monthString = "May";
+                    break;
+                case "06":
+                    monthString = "June";
+                    break;
+                case "07":
+                    monthString = "July";
+                    break;
+                case "08":
+                    monthString = "Aug";
+                    break;
+                case "09":
+                    monthString = "Sept";
+                    break;
+                case "10":
+                    monthString = "Oct";
+                    break;
+                case "11":
+                    monthString = "Nov";
+                    break;
+                case "12":
+                    monthString = "Dec";
+                    break;
+
+            }
+
+            finalDate = day + " " + monthString;
+
+
+        }
+        return finalDate;
+
+
+    }
+
 
 }

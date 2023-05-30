@@ -83,6 +83,7 @@
     <color name="colorAddPatientInput">#33B2AFBE</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#D8D5EB</color>
+    <color name="edittextBorder">#B2AFBE</color>
 
 
 </resources>

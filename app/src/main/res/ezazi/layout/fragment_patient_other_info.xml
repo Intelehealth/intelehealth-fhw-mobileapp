@@ -47,9 +47,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etLayout_admission_date"
                     style="@style/Theme.EZazi.Input.Add.Patient"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:endIconDrawable="@drawable/ic_calendar_new"
+                    app:endIconMode="custom">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_admission_date"
@@ -62,8 +65,7 @@
                         android:importantForAutofill="no"
                         android:maxLines="1"
                         android:paddingTop="@dimen/input_add_patient_padding_top"
-                        android:singleLine="true"
-                        app:drawableEndCompat="@drawable/ic_calendar_new" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -82,9 +84,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etLayout_admission_time"
                     style="@style/Theme.EZazi.Input.Add.Patient"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:endIconDrawable="@drawable/ic_time_drawable"
+                    app:endIconMode="custom">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_admission_time"
@@ -93,6 +98,7 @@
                         android:backgroundTint="@color/white"
                         android:gravity="center_vertical"
                         android:hint="@string/time"
+
                         android:imeOptions="actionNext"
                         android:importantForAutofill="no"
                         android:maxLines="1"
@@ -210,6 +216,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6">
 
+                <TextView
+                    android:id="@+id/et_spontaneous"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_bg_rounded_corners"
+                    android:gravity="center"
+                    android:text="@string/spontaneous"
+                    android:textSize="@dimen/std_12sp" />
+
+                <TextView
+                    android:id="@+id/et_induced"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_bg_rounded_corners"
+                    android:gravity="center"
+                    android:text="@string/induced"
+                    android:textSize="@dimen/std_12sp" />
+
+<!--
+
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="0dp"
@@ -264,12 +294,15 @@
                             android:hint="@string/induced"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
+                            android:inputType="number"
+                            android:maxLength="25"
                             android:maxLines="1"
                             android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </com.google.android.material.card.MaterialCardView>
+-->
 
             </LinearLayout>
 
@@ -324,9 +357,12 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLayout_labor_diagnosed_date"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:endIconDrawable="@drawable/ic_calendar_new"
+                        app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_labor_diagnosed_date"
@@ -359,9 +395,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView4">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLayout_labor_diagnosed_time"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:endIconDrawable="@drawable/ic_time_drawable"
+                        app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_labor_diagnosed_time"
@@ -413,9 +452,12 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLayout_sac_ruptured_date"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:endIconDrawable="@drawable/ic_calendar_new"
+                        app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_sac_ruptured_date"
@@ -448,9 +490,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView4">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLayout_sac_ruptured_time"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:endIconDrawable="@drawable/ic_time_drawable"
+                        app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_sac_ruptured_time"
@@ -537,77 +582,39 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView10">
 
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/activity_main_togglebutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:checkedButton="@id/activity_main_button1"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
+                <TextView
+                    android:id="@+id/option_hospital"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_bg_rounded_corners"
+                    android:gravity="center"
+                    android:text="@string/hospital"
+                    android:textSize="@dimen/std_12sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/activity_main_button1"
-                        style="@style/Theme.EZazi.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="Button 1" />
+                <TextView
+                    android:id="@+id/option_maternity"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_bg_rounded_corners"
+                    android:gravity="center"
+                    android:text="@string/maternity"
+                    android:textSize="@dimen/std_12sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/activity_main_button2"
-                        style="@style/Theme.EZazi.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="Button 2" />
+                <TextView
+                    android:id="@+id/option_other"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_bg_rounded_corners"
+                    android:gravity="center"
+                    android:text="@string/other"
+                    android:textSize="@dimen/std_12sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/activity_main_button3"
-                        style="@style/Theme.EZazi.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Button 3" />
-
-                </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
-            <!--
-                        <LinearLayout
-                            android:id="@+id/card_options"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                            android:orientation="horizontal"
-                            android:weightSum="3"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView10">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/option_hospital"
-                                style="@style/Theme.EZazi.Button.White_Options"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:layout_weight="1"
-                                android:text="@string/hospital" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/option_maternity"
-                                style="@style/Theme.EZazi.Button.White_Options"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:layout_weight="1"
-                                android:text="@string/maternity" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/option_other"
-                                style="@style/Theme.EZazi.Button.White_Options"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/other" />
-                        </LinearLayout>
-            -->
 
             <TextView
                 android:id="@+id/textView11"

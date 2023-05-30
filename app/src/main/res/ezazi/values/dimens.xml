@@ -181,5 +181,19 @@
     <dimen name="ib_edit_margin_end">15dp</dimen>
     <dimen name="ib_edit_height_width">20dp</dimen>
 
+    <!-- custom calendar-->
+
+    <dimen name="button_setup1_margin_bottom">15dp</dimen>
+    <dimen name="button_setup1_margin_top">60dp</dimen>
+    <dimen name="common_button_padding_left">12dp</dimen>
+    <dimen name="common_button_padding_top">10dp</dimen>
+    <dimen name="common_button_padding_right">12dp</dimen>
+    <dimen name="common_button_padding_bottom">10dp</dimen>
+    <dimen name="common_button_text_size">16sp</dimen>
+    <dimen name="corner_radius_8dp">8dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="edittext_textsize_16sp">16sp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="dialog_custom_cal_width">350dp</dimen>
 
 </resources>

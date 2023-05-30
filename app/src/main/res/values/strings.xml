@@ -922,8 +922,8 @@
     <string name="total_birth">Total Birth</string>
     <string name="total_miscarriage">Total Miscarriage</string>
     <string name="labor_onset">Labor Onset*</string>
-    <string name="spontaneous">Spontaneous*</string>
-    <string name="induced">Induced*</string>
+    <string name="spontaneous">Spontaneous</string>
+    <string name="induced">Induced</string>
     <string name="when_diagnosed">When was active labor diagnosed?</string>
     <string name="sac_ruptured">When was the amniotic sac ruptured?*</string>
     <string name="risk_factors">Risk Factors</string>
@@ -943,6 +943,14 @@
     <string name="bed_number_title">Bed Number</string>
     <string name="patient_info">Patient Information</string>
 
+    <string name="mo">Mo</string>
+    <string name="tu">Tu</string>
+    <string name="we">We</string>
+    <string name="th">Th</string>
+    <string name="fr">Fr</string>
+    <string name="sa">Sa</string>
+    <string name="su">Su</string>
+    <string name="okay">Okay</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

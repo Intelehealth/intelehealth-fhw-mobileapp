@@ -168,13 +168,17 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Theme.EZazi.Input.Add.Patient"
+                        android:id="@+id/etLayout_dob"
                         android:layout_width="match_parent"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_calendar_new"
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:id="@+id/et_dob"
                             android:layout_height="@dimen/input_add_patient_height"
+                            android:inputType="none"
                             android:backgroundTint="@color/white"
                             android:hint="@string/date_of_birth"
                             android:imeOptions="actionNext"
@@ -194,6 +198,9 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
+                        android:id="@+id/etLayout_age"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_calendar_new"
                         android:layout_height="match_parent">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -201,14 +208,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
-                            android:drawablePadding="30dp"
                             android:hint="@string/age"
+                            android:inputType="none"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:maxLines="1"
                             android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
-                            app:drawableEndCompat="@drawable/ic_calendar_new" />
+                         />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -230,6 +237,7 @@
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
                             android:hint="@string/mobile_number"
+                            android:maxLength="10"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:inputType="numberDecimal"
@@ -259,6 +267,7 @@
                             android:backgroundTint="@color/white"
                             android:hint="@string/alternate_mobile_no"
                             android:imeOptions="actionNext"
+                            android:maxLength="10"
                             android:importantForAutofill="no"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
@@ -266,6 +275,7 @@
                             android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
 
         </LinearLayout>

@@ -397,6 +397,7 @@ public class PatientAddressInfoFragment extends Fragment {
             if (patientDTO.getCityvillage() != null) {
                 String[] district_city = patientDTO.getCityvillage().trim().split(":");
                 //  district = district_city[0];
+               if(district_city.length>=2)
                 city_village = district_city[1];
                 //mDistrictNameSpinner.setSelection(districtAdapter.getPosition(district));
                 // temp autotvCity.setSelection(cityAdapter.getPosition(city_village));
@@ -669,8 +670,7 @@ temp
 */
 
         if (!autotvCountry.getText().toString().equals("") && !autotvState.getText().toString().equals("")
-                && !autotvCity.getText().toString().equals("") && !etAddress1.getText().toString().equals("") &&
-                !etAddress2.getText().toString().equals("") && !etPostalCode.getText().toString().equals("")) {
+                && !autotvCity.getText().toString().equals("")) {
 
             Log.v(TAG, "Result");
 
@@ -685,17 +685,6 @@ temp
 
             if (autotvCity.getText().toString().equals("")) {
                 autotvCity.setError(getString(R.string.error_field_required));
-            }
-
-            if (etAddress1.getText().toString().equals("")) {
-                etAddress1.setError(getString(R.string.error_field_required));
-            }
-
-            if (etAddress2.getText().toString().equals("")) {
-                etAddress2.setError(getString(R.string.error_field_required));
-            }
-            if (etPostalCode.getText().toString().equals("")) {
-                etPostalCode.setError(getString(R.string.error_field_required));
             }
 
 /* commented as per new flow

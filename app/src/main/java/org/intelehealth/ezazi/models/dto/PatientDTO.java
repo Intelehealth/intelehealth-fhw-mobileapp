@@ -62,12 +62,24 @@ public class PatientDTO implements Serializable {
     private String patientPhoto;
 
     private List<PatientAttributesDTO> patientAttributesDTOList;
+
+    public void setAlternateNo(String alternateNo) {
+        this.alternateNo = alternateNo;
+    }
+
     @SerializedName("dead")
     @Expose
     private Integer dead;
+
+    public String getAlternateNo() {
+        return alternateNo;
+    }
+
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+
+   String alternateNo;
 
     public String getUuid() {
         return uuid;

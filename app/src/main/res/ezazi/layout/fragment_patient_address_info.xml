@@ -68,6 +68,7 @@
                         android:layout_height="@dimen/input_add_patient_height"
                         android:hint="@string/state"
                         android:inputType="none"
+                        android:textAlignment="viewStart"
                         android:paddingTop="@dimen/input_add_patient_padding_top" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -174,6 +175,7 @@
                     android:hint="@string/postal_code"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:paddingTop="@dimen/input_add_patient_padding_top"
                     android:singleLine="true" />

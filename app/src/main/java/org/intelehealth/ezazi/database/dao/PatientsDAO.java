@@ -82,7 +82,7 @@ public class PatientsDAO {
     }
 
     public boolean insertPatientToDB(PatientDTO patientDTO, String uuid) throws DAOException {
-        Log.d("Patientsdao", "insertPatientToDB: uuid :"+uuid);
+        Log.d("Patientsdao", "insertPatientToDB: uuid :" + uuid);
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = null;
@@ -103,7 +103,8 @@ public class PatientsDAO {
             values.put("address2", patientDTO.getAddress2());
             values.put("country", patientDTO.getCountry());
             values.put("date_of_birth", patientDTO.getDateofbirth());
-            values.put("gender", patientDTO.getGender());
+            //hardcode as per old flow
+            values.put("gender", "F");
             values.put("postal_code", patientDTO.getPostalcode());
             values.put("city_village", patientDTO.getCityvillage());
             values.put("state_province", patientDTO.getStateprovince());
@@ -285,7 +286,7 @@ public class PatientsDAO {
                 while (cursor.moveToNext()) {
                     FamilyMemberRes familyMemberRes = new FamilyMemberRes();
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name"))+ " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
@@ -312,7 +313,7 @@ public class PatientsDAO {
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name"))+ " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
 
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }

@@ -232,16 +232,16 @@
     </style>
 
 
-   <!-- <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">?attr/colorPrimary</item>
-        <item name="boxStrokeWidth">1dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="hintTextColor">@color/darkGray</item>
-        <item name="boxBackgroundColor">@color/white</item>
-    </style>-->
+    <!-- <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+         <item name="boxStrokeColor">?attr/colorPrimary</item>
+         <item name="boxStrokeWidth">1dp</item>
+         <item name="boxCornerRadiusBottomEnd">8dp</item>
+         <item name="boxCornerRadiusBottomStart">8dp</item>
+         <item name="boxCornerRadiusTopEnd">8dp</item>
+         <item name="boxCornerRadiusTopStart">8dp</item>
+         <item name="hintTextColor">@color/darkGray</item>
+         <item name="boxBackgroundColor">@color/white</item>
+     </style>-->
 
     <style name="Theme.EZazi.LastSync.Text" parent="@style/Theme.EZazi.Caption">
         <item name="android:textAllCaps">false</item>
@@ -331,14 +331,14 @@
         <item name="android:theme">@style/Theme.EZazi.Button.Wrap</item>
     </style>
 
-<!--    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">-->
-<!--        <item name="android:textSize">@dimen/custom_appbar_title_size</item>-->
-<!--        <item name="android:textColor">@color/font_black_0</item>-->
-<!--        <item name="fontFamily">@font/dm_sans_medium</item>-->
-<!--        <item name="android:fontFamily">@font/dm_sans_medium</item>-->
-<!--        <item name="android:lineHeight">@dimen/std_31dp</item>-->
+    <!--    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">-->
+    <!--        <item name="android:textSize">@dimen/custom_appbar_title_size</item>-->
+    <!--        <item name="android:textColor">@color/font_black_0</item>-->
+    <!--        <item name="fontFamily">@font/dm_sans_medium</item>-->
+    <!--        <item name="android:fontFamily">@font/dm_sans_medium</item>-->
+    <!--        <item name="android:lineHeight">@dimen/std_31dp</item>-->
 
-<!--    </style>-->
+    <!--    </style>-->
 
 
     <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -381,10 +381,11 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/darkGray</item>
         <item name="rippleColor">@color/gray_2</item>
-        <item name="backgroundTint">@color/white</item>
+        <item name="background">@drawable/option_buttons_selector</item>
         <item name="strokeColor">@color/colorPrimary</item>
         <item name="strokeWidth">0.5dp</item>
         <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/dm_sans_regular</item>
 
     </style>
 
@@ -411,17 +412,23 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
     <style name="LabelStyleSummary" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/input_label_size</item>
         <item name="android:textColor">@color/darkGray</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
     </style>
+
     <style name="LabelStyleSummaryValues" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/input_label_size_values</item>
         <item name="android:textColor">@color/font_black_0</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
+    </style>
+
+    <style name="CalendarSpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/spinner_cal_view_bg_non_selected</item>
     </style>
 
 </resources>

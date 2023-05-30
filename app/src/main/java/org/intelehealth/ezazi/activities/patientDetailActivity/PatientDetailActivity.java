@@ -48,6 +48,7 @@ import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
@@ -199,7 +200,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
+                Intent intent2 = new Intent(PatientDetailActivity.this, AddNewPatientActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
                 startActivity(intent2);
 
@@ -718,7 +719,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 .into(photoView);*/
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
-            idView.setText(patient_new.getOpenmrs_id());
+            String id = "Patient ID:"+patient_new.getOpenmrs_id();
+            idView.setText(id);
 //            sessionManager.setOfllineOpenMRSID(patient_new.getOpenmrs_id());
         } else {
             idView.setText(getString(R.string.patient_not_registered));
@@ -1449,8 +1451,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                idView.setText(patientsDAO.getOpenmrsId(patientUuid));
 
+                String id = "Patient ID:" + patientsDAO.getOpenmrsId(patientUuid);
+                idView.setText(id);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }

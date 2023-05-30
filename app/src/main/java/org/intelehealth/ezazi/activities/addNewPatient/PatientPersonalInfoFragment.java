@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
+import static android.app.Activity.RESULT_OK;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__gu_dob;
@@ -23,8 +24,10 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -148,6 +151,8 @@ public class PatientPersonalInfoFragment extends Fragment {
     ImageView ivPersonal, ivAddress, ivOther;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     FloatingActionButton fab;
+    ImageView ivProfilePhoto;
+    TextInputLayout etLayoutDob, etLayoutAge;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -180,7 +185,22 @@ public class PatientPersonalInfoFragment extends Fragment {
         ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
         ivAddress = getActivity().findViewById(R.id.iv_address_info);
         ivOther = getActivity().findViewById(R.id.iv_other_info);
+        etLayoutAge = view.findViewById(R.id.etLayout_age);
+        etLayoutDob = view.findViewById(R.id.etLayout_dob);
 
+        etLayoutDob.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDOBPicker.show();
+
+            }
+        });
+        etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         /*new*/
         ProviderDAO providerDAO = new ProviderDAO();
         try {
@@ -189,7 +209,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             e.printStackTrace();
         }
         fab = view.findViewById(R.id.fab_update_photo);
-        ImageView ivProfilePhoto = view.findViewById(R.id.iv_profile_photo);
+        ivProfilePhoto = view.findViewById(R.id.iv_profile_photo);
         mFirstName = view.findViewById(R.id.et_first_name);
         mMiddleName = view.findViewById(R.id.et_middle_name);
         mLastName = view.findViewById(R.id.et_last_name);
@@ -200,7 +220,10 @@ public class PatientPersonalInfoFragment extends Fragment {
         btnSaveUpdate = view.findViewById(R.id.btn_save_update_first);
         i_privacy = getActivity().getIntent();
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mDOB.setShowSoftInputOnFocus(false);
+            mAge.setShowSoftInputOnFocus(false);
+        }
 
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
@@ -226,6 +249,8 @@ public class PatientPersonalInfoFragment extends Fragment {
             //   patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+            updateUI(patient1);
+
         }
 
 /*
@@ -245,7 +270,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             mMiddleName.setText(patientDTO.getMiddlename());
             mLastName.setText(patientDTO.getLastname());
             mMobileNumber.setText(patientDTO.getPhonenumber());
-            //mAlternateNumber.setText(patientDTO.getPhonenumber());
+            mAlternateNumber.setText(patientDTO.getAlternateNo());
 
             //if patient update then age will be set
             //dob to be displayed based on translation...
@@ -1116,15 +1141,6 @@ public class PatientPersonalInfoFragment extends Fragment {
             return;
         }
 
-        /*new*/
-      /*
-       commented as per new flow
-       if (mSecondaryDoctorUUIDString.isEmpty()) {
-            Toast.makeText(mContext, getString(R.string.seconday_doct_val_txt), Toast.LENGTH_SHORT).show();
-            return;
-        }*/
-        /*end*/
-
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -1158,170 +1174,12 @@ public class PatientPersonalInfoFragment extends Fragment {
                         (StringUtils.getValue(dob_value)));
             }
 
-          /* commented as per new flow
-          // patientDTO.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
-            patientDTO.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
-            patientDTO.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientDTO.setCity_village(StringUtils.getValue(mCity.getText().toString()));
-            patientDTO.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
-//            patientDTO.setCountry(StringUtils.getValue(mSwitch_hi_en_te_Country(mCountry.getSelectedItem().toString(),sessionManager.getAppLanguage())));
-            patientDTO.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
-            patientDTO.setPatient_photo(mCurrentPhotoPath);
-//                patientDTO.setEconomic(StringUtils.getValue(m));
-            patientDTO.setState_province(StringUtils.getValue(patientDTO.getState_province()));
-//           patientDTO.setState_province(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));*/
-           /* patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
-            patientAttributesDTOList.add(patientAttributesDTO);*/
-
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
             patientAttributesDTO.setValue(StringUtils.getValue(mMobileNumber.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
-
-            /*patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());*/
-
-
-            /*new*/
-          /*
-           Commented as per new flow
-
-           //AlternateNo
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("AlternateNo"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mAlternateNumberString));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Wife_Daughter_Of
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Wife_Daughter_Of"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mWifeDaughterOfString));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Admission_Date
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Admission_Date"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mAdmissionDateString));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Admission_Time
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Admission_Time"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mAdmissionTimeString));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Parity
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Parity"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mTotalBirthCount + "," + mTotalMiscarriageCount));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Labor Onset
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Labor Onset"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mLaborOnsetString));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Active Labor Diagnosed
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Active Labor Diagnosed"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mActiveLaborDiagnosedDate + " " + mActiveLaborDiagnosedTime));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Membrane Ruptured Timestamp
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Membrane Ruptured Timestamp"));
-            patientAttributesDTO.setValue(mUnknownMembraneRupturedCheckBox.isChecked() ? "U" : StringUtils.getValue(mMembraneRupturedDate + " " + mMembraneRupturedTime));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Risk factors
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Risk factors"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mRiskFactorsString));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Hospital_Maternity
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Hospital_Maternity"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mHospitalMaternityString));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //PrimaryDoctor
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryDoctor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mPrimaryDoctorUUIDString) + "@#@" + mPrimaryDoctorTextView.getText());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //SecondaryDoctor
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SecondaryDoctor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString) + "@#@" + mSecondaryDoctorTextView.getText());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-*/
-            /*end*/
-
 
             //House Hold Registration
             if (sessionManager.getHouseholdUuid().equals("")) {
@@ -1401,115 +1259,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             mAlternateNumberString = patient.getAlternateNo();
             mAlternateNumber.setText(mAlternateNumberString);
         }
-    /*
-     Commented as per new flow
 
-     //Wife_Daughter_Of
-        if (patient.getWifeDaughterOf() != null) {
-            mWifeDaughterOfString = patient.getWifeDaughterOf();
-            mWifeDaughterOfEditText.setText(mWifeDaughterOfString);
-        }
-
-        //Admission_Date
-        if (patient.getAdmissionDate() != null) {
-            mAdmissionDateString = patient.getAdmissionDate();
-            mAdmissionDateTextView.setText(mAdmissionDateString);
-        }
-        //Admission_Time
-        if (patient.getAdmissionTime() != null) {
-            mAdmissionTimeString = patient.getAdmissionTime();
-            mAdmissionTimeTextView.setText(mAdmissionTimeString);
-        }
-
-        // parity
-        if (patient.getParity() != null) {
-            mTotalBirthCount = patient.getParity().split(",")[0];
-            mTotalMiscarriageCount = patient.getParity().split(",")[1];
-            mTotalBirthEditText.setText(mTotalBirthCount);
-            mTotalMiscarriageEditText.setText(mTotalMiscarriageCount);
-        }
-
-        //Labor Onset
-        if (patient.getLaborOnset() != null) {
-            mLaborOnsetString = patient.getLaborOnset();
-            if (mLaborOnsetString.equalsIgnoreCase("Spontaneous")) {
-                mLaborOnsetRadioGroup.check(mLaborOnsetRadioGroup.getChildAt(0).getId());
-            } else if (mLaborOnsetString.equalsIgnoreCase("Induced")) {
-                mLaborOnsetRadioGroup.check(mLaborOnsetRadioGroup.getChildAt(1).getId());
-            }
-        }
-        //When was active labor diagnosed?
-        if (patient.getActiveLaborDiagnosed() != null) {
-            mActiveLaborDiagnosedDate = patient.getActiveLaborDiagnosed().split(" ")[0];
-            mActiveLaborDiagnosedTime = patient.getActiveLaborDiagnosed().split(" ")[1];
-            mActiveLaborDiagnosedDateTextView.setText(mActiveLaborDiagnosedDate);
-            mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
-        }
-
-        //When was the membrane ruptured?
-        if (patient.getMembraneRupturedTimestamp() != null) {
-            if (patient.getMembraneRupturedTimestamp().equalsIgnoreCase("U")) {
-                mUnknownMembraneRupturedCheckBox.setChecked(true);
-            } else {
-                mUnknownMembraneRupturedCheckBox.setChecked(false);
-                mMembraneRupturedDate = patient.getMembraneRupturedTimestamp().split(" ")[0];
-                mMembraneRupturedTime = patient.getMembraneRupturedTimestamp().split(" ")[1];
-                mMembraneRupturedDateTextView.setText(mMembraneRupturedDate);
-                mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
-            }
-        }
-        //Risk factors
-        if (patient.getRiskFactors() != null) {
-            mRiskFactorsString = patient.getRiskFactors();
-            mRiskFactorsTextView.setText(mRiskFactorsString);
-        }
-
-        //Hospital/Maternity?
-        if (patient.getHospitalMaternity() != null) {
-            mOthersEditText.setVisibility(View.GONE);
-            mHospitalMaternityString = patient.getHospitalMaternity();
-            if (mHospitalMaternityString.equalsIgnoreCase("Hospital")) {
-                mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(0).getId());
-            } else if (mHospitalMaternityString.equalsIgnoreCase("Maternity")) {
-                mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(1).getId());
-            } else {
-                mOthersEditText.setVisibility(View.VISIBLE);
-                mOthersEditText.setText(mHospitalMaternityString);
-                mOthersString = mHospitalMaternityString;
-                mHospitalMaternityRadioGroup.check(mHospitalMaternityRadioGroup.getChildAt(2).getId());
-            }
-        }
-        mOthersEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mOthersString = s.toString();
-                mHospitalMaternityString = mOthersString;
-            }
-        });
-
-        //primaryDoctor
-        Log.v(TAG, "getPrimaryDoctor"+patient.getPrimaryDoctor());
-        Log.v(TAG, "getPrimaryDoctor"+patient.getPrimaryDoctor());
-        if (patient.getPrimaryDoctor() != null) {
-            mPrimaryDoctorUUIDString = patient.getPrimaryDoctor().split("@#@")[0];
-            mPrimaryDoctorTextView.setText(patient.getPrimaryDoctor().split("@#@")[1]);
-        }
-
-        //secondaryDoctor
-        if (patient.getPrimaryDoctor() != null) {
-            mSecondaryDoctorUUIDString = patient.getSecondaryDoctor().split("@#@")[0];
-            mSecondaryDoctorTextView.setText(patient.getSecondaryDoctor().split("@#@")[1]);
-        }*/
     }
 
     private void setscreen(String patientUID) {
@@ -2195,6 +1945,80 @@ public class PatientPersonalInfoFragment extends Fragment {
             Log.d(TAG, "onPatientCreateClicked: patientdao is null");
         }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm();
+            } else {
+                showPermissionDeniedAlert(permissions);
+            }
+
+        }
+    }
+
+    private void showPermissionDeniedAlert(String[] permissions) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(getActivity());
+
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkPerm();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                getActivity().finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v(TAG, "Result Received");
+        if (requestCode == CameraActivity.TAKE_IMAGE) {
+            Log.v(TAG, "Request Code " + CameraActivity.TAKE_IMAGE);
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG, "Result OK");
+                mCurrentPhotoPath = data.getStringExtra("RESULT");
+                Log.v("IdentificationActivity", mCurrentPhotoPath);
+
+                Glide.with(getActivity())
+                        .load(new File(mCurrentPhotoPath))
+                        .thumbnail(0.25f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(ivProfilePhoto);
+            }
+        }
     }
 
 }
