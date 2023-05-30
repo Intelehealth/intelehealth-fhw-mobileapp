@@ -84,6 +84,5 @@ class PatientMultiChoiceViewHolder extends RecyclerView.ViewHolder {
         binding.cbPatientSelection.setChecked(isChecked);
         binding.cbPatientSelection.setActivated(true);
         binding.cbPatientSelection.setSelected(true);
-        binding.cbPatientSelection.setActivated(true);
     }
 }

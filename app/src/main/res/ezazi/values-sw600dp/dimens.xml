@@ -172,11 +172,11 @@
     <dimen name="search_icon_height">@dimen/std_18dp</dimen>
     <dimen name="send_icon_size">@dimen/std_36dp</dimen>
     <dimen name="video_call_action_btn_min_size">@dimen/std_84dp</dimen>
-    <dimen name="call_end_icon_width">@dimen/std_55dp</dimen>
-    <dimen name="call_end_icon_height">@dimen/std_25dp</dimen>
-    <dimen name="rtc_video_icon_width">@dimen/std_55dp</dimen>
-    <dimen name="rtc_video_icon_height">@dimen/std_40dp</dimen>
-    <dimen name="rtc_mic_icon_size">@dimen/std_55dp</dimen>
+    <dimen name="call_end_icon_width">@dimen/std_40dp</dimen>
+    <dimen name="call_end_icon_height">@dimen/std_18dp</dimen>
+    <dimen name="rtc_video_icon_width">@dimen/std_40dp</dimen>
+    <dimen name="rtc_video_icon_height">@dimen/std_29dp</dimen>
+    <dimen name="rtc_mic_icon_size">@dimen/std_40dp</dimen>
     <dimen name="rtc_margin_action_view">@dimen/std_82dp</dimen>
     <dimen name="rtc_self_view_width">208dp</dimen>
     <dimen name="rtc_self_profile_size">@dimen/std_77dp</dimen>
@@ -198,5 +198,5 @@
     <dimen name="tv_summary_layout_margin_top">26dp</dimen>
     <dimen name="ib_edit_details_size">34dp</dimen>
     <dimen name="ib_edit_details_padding">10dp</dimen>
-
+    <dimen name="time_picker_dialog_text_size">@dimen/std_36sp</dimen>
 </resources>

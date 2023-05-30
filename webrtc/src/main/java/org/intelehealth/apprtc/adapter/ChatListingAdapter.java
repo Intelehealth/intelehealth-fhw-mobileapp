@@ -32,7 +32,6 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public ChatListingAdapter(Context context, List<JSONObject> itemList) {
         mContext = context;
         mItemList = itemList;
-
     }
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
@@ -72,9 +71,10 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             try {
                 leftViewHolder.messageTextView.setText(leftViewHolder.jsonObject.getString("message"));
                 String rawTime = leftViewHolder.jsonObject.getString("createdAt"); // 2021-04-16T06:36:35.000Z
-                String displayDateTime = parseDate(rawTime);
-                leftViewHolder.timeTextView.setText(displayDateTime);
-            } catch (JSONException | ParseException e) {
+                setDateVisibility(position, rawTime, leftViewHolder.timeTextView);
+//                String displayDateTime = parseDate(rawTime);
+//                leftViewHolder.timeTextView.setText(displayDateTime);
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -85,12 +85,34 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             try {
                 rightViewHolder.messageTextView.setText(rightViewHolder.jsonObject.getString("message"));
                 String rawTime = rightViewHolder.jsonObject.getString("createdAt"); // 2021-04-16T06:36:35.000Z
-
-                String displayDateTime = parseDate(rawTime);
-                rightViewHolder.timeTextView.setText(displayDateTime);
-            } catch (JSONException | ParseException e) {
+                setDateVisibility(position, rawTime, rightViewHolder.timeTextView);
+//                String displayDateTime = parseDate(rawTime);
+//                rightViewHolder.timeTextView.setText(displayDateTime);
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void setDateVisibility(int position, String date, TextView textView) {
+        try {
+            String displayDateTime = parseDate(date);
+            textView.setVisibility(View.GONE);
+            if (position == 0) {
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(displayDateTime);
+            } else if (position > 0) {
+                JSONObject object = mItemList.get(position - 1);
+                String prevDate = parseDate(object.getString("createdAt"));
+                if (!displayDateTime.equalsIgnoreCase(prevDate)) {
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(displayDateTime);
+                }
+            }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -102,12 +124,12 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Date date = rawSimpleDateFormat.parse(rawTime);
         //Log.v("date", date.toString());
 
-        SimpleDateFormat displayFormat = new SimpleDateFormat("h:mm a, MMM d");
+        SimpleDateFormat displayFormat = new SimpleDateFormat("MMM 'at' h:mm a");
         displayFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
         Date todayDate = new Date();
         String temp1 = displayFormat.format(date);
         String temp2 = displayFormat.format(todayDate);
-        return temp1.split(",")[1].equals(temp2.split(",")[1]) ? temp1.split(",")[0] : temp1;
+        return temp1; //temp1.split(",")[1].equals(temp2.split(",")[1]) ? temp1.split(",")[0] : temp1;
     }
 
     @Override

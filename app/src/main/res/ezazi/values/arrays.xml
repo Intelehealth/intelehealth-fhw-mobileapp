@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="risk_factors">
+        <item>None</item>
+        <item>Under age 20</item>
+        <item>Women over age 35</item>
+        <item>Diabetes</item>
+        <item>Obesity</item>
+        <item>Underweight</item>
+        <item>High blood pressure</item>
+        <item>PCOS</item>
+        <item>Kidney disease</item>
+        <item>Thyroid disease</item>
+        <item>Asthma</item>
+        <item>Uterine fibroids</item>
+    </string-array>
+</resources>

@@ -13,9 +13,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_container_padding"
             android:background="@drawable/timepicker_timer_bg"
-            android:paddingHorizontal="@dimen/login_screen_padding"
-            android:paddingVertical="@dimen/screen_container_padding"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/timePickerClock"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -27,7 +27,7 @@
                 android:gravity="end"
                 android:minWidth="@dimen/icon_btn_width"
                 android:text="12"
-                android:textSize="@dimen/time_picker_dialog_text_size"
+                android:textSize="@dimen/screen_title_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=":"
-                android:textSize="@dimen/time_picker_dialog_text_size"
+                android:textSize="@dimen/screen_title_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/hours"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="12"
-                android:textSize="@dimen/time_picker_dialog_text_size"
+                android:textSize="@dimen/screen_title_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/separator"
@@ -63,10 +63,10 @@
                 style="@style/Theme.EZazi.Screen.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/std_16dp"
+                android:layout_marginStart="@dimen/screen_container_padding"
                 android:text="@string/lbl_am"
                 android:textColor="@color/color_am_pm_selector"
-                android:textSize="@dimen/heading2"
+                android:textSize="@dimen/input_label_size"
                 app:layout_constraintBottom_toTopOf="@id/btnPm"
                 app:layout_constraintStart_toEndOf="@id/minutes"
                 app:layout_constraintTop_toTopOf="parent"
@@ -77,12 +77,12 @@
                 style="@style/Theme.EZazi.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/std_16dp"
+                android:layout_marginStart="@dimen/screen_container_padding"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
                 android:text="@string/lbl_pm"
                 android:textColor="@color/color_am_pm_selector"
-                android:textSize="@dimen/heading2"
+                android:textSize="@dimen/input_label_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/minutes"
                 app:layout_constraintTop_toBottomOf="@id/btnAm" />
@@ -102,9 +102,8 @@
 
         <TimePicker
             android:id="@+id/timePickerClock"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/screen_container_padding"
             android:descendantFocusability="blocksDescendants"
             android:headerBackground="@drawable/timepicker_timer_bg"
             android:numbersBackgroundColor="@color/colorContainer"
@@ -112,7 +111,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clTimerView" />
+            app:layout_constraintStart_toEndOf="@id/clTimerView"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

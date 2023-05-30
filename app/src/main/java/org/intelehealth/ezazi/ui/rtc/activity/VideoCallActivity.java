@@ -40,6 +40,7 @@ import org.intelehealth.apprtc.data.Constants;
 import org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.ActivityVideoCallEzaziBinding;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.AudioSource;
@@ -314,31 +315,45 @@ public class VideoCallActivity extends AppCompatActivity {
     public void onBackPressed() {
         //super.onBackPressed();
 
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(org.intelehealth.apprtc.R.string.call_end_aler_txt))
+                .positiveButtonLabel(R.string.yes)
+                .build();
 
-        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        alertdialogBuilder.setMessage(org.intelehealth.apprtc.R.string.call_end_aler_txt);
-        alertdialogBuilder.setPositiveButton(org.intelehealth.apprtc.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (socket != null)
-                    socket.emit("bye");
-                else
-                    finish();
-            }
+        dialog.setListener(() -> {
+            if (socket != null)
+                socket.emit("bye");
+            else
+                finish();
         });
-        alertdialogBuilder.setNegativeButton(org.intelehealth.apprtc.R.string.no, null);
 
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
-        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+//        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+//
+//        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+//        alertdialogBuilder.setMessage(org.intelehealth.apprtc.R.string.call_end_aler_txt);
+//        alertdialogBuilder.setPositiveButton(org.intelehealth.apprtc.R.string.yes, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                if (socket != null)
+//                    socket.emit("bye");
+//                else
+//                    finish();
+//            }
+//        });
+//        alertdialogBuilder.setNegativeButton(org.intelehealth.apprtc.R.string.no, null);
+//
+//        AlertDialog alertDialog = alertdialogBuilder.create();
+//        alertDialog.show();
+//
+//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+//
+//        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+//        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         //IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 

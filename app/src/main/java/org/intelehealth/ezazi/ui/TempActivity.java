@@ -7,7 +7,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
+import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Vaghela Mithun R. on 23-05-2023 - 16:04.
@@ -27,5 +33,20 @@ public class TempActivity extends AppCompatActivity {
             Log.d("ThemeTimePickerDialog", "value : " + value);
         });
         dialog.show(getSupportFragmentManager(), "ThemeTimePickerDialog");
+
+
+//        MultiChoiceDialogFragment<String> dialog = new MultiChoiceDialogFragment.Builder<String>(this)
+//                .title(R.string.select_risk_factors)
+//                .positiveButtonLabel(R.string.save_button)
+//                .build();
+//
+//        List<String> items = Arrays.asList(getResources().getStringArray(R.array.risk_factors));
+//
+//        dialog.setAdapter(new RiskFactorMultiChoiceAdapter(this, new ArrayList<>(items)));
+//        dialog.setListener(selectedItems -> {
+//            // Todo get all selected item here
+//        });
+//
+//        dialog.show(getSupportFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
     }
 }
