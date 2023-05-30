@@ -50,7 +50,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
-
     }
 
 
@@ -248,8 +247,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         .build();
 
                 dialog.setListener((pos, value) -> {
-                    dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[pos]);
-                    mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[pos]);
+                    ParamInfo paramInfo = mItemList.get(position).getParamInfoList().get(positionChild);
+                    dropdownTextView.setText(paramInfo.getOptions()[pos]);
+                    paramInfo.setCapturedValue(paramInfo.getValues()[pos]);
                 });
 
                 dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());

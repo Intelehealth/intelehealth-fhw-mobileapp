@@ -58,7 +58,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     private static final int HOURLY = 0;
     private static final int HALF_HOUR = 1;
     private static final int FIFTEEN_MIN = 2;
-//    private static final int STAGE_1 = 1;
+    //    private static final int STAGE_1 = 1;
 //    private static final int STAGE_2 = 2;
     private int mQueryFor = HOURLY;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
@@ -222,6 +222,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
     private void saveObs() {
         // validation
         int count = 0;
+        Log.v("PartogramData", new Gson().toJson(mItemList));
         List<ObsDTO> obsDTOList = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
@@ -392,11 +393,7 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         }
         setEditData();
         PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
-                (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
-                    @Override
-                    public void onSelect(PartogramItemData partogramItemData) {
-
-                    }
+                (mRecyclerView, this, mItemList, partogramItemData -> {
                 });
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
