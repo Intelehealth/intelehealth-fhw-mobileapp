@@ -190,4 +190,13 @@
     <dimen name="pin_input_size">@dimen/std_26sp</dimen>
     <dimen name="pin_bottom_padding">@dimen/std_36dp</dimen>
     <dimen name="line_spacing">@dimen/std_4dp</dimen>
+    <dimen name="input_label_size_values">@dimen/std_16sp</dimen>
+    <dimen name="padding_card_summary">30dp</dimen>
+    <dimen name="margin_top_summary_views">18dp</dimen>
+    <dimen name="layout_summary_padding_top_bt">20dp</dimen>
+    <dimen name="tv_summary_title_text_size">22sp</dimen>
+    <dimen name="tv_summary_layout_margin_top">26dp</dimen>
+    <dimen name="ib_edit_details_size">34dp</dimen>
+    <dimen name="ib_edit_details_padding">10dp</dimen>
+
 </resources>

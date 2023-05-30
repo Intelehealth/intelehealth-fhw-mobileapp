@@ -191,4 +191,30 @@
     <dimen name="pin_input_size">@dimen/std_20sp</dimen>
     <dimen name="pin_bottom_padding">@dimen/std_12dp</dimen>
     <dimen name="line_spacing">@dimen/std_2dp</dimen>
+    <dimen name="input_label_size_values">@dimen/std_14sp</dimen>
+    <dimen name="padding_card_summary">20dp</dimen>
+    <dimen name="margin_top_summary_views">10dp</dimen>
+    <dimen name="layout_summary_padding_top_bt">16dp</dimen>
+    <dimen name="tv_summary_title_text_size">20sp</dimen>
+    <dimen name="tv_summary_layout_margin_top">22dp</dimen>
+    <dimen name="ib_edit_details_size">20dp</dimen>
+    <dimen name="ib_edit_details_padding">5dp</dimen>
+    <dimen name="ib_edit_margin_end">15dp</dimen>
+    <dimen name="ib_edit_height_width">20dp</dimen>
+
+    <!-- custom calendar-->
+
+    <dimen name="button_setup1_margin_bottom">15dp</dimen>
+    <dimen name="button_setup1_margin_top">60dp</dimen>
+    <dimen name="common_button_padding_left">12dp</dimen>
+    <dimen name="common_button_padding_top">10dp</dimen>
+    <dimen name="common_button_padding_right">12dp</dimen>
+    <dimen name="common_button_padding_bottom">10dp</dimen>
+    <dimen name="common_button_text_size">16sp</dimen>
+    <dimen name="corner_radius_8dp">8dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="edittext_textsize_16sp">16sp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="dialog_custom_cal_width">350dp</dimen>
+
 </resources>

@@ -4,9 +4,10 @@ package org.intelehealth.ezazi.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PatientDTO {
+public class PatientDTO implements Serializable {
 
     @SerializedName("uuid")
     @Expose
@@ -61,12 +62,24 @@ public class PatientDTO {
     private String patientPhoto;
 
     private List<PatientAttributesDTO> patientAttributesDTOList;
+
+    public void setAlternateNo(String alternateNo) {
+        this.alternateNo = alternateNo;
+    }
+
     @SerializedName("dead")
     @Expose
     private Integer dead;
+
+    public String getAlternateNo() {
+        return alternateNo;
+    }
+
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+
+   String alternateNo;
 
     public String getUuid() {
         return uuid;
