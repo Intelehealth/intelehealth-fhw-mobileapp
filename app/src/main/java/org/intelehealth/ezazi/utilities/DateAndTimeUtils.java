@@ -21,6 +21,7 @@ import org.intelehealth.ezazi.R;
 
 public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
+
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;
 
@@ -49,11 +50,11 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if(period.getYears() > 0)
+        if (period.getYears() > 0)
             xyears = period.getYears();
         else
             xyears = 0;
-        if(period.getMonths() > 0)
+        if (period.getMonths() > 0)
             xmonths = period.getMonths();
         else
             xmonths = 0;
@@ -67,7 +68,7 @@ public class DateAndTimeUtils {
     public String currentDateTime() {
         Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-      //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+        //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();
         return date.format(todayDate);
@@ -113,6 +114,7 @@ public class DateAndTimeUtils {
         }
 
     }
+
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
         if (s == null) return "";
@@ -143,22 +145,21 @@ public class DateAndTimeUtils {
         String tyears = "", tmonth = "", tdays = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
-        if(period.getMonths() > 0) {
+        if (period.getMonths() > 0) {
             tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
             //xmonths = String.valueOf(period.getMonths());
         }
-        if(period.getDays() > 0)
+        if (period.getDays() > 0)
             tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
         age = tyears + " " + tmonth + " " + tdays;
 
         return age;
     }
-
 
 
     public static String getAgeInYearMonth(String s) {
@@ -186,14 +187,14 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "0", tmonth = "0", tdays = "0";
 
-        if(period.getYears() > 0)
-            tyears = ""+period.getYears();
+        if (period.getYears() > 0)
+            tyears = "" + period.getYears();
 
-        if(period.getMonths() > 0)
-            tmonth = ""+period.getMonths();
+        if (period.getMonths() > 0)
+            tmonth = "" + period.getMonths();
 
-        if(period.getDays() > 0)
-            tdays = ""+period.getDays();
+        if (period.getDays() > 0)
+            tdays = "" + period.getDays();
 
         age = tyears + " " + tmonth + " " + tdays;
 
@@ -229,7 +230,7 @@ public class DateAndTimeUtils {
         String tyears = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
@@ -349,6 +350,7 @@ public class DateAndTimeUtils {
         }
         return result;
     }
+
     public static String[] getMonthAndYearFromGivenDate(String date) {
         String[] result = new String[0];
         if (date != null && !date.isEmpty()) {
@@ -405,6 +407,7 @@ public class DateAndTimeUtils {
 
 
     }
+
     public static String getDateWithDayAndMonthFromDDMMFormat(String date) {
         Log.d(TAG, "getDateWithDayAndMonthFromDDMMFormat: date : " + date);
         String finalDate = "";
@@ -466,6 +469,31 @@ public class DateAndTimeUtils {
 
 
     }
+    public static String convertDateToYyyyMMddFormat(String dateToConvert) {
+        Log.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
 
+        java.text.DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+        // java.text.DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy"); //gives month name
+        java.text.DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+        Date date = null;
+        try {
+            date = inputFormat.parse(dateToConvert);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return outputFormat.format(date);
+    }
+    public static String formatAgeInYearsMonthsDate(Context context, int year, int month, int day) {
+        String age = "";
+        if (year < 1) {
+            age = month + " " + context.getResources().getString(R.string.identification_screen_text_months) + " - " + day + " " + context.getResources().getString(R.string.days);
+        } else if (year < 3) {
+            age = year + " " + context.getResources().getString(R.string.identification_screen_text_years) + " - " + month + " " + context.getResources().getString(R.string.identification_screen_text_months);
+        } else {
+            age = year + " " + context.getResources().getString(R.string.identification_screen_text_years);
+        }
+        return age;
+    }
 }

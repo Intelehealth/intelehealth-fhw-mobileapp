@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.customCalendar.CustomCalendarViewUI2;
 import org.intelehealth.ezazi.database.dao.ImagesDAO;
 import org.intelehealth.ezazi.database.dao.ImagesPushDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
@@ -43,6 +44,10 @@ import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Address;
+import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
+import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
+import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -57,6 +62,7 @@ import org.w3c.dom.Text;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -107,6 +113,8 @@ public class PatientOtherInfoFragment extends Fragment {
     boolean fromThirdScreen = false, fromSecondScreen = false;
     ImageView ivPersonal, ivAddress, ivOther;
     TextView tvSpontaneous, tvInduced, tvSacRuptured;
+    int MY_REQUEST_CODE = 5555;
+    int dob_indexValue = 15;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -224,7 +232,7 @@ public class PatientOtherInfoFragment extends Fragment {
             optionHospital.setTextColor(getResources().getColor(R.color.white));
             optionMaternity.setTextColor(getResources().getColor(R.color.gray));
             optionOther.setTextColor(getResources().getColor(R.color.gray));
-            mLaborOnsetString = optionHospital.getText().toString();
+            mHospitalMaternityString = optionHospital.getText().toString();
         });
         optionMaternity.setOnClickListener(v -> {
             optionHospital.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
@@ -233,7 +241,7 @@ public class PatientOtherInfoFragment extends Fragment {
             optionHospital.setTextColor(getResources().getColor(R.color.gray));
             optionMaternity.setTextColor(getResources().getColor(R.color.white));
             optionOther.setTextColor(getResources().getColor(R.color.gray));
-            mLaborOnsetString = optionMaternity.getText().toString();
+            mHospitalMaternityString = optionMaternity.getText().toString();
 
         });
         optionOther.setOnClickListener(v -> {
@@ -243,7 +251,7 @@ public class PatientOtherInfoFragment extends Fragment {
             optionHospital.setTextColor(getResources().getColor(R.color.gray));
             optionMaternity.setTextColor(getResources().getColor(R.color.gray));
             optionOther.setTextColor(getResources().getColor(R.color.white));
-            mLaborOnsetString = optionOther.getText().toString();
+            mHospitalMaternityString = optionOther.getText().toString();
 
         });
 
@@ -288,7 +296,7 @@ public class PatientOtherInfoFragment extends Fragment {
         etLayoutSacRupturedTime = view.findViewById(R.id.etLayout_sac_ruptured_time);
 
         etLayoutAdmissionDate.setEndIconOnClickListener(v -> {
-            Calendar mCalendar = Calendar.getInstance();
+          /*  Calendar mCalendar = Calendar.getInstance();
             int year = mCalendar.get(Calendar.YEAR);
             int month = mCalendar.get(Calendar.MONTH);
             int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
@@ -305,10 +313,29 @@ public class PatientOtherInfoFragment extends Fragment {
                 }
             }, year, month, dayOfMonth);
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-            datePickerDialog.show();
+            datePickerDialog.show();*/
+
+            Bundle args = new Bundle();
+            args.putString("whichDate", "admissionDate");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
+            }
+
         });
 
         etLayoutAdmissionTime.setEndIconOnClickListener(v -> {
+           /* ThemeTimePickerDialog dialog = new ThemeTimePickerDialog.Builder(mContext)
+                    .title(R.string.current_time)
+                    .positiveButtonLabel(R.string.ok)
+                    .build();
+            dialog.setListener((hours, minutes, amPm, value) -> {
+                Log.d("ThemeTimePickerDialog", "value : " + value);
+            });
+            dialog.show(Objects.requireNonNull(getFragmentManager()), "ThemeTimePickerDialog");
+*/
             // Get Current Time
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
@@ -344,7 +371,7 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         });
         etLabourDiagnosedDate.setEndIconOnClickListener(v -> {
-            Calendar mCalendar = Calendar.getInstance();
+           /* Calendar mCalendar = Calendar.getInstance();
             int year = mCalendar.get(Calendar.YEAR);
             int month = mCalendar.get(Calendar.MONTH);
             int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
@@ -362,6 +389,16 @@ public class PatientOtherInfoFragment extends Fragment {
             }, year, month, dayOfMonth);
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
             datePickerDialog.show();
+      */
+
+            Bundle args = new Bundle();
+            args.putString("whichDate", "labourDiagnosedDate");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
+            }
         });
         etLabourDiagnosedTime.setEndIconOnClickListener(v -> {
             // Get Current Time
@@ -383,7 +420,7 @@ public class PatientOtherInfoFragment extends Fragment {
         });
 
         etLayoutSacRupturedDate.setEndIconOnClickListener(v -> {
-            Calendar mCalendar = Calendar.getInstance();
+          /*  Calendar mCalendar = Calendar.getInstance();
             int year = mCalendar.get(Calendar.YEAR);
             int month = mCalendar.get(Calendar.MONTH);
             int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
@@ -401,6 +438,16 @@ public class PatientOtherInfoFragment extends Fragment {
             }, year, month, dayOfMonth);
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
             datePickerDialog.show();
+        });*/
+
+            Bundle args1 = new Bundle();
+            args1.putString("whichDate", "sacRupturedDate");
+            CustomCalendarViewUI2 dialog1 = new CustomCalendarViewUI2(getActivity());
+            dialog1.setArguments(args1);
+            dialog1.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog1.show(getFragmentManager(), "PatientOtherInfoFragment");
+            }
         });
         etLayoutSacRupturedTime.setEndIconOnClickListener(v -> {
             // Get Current Time
@@ -425,7 +472,35 @@ public class PatientOtherInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                final String[] items = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
+                MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext)
+                        .title(R.string.select_risk_factors)
+                        .positiveButtonLabel(R.string.save_button)
+                        .build();
+
+                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
+                        "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+                List<String> items = Arrays.asList(itemsArray);
+
+                dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
+                dialog1.setListener(selectedItems -> {
+                    if (selectedItems.size() > 0) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < selectedItems.size(); i++) {
+                            if (!stringBuilder.toString().isEmpty())
+                                stringBuilder.append(",");
+                            stringBuilder.append(selectedItems.get(i));
+
+                        }
+                        mRiskFactorsString = stringBuilder.toString();
+                        mRiskFactorsTextView.setText(mRiskFactorsString);
+                    }
+
+                });
+
+                assert getFragmentManager() != null;
+                dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
+
+            /*    final String[] items = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
                         "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
                 boolean[] selectedItems = new boolean[items.length];
                 for (int i = 0; i < items.length; i++) {
@@ -468,7 +543,7 @@ public class PatientOtherInfoFragment extends Fragment {
                         });
 
 
-                builder.create().show();
+                builder.create().show();*/
             }
         });
 
@@ -1035,4 +1110,32 @@ public class PatientOtherInfoFragment extends Fragment {
                 .commit();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //selectedDate  -  30/5/2023
+        if (data != null) {
+            Bundle bundle = data.getExtras();
+            String selectedDate = bundle.getString("selectedDate");
+            String whichDate = bundle.getString("whichDate");
+            Log.d(TAG, "onActivityResult: selectedDate : " + selectedDate);
+
+            if (!whichDate.isEmpty()) {
+                if (whichDate.equals("admissionDate")) {
+                    mAdmissionDateString = selectedDate;
+                    mAdmissionDateTextView.setText(selectedDate);
+                /*String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(mAdmissionDateString);
+                if (!mAdmissionDateString.isEmpty()) {
+                    String[] splitedDate = mAdmissionDateString.split("/");
+                   mAdmissionDateTextView.setText(dateToshow1 + ", " + splitedDate[2]);
+                    */
+                } else if (whichDate.equals("labourDiagnosedDate")) {
+                    mActiveLaborDiagnosedDate = selectedDate;
+                    mActiveLaborDiagnosedDateTextView.setText(selectedDate);
+                } else if (whichDate.equals("sacRupturedDate")) {
+                    mMembraneRupturedDate = selectedDate;
+                    mMembraneRupturedDateTextView.setText(selectedDate);
+                }
+            }
+        }
+    }
 }
