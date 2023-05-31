@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -92,6 +93,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mUsernameView;
     //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+
+    private TextInputLayout mEmailInputView;
+    private TextInputLayout mPasswordInputView;
+
     private ImageView icLogo;
 
     private long createdRecordsCount = 0;
@@ -115,6 +120,8 @@ public class LoginActivity extends AppCompatActivity {
 
         offlineLogin = OfflineLogin.getOfflineLogin();
         txt_cant_login = findViewById(R.id.tvActionForgotPassword);
+        mEmailInputView = findViewById(R.id.etUsernameLayout);
+        mPasswordInputView = findViewById(R.id.etPasswordLayout);
         txt_cant_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,23 +210,25 @@ public class LoginActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String email = mUsernameView.getText().toString().trim();
         String password = mPasswordView.getText().toString().trim();
+        mEmailInputView.setError(null);
+        mPasswordInputView.setError(null);
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mUsernameView.setError(getString(R.string.enter_username));
-            mUsernameView.requestFocus();
+            mEmailInputView.setError(getString(R.string.enter_username));
+            mEmailInputView.requestFocus();
             return;
         }
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.enter_password));
-            mPasswordView.requestFocus();
+            mPasswordInputView.setError(getString(R.string.enter_password));
+            mPasswordInputView.requestFocus();
             return;
         }
 
         if (password.length() < 4) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            mPasswordView.requestFocus();
+            mPasswordInputView.setError(getString(R.string.error_invalid_password));
+            mPasswordInputView.requestFocus();
             return;
         }
         mEmailSignInButton.setText(getString(R.string.please_wait_progress));

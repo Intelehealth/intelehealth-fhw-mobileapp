@@ -269,7 +269,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     holder.cardview.setActivated(true);
                     holder.cardview.setEnabled(true);
                     holder.cardview.setActivated(true);
-                    holder.summaryNoteTextview.setText("You have submitted the history data.");
+                    holder.summaryNoteTextview.setText(context.getResources().getText(R.string.you_have_captured_obs));
                     holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                     holder.summary_textview.setActivated(true);
                     holder.ivEdit.setVisibility(View.VISIBLE);

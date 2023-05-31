@@ -50,14 +50,6 @@
                     tools:text="10LAM-3" />
 
                 <TextView
-                    android:id="@+id/tvPatientAge"
-                    style="@style/Theme.EZazi.Body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/std_4dp"
-                    tools:text="Age: 24 years" />
-
-                <TextView
                     android:id="@+id/tvBedNumber"
                     style="@style/Theme.EZazi.Body"
                     android:layout_width="match_parent"
@@ -65,6 +57,14 @@
                     android:layout_marginTop="@dimen/std_4dp"
                     android:text="Bed No: 2A"
                     tools:text="Bed No: 2A" />
+
+                <TextView
+                    android:id="@+id/tvPatientAge"
+                    style="@style/Theme.EZazi.Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/std_4dp"
+                    tools:text="Age: 24 years" />
 
                 <TextView
                     android:id="@+id/tvNoOfAlert"
@@ -81,8 +81,8 @@
                 style="@style/Theme.EZazi.Heading2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stage-1"
                 android:padding="@dimen/screen_container_padding"
+                android:text="Stage-1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

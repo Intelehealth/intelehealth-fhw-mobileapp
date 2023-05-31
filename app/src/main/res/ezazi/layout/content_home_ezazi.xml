@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:paddingStart="@dimen/screen_padding"
-    android:paddingEnd="@dimen/screen_padding">
+    android:paddingEnd="@dimen/screen_padding"
+    android:paddingBottom="@dimen/screen_container_padding">
 
     <View
         android:id="@+id/container"
@@ -98,11 +99,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvActiveVisits"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/list_container_padding"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/list_container_padding"
+        android:layout_marginTop="@dimen/list_container_padding"
+        android:layout_marginBottom="@dimen/screen_container_padding"
         android:paddingTop="@dimen/screen_container_padding"
         android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/container"
         app:layout_constraintStart_toStartOf="@id/container"
         app:layout_constraintTop_toBottomOf="@id/clSearchContainer"

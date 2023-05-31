@@ -59,7 +59,6 @@
             android:hint="@string/enter_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:text="Nurse@123"
             android:maxLength="100"
             android:minHeight="@dimen/max_input_height"
             android:textSize="@dimen/input_inner_size" />

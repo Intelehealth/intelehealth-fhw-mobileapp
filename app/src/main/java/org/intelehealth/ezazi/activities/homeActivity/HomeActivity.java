@@ -1472,13 +1472,17 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         }, 3000);
                     } else {
                         mResetSyncDialog.dismiss();
-                        DialogUtils dialogUtils = new DialogUtils();
-                        dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                        showConfirmationDialog(R.string.error, R.string.sync_failed, R.string.generic_ok, () -> {
+                        });
+//                        DialogUtils dialogUtils = new DialogUtils();
+//                        dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
                     }
                     return true;
                 } else {
-                    DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+                    showConfirmationDialog(R.string.error_network, R.string.no_network_sync, R.string.generic_ok, () -> {
+                    });
+//                    DialogUtils dialogUtils = new DialogUtils();
+//                    dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
                 }
 
             default:
@@ -1486,10 +1490,18 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    private void showConfirmationDialog(@StringRes int contentId,
+//    private void showConfirmationDialog(@StringRes int contentId,
+//                                        ConfirmationDialogFragment.OnConfirmationActionListener listener) {
+//        showConfirmationDialog(0, contentId, listener);
+//    }
+
+    private void showConfirmationDialog(@StringRes int title, @StringRes int contentId, @StringRes int positiveBtnLbl,
                                         ConfirmationDialogFragment.OnConfirmationActionListener listener) {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .positiveButtonLabel(R.string.yes)
+        ConfirmationDialogFragment.Builder builder = new ConfirmationDialogFragment.Builder(this);
+
+        if (title != 0) builder.title(title);
+
+        ConfirmationDialogFragment dialog = builder.positiveButtonLabel(positiveBtnLbl)
                 .content(getString(contentId))
                 .build();
 
@@ -1500,7 +1512,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void showLogoutAlert() {
 
-        showConfirmationDialog(R.string.sure_to_logout, () -> {
+        showConfirmationDialog(0, R.string.sure_to_logout, R.string.generic_yes, () -> {
             logout();
         });
 
@@ -1656,7 +1668,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 .setNegativeButton("No", null)
                 .show();
 */
-        showConfirmationDialog(R.string.sure_to_exit, () -> moveTaskToBack(true));
+        showConfirmationDialog(0, R.string.sure_to_exit, R.string.generic_yes, () -> moveTaskToBack(true));
 
 //        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 //
@@ -1961,23 +1973,27 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void showResetConfirmationDialog() {
         mResetSyncDialog.dismiss();
-        MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
-        resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
-        resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                showResetProgressbar();
-                deleteCache(getApplicationContext());
-            }
+        showConfirmationDialog(0, R.string.sure_to_reset_app, R.string.generic_yes, () -> {
+            showResetProgressbar();
+            deleteCache(getApplicationContext());
         });
-        resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-        AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
-        resetAlertDialog.show();
-        Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-        resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
+//        MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
+//        resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
+//        resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                showResetProgressbar();
+//                deleteCache(getApplicationContext());
+//            }
+//        });
+//        resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+//        AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
+//        resetAlertDialog.show();
+//        Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//        Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+//        resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
     }
 
 

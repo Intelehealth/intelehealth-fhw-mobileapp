@@ -11,6 +11,7 @@
         layout="@layout/content_home_ezazi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/bottom_menu_min_height"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <!--<include layout="@layout/content_home" />-->
@@ -34,9 +35,9 @@
                 android:id="@+id/tvLastSyncStatus"
                 style="@style/Theme.EZazi.LastSync.Text"
                 android:layout_width="wrap_content"
-                android:text="sfdfdfd"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end" />
+                android:layout_gravity="end"
+                android:text="sfdfdfd" />
 
         </androidx.appcompat.widget.Toolbar>
 

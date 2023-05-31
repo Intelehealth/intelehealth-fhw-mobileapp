@@ -36,6 +36,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
@@ -53,7 +54,6 @@ import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
-import org.intelehealth.ezazi.ui.dialog.model.DialogArg;
 import org.intelehealth.ezazi.utilities.Base64Utils;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
@@ -108,6 +108,10 @@ public class SetupActivity extends AppCompatActivity {
     private List<Location> mLocations = new ArrayList<>();
     private TextInputEditText mEmailView;
     private TextInputEditText mPasswordView;
+    private TextInputLayout mLocationInputView;
+    private TextInputLayout mEmailInputView;
+    private TextInputLayout mPasswordInputView;
+
     //    private EditText mAdminPasswordView;
 //    private EditText mUrlField;
     private Button mLoginButton;
@@ -164,6 +168,9 @@ public class SetupActivity extends AppCompatActivity {
         customProgressDialog = new CustomProgressDialog(context);
 
         // Set up the login form.
+        mLocationInputView = findViewById(R.id.etLocationLayout);
+        mEmailInputView = findViewById(R.id.etUsernameLayout);
+        mPasswordInputView = findViewById(R.id.etPasswordLayout);
         mEmailView = findViewById(R.id.et_email);
         // populateAutoComplete(); TODO: create our own autocomplete code
 
@@ -239,7 +246,7 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        showInternetConfirmationDialog();
+        showConfirmationDialog(getString(R.string.generic_warning), R.string.setup_internet);
 
 
         if (!setupUrl.trim().isEmpty() || !setupUrl.trim().equalsIgnoreCase("")) {
@@ -525,11 +532,11 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     // Replaced by Mithun Vaghela
-    private void showInternetConfirmationDialog() {
+    private void showConfirmationDialog(String title, int content) {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .title(R.string.generic_warning)
+                .title(title)
                 .positiveButtonLabel(R.string.generic_ok)
-                .content(getString(R.string.setup_internet))
+                .content(getString(content))
                 .build();
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
@@ -629,8 +636,9 @@ public class SetupActivity extends AppCompatActivity {
 
         // Reset errors.
 //        mUrlField.setError(null);
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        mEmailInputView.setError(null);
+        mPasswordInputView.setError(null);
+        mLocationInputView.setError(null);
 //        mAdminPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
@@ -650,7 +658,7 @@ public class SetupActivity extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordInputView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
@@ -661,15 +669,19 @@ public class SetupActivity extends AppCompatActivity {
 //            cancel = true;
 //        }
 
+        String selectedLocation = mDropdownLocation.getText().toString();
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+        if (TextUtils.isEmpty(selectedLocation)) {
+            mLocationInputView.setError(getString(R.string.error_field_required));
+//            focusView = mLocationInputView;
+            cancel = true;
+        } else if (TextUtils.isEmpty(email)) {
+            mEmailInputView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailInputView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
-
         }
 
         //spinner...
@@ -736,7 +748,7 @@ public class SetupActivity extends AppCompatActivity {
             //   Log.i(TAG, "location:: " + location.getDisplay());
             String urlString = setupUrl;
             // as in ezazi we dont want to show locations dropdown so adding as static value.
-            location.setDisplay("Remote");
+            location.setDisplay(selectedLocation);
             location.setUuid("eb374eaf-430e-465e-81df-fe94c2c515be");
             TestSetup(urlString, email, password, location);
             Log.d(TAG, "attempting setup");
@@ -1553,8 +1565,16 @@ public class SetupActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
-                DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
+                showConfirmationDialog("Error Login", R.string.error_incorrect_password);
+//                ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(SetupActivity.this)
+//                        .title("Error Login")
+//                        .positiveButtonLabel(R.string.generic_ok)
+//                        .content(getString(R.string.error_incorrect_password))
+//                        .build();
+
+//                dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//                DialogUtils dialogUtils = new DialogUtils();
+//                dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
             }

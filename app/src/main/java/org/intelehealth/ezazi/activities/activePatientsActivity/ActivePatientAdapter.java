@@ -116,13 +116,13 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         //get date of birth and convert it into years and months
         String age = DateAndTimeUtils.getAgeInYears(activePatientModel.getDate_of_birth(), context);
-        String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
+//        String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
 //        String body = String.format("%s %s (%s)", context.getString(R.string.identification_screen_prompt_age), age, activePatientModel.getGender());
-        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
-
+//        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
+        String ageInYear = context.getString(R.string.identification_screen_prompt_age) + " " + age;
         holder.getHeadTextView().setText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()));
         holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
-        holder.tvAgeGender.setText(body);
+        holder.tvAgeGender.setText(ageInYear);
         holder.tvStageNameTextView.setText(activePatientModel.getStageName());
         if (activePatientModel.getEnddate() == null) {
             holder.getIndicatorTextView().setText(R.string.active);
@@ -141,7 +141,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorHighAlert));
         } else if (count >= 15) { // yellow
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
-            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.yellow_alert));
+            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.ic_yellow_alert));
             holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorMediumAlert));
         } else { // green
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));

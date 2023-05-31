@@ -6,9 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".activities.splash_activity.SplashActivity">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBottomDarkVector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/splash_bottom_dark_bg" />
 
-    <include layout="@layout/view_bottom_shape" />
-
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBottomLightVector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/splash_bottom_ligh_bg" />
 
     <ImageView
         android:id="@+id/ivSplashLogo"
@@ -17,10 +35,9 @@
         android:layout_gravity="center"
         android:scaleType="centerCrop"
         android:src="@drawable/logo_ezazi"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ivBottomLightVector"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvSplashContent"

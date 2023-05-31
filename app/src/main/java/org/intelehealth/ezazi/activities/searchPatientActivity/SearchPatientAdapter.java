@@ -78,7 +78,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             linearLayout.setTag(patient);
             linearLayout.setOnClickListener(this);
 
-            String age = DateAndTimeUtils.getAgeInYearMonth(patient.getDateofbirth(), context);
+            String age = DateAndTimeUtils.getAgeInYears(patient.getDateofbirth(), context);
             String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
             String patientName = patient.getFirstname() + " " + patient.getLastname();
 
