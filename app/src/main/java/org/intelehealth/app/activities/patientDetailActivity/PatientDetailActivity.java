@@ -308,7 +308,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setUuid(UUID.randomUUID().toString());
                 encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
                 try {
-                    encounterDTO.setEncounterTime(OneMinutesLate(thisDate));
+                    encounterDTO.setEncounterTime(ThirtySecondsLate(thisDate));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }                encounterDTO.setVisituuid(uuid);
@@ -413,9 +413,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public String OneMinutesLate(String timeStamp) throws ParseException {
+    public String ThirtySecondsLate (String timeStamp) throws ParseException {
 
-        long FIVE_MINS_IN_MILLIS = 1 * 60 * 1000;
+        long FIVE_MINS_IN_MILLIS = (1 * 60 * 1000)/2;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long time = df.parse(timeStamp).getTime();
 

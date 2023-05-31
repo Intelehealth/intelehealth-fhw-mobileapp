@@ -269,11 +269,7 @@ public class SmoothUpgrade {
                     encounterDTO.setUuid(UUID.randomUUID().toString());
                     encounterDTO.setVisituuid(visituuid);
                     encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(cursor.getString(cursor.getColumnIndexOrThrow("encounter_type"))));
-                    try {
-                        encounterDTO.setEncounterTime(OneMinutesLate(time));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    encounterDTO.setEncounterTime(time);
                     encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
                     encounterDTO.setVoided(0);
                     encounterDTO.setSyncd(false);
@@ -380,7 +376,7 @@ public class SmoothUpgrade {
             encounterDTO.setUuid(uuid);
             encounterDTO.setVisituuid(visituuid);
             encounterDTO.setEncounterTypeUuid(getEncounterTypebasedonConcept(encounterType));
-            encounterDTO.setEncounterTime(OneMinutesLate(time));
+            encounterDTO.setEncounterTime(time);
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
             encounterDTO.setVoided(0);
