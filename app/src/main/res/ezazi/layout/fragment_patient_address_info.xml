@@ -40,7 +40,6 @@
                         android:layout_height="@dimen/input_add_patient_height"
                         android:backgroundTint="@color/white"
                         android:hint="@string/country"
-                        android:inputType="none"
                         android:paddingTop="@dimen/input_add_patient_padding_top" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -67,7 +66,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/input_add_patient_height"
                         android:hint="@string/state"
-                        android:inputType="none"
                         android:textAlignment="viewStart"
                         android:paddingTop="@dimen/input_add_patient_padding_top" />
 

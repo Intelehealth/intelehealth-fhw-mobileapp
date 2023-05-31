@@ -244,7 +244,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
 
         //Initialize the local database to store patient information
-
+        //edit patient
         Intent intent = Objects.requireNonNull(getActivity()).getIntent(); // The intent was passed to the activity
         if (intent != null) {
             if (intent.hasExtra("patientUuid")) {
@@ -253,9 +253,13 @@ public class PatientPersonalInfoFragment extends Fragment {
                 patientID_edit = intent.getStringExtra("patientUuid");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
+
+
                 updateUI(patient1);
             }
         }
+
+
         fragment_secondScreen = new PatientAddressInfoFragment();
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
@@ -265,6 +269,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             updateUI(patient1);
 
         }
+
 
 /*
             if (patientDTO.getPatientPhoto() != null) {
@@ -277,13 +282,17 @@ public class PatientPersonalInfoFragment extends Fragment {
                         .into(patient_imgview);
             }
 */
+
+
         // Setting up the screen when user came from Second screen.
         if (fromSecondScreen) {
+            Log.d(TAG, "initUI: fn : " + patientDTO.getFirstname());
             mFirstName.setText(patientDTO.getFirstname());
             mMiddleName.setText(patientDTO.getMiddlename());
             mLastName.setText(patientDTO.getLastname());
             mMobileNumber.setText(patientDTO.getPhonenumber());
             mAlternateNumber.setText(patientDTO.getAlternateNo());
+            mDOB.setText(patientDTO.getDateofbirth());
 
             //crash check pri
             //if patient update then age will be set
@@ -1031,6 +1040,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
 
     public void onPatientUpdateClicked(Patient patientDTO) {
+        Log.d(TAG, "onPatientUpdateClicked: patiebtdto : " + patientDTO);
 
       /*  mTotalBirthCount = mTotalBirthEditText.getText().toString().trim();
         mTotalMiscarriageCount = mTotalMiscarriageEditText.getText().toString().trim();
@@ -1220,6 +1230,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientDTO, uuid, patientAttributesDTOList);
             boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
 
+/* as per old flow
             if (NetworkConnection.isOnline(mContext)) {
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
@@ -1237,6 +1248,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirst_name() + "" + patientDTO.getLast_name() + "'s Image not complete.", 4, getApplication());
 
             }
+*/
             if (isPatientUpdated && isPatientImageUpdated) {
                 Logger.logD(TAG, "updated");
                 Intent i = new Intent(mContext, PatientDetailActivity.class);
@@ -1376,6 +1388,33 @@ public class PatientPersonalInfoFragment extends Fragment {
         }
         idCursor1.close();
 
+        mFirstName.setText(patient1.getFirst_name());
+        mMiddleName.setText(patient1.getMiddle_name());
+        mLastName.setText(patient1.getLast_name());
+        mMobileNumber.setText(patient1.getPhone_number());
+        mAlternateNumber.setText(patient1.getAlternateNo());
+        mDOB.setText(patient1.getDate_of_birth());
+        mCurrentPhotoPath = patient1.getPatient_photo();
+
+
+        if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
+            Glide.with(getActivity())
+                    .load(new File(mCurrentPhotoPath))
+                    .thumbnail(0.25f)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(ivProfilePhoto);
+        }
+
+        patientDTO.setCityvillage(patient1.getCity_village());
+        patientDTO.setStateprovince(patient1.getState_province());
+        patientDTO.setCountry(patient1.getCountry());
+        patientDTO.setAddress1(patient1.getAddress1());
+        patientDTO.setAddress2(patient1.getAddress2());
+        patientDTO.setPostalcode(patient1.getPostal_code());
+        patientDTO.setDateofbirth(patient1.getDate_of_birth());
+
     }
 
     @Override
@@ -1389,13 +1428,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         // next btn click
         btnSaveUpdate.setOnClickListener(v -> {
-           // onPatientCreateClicked();
-
-            if (patientID_edit != null) {
-                onPatientUpdateClicked(patient1);
-            } else {
-                onPatientCreateClicked();
-            }
+            onPatientCreateClicked();
         });
         // setting patient profile
         fab.setOnClickListener(new View.OnClickListener() {

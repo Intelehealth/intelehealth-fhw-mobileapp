@@ -61,6 +61,7 @@
                         android:backgroundTint="@color/white"
                         android:gravity="center_vertical"
                         android:hint="@string/date"
+                        android:textSize="@dimen/input_inner_size"
                         android:imeOptions="actionNext"
                         android:importantForAutofill="no"
                         android:maxLines="1"
@@ -98,6 +99,7 @@
                         android:backgroundTint="@color/white"
                         android:gravity="center_vertical"
                         android:hint="@string/time"
+                        android:textSize="@dimen/input_inner_size"
                         android:imeOptions="actionNext"
                         android:importantForAutofill="no"
                         android:maxLines="1"
@@ -149,6 +151,7 @@
                             android:backgroundTint="@color/white"
                             android:gravity="center_vertical"
                             android:hint="@string/total_birth"
+                            android:textSize="@dimen/input_inner_size"
                             android:inputType="number"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
@@ -182,6 +185,7 @@
                             android:layout_height="@dimen/input_add_patient_height"
                             android:backgroundTint="@color/white"
                             android:gravity="center_vertical"
+                            android:textSize="@dimen/input_inner_size"
                             android:hint="@string/total_miscarriage"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
@@ -486,7 +490,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:hint="@string/risk_factors"
-                        android:inputType="none"
+                        android:textSize="@dimen/input_inner_size"
                         android:paddingTop="@dimen/input_add_patient_padding_top" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -585,7 +589,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:hint="@string/primary_doctor"
-                        android:inputType="none"
+                        android:textSize="@dimen/input_inner_size"
                         android:paddingTop="@dimen/input_add_patient_padding_top" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -626,7 +630,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:hint="@string/secondary_doctor"
-                        android:inputType="none"
+                        android:textSize="@dimen/input_inner_size"
                         android:paddingTop="@dimen/input_add_patient_padding_top" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -669,6 +673,7 @@
                         android:imeOptions="actionNext"
                         android:importantForAutofill="no"
                         android:maxLines="1"
+                        android:textSize="@dimen/input_inner_size"
                         android:paddingTop="@dimen/input_add_patient_padding_top"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>

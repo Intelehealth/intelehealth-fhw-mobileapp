@@ -45,6 +45,7 @@ import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Address;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
 import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
@@ -336,7 +337,7 @@ public class PatientOtherInfoFragment extends Fragment {
             });
             dialog.show(Objects.requireNonNull(getFragmentManager()), "ThemeTimePickerDialog");
 */
-            // Get Current Time
+         /*   // Get Current Time
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
@@ -351,7 +352,10 @@ public class PatientOtherInfoFragment extends Fragment {
                             mAdmissionTimeTextView.setText(mAdmissionTimeString);
                         }
                     }, hour, minute, false);
-            timePickerDialog.show();
+            timePickerDialog.show();*/
+
+
+            selectTimeForAllParameters("admissionTimeString");
         });
 
         mUnknownMembraneRupturedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -401,7 +405,8 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         });
         etLabourDiagnosedTime.setEndIconOnClickListener(v -> {
-            // Get Current Time
+            selectTimeForAllParameters("laborOnsetString");
+           /* // Get Current Time
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
@@ -414,9 +419,10 @@ public class PatientOtherInfoFragment extends Fragment {
                             boolean isPM = (hourOfDay >= 12);
                             mActiveLaborDiagnosedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
                             mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
+                            Log.d(TAG, "onTimeSet: mActiveLaborDiagnosedTime : " + mActiveLaborDiagnosedTime);
                         }
                     }, hour, minute, false);
-            timePickerDialog.show();
+            timePickerDialog.show();*/
         });
 
         etLayoutSacRupturedDate.setEndIconOnClickListener(v -> {
@@ -450,7 +456,9 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         });
         etLayoutSacRupturedTime.setEndIconOnClickListener(v -> {
-            // Get Current Time
+            selectTimeForAllParameters("membraneRupturedTime");
+
+           /* // Get Current Time
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
@@ -466,7 +474,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
                         }
                     }, hour, minute, false);
-            timePickerDialog.show();
+            timePickerDialog.show();*/
         });
         mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -550,7 +558,9 @@ public class PatientOtherInfoFragment extends Fragment {
         mPrimaryDoctorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<ProviderDTO> providerDoctorList = new ArrayList<>();
+
+                selectPrimaryDoctor();
+              /*  List<ProviderDTO> providerDoctorList = new ArrayList<>();
                 for (int i = 0; i < mProviderDoctorList.size(); i++) {
                     if (!mSecondaryDoctorUUIDString.equals(mProviderDoctorList.get(i).getUserUuid())) {
                         providerDoctorList.add(mProviderDoctorList.get(i));
@@ -584,14 +594,16 @@ public class PatientOtherInfoFragment extends Fragment {
                                 mPrimaryDoctorTextView.setText(mDoctorNames[which]);
                             }
                         });
-                builder.create().show();
+                builder.create().show();*/
             }
         });
 
         mSecondaryDoctorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mPrimaryDoctorUUIDString.isEmpty()) {
+
+                selectSecondaryDoctor();
+               /* if (mPrimaryDoctorUUIDString.isEmpty()) {
                     Toast.makeText(mContext, "Please select the primary doctor", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -628,7 +640,7 @@ public class PatientOtherInfoFragment extends Fragment {
                                 mSecondaryDoctorTextView.setText(mDoctorNames[which]);
                             }
                         });
-                builder.create().show();
+                builder.create().show();*/
             }
         });
 
@@ -1137,5 +1149,103 @@ public class PatientOtherInfoFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void selectPrimaryDoctor() {
+        List<ProviderDTO> providerDoctorList = new ArrayList<>();
+        for (int i = 0; i < mProviderDoctorList.size(); i++) {
+            if (!mSecondaryDoctorUUIDString.equals(mProviderDoctorList.get(i).getUserUuid())) {
+                providerDoctorList.add(mProviderDoctorList.get(i));
+            }
+        }
+        Log.d(TAG, "onClick:providerDoctorList : " + providerDoctorList.size());
+        mDoctorNames = new String[providerDoctorList.size()];
+        mDoctorUUIDs.clear();
+        int selectedId = 0;
+
+        for (int i = 0; i < providerDoctorList.size(); i++) {
+            mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
+            mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
+            if (mPrimaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
+                selectedId = i;
+        }
+
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
+                .title(R.string.select_primary_doctor)
+                .positiveButtonLabel(R.string.save_button)
+                .content(Arrays.asList(mDoctorNames))
+                .build();
+
+        dialog.setListener((position, value) -> {
+            Log.d(TAG, "selectPrimaryDoctor: position : " + position);
+            Log.d(TAG, "selectPrimaryDoctor: value : " + value);
+            mPrimaryDoctorUUIDString = mDoctorUUIDs.get(position);
+            mPrimaryDoctorTextView.setText(mDoctorNames[position]);
+        });
+
+        dialog.show(Objects.requireNonNull(getFragmentManager()), dialog.getClass().getCanonicalName());
+    }
+
+    private void selectSecondaryDoctor() {
+        if (mPrimaryDoctorUUIDString.isEmpty()) {
+            Toast.makeText(mContext, "Please select the primary doctor", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<ProviderDTO> providerDoctorList = new ArrayList<>();
+        for (int i = 0; i < mProviderDoctorList.size(); i++) {
+            if (!mPrimaryDoctorUUIDString.equals(mProviderDoctorList.get(i).getUserUuid())) {
+                providerDoctorList.add(mProviderDoctorList.get(i));
+            }
+        }
+        mDoctorNames = new String[providerDoctorList.size()];
+        mDoctorUUIDs.clear();
+        int selectedId = 0;
+        for (int i = 0; i < providerDoctorList.size(); i++) {
+            mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
+            mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
+            if (mSecondaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
+                selectedId = i;
+        }
+
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
+                .title(R.string.select_secondary_doctor)
+                .positiveButtonLabel(R.string.save_button)
+                .content(Arrays.asList(mDoctorNames))
+                .build();
+
+        dialog.setListener((position, value) -> {
+            Log.d(TAG, "selectSecondaryDoctor: position : " + position);
+            Log.d(TAG, "selectSecondaryDoctor: value : " + value);
+            mSecondaryDoctorUUIDString = mDoctorUUIDs.get(position);
+            mSecondaryDoctorTextView.setText(mDoctorNames[position]);
+        });
+
+        dialog.show(Objects.requireNonNull(getFragmentManager()), dialog.getClass().getCanonicalName());
+    }
+
+    private void selectTimeForAllParameters(String forWhichParameter) {
+        ThemeTimePickerDialog dialog = new ThemeTimePickerDialog.Builder(mContext)
+                .title(R.string.current_time)
+                .positiveButtonLabel(R.string.ok)
+                .build();
+        dialog.setListener((hours, minutes, amPm, value) -> {
+            Log.d("ThemeTimePickerDialog", "value : " + value);
+            boolean isPM = (hours >= 12);
+            String timeString = String.format("%02d:%02d %s", (hours == 12 || hours == 0) ? 12 : hours % 12, minutes, isPM ? "PM" : "AM");
+            Log.d(TAG, "selectTime: timeString : " + timeString);
+
+            if (forWhichParameter.equals("admissionTimeString")) {
+                mAdmissionTimeString = timeString;
+                mAdmissionTimeTextView.setText(timeString);
+            } else if (forWhichParameter.equals("laborOnsetString")) {
+                mActiveLaborDiagnosedTime = timeString;
+                mActiveLaborDiagnosedTimeTextView.setText(timeString);
+            } else if (forWhichParameter.equals("membraneRupturedTime")) {
+                mMembraneRupturedTime = timeString;
+                mMembraneRupturedTimeTextView.setText(timeString);
+            }
+        });
+        dialog.show(getFragmentManager(), "ThemeTimePickerDialog");
     }
 }

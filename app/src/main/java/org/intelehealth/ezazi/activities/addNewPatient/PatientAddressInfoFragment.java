@@ -391,10 +391,13 @@ public class PatientAddressInfoFragment extends Fragment {
             //autotvCountry.setSelection(countryAdapter.getPosition(String.valueOf(patientDTO.getCountry())));
             // mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
 
+            Log.d(TAG, "onActivityCreated: state : " + patientDTO.getStateprovince());
             autotvCountry.setText(patientDTO.getCountry());
             autotvState.setText(patientDTO.getStateprovince());
+            Log.d(TAG, "onActivityCreated: city village :" + patientDTO.getCityvillage());
+            autotvCity.setText(patientDTO.getCityvillage());
 
-            if (patientDTO.getCityvillage() != null) {
+           /* if (patientDTO.getCityvillage() != null) {
                 String[] district_city = patientDTO.getCityvillage().trim().split(":");
                 //  district = district_city[0];
                if(district_city.length>=2)
@@ -402,10 +405,10 @@ public class PatientAddressInfoFragment extends Fragment {
                 //mDistrictNameSpinner.setSelection(districtAdapter.getPosition(district));
                 // temp autotvCity.setSelection(cityAdapter.getPosition(city_village));
                 Log.d(TAG, "onActivityCreated: city_village : " + city_village);
-                autotvState.setText(city_village);
+                autotvCity.setText(city_village);
 
 
-            }
+            }*/
         }
 
         // Back Button click event.
