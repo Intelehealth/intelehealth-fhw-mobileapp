@@ -40,4 +40,5 @@
     <string name="lbl_resend">Resend</string>
     <string name="lbl_am">AM</string>
     <string name="lbl_pm">PM</string>
+    <string name="select_doctor">Select Doctor</string>
 </resources>

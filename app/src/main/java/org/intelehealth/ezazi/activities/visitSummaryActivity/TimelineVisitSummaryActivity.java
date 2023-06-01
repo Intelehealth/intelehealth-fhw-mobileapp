@@ -217,65 +217,144 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-
-                    // show the patient primary & secondary doctor
-                    PatientsDAO patientsDAO = new PatientsDAO();
-                    List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
-                    String[] doctNames = new String[2];
-                    String[] doctUUIDs = new String[2];
-                    for (int i = 0; i < patientAttributes.size(); i++) {
-                        String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
-                        if (name.equalsIgnoreCase("PrimaryDoctor")) {
-                            doctUUIDs[0] = patientAttributes.get(i).getValue().split("@#@")[0];
-                            doctNames[0] = patientAttributes.get(i).getValue().split("@#@")[1];
-                        }
-                        if (name.equalsIgnoreCase("SecondaryDoctor")) {
-                            doctUUIDs[1] = patientAttributes.get(i).getValue().split("@#@")[0];
-                            doctNames[1] = patientAttributes.get(i).getValue().split("@#@")[1];
-                        }
-                    }
-
-                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(TimelineVisitSummaryActivity.this);
-
-                    builder.setTitle("Select Doctor")
-                            .setItems(doctNames, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //  EncounterDAO encounterDAO = new EncounterDAO();
-                                    EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-                                    RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-                                    RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                                    Intent in = new Intent(TimelineVisitSummaryActivity.this, VideoCallActivity.class);
-                                    String roomId = patientUuid;
-                                    String doctorName = doctNames[which];
-                                    String nurseId = encounterDTO.getProvideruuid();
-                                    in.putExtra("roomId", roomId);
-                                    in.putExtra("isInComingRequest", false);
-                                    in.putExtra("doctorname", doctorName);
-                                    in.putExtra("nurseId", nurseId);
-                                    in.putExtra("startNewCall", true);
-                                    in.putExtra("doctorUUID", doctUUIDs[which]);
-
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    }
-                                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                                    if (callState == TelephonyManager.CALL_STATE_IDLE) {
-                                        startActivity(in);
-                                    }
-                                }
-                            });
-                    builder.create().show();
-
-
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
+                showDoctorSelectionDialog();
+//                try {
+//
+//
+//                    // show the patient primary & secondary doctor
+//                    PatientsDAO patientsDAO = new PatientsDAO();
+//                    List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
+//                    String[] doctNames = new String[2];
+//                    String[] doctUUIDs = new String[2];
+//                    for (int i = 0; i < patientAttributes.size(); i++) {
+//                        String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
+//                        if (name.equalsIgnoreCase("PrimaryDoctor")) {
+//                            doctUUIDs[0] = patientAttributes.get(i).getValue().split("@#@")[0];
+//                            doctNames[0] = patientAttributes.get(i).getValue().split("@#@")[1];
+//                        }
+//                        if (name.equalsIgnoreCase("SecondaryDoctor")) {
+//                            doctUUIDs[1] = patientAttributes.get(i).getValue().split("@#@")[0];
+//                            doctNames[1] = patientAttributes.get(i).getValue().split("@#@")[1];
+//                        }
+//                    }
+//
+//                    AlertDialog.Builder builder =
+//                            new AlertDialog.Builder(TimelineVisitSummaryActivity.this);
+//
+//                    builder.setTitle("Select Doctor")
+//                            .setItems(doctNames, new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    //  EncounterDAO encounterDAO = new EncounterDAO();
+//                                    EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+//                                    RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//                                    RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+//                                    Intent in = new Intent(TimelineVisitSummaryActivity.this, VideoCallActivity.class);
+//                                    String roomId = patientUuid;
+//                                    String doctorName = doctNames[which];
+//                                    String nurseId = encounterDTO.getProvideruuid();
+//                                    in.putExtra("roomId", roomId);
+//                                    in.putExtra("isInComingRequest", false);
+//                                    in.putExtra("doctorname", doctorName);
+//                                    in.putExtra("nurseId", nurseId);
+//                                    in.putExtra("startNewCall", true);
+//                                    in.putExtra("doctorUUID", doctUUIDs[which]);
+//
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                                        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    }
+//                                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//                                    if (callState == TelephonyManager.CALL_STATE_IDLE) {
+//                                        startActivity(in);
+//                                    }
+//                                }
+//                            });
+//                    builder.create().show();
+//
+//
+//                } catch (DAOException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
 
+    }
+
+    /**
+     * Find the primary and secondary doctor's details of name and uuid
+     * from patient attributes list as a map, key present as a doctor name
+     * and value is doctor uuid
+     *
+     * @return doctors HashMap<String, String>
+     */
+    private HashMap<String, String> getDoctorsDetails() {
+        PatientsDAO patientsDAO = new PatientsDAO();
+        HashMap<String, String> doctors = new HashMap<>();
+        try {
+            List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
+            for (int i = 0; i < patientAttributes.size(); i++) {
+                String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
+                if (name.equalsIgnoreCase("PrimaryDoctor")) {
+                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
+                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
+                    doctors.put(doctorName, doctorUuid);
+                }
+                if (name.equalsIgnoreCase("SecondaryDoctor")) {
+                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
+                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
+                    doctors.put(doctorName, doctorUuid);
+                }
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return doctors;
+    }
+
+    /**
+     * Show the single choice doctor selection dialog and move forward
+     * to video call with selected doctor from list
+     */
+    private void showDoctorSelectionDialog() {
+        HashMap<String, String> doctors = getDoctorsDetails();
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
+                .title(R.string.select_doctor)
+                .content(new ArrayList<>(doctors.keySet()))
+                .build();
+
+        dialog.setListener((position, value) -> startVideoCallActivity(doctors, value));
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
+
+    /**
+     * Start video call with selected doctor from primary and secondary list.
+     *
+     * @param doctors    HashMap
+     * @param doctorName String
+     */
+    private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+        Intent in = new Intent(TimelineVisitSummaryActivity.this, VideoCallActivity.class);
+        String roomId = patientUuid;
+        String nurseId = encounterDTO.getProvideruuid();
+        in.putExtra("roomId", roomId);
+        in.putExtra("isInComingRequest", false);
+        in.putExtra("doctorname", doctorName);
+        in.putExtra("nurseId", nurseId);
+        in.putExtra("startNewCall", true);
+        in.putExtra("doctorUUID", doctors.get(doctorName));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+            startActivity(in);
+        }
     }
 
     private void showEmergencyDialog() {
