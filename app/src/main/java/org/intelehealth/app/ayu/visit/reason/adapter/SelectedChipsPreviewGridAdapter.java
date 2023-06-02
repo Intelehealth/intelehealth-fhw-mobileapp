@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.reason.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class SelectedChipsPreviewGridAdapter extends RecyclerView.Adapter<Recycl
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
-    private List<String> mItemList = new ArrayList<String>();
+    private List<ReasonData> mItemList = new ArrayList<ReasonData>();
 
     public interface OnItemSelection {
         public void onSelect(String data);
@@ -30,7 +32,7 @@ public class SelectedChipsPreviewGridAdapter extends RecyclerView.Adapter<Recycl
 
     private OnItemSelection mOnItemSelection;
 
-    public SelectedChipsPreviewGridAdapter(RecyclerView recyclerView, Context context, List<String> itemList, OnItemSelection onItemSelection) {
+    public SelectedChipsPreviewGridAdapter(RecyclerView recyclerView, Context context, List<ReasonData> itemList, OnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
@@ -56,11 +58,11 @@ public class SelectedChipsPreviewGridAdapter extends RecyclerView.Adapter<Recycl
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.index = position;
-            genericViewHolder.tvName.setText(mItemList.get(position));
+            genericViewHolder.tvName.setText(mItemList.get(position).getReasonNameLocalized());
 
 
         }

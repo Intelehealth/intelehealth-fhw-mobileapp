@@ -555,6 +555,7 @@ public class Node implements Serializable {
         }
     }
 
+
     public String findDisplay() {
 
         SessionManager sessionManager = null;
@@ -1161,6 +1162,34 @@ public class Node implements Serializable {
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
+    }
+
+    public String findPopup() {
+
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String locale = sessionManager.getCurrentLang();
+
+        switch (locale) {
+            case "or": {
+                if (pop_up_or != null && !pop_up_or.isEmpty()) {
+                    return pop_up_or;
+                } else {
+                    return pop_up;
+                }
+
+            }
+            case "hi": {
+                if (pop_up_hi != null && !pop_up_hi.isEmpty()) {
+                    return pop_up_hi;
+                } else {
+                    return pop_up;
+                }
+            }
+            default: {
+                return pop_up;
+            }
+        }
     }
 
     public void generatePopUp(final Activity context) {
@@ -3161,10 +3190,10 @@ public class Node implements Serializable {
 
             Log.v(TAG, text);
             Log.v(TAG, text);
-            Log.v(TAG, "isSelected - "+String.valueOf(isSelected()));
-            Log.v(TAG, "isNoSelected - "+String.valueOf(isNoSelected()));
-            Log.v(TAG, "anySubSelected - "+String.valueOf(anySubSelected()));
-            Log.v(TAG, "isNestedMandatoryOptionsAnswered - "+String.valueOf(isNestedMandatoryOptionsAnswered(this)));
+            Log.v(TAG, "isSelected - " + String.valueOf(isSelected()));
+            Log.v(TAG, "isNoSelected - " + String.valueOf(isNoSelected()));
+            Log.v(TAG, "anySubSelected - " + String.valueOf(anySubSelected()));
+            Log.v(TAG, "isNestedMandatoryOptionsAnswered - " + String.valueOf(isNestedMandatoryOptionsAnswered(this)));
 
         }
 

@@ -37,6 +37,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
@@ -128,7 +129,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private List<Node> mAssociateSymptomsNodeList = new ArrayList<>();
     private int mCurrentComplainNodeIndex = 0;
     private int mCurrentComplainNodeOptionsIndex = 0;
-    private List<String> selectedComplains = new ArrayList<>();
+    private List<ReasonData> mSelectedComplainList = new ArrayList<ReasonData>();
 
     // Physical Examination
 
@@ -289,10 +290,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 break;
 
             case STEP_2_VISIT_REASON_QUESTION:
-                selectedComplains = (List<String>) object;
-                loadChiefComplainNodeForSelectedNames(selectedComplains);
+                mSelectedComplainList = (List<ReasonData>) object;
+                loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 mStep2ProgressBar.setProgress(40);
-                setTitle(getResources().getString(R.string.visit_reason) + " : " + selectedComplains.get(0));
+                setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
@@ -506,9 +507,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private Node mCommonAssociateSymptoms = null;
 
-    private void loadChiefComplainNodeForSelectedNames(List<String> selectedComplains) {
+    private void loadChiefComplainNodeForSelectedNames(List<ReasonData> selectedComplains) {
         for (int i = 0; i < selectedComplains.size(); i++) {
-            String fileLocation = "engines/" + selectedComplains.get(i) + ".json";
+            String fileLocation = "engines/" + selectedComplains.get(i).getReasonName() + ".json";
             JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
             Node mainNode = new Node(currentFile);
             List<Node> optionList = new ArrayList<>();
@@ -589,7 +590,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         switch (mCurrentStep) {
             case STEP_2_VISIT_REASON_QUESTION:
                 if (title == null || title.isEmpty()) {
-                    setTitle(getResources().getString(R.string.visit_reason) + " : " + selectedComplains.get(0));
+                    setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
                 } else {
                     setTitle(title);
                 }
@@ -696,7 +697,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private void showNextComplainQueries() {
         mCurrentComplainNodeIndex++;
         mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + 10);
-        setTitle(getResources().getString(R.string.visit_reason) + " : " + selectedComplains.get(mCurrentComplainNodeIndex));
+        setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(mCurrentComplainNodeIndex).getReasonNameLocalized());
         //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
         //mSummaryFrameLayout.setVisibility(View.GONE);
        /* getSupportFragmentManager().beginTransaction().

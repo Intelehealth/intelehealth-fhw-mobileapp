@@ -213,7 +213,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void setData(int position, GenericViewHolder genericViewHolder) {
         Log.v(TAG, "setData");
-        if (genericViewHolder.node.getPop_up() != null && !genericViewHolder.node.getPop_up().isEmpty()) {
+        if (genericViewHolder.node.findPopup() != null && !genericViewHolder.node.findPopup().isEmpty()) {
             genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
 
         } else {
@@ -267,7 +267,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
 
         }
-        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainName());
+        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
 
         if (genericViewHolder.node.getText().equalsIgnoreCase("Associated symptoms")) {
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
@@ -1174,7 +1174,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         int i = 0;
         int max = 100;
         final String[] data = new String[max + 1];
-        data[0] = "Number";
+        data[0] = mContext.getString(R.string.number_label);
         for (i = 1; i <= max; i++) {
             data[i] = String.valueOf(i);
         }
@@ -1199,7 +1199,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
 
         // add a list
-        final String[] data1 = new String[]{"Duration Type",
+        final String[] data1 = new String[]{mContext.getString(R.string.duration_type),
                 mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
                 mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
                 mContext.getString(R.string.Years)};
@@ -1483,7 +1483,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
-        final Button displayDateButton = view.findViewById(R.id.btn_view_date);
+        final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -1491,9 +1491,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 // display the selected date by using a toast
                 int m = month + 1;
-                String date = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
-                        + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
-                displayDateButton.setText(date);
+                //String date = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
+                 //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(0);
+                //cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                cal.set(year, month, dayOfMonth);
+                Date date = cal.getTime();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                String dateString = simpleDateFormat.format(date);
+                displayDateButton.setText(dateString);
             }
         });
         holder.skipButton.setVisibility(View.GONE);
@@ -1512,20 +1519,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 String d = displayDateButton.getText().toString().trim();
-                if (!d.contains("-")) {
+                if (!d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
-                    Calendar cal = Calendar.getInstance();
+                    /*Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(0);
                     cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
                     Date date = cal.getTime();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
-                    String dateString = simpleDateFormat.format(date);
-                    if (!dateString.equalsIgnoreCase("")) {
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
+
+                    if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", d));
                         } else {
-                            node.addLanguage(dateString);
+                            node.addLanguage(d);
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
@@ -1533,19 +1539,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                         node.setDataCaptured(true);
                         holder.node.setDataCaptured(true);
-                    } else {
-                        if (node.isRequired()) {
-                            node.setSelected(false);
-                        } else {
-                            node.setSelected(true);
-                            if (node.getLanguage().contains("_")) {
-                                node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                            } else {
-                                node.addLanguage("Question not answered");
-                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                            }
-                        }
-                    }
+
                     //notifyDataSetChanged();
                     mOnItemSelection.onSelect(node, index, false);
                 }
@@ -1634,7 +1628,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             knowMoreTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showKnowMoreDialog(node.getDisplay(), node.getPop_up());
+                    showKnowMoreDialog(node.findDisplay(), node.findPopup());
                 }
             });
         }

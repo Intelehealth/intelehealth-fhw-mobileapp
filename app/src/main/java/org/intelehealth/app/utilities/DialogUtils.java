@@ -20,9 +20,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsPreviewGridAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DialogUtils {
     public interface CustomDialogListener {
@@ -159,7 +162,7 @@ public class DialogUtils {
         alertDialog.show();
     }
 
-    public void showCommonDialogWithChipsGrid(Context context, List<String> selectedData, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
+    public void showCommonDialogWithChipsGrid(Context context, ArrayList<ReasonData> selectedData, int iconResource, String title, String message, boolean isSingleButton, String positiveBtnText, String negativeBtnText, CustomDialogListener customDialogListener) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_message_with_chips_grid, null);

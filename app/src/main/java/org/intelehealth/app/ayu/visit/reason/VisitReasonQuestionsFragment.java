@@ -21,6 +21,7 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -97,9 +98,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
             Log.v("VISIT_REASON", new Gson().toJson(mChiefComplainRootNodeList.get(i)));
             ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
             complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
+            complainBasicInfo.setComplainNameByLocale(mChiefComplainRootNodeList.get(i).findDisplay());
             complainBasicInfo.setOptionSize(mChiefComplainRootNodeList.get(i).getOptionsList().size());
-            if (complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms"))
-                complainBasicInfo.setAssociateSymptom(true);
+            if (complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms")){
+                complainBasicInfo.setComplainNameByLocale(getString(R.string.associated_symptoms_header_visit_creation));
+                complainBasicInfo.setAssociateSymptom(true);}
             mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
         }
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, new OnItemSelection() {

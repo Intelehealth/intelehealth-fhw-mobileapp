@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class ComplainBasicInfo implements Parcelable {
     private int optionSize;
     private String complainName;
+    private String complainNameByLocale;
     private boolean isAssociateSymptom;
     private boolean isPhysicalExam;
     private boolean isPatientHistory;
@@ -98,5 +99,13 @@ public class ComplainBasicInfo implements Parcelable {
         parcel.writeByte((byte) (isPhysicalExam ? 1 : 0));
         parcel.writeByte((byte) (isPatientHistory ? 1 : 0));
         parcel.writeByte((byte) (isFamilyHistory ? 1 : 0));
+    }
+
+    public String getComplainNameByLocale() {
+        return complainNameByLocale;
+    }
+
+    public void setComplainNameByLocale(String complainNameByLocale) {
+        this.complainNameByLocale = complainNameByLocale;
     }
 }

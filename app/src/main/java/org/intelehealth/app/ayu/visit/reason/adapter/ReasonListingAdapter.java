@@ -14,6 +14,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<ReasonGroupData> mItemList = new ArrayList<ReasonGroupData>();
 
     public interface OnItemSelection {
-        public void onSelect(String data);
+        public void onSelect(ReasonData data);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -67,7 +68,7 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             ReasonChipsGridAdapter reasonChipsGridAdapter = new ReasonChipsGridAdapter(genericViewHolder.recyclerView, mContext, genericViewHolder.reasonGroupData.getReasons(), new ReasonChipsGridAdapter.OnItemSelection() {
                 @Override
-                public void onSelect(String data) {
+                public void onSelect(ReasonData data) {
                     mOnItemSelection.onSelect(data);
                 }
             });

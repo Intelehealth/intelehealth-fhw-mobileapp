@@ -24,7 +24,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private List<ReasonData> mItemList = new ArrayList<ReasonData>();
 
     public interface OnItemSelection {
-        public void onSelect(String data);
+        public void onSelect(ReasonData data);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -59,7 +59,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.index = position;
-            genericViewHolder.tvName.setText(mItemList.get(position).getReasonName());
+            genericViewHolder.tvName.setText(mItemList.get(position).getReasonNameLocalized());
             if (mItemList.get(position).isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_primary_bg);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
@@ -94,7 +94,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View view) {
                     if (mItemList.get(index).isEnabled()) {
-                        mOnItemSelection.onSelect(tvName.getText().toString());
+                        mOnItemSelection.onSelect(mItemList.get(index));
                         mItemList.get(index).setSelected(true);
                         notifyItemChanged(index);
                     }

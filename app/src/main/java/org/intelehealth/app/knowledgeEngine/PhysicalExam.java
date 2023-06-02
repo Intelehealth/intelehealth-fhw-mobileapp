@@ -256,7 +256,7 @@ public class PhysicalExam extends Node {
                 boolean checkSet = rootStrings.add(levelOne);
 
                 if (checkSet)
-                    stringsList.add("<b>"+bullet_arrow+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
+                    stringsList.add(bullet_arrow+"<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
                 else stringsList.add(bullet + " " + node.getLanguage());
                 if (!node.isTerminal()) {
                     String lang = node.formLanguage();

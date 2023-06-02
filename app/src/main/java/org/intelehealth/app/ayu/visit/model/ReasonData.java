@@ -3,7 +3,8 @@ package org.intelehealth.app.ayu.visit.model;
 import java.io.Serializable;
 
 public class ReasonData implements Serializable {
-    private String reasonName;
+    private String reasonName; // same as file name
+    private String reasonNameLocalized; // locale wise name
     private boolean isSelected;
     private boolean isEnabled;
 
@@ -30,5 +31,13 @@ public class ReasonData implements Serializable {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public String getReasonNameLocalized() {
+        return reasonNameLocalized;
+    }
+
+    public void setReasonNameLocalized(String reasonNameLocalized) {
+        this.reasonNameLocalized = reasonNameLocalized;
     }
 }

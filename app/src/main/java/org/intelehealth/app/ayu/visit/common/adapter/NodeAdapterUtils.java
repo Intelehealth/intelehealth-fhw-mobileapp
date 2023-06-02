@@ -6,11 +6,17 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.json.JSONObject;
 
 public class NodeAdapterUtils {
     public static final String TAG = NodeAdapterUtils.class.getSimpleName();
+
     /**
      * @param context
      * @param title
@@ -32,12 +38,12 @@ public class NodeAdapterUtils {
      * @param toCompareWithNode
      */
     public static void updateForHideShowFlag(Context context, Node targetNode, Node toCompareWithNode) {
-        Log.v(TAG, "updateForHideShowFlag - "+new Gson().toJson(toCompareWithNode));
+        Log.v(TAG, "updateForHideShowFlag - " + new Gson().toJson(toCompareWithNode));
         if (targetNode == null || toCompareWithNode == null) return;
         for (int i = 0; i < toCompareWithNode.getOptionsList().size(); i++) {
             boolean isSelected = toCompareWithNode.getOptionsList().get(i).isSelected();
             String text = toCompareWithNode.getOptionsList().get(i).getText();
-            Log.v(TAG, "updateForHideShowFlag text   - "+text+" - isSelected - "+isSelected);
+            Log.v(TAG, "updateForHideShowFlag text   - " + text + " - isSelected - " + isSelected);
             for (int j = 0; j < targetNode.getOptionsList().size(); j++) {
                 if (text.equals(targetNode.getOptionsList().get(j).getText())) {
                     Log.v(TAG, "updateForHideShowFlag match found!");
@@ -47,5 +53,99 @@ public class NodeAdapterUtils {
         }
     }
 
+    public static String getTheChiefComplainNameWRTLocale(Context context, String chiefComplainName) {
+        String fileLocation = "engines/" + chiefComplainName + ".json";
+        JSONObject currentFile = FileUtils.encodeJSON(context, fileLocation);
+        Node mainNode = new Node(currentFile);
+        return mainNode.findDisplay();
+    }
 
+
+    public static char getStartCharAsPerLocale() {
+        char result = 'A';
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String locale = sessionManager.getCurrentLang();
+
+        switch (locale) {
+
+            case "gu":
+                break;
+            case "bn":
+                break;
+            case "ta":
+                break;
+            case "or":
+                result = 'ଅ';
+                break;
+            case "hi":
+                result = 'अ';
+                break;
+            case "te":
+                break;
+            case "mr":
+                break;
+            case "as":
+                break;
+            case "ml":
+                break;
+            case "kn":
+                break;
+
+        }
+
+        return result;
+    }
+
+    public static char getEndCharAsPerLocale() {
+        char result = 'Z';
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String locale = sessionManager.getCurrentLang();
+
+        switch (locale) {
+
+            case "gu":
+                break;
+            case "bn":
+                break;
+            case "ta":
+                break;
+            case "or":
+                result = 'ୱ';
+                break;
+            case "hi":
+                result = 'ह';
+                break;
+            case "te":
+                break;
+            case "mr":
+                break;
+            case "as":
+                break;
+            case "ml":
+                break;
+            case "kn":
+                break;
+
+        }
+
+        return result;
+    }
+
+    public static String formatChiefComplainWithLocaleName(ReasonData reasonData) {
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String locale = sessionManager.getCurrentLang();
+        if (!locale.equalsIgnoreCase("en")) {
+            return reasonData.getReasonName() + " [ " + reasonData.getReasonNameLocalized() + " ] ";
+        } else {
+            return reasonData.getReasonName();
+        }
+    }
+
+    public static String getEngChiefComplainNameOnly(String item) {
+        if (item.contains("[")) {
+            return item.split("\\[")[0].trim();
+        } else {
+            return item;
+        }
+    }
 }

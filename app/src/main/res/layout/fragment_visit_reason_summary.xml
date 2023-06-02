@@ -148,7 +148,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
-                    android:text="@string/associated_symptoms" />
+                    android:text="Associated symptoms:" />
 
                 <TextView
                     android:id="@+id/tv_change_associate_sympt"

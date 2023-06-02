@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.collection.ArraySet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
@@ -39,6 +41,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,7 +57,7 @@ public class VisitReasonCaptureFragment extends Fragment {
     private TextView mEmptyReasonLabelTextView;
     //private ImageView mClearImageView;
 
-    private List<String> mSelectedComplains = new ArrayList<>();
+    private Set<ReasonData> mSelectedComplains = new ArraySet<ReasonData>();
     private List<ReasonGroupData> mVisitReasonItemList;
     private ReasonListingAdapter mReasonListingAdapter;
 
@@ -68,6 +71,7 @@ public class VisitReasonCaptureFragment extends Fragment {
     private float float_ageYear_Month;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     private List<String> mFinalEnabledMMList = new ArrayList<>();
+    private List<ReasonData> mRawReasonDataList = new ArrayList<>();
     private boolean mIsEditMode = false;
 
     public VisitReasonCaptureFragment() {
@@ -80,6 +84,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
+        mRawReasonDataList = getVisitReasonFilesNamesOnly();
     }
 
     public static VisitReasonCaptureFragment newInstance(Intent intent, boolean isEditMode, boolean cleanEdit) {
@@ -127,7 +132,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false,null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
             }
         });
 
@@ -144,8 +149,15 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
         }
         String[] mindmapsNamesFinalArray = new String[mFinalEnabledMMList.size()];
+
         for (int i = 0; i < mFinalEnabledMMList.size(); i++) {
-            mindmapsNamesFinalArray[i] = mFinalEnabledMMList.get(i);
+            for (int j = 0; j < mRawReasonDataList.size(); j++) {
+                if(mFinalEnabledMMList.get(i).equalsIgnoreCase(mRawReasonDataList.get(j).getReasonName())){
+                    mindmapsNamesFinalArray[i] = NodeAdapterUtils.formatChiefComplainWithLocaleName(mRawReasonDataList.get(j));
+                    break;
+                }
+            }
+
         }
 
 
@@ -159,9 +171,12 @@ public class VisitReasonCaptureFragment extends Fragment {
         mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String name = (String) adapterView.getItemAtPosition(position);
+                String name = NodeAdapterUtils.getEngChiefComplainNameOnly((String) adapterView.getItemAtPosition(position));
                 if (name != null && !name.isEmpty()) {
-                    mSelectedComplains.add(name);
+                    ReasonData data = new ReasonData();
+                    data.setReasonName(name);
+                    data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), name));
+                    mSelectedComplains.add(data);
                     // cross check for list also to keep on sync both selected
                     for (int i = 0; i < mVisitReasonItemList.size(); i++) {
                         List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
@@ -196,11 +211,11 @@ public class VisitReasonCaptureFragment extends Fragment {
         mVisitReasonItemList = getVisitReasonList();
         mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {
             @Override
-            public void onSelect(String name) {
-                if (!mSelectedComplains.contains(name)) {
-                    mSelectedComplains.add(name);
-                    showSelectedComplains();
-                }
+            public void onSelect(ReasonData data) {
+                //if (!mSelectedComplains.contains(name)) {
+                mSelectedComplains.add(data);
+                showSelectedComplains();
+                //}
             }
         });
         recyclerView.setAdapter(mReasonListingAdapter);
@@ -210,11 +225,11 @@ public class VisitReasonCaptureFragment extends Fragment {
 
     private void showConfirmDialog() {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialogWithChipsGrid(getActivity(), mSelectedComplains, R.drawable.ui2_visit_reason_summary_icon, getResources().getString(R.string.confirm_visit_reason), getResources().getString(R.string.are_you_sure_the_patient_has_the_following_reasons_for_a_visit), false, getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+        dialogUtils.showCommonDialogWithChipsGrid(getActivity(), new ArrayList<ReasonData>(mSelectedComplains), R.drawable.ui2_visit_reason_summary_icon, getResources().getString(R.string.confirm_visit_reason), getResources().getString(R.string.are_you_sure_the_patient_has_the_following_reasons_for_a_visit), false, getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
             @Override
             public void onDialogActionDone(int action) {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION,false, mSelectedComplains); // send the selected mms
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION, false, new ArrayList<ReasonData>(mSelectedComplains)); // send the selected mms
                 }
             }
         });
@@ -237,20 +252,20 @@ public class VisitReasonCaptureFragment extends Fragment {
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);
 
         mSelectedComplainRecyclerView.setLayoutManager(layoutManager);
-        SelectedChipsGridAdapter reasonChipsGridAdapter = new SelectedChipsGridAdapter(mSelectedComplainRecyclerView, getActivity(), mSelectedComplains, new SelectedChipsGridAdapter.OnItemSelection() {
+        SelectedChipsGridAdapter reasonChipsGridAdapter = new SelectedChipsGridAdapter(mSelectedComplainRecyclerView, getActivity(), new ArrayList<ReasonData>(mSelectedComplains), new SelectedChipsGridAdapter.OnItemSelection() {
             @Override
-            public void onSelect(String data) {
+            public void onSelect(ReasonData data) {
 
             }
 
             @Override
-            public void onRemoved(String data) {
+            public void onRemoved(ReasonData data) {
                 mSelectedComplains.remove(data);
                 for (int i = 0; i < mVisitReasonItemList.size(); i++) {
                     List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
                     for (int j = 0; j < reasonDataList.size(); j++) {
                         ReasonData reasonData = reasonDataList.get(j);
-                        if (reasonData.getReasonName().equalsIgnoreCase(data)) {
+                        if (reasonData.getReasonName().equalsIgnoreCase(data.getReasonName())) {
                             mVisitReasonItemList.get(i).getReasons().get(j).setSelected(false);
                             break;
                         }
@@ -275,18 +290,21 @@ public class VisitReasonCaptureFragment extends Fragment {
         }*/
     }
 
-    private String[] getVisitReasonFilesNamesOnly() {
-        String[] fileNames = new String[0];
+    private List<ReasonData> getVisitReasonFilesNamesOnly() {
+        List<ReasonData> reasonDataList = new ArrayList<ReasonData>();
         try {
             String[] temp = getActivity().getApplicationContext().getAssets().list("engines");
-            fileNames = new String[temp.length];
-            for (int i = 0; i < temp.length; i++) {
-                fileNames[i] = temp[i].split(".json")[0];
+            for (String s : temp) {
+                String fileName = s.split(".json")[0];
+                ReasonData reasonData = new ReasonData();
+                reasonData.setReasonName(fileName);
+                reasonData.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName));
+                reasonDataList.add(reasonData);
             }
         } catch (IOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        return fileNames;
+        return reasonDataList;
     }
 
     /**
@@ -307,19 +325,22 @@ public class VisitReasonCaptureFragment extends Fragment {
      */
     private List<ReasonGroupData> getVisitReasonList() {
         List<ReasonGroupData> itemList = new ArrayList<>();
-        String[] fileNames = getVisitReasonFilesNamesOnly();
-        for (char c = 'A'; c <= 'Z'; ++c) {
+
+        char startC = NodeAdapterUtils.getStartCharAsPerLocale();
+        char endC = NodeAdapterUtils.getEndCharAsPerLocale();
+
+        for (char c = startC; c <= endC; ++c) {
             ReasonGroupData reasonGroupData = new ReasonGroupData();
             reasonGroupData.setAlphabet(String.valueOf(c));
             List<ReasonData> list = new ArrayList<ReasonData>();
-            for (String fileName : fileNames) {
-
-                if (fileName.toUpperCase().startsWith(String.valueOf(c))) {
-                    ReasonData reasonData = new ReasonData();
-                    reasonData.setReasonName(fileName);
+            for (ReasonData reasonData : mRawReasonDataList) {
+                //String chiefComplainNameByLocale =  NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName);
+                if (reasonData.getReasonNameLocalized().toUpperCase().startsWith(String.valueOf(c))) {
+                    //ReasonData reasonData = new ReasonData();
+                    //reasonData.setReasonName(fileName);
 //                  // TODO: we are adding this below conditions for keeping these protocol enable for selection
-                    reasonData.setEnabled(mFinalEnabledMMList.contains(fileName));
-
+                    reasonData.setEnabled(mFinalEnabledMMList.contains(reasonData.getReasonName()));
+                    //reasonData.setReasonNameLocalized(chiefComplainNameByLocale);
                     list.add(reasonData);
                 }
             }
@@ -332,4 +353,6 @@ public class VisitReasonCaptureFragment extends Fragment {
 
         return itemList;
     }
+
+
 }

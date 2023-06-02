@@ -880,7 +880,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         int i = 0;
         int max = 100;
         final String[] data = new String[max + 1];
-        data[0] = "Number";
+        data[0] = mContext.getString(R.string.number_label);
         for (i = 1; i <= max; i++) {
             data[i] = String.valueOf(i);
         }
@@ -905,7 +905,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         });
 
         // add a list
-        final String[] data1 = new String[]{"Duration Type",
+        final String[] data1 = new String[]{mContext.getString(R.string.duration_type),
                 mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
                 mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
                 mContext.getString(R.string.Years)};
@@ -1210,7 +1210,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
-        final Button displayDateButton = view.findViewById(R.id.btn_view_date);
+        final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -1218,9 +1218,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 // display the selected date by using a toast
                 int m = month + 1;
-                String date = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
-                        + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
-                displayDateButton.setText(date);
+                //String d = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
+                 //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
+
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(0);
+                //cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                cal.set(year, month, dayOfMonth);
+                Date date = cal.getTime();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                String dateString = simpleDateFormat.format(date);
+                displayDateButton.setText(dateString);
             }
         });
         //holder.skipButton.setVisibility(View.GONE);
@@ -1242,20 +1251,19 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onClick(View view) {
                 String d = displayDateButton.getText().toString().trim();
-                if (!d.contains("-")) {
+                if (!d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
-                    Calendar cal = Calendar.getInstance();
+                    /*Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(0);
                     cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
                     Date date = cal.getTime();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
-                    String dateString = simpleDateFormat.format(date);
-                    if (!dateString.equalsIgnoreCase("")) {
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
+
+                    if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", d));
                         } else {
-                            node.addLanguage(dateString);
+                            node.addLanguage(d);
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
@@ -1265,23 +1273,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         //holder.node.setDataCaptured(true);
                         parentNode.setSelected(true);
                         parentNode.setDataCaptured(true);
-                    } else {
-                        if (node.isRequired()) {
-                            node.setSelected(false);
-                            parentNode.setSelected(false);
-                            parentNode.setDataCaptured(false);
-                        } else {
-                            node.setSelected(true);
-                            parentNode.setSelected(true);
-                            parentNode.setDataCaptured(true);
-                            if (node.getLanguage().contains("_")) {
-                                node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                            } else {
-                                node.addLanguage("Question not answered");
-                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                            }
-                        }
-                    }
+
                     //notifyDataSetChanged();
                     mOnItemSelection.onSelect(node, mRootIndex, false);
                 }
