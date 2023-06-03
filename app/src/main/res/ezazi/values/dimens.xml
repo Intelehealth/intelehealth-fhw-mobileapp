@@ -226,5 +226,9 @@
     <dimen name="addpatient_frame_padding_start_end">12dp</dimen>
     <dimen name="check_control_margin_top">3dp</dimen>
     <dimen name="dropdowns_add_patient_height">43dp</dimen>
+    <dimen name="validation_error_tv_margin_top">6dp</dimen>
+    <dimen name="validation_error_tv_size">12sp</dimen>
+
+
 
 </resources>

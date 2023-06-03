@@ -319,9 +319,9 @@ public class PatientPersonalInfoFragment extends Fragment {
 
                 // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
                 //get year month days
-               // String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth(), getActivity());
+                // String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth(), getActivity());
 
-               // String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+                // String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
                 String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dateOfBirth).split(" ");
                 mAgeYears = Integer.valueOf(ymdData[0]);
                 //  mAgeMonths = Integer.valueOf(ymdData[1]);
@@ -329,7 +329,7 @@ public class PatientPersonalInfoFragment extends Fragment {
           /*  String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                     mAgeDays + getResources().getString(R.string.days);*/
-                String age = mAgeYears +" "+ getResources().getString(R.string.identification_screen_text_years);
+                String age = mAgeYears + " " + getResources().getString(R.string.identification_screen_text_years);
                 mAge.setText(age);
 
                 // profile image edit
@@ -832,14 +832,6 @@ public class PatientPersonalInfoFragment extends Fragment {
             patientDTO.setLastname(mLastName.getText().toString());
             patientDTO.setPhonenumber(mMobileNumber.getText().toString());
             patientDTO.setDateofbirth(tvDobForDb.getText().toString());
-
-            //check new flow
-            Log.d(TAG, "11initUI: firstname personal:  " + patientDTO.getFirstname());
-            Log.d(TAG, "11initUI: lastname personal: " + patientDTO.getLastname());
-            Log.d(TAG, "11initUI: middlename personal: " + patientDTO.getMiddlename());
-            Log.d(TAG, "11initUI: dob personal: " + patientDTO.getDateofbirth());
-            Log.d(TAG, "11initUI: phoneno: personal " + patientDTO.getPhonenumber());
-            Log.d(TAG, "11initUI: patient_detail personal: " + patient_detail);
 
             // Bundle data
             Bundle bundle = new Bundle();

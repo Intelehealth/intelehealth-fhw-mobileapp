@@ -110,7 +110,16 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </com.google.android.material.card.MaterialCardView>
-
+                <TextView
+                    android:id="@+id/firstname_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory" />
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
@@ -164,7 +173,16 @@
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
-
+                <TextView
+                    android:id="@+id/lastname_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory" />
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
@@ -196,7 +214,16 @@
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
-
+                <TextView
+                    android:id="@+id/dob_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:visibility="gone"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/please_enter_mobile_number" />
                 <TextView
                     android:id="@+id/tv_selected_date_dob"
                     android:layout_width="match_parent"

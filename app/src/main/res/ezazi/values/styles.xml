@@ -474,4 +474,11 @@
         <item name="boxStrokeColor">@color/white</item>
         <item name="boxStrokeWidth">0dp</item>
     </style>
+    <style name="Textview_Validation_Error" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/validation_error_tv_size</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="fontFamily">@font/dm_sans_regular</item>
+        <item name="android:fontFamily">@font/dm_sans_regular</item>
+    </style>
+
 </resources>
