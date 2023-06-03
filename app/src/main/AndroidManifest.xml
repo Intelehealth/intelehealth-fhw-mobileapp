@@ -68,18 +68,21 @@
         <activity
             android:name="org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:exported="false"
             android:label="@string/title_activity_visit_summary"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
@@ -220,6 +223,7 @@
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_search_patient"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -260,6 +264,7 @@
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

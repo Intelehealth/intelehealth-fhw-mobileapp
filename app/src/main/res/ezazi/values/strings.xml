@@ -41,4 +41,5 @@
     <string name="lbl_am">AM</string>
     <string name="lbl_pm">PM</string>
     <string name="select_doctor">Select Doctor</string>
+    <string name="please_enter_field_value">Please enter/select at least one field value!</string>
 </resources>

@@ -37,6 +37,7 @@ import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -141,10 +142,18 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
                         context.getString(R.string.this_option_available_tablet_device) *//*+ ": " + dpi*//*, context.getString(R.string.ok));
             }*/
 
-            Intent intent = new Intent(this, EpartogramViewActivity.class);
-            intent.putExtra("patientuuid", mPatientUuid);
-            intent.putExtra("visituuid", mVisitUUID);
-            startActivity(intent);
+            boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+            if (isTablet) {
+                Intent intent = new Intent(this, EpartogramViewActivity.class);
+                intent.putExtra("patientuuid", mPatientUuid);
+                intent.putExtra("visituuid", mVisitUUID);
+                startActivity(intent);
+            } else {
+                new ConfirmationDialogFragment.Builder(this)
+                        .content(getString(R.string.this_option_available_tablet_device))
+                        .positiveButtonLabel(R.string.ok)
+                        .build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
+            }
 
 //            int dpi = context.getResources().getConfiguration().densityDpi;
 //            Log.i("Timeline", "Screen size in DP: " + dpi);
@@ -244,15 +253,21 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
         }
 
         if (obsDTOList.isEmpty()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-            alertDialogBuilder.setMessage("Please enter/select at least one field value!");
-            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            alertDialogBuilder.show();
+            ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                    .content(getString(R.string.please_enter_field_value))
+                    .positiveButtonLabel(R.string.ok)
+                    .build();
+            dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+
+//            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//            alertDialogBuilder.setMessage("Please enter/select at least one field value!");
+//            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            alertDialogBuilder.show();
         } else {
             ObsDAO obsDAO = new ObsDAO();
             VisitsDAO visitsDAO = new VisitsDAO();

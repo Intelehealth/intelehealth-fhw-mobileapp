@@ -405,7 +405,10 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_view_partogram:
-                showEpartogram();
+                boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+                if (isTablet)
+                    showEpartogram();
+                else showRequireTabletView();
                 break;
             case android.R.id.home:
                 finish();
@@ -413,6 +416,13 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void showRequireTabletView() {
+        new ConfirmationDialogFragment.Builder(this)
+                .content(getString(R.string.this_option_available_tablet_device))
+                .positiveButtonLabel(R.string.ok)
+                .build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
     }
 
     private void showEpartogram() {
@@ -811,12 +821,13 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
     private static void createNewEncounter(String visit_UUID, String nextEncounterTypeName) {
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
-
+        String typeUuid = encounterDAO.getEncounterTypeUuid(nextEncounterTypeName);
+        Log.e(TAG, "TypeUuid=>" + typeUuid);
         encounterDTO.setUuid(UUID.randomUUID().toString());
         encounterDTO.setVisituuid(visit_UUID);
         encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(nextEncounterTypeName));
+        encounterDTO.setEncounterTypeUuid(typeUuid);
         encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
         encounterDTO.setVoided(0);
         encounterDTO.setPrivacynotice_value("true");

@@ -248,6 +248,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                             holder.summary_textview.setActivated(false);
                             holder.cardview.setEnabled(false);
                             holder.cardview.setActivated(false);
+                            holder.circle.setEnabled(false);
+                            holder.circle.setActivated(false);
                             holder.ivEdit.setVisibility(View.GONE);
                         } else if (isMissed == 2) {
                             holder.summary_textview.setEnabled(true);
@@ -265,10 +267,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 }
 
                 if (issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
+                    holder.cardview.setClickable(false); // added by Mithun
                     holder.cardview.setEnabled(false);
                     holder.cardview.setActivated(true);
-                    holder.cardview.setEnabled(true);
-                    holder.cardview.setActivated(true);
+                    holder.circle.setEnabled(true);
+                    holder.circle.setActivated(true);
                     holder.summaryNoteTextview.setText(context.getResources().getText(R.string.you_have_captured_obs));
                     holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                     holder.summary_textview.setActivated(true);

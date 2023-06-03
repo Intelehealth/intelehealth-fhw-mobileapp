@@ -12,12 +12,15 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.StrictMode;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
@@ -144,7 +147,6 @@ public class SetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_ezazi);
-        getSupportActionBar();
         sessionManager = new SessionManager(SetupActivity.this);
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
@@ -153,17 +155,14 @@ public class SetupActivity extends AppCompatActivity {
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view -> {
+            finish();
         });
 
-        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-//        toolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         context = SetupActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
 
@@ -181,20 +180,17 @@ public class SetupActivity extends AppCompatActivity {
 //        mUrlField = findViewById(R.id.editText_URL);
 
         mLoginButton = findViewById(R.id.btnSetup);
+        findViewById(R.id.includeForgotPassword).setOnClickListener(view -> cantLogin());
 
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(), 0);
-                attemptLogin();
-            }
+        mLoginButton.setOnClickListener(v -> {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(), 0);
+            attemptLogin();
         });
 
 //        r1 = findViewById(R.id.demoMindmap);
 //        r2 = findViewById(R.id.downloadMindmap);
 
-        Button submitButton = findViewById(R.id.btnSetup);
         MaterialButton forgotPassword = findViewById(R.id.includeForgotPassword);
         TextThemeUtils.applyUnderline(forgotPassword);
 
@@ -233,18 +229,6 @@ public class SetupActivity extends AppCompatActivity {
 //        mAndroidIdTextView = findViewById(R.id.textView_Aid);
 //        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
 //        mAndroidIdTextView.setText(deviceID);
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(submitButton.getWindowToken(), 0);
-                attemptLogin();
-                //progressBar.setVisibility(View.VISIBLE);
-                //progressBar.setProgress(0);
-
-            }
-        });
 
         showConfirmationDialog(getString(R.string.generic_warning), R.string.setup_internet);
 
@@ -672,11 +656,11 @@ public class SetupActivity extends AppCompatActivity {
         String selectedLocation = mDropdownLocation.getText().toString();
         // Check for a valid email address.
         if (TextUtils.isEmpty(selectedLocation)) {
-            mLocationInputView.setError(getString(R.string.error_field_required));
+            mLocationInputView.setError(getString(R.string.error_location_not_selected));
 //            focusView = mLocationInputView;
             cancel = true;
         } else if (TextUtils.isEmpty(email)) {
-            mEmailInputView.setError(getString(R.string.error_field_required));
+            mEmailInputView.setError(getString(R.string.error_require_email));
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
@@ -1080,7 +1064,7 @@ public class SetupActivity extends AppCompatActivity {
      */
     private List<String> getLocationStringList(List<Location> locationList) {
         List<String> list = new ArrayList<String>();
-        list.add(getString(R.string.login_location_select));
+//        list.add(getString(R.string.login_location_select));
         for (int i = 0; i < locationList.size(); i++) {
             list.add(locationList.get(i).getDisplay());
         }
@@ -1586,6 +1570,31 @@ public class SetupActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void cantLogin() {
+        final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
+        Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
+
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(R.string.contact_whatsapp))
+                .positiveButtonLabel(R.string.contact)
+                .negativeButtonLabel(R.string.close_button)
+                .build();
+
+        dialog.setListener(() -> {
+            String phoneNumberWithCountryCode = AppConstants.HELP_NUMBER;//"+917005308163";
+            String message =
+                    getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+                            /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(
+                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                    phoneNumberWithCountryCode, message))));
+        });
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void fetchOxytocinValueFromAPI() {

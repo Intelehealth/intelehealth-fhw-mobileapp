@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <stroke android:color="#FD8C3E" android:width="5dp"/>
+    <stroke
+        android:width="@dimen/alert_stroke_size"
+        android:color="#FD8C3E" />
 </shape>

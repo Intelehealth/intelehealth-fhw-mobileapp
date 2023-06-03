@@ -403,7 +403,7 @@ public class ObsDAO {
             String typeuuid = "";
             while (idCursor.moveToNext()) {
                 typeuuid = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
-                if(!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase("35c3afdd-bb96-4b61-afb9-22a5fc2d088e")) {
+                if(!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase(MISSED_ENCOUNTER)) {
                     // ie. if typeuuid == MISSED_ENCOUNTER ie. missed enc already present than isMissed=1 else 2 ie. Submitted.
                     isMissed = 3; // already missed is created so check if 1 than only sync the record.
                 }

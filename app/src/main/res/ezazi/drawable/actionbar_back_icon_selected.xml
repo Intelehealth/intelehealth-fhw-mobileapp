@@ -17,10 +17,10 @@
                 android:width="@dimen/back_button_size"
                 android:height="@dimen/back_button_size" />
             <padding
-                android:bottom="@dimen/std_8dp"
-                android:left="@dimen/std_8dp"
-                android:right="@dimen/std_8dp"
-                android:top="@dimen/std_8dp" />
+                android:bottom="@dimen/back_button_padding"
+                android:left="@dimen/back_button_padding"
+                android:right="@dimen/back_button_padding"
+                android:top="@dimen/back_button_padding" />
         </shape>
     </item>
     <item android:drawable="@drawable/ic_arrow_back" />

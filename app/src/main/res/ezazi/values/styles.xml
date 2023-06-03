@@ -18,9 +18,8 @@
         <item name="boxStrokeWidthFocused">@dimen/input_stroke_size</item>
     </style>
 
-    <style name="Theme.EZazi.Input.Error" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textColor">@color/red</item>
-        <item name="android:textSize">@dimen/caption</item>
+    <style name="Theme.EZazi.Input.Error" parent="TextAppearance.AppCompat">
+        <item name="android:textAlignment">viewEnd</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
     </style>
@@ -28,6 +27,7 @@
     <style name="Theme.EZazi.Input.Login" parent="Theme.EZazi.Input">
         <item name="boxBackgroundColor">@color/colorLoginInputBg</item>
         <item name="boxStrokeColor">@color/input_focus_color</item>
+        <item name="errorTextAppearance">@style/Theme.EZazi.Input.Error</item>
     </style>
 
     <style name="Theme.EZazi.Input.Login.DropDown" parent="Theme.EZazi.Input.Login">

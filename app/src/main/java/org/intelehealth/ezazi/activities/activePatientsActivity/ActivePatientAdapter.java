@@ -137,16 +137,20 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         holder.ivPriscription.setText(String.valueOf(count));
         if (count > 22) { // red
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.red_1));
-            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.ic_high_alert));
+            holder.ivPriscription.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_high_alert));
             holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorHighAlert));
+            int padding = context.getResources().getDimensionPixelSize(R.dimen.high_alert_top_padding);
+            holder.ivPriscription.setPadding(0, padding, 0, 0);
         } else if (count >= 15) { // yellow
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.darkYellow2));
-            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.ic_yellow_alert));
+            holder.ivPriscription.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_yellow_alert));
             holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorMediumAlert));
+            holder.ivPriscription.setPadding(0, 0, 0, 0);
         } else { // green
             // holder.cardView_todaysVisit.setCardBackgroundColor(context.getResources().getColor(R.color.green2));
-            holder.ivPriscription.setBackground(context.getResources().getDrawable(R.drawable.ic_normal_alert));
+            holder.ivPriscription.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_normal_alert));
             holder.ivPriscription.setTextColor(ContextCompat.getColor(context, R.color.colorNormalAlert));
+            holder.ivPriscription.setPadding(0, 0, 0, 0);
         }
         // alert -> end
 

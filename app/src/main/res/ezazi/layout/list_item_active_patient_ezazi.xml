@@ -17,6 +17,7 @@
             android:id="@+id/cardView_todaysVisit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardElevation="0dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="@dimen/container_corner_radius">
 
@@ -133,7 +134,7 @@
                         android:background="@drawable/ic_normal_alert"
                         android:gravity="center"
                         android:tag="0"
-                        android:text="1"
+                        android:text="25"
                         android:textSize="@dimen/alert_text_size" />
 
                 </LinearLayout>

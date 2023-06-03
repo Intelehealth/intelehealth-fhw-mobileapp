@@ -2,7 +2,6 @@ package org.intelehealth.ezazi.activities.loginActivity;
 
 import android.content.Context;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.SpannableString;
@@ -28,7 +26,6 @@ import android.widget.Toast;
 
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -42,7 +39,6 @@ import java.security.NoSuchAlgorithmException;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -125,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         txt_cant_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cant_log();
+                cantLogin();
             }
         });
       /*  manager = AccountManager.get(LoginActivity.this);
@@ -254,7 +250,7 @@ public class LoginActivity extends AppCompatActivity {
         return password.length() > 4;
     }
 
-    public void cant_log() {
+    public void cantLogin() {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
