@@ -50,9 +50,9 @@
                 android:layout_height="@dimen/ib_edit_details_size"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:background="@null"
-                android:layout_marginEnd="@dimen/ib_edit_margin_end"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/ib_edit_margin_end"
+                android:background="@null"
                 android:contentDescription="TODO"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:foregroundGravity="center"
@@ -84,9 +84,9 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="viewStart"
                     android:layout_weight="1.1"
-                    android:hint="@string/patient_name" />
+                    android:hint="@string/patient_name"
+                    android:textAlignment="viewStart" />
             </LinearLayout>
 
 
@@ -118,8 +118,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.1"
-                    android:textAlignment="viewStart"
-                    android:hint="@string/unique_Ezazi_registration_number" />
+                    android:hint="@string/unique_Ezazi_registration_number"
+                    android:textAlignment="viewStart" />
             </LinearLayout>
 
 
@@ -150,9 +150,9 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="viewStart"
                     android:layout_weight="1.1"
-                    android:hint="@string/dob_title" />
+                    android:hint="@string/dob_title"
+                    android:textAlignment="viewStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -181,9 +181,9 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="viewStart"
                     android:layout_weight="1.1"
-                    android:hint="@string/age_title" />
+                    android:hint="@string/age_title"
+                    android:textAlignment="viewStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -213,8 +213,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.1"
-                    android:textAlignment="viewStart"
-                    android:hint="@string/address" />
+                    android:hint="@string/address"
+                    android:textAlignment="viewStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -240,14 +240,15 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1.1"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.1">
+
                     <TextView
                         android:id="@+id/textView_phone"
                         style="@style/LabelStyleSummaryValues"
                         android:layout_width="0dp"
-                        android:layout_marginEnd="5dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:layout_weight="1.1"
                         android:hint="@string/mobile_number" />
 
@@ -273,7 +274,6 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/margin_top_summary_views">
 
             <LinearLayout
@@ -296,8 +296,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.1"
-                    android:textAlignment="viewStart"
-                    android:hint="@string/bed_number_title" />
+                    android:hint="@string/bed_number_title"
+                    android:textAlignment="viewStart" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
@@ -306,12 +306,12 @@
         android:id="@+id/button_new_visit"
         style="@style/Theme.EZazi.Button"
         android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/add_patient_frame_margin_start"
-        android:layout_marginTop="@dimen/add_patient_frame_margin_top"
-        android:layout_marginEnd="@dimen/add_patient_frame_margin_end"
         android:layout_height="@dimen/input_height"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/add_patient_frame_margin_start"
+        android:layout_marginTop="@dimen/add_patient_frame_margin_top"
+        android:layout_marginEnd="@dimen/add_patient_frame_margin_end"
         android:text="@string/start_obs"
         app:rippleColor="@color/white" />
 

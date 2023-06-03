@@ -31,6 +31,7 @@
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:maxLength="100"
+            android:text="nurse1"
             android:minHeight="@dimen/max_input_height"
             android:textSize="@dimen/input_inner_size" />
 

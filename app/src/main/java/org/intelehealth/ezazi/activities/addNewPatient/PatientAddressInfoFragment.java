@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -63,6 +64,8 @@ public class PatientAddressInfoFragment extends Fragment {
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
     ImageView ivPersonal, ivAddress, ivOther;
+    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
+    String[] countryArr, stateArr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,9 +78,12 @@ public class PatientAddressInfoFragment extends Fragment {
     }
 
     private void initUI() {
-        ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
+        ivPersonal = requireActivity().findViewById(R.id.iv_personal_info);
         ivAddress = getActivity().findViewById(R.id.iv_address_info);
         ivOther = getActivity().findViewById(R.id.iv_other_info);
+        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
+        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
+        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
 
         autotvCountry = view.findViewById(R.id.autotv_country);
         autotvState = view.findViewById(R.id.autotv_state);
@@ -129,10 +135,13 @@ public class PatientAddressInfoFragment extends Fragment {
     private void setCountriesAndStates() {
         //countries array
         List<String> countriesList = Arrays.asList(getResources().getStringArray(R.array.countries));
+        countryArr = getResources().getStringArray(R.array.countries);
         CountryArrayAdapter adapter = new CountryArrayAdapter
                 (getActivity(), countriesList);
-        autotvCountry.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        autotvCountry.setThreshold(1);
         autotvCountry.setAdapter(adapter);
+        autotvCountry.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        adapter.notifyDataSetChanged();
         autotvCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -236,7 +245,7 @@ public class PatientAddressInfoFragment extends Fragment {
                                 R.array.states_us, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
-
+                        stateAdapter.notifyDataSetChanged();
                        /*
                        temp  if (patientID_edit != null) {
 
@@ -318,7 +327,9 @@ public class PatientAddressInfoFragment extends Fragment {
         ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info_done));
         ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_active));
         ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_unselected));
-
+        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tvAddressInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tvOtherInfo.setTextColor(getResources().getColor(R.color.darkGray));
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
@@ -391,6 +402,7 @@ public class PatientAddressInfoFragment extends Fragment {
             //autotvCountry.setSelection(countryAdapter.getPosition(String.valueOf(patientDTO.getCountry())));
             // mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
 
+
             Log.d(TAG, "onActivityCreated: state : " + patientDTO.getStateprovince());
             autotvCountry.setText(patientDTO.getCountry());
             autotvState.setText(patientDTO.getStateprovince());
@@ -419,6 +431,7 @@ public class PatientAddressInfoFragment extends Fragment {
         // Next Button click event.
         btnNext.setOnClickListener(v -> {
             onPatientCreateClicked();
+
         });
 
         autotvCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -791,7 +804,7 @@ temp
         bundle.putBoolean("patient_detail", patient_detail);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
-        Objects.requireNonNull(getActivity()).getSupportFragmentManager()
+        requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, fragment_thirdScreen)
                 .commit();
@@ -824,5 +837,6 @@ temp
 
         }
     }
+
 
 }

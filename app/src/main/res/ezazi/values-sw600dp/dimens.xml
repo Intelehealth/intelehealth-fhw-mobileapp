@@ -89,13 +89,13 @@
     <dimen name="apps_details_profile_iv_radius">20dp</dimen>
     <dimen name="iv_camera_width">35dp</dimen>
     <dimen name="iv_camera_height">35dp</dimen>
-    <dimen name="input_add_patient_height">65dp</dimen>
-    <dimen name="input_add_patient_margin_top">14dp</dimen>
+    <dimen name="input_add_patient_height">80dp</dimen>
+    <dimen name="input_add_patient_margin_top">22dp</dimen>
     <dimen name="input_add_patient_padding_top">5dp</dimen>
     <dimen name="spinners_add_patient_height">70dp</dimen>
-    <dimen name="add_patient_padding_start">8dp</dimen>
-    <dimen name="add_patient_padding_top">8dp</dimen>
-    <dimen name="add_patient_padding_end">8dp</dimen>
+    <dimen name="add_patient_padding_start">14dp</dimen>
+    <dimen name="add_patient_padding_top">14dp</dimen>
+    <dimen name="add_patient_padding_end">14dp</dimen>
     <dimen name="layout_stages_margin_top">25dp</dimen>
     <dimen name="layout_stages_icon_height">55dp</dimen>
     <dimen name="layout_stages_icon_width">100dp</dimen>
@@ -106,13 +106,13 @@
     <dimen name="stages_line_margin_bottom">20dp</dimen>
     <dimen name="stages_line_margin_end">10dp</dimen>
     <dimen name="layout_stages_line_width">40dp</dimen>
-    <dimen name="add_patient_frame_margin_start">20dp</dimen>
-    <dimen name="add_patient_frame_margin_top">20dp</dimen>
-    <dimen name="add_patient_frame_margin_end">20dp</dimen>
-    <dimen name="profile_layout_size">100dp</dimen>
+    <dimen name="add_patient_frame_margin_start">30dp</dimen>
+    <dimen name="add_patient_frame_margin_top">30dp</dimen>
+    <dimen name="add_patient_frame_margin_end">30dp</dimen>
+    <dimen name="profile_layout_size">150dp</dimen>
     <dimen name="profile_layout_margin_bottom">10dp</dimen>
-    <dimen name="card_profile_width">80dp</dimen>
-    <dimen name="card_profile_height">80dp</dimen>
+    <dimen name="card_profile_width">90dp</dimen>
+    <dimen name="card_profile_height">90dp</dimen>
     <dimen name="card_profile_corner_radius">12dp</dimen>
     <dimen name="card_profile_icon_height">70dp</dimen>
     <dimen name="card_profile_icon_width">70dp</dimen>
@@ -136,9 +136,9 @@
     <dimen name="layout_add_patient_margin_top">17dp</dimen>
     <dimen name="add_patient_button_margin_top">35dp</dimen>
     <dimen name="add_patient_button_margin_bottom">35dp</dimen>
-    <dimen name="add_patient_tabs_margin_start">80dp</dimen>
-    <dimen name="add_patient_tabs_margin_end">80dp</dimen>
-    <dimen name="add_patient_tabs_margin_top">40dp</dimen>
+    <dimen name="add_patient_tabs_margin_start">100dp</dimen>
+    <dimen name="add_patient_tabs_margin_end">100dp</dimen>
+    <dimen name="add_patient_tabs_margin_top">45dp</dimen>
 
     <dimen name="input_stroke_size">1dp</dimen>
 
@@ -203,4 +203,8 @@
     <dimen name="high_alert_top_padding">@dimen/screen_container_padding</dimen>
     <dimen name="alert_stroke_size">5dp</dimen>
     <dimen name="home_list_bottom_padding">@dimen/std_16dp</dimen>
+    <!-- newly added-->
+    <dimen name="btn_add_patient_margin_bottom">50dp</dimen>
+    <dimen name="btn_add_patient_margin_top">50dp</dimen>
+
 </resources>

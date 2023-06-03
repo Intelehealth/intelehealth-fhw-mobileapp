@@ -202,6 +202,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, AddNewPatientActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
+                intent2.putExtra("fromSummary", true);
                 startActivity(intent2);
 
             }
@@ -738,6 +739,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         //String id = idView.toString();
         //Log.d("IDEA","IDEA"+id);
 
+        Log.d(TAG, "setDisplay: dob: "+patient_new.getDate_of_birth());
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
         ageView.setText(age.trim());
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());

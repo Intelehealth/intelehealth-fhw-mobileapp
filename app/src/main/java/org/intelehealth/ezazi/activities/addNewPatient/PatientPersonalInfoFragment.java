@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__gu_dob;
@@ -18,6 +19,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -124,6 +126,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     private boolean mIsEditMode = false;
     String patientID_edit;
+    boolean fromSummary;
     Patient patient1 = new Patient();
     private boolean hasLicense = false;
     private String patientUuid = "";
@@ -140,7 +143,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     int dob_indexValue = 15;
     MaterialAlertDialogBuilder mAgePicker;
     MaterialButton btnSaveUpdate;
-    String uuid = "";
+    //String uuid = "";
     PatientDTO patientDTO = new PatientDTO();
     private String mCurrentPhotoPath;
     ImagesDAO imagesDAO = new ImagesDAO();
@@ -158,10 +161,10 @@ public class PatientPersonalInfoFragment extends Fragment {
     TextInputLayout etLayoutDob, etLayoutAge;
     int MY_REQUEST_CODE = 5555;
     String dobToDb;
+    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo, tvDobForDb, tvAgeDob;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         updateLocale();
         view = inflater.inflate(R.layout.fragment_patient_personal_info, container, false);
         mContext = getActivity();
@@ -179,8 +182,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getResources().updateConfiguration(config,
-                    getResources().getDisplayMetrics());
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
         //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
@@ -190,14 +192,18 @@ public class PatientPersonalInfoFragment extends Fragment {
         ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
         ivAddress = getActivity().findViewById(R.id.iv_address_info);
         ivOther = getActivity().findViewById(R.id.iv_other_info);
+        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
+        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
+        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
+
         etLayoutAge = view.findViewById(R.id.etLayout_age);
         etLayoutDob = view.findViewById(R.id.etLayout_dob);
 
+        tvDobForDb = view.findViewById(R.id.tv_selected_date_dob);
+        tvAgeDob = view.findViewById(R.id.tv_age_dob);
+
 
         etLayoutDob.setEndIconOnClickListener(v -> {
-            //mDOBPicker.show();
-
-
             Bundle args = new Bundle();
             args.putString("whichDate", "dobPatient");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
@@ -233,6 +239,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         btnSaveUpdate = view.findViewById(R.id.btn_save_update_first);
         i_privacy = getActivity().getIntent();
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mDOB.setShowSoftInputOnFocus(false);
             mAge.setShowSoftInputOnFocus(false);
@@ -243,683 +250,121 @@ public class PatientPersonalInfoFragment extends Fragment {
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
 
-        //Initialize the local database to store patient information
-        //edit patient
-        Intent intent = Objects.requireNonNull(getActivity()).getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            if (intent.hasExtra("patientUuid")) {
-                mIsEditMode = true;
-                //mContext.setTitle(R.string.update_patient_identification);
-                patientID_edit = intent.getStringExtra("patientUuid");
-                patient1.setUuid(patientID_edit);
-                setscreen(patientID_edit);
+        setDetailsAsPerConfigFile();
+        updatePatientDetailsFromSecondScreen();
+        updatePatientDetailsFromSummary();
+
+    }
 
 
-                updateUI(patient1);
-            }
-        }
-
-
+    private void updatePatientDetailsFromSecondScreen() {
         fragment_secondScreen = new PatientAddressInfoFragment();
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            //   patientID_edit = getArguments().getString("patientUuid");
+            patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             updateUI(patient1);
 
-        }
 
+            if (fromSecondScreen) {
+                Log.d(TAG, "initUI: fn : " + patientDTO.getFirstname());
+                mFirstName.setText(patientDTO.getFirstname());
+                mMiddleName.setText(patientDTO.getMiddlename());
+                mLastName.setText(patientDTO.getLastname());
+                mMobileNumber.setText(patientDTO.getPhonenumber());
+                mAlternateNumber.setText(patientDTO.getAlternateNo());
+                Log.d(TAG, "initUI: dob from dto : " + patientDTO.getDateofbirth());
+                String dateOfBirth = getSelectedDob(mContext);
+                ///String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
+                String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(dateOfBirth);
 
-/*
-            if (patientDTO.getPatientPhoto() != null) {
-                Glide.with(getActivity())
-                        .load(new File(patientDTO.getPatientPhoto()))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(patient_imgview);
-            }
-*/
-
-
-        // Setting up the screen when user came from Second screen.
-        if (fromSecondScreen) {
-            Log.d(TAG, "initUI: fn : " + patientDTO.getFirstname());
-            mFirstName.setText(patientDTO.getFirstname());
-            mMiddleName.setText(patientDTO.getMiddlename());
-            mLastName.setText(patientDTO.getLastname());
-            mMobileNumber.setText(patientDTO.getPhonenumber());
-            mAlternateNumber.setText(patientDTO.getAlternateNo());
-            mDOB.setText(patientDTO.getDateofbirth());
-
-            //crash check pri
-            //if patient update then age will be set
-            //dob to be displayed based on translation...
-            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-                mLastName.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                String dob_text = en__te_dob(dob); //to show text of English into Telugu...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                String dob_text = en__mr_dob(dob); //to show text of English into marathi...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                String dob_text = en__as_dob(dob); //to show text of English into assame...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                String dob_text = en__kn_dob(dob); //to show text of English into kannada...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                String dob_text = en__ru_dob(dob); //to show text of English into kannada...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-                mDOB.setText(dob_text);
-            } else {
-                mDOB.setText(dob);
-            }
-
-            // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
-            //get year month days
-            String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth(), getActivity());
-
-            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
-            mAgeYears = Integer.valueOf(ymdData[0]);
-            mAgeMonths = Integer.valueOf(ymdData[1]);
-            mAgeDays = Integer.valueOf(ymdData[2]);
-            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                    mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                    mAgeDays + getResources().getString(R.string.days);
-            mAge.setText(age);
-
-/*temp
-            mCountryCodePicker.setFullNumber(patientDTO.getPhonenumber()); // automatically assigns cc to spinner and number to edittext field.
-*/
-            //   phoneno_edittext.setText(patientDTO.getPhonenumber());
-
-        /*
-        commented as per new flow
-
-          // Gender edit
-            if (patientDTO.getGender().equals("M")) {
-                mGenderMaleRadioButton.setChecked(true);
-                if (mGenderFemaleRadioButton.isChecked())
-                    mGenderFemaleRadioButton.setChecked(false);
-                if (mGenderOthersRadioButton.isChecked())
-                    mGenderOthersRadioButton.setChecked(false);
-                Log.v(TAG, "yes");
-            } else if (patientDTO.getGender().equals("F")) {
-                mGenderFemaleRadioButton.setChecked(true);
-                if (mGenderMaleRadioButton.isChecked())
-                    mGenderMaleRadioButton.setChecked(false);
-                if (mGenderOthersRadioButton.isChecked())
-                    mGenderOthersRadioButton.setChecked(false);
-                Log.v(TAG, "yes");
-            } else {
-                mGenderOthersRadioButton.setChecked(true);
-                if (mGenderMaleRadioButton.isChecked())
-                    mGenderMaleRadioButton.setChecked(false);
-                if (mGenderFemaleRadioButton.isChecked())
-                    mGenderFemaleRadioButton.setChecked(false);
-            }
-
-            if (mGenderMaleRadioButton.isChecked()) {
-                mGender = "M";
-            } else if (mGenderFemaleRadioButton.isChecked()) {
-                mGender = "F";
-            } else {
-                mGender = "O";
-            }
-*/
-            // profile image edit
-            if (patientDTO.getPatientPhoto() != null && !patientDTO.getPatientPhoto().trim().isEmpty()) {
-                //  patient_imgview.setImageBitmap(BitmapFactory.decodeFile(patientDTO.getPatientPhoto()));
-                Glide.with(getActivity())
-                        .load(new File(patientDTO.getPatientPhoto()))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(ivProfilePhoto);
-
-            }
-        }
-//        if (sessionManager.valueContains("licensekey"))
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
-        //Check for license key and load the correct config file
-        try {
-            JSONObject obj = null;
-            if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, mContext),
-                                String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)));
-            }
-
-            //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("mFirstName")) {
-                mFirstName.setVisibility(View.VISIBLE);
-            } else {
-                mFirstName.setVisibility(View.GONE);
-            }
-
-            if (obj.getBoolean("mMiddleName")) {
-                mMiddleName.setVisibility(View.VISIBLE);
-            } else {
-                mMiddleName.setVisibility(View.GONE);
-            }
-
-            if (obj.getBoolean("mLastName")) {
-                mLastName.setVisibility(View.VISIBLE);
-            } else {
-                mLastName.setVisibility(View.GONE);
-            }
-
-            if (obj.getBoolean("mDOB")) {
-                mDOB.setVisibility(View.VISIBLE);
-            } else {
-                mDOB.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mPhoneNum")) {
-                mMobileNumber.setVisibility(View.VISIBLE);
-            } else {
-                mMobileNumber.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mAge")) {
-                mAge.setVisibility(View.VISIBLE);
-            } else {
-                mAge.setVisibility(View.GONE);
-            }
-           /*
-
-           temp
-
-           if (obj.getBoolean("mAddress1")) {
-                mAddress1.setVisibility(View.VISIBLE);
-            } else {
-                mAddress1.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mAddress2")) {
-                mAddress2.setVisibility(View.VISIBLE);
-            } else {
-                mAddress2.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mCity")) {
-                mCity.setVisibility(View.VISIBLE);
-            } else {
-                mCity.setVisibility(View.GONE);
-            }
-
-            if (obj.getBoolean("countryStateLayout")) {
-                countryStateLayout.setVisibility(View.VISIBLE);
-            } else {
-                countryStateLayout.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mPostal")) {
-                mPostal.setVisibility(View.VISIBLE);
-            } else {
-                mPostal.setVisibility(View.GONE);
-            }*/
-
-           /* if (obj.getBoolean("mGenderM")) {
-                mGenderM.setVisibility(View.VISIBLE);
-            } else {
-                mGenderM.setVisibility(View.GONE);
-            }*/
-            /*if (obj.getBoolean("mGenderF")) {
-                mGenderF.setVisibility(View.VISIBLE);
-            } else {
-                mGenderF.setVisibility(View.GONE);
-            }*/
-          /*  if (obj.getBoolean("mRelationship")) {
-                mRelationship.setVisibility(View.VISIBLE);
-            } else {
-                mRelationship.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mOccupation")) {
-                mOccupation.setVisibility(View.VISIBLE);
-            } else {
-                mOccupation.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("casteLayout")) {
-                casteLayout.setVisibility(View.VISIBLE);
-            } else {
-                casteLayout.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("educationLayout")) {
-                educationLayout.setVisibility(View.VISIBLE);
-            } else {
-                educationLayout.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("economicLayout")) {
-                economicLayout.setVisibility(View.VISIBLE);
-            } else {
-                economicLayout.setVisibility(View.GONE);
-            }
-            country1 = obj.getString("mCountry");
-            state = obj.getString("mState");
-
-            if (country1.equalsIgnoreCase("India")) {
-                EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
-            } else if (country1.equalsIgnoreCase("Philippines")) {
-                EditTextUtils.setEditTextMaxLength(11, mPhoneNum);
-            }*/
-
-        } catch (JSONException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-//            Issue #627
-//            added the catch exception to check the config and throwing back to setup activity
-            Toast.makeText(mContext, "JsonException" + e, Toast.LENGTH_LONG).show();
-            showAlertDialogButtonClicked(e.toString());
-        }
-
-
-        if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
-            ivProfilePhoto.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
-
-//        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
-//                R.array.caste, R.layout.custom_spinner);
-//        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        mCaste.setAdapter(casteAdapter);
-       /* try {
-            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
-            int castes = res.getIdentifier(casteLanguage, "array", getApplicationContext().getPackageName());
-            if (castes != 0) {
-                casteAdapter = ArrayAdapter.createFromResource(this,
-                        castes, R.layout.custom_spinner);
-
-            }
-            mCaste.setAdapter(casteAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-        try {
-            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
-            int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
-            if (economics != 0) {
-                economicStatusAdapter = ArrayAdapter.createFromResource(this,
-                        economics, R.layout.custom_spinner);
-            }
-            // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mEconomicStatus.setAdapter(economicStatusAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.economic_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-        try {
-            String educationLanguage = "education_" + sessionManager.getAppLanguage();
-            int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
-            if (educations != 0) {
-                educationAdapter = ArrayAdapter.createFromResource(this,
-                        educations, R.layout.custom_spinner);
-
-            }
-            // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);
-            mEducation.setAdapter(educationAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }*/
-
-
-        if (null == patientID_edit || patientID_edit.isEmpty()) {
-            generateUuid();
-
-        }
-
-        // setting radio button automatically according to the databse when user clicks edit details
-     /*  In new figma design gender removed
-
-      if (patientID_edit != null) {
-
-            if (patient1.getGender().equals("M")) {
-                mGenderM.setChecked(true);
-                if (mGenderF.isChecked())
-                    mGenderF.setChecked(false);
-                Log.v(TAG, "yes");
-            } else {
-                mGenderF.setChecked(true);
-                if (mGenderM.isChecked())
-                    mGenderM.setChecked(false);
-                Log.v(TAG, "yes");
-            }
-
-        }
-        if (mGenderM.isChecked()) {
-            mGender = "M";
-        } else {
-            mGender = "F";
-        }
-*/
-
-        gmDOBAndAge();
-    }
-
-    private void gmDOBAndAge() {
-        mDOBYear = today.get(Calendar.YEAR);
-        mDOBMonth = today.get(Calendar.MONTH);
-        mDOBDay = today.get(Calendar.DAY_OF_MONTH);
-        //DOB is set using an AlertDialog
-        // Locale.setDefault(Locale.ENGLISH);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -10);
-        mDOBPicker = new DatePickerDialog(mContext, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                //Set the DOB calendar to the date selected by the user
-                dob.set(year, monthOfYear, dayOfMonth);
-                mDOB.setError(null);
-                mAge.setError(null);
-                //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-                //  mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-                // Locale.setDefault(Locale.ENGLISH);
-                //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                dob.set(year, monthOfYear, dayOfMonth);
-                String dobString = simpleDateFormat.format(dob.getTime());
-                dob_indexValue = monthOfYear; //fetching the inex value of month selected...
-
+                Log.d(TAG, "initUI: dob : " + dob);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                    String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                    String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                    String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                    mDOB.setText(dob_text);
+                    String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                    mLastName.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                    String dob_text = en__te_dob(dobString); //to show text of English into telugu...
+                    String dob_text = en__te_dob(dob); //to show text of English into Telugu...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                    String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
+                    String dob_text = en__mr_dob(dob); //to show text of English into marathi...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                    String dob_text = en__as_dob(dobString); //to show text of English into telugu...
+                    String dob_text = en__as_dob(dob); //to show text of English into assame...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                    String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
+                    String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                    String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
+                    String dob_text = en__kn_dob(dob); //to show text of English into kannada...
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
+                    String dob_text = en__ru_dob(dob); //to show text of English into kannada...
+                    mDOB.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                    String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
+                    mDOB.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
+                    mDOB.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
                     mDOB.setText(dob_text);
                 } else {
-                    mDOB.setText(dobString);
+                    mDOB.setText(dob);
                 }
 
-                //  mDOB.setText(dobString);
-                mDOBYear = year;
-                mDOBMonth = monthOfYear;
-                mDOBDay = dayOfMonth;
+                // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+                //get year month days
+                // String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth(), getActivity());
 
-                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
-                //get years months days
-                String[] frtData = age.split("-");
-
-                String[] yearData = frtData[0].split(" ");
-                String[] monthData = frtData[1].split(" ");
-                String[] daysData = frtData[2].split(" ");
-
-                mAgeYears = Integer.valueOf(yearData[0]);
-                mAgeMonths = Integer.valueOf(monthData[1]);
-                mAgeDays = Integer.valueOf(daysData[1]);
-                String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                        mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                        mAgeDays + getResources().getString(R.string.days);
-                mAge.setText(ageS);
-
-            }
-        }, mDOBYear, mDOBMonth, mDOBDay);
-
-        //DOB Picker is shown when clicked
-        // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-        mDOBPicker.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        mDOB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDOBPicker.show();
-            }
-        });
-        //if patient update then age will be set
-        if (patientID_edit != null) {
-            //dob to be displayed based on translation...
-            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                String dob_text = en__te_dob(dob); //to show text of English into Telugu...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                String dob_text = en__mr_dob(dob); //to show text of English into marathi...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                String dob_text = en__as_dob(dob); //to show text of English into assame...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                String dob_text = en__kn_dob(dob); //to show text of English into kannada...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                String dob_text = en__ru_dob(dob); //to show text of English into kannada...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
-                mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-                mDOB.setText(dob_text);
-            } else {
-                mDOB.setText(dob);
-            }
-
-            // mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
-            //get year month days
-            String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), mContext);
-
-            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
-            mAgeYears = Integer.valueOf(ymdData[0]);
-            mAgeMonths = Integer.valueOf(ymdData[1]);
-            mAgeDays = Integer.valueOf(ymdData[2]);
-            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+                // String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
+                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dateOfBirth).split(" ");
+                mAgeYears = Integer.valueOf(ymdData[0]);
+                //  mAgeMonths = Integer.valueOf(ymdData[1]);
+                // mAgeDays = Integer.valueOf(ymdData[2]);
+          /*  String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                    mAgeDays + getResources().getString(R.string.days);
-            mAge.setText(age);
-        }
-        etLayoutAge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    mAgeDays + getResources().getString(R.string.days);*/
+                String age = mAgeYears + " " + getResources().getString(R.string.identification_screen_text_years);
+                mAge.setText(age);
 
-                mAgePicker = new MaterialAlertDialogBuilder(mContext, R.style.AlertDialogStyle);
-                mAgePicker.setTitle(R.string.identification_screen_prompt_age);
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
-                mAgePicker.setView(convertView);
-                NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-                NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-                NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
-                dayPicker.setVisibility(View.VISIBLE);
-
-                final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-                final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
-                final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
-                dayPicker.setVisibility(View.VISIBLE);
-
-                int totalDays = today.getActualMaximum(Calendar.DAY_OF_MONTH);
-                dayTv.setText(getString(R.string.days));
-                middleText.setText(getString(R.string.identification_screen_picker_years));
-                endText.setText(getString(R.string.identification_screen_picker_months));
-
-
-                yearPicker.setMinValue(10);
-                yearPicker.setMaxValue(100);
-                monthPicker.setMinValue(0);
-                monthPicker.setMaxValue(12);
-                dayPicker.setMinValue(0);
-                dayPicker.setMaxValue(31);
-
-                EditText yearText = yearPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
-                EditText monthText = monthPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
-                EditText dayText = dayPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
-
-
-                yearPicker.setValue(mAgeYears);
-                monthPicker.setValue(mAgeMonths);
-                dayPicker.setValue(mAgeDays);
-
-                //year
-                EditTextUtils.returnEditextValues(new IReturnValues() {
-                    @Override
-                    public void onReturnValue(String value) {
-                        mAgeYears = Integer.valueOf(value);
-                    }
-                }, yearText);
-
-                //month
-                EditTextUtils.returnEditextValues(new IReturnValues() {
-                    @Override
-                    public void onReturnValue(String value) {
-                        mAgeMonths = Integer.valueOf(value);
-                    }
-                }, monthText);
-
-                //day
-                EditTextUtils.returnEditextValues(new IReturnValues() {
-                    @Override
-                    public void onReturnValue(String value) {
-                        mAgeDays = Integer.valueOf(value);
-                    }
-                }, dayText);
-                mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
-                    String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
-                            mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
-                            mAgeDays + getString(R.string.days);
-                    mAge.setText(ageString);
-
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
-                    calendar.add(Calendar.MONTH, -mAgeMonths);
-                    calendar.add(Calendar.YEAR, -mAgeYears);
-
-                    mDOBYear = calendar.get(Calendar.YEAR);
-                    mDOBMonth = calendar.get(Calendar.MONTH);
-                    mDOBDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-//                    int curYear = calendar.get(Calendar.YEAR);
-//                    //int birthYear = curYear - yearPicker.getValue();
-//                    int birthYear = curYear - mAgeYears;
-//                    int curMonth = calendar.get(Calendar.MONTH);
-//                    //int birthMonth = curMonth - monthPicker.getValue();
-//                    int birthMonth = curMonth - mAgeMonths;
-//                    //int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
-//                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays;
-//                    mDOBYear = birthYear;
-//                    mDOBMonth = birthMonth;
-//
-//                    if (birthDay < 0) {
-//                        mDOBDay = birthDay + totalDays - 1;
-//                        mDOBMonth--;
-//
-//                    } else {
-//                        mDOBDay = birthDay;
-//                    }
-//                    //   Locale.setDefault(Locale.ENGLISH);
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
-                            Locale.ENGLISH);
-                    dob.set(mDOBYear, mDOBMonth, mDOBDay);
-                    String dobString = simpleDateFormat.format(dob.getTime());
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                        String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                        String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        String dob_text = en__mr_dob(dobString); //to show text of English into marathi...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                        String dob_text = en__as_dob(dobString); //to show text of English into assame...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                        String dob_text = en__ml_dob(dobString);
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                        String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                        String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
-                        mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                        String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                        mDOB.setText(dob_text);
-                    } else {
-                        mDOB.setText(dobString);
-                    }
-
-//                    mDOB.setText(dobString);
-                    mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
-                    dialog.dismiss();
-                });
-                mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialog = mAgePicker.show();
-                IntelehealthApplication.setAlertDialogCustomTheme(mContext, alertDialog);
+                // profile image edit
+                if (patientDTO.getPatientPhoto() != null && !patientDTO.getPatientPhoto().trim().isEmpty()) {
+                    //  patient_imgview.setImageBitmap(BitmapFactory.decodeFile(patientDTO.getPatientPhoto()));
+                    Glide.with(getActivity()).load(new File(patientDTO.getPatientPhoto())).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
+                }
             }
-        });
 
+            if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
+                ivProfilePhoto.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
+
+            //one time generation of uuid
+            if (null == patientID_edit || patientID_edit.isEmpty()) {
+                generateUuid();
+            }
+        }
+    }
+
+    private void updatePatientDetailsFromSummary() {
+        //edit patient
+        Intent intent = requireActivity().getIntent();
+        if (intent != null) {
+            if (intent.hasExtra("fromSummary")) {
+                mIsEditMode = true;
+                patientID_edit = intent.getStringExtra("patientUuid");
+                fromSummary = intent.getBooleanExtra("fromSummary", false);
+                if (fromSummary) {
+                    patient1.setUuid(patientID_edit);
+                    setscreen(patientID_edit);
+                    updateUI(patient1);
+                }
+
+            }
+        }
     }
 
     @Override
@@ -960,309 +405,6 @@ public class PatientPersonalInfoFragment extends Fragment {
     public void generateUuid() {
 
         patientUuid = uuidGenerator.UuidGenerator();
-
-    }
-
-    public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
-
-        //three ten implementation
-//        org.threeten.bp.LocalDate localDateTime1 = org.threeten.bp.LocalDate.now();
-//        org.threeten.bp.LocalDate localDateTime2 = org.threeten.bp.LocalDate.now();
-//        localDateTime2 = localDateTime2.withYear(syear).withMonth(smonth + 1).withDayOfMonth(sday);
-//        org.threeten.bp.Period p = org.threeten.bp.Period.between(localDateTime2, localDateTime1);
-//return p.getYears() + " years  - " + p.getMonths() + " month - " + p.getDays() + " days";
-
-        LocalDate birthdate = new LocalDate(syear, smonth + 1, sday);
-        LocalDate now = new LocalDate();
-        Period p = new Period(birthdate, now, PeriodType.yearMonthDay());
-        return p.getYears() + " years  - " + p.getMonths() + " month - " + p.getDays() + " days";
-
-
-//        String calculatedAge = null;
-//        int resmonth;
-//        int resyear;
-//        int resday;
-//
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//
-//            LocalDate today = LocalDate.now();
-//            LocalDate birthday = LocalDate.of(syear, smonth + 1, sday);
-//
-//            Period p = Period.between(birthday, today);
-//            System.out.println(p.getDays());
-//            System.out.println(p.getMonths());
-//            System.out.println(p.getYears());
-//            calculatedAge = p.getYears() + " years  - " + p.getMonths() + " month - " + p.getDays() + " days";
-//
-//
-//        } else {
-//
-//            //calculating year
-//            resyear = eyear - syear;
-//
-//            //calculating month
-//            if (emonth >= smonth) {
-//                resmonth = emonth - smonth;
-//            } else {
-//                resmonth = emonth - smonth;
-//                resmonth = 12 + resmonth;
-//                resyear--;
-//            }
-//
-//            //calculating date
-//            if (eday >= sday) {
-//                resday = eday - sday;
-//            } else {
-//                resday = eday - sday;
-//                resday = 30 + resday;
-//                if (resmonth == 0) {
-//                    resmonth = 11;
-//                    resyear--;
-//                } else {
-//                    resmonth--;
-//                }
-//            }
-//
-//            //displaying error if calculated age is negative
-//            if (resday < 0 || resmonth < 0 || resyear < 0) {
-//                Toast.makeText(this, "Current Date must be greater than Date of Birth", Toast.LENGTH_LONG).show();
-//                mDOB.setError(getString(R.string.identification_screen_error_dob));
-//                mAge.setError(getString(R.string.identification_screen_error_age));
-//            } else {
-//                // t1.setText("Age: " + resyear + " years /" + resmonth + " months/" + resday + " days");
-//
-//                calculatedAge = resyear + " years - " + resmonth + " months - " + resday + " days";
-//            }
-//        }
-//
-//        return calculatedAge != null ? calculatedAge : " ";
-    }
-
-
-    public void onPatientUpdateClicked(Patient patientDTO) {
-        Log.d(TAG, "onPatientUpdateClicked: patiebtdto : " + patientDTO);
-
-      /*  mTotalBirthCount = mTotalBirthEditText.getText().toString().trim();
-        mTotalMiscarriageCount = mTotalMiscarriageEditText.getText().toString().trim();
-        mAlternateNumberString = mAlternateNumberEditText.getText().toString().trim();
-        mWifeDaughterOfString = mWifeDaughterOfEditText.getText().toString().trim();*/
-
-        PatientsDAO patientsDAO = new PatientsDAO();
-        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
-        uuid = patientDTO.getUuid();
-
-        patientDTO.setUuid(uuid);
-        Gson gson = new Gson();
-
-        boolean cancel = false;
-        View focusView = null;
-
-
-        if (dob.equals("") || dob.toString().equals("")) {
-            if (dob.after(today)) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(mContext);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
-                //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                mDOBPicker.show();
-                alertDialog.show();
-
-                Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                // postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(mContext, alertDialog);
-                return;
-            }
-        }
-
-        if (mMobileNumber.getText().toString().trim().length() > 0) {
-            if (mMobileNumber.getText().toString().trim().length() < 10) {
-                mMobileNumber.requestFocus();
-                mMobileNumber.setError("Enter 10 digits");
-                return;
-            }
-        }
-
-       /* ArrayList<EditText> values = new ArrayList<>();
-        values.add(mFirstName);
-        values.add(mMiddleName);
-        values.add(mLastName);
-        values.add(mDOB);
-        values.add(mPhoneNum);
-        values.add(mAddress1);
-        values.add(mAddress2);
-        values.add(mCity);
-        values.add(mPostal);
-        values.add(mRelationship);
-        values.add(mOccupation);*/
-
-/*
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            return;
-        }
-*/
-
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
-
-            Log.v(TAG, "Result");
-
-        } else {
-            if (mFirstName.getText().toString().equals("")) {
-                mFirstName.setError(getString(R.string.error_field_required));
-            }
-
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-            }
-
-            if (mDOB.getText().toString().equals("")) {
-                mDOB.setError(getString(R.string.error_field_required));
-            }
-
-            if (mAge.getText().toString().equals("")) {
-                mAge.setError(getString(R.string.error_field_required));
-            }
-
-            Toast.makeText(mContext, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
-            if (mCurrentPhotoPath == null)
-                mCurrentPhotoPath = patientDTO.getPatient_photo();
-
-            patientDTO.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
-            patientDTO.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientDTO.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
-            patientDTO.setPhone_number(StringUtils.getValue(mMobileNumber.getText().toString()));
-            //  patientDTO.setGender(StringUtils.getValue(mGender));
-            String[] dob_array = mDOB.getText().toString().split(" ");
-            Log.d("dob_array", "0: " + dob_array[0]);
-            Log.d("dob_array", "0: " + dob_array[1]);
-            Log.d("dob_array", "0: " + dob_array[2]);
-
-            //get month index and return English value for month.
-            if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or_bn_en_noEdit
-                        (mDOB.getText().toString(), sessionManager.getAppLanguage());
-                patientDTO.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob)));
-            } else {
-                String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
-                String dob_month_split = dob_array[1];
-                dob_array[1] = dob_month_split.replace(dob_month_split, dob);
-                String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-
-                patientDTO.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob_value)));
-            }
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mMobileNumber.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")) {
-
-                String HouseHold_UUID = UUID.randomUUID().toString();
-                sessionManager.setHouseholdUuid(HouseHold_UUID);
-
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("householdID"));
-                patientAttributesDTO.setValue(HouseHold_UUID);
-
-            } else {
-
-                String HouseHold_UUID = sessionManager.getHouseholdUuid();
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("householdID"));
-                patientAttributesDTO.setValue(HouseHold_UUID);
-
-            }
-//          patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTOList.add(patientAttributesDTO);
-            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
-            //patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
-
-            Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientDTO, Patient.class));
-
-        }
-        try {
-            Logger.logD(TAG, "update ");
-            boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientDTO, uuid, patientAttributesDTOList);
-            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
-
-/* as per old flow
-            if (NetworkConnection.isOnline(mContext)) {
-                SyncDAO syncDAO = new SyncDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean ispush = syncDAO.pushDataApi();
-                boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
-
-//                if (ispush)
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirst_name() + "" + patientDTO.getLast_name() + "'s data upload complete.", 2, getApplication());
-//                else
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirst_name() + "" + patientDTO.getLast_name() + "'s data not uploaded.", 2, getApplication());
-
-//                if (isPushImage)
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirst_name() + "" + patientDTO.getLast_name() + "'s Image upload complete.", 4, getApplication());
-//                else
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirst_name() + "" + patientDTO.getLast_name() + "'s Image not complete.", 4, getApplication());
-
-            }
-*/
-            if (isPatientUpdated && isPatientImageUpdated) {
-                Logger.logD(TAG, "updated");
-                Intent i = new Intent(mContext, PatientDetailActivity.class);
-                i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientDTO.getFirst_name() + " " + patientDTO.getLast_name());
-                i.putExtra("tag", "newPatient");
-                i.putExtra("hasPrescription", "false");
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                mContext.startActivity(i);
-            }
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-
     }
 
     private void updateUI(Patient patient) {
@@ -1280,10 +422,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         String patientSelection = "uuid=?";
         String[] patientArgs = {patientUID};
-        String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
-                "economic_status", "education_status", "caste"};
+        String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo", "economic_status", "education_status", "caste"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1393,18 +532,25 @@ public class PatientPersonalInfoFragment extends Fragment {
         mLastName.setText(patient1.getLast_name());
         mMobileNumber.setText(patient1.getPhone_number());
         mAlternateNumber.setText(patient1.getAlternateNo());
-        mDOB.setText(patient1.getDate_of_birth());
-        mCurrentPhotoPath = patient1.getPatient_photo();
 
+        mCurrentPhotoPath = patient1.getPatient_photo();
+        Log.d(TAG, "setscreen: dob :" + patient1.getDate_of_birth());
+
+        String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
+        mDOB.setText(dob);
+        tvDobForDb.setText(patient1.getDate_of_birth());
+        //for age
+        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
+        mAgeYears = Integer.parseInt(ymdData[0]);
+        mAgeMonths = Integer.parseInt(ymdData[1]);
+        mAgeDays = Integer.parseInt(ymdData[2]);
+
+        // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+        String[] splitedDate = dob.split("/");
+        mAge.setText(mAgeYears + " years");
 
         if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
-            Glide.with(getActivity())
-                    .load(new File(mCurrentPhotoPath))
-                    .thumbnail(0.25f)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(ivProfilePhoto);
+            Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
         }
 
         patientDTO.setCityvillage(patient1.getCity_village());
@@ -1413,7 +559,6 @@ public class PatientPersonalInfoFragment extends Fragment {
         patientDTO.setAddress1(patient1.getAddress1());
         patientDTO.setAddress2(patient1.getAddress2());
         patientDTO.setPostalcode(patient1.getPostal_code());
-        patientDTO.setDateofbirth(patient1.getDate_of_birth());
 
     }
 
@@ -1424,7 +569,9 @@ public class PatientPersonalInfoFragment extends Fragment {
         ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info));
         ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_unselected));
         ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_unselected));
-
+        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tvAddressInfo.setTextColor(getResources().getColor(R.color.darkGray));
+        tvOtherInfo.setTextColor(getResources().getColor(R.color.darkGray));
 
         // next btn click
         btnSaveUpdate.setOnClickListener(v -> {
@@ -1438,133 +585,6 @@ public class PatientPersonalInfoFragment extends Fragment {
             }
         });
 
-    /* as per new flow commented
-    // Gender - start
-        if (mGenderMaleRadioButton.isChecked()) {
-            mGender = "M";
-        } else if (mGenderFemaleRadioButton.isChecked()) {
-            mGender = "F";
-        } else {
-            mGender = "O";
-        }
-
-        mGenderFemaleRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-
-        mGenderMaleRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-        mGenderOthersRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioButtonClicked(v);
-            }
-        });
-        // Gender - end*/
-
-        // DOB - start
-        mDOBPicker = new DatePickerDialog(getActivity(), R.style.datepicker,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        //Set the DOB calendar to the date selected by the user
-                        dob.set(year, monthOfYear, dayOfMonth);
-                        mDOB.setError(null);
-                        mAge.setError(null);
-
-                        // mDOBErrorTextView.setVisibility(View.GONE);
-                        //  mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-//
-///                        mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
-                        //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-
-                        // Locale.setDefault(Locale.ENGLISH);
-                        //Formatted so that it can be read the way the user sets
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                        dob.set(year, monthOfYear, dayOfMonth);
-                        String dobString = simpleDateFormat.format(dob.getTime());
-                        dob_indexValue = monthOfYear; //fetching the inex value of month selected...
-
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                            String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                            String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                            String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                            String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                            String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                            String dob_text = en__as_dob(dobString); //to show text of English into telugu...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                            String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                            String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
-                            mDOB.setText(dob_text);
-                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                            String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
-                            mDOB.setText(dob_text);
-                        } else {
-                            mDOB.setText(dobString);
-                        }
-
-                        //  dob_edittext.setText(dobString);
-                        mDOBYear = year;
-                        mDOBMonth = monthOfYear;
-                        mDOBDay = dayOfMonth;
-
-                        String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
-                                today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
-                        //get years months days
-                        String[] frtData = age.split("-");
-
-                        String[] yearData = frtData[0].split(" ");
-                        String[] monthData = frtData[1].split(" ");
-                        String[] daysData = frtData[2].split(" ");
-
-                        mAgeYears = Integer.valueOf(yearData[0]);
-                        mAgeMonths = Integer.valueOf(monthData[1]);
-                        mAgeDays = Integer.valueOf(daysData[1]);
-                        String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                                mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                                mAgeDays + getResources().getString(R.string.days);
-                        mAge.setText(ageS);
-
-                    }
-                }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE)); // so that todays date as shown as default selection.
-
-        //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-        mDOB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDOBPicker.show();
-            }
-        });
-        // DOB - end
 
         // Age - start
         etLayoutAge.setOnClickListener(new View.OnClickListener() {
@@ -1634,10 +654,11 @@ public class PatientPersonalInfoFragment extends Fragment {
 
 
                 mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
-                    String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
+                /*    String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
-                            mAgeDays + getString(R.string.days);
-                    mAge.setText(ageString);
+                            mAgeDays + getString(R.string.days);*/
+                    String ageString = mAgeYears + getString(R.string.identification_screen_text_years);
+                    /// temp commit k  mAge.setText(ageString);
 
                     //mDOBErrorTextView.setVisibility(View.GONE);
                     // mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -1645,7 +666,11 @@ public class PatientPersonalInfoFragment extends Fragment {
                     // mAgeErrorTextView.setVisibility(View.GONE);
                     //  mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
 
-                    Calendar calendar = Calendar.getInstance();
+                 /*
+                   temp commit
+
+
+                   Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_MONTH, -mAgeDays);
                     calendar.add(Calendar.MONTH, -mAgeMonths);
                     calendar.add(Calendar.YEAR, -mAgeYears);
@@ -1697,7 +722,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
 //                    dob_edittext.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
-                    dialog.dismiss();
+                    dialog.dismiss();*/
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -1735,8 +760,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
@@ -1763,8 +787,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     private void onPatientCreateClicked() {
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
 
             Log.v(TAG, "Result");
 
@@ -1789,203 +812,36 @@ public class PatientPersonalInfoFragment extends Fragment {
             return;
         }
 
-        uuid = UUID.randomUUID().toString();
-
-        Log.v(TAG, "reltion: " + patientID_edit);
-        /*if (patientID_edit != null) {
-            patientDTO.setUuid(patientID_edit);
-        } else if (patientDTO.getUuid() != null){
-          //  patientDTO.setUuid(uuid);
-        }
-        else {
-            patientDTO.setUuid(uuid);
-        }*/
+        patientUuid = UUID.randomUUID().toString();
 
         if (patient_detail) {
             //   patientDTO.setUuid(patientID_edit);
         } else {
-            patientDTO.setUuid(uuid);
+            patientDTO.setUuid(patientUuid);
         }
 
-/*
-
-        //frag1_nxt_btn_main.setBackground(getResources().getDrawable(R.drawable.disabled_patient_reg_btn));
-        if (mFirstName.getText().toString().equals("")) {
-            mFirstNameErrorTextView.setVisibility(View.VISIBLE);
-            mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
-            mFirstNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mFirstNameEditText.requestFocus();
-            return;
-        } else {
-            mFirstNameErrorTextView.setVisibility(View.GONE);
-            mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
-
-       */
-/* if (mMiddleNameEditText.getText().toString().equals("")) {
-            mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
-            mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
-            mMiddleNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mMiddleNameEditText.requestFocus();
-            return;
-        } else {
-            mMiddleNameErrorTextView.setVisibility(View.GONE);
-            mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }*//*
-
-
-        if (mLastNameEditText.getText().toString().equals("")) {
-            mLastNameErrorTextView.setVisibility(View.VISIBLE);
-            mLastNameErrorTextView.setText(getString(R.string.error_field_required));
-            mLastNameEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mLastNameEditText.requestFocus();
-            return;
-        } else {
-            mLastNameErrorTextView.setVisibility(View.GONE);
-            mLastNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
-        // gender valid - start
-        if (!mGenderFemaleRadioButton.isChecked() && !mGenderMaleRadioButton.isChecked() && !mGenderOthersRadioButton.isChecked()) {
-            mGenderErrorTextView.setVisibility(View.VISIBLE);
-            return;
-        } else {
-            mGenderErrorTextView.setVisibility(View.GONE);
-        }
-        // gender valid - end
-
-        if (mDOBEditText.getText().toString().equals("")) {
-            //  dob_edittext.setError(getString(R.string.error_field_required));
-            mDOBErrorTextView.setVisibility(View.VISIBLE);
-            mDOBErrorTextView.setText(getString(R.string.error_field_required));
-            mDOBEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mDOBEditText.requestFocus();
-            return;
-        } else {
-            mDOBErrorTextView.setVisibility(View.GONE);
-            mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
-
-        if (mAgeEditText.getText().toString().equals("")) {
-            //   age_edittext.setError(getString(R.string.error_field_required));
-            mAgeErrorTextView.setVisibility(View.VISIBLE);
-            mAgeErrorTextView.setText(getString(R.string.error_field_required));
-            mAgeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mAgeEditText.requestFocus();
-            return;
-        } else {
-            mAgeErrorTextView.setVisibility(View.GONE);
-            mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }
-
-        if (mPhoneNumberEditText.getText().toString().equals("")) {
-            mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-            mPhoneNumberErrorTextView.setText(getString(R.string.error_field_required));
-            mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mPhoneNumberEditText.requestFocus();
-            return;
-        } else {
-            String s = mPhoneNumberEditText.getText().toString().replaceAll("\\s+", "");
-            Log.v("phone", "phone: " + s);
-            if (s.length() < 10) {
-                mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                mPhoneNumberErrorTextView.setText(getString(R.string.enter_10_digits));
-                mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                mPhoneNumberEditText.requestFocus();
-                return;
-            } else {
-                mPhoneNumberErrorTextView.setVisibility(View.GONE);
-                mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            }
-
-            if (mCountryCodePicker.getSelectedCountryCode().equalsIgnoreCase("91")
-                    && s.length() > 10) {
-                mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
-                mPhoneNumberErrorTextView.setText(R.string.invalid_mobile_no);
-                mPhoneNumberEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                mPhoneNumberEditText.requestFocus();
-                return;
-            } else {
-                mPhoneNumberErrorTextView.setVisibility(View.GONE);
-                mPhoneNumberEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-            }
-            // Indian mobile number max
-        }
-
-        // mobile no - start
-
-        // mobile no - end
-*/
-
-        if (mCurrentPhotoPath != null)
-            patientDTO.setPatientPhoto(mCurrentPhotoPath);
-        else
-            patientDTO.setPatientPhoto(patientDTO.getPatientPhoto());
-
-        patientDTO.setFirstname(mFirstName.getText().toString());
-        patientDTO.setMiddlename(mMiddleName.getText().toString());
-        patientDTO.setLastname(mLastName.getText().toString());
-        patientDTO.setPhonenumber(mMobileNumber.getText().toString());
-        patientDTO.setDateofbirth(dobToDb);
-
-        // patientDTO.setGender(StringUtils.getValue(mGender));
-
-        //get unformatted number with prefix "+" i.e "+14696641766"
-        //   patientDTO.setPhonenumber(StringUtils.getValue(countryCodePicker.getFullNumberWithPlus()));
-
-
-        ///////////// patientDTO.setPhonenumber(StringUtils.getValue(mCountryCodePicker.getFullNumberWithPlus())); // automatically combines both cc and number togther.
-
-        String[] dob_array = mDOB.getText().toString().split(" ");
-        Log.d("dob_array", "0: " + dob_array[0]);
-        Log.d("dob_array", "0: " + dob_array[1]);
-        Log.d("dob_array", "0: " + dob_array[2]);
-
-      /*
-
-
-       temp commit crash
-
-     //get month index and return English value for month.
-        if (dob_indexValue == 15) {
-            String dob = StringUtils.hi_or_bn_en_noEdit
-                    (mDOB.getText().toString(), sessionManager.getAppLanguage());
-            patientDTO.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                    (StringUtils.getValue(dob)));
-        } else {
-            String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
-            dob_array[1] = dob_array[1].replace(dob_array[1], dob);
-            String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-            patientDTO.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                    (StringUtils.getValue(dob_value)));
-            Log.d(TAG, "onPatientCreateClicked: dob : " + DateAndTimeUtils.getFormatedDateOfBirth
-                    (StringUtils.getValue(dob_value)));
-
-        }*/
 
         if (patientDTO != null) {
             Log.d(TAG, "onPatientCreateClicked: not null");
 
+            if (mCurrentPhotoPath != null) patientDTO.setPatientPhoto(mCurrentPhotoPath);
+            else patientDTO.setPatientPhoto(patientDTO.getPatientPhoto());
 
-            //check new flow
-            Log.d(TAG, "11initUI: firstname personal:  " + patientDTO.getFirstname());
-            Log.d(TAG, "11initUI: lastname personal: " + patientDTO.getLastname());
-            Log.d(TAG, "11initUI: middlename personal: " + patientDTO.getMiddlename());
-            Log.d(TAG, "11initUI: dob personal: " + patientDTO.getDateofbirth());
-            Log.d(TAG, "11initUI: phoneno: personal " + patientDTO.getPhonenumber());
-            Log.d(TAG, "11initUI: patient_detail personal: " + patient_detail);
+            patientDTO.setFirstname(mFirstName.getText().toString());
+            patientDTO.setMiddlename(mMiddleName.getText().toString());
+            patientDTO.setLastname(mLastName.getText().toString());
+            patientDTO.setPhonenumber(mMobileNumber.getText().toString());
+            patientDTO.setDateofbirth(tvDobForDb.getText().toString());
 
             // Bundle data
             Bundle bundle = new Bundle();
             bundle.putSerializable("patientDTO", (Serializable) patientDTO);
             bundle.putBoolean("fromFirstScreen", true);
             bundle.putBoolean("patient_detail", patient_detail);
-            //   bundle.putString("patientUuid", patientID_edit);
+            bundle.putString("patientUuid", patientID_edit);
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment
 
-            Objects.requireNonNull(getActivity()).getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_add_patient, fragment_secondScreen)
-                    .commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_add_patient, fragment_secondScreen).commit();
             // end
         } else {
             Log.d(TAG, "onPatientCreateClicked: patientdao is null");
@@ -2056,13 +912,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
 
-                Glide.with(getActivity())
-                        .load(new File(mCurrentPhotoPath))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(ivProfilePhoto);
+                Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
             }
         } else if (requestCode == MY_REQUEST_CODE) {
             //selectedDate  -  30/5/2023
@@ -2099,8 +949,12 @@ public class PatientPersonalInfoFragment extends Fragment {
                     // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
                     String[] splitedDate = selectedDate.split("/");
                     mAge.setText(mAgeYears + " years");
-                    mDOB.setText(dateToshow1 + ", " + splitedDate[2]);
+                    mDOB.setText(dateToshow1 + " " + splitedDate[2]);
+                    tvDobForDb.setText(dobToDb);
+                    tvAgeDob.setText(mAgeYears + " years");
+                    patientDTO.setDateofbirth(dobToDb);
                     Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+                    setSelectedDob(mContext, dobToDb);
                 } else {
                     Log.d(TAG, "onClick: date empty");
                 }
@@ -2108,6 +962,75 @@ public class PatientPersonalInfoFragment extends Fragment {
         }
     }
 
+    private void setDetailsAsPerConfigFile() {
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
+        //Check for license key and load the correct config file
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, mContext), String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)));
+            }
+
+            //Display the fields on the Add Patient screen as per the config file
+            if (obj.getBoolean("mFirstName")) {
+                mFirstName.setVisibility(View.VISIBLE);
+            } else {
+                mFirstName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mMiddleName")) {
+                mMiddleName.setVisibility(View.VISIBLE);
+            } else {
+                mMiddleName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mLastName")) {
+                mLastName.setVisibility(View.VISIBLE);
+            } else {
+                mLastName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mDOB")) {
+                mDOB.setVisibility(View.VISIBLE);
+            } else {
+                mDOB.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mPhoneNum")) {
+                mMobileNumber.setVisibility(View.VISIBLE);
+            } else {
+                mMobileNumber.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mAge")) {
+                mAge.setVisibility(View.VISIBLE);
+            } else {
+                mAge.setVisibility(View.GONE);
+            }
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            //            Issue #627
+            //            added the catch exception to check the config and throwing back to setup activity
+            Toast.makeText(mContext, "JsonException" + e, Toast.LENGTH_LONG).show();
+            showAlertDialogButtonClicked(e.toString());
+        }
+
+    }
+
+    public String getSelectedDob(Context context) {
+        String access = "dobPatient";
+        SharedPreferences prefs = context.getSharedPreferences(access, MODE_PRIVATE);
+        String accdate = prefs.getString("dobPatient", "");
+        return accdate;
+    }
+
+    public void setSelectedDob(Context context, String dob) {
+        SharedPreferences pref = context.getApplicationContext().getSharedPreferences("dobPatient", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("dobPatient", dob);
+        editor.apply();
+    }
 /*
     private  void updateDobAsPerLanguage(){
 

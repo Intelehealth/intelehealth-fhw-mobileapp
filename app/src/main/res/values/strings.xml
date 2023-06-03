@@ -910,8 +910,8 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="alternate_mobile_no">Alternate Mobile Number</string>
     <string name="back">Back</string>
-    <string name="country">Country</string>
-    <string name="state">State</string>
+    <string name="country">Country*</string>
+    <string name="state">State*</string>
     <string name="village_town_city">Village/Town/City*</string>
     <string name="address_line1">Address Line 1</string>
     <string name="address_line2">Address Line 2</string>
