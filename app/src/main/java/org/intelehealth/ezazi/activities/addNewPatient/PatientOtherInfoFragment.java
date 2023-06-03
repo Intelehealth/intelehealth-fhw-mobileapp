@@ -5,7 +5,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,9 +117,12 @@ public class PatientOtherInfoFragment extends Fragment {
     private PatientAddressInfoFragment secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
     ImageView ivPersonal, ivAddress, ivOther;
-    TextView tvSpontaneous, tvInduced, tvSacRuptured;
+    TextView tvSpontaneous, tvInduced;
+
     int MY_REQUEST_CODE = 5555;
     int dob_indexValue = 15;
+    PatientsDAO patientsDAO = new PatientsDAO();
+    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -131,6 +138,9 @@ public class PatientOtherInfoFragment extends Fragment {
         ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
         ivAddress = getActivity().findViewById(R.id.iv_address_info);
         ivOther = getActivity().findViewById(R.id.iv_other_info);
+        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
+        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
+        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
 
         mAdmissionDateTextView = view.findViewById(R.id.et_admission_date);
         mAdmissionTimeTextView = view.findViewById(R.id.et_admission_time);
@@ -152,11 +162,9 @@ public class PatientOtherInfoFragment extends Fragment {
         btnNext = view.findViewById(R.id.btn_next_other);
         mUnknownMembraneRupturedCheckBox = view.findViewById(R.id.mUnknownMembraneRupturedCheckBox);
         mRiskFactorsTextView = view.findViewById(R.id.autotv_risk_factors);
-        tvSacRuptured = view.findViewById(R.id.textView8);
 
 
         handleOptionsForMaternity();
-
 
         mRiskFactorsTextView.setOnClickListener(v -> {
             // showRiskFactorsDialog();
@@ -219,7 +227,17 @@ public class PatientOtherInfoFragment extends Fragment {
             }*/
         }
 
-
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            if (intent.hasExtra("patientUuid")) {
+                mIsEditMode = true;
+                // this.setTitle(R.string.update_patient_identification);
+                patientID_edit = intent.getStringExtra("patientUuid");
+                patient1.setUuid(patientID_edit);
+                setscreen(patientID_edit);
+                updateUI(patient1);
+            }
+        }
     }
 
     private void handleOptionsForMaternity() {
@@ -288,34 +306,20 @@ public class PatientOtherInfoFragment extends Fragment {
     private void handleAllClickListeners() {
 
         TextInputLayout etLayoutAdmissionDate, etLayoutAdmissionTime,
-                etLabourDiagnosedDate, etLabourDiagnosedTime, etLayoutSacRupturedDate, etLayoutSacRupturedTime;
+                etLabourDiagnosedDate, etLabourDiagnosedTime, etLayoutSacRupturedDate, etLayoutSacRupturedTime,
+                etLayoutRiskFactors, etLayoutPrimaryDoctor, etLayoutSecondaryDoctor;
         etLayoutAdmissionDate = view.findViewById(R.id.etLayout_admission_date);
         etLayoutAdmissionTime = view.findViewById(R.id.etLayout_admission_time);
         etLabourDiagnosedDate = view.findViewById(R.id.etLayout_labor_diagnosed_date);
         etLabourDiagnosedTime = view.findViewById(R.id.etLayout_labor_diagnosed_time);
         etLayoutSacRupturedDate = view.findViewById(R.id.etLayout_sac_ruptured_date);
         etLayoutSacRupturedTime = view.findViewById(R.id.etLayout_sac_ruptured_time);
+        etLayoutRiskFactors = view.findViewById(R.id.etLayout_risk_factors);
+        etLayoutPrimaryDoctor = view.findViewById(R.id.etLayout_primary_doctor);
+        etLayoutSecondaryDoctor = view.findViewById(R.id.etLayout_secondary_doctor);
+
 
         etLayoutAdmissionDate.setEndIconOnClickListener(v -> {
-          /*  Calendar mCalendar = Calendar.getInstance();
-            int year = mCalendar.get(Calendar.YEAR);
-            int month = mCalendar.get(Calendar.MONTH);
-            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(0);
-                    cal.set(year, month, dayOfMonth);
-                    Date date = cal.getTime();
-
-                    mAdmissionDateString = simpleDateFormat.format(date);
-                    mAdmissionDateTextView.setText(mAdmissionDateString);
-                }
-            }, year, month, dayOfMonth);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-            datePickerDialog.show();*/
-
             Bundle args = new Bundle();
             args.putString("whichDate", "admissionDate");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
@@ -328,33 +332,6 @@ public class PatientOtherInfoFragment extends Fragment {
         });
 
         etLayoutAdmissionTime.setEndIconOnClickListener(v -> {
-           /* ThemeTimePickerDialog dialog = new ThemeTimePickerDialog.Builder(mContext)
-                    .title(R.string.current_time)
-                    .positiveButtonLabel(R.string.ok)
-                    .build();
-            dialog.setListener((hours, minutes, amPm, value) -> {
-                Log.d("ThemeTimePickerDialog", "value : " + value);
-            });
-            dialog.show(Objects.requireNonNull(getFragmentManager()), "ThemeTimePickerDialog");
-*/
-         /*   // Get Current Time
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Launch Time Picker Dialog
-            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            boolean isPM = (hourOfDay >= 12);
-                            mAdmissionTimeString = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
-                            mAdmissionTimeTextView.setText(mAdmissionTimeString);
-                        }
-                    }, hour, minute, false);
-            timePickerDialog.show();*/
-
-
             selectTimeForAllParameters("admissionTimeString");
         });
 
@@ -365,36 +342,20 @@ public class PatientOtherInfoFragment extends Fragment {
                 if (isChecked) {
                     etLayoutSacRupturedDate.setVisibility(View.GONE);
                     etLayoutSacRupturedTime.setVisibility(View.GONE);
-                    tvSacRuptured.setVisibility(View.GONE);
+                    mMembraneRupturedDateTextView.setEnabled(false);
+                    mMembraneRupturedTimeTextView.setEnabled(false);
+
                 } else {
                     etLayoutSacRupturedDate.setVisibility(View.VISIBLE);
                     etLayoutSacRupturedTime.setVisibility(View.VISIBLE);
-                    tvSacRuptured.setVisibility(View.VISIBLE);
+                    mMembraneRupturedDateTextView.setEnabled(true);
+                    mMembraneRupturedTimeTextView.setEnabled(true);
+
 
                 }
             }
         });
         etLabourDiagnosedDate.setEndIconOnClickListener(v -> {
-           /* Calendar mCalendar = Calendar.getInstance();
-            int year = mCalendar.get(Calendar.YEAR);
-            int month = mCalendar.get(Calendar.MONTH);
-            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(0);
-                    cal.set(year, month, dayOfMonth);
-                    Date date = cal.getTime();
-
-                    mActiveLaborDiagnosedDate = simpleDateFormat.format(date);
-                    mActiveLaborDiagnosedDateTextView.setText(mActiveLaborDiagnosedDate);
-                }
-            }, year, month, dayOfMonth);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-            datePickerDialog.show();
-      */
-
             Bundle args = new Bundle();
             args.putString("whichDate", "labourDiagnosedDate");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
@@ -406,46 +367,9 @@ public class PatientOtherInfoFragment extends Fragment {
         });
         etLabourDiagnosedTime.setEndIconOnClickListener(v -> {
             selectTimeForAllParameters("laborOnsetString");
-           /* // Get Current Time
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Launch Time Picker Dialog
-            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            boolean isPM = (hourOfDay >= 12);
-                            mActiveLaborDiagnosedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
-                            mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
-                            Log.d(TAG, "onTimeSet: mActiveLaborDiagnosedTime : " + mActiveLaborDiagnosedTime);
-                        }
-                    }, hour, minute, false);
-            timePickerDialog.show();*/
         });
 
         etLayoutSacRupturedDate.setEndIconOnClickListener(v -> {
-          /*  Calendar mCalendar = Calendar.getInstance();
-            int year = mCalendar.get(Calendar.YEAR);
-            int month = mCalendar.get(Calendar.MONTH);
-            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(0);
-                    cal.set(year, month, dayOfMonth);
-                    Date date = cal.getTime();
-
-                    mMembraneRupturedDate = simpleDateFormat.format(date);
-                    mMembraneRupturedDateTextView.setText(mMembraneRupturedDate);
-                }
-            }, year, month, dayOfMonth);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-            datePickerDialog.show();
-        });*/
-
             Bundle args1 = new Bundle();
             args1.putString("whichDate", "sacRupturedDate");
             CustomCalendarViewUI2 dialog1 = new CustomCalendarViewUI2(getActivity());
@@ -458,25 +382,8 @@ public class PatientOtherInfoFragment extends Fragment {
         etLayoutSacRupturedTime.setEndIconOnClickListener(v -> {
             selectTimeForAllParameters("membraneRupturedTime");
 
-           /* // Get Current Time
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Launch Time Picker Dialog
-            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext, R.style.DatePicker_Theme,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            boolean isPM = (hourOfDay >= 12);
-                            mMembraneRupturedTime = String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, isPM ? "PM" : "AM");
-                            mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
-
-                        }
-                    }, hour, minute, false);
-            timePickerDialog.show();*/
         });
-        mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
+        etLayoutRiskFactors.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -507,180 +414,22 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 assert getFragmentManager() != null;
                 dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
-
-            /*    final String[] items = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
-                        "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
-                boolean[] selectedItems = new boolean[items.length];
-                for (int i = 0; i < items.length; i++) {
-                    selectedItems[i] = mSelectedRiskFactorList.contains(items[i]);
-                }
-                AlertDialog.Builder builder =
-                        new AlertDialog.Builder(mContext);
-
-                builder.setTitle("Select Risk Factors")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setMultiChoiceItems(items, selectedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                            public void onClick(DialogInterface dialog, int itemIndex, boolean isChecked) {
-                                Log.i("Dialogos", "Opción elegida: " + items[itemIndex]);
-                                if (isChecked) {
-                                    if (itemIndex == 0) {
-                                        mSelectedRiskFactorList.clear();
-                                    } else {
-                                        mSelectedRiskFactorList.remove(items[0]);
-                                    }
-                                    if (!mSelectedRiskFactorList.contains(items[itemIndex]))
-                                        mSelectedRiskFactorList.add(items[itemIndex]);
-                                } else {
-                                    mSelectedRiskFactorList.remove(items[itemIndex]);
-                                }
-                                StringBuilder stringBuilder = new StringBuilder();
-                                for (int i = 0; i < mSelectedRiskFactorList.size(); i++) {
-                                    if (!stringBuilder.toString().isEmpty())
-                                        stringBuilder.append(",");
-                                    stringBuilder.append(mSelectedRiskFactorList.get(i));
-
-                                }
-                                mRiskFactorsString = stringBuilder.toString();
-                                mRiskFactorsTextView.setText(mRiskFactorsString);
-                            }
-                        });
-
-
-                builder.create().show();*/
             }
         });
 
-        mPrimaryDoctorTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        etLayoutPrimaryDoctor.setEndIconOnClickListener(v -> selectPrimaryDoctor());
 
-                selectPrimaryDoctor();
-              /*  List<ProviderDTO> providerDoctorList = new ArrayList<>();
-                for (int i = 0; i < mProviderDoctorList.size(); i++) {
-                    if (!mSecondaryDoctorUUIDString.equals(mProviderDoctorList.get(i).getUserUuid())) {
-                        providerDoctorList.add(mProviderDoctorList.get(i));
-                    }
-                }
-                Log.d(TAG, "onClick:providerDoctorList : " + providerDoctorList.size());
-                mDoctorNames = new String[providerDoctorList.size()];
-                mDoctorUUIDs.clear();
-                int selectedId = 0;
-
-                for (int i = 0; i < providerDoctorList.size(); i++) {
-                    mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
-                    mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
-                    if (mPrimaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
-                        selectedId = i;
-                }
-                AlertDialog.Builder builder =
-                        new AlertDialog.Builder(mContext);
-
-                builder.setTitle("Select Primary Doctor")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setSingleChoiceItems(mDoctorNames, selectedId, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mPrimaryDoctorUUIDString = mDoctorUUIDs.get(which);
-                                mPrimaryDoctorTextView.setText(mDoctorNames[which]);
-                            }
-                        });
-                builder.create().show();*/
-            }
+        etLayoutSecondaryDoctor.setEndIconOnClickListener(v -> {
+            selectSecondaryDoctor();
         });
-
-        mSecondaryDoctorTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                selectSecondaryDoctor();
-               /* if (mPrimaryDoctorUUIDString.isEmpty()) {
-                    Toast.makeText(mContext, "Please select the primary doctor", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                List<ProviderDTO> providerDoctorList = new ArrayList<>();
-                for (int i = 0; i < mProviderDoctorList.size(); i++) {
-                    if (!mPrimaryDoctorUUIDString.equals(mProviderDoctorList.get(i).getUserUuid())) {
-                        providerDoctorList.add(mProviderDoctorList.get(i));
-                    }
-                }
-                mDoctorNames = new String[providerDoctorList.size()];
-                mDoctorUUIDs.clear();
-                int selectedId = 0;
-                for (int i = 0; i < providerDoctorList.size(); i++) {
-                    mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
-                    mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
-                    if (mSecondaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
-                        selectedId = i;
-                }
-                AlertDialog.Builder builder =
-                        new AlertDialog.Builder(mContext);
-
-                builder.setTitle("Select Secondary Doctor")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setSingleChoiceItems(mDoctorNames, selectedId, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mSecondaryDoctorUUIDString = mDoctorUUIDs.get(which);
-                                mSecondaryDoctorTextView.setText(mDoctorNames[which]);
-                            }
-                        });
-                builder.create().show();*/
-            }
-        });
-
-     /*   mLaborOnsetRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rbLOSpontaneous) {
-                    mLaborOnsetString = "Spontaneous";
-                } else if (checkedId == R.id.rbLOInduced) {
-                    mLaborOnsetString = "Induced";
-                }
-            }
-        });*/
-
-/*
-        mHospitalMaternityRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mOthersEditText.setVisibility(View.GONE);
-                if (checkedId == R.id.rbHospital) {
-                    mHospitalMaternityString = "Hospital";
-                } else if (checkedId == R.id.rbMaternity) {
-                    mHospitalMaternityString = "Maternity";
-                } else {
-                    mHospitalMaternityString = " ";
-                    mOthersEditText.setVisibility(View.VISIBLE);
-//                    mOthersEditText.setText(mHospitalMaternityString);
-                }
-            }
-        });
-*/
-        /*end*/
 
         i_privacy = getActivity().getIntent();
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
 
-//Initialize the local database to store patient information
+        //Initialize the local database to store patient information
 
-        Intent intent = getActivity().getIntent(); // The intent was passed to the activity
+      /*  Intent intent = getActivity().getIntent(); // The intent was passed to the activity
         if (intent != null) {
             if (intent.hasExtra("patientUuid")) {
                 mIsEditMode = true;
@@ -691,7 +440,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 // setscreen(patientID_edit);
                 //  updateUI(patient1);
             }
-        }
+        }*/
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -716,10 +465,11 @@ public class PatientOtherInfoFragment extends Fragment {
             // temp commit -  showAlertDialogButtonClicked(e.toString());
         }
 
+        /*temp commit
         if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
 
-        }
+        }*/
     }
 
     @Override
@@ -728,46 +478,6 @@ public class PatientOtherInfoFragment extends Fragment {
 
     }
 
-
-    /*
-        private void showRiskFactorsDialog() {
-            final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight",
-                    "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
-
-            ArrayList<MultiChoiceItem> riskFactorItems = new ArrayList<>();
-            for (int i = 0; i < itemsArray.length; i++) {
-                RiskFactorsModel riskFactorsModel = new RiskFactorsModel(itemsArray[i], i);
-                riskFactorItems.add(riskFactorsModel);
-            }
-
-            //SelectAllMultiChoice selectAll = new SelectAllMultiChoice();
-            //selectAll.setHeader("Select All");
-            // items.add(0, selectAll);
-            MultiChoiceDialogFragment<MultiChoiceItem> dialog = new MultiChoiceDialogFragment.Builder<MultiChoiceItem>
-                    (mContext)
-                    .title(R.string.select_risk_factors)
-                    .positiveButtonLabel(R.string.save_button)
-                    .build();
-
-            dialog.setAdapter(new PatientMultiChoiceAdapter(mContext, riskFactorItems));
-            dialog.setListener(selectedItems -> {
-                //your code after multi selection
-                //  if (selectedItems.size() > 0) showNextShiftNursesDialog(selectedItems);
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < riskFactorItems.size(); i++) {
-                    if (!stringBuilder.toString().isEmpty())
-                        stringBuilder.append(",");
-                    stringBuilder.append(riskFactorItems.get(i));
-
-                }
-                String mRiskFactorsString = stringBuilder.toString();
-                Log.d(TAG, "showRiskFactorsDialog: mRiskFactorsString :" + mRiskFactorsString);
-
-            });
-
-            dialog.show(Objects.requireNonNull(getFragmentManager()), MultiChoiceDialogFragment.class.getCanonicalName());
-        }
-    */
     public void generateUuid() {
 
         patientUuid = uuidGenerator.UuidGenerator();
@@ -782,6 +492,11 @@ public class PatientOtherInfoFragment extends Fragment {
         ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info_done));
         ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_done));
         ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_info_active));
+        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tvAddressInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tvOtherInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
         btnBack.setOnClickListener(v -> {
             onBackInsertIntopatientDTO();
         });
@@ -1055,8 +770,8 @@ public class PatientOtherInfoFragment extends Fragment {
             Logger.logD(TAG, "insertpatinet ");
             boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, uuid);
             Log.d(TAG, "onPatientCreateClicked: isPatientInserted : " + isPatientInserted);
-            //
-            //   //temp comment  boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
+
+          boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), uuid);
 
             if (NetworkConnection.isOnline(mContext)) {
 //                patientApiCall();
@@ -1116,7 +831,7 @@ public class PatientOtherInfoFragment extends Fragment {
         bundle.putBoolean("patient_detail", patient_detail);
         secondScreen.setArguments(bundle); // passing data to Fragment
 
-        getActivity().getSupportFragmentManager()
+        requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, secondScreen)
                 .commit();
@@ -1183,7 +898,7 @@ public class PatientOtherInfoFragment extends Fragment {
             mPrimaryDoctorTextView.setText(mDoctorNames[position]);
         });
 
-        dialog.show(Objects.requireNonNull(getFragmentManager()), dialog.getClass().getCanonicalName());
+        dialog.show(requireFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void selectSecondaryDoctor() {
@@ -1221,7 +936,7 @@ public class PatientOtherInfoFragment extends Fragment {
             mSecondaryDoctorTextView.setText(mDoctorNames[position]);
         });
 
-        dialog.show(Objects.requireNonNull(getFragmentManager()), dialog.getClass().getCanonicalName());
+        dialog.show(requireFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void selectTimeForAllParameters(String forWhichParameter) {
@@ -1248,4 +963,230 @@ public class PatientOtherInfoFragment extends Fragment {
         });
         dialog.show(getFragmentManager(), "ThemeTimePickerDialog");
     }
+
+    private void setscreen(String patientUID) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        String patientSelection = "uuid=?";
+        String[] patientArgs = {patientUID};
+        String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
+                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
+                "economic_status", "education_status", "caste"};
+        Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
+        if (idCursor.moveToFirst()) {
+            do {
+                patient1.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                patient1.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                patient1.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                patient1.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patient1.setDate_of_birth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                patient1.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                patient1.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patient1.setCity_village(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patient1.setState_province(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patient1.setPostal_code(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patient1.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                patient1.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+
+            } while (idCursor.moveToNext());
+            idCursor.close();
+        }
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUID};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                if (name.equalsIgnoreCase("caste")) {
+                    patient1.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone Number")) {
+                    patient1.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education Level")) {
+                    patient1.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Economic Status")) {
+                    patient1.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Son/wife/daughter")) {
+                    patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                /*new*/
+                if (name.equalsIgnoreCase("AlternateNo")) {
+                    patient1.setAlternateNo(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Wife_Daughter_Of")) {
+                    patient1.setWifeDaughterOf(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Admission_Date")) {
+                    patient1.setAdmissionDate(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Admission_Time")) {
+                    patient1.setAdmissionTime(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+
+                if (name.equalsIgnoreCase("Parity")) {
+                    patient1.setParity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Labor Onset")) {
+                    patient1.setLaborOnset(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Active Labor Diagnosed")) {
+                    patient1.setActiveLaborDiagnosed(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Membrane Ruptured Timestamp")) {
+                    patient1.setMembraneRupturedTimestamp(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Risk factors")) {
+                    patient1.setRiskFactors(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Hospital_Maternity")) {
+                    patient1.setHospitalMaternity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("PrimaryDoctor")) {
+                    patient1.setPrimaryDoctor(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("SecondaryDoctor")) {
+                    patient1.setSecondaryDoctor(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("Ezazi Registration Number")) {
+                    patient1.seteZaziRegNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                /*end*/
+
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+
+    }
+
+    private void updateUI(Patient patient) {
+
+        //Admission_Date
+        if (patient.getAdmissionDate() != null) {
+            mAdmissionDateString = patient.getAdmissionDate();
+            mAdmissionDateTextView.setText(mAdmissionDateString);
+        }
+        //Admission_Time
+        if (patient.getAdmissionTime() != null) {
+            mAdmissionTimeString = patient.getAdmissionTime();
+            mAdmissionTimeTextView.setText(mAdmissionTimeString);
+        }
+
+        // parity
+        if (patient.getParity() != null) {
+            mTotalBirthCount = patient.getParity().split(",")[0];
+            mTotalMiscarriageCount = patient.getParity().split(",")[1];
+            mTotalBirthEditText.setText(mTotalBirthCount);
+            mTotalMiscarriageEditText.setText(mTotalMiscarriageCount);
+        }
+
+        //Labor Onset
+        if (patient.getLaborOnset() != null) {
+            mLaborOnsetString = patient.getLaborOnset();
+            if (mLaborOnsetString.equalsIgnoreCase("Spontaneous")) {
+                tvSpontaneous.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+                tvInduced.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                tvSpontaneous.setTextColor(getResources().getColor(R.color.white));
+                tvInduced.setTextColor(getResources().getColor(R.color.gray));
+                mLaborOnsetString = tvSpontaneous.getText().toString();
+            } else if (mLaborOnsetString.equalsIgnoreCase("Induced")) {
+                tvSpontaneous.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                tvInduced.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+                tvSpontaneous.setTextColor(getResources().getColor(R.color.gray));
+                tvInduced.setTextColor(getResources().getColor(R.color.white));
+                mLaborOnsetString = tvInduced.getText().toString();
+            }
+        }
+        //When was active labor diagnosed?
+        if (patient.getActiveLaborDiagnosed() != null) {
+            mActiveLaborDiagnosedDate = patient.getActiveLaborDiagnosed().split(" ")[0];
+            mActiveLaborDiagnosedTime = patient.getActiveLaborDiagnosed().split(" ")[1];
+            mActiveLaborDiagnosedDateTextView.setText(mActiveLaborDiagnosedDate);
+            mActiveLaborDiagnosedTimeTextView.setText(mActiveLaborDiagnosedTime);
+        }
+
+        //When was the membrane ruptured?
+        if (patient.getMembraneRupturedTimestamp() != null) {
+            if (patient.getMembraneRupturedTimestamp().equalsIgnoreCase("U")) {
+                mUnknownMembraneRupturedCheckBox.setChecked(true);
+            } else {
+                mUnknownMembraneRupturedCheckBox.setChecked(false);
+                mMembraneRupturedDate = patient.getMembraneRupturedTimestamp().split(" ")[0];
+                mMembraneRupturedTime = patient.getMembraneRupturedTimestamp().split(" ")[1];
+                mMembraneRupturedDateTextView.setText(mMembraneRupturedDate);
+                mMembraneRupturedTimeTextView.setText(mMembraneRupturedTime);
+            }
+        }
+        //Risk factors
+        if (patient.getRiskFactors() != null) {
+            mRiskFactorsString = patient.getRiskFactors();
+            mRiskFactorsTextView.setText(mRiskFactorsString);
+        }
+
+        //Hospital/Maternity?
+        if (patient.getHospitalMaternity() != null) {
+            //mOthersEditText.setVisibility(View.GONE);
+            mHospitalMaternityString = patient.getHospitalMaternity();
+            if (mHospitalMaternityString.equalsIgnoreCase("Hospital")) {
+                optionHospital.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+                optionMaternity.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                optionOther.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                optionHospital.setTextColor(getResources().getColor(R.color.white));
+                optionMaternity.setTextColor(getResources().getColor(R.color.gray));
+                optionOther.setTextColor(getResources().getColor(R.color.gray));
+                mHospitalMaternityString = optionHospital.getText().toString();
+            } else if (mHospitalMaternityString.equalsIgnoreCase("Maternity")) {
+                optionHospital.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                optionMaternity.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+                optionOther.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                optionHospital.setTextColor(getResources().getColor(R.color.gray));
+                optionMaternity.setTextColor(getResources().getColor(R.color.white));
+                optionOther.setTextColor(getResources().getColor(R.color.gray));
+                mHospitalMaternityString = optionMaternity.getText().toString();
+            } else {
+                optionHospital.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                optionMaternity.setBackground(getResources().getDrawable(R.drawable.button_bg_rounded_corners));
+                optionOther.setBackground(getResources().getDrawable(R.drawable.button_primary_rounded));
+                optionHospital.setTextColor(getResources().getColor(R.color.gray));
+                optionMaternity.setTextColor(getResources().getColor(R.color.gray));
+                optionOther.setTextColor(getResources().getColor(R.color.white));
+                mHospitalMaternityString = optionOther.getText().toString();
+            }
+        }
+
+        //primaryDoctor
+        Log.v(TAG, "getPrimaryDoctor" + patient.getPrimaryDoctor());
+        Log.v(TAG, "getPrimaryDoctor" + patient.getPrimaryDoctor());
+        if (patient.getPrimaryDoctor() != null) {
+            mPrimaryDoctorUUIDString = patient.getPrimaryDoctor().split("@#@")[0];
+            mPrimaryDoctorTextView.setText(patient.getPrimaryDoctor().split("@#@")[1]);
+        }
+
+        //secondaryDoctor
+        if (patient.getPrimaryDoctor() != null) {
+            mSecondaryDoctorUUIDString = patient.getSecondaryDoctor().split("@#@")[0];
+            mSecondaryDoctorTextView.setText(patient.getSecondaryDoctor().split("@#@")[1]);
+        }
+    }
+
 }

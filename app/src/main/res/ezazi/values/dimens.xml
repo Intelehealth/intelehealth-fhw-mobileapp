@@ -100,8 +100,8 @@
     <dimen name="input_add_patient_padding_top">11dp</dimen>
     <dimen name="spinners_add_patient_height">52dp</dimen>
     <dimen name="add_patient_padding_start">8dp</dimen>
-    <dimen name="add_patient_padding_top">8dp</dimen>
-    <dimen name="add_patient_padding_end">8dp</dimen>
+    <dimen name="add_patient_padding_top">14dp</dimen>
+    <dimen name="add_patient_padding_end">14dp</dimen>
     <dimen name="layout_stages_margin_top">25dp</dimen>
     <dimen name="layout_stages_icon_height">45dp</dimen>
     <dimen name="layout_stages_icon_width">40dp</dimen>
@@ -218,5 +218,13 @@
     <dimen name="dialog_custom_cal_width">350dp</dimen>
     <dimen name="edittext_text_size">16sp</dimen>
     <dimen name="time_picker_dialog_text_size">@dimen/std_24sp</dimen>
+
+    <!-- newly added-->
+    <dimen name="btn_add_patient_margin_bottom">30dp</dimen>
+    <dimen name="btn_add_patient_margin_top">30dp</dimen>
+    <dimen name="addpatient_frame_padding_top_bottom">14dp</dimen>
+    <dimen name="addpatient_frame_padding_start_end">12dp</dimen>
+    <dimen name="check_control_margin_top">3dp</dimen>
+    <dimen name="dropdowns_add_patient_height">43dp</dimen>
 
 </resources>
