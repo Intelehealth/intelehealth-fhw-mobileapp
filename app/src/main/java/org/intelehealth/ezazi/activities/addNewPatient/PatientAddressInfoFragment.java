@@ -141,9 +141,7 @@ public class PatientAddressInfoFragment extends Fragment {
         autotvCountry.setThreshold(1);
         autotvCountry.setAdapter(adapter);
         autotvCountry.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
-        autotvCountry.setValidator(new ValidatorCountry());
         adapter.notifyDataSetChanged();
-        autotvCountry.setOnFocusChangeListener(new FocusListenerForCountry());
         autotvCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -231,9 +229,6 @@ public class PatientAddressInfoFragment extends Fragment {
                                 R.array.states_india, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
-                        autotvState.setValidator(new ValidatorState());
-                        stateAdapter.notifyDataSetChanged();
-                        autotvState.setOnFocusChangeListener(new FocusListenerForState());
                         // setting state according database when user clicks edit details
 
                    /*    temp  if (patientID_edit != null)
@@ -250,9 +245,7 @@ public class PatientAddressInfoFragment extends Fragment {
                                 R.array.states_us, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
-                        autotvState.setValidator(new ValidatorState());
                         stateAdapter.notifyDataSetChanged();
-                        autotvState.setOnFocusChangeListener(new FocusListenerForState());
                        /*
                        temp  if (patientID_edit != null) {
 
@@ -263,9 +256,6 @@ public class PatientAddressInfoFragment extends Fragment {
                                 R.array.states_philippines, R.layout.custom_spinner);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
-                        autotvState.setValidator(new ValidatorState());
-                        stateAdapter.notifyDataSetChanged();
-                        autotvState.setOnFocusChangeListener(new FocusListenerForState());
 
                     /*   temp  if (patientID_edit != null) {
                             autotvState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
@@ -440,9 +430,8 @@ public class PatientAddressInfoFragment extends Fragment {
 
         // Next Button click event.
         btnNext.setOnClickListener(v -> {
-            if (checkCountryValidation() && checkStateValidation()) {
-                onPatientCreateClicked();
-            }
+            onPatientCreateClicked();
+
         });
 
         autotvCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -849,116 +838,5 @@ temp
         }
     }
 
-    class FocusListenerForCountry implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (v.getId() == R.id.autotv_country && !hasFocus) {
-                ((AutoCompleteTextView) v).performValidation();
-            }
-        }
-    }
-
-    class ValidatorCountry implements AutoCompleteTextView.Validator {
-
-        @Override
-        public boolean isValid(CharSequence text) {
-            if (countryArr != null) {
-                Arrays.sort(countryArr);
-                String textToSearch = text.toString();
-
-                int retVal = Arrays.binarySearch(countryArr, textToSearch);
-                if (retVal >= 0) {
-                    return true;
-
-                }
-                return false;
-            } else {
-                return false;
-            }
-
-        }
-
-        @Override
-        public CharSequence fixText(CharSequence invalidText) {
-
-            return "";
-        }
-    }
-
-    private boolean checkCountryValidation() {
-        if (countryArr != null) {
-            Arrays.sort(countryArr);
-            int retVal = Arrays.binarySearch(countryArr, autotvState.getText().toString());
-            if (retVal >= 0) {
-                return true;
-
-            } else {
-                Toast.makeText(mContext, "Please select country", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-        } else {
-            return false;
-
-        }
-    }
-
-    private boolean checkStateValidation() {
-        if (stateArr != null) {
-            Arrays.sort(stateArr);
-            int retVal = Arrays.binarySearch(stateArr, autotvState.getText().toString());
-            if (retVal >= 0) {
-                return true;
-
-            } else {
-                Toast.makeText(mContext, "Please select state", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-        } else {
-            return false;
-
-        }
-    }
-
-    class FocusListenerForState implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (v.getId() == R.id.autotv_state && !hasFocus) {
-                ((AutoCompleteTextView) v).performValidation();
-            }
-        }
-    }
-
-    class ValidatorState implements AutoCompleteTextView.Validator {
-
-        @Override
-        public boolean isValid(CharSequence text) {
-            if (stateArr != null) {
-                Arrays.sort(stateArr);
-                String textToSearch = text.toString();
-
-                int retVal = Arrays.binarySearch(stateArr, textToSearch);
-                if (retVal >= 0) {
-                    return true;
-
-                }
-                Toast.makeText(mContext, "Please select state", Toast.LENGTH_SHORT).show();
-
-                return false;
-            } else {
-                return false;
-            }
-
-        }
-
-        @Override
-        public CharSequence fixText(CharSequence invalidText) {
-
-            return "";
-        }
-    }
 
 }
