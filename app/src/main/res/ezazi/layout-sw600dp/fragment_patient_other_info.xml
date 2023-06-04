@@ -38,16 +38,20 @@
                 android:id="@+id/card_addmission_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/admission_date_margin_top"
-                android:orientation="vertical"
+                android:layout_marginTop="@dimen/other_all_controls_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_date_admission"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/admission_date_margin_top"
+                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_weight="1"
                     app:layout_constraintEnd_toStartOf="@+id/card_time"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -82,25 +86,14 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tv_admission_date_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
-                    android:gravity="end"
-                    android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_time_admission"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
+                    android:layout_marginStart="@dimen/time_margin_start"
+                    android:layout_marginTop="@dimen/admission_date_margin_top"
+                    android:layout_weight="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -136,18 +129,42 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
                 <TextView
-                    android:id="@+id/tv_admission_time_error"
+                    android:id="@+id/tv_admission_date_error"
                     style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="This field is mandatory"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tv_admission_time_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="invisible" />
 
             </LinearLayout>
+
 
             <TextView
                 android:id="@+id/textView5"
@@ -155,7 +172,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:layout_marginTop="@dimen/titles_margin_top"
                 android:text="@string/parity"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
@@ -165,16 +181,19 @@
                 android:id="@+id/card_details1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/admission_date_margin_top"
-                android:orientation="vertical"
+                android:layout_marginTop="@dimen/other_all_controls_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_total_birth"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/date_margin_end"
+                    android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Theme.EZazi.Input.Add.Patient"
@@ -199,28 +218,13 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tv_parity_date_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_total_miscarraige"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
+                    android:layout_marginStart="@dimen/time_margin_start"
                     android:layout_weight="1"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -258,18 +262,31 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
+                <TextView
+                    android:id="@+id/tv_parity_date_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/tv_parity_time_error"
                     style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="This field is mandatory"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
@@ -280,7 +297,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/labor_onset"
-                android:layout_marginTop="@dimen/titles_margin_top"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_details1" />
@@ -289,7 +305,7 @@
                 android:id="@+id/card_labour_onset"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_add_patient_height"
-                android:layout_marginTop="@dimen/admission_date_margin_top"
+                android:layout_marginTop="@dimen/other_all_controls_margin_top"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -330,9 +346,9 @@
                 android:gravity="end"
                 android:lineSpacingExtra="0sp"
                 android:text="This field is mandatory"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
-        <!--    <RelativeLayout
+            <RelativeLayout
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -340,35 +356,34 @@
                 android:layout_marginBottom="@dimen/when_diagnosed_margin_bottom"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_labour_onset">
--->
+
                 <TextView
-                    android:id="@+id/textView7"
                     style="@style/LabelStyleAddPatient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/titles_margin_top"
                     android:text="@string/when_diagnosed"
                     android:textColor="@color/colorBlack" />
 
-<!--
             </RelativeLayout>
--->
 
             <LinearLayout
                 android:id="@+id/card_labour_diagnosed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/admission_date_margin_top"
-                android:orientation="vertical"
+                android:layout_marginTop="@dimen/other_all_controls_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_diagnosed_date"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/date_margin_end"
+                    android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/etLayout_labor_diagnosed_date"
@@ -398,24 +413,13 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tv_labour_diagnosed_date_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
-                    android:gravity="end"
-                    android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_diagnosed_time"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
+                    android:layout_marginStart="@dimen/time_margin_start"
+                    android:layout_weight="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -451,31 +455,53 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
                 <TextView
-                    android:id="@+id/tv_labour_diagnosed_time_error"
+                    android:id="@+id/tv_labour_diagnosed_date_error"
                     style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="This field is mandatory"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tv_labour_diagnosed_time_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="invisible" />
 
             </LinearLayout>
-
 
             <RelativeLayout
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/titles_margin_top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_labour_diagnosed">
 
                 <TextView
                     style="@style/LabelStyleAddPatient"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="@string/sac_ruptured"
                     android:textColor="@color/colorBlack" />
@@ -483,12 +509,11 @@
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/mUnknownMembraneRupturedCheckBox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
                     android:fontFamily="@font/dm_sans_medium"
                     android:gravity="center"
-                    android:layout_marginTop="@dimen/other_info_checkbox_margin_top"
                     android:layoutDirection="rtl"
                     android:padding="5dp"
                     android:text="@string/unknown"
@@ -505,16 +530,19 @@
                 android:id="@+id/card_sac_ruptured"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/admission_date_margin_top"
-                android:orientation="vertical"
+                android:layout_marginTop="@dimen/check_control_margin_top"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView8">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_sac_ruptured_date"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/date_margin_end"
+                    android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/etLayout_sac_ruptured_date"
@@ -545,25 +573,13 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tv_sac_ruptured_date_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
-                    android:gravity="end"
-                    android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_sac_ruptured_time"
                     style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
+                    android:layout_marginStart="@dimen/time_margin_start"
+                    android:layout_weight="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -599,16 +615,39 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
                 <TextView
-                    android:id="@+id/tv_sac_ruptured_time_error"
+                    android:id="@+id/tv_sac_ruptured_date_error"
                     style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="This field is mandatory"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tv_sac_ruptured_time_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
@@ -618,7 +657,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:layout_marginTop="@dimen/titles_margin_top"
                 android:text="@string/risk_factors"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
@@ -767,7 +805,7 @@
                 android:gravity="end"
                 android:lineSpacingExtra="0sp"
                 android:text="This field is mandatory"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -775,7 +813,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:layout_marginTop="@dimen/titles_margin_top"
                 android:text="@string/secondary_doctor"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
@@ -821,7 +858,7 @@
                 android:gravity="end"
                 android:lineSpacingExtra="0sp"
                 android:text="This field is mandatory"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -830,7 +867,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/bed_number"
-                android:layout_marginTop="@dimen/titles_margin_top"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dropdown_secondary_doctor" />
@@ -876,7 +912,7 @@
                 android:gravity="end"
                 android:lineSpacingExtra="0sp"
                 android:text="This field is mandatory"
-                android:visibility="gone" />
+                android:visibility="invisible" />
         </LinearLayout>
 
     </ScrollView>

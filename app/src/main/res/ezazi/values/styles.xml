@@ -232,16 +232,16 @@
     </style>
 
 
-   <!-- <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">?attr/colorPrimary</item>
-        <item name="boxStrokeWidth">1dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="hintTextColor">@color/darkGray</item>
-        <item name="boxBackgroundColor">@color/white</item>
-    </style>-->
+    <!-- <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+         <item name="boxStrokeColor">?attr/colorPrimary</item>
+         <item name="boxStrokeWidth">1dp</item>
+         <item name="boxCornerRadiusBottomEnd">8dp</item>
+         <item name="boxCornerRadiusBottomStart">8dp</item>
+         <item name="boxCornerRadiusTopEnd">8dp</item>
+         <item name="boxCornerRadiusTopStart">8dp</item>
+         <item name="hintTextColor">@color/darkGray</item>
+         <item name="boxBackgroundColor">@color/white</item>
+     </style>-->
 
     <style name="Theme.EZazi.LastSync.Text" parent="@style/Theme.EZazi.Caption">
         <item name="android:textAllCaps">false</item>
@@ -329,14 +329,14 @@
         <item name="android:theme">@style/Theme.EZazi.Button.Wrap</item>
     </style>
 
-<!--    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">-->
-<!--        <item name="android:textSize">@dimen/custom_appbar_title_size</item>-->
-<!--        <item name="android:textColor">@color/font_black_0</item>-->
-<!--        <item name="fontFamily">@font/dm_sans_medium</item>-->
-<!--        <item name="android:fontFamily">@font/dm_sans_medium</item>-->
-<!--        <item name="android:lineHeight">@dimen/std_31dp</item>-->
+    <!--    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">-->
+    <!--        <item name="android:textSize">@dimen/custom_appbar_title_size</item>-->
+    <!--        <item name="android:textColor">@color/font_black_0</item>-->
+    <!--        <item name="fontFamily">@font/dm_sans_medium</item>-->
+    <!--        <item name="android:fontFamily">@font/dm_sans_medium</item>-->
+    <!--        <item name="android:lineHeight">@dimen/std_31dp</item>-->
 
-<!--    </style>-->
+    <!--    </style>-->
 
 
     <style name="Theme.EZazi.Input.Add.Patient" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -351,18 +351,31 @@
     </style>
 
     <style name="Theme.EZazi.Material.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">8dp</item>
         <item name="elevation">0dp</item>
         <item name="cardElevation">0dp</item>
         <item name="cardMaxElevation">0dp</item>
-        <item name="strokeWidth">0.1dp</item>
-        <item name="strokeColor">@color/colorScrollbar</item>
+        <item name="cardCornerRadius">8dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingTop">-10dp</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>
+        <item name="strokeWidth">0.1dp</item>
+        <item name="strokeColor">@color/colorScrollbar</item>
 
     </style>
+    <!-- <style name="Theme.EZazi.Material.CardView" parent="Widget.MaterialComponents.CardView">
+         <item name="cardCornerRadius">8dp</item>
+         <item name="elevation">0dp</item>
+         <item name="cardElevation">0dp</item>
+         <item name="cardMaxElevation">0dp</item>
+         <item name="strokeWidth">0.1dp</item>
+         <item name="strokeColor">@color/colorScrollbar</item>
+         <item name="android:paddingBottom">10dp</item>
+         <item name="android:paddingTop">-10dp</item>
+         <item name="android:paddingStart">10dp</item>
+         <item name="android:paddingEnd">10dp</item>
+
+     </style>-->
 
     <style name="Theme.EZazi.Input.Add.Patient.DropDown" parent="Theme.EZazi.Input.Login">
         <item name="android:theme">
@@ -450,21 +463,23 @@
     <style name="CalendarSpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/spinner_cal_view_bg_non_selected</item>
     </style>
+
     <style name="TextInputLayoutHintText">
         <item name="android:textColor">@color/gray</item>
-        <item name="android:textSize">12sp</item></style>
+        <item name="android:textSize">12sp</item>
+    </style>
 
 
-  <!--  <style name="Theme.EZazi.Input.Add.Patient.DropDown" parent="Theme.EZazi.Input.Login">
-        <item name="android:theme">
-            @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu
-        </item>
-        <item name="endIconDrawable">@drawable/ic_dropdown</item>
-        <item name="endIconMode">dropdown_menu</item>
-        <item name="boxBackgroundColor">@color/white</item>
-        <item name="boxStrokeColor">@color/white</item>
-        <item name="boxStrokeWidth">0dp</item>
-    </style>-->
+    <!--  <style name="Theme.EZazi.Input.Add.Patient.DropDown" parent="Theme.EZazi.Input.Login">
+          <item name="android:theme">
+              @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu
+          </item>
+          <item name="endIconDrawable">@drawable/ic_dropdown</item>
+          <item name="endIconMode">dropdown_menu</item>
+          <item name="boxBackgroundColor">@color/white</item>
+          <item name="boxStrokeColor">@color/white</item>
+          <item name="boxStrokeWidth">0dp</item>
+      </style>-->
     <style name="Widget.MyApp.TextInputLayout.custom.dropdown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
@@ -474,6 +489,7 @@
         <item name="boxStrokeColor">@color/white</item>
         <item name="boxStrokeWidth">0dp</item>
     </style>
+
     <style name="Textview_Validation_Error" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/validation_error_tv_size</item>
         <item name="android:textColor">@color/red</item>

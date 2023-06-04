@@ -82,6 +82,7 @@
                 android:paddingBottom="@dimen/addpatient_frame_padding_top_bottom">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_first_name"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -110,16 +111,18 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </com.google.android.material.card.MaterialCardView>
+
                 <TextView
                     android:id="@+id/firstname_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory" />
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_prescription"
                     style="@style/Theme.EZazi.Material.CardView"
@@ -149,6 +152,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_last_name"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -173,17 +177,20 @@
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
+
                 <TextView
                     android:id="@+id/lastname_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory" />
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
+
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_dob"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,6 +221,7 @@
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
+
                 <TextView
                     android:id="@+id/dob_error"
                     style="@style/Textview_Validation_Error"
@@ -221,9 +229,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:visibility="gone"
                     android:lineSpacingExtra="0sp"
-                    android:text="@string/please_enter_mobile_number" />
+                    android:text="@string/please_enter_mobile_number"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/tv_selected_date_dob"
                     android:layout_width="match_parent"
@@ -237,6 +246,7 @@
                     android:visibility="gone" />
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_age"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -266,10 +276,22 @@
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <TextView
+                    android:id="@+id/age_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
+
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/card_mobile_no"
                     android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -294,10 +316,21 @@
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/mobile_no_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
 
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
+                    android:id="@+id/card_alternate_mobile_no"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/input_add_patient_margin_top"
                     android:layout_marginBottom="15dp">
@@ -324,6 +357,17 @@
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/alternate_no_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
+
 
             </LinearLayout>
 

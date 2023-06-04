@@ -2,6 +2,9 @@ package org.intelehealth.ezazi.activities.addNewPatient;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +12,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -66,6 +72,9 @@ public class PatientAddressInfoFragment extends Fragment {
     ImageView ivPersonal, ivAddress, ivOther;
     TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     String[] countryArr, stateArr;
+    TextView tvErrorCountry, tvErrorState, tvErrorCityVillage;
+    MaterialCardView cardCountry, cardState, cardCityVillage;
+    String mAlternateNumberString;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +103,13 @@ public class PatientAddressInfoFragment extends Fragment {
         etPostalCode = view.findViewById(R.id.et_postal_code);
         btnBack = view.findViewById(R.id.btn_back_address);
         btnNext = view.findViewById(R.id.btn_next_address);
+        tvErrorCountry = view.findViewById(R.id.tv_error_country);
+        tvErrorState = view.findViewById(R.id.tv_error_state);
+        tvErrorCityVillage = view.findViewById(R.id.tv_error_city_village);
+        cardCountry = view.findViewById(R.id.card_country);
+        cardState = view.findViewById(R.id.card_state);
+        cardCityVillage = view.findViewById(R.id.card_city_village);
+
 
         setCountriesAndStates();
         firstScreen = new PatientPersonalInfoFragment();
@@ -104,6 +120,9 @@ public class PatientAddressInfoFragment extends Fragment {
             fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
             fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
+            mAlternateNumberString = getArguments().getString("mAlternateNumberString");
+
+
             //   patientID_edit = getArguments().getString("patientUuid");
 
             //check new flow
@@ -599,6 +618,8 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
+        bundle.putString("mAlternateNumberString", mAlternateNumberString);
+
         firstScreen.setArguments(bundle); // passing data to Fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -615,144 +636,48 @@ public class PatientAddressInfoFragment extends Fragment {
 
         patientDTO.setUuid(uuid);
         Gson gson = new Gson();
+        //validations
+        if (TextUtils.isEmpty(autotvCountry.getText().toString())) {
+            autotvCountry.requestFocus();
+
+            tvErrorCountry.setVisibility(View.VISIBLE);
+            tvErrorCountry.setText(getString(R.string.select_admission_date));
+            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+            return;
+        } else {
+            tvErrorCountry.setVisibility(View.GONE);
+            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        if (TextUtils.isEmpty(autotvState.getText().toString())) {
+            autotvState.requestFocus();
+
+            tvErrorState.setVisibility(View.VISIBLE);
+            tvErrorState.setText(getString(R.string.select_admission_time));
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            return;
+
+        } else {
+            tvErrorState.setVisibility(View.GONE);
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+        }
+
+        if (TextUtils.isEmpty(autotvCity.getText().toString())) {
+            autotvCity.requestFocus();
+
+            tvErrorCityVillage.setVisibility(View.VISIBLE);
+            tvErrorCityVillage.setText(getString(R.string.total_birth_count_val_txt));
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            return;
+
+        } else {
+            tvErrorCityVillage.setVisibility(View.GONE);
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
 
         boolean cancel = false;
         View focusView = null;
-
-
-/*
-
-temp
-        if (dob.equals("") || dob.toString().equals("")) {
-            if (dob.after(today)) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(mContext);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
-                //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                mDOBPicker.show();
-                alertDialog.show();
-
-                Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                // postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-                return;
-            }
-        }
-*/
-
-
-   /*     ArrayList<EditText> values = new ArrayList<>();
-        values.add(mFirstName);
-        values.add(mMiddleName);
-        values.add(mLastName);
-        values.add(mDOB);
-        values.add(mPhoneNum);
-        values.add(mAddress1);
-        values.add(mAddress2);
-        values.add(mCity);
-        values.add(mPostal);
-        values.add(mRelationship);
-        values.add(mOccupation);*/
-
-/*
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            return;
-        }
-*/
-
-        if (!autotvCountry.getText().toString().equals("") && !autotvState.getText().toString().equals("")
-                && !autotvCity.getText().toString().equals("")) {
-
-            Log.v(TAG, "Result");
-
-        } else {
-            if (autotvCountry.getText().toString().equals("")) {
-                autotvCountry.setError(getString(R.string.error_field_required));
-            }
-
-            if (autotvState.getText().toString().equals("")) {
-                autotvState.setError(getString(R.string.error_field_required));
-            }
-
-            if (autotvCity.getText().toString().equals("")) {
-                autotvCity.setError(getString(R.string.error_field_required));
-            }
-
-/* commented as per new flow
-
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
-            }
-
-*/
-
-
-            Toast.makeText(mContext, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-      /*
-      validation pending
-      if (autotvCountry.getListSelection() == 0) {
-            countryText.setError(getString(R.string.error_field_required));
-            focusView = countryText;
-            cancel = true;
-            return;
-        } else {
-            countryText.setError(null);
-        }
-
-
-        if (mState.getSelectedItemPosition() == 0) {
-            stateText.setError(getString(R.string.error_field_required));
-            focusView = stateText;
-            cancel = true;
-            return;
-        } else {
-            stateText.setError(null);
-        }*/
-        /*new*/
 
         if (cancel) {
             focusView.requestFocus();
@@ -838,5 +763,62 @@ temp
         }
     }
 
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+            if (this.editText.getId() == R.id.autotv_country) {
+                if (val.isEmpty()) {
+                    tvErrorCountry.setVisibility(View.VISIBLE);
+                    tvErrorCountry.setText(getString(R.string.select_admission_date));
+                    cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+                } else {
+                    tvErrorCountry.setVisibility(View.GONE);
+                    cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+                }
+            } else if (this.editText.getId() == R.id.autotv_state) {
+                if (val.isEmpty()) {
+                    tvErrorState.setVisibility(View.VISIBLE);
+                    tvErrorState.setText(getString(R.string.select_admission_time));
+                    cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+                } else {
+                    tvErrorState.setVisibility(View.GONE);
+                    cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+                }
+            } else if (this.editText.getId() == R.id.autotv_city) {
+                if (val.isEmpty()) {
+                    tvErrorCityVillage.setVisibility(View.VISIBLE);
+                    tvErrorCityVillage.setText(getString(R.string.total_birth_count_val_txt));
+                    cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+
+                } else {
+                    tvErrorCityVillage.setVisibility(View.GONE);
+                    cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+
+                }
+            }
+        }
+    }
 
 }

@@ -10,6 +10,15 @@ public class Patient {
     private String phone_number;
     private String address1;
     private String address2;
+
+    public String getBedNumber() {
+        return bedNumber;
+    }
+
+    public void setBedNumber(String bedNumber) {
+        this.bedNumber = bedNumber;
+    }
+
     private String city_village;
     private String state_province;
     private String postal_code;
@@ -38,6 +47,7 @@ public class Patient {
     private String primaryDoctor;
     private String secondaryDoctor;
     private String eZaziRegNumber;
+    String bedNumber; //new flow
     /*end*/
 
     public String getUuid() {

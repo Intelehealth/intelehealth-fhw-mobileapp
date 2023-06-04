@@ -21,12 +21,12 @@
             android:weightSum="2">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_country"
                 style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/input_add_patient_margin_top"
-                android:layout_marginEnd="5dp">
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
@@ -49,61 +49,39 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="@dimen/input_add_patient_margin_top"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="true">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autotv_state"
+                        style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/input_add_patient_height"
+                        android:dropDownSelector="@color/white"
+                        android:hint="@string/state"
+                        android:paddingTop="@dimen/input_add_patient_padding_top"
+                        android:textAlignment="viewStart"
+                        android:textSize="@dimen/input_inner_size" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-        <TextView
-            android:id="@+id/tv_error_country"
-            style="@style/Textview_Validation_Error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:lineSpacingExtra="0sp"
-            android:text="This field is mandatory"
-            android:visibility="gone" />
+
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_state"
-            style="@style/Theme.EZazi.Material.CardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="@dimen/input_add_patient_margin_top"
-            android:backgroundTint="@color/white">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hintEnabled="true">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autotv_state"
-                    style="@style/Theme.EZazi.Scrollbar.Thumb"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_add_patient_height"
-                    android:dropDownSelector="@color/white"
-                    android:hint="@string/state"
-                    android:paddingTop="@dimen/input_add_patient_padding_top"
-                    android:textAlignment="viewStart"
-                    android:textSize="@dimen/input_inner_size" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-        <TextView
-            android:id="@+id/tv_error_state"
-            style="@style/Textview_Validation_Error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:lineSpacingExtra="0sp"
-            android:text="This field is mandatory"
-            android:visibility="gone" />
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_city_village"
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,17 +108,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tv_error_city_village"
-            style="@style/Textview_Validation_Error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:lineSpacingExtra="0sp"
-            android:text="This field is mandatory"
-            android:visibility="gone" />
+
         <com.google.android.material.card.MaterialCardView
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"

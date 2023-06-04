@@ -871,7 +871,7 @@
     <string name="refer_data_submitted_successfully">Refer data submitted successfully</string>
     <string name="select_birth_outcome">Select Birth Outcome</string>
     <string name="primary_doct_val_txt">Please select primary Doctor</string>
-    <string name="seconday_doct_val_txt">Please select seconday Doctor</string>
+    <string name="seconday_doct_val_txt">Please select secondary Doctor</string>
     <string name="birth_weight">Birth Weight</string>
     <string name="apgar_1min">Apgar at 1min</string>
     <string name="apgar_5min">Apgar at 5min</string>
@@ -971,4 +971,19 @@
     <string name="enter_doctor_name">Enter Doctor Name</string>
     <string name="enter_note">Enter Note</string>
     <string name="search_patients">Search Patients</string>
+
+    <string name="enter_first_name">Please enter first name</string>
+    <string name="enter_last_name">Please enter last name</string>
+    <string name="select_dob">Please select date of birth</string>
+    <string name="select_age">Please select date of birth</string>
+    <string name="mobile_no_length">Mobile number length is 10</string>
+    <string name="select_admission_date">Please select admission date</string>
+    <string name="select_admission_time">Please select admission time</string>
+    <string name="select_sac_ruptured_date">Select amniotic sac ruptured date</string>
+    <string name="select_sac_ruptured_time">Select amniotic sac ruptured time</string>
+    <string name="enter_bed_no">Enter bed number</string>
+    <string name="select_country">Please select country</string>
+    <string name="select_state">Please select state</string>
+    <string name="select_city_village">Please select city/village</string>
+
 </resources>
