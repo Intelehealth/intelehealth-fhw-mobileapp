@@ -25,8 +25,7 @@
                 style="@style/Theme.EZazi.Material.CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/input_add_patient_margin_top"
-                android:layout_marginEnd="5dp">
+                android:layout_marginTop="@dimen/input_add_patient_margin_top">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
@@ -67,7 +66,6 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:layout_marginTop="@dimen/input_add_patient_margin_top"
             android:backgroundTint="@color/white">
 

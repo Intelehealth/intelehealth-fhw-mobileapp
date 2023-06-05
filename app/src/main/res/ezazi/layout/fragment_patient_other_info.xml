@@ -483,7 +483,7 @@
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/mUnknownMembraneRupturedCheckBox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     android:fontFamily="@font/dm_sans_medium"

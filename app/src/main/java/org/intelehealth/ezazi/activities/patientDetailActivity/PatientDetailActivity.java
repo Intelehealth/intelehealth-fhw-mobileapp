@@ -205,6 +205,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(PatientDetailActivity.this, AddNewPatientActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
                 intent2.putExtra("fromSummary", true);
+                intent2.putExtra("editDetails", true);
+
+
                 startActivity(intent2);
 
             }

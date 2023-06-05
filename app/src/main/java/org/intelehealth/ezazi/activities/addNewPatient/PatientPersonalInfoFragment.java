@@ -157,6 +157,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     boolean fromSecondScreen = false;
     private PatientAddressInfoFragment fragment_secondScreen;
     boolean patient_detail = false;
+    boolean editDetails = false;
     ImageView ivPersonal, ivAddress, ivOther;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     FloatingActionButton fab;
@@ -291,6 +292,10 @@ public class PatientPersonalInfoFragment extends Fragment {
             patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
+            mAlternateNumberString = getArguments().getString("mAlternateNumberString");
+            editDetails = getArguments().getBoolean("editDetails");
+
+
             updateUI(patient1);
 
 
@@ -300,7 +305,8 @@ public class PatientPersonalInfoFragment extends Fragment {
                 mMiddleName.setText(patientDTO.getMiddlename());
                 mLastName.setText(patientDTO.getLastname());
                 mMobileNumber.setText(patientDTO.getPhonenumber());
-                mAlternateNumber.setText(patientDTO.getAlternateNo());
+                Log.d(TAG, "updatePatientDetailsFromSecondScreen: phone : " + patientDTO.getPhonenumber());
+                mAlternateNumber.setText(mAlternateNumberString);
                 Log.d(TAG, "initUI: dob from dto : " + patientDTO.getDateofbirth());
                 String dateOfBirth = getSelectedDob(mContext);
                 ///String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
@@ -921,6 +927,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             bundle.putBoolean("patient_detail", patient_detail);
             bundle.putString("patientUuid", patientID_edit);
             bundle.putString("mAlternateNumberString", mAlternateNumber.getText().toString());
+            bundle.putBoolean("editDetails", true);
 
 
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment

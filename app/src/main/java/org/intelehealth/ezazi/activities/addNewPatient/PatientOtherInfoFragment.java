@@ -174,7 +174,6 @@ public class PatientOtherInfoFragment extends Fragment {
         mRiskFactorsTextView = view.findViewById(R.id.autotv_risk_factors);
 
 
-        handleValidations();
 
         handleOptionsForMaternity();
 
@@ -197,17 +196,6 @@ public class PatientOtherInfoFragment extends Fragment {
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
-
-
-            //   patientID_edit = getArguments().getString("patientUuid");
-            //check new flow
-            Log.d(TAG, "33initUI: firstname personal:  " + patientDTO.getFirstname());
-            Log.d(TAG, "33initUI: lastname personal: " + patientDTO.getLastname());
-            Log.d(TAG, "33initUI: middlename personal: " + patientDTO.getMiddlename());
-            Log.d(TAG, "33initUI: dob personal: " + patientDTO.getDateofbirth());
-            Log.d(TAG, "33initUI: phoneno: personal " + patientDTO.getPhonenumber());
-            Log.d(TAG, "33initUI: patient_detail personal: " + patient_detail);
-
 
 
           /*  if (patientID_edit != null) {
@@ -253,6 +241,9 @@ public class PatientOtherInfoFragment extends Fragment {
                 updateUI(patient1);
             }
         }
+
+        handleValidations();
+
     }
 
     private void handleValidations() {
@@ -389,8 +380,22 @@ public class PatientOtherInfoFragment extends Fragment {
             }
 
         });
+        etLayoutAdmissionDate.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("whichDate", "admissionDate");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
+            }
+
+        });
 
         etLayoutAdmissionTime.setEndIconOnClickListener(v -> {
+            selectTimeForAllParameters("admissionTimeString");
+        });
+        etLayoutAdmissionTime.setOnClickListener(v -> {
             selectTimeForAllParameters("admissionTimeString");
         });
 
@@ -424,7 +429,30 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
             }
         });
+        etLabourDiagnosedDate.setEndIconOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("whichDate", "labourDiagnosedDate");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
+            }
+        });
+        etLabourDiagnosedDate.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("whichDate", "labourDiagnosedDate");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
+            }
+        });
         etLabourDiagnosedTime.setEndIconOnClickListener(v -> {
+            selectTimeForAllParameters("laborOnsetString");
+        });
+        etLabourDiagnosedTime.setOnClickListener(v -> {
             selectTimeForAllParameters("laborOnsetString");
         });
 
@@ -438,7 +466,21 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog1.show(getFragmentManager(), "PatientOtherInfoFragment");
             }
         });
+        etLayoutSacRupturedDate.setOnClickListener(v -> {
+            Bundle args1 = new Bundle();
+            args1.putString("whichDate", "sacRupturedDate");
+            CustomCalendarViewUI2 dialog1 = new CustomCalendarViewUI2(getActivity());
+            dialog1.setArguments(args1);
+            dialog1.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog1.show(getFragmentManager(), "PatientOtherInfoFragment");
+            }
+        });
         etLayoutSacRupturedTime.setEndIconOnClickListener(v -> {
+            selectTimeForAllParameters("membraneRupturedTime");
+
+        });
+        etLayoutSacRupturedTime.setOnClickListener(v -> {
             selectTimeForAllParameters("membraneRupturedTime");
 
         });
@@ -1004,6 +1046,8 @@ public class PatientOtherInfoFragment extends Fragment {
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromThirdScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
+        bundle.putBoolean("editDetails", true);
+
         secondScreen.setArguments(bundle); // passing data to Fragment
 
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_add_patient, secondScreen).commit();
@@ -1430,7 +1474,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     cardTotalMiscarraige.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                 }
             } else if ((this.editText.getId() == R.id.et_spontaneous) || (this.editText.getId() == R.id.et_induced)) {//labour onset
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
 
                     tvErrorLabourOnset.setVisibility(View.VISIBLE);
                     tvErrorLabourOnset.setText(getString(R.string.labor_onset_val_txt));
@@ -1444,7 +1488,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 }
             } else if (this.editText.getId() == R.id.et_labor_diagnosed_date) {
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
 
                     tvErrorLabourDiagnosedDate.setVisibility(View.VISIBLE);
                     tvErrorLabourDiagnosedDate.setText(getString(R.string.active_labor_diagnosed_date_val_txt));
@@ -1455,7 +1499,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 }
             } else if (this.editText.getId() == R.id.et_labor_diagnosed_time) {
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
                     tvErrorLabourDiagnosedTime.setVisibility(View.VISIBLE);
                     tvErrorLabourDiagnosedTime.setText(getString(R.string.active_labor_diagnosed_time_val_txt));
                     cardDiagnosedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
@@ -1464,7 +1508,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     cardDiagnosedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                 }
             } else if (this.editText.getId() == R.id.et_sac_ruptured_date) {
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
 
                     tvErrorSacRupturedDate.setVisibility(View.VISIBLE);
                     tvErrorSacRupturedDate.setText(getString(R.string.select_sac_ruptured_date));
@@ -1474,7 +1518,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                 }
             } else if (this.editText.getId() == R.id.et_sac_ruptured_time) {
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
 
                     tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
                     tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
@@ -1485,7 +1529,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 }
             } else if (this.editText.getId() == R.id.autotv_primary_doctor) {
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
 
                     tvErrorPrimaryDoctor.setVisibility(View.VISIBLE);
                     tvErrorPrimaryDoctor.setText(getString(R.string.select_primary_doctor));
@@ -1496,7 +1540,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 }
             } else if (this.editText.getId() == R.id.autotv_secondary_doctor) {
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
 
                     tvErrorSecondaryDoctor.setVisibility(View.VISIBLE);
                     tvErrorSecondaryDoctor.setText(getString(R.string.secondary_doctor));
@@ -1507,7 +1551,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 }
             } else if (this.editText.getId() == R.id.et_bed_number) {
-                if (!val.isEmpty()) {
+                if (val.isEmpty()) {
 
                     tvErrorBedNumber.setVisibility(View.VISIBLE);
                     tvErrorBedNumber.setText(getString(R.string.enter_bed_no));
@@ -1520,6 +1564,7 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         }
     }
+
     private String getBedNumber(String patientuuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
