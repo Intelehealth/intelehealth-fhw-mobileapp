@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_save_update_first"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/screen_padding"
         android:fillViewport="true"
         android:orientation="vertical"
         android:scrollbars="none">
