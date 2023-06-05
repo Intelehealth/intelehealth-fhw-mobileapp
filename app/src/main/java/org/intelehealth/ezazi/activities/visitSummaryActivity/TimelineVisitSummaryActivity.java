@@ -426,6 +426,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         new ConfirmationDialogFragment.Builder(this)
                 .content(getString(R.string.this_option_available_tablet_device))
                 .positiveButtonLabel(R.string.ok)
+                .hideNegativeButton(true)
                 .build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
     }
 

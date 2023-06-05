@@ -62,7 +62,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     }
 
     public Drawable getDialogBackground() {
-        return ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.white_child_container_bg);
+        return ContextCompat.getDrawable(requireContext(), R.drawable.white_child_container_bg);
     }
 
     @NonNull
@@ -146,6 +146,8 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
         private String positiveBtnLabel;
         private String negativeBtnLabel;
 
+        private boolean hideNegativeButton = false;
+
         private T content;
 
         private View view;
@@ -184,6 +186,11 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             return this;
         }
 
+        public BaseBuilder<T, D> hideNegativeButton(boolean hide) {
+            this.hideNegativeButton = hide;
+            return this;
+        }
+
         public BaseBuilder<T, D> content(T content) {
             this.content = content;
             return this;
@@ -201,6 +208,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             args.setTitle(title);
             args.setPositiveBtnLabel(positiveBtnLabel);
             args.setNegativeBtnLabel(negativeBtnLabel == null ? context.getResources().getString(R.string.cancel) : negativeBtnLabel);
+            if (hideNegativeButton) args.setNegativeBtnLabel(null);
             args.setContent(content);
             return getDialogArgument(args);
         }
