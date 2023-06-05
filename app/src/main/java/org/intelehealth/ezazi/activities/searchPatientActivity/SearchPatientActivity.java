@@ -29,17 +29,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
+import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.ConfigUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -50,7 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SearchPatientActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class SearchPatientActivity extends BaseActionBarActivity implements SearchView.OnQueryTextListener {
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;
@@ -69,20 +69,8 @@ public class SearchPatientActivity extends AppCompatActivity implements SearchVi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_ezazi);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_sort_white_24dp);
-//        toolbar.setOverflowIcon(drawable);
-
-        setSupportActionBar(toolbar);
-//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-//        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle(getString(R.string.title_search_patient));
+        super.onCreate(savedInstanceState);
         // Get the intent, verify the action and get the query
 
 
@@ -228,7 +216,7 @@ public class SearchPatientActivity extends AppCompatActivity implements SearchVi
                 //Loads the config file values and check for the boolean value of privacy key.
                 ConfigUtils configUtils = new ConfigUtils(SearchPatientActivity.this);
                 if (configUtils.privacy_notice()) {
-                    Intent intent = new Intent(SearchPatientActivity.this, PrivacyNotice_Activity.class);
+                    Intent intent = new Intent(SearchPatientActivity.this, PrivacyNoticeActivity.class);
                     startActivity(intent);
                 } else {
                     //Clear HouseHold UUID from Session for new registration
@@ -238,6 +226,11 @@ public class SearchPatientActivity extends AppCompatActivity implements SearchVi
                 }
             }
         });
+    }
+
+    @Override
+    protected int getScreenTitle() {
+        return R.string.title_search_patient;
     }
 
     @Override

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ezazi.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.ezazi.activities.videoLibraryActivity.VideoLibraryActivity;
@@ -89,7 +89,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     ConfigUtils configUtils = new ConfigUtils(this.context);
                     if(configUtils.privacy_notice())
                     {
-                        Intent intent = new Intent(this.context, PrivacyNotice_Activity.class);
+                        Intent intent = new Intent(this.context, PrivacyNoticeActivity.class);
                         this.context.startActivity(intent);
                         break;
                     }

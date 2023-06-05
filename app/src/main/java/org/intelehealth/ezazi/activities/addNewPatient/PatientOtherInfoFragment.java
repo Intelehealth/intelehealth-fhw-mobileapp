@@ -77,6 +77,11 @@ import java.util.UUID;
 
 public class PatientOtherInfoFragment extends Fragment {
     private static final String TAG = "PatientPersonalInfoFrag";
+
+    public static PatientOtherInfoFragment getInstance() {
+        return new PatientOtherInfoFragment();
+    }
+
     View view;
     AutoCompleteTextView mRiskFactorsTextView, mPrimaryDoctorTextView, mSecondaryDoctorTextView;
     Context mContext;
@@ -116,13 +121,13 @@ public class PatientOtherInfoFragment extends Fragment {
     boolean patient_detail = false;
     private PatientAddressInfoFragment secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
-    ImageView ivPersonal, ivAddress, ivOther;
+    //    ImageView ivPersonal, ivAddress, ivOther;
     TextView tvSpontaneous, tvInduced;
 
     int MY_REQUEST_CODE = 5555;
     int dob_indexValue = 15;
     PatientsDAO patientsDAO = new PatientsDAO();
-    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
+//    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,12 +140,12 @@ public class PatientOtherInfoFragment extends Fragment {
     }
 
     private void initUI() {
-        ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
-        ivAddress = getActivity().findViewById(R.id.iv_address_info);
-        ivOther = getActivity().findViewById(R.id.iv_other_info);
-        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
-        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
-        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
+//        ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
+//        ivAddress = getActivity().findViewById(R.id.iv_address_info);
+//        ivOther = getActivity().findViewById(R.id.iv_other_info);
+//        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
+//        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
+//        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
 
         mAdmissionDateTextView = view.findViewById(R.id.et_admission_date);
         mAdmissionTimeTextView = view.findViewById(R.id.et_admission_time);
@@ -489,12 +494,12 @@ public class PatientOtherInfoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info_done));
-        ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_done));
-        ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_info_active));
-        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
-        tvAddressInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
-        tvOtherInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info_done));
+//        ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_done));
+//        ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_info_active));
+//        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        tvAddressInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        tvOtherInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
 
 
         btnBack.setOnClickListener(v -> {
@@ -771,7 +776,7 @@ public class PatientOtherInfoFragment extends Fragment {
             boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, uuid);
             Log.d(TAG, "onPatientCreateClicked: isPatientInserted : " + isPatientInserted);
 
-          boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), uuid);
+            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), uuid);
 
             if (NetworkConnection.isOnline(mContext)) {
 //                patientApiCall();
@@ -835,6 +840,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, secondScreen)
                 .commit();
+        ((AddNewPatientActivity) requireActivity()).changeCurrentPage(AddNewPatientActivity.PAGE_ADDRESS);
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.privacyNoticeActivity.PrivacyNotice_Activity">
+    tools:context=".activities.privacyNoticeActivity.PrivacyNoticeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/actionbar"

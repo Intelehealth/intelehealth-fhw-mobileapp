@@ -17,9 +17,10 @@ import android.webkit.WebViewClient;
 
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
-public class EpartogramViewActivity extends AppCompatActivity {
+public class EpartogramViewActivity extends BaseActionBarActivity {
     private WebView webView;
     private String patientUuid, visitUuid;
     private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
@@ -32,10 +33,8 @@ public class EpartogramViewActivity extends AppCompatActivity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_epartogram_ezazi);
-
-        setupActionBar();
+        super.onCreate(savedInstanceState);
 
         Intent intent = this.getIntent();
         if (intent != null) {
@@ -87,12 +86,9 @@ public class EpartogramViewActivity extends AppCompatActivity {
 
     }
 
-    private void setupActionBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(view -> {
-            super.onBackPressed();
-        });
+    @Override
+    protected int getScreenTitle() {
+        return 0;
     }
 
     @Override

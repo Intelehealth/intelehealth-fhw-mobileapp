@@ -37,6 +37,7 @@ import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartogramDataCaptureActivity extends AppCompatActivity {
+public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
     private Button mSaveTextView, mEpartogramTextView;
     private RecyclerView mRecyclerView;
@@ -69,12 +70,8 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partogram_data_capture_ezazi);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.observations));
+        super.onCreate(savedInstanceState);
         mSaveTextView = findViewById(R.id.btnSave);
         mEpartogramTextView = findViewById(R.id.btnView);
         mRecyclerView = findViewById(R.id.rvQuery);
@@ -225,6 +222,11 @@ public class PartogramDataCaptureActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected int getScreenTitle() {
+        return R.string.observations;
     }
 
 

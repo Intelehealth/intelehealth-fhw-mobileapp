@@ -118,8 +118,8 @@
     <dimen name="add_patient_frame_margin_end">20dp</dimen>
     <dimen name="profile_layout_size">100dp</dimen>
     <dimen name="profile_layout_margin_bottom">10dp</dimen>
-    <dimen name="card_profile_width">70dp</dimen>
-    <dimen name="card_profile_height">70dp</dimen>
+    <dimen name="card_profile_width">72dp</dimen>
+    <dimen name="card_profile_height">72dp</dimen>
     <dimen name="card_profile_corner_radius">12dp</dimen>
     <dimen name="card_profile_icon_height">60dp</dimen>
     <dimen name="card_profile_icon_width">60dp</dimen>
@@ -136,7 +136,7 @@
     <dimen name="time_margin_start">10dp</dimen>
     <dimen name="titles_margin_top">12dp</dimen>
     <dimen name="layout_stages_padding">10dp</dimen>
-    <dimen name="add_picture_text_size">14sp</dimen>
+    <dimen name="add_picture_text_size">16sp</dimen>
     <dimen name="layout_add_patient_padding_start">12dp</dimen>
     <dimen name="layout_add_patient_padding_top">10dp</dimen>
     <dimen name="layout_add_patient_padding_end">12dp</dimen>
@@ -234,7 +234,5 @@
     <dimen name="dropdowns_add_patient_height">43dp</dimen>
     <dimen name="validation_error_tv_margin_top">6dp</dimen>
     <dimen name="validation_error_tv_size">12sp</dimen>
-
-
-
+    <dimen name="dotted_line_top_margin">@dimen/std_16dp</dimen>
 </resources>

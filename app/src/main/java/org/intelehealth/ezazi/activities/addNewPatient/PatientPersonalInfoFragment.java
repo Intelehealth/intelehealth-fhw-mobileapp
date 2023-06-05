@@ -117,6 +117,11 @@ import java.util.UUID;
  */
 public class PatientPersonalInfoFragment extends Fragment {
     private static final String TAG = "PatientPersonalInfoFrag";
+
+    public static PatientPersonalInfoFragment getInstance() {
+        return new PatientPersonalInfoFragment();
+    }
+
     View view;
     SessionManager sessionManager = null;
     Context mContext;
@@ -154,14 +159,15 @@ public class PatientPersonalInfoFragment extends Fragment {
     boolean fromSecondScreen = false;
     private PatientAddressInfoFragment fragment_secondScreen;
     boolean patient_detail = false;
-    ImageView ivPersonal, ivAddress, ivOther;
+    //    ImageView ivPersonal, ivAddress, ivOther;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     FloatingActionButton fab;
     ImageView ivProfilePhoto;
     TextInputLayout etLayoutDob, etLayoutAge;
     int MY_REQUEST_CODE = 5555;
     String dobToDb;
-    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo, tvDobForDb, tvAgeDob;
+    //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
+    TextView tvDobForDb, tvAgeDob;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -189,12 +195,12 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private void initUI() {
-        ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
-        ivAddress = getActivity().findViewById(R.id.iv_address_info);
-        ivOther = getActivity().findViewById(R.id.iv_other_info);
-        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
-        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
-        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
+//        ivPersonal = getActivity().findViewById(R.id.iv_personal_info);
+//        ivAddress = getActivity().findViewById(R.id.iv_address_info);
+//        ivOther = getActivity().findViewById(R.id.iv_other_info);
+//        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
+//        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
+//        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
 
         etLayoutAge = view.findViewById(R.id.etLayout_age);
         etLayoutDob = view.findViewById(R.id.etLayout_dob);
@@ -566,12 +572,12 @@ public class PatientPersonalInfoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info));
-        ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_unselected));
-        ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_unselected));
-        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
-        tvAddressInfo.setTextColor(getResources().getColor(R.color.darkGray));
-        tvOtherInfo.setTextColor(getResources().getColor(R.color.darkGray));
+//        ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info));
+//        ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_unselected));
+//        ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_unselected));
+//        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        tvAddressInfo.setTextColor(getResources().getColor(R.color.darkGray));
+//        tvOtherInfo.setTextColor(getResources().getColor(R.color.darkGray));
 
         // next btn click
         btnSaveUpdate.setOnClickListener(v -> {
@@ -840,8 +846,9 @@ public class PatientPersonalInfoFragment extends Fragment {
             bundle.putBoolean("patient_detail", patient_detail);
             bundle.putString("patientUuid", patientID_edit);
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment
-
+//
             requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_add_patient, fragment_secondScreen).commit();
+            ((AddNewPatientActivity) requireActivity()).changeCurrentPage(AddNewPatientActivity.PAGE_ADDRESS);
             // end
         } else {
             Log.d(TAG, "onPatientCreateClicked: patientdao is null");

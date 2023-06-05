@@ -105,7 +105,7 @@
         </receiver>
 
         <activity
-            android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:name=".activities.privacyNoticeActivity.PrivacyNoticeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
@@ -222,7 +222,7 @@
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
-            android:label="@string/title_activity_search_patient"
+            android:label="@string/title_search_patient"
             android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

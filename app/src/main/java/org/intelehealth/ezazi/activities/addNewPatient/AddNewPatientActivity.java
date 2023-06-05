@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.activities.addNewPatient;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 
 import android.content.DialogInterface;
@@ -21,47 +22,49 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 
 import java.io.Serializable;
 
-public class AddNewPatientActivity extends AppCompatActivity {
+public class AddNewPatientActivity extends BaseActionBarActivity {
     private static final String TAG = "AddNewPatientActivity";
+    public static final int PAGE_PERSONAL = 0;
+    public static final int PAGE_ADDRESS = 1;
+    public static final int PAGE_OTHER = 2;
+//    private ViewPager2 pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_patient);
-
+        super.onCreate(savedInstanceState);
         initUI();
+    }
 
-
+    @Override
+    protected int getScreenTitle() {
+        return R.string.add_patient;
     }
 
     private void initUI() {
-        ImageView ivPersonalInfo = findViewById(R.id.iv_personal_info);
-        ImageView ivAddressInfo = findViewById(R.id.iv_address_info);
-        ImageView ivOtherInfo = findViewById(R.id.iv_other_info);
-
-        View toolbar = findViewById(R.id.toolbar_common);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        tvTitle.setText(getResources().getString(R.string.add_patient));
-        ImageView ibBackArrow = toolbar.findViewById(R.id.iv_back_arrow_common);
-
-
-        ibBackArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, new PatientPersonalInfoFragment())
                 .commit();
+        changeCurrentButtonState(PAGE_PERSONAL);
 
+//        pager = findViewById(R.id.viewPager);
+//        pager.setUserInputEnabled(false);
+//        pager.setAdapter(new PatientTabPagerAdapter(getSupportFragmentManager(), getLifecycle()));
+//        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                super.onPageSelected(position);
+//                changeCurrentButtonState(position);
+//            }
+//        });
 
+//        pager.setCurrentItem(0);
        /* Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
 
@@ -77,6 +80,27 @@ public class AddNewPatientActivity extends AppCompatActivity {
                 }
 
             }*/
+    }
+
+    private void changeCurrentButtonState(int position) {
+        TextView tvPersonal = findViewById(R.id.tv_personal_info);
+        TextView tvAddress = findViewById(R.id.tv_address_info);
+        TextView tvOther = findViewById(R.id.tv_other_info);
+
+        if (position == PAGE_PERSONAL) {
+            tvPersonal.setSelected(true);
+        } else if (position == PAGE_ADDRESS) {
+            tvPersonal.setActivated(true);
+            tvAddress.setSelected(true);
+        } else if (position == PAGE_OTHER) {
+            tvOther.setSelected(true);
+            tvAddress.setActivated(true);
+        }
+    }
+
+    public void changeCurrentPage(int position) {
+//        pager.setCurrentItem(position);
+        changeCurrentButtonState(position);
     }
 
     private void setScreen(Fragment fragment) {

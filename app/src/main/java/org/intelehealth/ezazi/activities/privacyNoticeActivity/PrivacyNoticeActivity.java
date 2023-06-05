@@ -2,7 +2,6 @@ package org.intelehealth.ezazi.activities.privacyNoticeActivity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -19,8 +18,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
-import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.json.JSONException;
@@ -29,7 +28,7 @@ import org.json.JSONObject;
 import java.util.Locale;
 import java.util.Objects;
 
-public class PrivacyNotice_Activity extends AppCompatActivity implements View.OnClickListener {
+public class PrivacyNoticeActivity extends BaseActionBarActivity implements View.OnClickListener {
     TextView privacy_textview;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -49,28 +48,8 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_notice_ezazi);
-//        setTitle(getString(R.string.privacy_notice_title));
-
-        /*
-         * Toolbar which displays back arrow on action bar
-         * Add the below lines for every activity*/
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-//        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle(getString(R.string.privacy_notice_title));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
+        super.onCreate(savedInstanceState);
 
         sessionManager = new SessionManager(this);
         privacy_textview = findViewById(R.id.privacy_text);
@@ -180,6 +159,11 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
     }
 
     @Override
+    protected int getScreenTitle() {
+        return R.string.privacy_notice_title;
+    }
+
+    @Override
     public void onClick(View v) {
 
         if (checkBox_cho.isChecked() && v.getId() == R.id.button_accept) {
@@ -192,11 +176,11 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
             Log.d("Privacy", "selected radio: " + accept.getText().toString());
             startActivity(intent);
         } else if (checkBox_cho.isChecked() && v.getId() == R.id.button_reject) {
-            Toast.makeText(PrivacyNotice_Activity.this,
+            Toast.makeText(PrivacyNoticeActivity.this,
                     getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            Toast.makeText(PrivacyNotice_Activity.this,
+            Toast.makeText(PrivacyNoticeActivity.this,
                     getString(R.string.please_read_out_privacy_consent_first), Toast.LENGTH_SHORT).show();
         }
 

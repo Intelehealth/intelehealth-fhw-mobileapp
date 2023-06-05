@@ -45,6 +45,11 @@ import java.util.UUID;
 
 public class PatientAddressInfoFragment extends Fragment {
     private static final String TAG = "PatientPersonalInfoFrag";
+
+    public static PatientAddressInfoFragment getInstance() {
+        return new PatientAddressInfoFragment();
+    }
+
     View view;
     AutoCompleteTextView autotvCountry, autotvState, autotvCity;
     Context mContext;
@@ -63,8 +68,8 @@ public class PatientAddressInfoFragment extends Fragment {
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
-    ImageView ivPersonal, ivAddress, ivOther;
-    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
+    //    ImageView ivPersonal, ivAddress, ivOther;
+//    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     String[] countryArr, stateArr;
 
     @Override
@@ -78,12 +83,12 @@ public class PatientAddressInfoFragment extends Fragment {
     }
 
     private void initUI() {
-        ivPersonal = requireActivity().findViewById(R.id.iv_personal_info);
-        ivAddress = getActivity().findViewById(R.id.iv_address_info);
-        ivOther = getActivity().findViewById(R.id.iv_other_info);
-        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
-        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
-        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
+//        ivPersonal = requireActivity().findViewById(R.id.iv_personal_info);
+//        ivAddress = getActivity().findViewById(R.id.iv_address_info);
+//        ivOther = getActivity().findViewById(R.id.iv_other_info);
+//        tvPersonalInfo = getActivity().findViewById(R.id.tv_personal_info);
+//        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
+//        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
 
         autotvCountry = view.findViewById(R.id.autotv_country);
         autotvState = view.findViewById(R.id.autotv_state);
@@ -324,12 +329,12 @@ public class PatientAddressInfoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info_done));
-        ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_active));
-        ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_unselected));
-        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
-        tvAddressInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
-        tvOtherInfo.setTextColor(getResources().getColor(R.color.darkGray));
+//        ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info_done));
+//        ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_active));
+//        ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_unselected));
+//        tvPersonalInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        tvAddressInfo.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        tvOtherInfo.setTextColor(getResources().getColor(R.color.darkGray));
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
@@ -600,10 +605,11 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
         firstScreen.setArguments(bundle); // passing data to Fragment
-        getActivity().getSupportFragmentManager()
+        requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, firstScreen)
                 .commit();
+        ((AddNewPatientActivity) requireActivity()).changeCurrentPage(AddNewPatientActivity.PAGE_PERSONAL);
     }
 
     public void onPatientCreateClicked() {
@@ -803,11 +809,13 @@ temp
         //   bundle.putString("patientUuid", patientID_edit);
         bundle.putBoolean("patient_detail", patient_detail);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
-
+//
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, fragment_thirdScreen)
                 .commit();
+
+        ((AddNewPatientActivity) requireActivity()).changeCurrentPage(AddNewPatientActivity.PAGE_OTHER);
 
         if (NetworkConnection.isOnline(mContext)) {
 //                patientApiCall();

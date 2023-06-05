@@ -56,6 +56,7 @@ import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
@@ -81,7 +82,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TimelineVisitSummaryActivity extends AppCompatActivity {
+public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     RecyclerView recyclerView;
     TimelineAdapter adapter;
     Context context;
@@ -127,10 +128,8 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline_ezazi);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        super.onCreate(savedInstanceState);
         initUI();
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
 //        recyclerView.setAdapter(adapter);
@@ -278,6 +277,11 @@ public class TimelineVisitSummaryActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected int getScreenTitle() {
+        return 0;
     }
 
     /**
