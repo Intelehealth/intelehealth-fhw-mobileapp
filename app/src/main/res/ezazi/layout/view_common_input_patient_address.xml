@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_city_village"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/input_add_patient_margin_top">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding"
+            android:hint="@string/village_town_city">
+
+            <AutoCompleteTextView
+                android:id="@+id/autotv_city"
+                style="@style/Theme.EZazi.Scrollbar.Thumb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dropDownSelector="@color/white"
+                android:textSize="@dimen/input_inner_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_city_village"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/this_field_is_mandatory"
+        android:visibility="gone" />
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/list_container_padding"
+            android:hint="@string/address_line1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/input_inner_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/list_container_padding">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/address_line2"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/input_inner_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/list_container_padding"
+            android:hint="@string/postal_code">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_postal_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="9"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/input_inner_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

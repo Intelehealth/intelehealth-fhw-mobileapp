@@ -138,7 +138,7 @@
     <dimen name="std_26dp">26dp</dimen>
     <dimen name="std_130dp">130dp</dimen>
     <dimen name="std_30sp">30sp</dimen>
-    <dimen name="input_stroke_size">1dp</dimen>
+    <dimen name="input_stroke_size">0.5dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_8dp</dimen>
 
     <dimen name="splash_bottom_dark_bg_width">400</dimen>
