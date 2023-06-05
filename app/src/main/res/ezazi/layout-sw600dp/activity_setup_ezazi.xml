@@ -17,7 +17,8 @@
         layout="@layout/content_setup_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/login_top_margin"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    <include layout="@layout/simple_appbar" />
+    <!--    <include layout="@layout/simple_appbar" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

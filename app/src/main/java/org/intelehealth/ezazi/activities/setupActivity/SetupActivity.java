@@ -154,15 +154,15 @@ public class SetupActivity extends AppCompatActivity {
         setupUrl = getString(R.string.setupUrl);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(view -> {
-            finish();
-        });
-
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setNavigationOnClickListener(view -> {
+//            finish();
+//        });
+//
+//        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
         context = SetupActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
 

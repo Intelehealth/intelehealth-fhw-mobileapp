@@ -238,7 +238,7 @@
     <dimen name="titles_margin_top_other">8dp</dimen>
     <dimen name="titles_margin_top_for_phone">8dp</dimen>
     <dimen name="other_info_checkbox_margin_top">8dp</dimen>
-
+    <dimen name="input_bg_radius">@dimen/std_6dp</dimen>
 
 
 </resources>

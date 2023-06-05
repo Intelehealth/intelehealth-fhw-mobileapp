@@ -87,6 +87,6 @@
     <color name="colorIncomingCallBg">#B0ADBE</color>
     <color name="edittextBorder">#B2AFBE</color>
     <color name="error_red">#FF475D</color>
-
+    <color name="colorInputBgBorder">#267F7B92</color>
 
 </resources>

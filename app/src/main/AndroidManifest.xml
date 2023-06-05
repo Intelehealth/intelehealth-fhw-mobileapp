@@ -43,7 +43,7 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
-            android:name=".PatientSummaryActivity"
+            android:name=".activities.addNewPatient.PatientSummaryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -53,7 +53,7 @@
             android:name=".activities.addNewPatient.AddNewPatientActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan">
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -68,23 +68,23 @@
         <activity
             android:name="org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:exported="false"
             android:label="@string/title_activity_visit_summary"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan" />
         <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
         <activity
             android:name="org.intelehealth.ezazi.appointment.AppointmentListingActivity"
@@ -223,9 +223,9 @@
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_search_patient"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -257,16 +257,16 @@
             android:name=".activities.loginActivity.LoginActivity"
             android:configChanges="uiMode"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
@@ -293,8 +293,8 @@
             android:name=".ui.password.activity.ForgotPasswordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <!--            <intent-filter>-->
             <!--                <action android:name="android.intent.action.MAIN" />-->
 
@@ -305,9 +305,9 @@
             android:name=".activities.setupActivity.SetupActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_setup"
-            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.rtc.activity.EzaziChatActivity"
             android:configChanges="uiMode"
