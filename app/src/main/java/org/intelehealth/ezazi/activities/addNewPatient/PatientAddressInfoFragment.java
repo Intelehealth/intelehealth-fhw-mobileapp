@@ -2,6 +2,9 @@ package org.intelehealth.ezazi.activities.addNewPatient;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +12,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -58,6 +64,7 @@ public class PatientAddressInfoFragment extends Fragment {
     private PatientPersonalInfoFragment firstScreen;
     boolean fromThirdScreen = false, fromFirstScreen = false;
     boolean patient_detail = false;
+    boolean editDetails = false;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private String country1, state;
@@ -71,6 +78,9 @@ public class PatientAddressInfoFragment extends Fragment {
     //    ImageView ivPersonal, ivAddress, ivOther;
 //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     String[] countryArr, stateArr;
+    TextView tvErrorCountry, tvErrorState, tvErrorCityVillage;
+    MaterialCardView cardCountry, cardState, cardCityVillage;
+    String mAlternateNumberString;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,8 +109,16 @@ public class PatientAddressInfoFragment extends Fragment {
         etPostalCode = view.findViewById(R.id.et_postal_code);
         btnBack = view.findViewById(R.id.btn_back_address);
         btnNext = view.findViewById(R.id.btn_next_address);
+        tvErrorCountry = view.findViewById(R.id.tv_error_country);
+        tvErrorState = view.findViewById(R.id.tv_error_state);
+        tvErrorCityVillage = view.findViewById(R.id.tv_error_city_village);
+        cardCountry = view.findViewById(R.id.card_country);
+        cardState = view.findViewById(R.id.card_state);
+        cardCityVillage = view.findViewById(R.id.card_city_village);
+
 
         setCountriesAndStates();
+
         firstScreen = new PatientPersonalInfoFragment();
         fragment_thirdScreen = new PatientOtherInfoFragment();
         if (getArguments() != null) {
@@ -109,6 +127,10 @@ public class PatientAddressInfoFragment extends Fragment {
             fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
             fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
+            mAlternateNumberString = getArguments().getString("mAlternateNumberString");
+            editDetails = getArguments().getBoolean("editDetails");
+
+
             //   patientID_edit = getArguments().getString("patientUuid");
 
             //check new flow
@@ -141,11 +163,12 @@ public class PatientAddressInfoFragment extends Fragment {
         //countries array
         List<String> countriesList = Arrays.asList(getResources().getStringArray(R.array.countries));
         countryArr = getResources().getStringArray(R.array.countries);
-        CountryArrayAdapter adapter = new CountryArrayAdapter
-                (getActivity(), countriesList);
+        CountryArrayAdapter adapter = new CountryArrayAdapter(getActivity(), countriesList);
         autotvCountry.setThreshold(1);
         autotvCountry.setAdapter(adapter);
         autotvCountry.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        autotvCountry.setValidator(new CountryValidator());
+        autotvCountry.setOnFocusChangeListener(new CountryFocusListener());
         adapter.notifyDataSetChanged();
         autotvCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -228,51 +251,52 @@ public class PatientAddressInfoFragment extends Fragment {
                         mState.setAdapter(stateAdapter);
 
                     }*/
+                    autotvState.setText("");
+                    autotvCity.setText("");
+
 
                     if (country.matches("India")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext,
-                                R.array.states_india, R.layout.custom_spinner);
+                        stateArr = getResources().getStringArray(R.array.states_india);
+
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_india, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
+                        autotvState.setValidator(new StateValidator());
+                        autotvState.setOnFocusChangeListener(new StateFocusListener());
                         // setting state according database when user clicks edit details
 
-                   /*    temp  if (patientID_edit != null)
-                            autotvState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        else
-*/
+
                         //for default state select state
                         autotvState.setSelection(0);
 //                            mState.setSelection(stateAdapter.getPosition(state));
 
 
                     } else if (country.matches("United States")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext,
-                                R.array.states_us, R.layout.custom_spinner);
+                        stateArr = getResources().getStringArray(R.array.states_us);
+
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_us, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
+                        autotvState.setValidator(new StateValidator());
+                        autotvState.setOnFocusChangeListener(new StateFocusListener());
                         stateAdapter.notifyDataSetChanged();
-                       /*
-                       temp  if (patientID_edit != null) {
-
-                            autotvState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        }*/
                     } else if (country.matches("Philippines")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext,
-                                R.array.states_philippines, R.layout.custom_spinner);
+                        stateArr = getResources().getStringArray(R.array.states_philippines);
+
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_philippines, R.layout.custom_spinner);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
+                        autotvState.setValidator(new StateValidator());
+                        autotvState.setOnFocusChangeListener(new StateFocusListener());
 
-                    /*   temp  if (patientID_edit != null) {
-                            autotvState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        } else {*/
                         autotvState.setSelection(stateAdapter.getPosition("Bukidnon"));
                         // }
 
                     } else {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext,
-                                R.array.state_error, R.layout.custom_spinner);
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.state_error, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
+
                     }
                 }
 
@@ -283,17 +307,18 @@ public class PatientAddressInfoFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String state = parent.getItemAtPosition(position).toString();
+
+                autotvCity.setText("");
+
                 Log.d(TAG, "onItemSelected: state : " + state);
                 if (state.matches(getResources().getString(R.string.str_check_Odisha))) {
                     Log.d(TAG, "onItemSelected: state : " + state);
                     //Creating the instance of ArrayAdapter containing list of fruit names
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext,
-                            R.array.odisha_villages, R.layout.custom_spinner);
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.odisha_villages, R.layout.custom_spinner);
                     autotvCity.setThreshold(1);//will start working from first character
                     autotvCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else if (state.matches(getResources().getString(R.string.str_check_Bukidnon))) {
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext,
-                            R.array.bukidnon_villages, R.layout.custom_spinner);
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.bukidnon_villages, R.layout.custom_spinner);
                     autotvCity.setThreshold(1);//will start working from first character
                     autotvCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
@@ -342,9 +367,7 @@ public class PatientAddressInfoFragment extends Fragment {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, mContext),
-                                String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, mContext), String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(getActivity(), AppConstants.CONFIG_FILE_NAME)));
             }
@@ -366,36 +389,6 @@ public class PatientAddressInfoFragment extends Fragment {
             //  showAlertDialogButtonClicked(e.toString());
         }
 
-     /*
-     added in intui method
-     Resources res = getResources();
-
-        // country
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.countries));
-//        country_spinner.setSelection(countryAdapter.getPosition(country1));
-        mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
-
-       *//* ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.states_india, android.R.layout.simple_spinner_dropdown_item);
-        state_spinner.setSelection(stateAdapter.getPosition(state));
-*//*
-
-        //state
-        ArrayAdapter<String> stateAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.states_india));
-        mStateNameSpinner.setAdapter(stateAdapter);
-
-        //district
-        districtAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.district));
-        mDistrictNameSpinner.setAdapter(districtAdapter);
-
-        //city
-        cityAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.city));
-        mCityNameSpinner.setAdapter(cityAdapter);
-*/
         // Setting up the screen when user came from SEcond screen.
         if (fromThirdScreen || fromFirstScreen) {
             if (patientDTO.getPostalcode() != null && !patientDTO.getPostalcode().isEmpty())
@@ -435,7 +428,15 @@ public class PatientAddressInfoFragment extends Fragment {
 
         // Next Button click event.
         btnNext.setOnClickListener(v -> {
-            onPatientCreateClicked();
+
+            if (editDetails) {
+                onPatientCreateClicked();
+
+            } else {
+                if (checkValidEntryForCountry() && checkValidEntryForState())
+                    onPatientCreateClicked();
+
+            }
 
         });
 
@@ -594,16 +595,13 @@ public class PatientAddressInfoFragment extends Fragment {
         patientDTO.setAddress1(etAddress1.getText().toString());
         patientDTO.setAddress2(etAddress2.getText().toString());
 
-     /*   Log.v("fragmemt_2", "values: " + autotvCountry.getSelectedItem().toString()
-                + "\n" + autotvState.getSelectedItem().toString()
-                + "\n" + autotvCity.getSelectedItem().toString()
-                + "\n" + mAddress1EditText.getText().toString()
-                + "\n" + mAddress2EditText.getText().toString());*/
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
+        bundle.putString("mAlternateNumberString", mAlternateNumberString);
+
         firstScreen.setArguments(bundle); // passing data to Fragment
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -622,143 +620,9 @@ public class PatientAddressInfoFragment extends Fragment {
         patientDTO.setUuid(uuid);
         Gson gson = new Gson();
 
+
         boolean cancel = false;
         View focusView = null;
-
-
-/*
-
-temp
-        if (dob.equals("") || dob.toString().equals("")) {
-            if (dob.after(today)) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(mContext);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
-                //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                mDOBPicker.show();
-                alertDialog.show();
-
-                Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                // postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-                return;
-            }
-        }
-*/
-
-
-   /*     ArrayList<EditText> values = new ArrayList<>();
-        values.add(mFirstName);
-        values.add(mMiddleName);
-        values.add(mLastName);
-        values.add(mDOB);
-        values.add(mPhoneNum);
-        values.add(mAddress1);
-        values.add(mAddress2);
-        values.add(mCity);
-        values.add(mPostal);
-        values.add(mRelationship);
-        values.add(mOccupation);*/
-
-/*
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-            return;
-        }
-*/
-
-        if (!autotvCountry.getText().toString().equals("") && !autotvState.getText().toString().equals("")
-                && !autotvCity.getText().toString().equals("")) {
-
-            Log.v(TAG, "Result");
-
-        } else {
-            if (autotvCountry.getText().toString().equals("")) {
-                autotvCountry.setError(getString(R.string.error_field_required));
-            }
-
-            if (autotvState.getText().toString().equals("")) {
-                autotvState.setError(getString(R.string.error_field_required));
-            }
-
-            if (autotvCity.getText().toString().equals("")) {
-                autotvCity.setError(getString(R.string.error_field_required));
-            }
-
-/* commented as per new flow
-
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
-            }
-
-*/
-
-
-            Toast.makeText(mContext, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-      /*
-      validation pending
-      if (autotvCountry.getListSelection() == 0) {
-            countryText.setError(getString(R.string.error_field_required));
-            focusView = countryText;
-            cancel = true;
-            return;
-        } else {
-            countryText.setError(null);
-        }
-
-
-        if (mState.getSelectedItemPosition() == 0) {
-            stateText.setError(getString(R.string.error_field_required));
-            focusView = stateText;
-            cancel = true;
-            return;
-        } else {
-            stateText.setError(null);
-        }*/
-        /*new*/
 
         if (cancel) {
             focusView.requestFocus();
@@ -806,6 +670,8 @@ temp
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
+        bundle.putBoolean("editDetails", true);
+
         //   bundle.putString("patientUuid", patientID_edit);
         bundle.putBoolean("patient_detail", patient_detail);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
@@ -846,5 +712,166 @@ temp
         }
     }
 
+
+    class CountryValidator implements AutoCompleteTextView.Validator {
+
+        @Override
+        public boolean isValid(CharSequence text) {
+            if (countryArr != null) {
+                Arrays.sort(countryArr);
+                String textToSearch = text.toString();
+
+                int retVal = Arrays.binarySearch(countryArr, textToSearch);
+                if (retVal >= 0) {
+                    return true;
+
+                }
+                checkValidEntryForCountry();
+
+                return false;
+            } else {
+                return false;
+            }
+
+        }
+
+        @Override
+        public CharSequence fixText(CharSequence invalidText) {
+
+            return "";
+        }
+    }
+
+    class CountryFocusListener implements View.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (v.getId() == R.id.autotv_country && !hasFocus) {
+                ((AutoCompleteTextView) v).performValidation();
+            }
+        }
+    }
+
+    private boolean checkValidEntryForCountry() {
+        if (countryArr != null) {
+            Arrays.sort(countryArr);
+            int retVal = Arrays.binarySearch(countryArr, autotvCountry.getText().toString());
+            if (retVal >= 0) {
+                return true;
+
+            } else {
+                validateInputFields();
+                //add validation on country
+                return false;
+            }
+
+        } else {
+            return false;
+
+        }
+
+    }
+
+    private void validateInputFields() {
+        //validations
+        if (TextUtils.isEmpty(autotvCountry.getText().toString())) {
+            autotvCountry.requestFocus();
+
+            tvErrorCountry.setVisibility(View.VISIBLE);
+            tvErrorCountry.setText(getString(R.string.select_country));
+            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+            return;
+        } else {
+            tvErrorCountry.setVisibility(View.GONE);
+            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        if (TextUtils.isEmpty(autotvState.getText().toString())) {
+            autotvState.requestFocus();
+
+            tvErrorState.setVisibility(View.VISIBLE);
+            tvErrorState.setText(getString(R.string.select_state));
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            return;
+
+        } else {
+            tvErrorState.setVisibility(View.GONE);
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+        }
+
+        if (TextUtils.isEmpty(autotvCity.getText().toString())) {
+            autotvCity.requestFocus();
+
+            tvErrorCityVillage.setVisibility(View.VISIBLE);
+            tvErrorCityVillage.setText(getString(R.string.select_city_village));
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            return;
+
+        } else {
+            tvErrorCityVillage.setVisibility(View.GONE);
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+
+    }
+
+    class StateValidator implements AutoCompleteTextView.Validator {
+
+        @Override
+        public boolean isValid(CharSequence text) {
+            if (stateArr != null) {
+                Arrays.sort(stateArr);
+                String textToSearch = text.toString();
+
+                int retVal = Arrays.binarySearch(stateArr, textToSearch);
+                if (retVal >= 0) {
+                    return true;
+
+                }
+                checkValidEntryForState();
+
+                return false;
+            } else {
+                return false;
+            }
+
+        }
+
+        @Override
+        public CharSequence fixText(CharSequence invalidText) {
+
+            return "";
+        }
+    }
+
+    class StateFocusListener implements View.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (v.getId() == R.id.autotv_state && !hasFocus) {
+                ((AutoCompleteTextView) v).performValidation();
+            }
+        }
+    }
+
+    private boolean checkValidEntryForState() {
+        if (stateArr != null) {
+            Arrays.sort(stateArr);
+            int retVal = Arrays.binarySearch(stateArr, autotvState.getText().toString());
+            if (retVal >= 0) {
+                return true;
+
+            } else {
+                validateInputFields();
+                //add validation on country
+                return false;
+            }
+
+        } else {
+            return false;
+
+        }
+
+    }
 
 }

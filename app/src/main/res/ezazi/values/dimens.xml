@@ -130,7 +130,7 @@
     <dimen name="button_add_patient_margin_bottom">30dp</dimen>
     <dimen name="input_label_size_add_patient">@dimen/std_12sp</dimen>
     <dimen name="admission_date_margin_top">5dp</dimen>
-    <dimen name="admission_date_margin_end">10dp</dimen>
+    <dimen name="admission_date_margin_end">5dp</dimen>
     <dimen name="other_all_controls_margin_top">5dp</dimen>
     <dimen name="date_margin_end">10dp</dimen>
     <dimen name="time_margin_start">10dp</dimen>
@@ -232,7 +232,13 @@
     <dimen name="addpatient_frame_padding_start_end">12dp</dimen>
     <dimen name="check_control_margin_top">3dp</dimen>
     <dimen name="dropdowns_add_patient_height">43dp</dimen>
-    <dimen name="validation_error_tv_margin_top">6dp</dimen>
+    <dimen name="validation_error_tv_margin_top">3dp</dimen>
     <dimen name="validation_error_tv_size">12sp</dimen>
     <dimen name="dotted_line_top_margin">@dimen/std_16dp</dimen>
+    <dimen name="titles_margin_top_other">8dp</dimen>
+    <dimen name="titles_margin_top_for_phone">8dp</dimen>
+    <dimen name="other_info_checkbox_margin_top">8dp</dimen>
+
+
+
 </resources>

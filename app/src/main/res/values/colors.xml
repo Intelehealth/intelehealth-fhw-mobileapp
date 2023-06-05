@@ -86,6 +86,7 @@
     <color name="colorDeactivated">#B0ADBE</color>
     <color name="colorIncomingCallBg">#B0ADBE</color>
     <color name="edittextBorder">#B2AFBE</color>
+    <color name="error_red">#FF475D</color>
 
 
 </resources>

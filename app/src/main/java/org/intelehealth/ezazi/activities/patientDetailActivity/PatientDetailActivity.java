@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -135,6 +136,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     float float_ageYear_Month;
     List<String> encounterTypeUUIDListFor12Encounters = new ArrayList<>();
     String stage1Hr1_1_EncounterUuid, stage1Hr1_2_EncounterUuid;
+    TextView tvBedNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +205,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(PatientDetailActivity.this, AddNewPatientActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
                 intent2.putExtra("fromSummary", true);
+                intent2.putExtra("editDetails", true);
+
+
                 startActivity(intent2);
 
             }
@@ -614,6 +619,8 @@ public class PatientDetailActivity extends AppCompatActivity {
        /* TableRow addr2Row = findViewById(R.id.tableRow_addr2);
         TextView addr2View = findViewById(R.id.textView_address2);*/
         TextView addrFinalView = findViewById(R.id.textView_address_final);
+        tvBedNumber = findViewById(R.id.textView_bed_no);
+
      /*   TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);*/
@@ -688,6 +695,13 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         Log.v("patient_new", new Gson().toJson(patient_new));
 //changing patient to patient_new object
+
+        //new flow
+        try {
+            tvBedNumber.setText(getBedNumber(patient_new.getUuid()));
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
         if (patient_new.getMiddle_name() == null) {
             patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         } else {
@@ -720,7 +734,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 .into(photoView);*/
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
-            String id = "Patient ID:"+patient_new.getOpenmrs_id();
+            String id = "Patient ID:" + patient_new.getOpenmrs_id();
             idView.setText(id);
 //            sessionManager.setOfllineOpenMRSID(patient_new.getOpenmrs_id());
         } else {
@@ -739,7 +753,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         //String id = idView.toString();
         //Log.d("IDEA","IDEA"+id);
 
-        Log.d(TAG, "setDisplay: dob: "+patient_new.getDate_of_birth());
+        Log.d(TAG, "setDisplay: dob: " + patient_new.getDate_of_birth());
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
         ageView.setText(age.trim());
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
@@ -1743,4 +1757,22 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
+    private String getBedNumber(String patientuuid) throws DAOException {
+        String bedNumber = null;
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='d0786817-68d9-4226-b311-3de68d534b9e' ", new String[]{patientuuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    bedNumber = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        }
+        idCursor.close();
+
+        return bedNumber;
+    }
 }
