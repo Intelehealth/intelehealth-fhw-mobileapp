@@ -1,17 +1,11 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -23,16 +17,12 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -56,12 +46,10 @@ import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
-import org.intelehealth.ezazi.models.pushRequestApiCall.Address;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
 import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
-import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -71,14 +59,11 @@ import org.intelehealth.ezazi.utilities.UuidGenerator;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -134,7 +119,7 @@ public class PatientOtherInfoFragment extends Fragment {
     int MY_REQUEST_CODE = 5555;
     int dob_indexValue = 15;
     PatientsDAO patientsDAO = new PatientsDAO();
-//    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
+    //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
 //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     TextView tvErrorAdmissionDate, tvErrorAdmissionTime, tvErrorTotalBirth, tvErrorTotalMiscarriage, tvErrorLabourOnset, tvErrorSacRupturedDate, tvErrorSacRupturedTime, tvErrorPrimaryDoctor, tvErrorSecondaryDoctor, tvErrorBedNumber, tvErrorLabourDiagnosedDate, tvErrorLabourDiagnosedTime;
     MaterialCardView cardAdmissionDate, cardAdmissionTime, cardTotalBirth, cardTotalMiscarraige, cardSacRupturedDate, cardSacRupturedTime, cardPrimaryDoctor, cardSecondaryDoctor, cardBedNumber, cardDiagnosedDate, cardDiagnosedTime;
@@ -174,11 +159,10 @@ public class PatientOtherInfoFragment extends Fragment {
         mPrimaryDoctorTextView = view.findViewById(R.id.autotv_primary_doctor);
         mSecondaryDoctorTextView = view.findViewById(R.id.autotv_secondary_doctor);
         etBedNumber = view.findViewById(R.id.et_bed_number);
-        btnBack = view.findViewById(R.id.btn_back_other);
-        btnNext = view.findViewById(R.id.btn_next_other);
+        btnBack = view.findViewById(R.id.btn_back_address);
+        btnNext = view.findViewById(R.id.btn_next_address);
         mUnknownMembraneRupturedCheckBox = view.findViewById(R.id.mUnknownMembraneRupturedCheckBox);
         mRiskFactorsTextView = view.findViewById(R.id.autotv_risk_factors);
-
 
 
         handleOptionsForMaternity();

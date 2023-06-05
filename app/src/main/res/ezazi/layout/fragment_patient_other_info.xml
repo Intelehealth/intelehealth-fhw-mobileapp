@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/screen_padding"
     tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
     <ScrollView
@@ -11,17 +12,13 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="100dp"
         android:background="@drawable/container_bg_rounded"
-        android:paddingStart="@dimen/addpatient_frame_padding_start_end"
-        android:paddingTop="@dimen/addpatient_frame_padding_top_bottom"
-        android:paddingEnd="@dimen/addpatient_frame_padding_top_bottom"
-        android:paddingBottom="@dimen/addpatient_frame_padding_top_bottom"
+        android:padding="@dimen/screen_container_padding"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
             <TextView
                 android:id="@+id/textView4"
@@ -47,26 +44,21 @@
                     android:id="@+id/card_date_admission"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toStartOf="@+id/card_time"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4">
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/etLayout_admission_date"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
                         app:endIconDrawable="@drawable/ic_calendar_new"
                         app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_admission_date"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
@@ -75,7 +67,6 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -100,26 +91,21 @@
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/card_date"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4">
+                    android:layout_marginTop="@dimen/screen_container_padding">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/etLayout_admission_time"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
                         app:endIconDrawable="@drawable/ic_time_drawable"
                         app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_admission_time"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
@@ -128,7 +114,6 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size"
                             app:drawableEndCompat="@drawable/ic_time_drawable" />
@@ -154,8 +139,8 @@
                 style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="start"
                 android:layout_marginTop="@dimen/titles_margin_top"
+                android:gravity="start"
                 android:text="@string/parity"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
@@ -179,20 +164,19 @@
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_total_birth"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:hint="@string/total_birth"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -218,32 +202,25 @@
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
-                    android:layout_weight="1"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/card_date"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4">
+                    android:layout_marginTop="@dimen/screen_container_padding"
+                    android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_total_miscarriage"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:hint="@string/total_miscarriage"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -258,17 +235,16 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-
                 <TextView
                     android:id="@+id/tv_parity_time_error"
                     style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:visibility="gone" />
 
             </LinearLayout>
@@ -278,9 +254,9 @@
                 style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/titles_margin_top"
                 android:gravity="start"
                 android:text="@string/labor_onset"
-                android:layout_marginTop="@dimen/titles_margin_top"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_details1" />
@@ -299,7 +275,7 @@
                     android:id="@+id/et_spontaneous"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/date_margin_end"
+                    android:layout_marginEnd="@dimen/screen_container_padding"
                     android:layout_weight="1"
                     android:background="@drawable/button_bg_rounded_corners"
                     android:gravity="center"
@@ -332,28 +308,27 @@
                 android:text="This field is mandatory"
                 android:visibility="gone" />
 
-        <!--    <RelativeLayout
+            <!--    <RelativeLayout
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/titles_margin_top"
+                    android:layout_marginBottom="@dimen/when_diagnosed_margin_bottom"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/card_labour_onset">
+    -->
+            <TextView
                 android:id="@+id/textView7"
-                android:layout_width="match_parent"
+                style="@style/LabelStyleAddPatient"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/titles_margin_top"
-                android:layout_marginBottom="@dimen/when_diagnosed_margin_bottom"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_labour_onset">
--->
-                <TextView
-                    android:id="@+id/textView7"
-                    style="@style/LabelStyleAddPatient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/titles_margin_top"
-                    android:text="@string/when_diagnosed"
-                    android:textColor="@color/colorBlack" />
+                android:text="@string/when_diagnosed"
+                android:textColor="@color/colorBlack" />
 
-<!--
-            </RelativeLayout>
--->
+            <!--
+                        </RelativeLayout>
+            -->
 
             <LinearLayout
                 android:id="@+id/card_labour_diagnosed"
@@ -375,14 +350,14 @@
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
                         app:endIconDrawable="@drawable/ic_calendar_new"
                         app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_labor_diagnosed_date"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
                             android:hint="@string/date"
@@ -390,7 +365,6 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size"
                             app:drawableEndCompat="@drawable/ic_calendar_new" />
@@ -407,7 +381,7 @@
                     android:layout_marginEnd="@dimen/admission_date_margin_end"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:visibility="gone" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -415,26 +389,21 @@
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/card_date"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4">
+                    android:layout_marginTop="@dimen/screen_container_padding">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/etLayout_labor_diagnosed_time"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
                         app:endIconDrawable="@drawable/ic_time_drawable"
                         app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_labor_diagnosed_time"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
@@ -443,7 +412,6 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size"
                             app:drawableEndCompat="@drawable/ic_calendar_new" />
@@ -474,8 +442,8 @@
                 <TextView
                     style="@style/LabelStyleAddPatient"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/titles_margin_top"
                     android:gravity="start"
                     android:text="@string/sac_ruptured"
                     android:textColor="@color/colorBlack" />
@@ -484,11 +452,11 @@
                     android:id="@+id/mUnknownMembraneRupturedCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/other_info_checkbox_margin_top"
                     android:fontFamily="@font/dm_sans_medium"
                     android:gravity="center"
-                    android:layout_marginTop="@dimen/other_info_checkbox_margin_top"
                     android:layoutDirection="rtl"
                     android:padding="5dp"
                     android:text="@string/unknown"
@@ -505,7 +473,7 @@
                 android:id="@+id/card_sac_ruptured"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/admission_date_margin_top"
+                android:layout_marginTop="@dimen/screen_container_padding"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView8">
@@ -521,14 +489,14 @@
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
                         app:endIconDrawable="@drawable/ic_calendar_new"
                         app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_sac_ruptured_date"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
@@ -537,7 +505,6 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size"
                             app:drawableEndCompat="@drawable/ic_calendar_new" />
@@ -555,7 +522,7 @@
                     android:layout_marginEnd="@dimen/admission_date_margin_end"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:visibility="gone" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -563,26 +530,21 @@
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/titles_margin_top_for_phone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/card_date"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4">
+                    android:layout_marginTop="@dimen/screen_container_padding">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/etLayout_sac_ruptured_time"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
                         app:endIconDrawable="@drawable/ic_time_drawable"
                         app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_sac_ruptured_time"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/input_add_patient_height"
-                            android:backgroundTint="@color/white"
+                            android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
@@ -591,7 +553,6 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
-                            android:paddingTop="@dimen/input_add_patient_padding_top"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size"
                             app:drawableEndCompat="@drawable/ic_calendar_new" />
@@ -607,314 +568,23 @@
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:visibility="gone" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView9"
-                style="@style/LabelStyleAddPatient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:layout_marginTop="@dimen/titles_margin_top"
-                android:text="@string/risk_factors"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_sac_ruptured" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/dropdown_risk_factors"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                android:layout_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etLayout_risk_factors"
-                    style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="true">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autotv_risk_factors"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_add_patient_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="@string/select_risk_factors"
-                        android:paddingTop="@dimen/input_add_patient_padding_top"
-                        android:textSize="@dimen/input_inner_size" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:id="@+id/textView10"
-                style="@style/LabelStyleAddPatient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/titles_margin_top"
-                android:gravity="start"
-                android:text="@string/hospital_maternity"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dropdown_risk_factors" />
-
-
-            <LinearLayout
-                android:id="@+id/card_options"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/input_add_patient_height"
-                android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10">
-
-                <TextView
-                    android:id="@+id/option_hospital"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_bg_rounded_corners"
-                    android:gravity="center"
-                    android:text="@string/hospital"
-                    android:textColor="@color/darkGray"
-                    android:textSize="@dimen/input_inner_size" />
-
-                <TextView
-                    android:id="@+id/option_maternity"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_bg_rounded_corners"
-                    android:gravity="center"
-                    android:text="@string/maternity"
-                    android:textColor="@color/darkGray"
-                    android:textSize="@dimen/input_inner_size" />
-
-                <TextView
-                    android:id="@+id/option_other"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_bg_rounded_corners"
-                    android:gravity="center"
-                    android:text="@string/other"
-                    android:textColor="@color/darkGray"
-                    android:textSize="@dimen/input_inner_size" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView11"
-                style="@style/LabelStyleAddPatient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/titles_margin_top"
-                android:gravity="start"
-                android:text="@string/primary_doctor"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_options" />
-
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/dropdown_primary_doctor"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                android:layout_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etLayout_primary_doctor"
-                    style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="true">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autotv_primary_doctor"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_add_patient_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="@string/select_primary_doctor"
-                        android:paddingTop="@dimen/input_add_patient_padding_top"
-                        android:textSize="@dimen/input_inner_size" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:id="@+id/tv_error_primary_doctor"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:lineSpacingExtra="0sp"
-                android:text="This field is mandatory"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/textView12"
-                style="@style/LabelStyleAddPatient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:layout_marginTop="@dimen/titles_margin_top"
-                android:text="@string/secondary_doctor"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dropdown_primary_doctor" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/dropdown_secondary_doctor"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                android:layout_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etLayout_secondary_doctor"
-                    style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="true">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autotv_secondary_doctor"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_add_patient_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="@string/select_secondary_doctor"
-                        android:paddingTop="@dimen/input_add_patient_padding_top"
-                        android:textSize="@dimen/input_inner_size" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:id="@+id/tv_error_secondary_doctor"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:lineSpacingExtra="0sp"
-                android:text="This field is mandatory"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/textView13"
-                style="@style/LabelStyleAddPatient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="@string/bed_number"
-                android:layout_marginTop="@dimen/titles_margin_top"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dropdown_secondary_doctor" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_bed_no"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/other_all_controls_margin_top"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13">
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Theme.EZazi.Input.Add.Patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_bed_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/input_add_patient_height"
-                        android:backgroundTint="@color/white"
-                        android:hint="@string/bed_number"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:paddingTop="@dimen/input_add_patient_padding_top"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:id="@+id/tv_error_bed_number"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:lineSpacingExtra="0sp"
-                android:text="This field is mandatory"
-                android:visibility="gone" />
+            <include layout="@layout/view_other_tab_common_component" />
         </LinearLayout>
 
     </ScrollView>
 
-    <LinearLayout
+    <include
+        layout="@layout/view_add_patient_bottom_action_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/button_add_patient_margin_bottom"
-        android:orientation="horizontal"
-        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_back_other"
-            style="@style/Theme.EZazi.Button.White"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/button_add_patient_margin"
-            android:layout_weight="1"
-            android:text="@string/back" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_next_other"
-            style="@style/Theme.EZazi.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/button_add_patient_margin"
-            android:layout_weight="1"
-            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-            android:drawableTint="@color/white"
-            android:text="@string/next">
-
-        </com.google.android.material.button.MaterialButton>
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

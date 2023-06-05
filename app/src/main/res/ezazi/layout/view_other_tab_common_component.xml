@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textView9"
+        style="@style/LabelStyleAddPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/titles_margin_top"
+        android:gravity="start"
+        android:text="@string/risk_factors"
+        android:textColor="@color/colorBlack" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dropdown_risk_factors"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/other_all_controls_margin_top"
+        android:layout_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etLayout_risk_factors"
+            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding"
+            app:hintEnabled="true">
+
+            <AutoCompleteTextView
+                android:id="@+id/autotv_risk_factors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/select_risk_factors"
+                android:textSize="@dimen/input_inner_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textView10"
+        style="@style/LabelStyleAddPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/titles_margin_top"
+        android:gravity="start"
+        android:text="@string/hospital_maternity"
+        android:textColor="@color/colorBlack" />
+
+
+    <LinearLayout
+        android:id="@+id/card_options"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_add_patient_height"
+        android:layout_marginTop="@dimen/other_all_controls_margin_top"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/option_hospital"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_bg_rounded_corners"
+            android:gravity="center"
+            android:text="@string/hospital"
+            android:textColor="@color/darkGray"
+            android:textSize="@dimen/input_inner_size" />
+
+        <TextView
+            android:id="@+id/option_maternity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_marginStart="@dimen/screen_container_padding"
+            android:background="@drawable/button_bg_rounded_corners"
+            android:gravity="center"
+            android:text="@string/maternity"
+            android:textColor="@color/darkGray"
+            android:textSize="@dimen/input_inner_size" />
+
+        <TextView
+            android:id="@+id/option_other"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_bg_rounded_corners"
+            android:gravity="center"
+            android:text="@string/other"
+            android:textColor="@color/darkGray"
+            android:textSize="@dimen/input_inner_size" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView11"
+        style="@style/LabelStyleAddPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/titles_margin_top"
+        android:gravity="start"
+        android:text="@string/primary_doctor"
+        android:textColor="@color/colorBlack" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dropdown_primary_doctor"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_container_padding"
+        android:layout_weight="1">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etLayout_primary_doctor"
+            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding"
+            app:hintEnabled="true">
+
+            <AutoCompleteTextView
+                android:id="@+id/autotv_primary_doctor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/select_primary_doctor"
+                android:textSize="@dimen/input_inner_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_primary_doctor"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/this_field_is_mandatory"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView12"
+        style="@style/LabelStyleAddPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/titles_margin_top"
+        android:gravity="start"
+        android:text="@string/secondary_doctor"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dropdown_primary_doctor" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dropdown_secondary_doctor"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_container_padding"
+        android:layout_weight="1">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etLayout_secondary_doctor"
+            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding"
+            app:hintEnabled="true">
+
+            <AutoCompleteTextView
+                android:id="@+id/autotv_secondary_doctor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/select_secondary_doctor"
+                android:textSize="@dimen/input_inner_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_secondary_doctor"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/this_field_is_mandatory"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView13"
+        style="@style/LabelStyleAddPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding"
+        android:gravity="start"
+        android:text="@string/bed_number"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dropdown_secondary_doctor" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_bed_no"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_container_padding">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_bed_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/bed_number"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/input_inner_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_bed_number"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/this_field_is_mandatory"
+        android:visibility="gone" />
+</LinearLayout>
