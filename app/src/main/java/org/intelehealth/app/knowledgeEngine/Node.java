@@ -374,6 +374,7 @@ public class Node implements Serializable {
         this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.text = source.text;
         this.display = source.display;
+        this.display_hindi = source.display_hindi;
         this.display_oriya = source.display_oriya;
         this.display_gujarati = source.display_gujarati;
         this.display_bengali = source.display_bengali;
