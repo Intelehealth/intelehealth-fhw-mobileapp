@@ -975,7 +975,7 @@
     <string name="enter_first_name">Please enter first name</string>
     <string name="enter_last_name">Please enter last name</string>
     <string name="select_dob">Please select date of birth</string>
-    <string name="select_age">Please select date of birth</string>
+    <string name="select_age">Age must be greater than 9 years</string>
     <string name="mobile_no_length">Mobile number length is must be 10</string>
     <string name="select_admission_date">Please select admission date</string>
     <string name="select_admission_time">Please select admission time</string>

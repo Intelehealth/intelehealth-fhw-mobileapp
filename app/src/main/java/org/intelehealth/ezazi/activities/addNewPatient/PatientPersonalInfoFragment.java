@@ -362,8 +362,17 @@ public class PatientPersonalInfoFragment extends Fragment {
           /*  String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                     mAgeDays + getResources().getString(R.string.days);*/
-                String age = mAgeYears + " " + getResources().getString(R.string.identification_screen_text_years);
-                mAge.setText(age);
+
+                if (mAgeYears < 9) {
+                    mAge.setText("");
+                    mDOB.setText("");
+                    tvErrorAge.setVisibility(View.VISIBLE);
+
+                } else {
+                    mAge.setText(mAgeYears + "");
+
+
+                }
 
                 // profile image edit
                 if (patientDTO.getPatientPhoto() != null && !patientDTO.getPatientPhoto().trim().isEmpty()) {
@@ -1039,11 +1048,17 @@ public class PatientPersonalInfoFragment extends Fragment {
 
                     // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
                     String[] splitedDate = selectedDate.split("/");
-                    mAge.setText(mAgeYears + " years");
                     mDOB.setText(dateToshow1 + " " + splitedDate[2]);
                     tvDobForDb.setText(dobToDb);
-                    tvAgeDob.setText(mAgeYears + " years");
                     patientDTO.setDateofbirth(dobToDb);
+                    if (mAgeYears < 9) {
+                        mAge.setText("");
+                        mDOB.setText("");
+                        tvErrorAge.setVisibility(View.VISIBLE);
+
+                    } else {
+                        mAge.setText(mAgeYears + "");
+                    }
                     Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
                     setSelectedDob(mContext, dobToDb);
                 } else {
