@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.reason;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
-import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -85,6 +85,24 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_visit_reason_questions, container, false);
 
+        if (mIsEditMode) {
+            view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
+
+                }
+            });
+            view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                }
+            });
+        }
         RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -100,9 +118,10 @@ public class VisitReasonQuestionsFragment extends Fragment {
             complainBasicInfo.setComplainName(mChiefComplainRootNodeList.get(i).getText());
             complainBasicInfo.setComplainNameByLocale(mChiefComplainRootNodeList.get(i).findDisplay());
             complainBasicInfo.setOptionSize(mChiefComplainRootNodeList.get(i).getOptionsList().size());
-            if (complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms")){
+            if (complainBasicInfo.getComplainName().equalsIgnoreCase("Associated symptoms")) {
                 complainBasicInfo.setComplainNameByLocale(getString(R.string.associated_symptoms_header_visit_creation));
-                complainBasicInfo.setAssociateSymptom(true);}
+                complainBasicInfo.setAssociateSymptom(true);
+            }
             mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
         }
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, new OnItemSelection() {
@@ -116,7 +135,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     VisitUtils.scrollNow(recyclerView, 100, 0, 1000);
                     return;
                 }
-                if(isSkipped){
+                if (isSkipped) {
                     mQuestionsListingAdapter.geItems().get(index).setSelected(false);
                     mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
 
@@ -128,7 +147,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     if (mQuestionsListingAdapter.geItems().get(index).isRequired()) {
                         mQuestionsListingAdapter.notifyItemChanged(index);
                         return;
-                    }else{
+                    } else {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -188,6 +207,31 @@ public class VisitReasonQuestionsFragment extends Fragment {
         recyclerView.setAdapter(mQuestionsListingAdapter);
         mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
         mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+
+        if (mIsEditMode) {
+            boolean pendingForAddAll = true;
+            while (pendingForAddAll) {
+
+                if (mCurrentComplainNodeOptionsIndex < mCurrentNode.getOptionsList().size() - 1)
+                    mCurrentComplainNodeOptionsIndex++;
+                else {
+                    mCurrentComplainNodeOptionsIndex = 0;
+                    mCurrentComplainNodeIndex += 1;
+                    mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
+                    mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
+                }
+                if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
+                    linearLayoutManager.setStackFromEnd(false);
+                    if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
+                        mQuestionsListingAdapter.addItem(mCurrentNode);
+                    mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
+                    pendingForAddAll = false;
+                } else {
+                    linearLayoutManager.setStackFromEnd(true);
+                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+                }
+            }
+        }
         return view;
     }
 

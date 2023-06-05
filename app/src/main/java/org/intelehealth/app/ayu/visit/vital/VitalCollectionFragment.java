@@ -278,7 +278,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 //validate
                 if (validateTable()) {
                     mActionListener.onProgress(100);
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, results);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, results);
                 }
                 break;
 
@@ -367,8 +367,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         // set existing data
         if (results != null) {
             if (results.getHeight() != null && !results.getHeight().isEmpty() && !results.getHeight().equalsIgnoreCase("0")) {
-                Log.v(TAG, "getHeight - " + results.getHeight());
-                Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
+                //Log.v(TAG, "getHeight - " + results.getHeight());
+                //Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
                 mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(results.getHeight() + " " + getResources().getString(R.string.cm)), true);
             }
 
@@ -501,8 +501,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 heightvalue = value;
                 //mHeightTextView.setText(value);
                 if (heightvalue != null && !heightvalue.isEmpty() && !heightvalue.equalsIgnoreCase("0")) {
-                    Log.v(TAG, "getHeight - " + results.getHeight());
-                    Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
+                    //Log.v(TAG, "getHeight - " + results.getHeight());
+                    //Log.v(TAG, "getPosition - " + mHeightArrayAdapter.getPosition(results.getHeight()));
                     mHeightSpinner.setSelection(mHeightArrayAdapter.getPosition(heightvalue + " " + getResources().getString(R.string.cm)), true);
                 }
 
@@ -515,13 +515,16 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 //mWeightTextView.setText(value);
                 break;
             case UuidDictionary.PULSE: //Pulse
-                mPulseEditText.setText(value);
+                if (value != null && !value.isEmpty())
+                    mPulseEditText.setText(value);
                 break;
             case UuidDictionary.SYSTOLIC_BP: //Systolic BP
-                mBpSysEditText.setText(value);
+                if (value != null && !value.isEmpty())
+                    mBpSysEditText.setText(value);
                 break;
             case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
-                mBpDiaEditText.setText(value);
+                if (value != null && !value.isEmpty())
+                    mBpDiaEditText.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
 
@@ -538,10 +541,12 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 break;
             //    Respiratory added by mahiti dev team
             case UuidDictionary.RESPIRATORY: //Respiratory
-                mRespEditText.setText(value);
+                if (value != null && !value.isEmpty())
+                    mRespEditText.setText(value);
                 break;
             case UuidDictionary.SPO2: //SpO2
-                mSpo2EditText.setText(value);
+                if (value != null && !value.isEmpty())
+                    mSpo2EditText.setText(value);
                 break;
             default:
                 break;
@@ -1107,7 +1112,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     private String convertCtoF(String temperature) {
-
+        if (temperature == null) return "";
         String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
         Double b = (a * 9 / 5) + 32;

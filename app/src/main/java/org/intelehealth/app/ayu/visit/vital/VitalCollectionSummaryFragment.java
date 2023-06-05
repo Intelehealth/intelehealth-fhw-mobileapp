@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.vital;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,15 +36,16 @@ public class VitalCollectionSummaryFragment extends Fragment {
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
     private VitalsObject mVitalsObject;
-
+    private boolean mIsEditMode = false;
     public VitalCollectionSummaryFragment() {
         // Required empty public constructor
     }
 
 
-    public static VitalCollectionSummaryFragment newInstance(VitalsObject result) {
+    public static VitalCollectionSummaryFragment newInstance(VitalsObject result, boolean isEditMode) {
         VitalCollectionSummaryFragment fragment = new VitalCollectionSummaryFragment();
         fragment.mVitalsObject = result;
+        fragment.mIsEditMode = isEditMode;
         return fragment;
     }
 
@@ -144,7 +146,12 @@ public class VitalCollectionSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON,false, mVitalsObject);
+                if(mIsEditMode){
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                }else {
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, false, mVitalsObject);
+                }
             }
         });
         view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {

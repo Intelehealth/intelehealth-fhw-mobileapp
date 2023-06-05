@@ -1437,4 +1437,5 @@
     <string name="duration_type">अवधि प्रकार</string>
     <string name="number_label">संख्या</string>
     <string name="associated_symptoms_header_visit_creation">जुड़े लक्षण</string>
+    <string name="edit">एडिट</string>
 </resources>

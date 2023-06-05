@@ -1840,4 +1840,5 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="duration_type">Duration Type</string>
     <string name="number_label">Number</string>
     <string name="associated_symptoms_header_visit_creation">Associated symptoms</string>
+    <string name="edit">Edit</string>
 </resources>

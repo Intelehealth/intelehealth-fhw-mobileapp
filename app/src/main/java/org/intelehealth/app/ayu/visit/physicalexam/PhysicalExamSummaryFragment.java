@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.physicalexam;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class PhysicalExamSummaryFragment extends Fragment {
     private List<Node> mAnsweredRootNodeList = new ArrayList<>();
@@ -37,6 +37,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
     private LinearLayout mSummaryLinearLayout;
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
+    private boolean mIsEditMode = false;
 
     public PhysicalExamSummaryFragment() {
         // Required empty public constructor
@@ -44,9 +45,10 @@ public class PhysicalExamSummaryFragment extends Fragment {
 
     private String mSummaryString;
 
-    public static PhysicalExamSummaryFragment newInstance(Intent intent, String values) {
+    public static PhysicalExamSummaryFragment newInstance(Intent intent, String values, boolean isEditMode) {
         PhysicalExamSummaryFragment fragment = new PhysicalExamSummaryFragment();
         fragment.mSummaryString = values;
+        fragment.mIsEditMode = isEditMode;
         //fragment.prepareSummary();
         return fragment;
     }
@@ -73,7 +75,11 @@ public class PhysicalExamSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY, false, null);
+                if (mIsEditMode) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                } else
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY, mIsEditMode, null);
             }
         });
 

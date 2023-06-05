@@ -3,6 +3,7 @@ package org.intelehealth.app.ayu.visit.pastmedicalhist;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,16 +48,19 @@ public class MedicalHistorySummaryFragment extends Fragment {
     private String mSummaryStringPastHistory, mSummaryStringFamilyHistory;
     private LinearLayout mSummaryLinearLayout;
     private ObjectAnimator syncAnimator;
+    private boolean mIsEditMode = false;
+
     public MedicalHistorySummaryFragment() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static MedicalHistorySummaryFragment newInstance(Intent intent, String patientHistory, String familyHistory) {
+    public static MedicalHistorySummaryFragment newInstance(Intent intent, String patientHistory, String familyHistory, boolean isEditMode) {
         MedicalHistorySummaryFragment fragment = new MedicalHistorySummaryFragment();
         fragment.mSummaryStringPastHistory = patientHistory;
         fragment.mSummaryStringFamilyHistory = familyHistory;
+        fragment.mIsEditMode = isEditMode;
         return fragment;
     }
 
@@ -81,13 +85,17 @@ public class MedicalHistorySummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_6_VISIT_SUMMARY,false, null);
+                if (mIsEditMode) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                } else
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_6_VISIT_SUMMARY, false, null);
             }
         });
         view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT,true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
             }
         });
         view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
@@ -140,7 +148,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
         }
 
         System.out.println(mapData);
-        for(String key : mapData.keySet()){
+        for (String key : mapData.keySet()) {
 
             String _complain = key;
             List<String> _list = mapData.get(key);
@@ -152,9 +160,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(key.equalsIgnoreCase("Patient history")){
+                        if (key.equalsIgnoreCase("Patient history")) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
-                        }else if(key.equalsIgnoreCase("Family history")){
+                        } else if (key.equalsIgnoreCase("Family history")) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
                         }
 

@@ -115,7 +115,6 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -536,8 +535,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         showVisitID();  // display visit ID.
 
         if (intentTag != null && !intentTag.isEmpty()) {
+            boolean isAllowForEdit = true;
             // Edit btn visibility based on user coming from Visit Details screen - Start
-            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+            //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+            if (!isAllowForEdit) {
                 editVitals.setVisibility(View.GONE);
                 editComplaint.setVisibility(View.GONE);
                 cc_details_edit.setVisibility(View.GONE);
@@ -575,8 +576,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 editAddDocs.setVisibility(View.VISIBLE);*/
                 editVitals.setVisibility(View.VISIBLE);
                 editComplaint.setVisibility(View.VISIBLE);
-                cc_details_edit.setVisibility(View.VISIBLE);
-                ass_symp_edit.setVisibility(View.VISIBLE);
+                //cc_details_edit.setVisibility(View.VISIBLE);
+                //ass_symp_edit.setVisibility(View.VISIBLE);
                 editPhysical.setVisibility(View.VISIBLE);
                 editFamHist.setVisibility(View.VISIBLE);
                 editMedHist.setVisibility(View.VISIBLE);
@@ -1180,7 +1181,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
                 intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
-                startActivity(intent1);
+                //startActivity(intent1);
+                mStartForEditVisit.launch(intent1);
             }
         });
 
@@ -1200,7 +1202,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
                 complaintText.setEnabled(false);
 
-                complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                /*complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
@@ -1261,9 +1263,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
                         dialogInterface.dismiss();
                     }
-                });
+                });*/
 
-                complaintDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                complaintDialog.setNegativeButton(getString(R.string.edit), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Deleting the old image in physcial examination
@@ -1291,7 +1293,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
-                        startActivity(intent1);
+                        //startActivity(intent1);
+                        mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
                     }
                 });
@@ -1342,7 +1345,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
 
-                physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                /*physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
@@ -1403,9 +1406,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
                         dialogInterface.dismiss();
                     }
-                });
+                });*/
 
-                physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                physicalDialog.setNegativeButton(getString(R.string.edit), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (obsImgdir.exists()) {
@@ -1431,7 +1434,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
-                        startActivity(intent1);
+                        //startActivity(intent1);
+                        mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
                     }
                 });
@@ -1481,7 +1485,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     historyText.setText(Html.fromHtml(patHistory.getValue()));
                 historyText.setEnabled(false);
 
-                historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                /*historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
@@ -1546,9 +1550,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
                         dialogInterface.dismiss();
                     }
-                });
+                });*/
 
-                historyDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                historyDialog.setNegativeButton(getString(R.string.edit), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
@@ -1560,7 +1564,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
-                        startActivity(intent1);
+                        //startActivity(intent1);
+                        mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
                     }
                 });
@@ -1613,7 +1618,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
                 famHistText.setEnabled(false);
 
-                famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
@@ -1653,10 +1658,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                 dialog.dismiss();
                             }
                         });
-                      /*  AlertDialog alertDialog = textInput.show();
+                      *//*  AlertDialog alertDialog = textInput.show();
                         dialogInterface.dismiss();
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
-*/
+*//*
                         AlertDialog alertDialog = textInput.create();
                         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
                         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
@@ -1679,7 +1684,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity_New.this, alertDialog);
                         dialogInterface.dismiss();
                     }
-                });
+                });*/
 
                 famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -1688,7 +1693,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     }
                 });
 
-                famHistDialog.setNegativeButton(R.string.generic_erase_redo, new DialogInterface.OnClickListener() {
+                famHistDialog.setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -1701,7 +1706,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
-                        startActivity(intent1);
+                        //startActivity(intent1);
+                        mStartForEditVisit.launch(intent1);
                         dialogInterface.dismiss();
                     }
                 });
@@ -1797,17 +1803,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void checkPerm() {
         if (checkAndRequestPermissions()) {
             try {
-                if(hasPrescription.equalsIgnoreCase("true")) {
+                if (hasPrescription.equalsIgnoreCase("true")) {
                     doWebViewPrint_downloadBtn();
-                }
-                else
-                {
+                } else {
                     DialogUtils dialogUtils = new DialogUtils();
                     dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
                         @Override
                         public void onDialogActionDone(int action) {
                         }
-                    });                }
+                    });
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -2678,8 +2683,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     fileList.add(new File(filename));
                 }
             }
-            if(fileList.size()==0)
-            {
+            if (fileList.size() == 0) {
                 physcialExaminationDownloadText.setVisibility(View.GONE);
             }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
@@ -3208,11 +3212,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (encounterUuidAdultIntial != null) {
             try {
                 List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-                if(imageList.size()==0)
-                {
+                if (imageList.size() == 0) {
                     physcialExaminationDownloadText.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     for (String images : imageList) {
                         if (imagesDAO.isLocalImageUuidExists(images))
                             physcialExaminationDownloadText.setVisibility(View.GONE);
@@ -4755,7 +4757,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) +": " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -4771,7 +4773,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) +": " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -4877,5 +4879,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         intent2.putExtra("BUNDLE", args);
         startActivity(intent2);
     }
+
+    ActivityResultLauncher<Intent> mStartForEditVisit = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        recreate();
+                    }
+                }
+            });
 
 }

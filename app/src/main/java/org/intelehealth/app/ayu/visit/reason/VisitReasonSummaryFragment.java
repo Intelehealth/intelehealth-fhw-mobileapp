@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.reason;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class VisitReasonSummaryFragment extends Fragment {
     private LinearLayout mAssociateSymptomsLinearLayout, mComplainSummaryLinearLayout;
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
+    private boolean mIsEditMode = false;
 
     public VisitReasonSummaryFragment() {
         // Required empty public constructor
@@ -49,9 +51,10 @@ public class VisitReasonSummaryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static VisitReasonSummaryFragment newInstance(Intent intent, String values) {
+    public static VisitReasonSummaryFragment newInstance(Intent intent, String values, boolean isEditMode) {
         VisitReasonSummaryFragment fragment = new VisitReasonSummaryFragment();
         fragment.mSummaryString = values;
+        fragment.mIsEditMode = isEditMode;
         return fragment;
     }
 
@@ -79,7 +82,11 @@ public class VisitReasonSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION, false, null);
+                if (mIsEditMode) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                } else
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION, false, null);
             }
         });
         view.findViewById(R.id.tv_change_associate_sympt).setOnClickListener(new View.OnClickListener() {

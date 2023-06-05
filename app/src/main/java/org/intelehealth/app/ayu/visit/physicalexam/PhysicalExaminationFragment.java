@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.physicalexam;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class PhysicalExaminationFragment extends Fragment {
     private PhysicalExam physicalExam;
     private VisitCreationActionListener mActionListener;
     private boolean mIsEditMode = false;
+
     public PhysicalExaminationFragment() {
         // Required empty public constructor
     }
@@ -82,6 +84,24 @@ public class PhysicalExaminationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_physical_examination, container, false);
+        if (mIsEditMode) {
+            view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+
+                }
+            });
+            view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                }
+            });
+        }
         RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -103,7 +123,7 @@ public class PhysicalExaminationFragment extends Fragment {
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
                 }
-                if(isSkipped){
+                if (isSkipped) {
                     mQuestionsListingAdapter.geItems().get(index).setSelected(false);
                     mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
                     mQuestionsListingAdapter.notifyItemChanged(index);
@@ -131,7 +151,7 @@ public class PhysicalExaminationFragment extends Fragment {
                     mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
                     // }
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION,false, null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
                 }
 
             }
@@ -143,7 +163,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, false,null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
             }
 
             @Override
@@ -162,6 +182,25 @@ public class PhysicalExaminationFragment extends Fragment {
 
                 getOption(0));
         showSanityDialog();
+        if (mIsEditMode) {
+            while (true) {
+                if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
+                    mCurrentComplainNodeOptionsIndex++;
+                    mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0));
+
+
+
+                } else {
+                    break;
+                }
+            }
+            /*recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                }
+            }, 100);*/
+        }
         return view;
     }
 

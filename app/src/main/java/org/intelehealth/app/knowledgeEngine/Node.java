@@ -3139,10 +3139,10 @@ public class Node implements Serializable {
                     }
                 }
 
-                Log.v(TAG, node.text);
-                Log.v(TAG, node.text);
-                Log.v(TAG, String.valueOf(node.isSelected()));
+                Log.v(TAG, "checkAllRequiredAnswered - " + node.text);
+                Log.v(TAG, "checkAllRequiredAnswered - " + String.valueOf(node.isSelected()));
             }
+            Log.v(TAG, "checkAllRequiredAnswered requiredStrings - " + stringBuilder.toString());
         }
         answerResult.requiredStrings = stringBuilder.toString();
         return answerResult;
@@ -3188,12 +3188,11 @@ public class Node implements Serializable {
                 }
             }
 
-            Log.v(TAG, text);
-            Log.v(TAG, text);
-            Log.v(TAG, "isSelected - " + String.valueOf(isSelected()));
-            Log.v(TAG, "isNoSelected - " + String.valueOf(isNoSelected()));
-            Log.v(TAG, "anySubSelected - " + String.valueOf(anySubSelected()));
-            Log.v(TAG, "isNestedMandatoryOptionsAnswered - " + String.valueOf(isNestedMandatoryOptionsAnswered(this)));
+            Log.v(TAG, "checkAllRequiredAnsweredRootNode - " + text);
+            Log.v(TAG, "checkAllRequiredAnsweredRootNode isSelected - " + String.valueOf(isSelected()));
+            Log.v(TAG, "checkAllRequiredAnsweredRootNode isNoSelected - " + String.valueOf(isNoSelected()));
+            Log.v(TAG, "checkAllRequiredAnsweredRootNode anySubSelected - " + String.valueOf(anySubSelected()));
+            Log.v(TAG, "checkAllRequiredAnsweredRootNode isNestedMandatoryOptionsAnswered - " + String.valueOf(isNestedMandatoryOptionsAnswered(this)));
 
         }
 
@@ -3202,7 +3201,7 @@ public class Node implements Serializable {
     }
 
     public boolean isNestedMandatoryOptionsAnswered(Node node) {
-        Log.v("isNestedMandatory", new Gson().toJson(node).toString());
+        Log.v(TAG, "isNestedMandatory - " + new Gson().toJson(node).toString());
         boolean allAnswered = node.isSelected();
         /*if(node.isSelected() && node.isRequired() && node.optionsList.size()==1){
             if(!node.optionsList.get(0).isSelected()){
@@ -3221,6 +3220,7 @@ public class Node implements Serializable {
             }
 
         }
+        Log.v(TAG, "isNestedMandatory allAnswered - " + allAnswered);
         return allAnswered;
     }
 

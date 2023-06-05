@@ -141,6 +141,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public void addItemAll(List<Node> nodes) {
         mItemList = nodes;
+
+        for (int i = 0; i < mItemList.size(); i++) {
+            if (!mIndexMappingHashMap.containsKey(i))
+                mIndexMappingHashMap.put(i, mRootIndex);
+        }
+
         notifyDataSetChanged();
     }
 
@@ -1492,7 +1498,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 // display the selected date by using a toast
                 int m = month + 1;
                 //String date = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
-                 //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
+                //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(0);
                 //cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
@@ -1529,16 +1535,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
 
                     if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", d));
-                        } else {
-                            node.addLanguage(d);
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
-                        node.setSelected(true);
-                        holder.node.setSelected(true);
+                        node.setLanguage(node.getLanguage().replace("_", d));
+                    } else {
+                        node.addLanguage(d);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    holder.node.setSelected(true);
 
-                        node.setDataCaptured(true);
-                        holder.node.setDataCaptured(true);
+                    node.setDataCaptured(true);
+                    holder.node.setDataCaptured(true);
 
                     //notifyDataSetChanged();
                     mOnItemSelection.onSelect(node, index, false);

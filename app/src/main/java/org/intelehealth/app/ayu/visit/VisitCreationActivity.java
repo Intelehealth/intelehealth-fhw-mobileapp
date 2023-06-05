@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -217,7 +218,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         else makeReadyForEdit();
     }
 
+
     private void makeReadyForEdit() {
+        findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
         switch (mEditFor) {
             case STEP_1_VITAL:
                 getSupportFragmentManager().beginTransaction().
@@ -225,20 +228,41 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         commit();
                 break;
             case STEP_2_VISIT_REASON:
-                mStep2ProgressBar.setProgress(20);
-                ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string.visit_reason));
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
+                }.getType());
 
+                mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
+                }.getType());
+
+                //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
+                //mStep2ProgressBar.setProgress(40);
+                setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
+                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
+                //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonCaptureFragment.newInstance(getIntent(), mIsEditMode, true), VISIT_REASON_FRAGMENT).
+                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mIsEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
-                mSummaryFrameLayout.setVisibility(View.GONE);
                 break;
             case STEP_3_PHYSICAL_EXAMINATION:
+                mStep3ProgressBar.setProgress(10);
+                setTitle(getResources().getString(R.string._phy_examination));
+                mSummaryFrameLayout.setVisibility(View.GONE);
+                //mPhysicalExamNode =
+                //loadPhysicalExam();
+                physicalExamMap = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid), PhysicalExam.class);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mIsEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
+                        commit();
                 break;
             case STEP_4_PAST_MEDICAL_HISTORY:
+                mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
+                mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
+                showPastMedicalHistoryFragment(mIsEditMode);
                 break;
             case STEP_5_FAMILY_HISTORY:
+                mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
+                mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
+                showFamilyHistoryFragment(mIsEditMode);
                 break;
         }
     }
@@ -262,7 +286,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep1ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject), VITAL_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode), VITAL_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -323,7 +347,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertion), VISIT_REASON_QUESTION_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertion, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
                             commit();
                 }
                 break;
@@ -342,7 +366,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 if (isSavedPhysicalExam()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -359,7 +383,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 if (isSavedPastHistory()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistory, familyHistory), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistory, familyHistory, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -421,9 +445,14 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private boolean isSavedVisitReason() {
 
+        // save to cache
+        sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid, new Gson().toJson(mSelectedComplainList));
+        sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid, new Gson().toJson(mChiefComplainRootNodeList));
+        //**********
         insertion = "";
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
+            Log.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
             String val = formatComplainRecord(node, i == mChiefComplainRootNodeList.size() - 1);
             if (val == null) {
                 return false;
@@ -845,6 +874,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private boolean savePhysicalExamData() {
         Log.v(TAG, "savePhysicalExamData");
+        // save to cache
+        sessionManager.setVisitEditCache(SessionManager.PHY_EXAM + visitUuid, new Gson().toJson(physicalExamMap));
+        //**********
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
         if (complaintConfirmed) {
@@ -874,7 +906,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
      * @return
      */
     private boolean savePastHistoryData() {
-
+        // save to cache
+        sessionManager.setVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid, new Gson().toJson(mPastMedicalHistoryNode));
+        sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
+        //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
         while (patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");

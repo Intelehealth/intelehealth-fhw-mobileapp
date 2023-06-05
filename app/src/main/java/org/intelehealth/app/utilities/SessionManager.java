@@ -54,6 +54,12 @@ public class SessionManager {
     public static final String PREVIOUS_SEARCH_QUERY = "PREVIOUS_SEARCH_QUERY";
     public static final String FIRST_PROVIDER_LOGIN_TIME = "FIRST_LOGIN_TIME";
     private static final String ENABLE_APP_LOCK = "ENABLE_APP_LOCK";
+    // prefix for visit edit cache
+    public static final String CHIEF_COMPLAIN_LIST = "CHIEF_COMPLAIN_LIST_";
+    public static final String CHIEF_COMPLAIN_QUESTION_NODE = "CHIEF_COMPLAIN_QUESTION_NODE_";
+    public static final String PHY_EXAM = "PHY_EXAM_";
+    public static final String PATIENT_HISTORY = "PATIENT_HISTORY_";
+    public static final String FAMILY_HISTORY = "FAMILY_HISTORY_";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -499,5 +505,15 @@ public class SessionManager {
 
     public String getFirstProviderLoginTime() {
         return pref.getString(FIRST_PROVIDER_LOGIN_TIME, "");
+    }
+
+    // set the visit edit cache data as json string
+    public void setVisitEditCache(String key, String valueJson) {
+        editor.putString(key, valueJson);
+        editor.commit();
+    }
+    // get the visit edit cache data as json string
+    public String getVisitEditCache(String key) {
+        return pref.getString(key, "");
     }
 }
