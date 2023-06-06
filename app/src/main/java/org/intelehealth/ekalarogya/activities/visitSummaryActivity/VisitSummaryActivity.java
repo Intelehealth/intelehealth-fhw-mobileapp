@@ -1168,7 +1168,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (complaints != null) {
                     for (String comp : complaints) {
                         if (!comp.isEmpty() && !comp.trim().isEmpty()) {
-                            mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                            try {   // AEAT-510
+                                mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                            }
+                            catch (Exception e) {
+                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
                         }
                     }
@@ -2431,8 +2437,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (complaints != null) {
             for (String comp : complaints) {
                 if (!comp.isEmpty() && !comp.trim().isEmpty()) {
-                    mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
+                    try {   // AEAT-510
+                        mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
             }
             if (!mComplaint.isEmpty()) {
