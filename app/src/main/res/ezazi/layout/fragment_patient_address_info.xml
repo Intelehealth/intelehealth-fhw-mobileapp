@@ -32,8 +32,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_container_padding"
-                    app:endIconMode="none"
                     android:hint="@string/country"
+                    app:endIconMode="none"
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
@@ -41,10 +41,10 @@
                         style="@style/Theme.EZazi.Scrollbar.Thumb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:text="@string/str_check_India"
                         android:backgroundTint="@color/white"
                         android:dropDownSelector="@color/white"
+                        android:inputType="none"
+                        android:text="@string/str_check_India"
                         android:textSize="@dimen/input_inner_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>
