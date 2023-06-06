@@ -130,6 +130,7 @@ public class PatientsDAO {
     }
 
     public boolean updatePatientToDBNew(PatientDTO patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+        Log.d("tag", "updatePatientToDBNew:uuid :  "+uuid);
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

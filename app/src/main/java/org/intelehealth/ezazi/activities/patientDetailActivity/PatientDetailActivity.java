@@ -182,6 +182,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
+            Log.d(TAG, "onCreate: patientUuid : " + patientUuid);
             patientName = intent.getStringExtra("patientName");
             hasPrescription = intent.getStringExtra("hasPrescription");
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
@@ -756,47 +757,55 @@ public class PatientDetailActivity extends AppCompatActivity {
         //Log.d("IDEA","IDEA"+id);
 
         Log.d(TAG, "setDisplay: dob: " + patient_new.getDate_of_birth());
-        String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
-        ageView.setText(age.trim());
-        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
 
-        String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            String dob_text = en__te_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String dob_text = en__mr_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            String dob_text = en__as_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            String dob_text = en__ml_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            String dob_text = en__kn_dob(dob); //to show text of English into telugu...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String dob_text = en__ru_dob(dob); //to show text of English into Russian...
-            dobView.setText(dob_text);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-            dobView.setText(dob_text);
-        } else {
-            dobView.setText(dob);
+        String dobPatient = patient_new.getDate_of_birth();
+        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dobPatient);
+        String age = DateAndTimeUtils.getAgeInYearMonthNew(patient_new.getDate_of_birth(), context);
+        ageView.setText(age.trim());
+        Log.d(TAG, "setDisplay: agedob : " + patient_new.getDate_of_birth());
+        Log.d(TAG, "setDisplay: age : " + age);
+
+        if (dobPatient != null && !dobPatient.isEmpty()) {
+
+            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                String dob_text = en__te_dob(dob); //to show text of English into telugu...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String dob_text = en__mr_dob(dob); //to show text of English into telugu...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                String dob_text = en__as_dob(dob); //to show text of English into telugu...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                String dob_text = en__ml_dob(dob); //to show text of English into telugu...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                String dob_text = en__kn_dob(dob); //to show text of English into telugu...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                String dob_text = en__ru_dob(dob); //to show text of English into Russian...
+                dobView.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
+                dobView.setText(dob_text);
+            } else {
+                dobView.setText(dob);
+            }
         }
+
         //dobView.setText(dob);
        /* mGender = patient_new.getGender();
         if (patient_new.getGender() == null || patient_new.getGender().equals("")) {

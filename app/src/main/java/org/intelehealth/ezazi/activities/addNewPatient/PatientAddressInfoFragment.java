@@ -5,6 +5,8 @@ import static com.google.android.material.textfield.TextInputLayout.END_ICON_NON
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -69,6 +71,7 @@ public class PatientAddressInfoFragment extends Fragment {
     boolean patient_detail = false;
     boolean editDetails = false;
     boolean fromSummary = false;
+    String patientUuidUpdate = "";
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private String country1, state;
@@ -122,7 +125,7 @@ public class PatientAddressInfoFragment extends Fragment {
         cardState = view.findViewById(R.id.card_state);
         cardCityVillage = view.findViewById(R.id.card_city_village);
         etLayoutCityVillage = view.findViewById(R.id.et_layout_city_village);
-
+        autotvCity.setFilters(new InputFilter[]{filter});
 
         setStatesForIndia();
 
@@ -137,6 +140,7 @@ public class PatientAddressInfoFragment extends Fragment {
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
             editDetails = getArguments().getBoolean("editDetails");
             fromSummary = getArguments().getBoolean("fromSummary");
+            patientUuidUpdate = getArguments().getString("patientUuidUpdate");
 
 
             getCityVillageAsPerStateSelection(patientDTO.getStateprovince());
@@ -160,6 +164,7 @@ public class PatientAddressInfoFragment extends Fragment {
         //For India only
         getStates();
         autotvState.setOnItemClickListener((parent, view, position, id) -> {
+            autotvCity.setText("");
             String state = parent.getItemAtPosition(position).toString();
 
             getCityVillageAsPerStateSelection(state);
@@ -438,7 +443,7 @@ public class PatientAddressInfoFragment extends Fragment {
             Toast.makeText(getActivity(), "JsonException" + e, Toast.LENGTH_LONG).show();
             //  showAlertDialogButtonClicked(e.toString());
         }
-        Log.d(TAG, "onActivityCreated: postal code: "+patientDTO.getPostalcode());
+        Log.d(TAG, "onActivityCreated: postal code: " + patientDTO.getPostalcode());
         // Setting up the screen when user came from SEcond screen.
         if (fromThirdScreen || fromFirstScreen) {
             if (patientDTO.getPostalcode() != null && !patientDTO.getPostalcode().isEmpty())
@@ -647,6 +652,7 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putBoolean("patient_detail", patient_detail);
         bundle.putString("mAlternateNumberString", mAlternateNumberString);
         bundle.putBoolean("fromSummary", fromSummary);
+        bundle.putString("patientUuidUpdate", patientUuidUpdate);
 
         firstScreen.setArguments(bundle); // passing data to Fragment
         requireActivity().getSupportFragmentManager()
@@ -759,8 +765,7 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putBoolean("editDetails", true);
         bundle.putString("mAlternateNumberString", mAlternateNumberString);
         bundle.putBoolean("fromSummary", fromSummary);
-
-        //   bundle.putString("patientUuid", patientID_edit);
+        bundle.putString("patientUuidUpdate", patientUuidUpdate);
         bundle.putBoolean("patient_detail", patient_detail);
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 //
@@ -882,4 +887,19 @@ public class PatientAddressInfoFragment extends Fragment {
             result = "none";
         return result;
     }
+
+    private String blockCharacterSet = "~#^|$%&*!@(){}[]+_.,<>?/;:=";
+
+    private InputFilter filter = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+            if (source != null && blockCharacterSet.contains(("" + source))) {
+                return "";
+            }
+            return null;
+        }
+    };
+
 }

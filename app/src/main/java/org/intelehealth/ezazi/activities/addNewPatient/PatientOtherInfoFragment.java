@@ -112,6 +112,7 @@ public class PatientOtherInfoFragment extends Fragment {
     CheckBox mUnknownMembraneRupturedCheckBox;
     ImagesDAO imagesDAO = new ImagesDAO();
     boolean patient_detail = false;
+    String patientUuidUpdate = "";
     boolean fromSummary = false;
     private PatientAddressInfoFragment secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
@@ -188,6 +189,7 @@ public class PatientOtherInfoFragment extends Fragment {
             patient_detail = getArguments().getBoolean("patient_detail");
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
             fromSummary = getArguments().getBoolean("fromSummary");
+            patientUuidUpdate = getArguments().getString("patientUuidUpdate");
 
 
           /*  if (patientID_edit != null) {
@@ -790,7 +792,15 @@ public class PatientOtherInfoFragment extends Fragment {
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
-        uuid = UUID.randomUUID().toString();
+
+        //wrong uuid
+
+        if (fromSummary && patientUuidUpdate != null && !patientUuidUpdate.isEmpty()) {
+            uuid = patientUuidUpdate;
+        } else {
+            uuid = UUID.randomUUID().toString();
+
+        }
 
         patientDTO.setUuid(uuid);
         Gson gson = new Gson();
@@ -1000,6 +1010,8 @@ public class PatientOtherInfoFragment extends Fragment {
         try {
 
             //updatePatientDetails
+            Log.d(TAG, "onPatientCreateClicked: fromSummary : " + fromSummary);
+            Log.d(TAG, "onPatientCreateClicked: uuid : " + uuid);
 
             if (fromSummary) {
                 boolean isPatientUpdated = patientsDAO.updatePatientToDBNew(patientDTO, uuid, patientAttributesDTOList);
@@ -1023,6 +1035,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 }
                 if (isPatientUpdated && isPatientImageUpdated) {
+                    Log.d(TAG, "99onPatientCreateClicked:update uuid : " + uuid);
                     Logger.logD(TAG, "updated");
                     Intent i = new Intent(getActivity().getApplication(), PatientDetailActivity.class);
                     i.putExtra("patientUuid", uuid);
@@ -1060,6 +1073,8 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 if (isPatientInserted) {
                     Logger.logD(TAG, "inserted");
+                    Log.d(TAG, "99onPatientCreateClicked:add uuid : " + uuid);
+
                     Intent i = new Intent(mContext, PatientDetailActivity.class);
                     i.putExtra("patientUuid", uuid);
                     i.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
@@ -1089,6 +1104,7 @@ public class PatientOtherInfoFragment extends Fragment {
         bundle.putBoolean("editDetails", true);
         bundle.putString("mAlternateNumberString", mAlternateNumberString);
         bundle.putBoolean("fromSummary", fromSummary);
+        bundle.putString("patientUuidUpdate", patientUuidUpdate);
 
         secondScreen.setArguments(bundle); // passing data to Fragment
 
