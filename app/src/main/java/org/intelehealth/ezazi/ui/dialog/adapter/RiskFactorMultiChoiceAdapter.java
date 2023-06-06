@@ -89,8 +89,8 @@ class RiskFactorMultiChoiceViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void enableAll(boolean disable) {
-        if (!binding.cbSelectAll.getText().toString().equalsIgnoreCase("None"))
-            binding.cbSelectAll.setEnabled(disable);
-        else binding.cbSelectAll.setEnabled(true);
+        if (binding.getHeader().trim().equalsIgnoreCase("None"))
+            binding.cbSelectAll.setEnabled(true);
+        else binding.cbSelectAll.setEnabled(disable);
     }
 }
