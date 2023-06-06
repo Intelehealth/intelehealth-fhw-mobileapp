@@ -217,5 +217,5 @@
     <dimen name="summary_label_text_size">@dimen/std_18sp</dimen>
     <dimen name="call_icon_width">@dimen/std_20dp</dimen>
     <dimen name="call_icon_height">@dimen/std_26dp</dimen>
-    <dimen name="whatsapp_icon_size">@dimen/std_20dp</dimen>
+    <dimen name="whatsapp_icon_size">@dimen/std_26dp</dimen>
 </resources>
