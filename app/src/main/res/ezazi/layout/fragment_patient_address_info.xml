@@ -34,6 +34,7 @@
                     android:layout_margin="@dimen/list_container_padding"
                     android:hint="@string/country"
                     app:endIconMode="none"
+                    android:enabled="false"
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
@@ -41,9 +42,9 @@
                         style="@style/Theme.EZazi.Scrollbar.Thumb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
                         android:dropDownSelector="@color/white"
                         android:inputType="none"
+                        android:maxLines="1"
                         android:text="@string/str_check_India"
                         android:textSize="@dimen/input_inner_size" />
 
@@ -86,6 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:dropDownSelector="@color/white"
+                    android:maxLines="1"
                     android:textAlignment="viewStart"
                     android:textSize="@dimen/input_inner_size" />
 

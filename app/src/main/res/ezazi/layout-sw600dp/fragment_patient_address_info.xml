@@ -33,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_container_padding"
+                    android:enabled="false"
                     android:hint="@string/country"
                     app:endIconMode="none"
                     app:hintEnabled="true">
@@ -42,9 +43,10 @@
                         style="@style/Theme.EZazi.Scrollbar.Thumb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
                         android:dropDownSelector="@color/white"
                         android:hint="@string/country"
+                        android:maxLines="1"
+                        android:text="@string/str_check_India"
                         android:textSize="@dimen/input_inner_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -73,6 +75,7 @@
                         android:layout_height="wrap_content"
                         android:dropDownSelector="@color/white"
                         android:hint="@string/state"
+                        android:maxLines="1"
                         android:textAlignment="viewStart"
                         android:textSize="@dimen/input_inner_size" />
 
