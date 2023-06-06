@@ -270,7 +270,6 @@ public class PatientOtherInfoFragment extends Fragment {
         cardDiagnosedDate = view.findViewById(R.id.card_diagnosed_date);
         cardDiagnosedTime = view.findViewById(R.id.card_diagnosed_time);
         layoutErrorLabourOnset = view.findViewById(R.id.card_labour_onset);
-        layoutSacRuptured = view.findViewById(R.id.card_sac_ruptured);
 
 
         mAdmissionDateTextView.addTextChangedListener(new MyTextWatcher(mAdmissionDateTextView));
@@ -363,6 +362,7 @@ public class PatientOtherInfoFragment extends Fragment {
         etLayoutRiskFactors = view.findViewById(R.id.etLayout_risk_factors);
         etLayoutPrimaryDoctor = view.findViewById(R.id.etLayout_primary_doctor);
         etLayoutSecondaryDoctor = view.findViewById(R.id.etLayout_secondary_doctor);
+        layoutSacRuptured = view.findViewById(R.id.card_sac_ruptured);
 
 
         etLayoutAdmissionDate.setEndIconOnClickListener(v -> {
