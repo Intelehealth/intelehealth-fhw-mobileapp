@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.google.android.material.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,26 +43,32 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
     @Override
     public void setErrorEnabled(boolean enabled) {
         super.setErrorEnabled(enabled);
+        this.findViewById(R.id.textinput_error).setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
+//        if (!enabled) {
+//            return;
+//        }
+//
+//        try {
+//            Field errorViewField = TextInputLayout.class.getDeclaredField("mErrorView");
+//            errorViewField.setAccessible(true);
+//            TextView errorView = (TextView) errorViewField.get(this);
+//            if (errorView != null) {
+//                errorView.setGravity(Gravity.END);
+//                errorView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//                params.gravity = Gravity.END;
+//                errorView.setLayoutParams(params);
+//            }
+//        }
+//        catch (Exception e) {
+//            // At least log what went wrong
+//            e.printStackTrace();
+//        }
+    }
 
-        if (!enabled) {
-            return;
-        }
-
-        try {
-            Field errorViewField = TextInputLayout.class.getDeclaredField("mErrorView");
-            errorViewField.setAccessible(true);
-            TextView errorView = (TextView) errorViewField.get(this);
-            if (errorView != null) {
-                errorView.setGravity(Gravity.END);
-                errorView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.gravity = Gravity.END;
-                errorView.setLayoutParams(params);
-            }
-        }
-        catch (Exception e) {
-            // At least log what went wrong
-            e.printStackTrace();
-        }
+    @Override
+    public void setError(@Nullable CharSequence errorText) {
+        super.setError(errorText);
+        this.findViewById(R.id.textinput_error).setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
     }
 }

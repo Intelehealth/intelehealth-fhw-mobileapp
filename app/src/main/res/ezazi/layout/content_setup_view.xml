@@ -47,7 +47,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
             android:id="@+id/etLocationLayout"
             style="@style/Theme.EZazi.Input.Login.DropDown"
             android:layout_width="match_parent"
@@ -63,13 +63,13 @@
                 style="@style/Theme.EZazi.Scrollbar.Thumb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:dropDownSelector="@color/white"
                 android:hint="@string/login_location_select"
                 android:inputType="none"
-                android:dropDownSelector="@color/white"
                 android:minHeight="@dimen/max_input_height"
                 android:textSize="@dimen/input_inner_size" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
         <include
             android:id="@+id/includeLoginInput"

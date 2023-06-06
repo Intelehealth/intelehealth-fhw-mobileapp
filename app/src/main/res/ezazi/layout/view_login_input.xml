@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
         android:id="@+id/etUsernameLayout"
         style="@style/Theme.EZazi.Input.Login"
         android:layout_width="match_parent"
@@ -31,23 +31,23 @@
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:maxLength="100"
-            android:text="nurse1"
             android:minHeight="@dimen/max_input_height"
+            android:text="nurse1"
             android:textSize="@dimen/input_inner_size" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvLblPassword"
         style="@style/LabelStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/prompt_password"
         android:layout_marginTop="@dimen/screen_container_padding"
+        android:text="@string/prompt_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etUsernameLayout" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
         android:id="@+id/etPasswordLayout"
         style="@style/Theme.EZazi.Input.Login.Password"
         android:layout_width="match_parent"
@@ -66,6 +66,6 @@
             android:minHeight="@dimen/max_input_height"
             android:textSize="@dimen/input_inner_size" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
