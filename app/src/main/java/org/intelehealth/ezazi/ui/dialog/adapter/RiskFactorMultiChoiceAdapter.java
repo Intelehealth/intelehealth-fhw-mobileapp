@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.ui.dialog.adapter;
 
+import static org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter.OPTION_NONE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 public class RiskFactorMultiChoiceAdapter extends MultiChoiceAdapter<String, RecyclerView.ViewHolder> {
 
     private boolean enableAll = true;
+    public static final String OPTION_NONE = "None";
 
     public RiskFactorMultiChoiceAdapter(Context context, ArrayList<String> objectsList) {
         super(context, objectsList);
@@ -54,7 +57,7 @@ public class RiskFactorMultiChoiceAdapter extends MultiChoiceAdapter<String, Rec
         if (view.getTag() instanceof CheckBox) {
             CheckBox checkBox = (CheckBox) view.getTag();
             int checkedPosition = (int) view.getTag(view.getId());
-            if (checkBox.getText().toString().equalsIgnoreCase("None") && checkedPosition == 0) {
+            if (checkBox.getText().toString().equalsIgnoreCase(OPTION_NONE) && checkedPosition == 0) {
                 enableAll = !checkBox.isChecked();
                 clearSelection();
                 selectItem(checkedPosition);
@@ -89,7 +92,7 @@ class RiskFactorMultiChoiceViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void enableAll(boolean disable) {
-        if (binding.getHeader().trim().equalsIgnoreCase("None"))
+        if (binding.getHeader().trim().equalsIgnoreCase(OPTION_NONE))
             binding.cbSelectAll.setEnabled(true);
         else binding.cbSelectAll.setEnabled(disable);
     }
