@@ -8,6 +8,8 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
@@ -466,7 +468,12 @@ public class SyncDAO {
 
             if(am == null || am.getRunningTasks(1)==null || am.getRunningTasks(1).size()==0)
             {
-                Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                new Handler(Looper.getMainLooper()).post(new Runnable() {  // AEAT-459
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 return;    // AEAT-427: crash handled.
             }
 
