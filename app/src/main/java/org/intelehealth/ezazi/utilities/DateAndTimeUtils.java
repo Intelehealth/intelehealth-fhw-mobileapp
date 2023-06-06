@@ -211,6 +211,8 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if (date == null) return s;
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");
@@ -469,6 +471,7 @@ public class DateAndTimeUtils {
 
 
     }
+
     public static String convertDateToYyyyMMddFormat(String dateToConvert) {
         Log.d(TAG, "convertDateToYyyyMMddFormat: dateToConvert : " + dateToConvert);
 
@@ -485,6 +488,7 @@ public class DateAndTimeUtils {
 
         return outputFormat.format(date);
     }
+
     public static String formatAgeInYearsMonthsDate(Context context, int year, int month, int day) {
         String age = "";
         if (year < 1) {

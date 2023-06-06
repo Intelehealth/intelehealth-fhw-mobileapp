@@ -722,10 +722,10 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
     public boolean onQueryTextChange(String s) {
         if (s.isEmpty()) firstQuery();
         else {
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions
-                    (SearchPatientActivity.this,
-                            SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-            suggestions.clearHistory();
+//            SearchRecentSuggestions suggestions = new SearchRecentSuggestions
+//                    (SearchPatientActivity.this,
+//                            SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+//            suggestions.clearHistory();
             query = s;
             doQuery(s);
         }
