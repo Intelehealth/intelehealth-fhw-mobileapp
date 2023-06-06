@@ -31,7 +31,7 @@
                 android:layout_height="@dimen/profile_layout_size"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/profile_layout_margin_bottom">
+                android:layout_marginBottom="@dimen/screen_container_padding">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/card_profile_width"
@@ -103,6 +103,7 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:maxLines="1"
+                            android:nextFocusForward="@id/et_middle_name"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -141,6 +142,7 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:maxLines="1"
+                            android:nextFocusForward="@id/et_last_name"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -167,6 +169,7 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:maxLines="1"
+                            android:nextFocusForward="@id/et_dob"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -210,6 +213,7 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
+                            android:nextFocusForward="@id/et_age"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -263,6 +267,7 @@
                             android:importantForAutofill="no"
                             android:inputType="none"
                             android:maxLines="1"
+                            android:nextFocusForward="@id/et_mobile_no"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -302,6 +307,7 @@
                             android:inputType="numberDecimal"
                             android:maxLength="10"
                             android:maxLines="1"
+                            android:nextFocusForward="@id/et_alternate_mobile"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -341,6 +347,7 @@
                             android:inputType="numberDecimal"
                             android:maxLength="10"
                             android:maxLines="1"
+                            android:nextFocusForward="@id/btn_save_update_first"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -354,7 +361,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
+                    android:text="@string/this_field_is_mandatory"
                     android:visibility="gone" />
 
 

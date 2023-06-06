@@ -369,6 +369,22 @@
         <item name="hintEnabled">true</item>
         <item name="boxBackgroundMode">filled</item>
         <item name="android:padding">0dp</item>
+        <item name="android:textAppearance">@style/Theme.EZazi.Regular.Text</item>
+        <item name="hintTextAppearance">@style/Theme.EZazi.Hint.Text</item>
+    </style>
+
+    <style name="Theme.EZazi.Text.Regular" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/dm_sans_regular</item>
+        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="android:textColor">@color/darkGray</item>
+    </style>
+
+    <style name="Theme.EZazi.Hint.Text" parent="Theme.EZazi.Text.Regular">
+        <item name="android:textColor">@color/darkGray</item>
+    </style>
+
+    <style name="Theme.EZazi.Regular.Text" parent="Theme.EZazi.Text.Regular">
+        <item name="android:textColor">@color/font_black_0</item>
     </style>
 
     <style name="Theme.EZazi.Material.CardView" parent="Widget.MaterialComponents.CardView">

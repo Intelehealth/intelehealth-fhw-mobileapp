@@ -109,7 +109,7 @@
     <dimen name="add_patient_frame_margin_start">30dp</dimen>
     <dimen name="add_patient_frame_margin_top">30dp</dimen>
     <dimen name="add_patient_frame_margin_end">30dp</dimen>
-    <dimen name="profile_layout_size">150dp</dimen>
+    <dimen name="profile_layout_size">132dp</dimen>
     <dimen name="profile_layout_margin_bottom">10dp</dimen>
     <dimen name="card_profile_width">100dp</dimen>
     <dimen name="card_profile_height">100dp</dimen>

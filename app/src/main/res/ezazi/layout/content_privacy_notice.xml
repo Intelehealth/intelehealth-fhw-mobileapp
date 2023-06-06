@@ -17,6 +17,7 @@
         style="@style/Theme.EZazi.Scrollbar.Thumb"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/screen_padding"
         android:fadeScrollbars="false"
         android:padding="@dimen/screen_container_padding"
         app:layout_constraintBottom_toTopOf="@id/buttons"
@@ -36,6 +37,7 @@
                 style="@style/Theme.EZazi.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/screen_padding"
                 android:padding="@dimen/actionbar_vertical_padding"
                 android:text="Lörem ipsum uligen ud nånannanism jirövis. Carina Lindqvist lunt nidat beren fastän tisapp att såjyr Barbro Nordström jin. Makrosk tetrapärade jag vans dekatt pultvätta sys bede masoligt. Kärrtorpa syvir ifall losm dol. Sektiga olig der plan, och Gun Månsson. Roland Falk upände, om dere hemiv om lalöling Adam Sundström utom Kristina Söderberg när geore ifall ysat. Seliga rallylydnad, restdejting filosofi utan gigalona dovis sunat. Röskade påner, inte säns katubel dystes. Eulåliga pälödat i terrorresa mikromatisk regisk det vill säga kaning redigt i köling om akat. Blåljusyrke vididade tejyseskap proner ren, vande preligt. Lagugt renovräkning medan monokemi klämspärr Arne Arvidsson, i visk inte obelt, padifall. Presk nedyling dost och debyns lorade demibel dår. Vitinade makroning, nyr snurrmästare Elias Söderberg misam. Britt Åkesson dekangen. Magnus Öberg diryn Caroline Sundberg inte plar. Gubyn veganisera, bilog monossade fasm. Sul swishjournalist i div relår faspening Olov Andersson Viktor Sjöberg panbel androcism. Igisk skurkstat infrasam dovis transmodern."
                 android:textAlignment="gravity" />
