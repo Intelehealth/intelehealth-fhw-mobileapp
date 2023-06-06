@@ -289,6 +289,10 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     @Override
                     public void onResponse(Call<SlotInfoResponse> call, retrofit2.Response<SlotInfoResponse> response) {
                         SlotInfoResponse slotInfoResponse = response.body();
+                        if (slotInfoResponse == null) { // AEAT-460
+                            Toast.makeText(ScheduleListingActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                         SlotListingAdapter slotListingAdapter = new SlotListingAdapter(rvSlots,
                                 ScheduleListingActivity.this,
