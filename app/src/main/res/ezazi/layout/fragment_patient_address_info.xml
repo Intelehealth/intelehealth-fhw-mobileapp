@@ -32,9 +32,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_container_padding"
+                    android:enabled="false"
                     android:hint="@string/country"
                     app:endIconMode="none"
-                    android:enabled="false"
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView
