@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="@dimen/screen_container_padding"
-    android:paddingHorizontal="@dimen/login_screen_padding">
+    android:paddingHorizontal="@dimen/login_screen_padding"
+    android:paddingVertical="@dimen/screen_container_padding">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_personal_info"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <View
         android:id="@+id/line_1"
         android:layout_width="0dp"
         android:layout_height="@dimen/layout_stages_line_height"
@@ -44,7 +44,7 @@
         app:layout_constraintStart_toEndOf="@id/line_1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <View
         android:id="@+id/line_2"
         android:layout_width="0dp"
         android:layout_height="@dimen/layout_stages_line_height"
@@ -63,6 +63,7 @@
         android:layout_marginEnd="@dimen/screen_container_padding"
         android:drawableTop="@drawable/ic_other_info"
         android:drawablePadding="@dimen/actionbar_vertical_padding"
+        android:minEms="3"
         android:text="@string/other"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
