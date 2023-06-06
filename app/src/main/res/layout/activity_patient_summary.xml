@@ -19,7 +19,7 @@
     <LinearLayout
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_common"
         android:layout_marginStart="@dimen/add_patient_frame_margin_start"
         android:layout_marginTop="@dimen/add_patient_frame_margin_top"
@@ -37,6 +37,7 @@
 
             <TextView
                 android:id="@+id/textView_ID"
+                style="@style/Theme.EZazi.Text.SubHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/ib_edit_details_padding"
@@ -50,9 +51,9 @@
                 android:layout_height="@dimen/ib_edit_details_size"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:background="?attr/selectableItemBackground"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/ib_edit_margin_end"
+                android:background="?attr/selectableItemBackground"
                 android:contentDescription="TODO"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:foregroundGravity="center"
@@ -69,7 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_card_summary"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/padding_card_summary"
                 android:weightSum="2">
 
                 <TextView
@@ -102,7 +104,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_card_summary"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/padding_card_summary"
                 android:weightSum="2">
 
                 <TextView
@@ -135,7 +138,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_card_summary"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/padding_card_summary"
                 android:weightSum="2">
 
                 <TextView
@@ -166,7 +170,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_card_summary"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/padding_card_summary"
                 android:weightSum="2">
 
                 <TextView
@@ -197,7 +202,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_card_summary"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/padding_card_summary"
                 android:weightSum="2">
 
                 <TextView
@@ -227,8 +233,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_card_summary"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/screen_container_padding"
                 android:weightSum="2">
 
                 <TextView
@@ -241,7 +249,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2">
+                    android:layout_weight="1.2"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/textView_phone"
@@ -253,17 +262,20 @@
                         android:hint="@string/mobile_number" />
 
                     <ImageView
-                        android:id="@+id/whatsapp_no"
-                        android:layout_width="@dimen/ib_edit_height_width"
-                        android:layout_height="@dimen/ib_edit_height_width"
-                        app:srcCompat="@drawable/ic_icons8_whatsapp" />
+                        android:id="@+id/calling"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/selector_icon"
+                        app:srcCompat="@drawable/ic_call_primary" />
 
                     <ImageView
-                        android:id="@+id/calling"
-                        android:layout_width="@dimen/ib_edit_height_width"
-                        android:layout_height="@dimen/ib_edit_height_width"
-                        android:layout_marginStart="10dp"
-                        app:srcCompat="@drawable/ic_call_primary" />
+                        android:id="@+id/whatsapp_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/selector_icon"
+                        app:srcCompat="@drawable/ic_icons8_whatsapp" />
 
                 </LinearLayout>
 
@@ -280,7 +292,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/padding_card_summary"
+                android:paddingHorizontal="@dimen/screen_container_padding"
+                android:paddingVertical="@dimen/padding_card_summary"
                 android:weightSum="2">
 
                 <TextView

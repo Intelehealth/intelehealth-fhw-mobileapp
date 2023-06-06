@@ -57,6 +57,7 @@
     <dimen name="dialog_btn_horizontal_margin">@dimen/std_47dp</dimen>
     <dimen name="dialog_btn_vertical_margin">@dimen/std_16dp</dimen>
     <dimen name="scrollbar_width">@dimen/std_6dp</dimen>
+    <dimen name="ib_edit_height_width">22dp</dimen>
 
     <!-- Added by Kaveri-->
     <!--Custom toolbar UI2.0-->
@@ -191,11 +192,11 @@
     <dimen name="pin_input_size">@dimen/std_26sp</dimen>
     <dimen name="pin_bottom_padding">@dimen/std_36dp</dimen>
     <dimen name="line_spacing">@dimen/std_4dp</dimen>
-    <dimen name="input_label_size_values">@dimen/std_16sp</dimen>
+    <dimen name="input_label_size_values">@dimen/std_21sp</dimen>
     <dimen name="padding_card_summary">30dp</dimen>
     <dimen name="margin_top_summary_views">18dp</dimen>
     <dimen name="layout_summary_padding_top_bt">20dp</dimen>
-    <dimen name="tv_summary_title_text_size">22sp</dimen>
+    <dimen name="tv_summary_title_text_size">26sp</dimen>
     <dimen name="tv_summary_layout_margin_top">26dp</dimen>
     <dimen name="ib_edit_details_size">34dp</dimen>
     <dimen name="ib_edit_details_padding">10dp</dimen>
@@ -214,5 +215,7 @@
     <dimen name="validation_error_tv_size">16sp</dimen>
     <dimen name="summary_values_text_size">@dimen/std_20sp</dimen>
     <dimen name="summary_label_text_size">@dimen/std_18sp</dimen>
-
+    <dimen name="call_icon_width">@dimen/std_20dp</dimen>
+    <dimen name="call_icon_height">@dimen/std_26dp</dimen>
+    <dimen name="whatsapp_icon_size">@dimen/std_20dp</dimen>
 </resources>

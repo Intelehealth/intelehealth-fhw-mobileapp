@@ -476,17 +476,17 @@
     </style>
 
     <style name="LabelStyleSummary" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textSize">@dimen/input_label_size</item>
+        <item name="android:textSize">@dimen/body</item>
         <item name="android:textColor">@color/darkGray</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/dm_sans_regular</item>
+        <item name="android:fontFamily">@font/dm_sans_regular</item>
     </style>
 
     <style name="LabelStyleSummaryValues" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/input_label_size_values</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/dm_sans_regular</item>
+        <item name="android:fontFamily">@font/dm_sans_regular</item>
     </style>
 
     <style name="CalendarSpinnerTheme" parent="android:Widget.Spinner">
