@@ -985,6 +985,6 @@
     <string name="enter_bed_no">Enter bed number</string>
     <string name="select_country">Please select country</string>
     <string name="select_state">Please select state</string>
-    <string name="select_city_village">Please select city/village</string>
+    <string name="select_city_village">Please select or enter city/village</string>
 
 </resources>

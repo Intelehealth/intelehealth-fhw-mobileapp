@@ -531,16 +531,36 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         int startYear = currentYear - 100;
         int totalNumberOfYears = currentYear - startYear;
 
-        for (int i = 0; i < totalNumberOfYears + 1; i++) {
-            if (startYear == currentYear) {
-                model1 = new CalendarviewYearModel(startYear, true);
+        //for date of birth logic - i.e. dob should be less than current date by 10 years
+        if (!whichDate.isEmpty() && whichDate.equalsIgnoreCase("dobPatient")) {
+            int startYear1 = currentYear - 100;
+            int totalNumberOfYears1 = (currentYear - 10) - startYear1;
+            Log.d(TAG, "fillYearSpinner: totalNumberOfYears1 : " + totalNumberOfYears1);
+            currentYear = currentYear - 10;
+            for (int i = 0; i < totalNumberOfYears1 + 1; i++) {
+                if (startYear1 == currentYear) {
+                    model1 = new CalendarviewYearModel(startYear1, true);
 
-            } else {
-                model1 = new CalendarviewYearModel(startYear, false);
+                } else {
+                    model1 = new CalendarviewYearModel(startYear1, false);
 
+                }
+                yearsList.add(model1);
+                startYear1 = startYear1 + 1;
             }
-            yearsList.add(model1);
-            startYear = startYear + 1;
+        } else {
+            //logic for rest of the scenarios
+            for (int i = 0; i < totalNumberOfYears + 1; i++) {
+                if (startYear == currentYear) {
+                    model1 = new CalendarviewYearModel(startYear, true);
+
+                } else {
+                    model1 = new CalendarviewYearModel(startYear, false);
+
+                }
+                yearsList.add(model1);
+                startYear = startYear + 1;
+            }
         }
 
 
@@ -716,10 +736,18 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         spinnerSelectedYearModel = new CalendarviewYearModel(currentYear, true);
         spinnerSelectedMonthModel = new CalendarViewMonthModel("", currentMonth, true);
 
-
+        Bundle mArgs = getArguments();
+        assert mArgs != null;
+        whichDate = mArgs.getString("whichDate");
         fillMonthsSpinner();
         fillYearSpinner();
-        setValuesToTheMonthSpinnerForDefault(currentMonth);
+        //set current month as a january for new year -default
+        if (!whichDate.isEmpty() && whichDate.equalsIgnoreCase("dobPatient"))
+            setValuesToTheMonthSpinnerForDefault(1);
+        else
+            setValuesToTheMonthSpinnerForDefault(currentMonth); // default current month for other cases
+
+
         setValuesToTheYearSpinnerForDefault(currentYear);
         fillDatesMonthsWise("default");
 

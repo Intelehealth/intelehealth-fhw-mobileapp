@@ -112,6 +112,7 @@ public class PatientOtherInfoFragment extends Fragment {
     CheckBox mUnknownMembraneRupturedCheckBox;
     ImagesDAO imagesDAO = new ImagesDAO();
     boolean patient_detail = false;
+    boolean fromSummary = false;
     private PatientAddressInfoFragment secondScreen;
     boolean fromThirdScreen = false, fromSecondScreen = false;
     //    ImageView ivPersonal, ivAddress, ivOther;
@@ -186,6 +187,7 @@ public class PatientOtherInfoFragment extends Fragment {
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
+            fromSummary = getArguments().getBoolean("fromSummary");
 
 
           /*  if (patientID_edit != null) {
@@ -370,7 +372,7 @@ public class PatientOtherInfoFragment extends Fragment {
             }
 
         });
-        etLayoutAdmissionDate.setOnClickListener(v -> {
+        mAdmissionDateTextView.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putString("whichDate", "admissionDate");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
@@ -385,7 +387,7 @@ public class PatientOtherInfoFragment extends Fragment {
         etLayoutAdmissionTime.setEndIconOnClickListener(v -> {
             selectTimeForAllParameters("admissionTimeString");
         });
-        etLayoutAdmissionTime.setOnClickListener(v -> {
+        mAdmissionTimeTextView.setOnClickListener(v -> {
             selectTimeForAllParameters("admissionTimeString");
         });
 
@@ -419,17 +421,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
             }
         });
-        etLabourDiagnosedDate.setEndIconOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("whichDate", "labourDiagnosedDate");
-            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-            dialog.setArguments(args);
-            dialog.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
-            if (getFragmentManager() != null) {
-                dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
-            }
-        });
-        etLabourDiagnosedDate.setOnClickListener(v -> {
+        mActiveLaborDiagnosedDateTextView.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putString("whichDate", "labourDiagnosedDate");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
@@ -442,7 +434,7 @@ public class PatientOtherInfoFragment extends Fragment {
         etLabourDiagnosedTime.setEndIconOnClickListener(v -> {
             selectTimeForAllParameters("laborOnsetString");
         });
-        etLabourDiagnosedTime.setOnClickListener(v -> {
+        mActiveLaborDiagnosedTimeTextView.setOnClickListener(v -> {
             selectTimeForAllParameters("laborOnsetString");
         });
 
@@ -456,7 +448,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog1.show(getFragmentManager(), "PatientOtherInfoFragment");
             }
         });
-        etLayoutSacRupturedDate.setOnClickListener(v -> {
+        mMembraneRupturedDateTextView.setOnClickListener(v -> {
             Bundle args1 = new Bundle();
             args1.putString("whichDate", "sacRupturedDate");
             CustomCalendarViewUI2 dialog1 = new CustomCalendarViewUI2(getActivity());
@@ -470,7 +462,7 @@ public class PatientOtherInfoFragment extends Fragment {
             selectTimeForAllParameters("membraneRupturedTime");
 
         });
-        etLayoutSacRupturedTime.setOnClickListener(v -> {
+        mMembraneRupturedTimeTextView.setOnClickListener(v -> {
             selectTimeForAllParameters("membraneRupturedTime");
 
         });
@@ -502,10 +494,41 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
             }
         });
+        mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
+
+                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+                List<String> items = Arrays.asList(itemsArray);
+
+                dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
+                dialog1.setListener(selectedItems -> {
+                    if (selectedItems.size() > 0) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < selectedItems.size(); i++) {
+                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
+                            stringBuilder.append(selectedItems.get(i));
+
+                        }
+                        mRiskFactorsString = stringBuilder.toString();
+                        mRiskFactorsTextView.setText(mRiskFactorsString);
+                    }
+
+                });
+
+                assert getFragmentManager() != null;
+                dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
+            }
+        });
         etLayoutPrimaryDoctor.setEndIconOnClickListener(v -> selectPrimaryDoctor());
+        mPrimaryDoctorTextView.setOnClickListener(v -> selectPrimaryDoctor());
 
         etLayoutSecondaryDoctor.setEndIconOnClickListener(v -> {
+            selectSecondaryDoctor();
+        });
+        mSecondaryDoctorTextView.setOnClickListener(v -> {
             selectSecondaryDoctor();
         });
 
@@ -766,6 +789,7 @@ public class PatientOtherInfoFragment extends Fragment {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+
         uuid = UUID.randomUUID().toString();
 
         patientDTO.setUuid(uuid);
@@ -966,7 +990,7 @@ public class PatientOtherInfoFragment extends Fragment {
 //            }
 
             patientAttributesDTOList.add(patientAttributesDTO);
-            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
+            Logger.logD(TAG, "buPatientAttrite list size" + patientAttributesDTOList.size());
             patientDTO.setPatientAttributesDTOList(patientAttributesDTOList);
             patientDTO.setSyncd(false);
             Logger.logD("patient json : ", "Json : " + gson.toJson(patientDTO, PatientDTO.class));
@@ -974,25 +998,48 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         try {
-            Logger.logD(TAG, "insertpatinet ");
-            boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, uuid);
-            Log.d(TAG, "onPatientCreateClicked: isPatientInserted : " + isPatientInserted);
 
-            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), uuid);
+            //updatePatientDetails
 
-            if (NetworkConnection.isOnline(mContext)) {
-//                patientApiCall();
-//                frameJson();
+            if (fromSummary) {
+                boolean isPatientUpdated = patientsDAO.updatePatientToDBNew(patientDTO, uuid, patientAttributesDTOList);
+                boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), uuid);
 
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_upload),
-//                        getString(R.string.uploading) + patientDTO.getFirstname() + "" + patientDTO.getLastname() +
-//                                "'s data", 2, getApplication());
+                if (NetworkConnection.isOnline(getActivity().getApplication())) {
+                    SyncDAO syncDAO = new SyncDAO();
+                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                    boolean ispush = syncDAO.pushDataApi();
+                    boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
 
+//                if (ispush)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", 2, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data not uploaded.", 2, getApplication());
 
-                SyncDAO syncDAO = new SyncDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean push = syncDAO.pushDataApi();
-                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+//                if (isPushImage)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image upload complete.", 4, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image not complete.", 4, getApplication());
+
+                }
+                if (isPatientUpdated && isPatientImageUpdated) {
+                    Logger.logD(TAG, "updated");
+                    Intent i = new Intent(getActivity().getApplication(), PatientDetailActivity.class);
+                    i.putExtra("patientUuid", uuid);
+                    i.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
+                    i.putExtra("tag", "newPatient");
+                    i.putExtra("hasPrescription", "false");
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    getActivity().getApplication().startActivity(i);
+                }
+            } else {
+                boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, uuid);
+                boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(patientDTO.getPatientPhoto(), uuid);
+                if (NetworkConnection.isOnline(mContext)) {
+                    SyncDAO syncDAO = new SyncDAO();
+                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                    boolean push = syncDAO.pushDataApi();
+                    boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 //                if (push)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientDTO.getFirstname() + "" + patientDTO.getLastname() + "'s data upload complete.", 2, getApplication());
 //                else
@@ -1005,26 +1052,29 @@ public class PatientOtherInfoFragment extends Fragment {
 
 
 //
-            }
+                }
 //            else {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
 //            }
-            // if (isPatientInserted && isPatientImageInserted) {
+                // if (isPatientInserted && isPatientImageInserted) {
 
-            if (isPatientInserted) {
-                Logger.logD(TAG, "inserted");
-                Intent i = new Intent(mContext, PatientDetailActivity.class);
-                i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
-                i.putExtra("tag", "newPatient");
-                i.putExtra("privacy", privacy_value);
-                i.putExtra("hasPrescription", "false");
-                Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                mContext.startActivity(i);
-            } else {
-                Toast.makeText(mContext, "Error of adding the data", Toast.LENGTH_SHORT).show();
+                if (isPatientInserted) {
+                    Logger.logD(TAG, "inserted");
+                    Intent i = new Intent(mContext, PatientDetailActivity.class);
+                    i.putExtra("patientUuid", uuid);
+                    i.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
+                    i.putExtra("tag", "newPatient");
+                    i.putExtra("privacy", privacy_value);
+                    i.putExtra("hasPrescription", "false");
+                    Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    mContext.startActivity(i);
+                } else {
+                    Toast.makeText(mContext, "Error of adding the data", Toast.LENGTH_SHORT).show();
+                }
             }
+
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1037,6 +1087,8 @@ public class PatientOtherInfoFragment extends Fragment {
         bundle.putBoolean("fromThirdScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
         bundle.putBoolean("editDetails", true);
+        bundle.putString("mAlternateNumberString", mAlternateNumberString);
+        bundle.putBoolean("fromSummary", fromSummary);
 
         secondScreen.setArguments(bundle); // passing data to Fragment
 
@@ -1578,5 +1630,43 @@ public class PatientOtherInfoFragment extends Fragment {
         idCursor.close();
 
         return bedNumber;
+    }
+
+    private void updatePatientDetails(Patient patientdto, String uuid, List<PatientAttributesDTO> patientAttributesDTOList) {
+        try {
+            Logger.logD(TAG, "update ");
+            boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
+            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(patientdto.getPatient_photo(), uuid);
+
+            if (NetworkConnection.isOnline(getActivity().getApplication())) {
+                SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean ispush = syncDAO.pushDataApi();
+                boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
+
+//                if (ispush)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", 2, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data not uploaded.", 2, getApplication());
+
+//                if (isPushImage)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image upload complete.", 4, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image not complete.", 4, getApplication());
+
+            }
+            if (isPatientUpdated && isPatientImageUpdated) {
+                Logger.logD(TAG, "updated");
+                Intent i = new Intent(getActivity().getApplication(), PatientDetailActivity.class);
+                i.putExtra("patientUuid", uuid);
+                i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
+                i.putExtra("tag", "newPatient");
+                i.putExtra("hasPrescription", "false");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getActivity().getApplication().startActivity(i);
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 }

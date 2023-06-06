@@ -210,4 +210,9 @@
     <dimen name="input_bg_radius">@dimen/std_8dp</dimen>
     <dimen name="dash_line_size">@dimen/std_8dp</dimen>
     <dimen name="dash_line_gap">@dimen/std_4dp</dimen>
+    <dimen name="validation_error_tv_margin_top">6dp</dimen>
+    <dimen name="validation_error_tv_size">16sp</dimen>
+    <dimen name="summary_values_text_size">@dimen/std_20sp</dimen>
+    <dimen name="summary_label_text_size">@dimen/std_18sp</dimen>
+
 </resources>

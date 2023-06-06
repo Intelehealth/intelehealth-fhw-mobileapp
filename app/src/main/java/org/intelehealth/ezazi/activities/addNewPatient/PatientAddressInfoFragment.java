@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
+import static com.google.android.material.textfield.TextInputLayout.END_ICON_NONE;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -65,6 +68,7 @@ public class PatientAddressInfoFragment extends Fragment {
     boolean fromThirdScreen = false, fromFirstScreen = false;
     boolean patient_detail = false;
     boolean editDetails = false;
+    boolean fromSummary = false;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private String country1, state;
@@ -81,6 +85,8 @@ public class PatientAddressInfoFragment extends Fragment {
     TextView tvErrorCountry, tvErrorState, tvErrorCityVillage;
     MaterialCardView cardCountry, cardState, cardCityVillage;
     String mAlternateNumberString;
+    TextInputLayout etLayoutCityVillage;
+    String[] cityVillagesArr = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,9 +121,10 @@ public class PatientAddressInfoFragment extends Fragment {
         cardCountry = view.findViewById(R.id.card_country);
         cardState = view.findViewById(R.id.card_state);
         cardCityVillage = view.findViewById(R.id.card_city_village);
+        etLayoutCityVillage = view.findViewById(R.id.et_layout_city_village);
 
 
-        setCountriesAndStates();
+        setStatesForIndia();
 
         firstScreen = new PatientPersonalInfoFragment();
         fragment_thirdScreen = new PatientOtherInfoFragment();
@@ -129,19 +136,10 @@ public class PatientAddressInfoFragment extends Fragment {
             patient_detail = getArguments().getBoolean("patient_detail");
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
             editDetails = getArguments().getBoolean("editDetails");
+            fromSummary = getArguments().getBoolean("fromSummary");
 
 
-            //   patientID_edit = getArguments().getString("patientUuid");
-
-            //check new flow
-            Log.d(TAG, "22initUI: firstname:  " + patientDTO.getFirstname());
-            Log.d(TAG, "22initUI: lastname: " + patientDTO.getLastname());
-            Log.d(TAG, "22initUI: middlename: " + patientDTO.getMiddlename());
-            Log.d(TAG, "22initUI: dob: " + patientDTO.getDateofbirth());
-            Log.d(TAG, "22initUI: phoneno: " + patientDTO.getPhonenumber());
-            Log.d(TAG, "22initUI: patient_detail: " + patient_detail);
-            Log.d(TAG, "22initUI: fromFirstScreen: " + fromFirstScreen);
-
+            getCityVillageAsPerStateSelection(patientDTO.getStateprovince());
 
            /* if (patientID_edit != null) {
                 patientDTO.setUuid(patientID_edit);
@@ -155,11 +153,70 @@ public class PatientAddressInfoFragment extends Fragment {
                 // do nothing...
             }
         }
+    }
 
+    private void setStatesForIndia() {
+        autotvCountry.setText(getResources().getString(R.string.str_check_India));
+        //For India only
+        getStates();
+        autotvState.setOnItemClickListener((parent, view, position, id) -> {
+            String state = parent.getItemAtPosition(position).toString();
+
+            getCityVillageAsPerStateSelection(state);
+
+
+//                if (state.matches("Odisha")) {
+//                    //Creating the instance of ArrayAdapter containing list of fruit names
+//                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                            R.array.odisha_villages, R.layout.custom_spinner);
+//                    mCity.setThreshold(1);//will start working from first character
+//                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+//                } else if (state.matches("Bukidnon")) {
+//                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                            R.array.bukidnon_villages, R.layout.custom_spinner);
+//                    mCity.setThreshold(1);//will start working from first character
+//                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+//                } else {
+//                    mCity.setAdapter(null);
+//                }
+        });
+    }
+
+    private void getCityVillageAsPerStateSelection(String state) {
+        Log.d(TAG, "getCityVillageAsPerStateSelection: state : " + state);
+        if (state != null && !state.isEmpty()) {
+            // etLayoutCityVillage.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
+
+            if (state.matches(getResources().getString(R.string.str_check_Odisha))) {
+                cityVillagesArr = getResources().getStringArray(R.array.odisha_villages);
+
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.odisha_villages, R.layout.custom_spinner);
+                autotvCity.setThreshold(1);
+                autotvCity.setAdapter(adapter);
+            } else {
+                autotvCity.setAdapter(null);
+                cityVillagesArr = null;
+                ///etLayoutCityVillage.setEndIconMode(TextInputLayout.END_ICON_NONE);
+            }
+        } else {
+            autotvState.setText("");
+        }
+        // autotvCountry.addTextChangedListener(new MyTextWatcher(autotvCountry));
+        // autotvState.addTextChangedListener(new MyTextWatcher(autotvState));
+        // autotvCity.addTextChangedListener(new MyTextWatcher(autotvCity));
 
     }
 
+    private void getStates() {
+        stateArr = getResources().getStringArray(R.array.states_india);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_india, R.layout.custom_spinner);
+        autotvState.setAdapter(stateAdapter);
+        autotvState.setSelection(0);
+    }
+
     private void setCountriesAndStates() {
+
+        //For multiple countries
         //countries array
         List<String> countriesList = Arrays.asList(getResources().getStringArray(R.array.countries));
         countryArr = getResources().getStringArray(R.array.countries);
@@ -167,8 +224,6 @@ public class PatientAddressInfoFragment extends Fragment {
         autotvCountry.setThreshold(1);
         autotvCountry.setAdapter(adapter);
         autotvCountry.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
-        autotvCountry.setValidator(new CountryValidator());
-        autotvCountry.setOnFocusChangeListener(new CountryFocusListener());
         adapter.notifyDataSetChanged();
         autotvCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -261,8 +316,6 @@ public class PatientAddressInfoFragment extends Fragment {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_india, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
-                        autotvState.setValidator(new StateValidator());
-                        autotvState.setOnFocusChangeListener(new StateFocusListener());
                         // setting state according database when user clicks edit details
 
 
@@ -277,8 +330,6 @@ public class PatientAddressInfoFragment extends Fragment {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_us, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
-                        autotvState.setValidator(new StateValidator());
-                        autotvState.setOnFocusChangeListener(new StateFocusListener());
                         stateAdapter.notifyDataSetChanged();
                     } else if (country.matches("Philippines")) {
                         stateArr = getResources().getStringArray(R.array.states_philippines);
@@ -286,8 +337,6 @@ public class PatientAddressInfoFragment extends Fragment {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_philippines, R.layout.custom_spinner);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         autotvState.setAdapter(stateAdapter);
-                        autotvState.setValidator(new StateValidator());
-                        autotvState.setOnFocusChangeListener(new StateFocusListener());
 
                         autotvState.setSelection(stateAdapter.getPosition("Bukidnon"));
                         // }
@@ -354,6 +403,7 @@ public class PatientAddressInfoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
 //        ivPersonal.setImageDrawable(getResources().getDrawable(R.drawable.ic_personal_info_done));
 //        ivAddress.setImageDrawable(getResources().getDrawable(R.drawable.ic_address_active));
 //        ivOther.setImageDrawable(getResources().getDrawable(R.drawable.ic_other_unselected));
@@ -388,7 +438,7 @@ public class PatientAddressInfoFragment extends Fragment {
             Toast.makeText(getActivity(), "JsonException" + e, Toast.LENGTH_LONG).show();
             //  showAlertDialogButtonClicked(e.toString());
         }
-
+        Log.d(TAG, "onActivityCreated: postal code: "+patientDTO.getPostalcode());
         // Setting up the screen when user came from SEcond screen.
         if (fromThirdScreen || fromFirstScreen) {
             if (patientDTO.getPostalcode() != null && !patientDTO.getPostalcode().isEmpty())
@@ -429,14 +479,7 @@ public class PatientAddressInfoFragment extends Fragment {
         // Next Button click event.
         btnNext.setOnClickListener(v -> {
 
-            if (editDetails) {
-                onPatientCreateClicked();
-
-            } else {
-                if (checkValidEntryForCountry() && checkValidEntryForState())
-                    onPatientCreateClicked();
-
-            }
+            onPatientCreateClicked();
 
         });
 
@@ -445,6 +488,7 @@ public class PatientAddressInfoFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     String district = adapterView.getItemAtPosition(i).toString();
+                    autotvCity.setText("");
                  /*  temp  mCityNameErrorTextView.setVisibility(View.GONE);
                     mCityNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);*/
                 }
@@ -584,6 +628,7 @@ public class PatientAddressInfoFragment extends Fragment {
         });
 
         // country - end*/
+        autotvCountry.setText(getResources().getString(R.string.str_check_India));
 
     }
 
@@ -601,6 +646,7 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
         bundle.putString("mAlternateNumberString", mAlternateNumberString);
+        bundle.putBoolean("fromSummary", fromSummary);
 
         firstScreen.setArguments(bundle); // passing data to Fragment
         requireActivity().getSupportFragmentManager()
@@ -611,7 +657,47 @@ public class PatientAddressInfoFragment extends Fragment {
     }
 
     public void onPatientCreateClicked() {
+        //validations
+        /*if (TextUtils.isEmpty(autotvCountry.getText().toString())) {
+            autotvCountry.requestFocus();
 
+            tvErrorCountry.setVisibility(View.VISIBLE);
+            tvErrorCountry.setText(getString(R.string.select_country));
+            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+            return;
+        } else {
+            tvErrorCountry.setVisibility(View.GONE);
+            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }*/
+        String stateText = autotvState.getText().toString();
+        boolean isStateInList = searchForState(stateText);
+        if (TextUtils.isEmpty(stateText) || !isStateInList) {
+            autotvState.requestFocus();
+
+            tvErrorState.setVisibility(View.VISIBLE);
+            tvErrorState.setText(getString(R.string.select_state));
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            return;
+
+        } else {
+            tvErrorState.setVisibility(View.GONE);
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+        }
+        String isCityVillageInListString = searchForCityVillage(autotvCity.getText().toString());
+        if (TextUtils.isEmpty(autotvCity.getText().toString()) || isCityVillageInListString.equalsIgnoreCase("notInList")) {
+            autotvCity.requestFocus();
+
+            tvErrorCityVillage.setVisibility(View.VISIBLE);
+            tvErrorCityVillage.setText(getString(R.string.select_city_village));
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            ;
+            return;
+        } else {
+            tvErrorCityVillage.setVisibility(View.GONE);
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -671,6 +757,8 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("editDetails", true);
+        bundle.putString("mAlternateNumberString", mAlternateNumberString);
+        bundle.putBoolean("fromSummary", fromSummary);
 
         //   bundle.putString("patientUuid", patientID_edit);
         bundle.putBoolean("patient_detail", patient_detail);
@@ -680,7 +768,6 @@ public class PatientAddressInfoFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, fragment_thirdScreen)
                 .commit();
-
         ((AddNewPatientActivity) requireActivity()).changeCurrentPage(AddNewPatientActivity.PAGE_OTHER);
 
         if (NetworkConnection.isOnline(mContext)) {
@@ -713,165 +800,86 @@ public class PatientAddressInfoFragment extends Fragment {
     }
 
 
-    class CountryValidator implements AutoCompleteTextView.Validator {
+    class MyTextWatcher implements TextWatcher {
+        EditText editText;
+
+        MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
 
         @Override
-        public boolean isValid(CharSequence text) {
-            if (countryArr != null) {
-                Arrays.sort(countryArr);
-                String textToSearch = text.toString();
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                int retVal = Arrays.binarySearch(countryArr, textToSearch);
-                if (retVal >= 0) {
-                    return true;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String val = editable.toString().trim();
+           /*
+           commented bcz code is for India only
+           if (this.editText.getId() == R.id.autotv_country) {
+                if (val.isEmpty()) {
+                    tvErrorCountry.setVisibility(View.VISIBLE);
+                    tvErrorCountry.setText(getString(R.string.select_admission_date));
+                    cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                    return;
+                } else {
+                    tvErrorCountry.setVisibility(View.GONE);
+                    cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                 }
-                checkValidEntryForCountry();
+            } else*/
+            if (this.editText.getId() == R.id.autotv_state) {
+                boolean isStateInList = searchForState(val);
+                if (val.isEmpty() || !isStateInList) {
 
-                return false;
-            } else {
-                return false;
-            }
-
-        }
-
-        @Override
-        public CharSequence fixText(CharSequence invalidText) {
-
-            return "";
-        }
-    }
-
-    class CountryFocusListener implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (v.getId() == R.id.autotv_country && !hasFocus) {
-                ((AutoCompleteTextView) v).performValidation();
-            }
-        }
-    }
-
-    private boolean checkValidEntryForCountry() {
-        if (countryArr != null) {
-            Arrays.sort(countryArr);
-            int retVal = Arrays.binarySearch(countryArr, autotvCountry.getText().toString());
-            if (retVal >= 0) {
-                return true;
-
-            } else {
-                validateInputFields();
-                //add validation on country
-                return false;
-            }
-
-        } else {
-            return false;
-
-        }
-
-    }
-
-    private void validateInputFields() {
-        //validations
-        if (TextUtils.isEmpty(autotvCountry.getText().toString())) {
-            autotvCountry.requestFocus();
-
-            tvErrorCountry.setVisibility(View.VISIBLE);
-            tvErrorCountry.setText(getString(R.string.select_country));
-            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-            return;
-        } else {
-            tvErrorCountry.setVisibility(View.GONE);
-            cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-        if (TextUtils.isEmpty(autotvState.getText().toString())) {
-            autotvState.requestFocus();
-
-            tvErrorState.setVisibility(View.VISIBLE);
-            tvErrorState.setText(getString(R.string.select_state));
-            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrorState.setVisibility(View.GONE);
-            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
-        }
-
-        if (TextUtils.isEmpty(autotvCity.getText().toString())) {
-            autotvCity.requestFocus();
-
-            tvErrorCityVillage.setVisibility(View.VISIBLE);
-            tvErrorCityVillage.setText(getString(R.string.select_city_village));
-            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrorCityVillage.setVisibility(View.GONE);
-            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-
-    }
-
-    class StateValidator implements AutoCompleteTextView.Validator {
-
-        @Override
-        public boolean isValid(CharSequence text) {
-            if (stateArr != null) {
-                Arrays.sort(stateArr);
-                String textToSearch = text.toString();
-
-                int retVal = Arrays.binarySearch(stateArr, textToSearch);
-                if (retVal >= 0) {
-                    return true;
+                    tvErrorState.setVisibility(View.VISIBLE);
+                    tvErrorState.setText(getString(R.string.select_state));
+                    cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                } else {
+                    tvErrorState.setVisibility(View.GONE);
+                    cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                 }
-                checkValidEntryForState();
+            } else if (this.editText.getId() == R.id.autotv_city) {
+                String isCityVillageInListString = searchForCityVillage(val);
+                if (val.isEmpty() || isCityVillageInListString.equalsIgnoreCase("notInList")) {
+                    tvErrorCityVillage.setVisibility(View.VISIBLE);
+                    tvErrorCityVillage.setText(getString(R.string.select_city_village));
+                    cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
-                return false;
-            } else {
-                return false;
-            }
+                } else {
+                    tvErrorCityVillage.setVisibility(View.GONE);
+                    cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
-        }
 
-        @Override
-        public CharSequence fixText(CharSequence invalidText) {
-
-            return "";
-        }
-    }
-
-    class StateFocusListener implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (v.getId() == R.id.autotv_state && !hasFocus) {
-                ((AutoCompleteTextView) v).performValidation();
+                }
             }
         }
     }
 
-    private boolean checkValidEntryForState() {
-        if (stateArr != null) {
-            Arrays.sort(stateArr);
-            int retVal = Arrays.binarySearch(stateArr, autotvState.getText().toString());
-            if (retVal >= 0) {
-                return true;
-
-            } else {
-                validateInputFields();
-                //add validation on country
-                return false;
-            }
-
-        } else {
-            return false;
-
-        }
-
+    private boolean searchForState(String state) {
+        List<String> statesList = Arrays.asList(stateArr);
+        return statesList.contains(state);
     }
 
+    private String searchForCityVillage(String cityVillage) {
+        String result = "";
+        if (cityVillagesArr != null) {
+            List<String> cityVillageList = Arrays.asList(cityVillagesArr);
+            boolean isInList = cityVillageList.contains(cityVillage);
+            if (isInList)
+                result = "inList";
+            else {
+                result = "notInList";
+
+            }
+        } else
+            result = "none";
+        return result;
+    }
 }

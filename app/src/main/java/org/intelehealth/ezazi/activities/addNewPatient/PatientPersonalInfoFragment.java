@@ -228,23 +228,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         tvErrorMobileNo = view.findViewById(R.id.mobile_no_error);
         tvErrAlternateMobileNo = view.findViewById(R.id.alternate_no_error);
 
-        etLayoutDob.setEndIconOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("whichDate", "dobPatient");
-            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-            dialog.setArguments(args);
-            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
-            if (getFragmentManager() != null) {
-                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
-            }
 
-        });
-        etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         /*new*/
         ProviderDAO providerDAO = new ProviderDAO();
         try {
@@ -285,7 +269,38 @@ public class PatientPersonalInfoFragment extends Fragment {
         setDetailsAsPerConfigFile();
         updatePatientDetailsFromSecondScreen();
         updatePatientDetailsFromSummary();
+        handleClickListeners();
+    }
 
+    private void handleClickListeners() {
+        etLayoutDob.setEndIconOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("whichDate", "dobPatient");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
+            }
+
+        });
+        mDOB.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("whichDate", "dobPatient");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
+            }
+
+        });
+        etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 
@@ -293,12 +308,12 @@ public class PatientPersonalInfoFragment extends Fragment {
         fragment_secondScreen = new PatientAddressInfoFragment();
         if (getArguments() != null) {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
-            patientID_edit = getArguments().getString("patientUuid");
+           // patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
             editDetails = getArguments().getBoolean("editDetails");
-
+            patientDTO.setAlternateNo(mAlternateNumberString);
 
             updateUI(patient1);
 
@@ -311,8 +326,11 @@ public class PatientPersonalInfoFragment extends Fragment {
                 mMobileNumber.setText(patientDTO.getPhonenumber());
                 Log.d(TAG, "updatePatientDetailsFromSecondScreen: phone : " + patientDTO.getPhonenumber());
                 mAlternateNumber.setText(mAlternateNumberString);
+
                 Log.d(TAG, "initUI: dob from dto : " + patientDTO.getDateofbirth());
                 String dateOfBirth = getSelectedDob(mContext);
+                tvDobForDb.setText(dateOfBirth);
+
                 ///String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
                 String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(dateOfBirth);
 
@@ -388,10 +406,12 @@ public class PatientPersonalInfoFragment extends Fragment {
             if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
                 ivProfilePhoto.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
 
-            //one time generation of uuid
+           /*
+
+           temp commit//one time generation of uuid
             if (null == patientID_edit || patientID_edit.isEmpty()) {
                 generateUuid();
-            }
+            }*/
         }
     }
 
@@ -593,7 +613,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
         String[] splitedDate = dob.split("/");
-        mAge.setText(mAgeYears + " years");
+        mAge.setText(mAgeYears + "");
 
         if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
             Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
@@ -938,9 +958,10 @@ public class PatientPersonalInfoFragment extends Fragment {
             bundle.putSerializable("patientDTO", (Serializable) patientDTO);
             bundle.putBoolean("fromFirstScreen", true);
             bundle.putBoolean("patient_detail", patient_detail);
-            bundle.putString("patientUuid", patientID_edit);
+           // bundle.putString("patientUuid", patientID_edit);
             bundle.putString("mAlternateNumberString", mAlternateNumber.getText().toString());
             bundle.putBoolean("editDetails", true);
+            bundle.putBoolean("fromSummary", fromSummary);
 
 
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment

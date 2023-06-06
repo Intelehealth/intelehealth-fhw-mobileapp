@@ -76,7 +76,7 @@
                     style="@style/LabelStyleSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:text="@string/patient_name" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1.2"
                     android:hint="@string/patient_name"
                     android:textAlignment="viewStart" />
             </LinearLayout>
@@ -109,7 +109,7 @@
                     style="@style/LabelStyleSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:text="@string/unique_Ezazi_registration_number" />
 
                 <TextView
@@ -117,7 +117,7 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1.2"
                     android:hint="@string/unique_Ezazi_registration_number"
                     android:textAlignment="viewStart" />
             </LinearLayout>
@@ -142,7 +142,7 @@
                     style="@style/LabelStyleSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:text="@string/dob_title" />
 
                 <TextView
@@ -150,7 +150,7 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1.2"
                     android:hint="@string/dob_title"
                     android:textAlignment="viewStart" />
             </LinearLayout>
@@ -173,7 +173,7 @@
                     style="@style/LabelStyleSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:text="@string/age_title" />
 
                 <TextView
@@ -181,7 +181,7 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1.2"
                     android:hint="@string/age_title"
                     android:textAlignment="viewStart" />
             </LinearLayout>
@@ -204,7 +204,7 @@
                     style="@style/LabelStyleSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:text="@string/address" />
 
                 <TextView
@@ -212,7 +212,7 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1.2"
                     android:hint="@string/address"
                     android:textAlignment="viewStart" />
             </LinearLayout>
@@ -235,13 +235,13 @@
                     style="@style/LabelStyleSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:text="@string/mobile_number" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1">
+                    android:layout_weight="1.2">
 
                     <TextView
                         android:id="@+id/textView_phone"
@@ -249,7 +249,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
-                        android:layout_weight="1.1"
+                        android:layout_weight="1.2"
                         android:hint="@string/mobile_number" />
 
                     <ImageView
@@ -287,7 +287,7 @@
                     style="@style/LabelStyleSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:text="@string/bed_number_title" />
 
                 <TextView
@@ -295,7 +295,7 @@
                     style="@style/LabelStyleSummaryValues"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1.2"
                     android:hint="@string/bed_number_title"
                     android:textAlignment="viewStart" />
             </LinearLayout>
