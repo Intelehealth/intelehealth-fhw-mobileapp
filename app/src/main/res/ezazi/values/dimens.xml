@@ -113,9 +113,9 @@
     <dimen name="stages_line_margin_bottom">20dp</dimen>
     <dimen name="stages_line_margin_end">3dp</dimen>
     <dimen name="layout_stages_line_width">40dp</dimen>
-    <dimen name="add_patient_frame_margin_start">20dp</dimen>
-    <dimen name="add_patient_frame_margin_top">20dp</dimen>
-    <dimen name="add_patient_frame_margin_end">20dp</dimen>
+    <dimen name="add_patient_frame_margin_start">10dp</dimen>
+    <dimen name="add_patient_frame_margin_top">10dp</dimen>
+    <dimen name="add_patient_frame_margin_end">10dp</dimen>
     <dimen name="profile_layout_size">100dp</dimen>
     <dimen name="profile_layout_margin_bottom">10dp</dimen>
     <dimen name="card_profile_width">72dp</dimen>
@@ -241,4 +241,7 @@
     <dimen name="input_bg_radius">@dimen/std_6dp</dimen>
     <dimen name="dash_line_size">@dimen/std_4dp</dimen>
     <dimen name="dash_line_gap">@dimen/std_2dp</dimen>
+    <dimen name="summary_values_text_size">@dimen/std_16sp</dimen>
+    <dimen name="summary_label_text_size">@dimen/std_14sp</dimen>
+
 </resources>

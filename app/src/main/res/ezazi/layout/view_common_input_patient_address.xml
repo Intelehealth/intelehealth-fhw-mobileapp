@@ -15,6 +15,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
             android:layout_width="match_parent"
+            android:id="@+id/et_layout_city_village"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/list_container_padding"
             android:hint="@string/village_town_city">

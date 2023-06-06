@@ -36,6 +36,7 @@
                 android:id="@+id/autotv_risk_factors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="none"
                 android:hint="@string/select_risk_factors"
                 android:textSize="@dimen/input_inner_size" />
 
@@ -131,6 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/select_primary_doctor"
+                android:inputType="none"
                 android:textSize="@dimen/input_inner_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -180,6 +182,7 @@
             <AutoCompleteTextView
                 android:id="@+id/autotv_secondary_doctor"
                 android:layout_width="match_parent"
+                android:inputType="none"
                 android:layout_height="wrap_content"
                 android:hint="@string/select_secondary_doctor"
                 android:textSize="@dimen/input_inner_size" />

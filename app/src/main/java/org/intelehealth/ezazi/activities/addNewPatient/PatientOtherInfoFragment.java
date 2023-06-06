@@ -370,7 +370,7 @@ public class PatientOtherInfoFragment extends Fragment {
             }
 
         });
-        etLayoutAdmissionDate.setOnClickListener(v -> {
+        mAdmissionDateTextView.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putString("whichDate", "admissionDate");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
@@ -385,7 +385,7 @@ public class PatientOtherInfoFragment extends Fragment {
         etLayoutAdmissionTime.setEndIconOnClickListener(v -> {
             selectTimeForAllParameters("admissionTimeString");
         });
-        etLayoutAdmissionTime.setOnClickListener(v -> {
+        mAdmissionTimeTextView.setOnClickListener(v -> {
             selectTimeForAllParameters("admissionTimeString");
         });
 
@@ -419,17 +419,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
             }
         });
-        etLabourDiagnosedDate.setEndIconOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("whichDate", "labourDiagnosedDate");
-            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-            dialog.setArguments(args);
-            dialog.setTargetFragment(PatientOtherInfoFragment.this, MY_REQUEST_CODE);
-            if (getFragmentManager() != null) {
-                dialog.show(getFragmentManager(), "PatientOtherInfoFragment");
-            }
-        });
-        etLabourDiagnosedDate.setOnClickListener(v -> {
+        mActiveLaborDiagnosedDateTextView.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putString("whichDate", "labourDiagnosedDate");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
@@ -442,7 +432,7 @@ public class PatientOtherInfoFragment extends Fragment {
         etLabourDiagnosedTime.setEndIconOnClickListener(v -> {
             selectTimeForAllParameters("laborOnsetString");
         });
-        etLabourDiagnosedTime.setOnClickListener(v -> {
+        mActiveLaborDiagnosedTimeTextView.setOnClickListener(v -> {
             selectTimeForAllParameters("laborOnsetString");
         });
 
@@ -456,7 +446,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog1.show(getFragmentManager(), "PatientOtherInfoFragment");
             }
         });
-        etLayoutSacRupturedDate.setOnClickListener(v -> {
+        mMembraneRupturedDateTextView.setOnClickListener(v -> {
             Bundle args1 = new Bundle();
             args1.putString("whichDate", "sacRupturedDate");
             CustomCalendarViewUI2 dialog1 = new CustomCalendarViewUI2(getActivity());
@@ -470,7 +460,7 @@ public class PatientOtherInfoFragment extends Fragment {
             selectTimeForAllParameters("membraneRupturedTime");
 
         });
-        etLayoutSacRupturedTime.setOnClickListener(v -> {
+        mMembraneRupturedTimeTextView.setOnClickListener(v -> {
             selectTimeForAllParameters("membraneRupturedTime");
 
         });
@@ -502,10 +492,41 @@ public class PatientOtherInfoFragment extends Fragment {
                 dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
             }
         });
+        mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
+
+                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+                List<String> items = Arrays.asList(itemsArray);
+
+                dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
+                dialog1.setListener(selectedItems -> {
+                    if (selectedItems.size() > 0) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < selectedItems.size(); i++) {
+                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
+                            stringBuilder.append(selectedItems.get(i));
+
+                        }
+                        mRiskFactorsString = stringBuilder.toString();
+                        mRiskFactorsTextView.setText(mRiskFactorsString);
+                    }
+
+                });
+
+                assert getFragmentManager() != null;
+                dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
+            }
+        });
         etLayoutPrimaryDoctor.setEndIconOnClickListener(v -> selectPrimaryDoctor());
+        mPrimaryDoctorTextView.setOnClickListener(v -> selectPrimaryDoctor());
 
         etLayoutSecondaryDoctor.setEndIconOnClickListener(v -> {
+            selectSecondaryDoctor();
+        });
+        mSecondaryDoctorTextView.setOnClickListener(v -> {
             selectSecondaryDoctor();
         });
 

@@ -228,23 +228,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         tvErrorMobileNo = view.findViewById(R.id.mobile_no_error);
         tvErrAlternateMobileNo = view.findViewById(R.id.alternate_no_error);
 
-        etLayoutDob.setEndIconOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("whichDate", "dobPatient");
-            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-            dialog.setArguments(args);
-            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
-            if (getFragmentManager() != null) {
-                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
-            }
 
-        });
-        etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         /*new*/
         ProviderDAO providerDAO = new ProviderDAO();
         try {
@@ -285,7 +269,38 @@ public class PatientPersonalInfoFragment extends Fragment {
         setDetailsAsPerConfigFile();
         updatePatientDetailsFromSecondScreen();
         updatePatientDetailsFromSummary();
+        handleClickListeners();
+    }
 
+    private void handleClickListeners() {
+        etLayoutDob.setEndIconOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("whichDate", "dobPatient");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
+            }
+
+        });
+        mDOB.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("whichDate", "dobPatient");
+            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+            dialog.setArguments(args);
+            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
+            if (getFragmentManager() != null) {
+                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
+            }
+
+        });
+        etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 
@@ -311,6 +326,7 @@ public class PatientPersonalInfoFragment extends Fragment {
                 mMobileNumber.setText(patientDTO.getPhonenumber());
                 Log.d(TAG, "updatePatientDetailsFromSecondScreen: phone : " + patientDTO.getPhonenumber());
                 mAlternateNumber.setText(mAlternateNumberString);
+
                 Log.d(TAG, "initUI: dob from dto : " + patientDTO.getDateofbirth());
                 String dateOfBirth = getSelectedDob(mContext);
                 ///String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
@@ -593,7 +609,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
         String[] splitedDate = dob.split("/");
-        mAge.setText(mAgeYears + " years");
+        mAge.setText(mAgeYears + "");
 
         if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
             Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
