@@ -1,17 +1,16 @@
 package org.intelehealth.ezazi.ui.dialog.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.databinding.PatientChoiceDialogItemBinding;
 import org.intelehealth.ezazi.databinding.SelectAllDialogItemHeaderBinding;
-import org.intelehealth.ezazi.models.FamilyMemberRes;
-import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
 
 import java.util.ArrayList;
 
@@ -21,6 +20,8 @@ import java.util.ArrayList;
  * Mob   : +919727206702Im
  **/
 public class RiskFactorMultiChoiceAdapter extends MultiChoiceAdapter<String, RecyclerView.ViewHolder> {
+
+    private boolean enableAll = true;
 
     public RiskFactorMultiChoiceAdapter(Context context, ArrayList<String> objectsList) {
         super(context, objectsList);
@@ -43,12 +44,29 @@ public class RiskFactorMultiChoiceAdapter extends MultiChoiceAdapter<String, Rec
         RiskFactorMultiChoiceViewHolder patientHolder = (RiskFactorMultiChoiceViewHolder) holder;
         patientHolder.bind(getItem(position));
         patientHolder.setCheckedItem(isItemSelected(position));
+        patientHolder.enableAll(enableAll);
         patientHolder.setClickListener(this);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onClick(View view) {
+        if (view.getTag() instanceof CheckBox) {
+            CheckBox checkBox = (CheckBox) view.getTag();
+            int checkedPosition = (int) view.getTag(view.getId());
+            if (checkBox.getText().toString().equalsIgnoreCase("None") && checkedPosition == 0) {
+                enableAll = !checkBox.isChecked();
+                clearSelection();
+                selectItem(checkedPosition);
+                notifyDataSetChanged();
+            }
+            super.onClick(view);
+        }
     }
 }
 
 class RiskFactorMultiChoiceViewHolder extends RecyclerView.ViewHolder {
-    private SelectAllDialogItemHeaderBinding binding;
+    private final SelectAllDialogItemHeaderBinding binding;
 
     public RiskFactorMultiChoiceViewHolder(@NonNull SelectAllDialogItemHeaderBinding binding) {
         super(binding.getRoot());
@@ -68,5 +86,11 @@ class RiskFactorMultiChoiceViewHolder extends RecyclerView.ViewHolder {
 
     public void setCheckedItem(boolean isChecked) {
         binding.cbSelectAll.setChecked(isChecked);
+    }
+
+    public void enableAll(boolean disable) {
+        if (!binding.cbSelectAll.getText().toString().equalsIgnoreCase("None"))
+            binding.cbSelectAll.setEnabled(disable);
+        else binding.cbSelectAll.setEnabled(true);
     }
 }

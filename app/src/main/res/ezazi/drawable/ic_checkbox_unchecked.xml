@@ -4,7 +4,7 @@
     android:viewportWidth="18"
     android:viewportHeight="18">
     <path
-        android:fillColor="#FFD7E2"
+        android:fillColor="@color/color_checkbox_selector"
         android:pathData="M4,0L14,0A4,4 0,0 1,18 4L18,14A4,4 0,0 1,14 18L4,18A4,4 0,0 1,0 14L0,4A4,4 0,0 1,4 0z" />
     <path
         android:fillColor="#00000000"
