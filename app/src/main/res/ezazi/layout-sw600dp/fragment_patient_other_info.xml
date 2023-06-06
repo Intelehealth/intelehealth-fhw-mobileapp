@@ -47,7 +47,7 @@
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +63,6 @@
                             android:id="@+id/et_admission_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:cursorVisible="false"
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="@string/date"
@@ -117,6 +116,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -126,25 +126,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="This field is mandatory"
-                    android:visibility="invisible" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_admission_time_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="This field is mandatory"
-                    android:visibility="invisible" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -154,6 +152,7 @@
                 style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/screen_container_padding"
                 android:gravity="start"
                 android:text="@string/parity"
                 android:textColor="@color/colorBlack"
@@ -175,7 +174,7 @@
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -234,6 +233,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -243,25 +243,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="invisible" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_parity_time_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="invisible" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -270,6 +268,7 @@
                 style="@style/LabelStyleAddPatient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/screen_container_padding"
                 android:gravity="start"
                 android:text="@string/labor_onset"
                 android:textColor="@color/colorBlack"
@@ -288,7 +287,7 @@
                     android:id="@+id/et_spontaneous"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1"
                     android:background="@drawable/button_bg_rounded_corners"
                     android:gravity="center"
@@ -354,7 +353,7 @@
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/screen_container_padding"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -434,7 +433,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
@@ -582,6 +581,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -591,8 +591,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:layout_marginEnd="@dimen/admission_date_margin_end"
+                    android:layout_marginEnd="@dimen/error_tv_margin_end"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
@@ -604,7 +603,6 @@
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
@@ -769,7 +767,7 @@
             <!--                android:gravity="end"-->
             <!--                android:lineSpacingExtra="0sp"-->
             <!--                android:text="This field is mandatory"-->
-            <!--                android:visibility="invisible" />-->
+            <!--                android:visibility="gone" />-->
 
             <!--            <TextView-->
             <!--                android:id="@+id/textView12"-->
@@ -822,7 +820,7 @@
             <!--                android:gravity="end"-->
             <!--                android:lineSpacingExtra="0sp"-->
             <!--                android:text="This field is mandatory"-->
-            <!--                android:visibility="invisible" />-->
+            <!--                android:visibility="gone" />-->
 
             <!--            <TextView-->
             <!--                android:id="@+id/textView13"-->
@@ -876,7 +874,7 @@
             <!--                android:gravity="end"-->
             <!--                android:lineSpacingExtra="0sp"-->
             <!--                android:text="This field is mandatory"-->
-            <!--                android:visibility="invisible" />-->
+            <!--                android:visibility="gone" />-->
         </LinearLayout>
 
     </ScrollView>

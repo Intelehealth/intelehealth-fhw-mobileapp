@@ -34,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_container_padding"
                     android:hint="@string/country"
+                    app:endIconMode="none"
                     app:hintEnabled="true">
 
                     <AutoCompleteTextView

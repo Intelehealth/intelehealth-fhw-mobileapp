@@ -244,5 +244,6 @@
     <dimen name="summary_values_text_size">@dimen/std_16sp</dimen>
     <dimen name="summary_label_text_size">@dimen/std_14sp</dimen>
     <dimen name="summary_padding_end">12dp</dimen>
+    <dimen name="error_tv_margin_end">@dimen/std_20dp</dimen>
 
 </resources>
