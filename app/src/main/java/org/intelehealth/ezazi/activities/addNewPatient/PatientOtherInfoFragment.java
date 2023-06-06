@@ -125,7 +125,8 @@ public class PatientOtherInfoFragment extends Fragment {
 //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     TextView tvErrorAdmissionDate, tvErrorAdmissionTime, tvErrorTotalBirth, tvErrorTotalMiscarriage, tvErrorLabourOnset, tvErrorSacRupturedDate, tvErrorSacRupturedTime, tvErrorPrimaryDoctor, tvErrorSecondaryDoctor, tvErrorBedNumber, tvErrorLabourDiagnosedDate, tvErrorLabourDiagnosedTime;
     MaterialCardView cardAdmissionDate, cardAdmissionTime, cardTotalBirth, cardTotalMiscarraige, cardSacRupturedDate, cardSacRupturedTime, cardPrimaryDoctor, cardSecondaryDoctor, cardBedNumber, cardDiagnosedDate, cardDiagnosedTime;
-    LinearLayout layoutErrorLabourOnset,layoutSacRuptured;
+    LinearLayout layoutErrorLabourOnset, layoutSacRuptured;
+    boolean isUnknownChecked;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -399,16 +400,17 @@ public class PatientOtherInfoFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d(TAG, "onCheckedChanged: isChecked : " + isChecked);
                 if (isChecked) {
-
+                    isUnknownChecked = true;
                     //setenabled false  -- pending as per figma
                     mMembraneRupturedDateTextView.setEnabled(false);
                     mMembraneRupturedTimeTextView.setEnabled(false);
-                    //  etLayoutSacRupturedDate.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorGray));
-
                     layoutSacRuptured.setVisibility(View.GONE);
-                } else {
-                    layoutSacRuptured.setVisibility(View.VISIBLE);
+                    mMembraneRupturedDateTextView.setText("");
+                    mMembraneRupturedTimeTextView.setText("");
 
+                } else {
+                    isUnknownChecked = false;
+                    layoutSacRuptured.setVisibility(View.VISIBLE);
                     mMembraneRupturedDateTextView.setEnabled(true);
                     mMembraneRupturedTimeTextView.setEnabled(true);
 
@@ -717,31 +719,38 @@ public class PatientOtherInfoFragment extends Fragment {
             tvErrorLabourDiagnosedTime.setVisibility(View.GONE);
             cardDiagnosedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
-        if (TextUtils.isEmpty(mMembraneRupturedDateTextView.getText().toString())) {
-            mMembraneRupturedDateTextView.requestFocus();
+        if (!isUnknownChecked) {
+            if (TextUtils.isEmpty(mMembraneRupturedDateTextView.getText().toString())) {
+                mMembraneRupturedDateTextView.requestFocus();
 
-            tvErrorSacRupturedDate.setVisibility(View.VISIBLE);
-            tvErrorSacRupturedDate.setText(getString(R.string.select_sac_ruptured_date));
-            cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
+                tvErrorSacRupturedDate.setVisibility(View.VISIBLE);
+                tvErrorSacRupturedDate.setText(getString(R.string.select_sac_ruptured_date));
+                cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                return;
 
-        } else {
-            tvErrorSacRupturedDate.setVisibility(View.GONE);
-            cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            } else {
+                tvErrorSacRupturedDate.setVisibility(View.GONE);
+                cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            }
         }
-        if (TextUtils.isEmpty(mMembraneRupturedTimeTextView.getText().toString())) {
-            mMembraneRupturedTimeTextView.requestFocus();
-            tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
-            tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
-            tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
-            cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
+        if (!isUnknownChecked) {
+            if (TextUtils.isEmpty(mMembraneRupturedTimeTextView.getText().toString())) {
+                mMembraneRupturedTimeTextView.requestFocus();
+                tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
+                tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
+                tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
+                cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                return;
 
-        } else {
-            tvErrorSacRupturedDate.setVisibility(View.GONE);
-            tvErrorSacRupturedTime.setVisibility(View.GONE);
-            cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            } else {
+                tvErrorSacRupturedDate.setVisibility(View.GONE);
+                tvErrorSacRupturedTime.setVisibility(View.GONE);
+                cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            }
+
         }
+
+
         /*if (TextUtils.isEmpty(mMembraneRupturedTimeTextView.getText().toString())) {
             mMembraneRupturedTimeTextView.requestFocus();
 
@@ -1586,28 +1595,32 @@ public class PatientOtherInfoFragment extends Fragment {
                     cardDiagnosedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                 }
             } else if (this.editText.getId() == R.id.et_sac_ruptured_date) {
-                if (val.isEmpty()) {
-
-                    tvErrorSacRupturedDate.setVisibility(View.VISIBLE);
-                    tvErrorSacRupturedDate.setText(getString(R.string.select_sac_ruptured_date));
-                    cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-                } else {
-                    tvErrorSacRupturedDate.setVisibility(View.GONE);
-                    cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+                if (!isUnknownChecked) {
+                    if (val.isEmpty()) {
+                        tvErrorSacRupturedDate.setVisibility(View.VISIBLE);
+                        tvErrorSacRupturedDate.setText(getString(R.string.select_sac_ruptured_date));
+                        cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                    } else {
+                        tvErrorSacRupturedDate.setVisibility(View.GONE);
+                        cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+                    }
                 }
             } else if (this.editText.getId() == R.id.et_sac_ruptured_time) {
-                if (val.isEmpty()) {
-                    tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
-                    tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
-                    tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
-                    cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                if (!isUnknownChecked) {
+                    if (val.isEmpty()) {
+                        tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
+                        tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
+                        tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
+                        cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
-                } else {
-                    tvErrorSacRupturedDate.setVisibility(View.GONE);
-                    tvErrorSacRupturedTime.setVisibility(View.GONE);
-                    cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+                    } else {
+                        tvErrorSacRupturedDate.setVisibility(View.GONE);
+                        tvErrorSacRupturedTime.setVisibility(View.GONE);
+                        cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
+                    }
                 }
+
             } else if (this.editText.getId() == R.id.autotv_primary_doctor) {
                 if (val.isEmpty()) {
 
@@ -1644,6 +1657,7 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         }
     }
+
     private String getBedNumber(String patientuuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
