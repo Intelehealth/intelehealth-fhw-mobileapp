@@ -68,6 +68,7 @@ public class PatientAddressInfoFragment extends Fragment {
     boolean fromThirdScreen = false, fromFirstScreen = false;
     boolean patient_detail = false;
     boolean editDetails = false;
+    boolean fromSummary = false;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private String country1, state;
@@ -135,6 +136,7 @@ public class PatientAddressInfoFragment extends Fragment {
             patient_detail = getArguments().getBoolean("patient_detail");
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
             editDetails = getArguments().getBoolean("editDetails");
+            fromSummary = getArguments().getBoolean("fromSummary");
 
 
             getCityVillageAsPerStateSelection(patientDTO.getStateprovince());
@@ -644,6 +646,7 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("patient_detail", patient_detail);
         bundle.putString("mAlternateNumberString", mAlternateNumberString);
+        bundle.putBoolean("fromSummary", fromSummary);
 
         firstScreen.setArguments(bundle); // passing data to Fragment
         requireActivity().getSupportFragmentManager()
@@ -754,6 +757,8 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
         bundle.putBoolean("fromSecondScreen", true);
         bundle.putBoolean("editDetails", true);
+        bundle.putString("mAlternateNumberString", mAlternateNumberString);
+        bundle.putBoolean("fromSummary", fromSummary);
 
         //   bundle.putString("patientUuid", patientID_edit);
         bundle.putBoolean("patient_detail", patient_detail);
@@ -763,7 +768,6 @@ public class PatientAddressInfoFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, fragment_thirdScreen)
                 .commit();
-
         ((AddNewPatientActivity) requireActivity()).changeCurrentPage(AddNewPatientActivity.PAGE_OTHER);
 
         if (NetworkConnection.isOnline(mContext)) {

@@ -698,7 +698,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         //new flow
         try {
-            tvBedNumber.setText(getBedNumber(patient_new.getUuid()));
+            String checkUUId = patient_new.getUuid();
+            if (checkUUId != null && !checkUUId.isEmpty())
+                tvBedNumber.setText(getBedNumber(checkUUId));
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -1758,6 +1760,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     private String getBedNumber(String patientuuid) throws DAOException {
+        Log.d(TAG, "getBedNumber: patientuuid : " + patientuuid);
         String bedNumber = null;
         Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='d0786817-68d9-4226-b311-3de68d534b9e' ", new String[]{patientuuid});
         try {
