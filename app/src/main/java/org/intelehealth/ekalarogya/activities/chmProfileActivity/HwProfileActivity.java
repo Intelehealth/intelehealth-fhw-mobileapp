@@ -343,9 +343,15 @@ public class HwProfileActivity extends AppCompatActivity {
 
                 UploadHW_ProfileImage();
             }
-        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            if (resultCode == RESULT_OK && null != data) {
+        } else if (requestCode == PICK_IMAGE_FROM_GALLERY && null != data) {
+            if (resultCode == RESULT_OK) {
+                Log.v("HWProfile", "HWProfile: " + "Result OK");
                 Uri selectedImage = data.getData();
+                if (selectedImage == null) {    // AEAT-471
+                    Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
@@ -363,6 +369,10 @@ public class HwProfileActivity extends AppCompatActivity {
                         .into(hw_profile_image);
                 // String picturePath contains the path of selected Image
                 UploadHW_ProfileImage();
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                return;
             }
         }
     }
