@@ -140,6 +140,7 @@
     <dimen name="std_30sp">30sp</dimen>
     <dimen name="input_stroke_size">0.5dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_8dp</dimen>
+    <dimen name="std_28dp">28dp</dimen>
 
     <dimen name="splash_bottom_dark_bg_width">400</dimen>
     <dimen name="splash_bottom_dark_bg_height">224dp</dimen>

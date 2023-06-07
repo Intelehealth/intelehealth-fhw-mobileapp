@@ -18,13 +18,13 @@
     <dimen name="actionbar_size">56dp</dimen>
     <dimen name="button_text_size">@dimen/std_14sp</dimen>
     <dimen name="login_logo_size">@dimen/std_56dp</dimen>
-    <dimen name="login_top_margin">@dimen/std_56dp</dimen>
+    <dimen name="login_top_margin">@dimen/std_36dp</dimen>
     <dimen name="welcome_text_size">@dimen/std_21sp</dimen>
     <dimen name="subheading_text_size">@dimen/std_16sp</dimen>
     <dimen name="home_logo_width">@dimen/std_100dp</dimen>
     <dimen name="home_logo_height">@dimen/std_36dp</dimen>
     <dimen name="action_menu_text_size">@dimen/std_12sp</dimen>
-    <dimen name="login_screen_padding">@dimen/std_64dp</dimen>
+    <dimen name="login_screen_padding">@dimen/std_36dp</dimen>
     <dimen name="small_btn_horizontal_padding">@dimen/std_16dp</dimen>
     <dimen name="small_btn_vertical_padding">0dp</dimen>
     <dimen name="small_btn_radius">@dimen/std_4dp</dimen>
