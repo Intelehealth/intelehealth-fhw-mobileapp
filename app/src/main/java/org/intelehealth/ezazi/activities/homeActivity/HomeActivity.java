@@ -94,6 +94,7 @@ import org.intelehealth.ezazi.models.DownloadMindMapRes;
 import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
@@ -907,6 +908,11 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         filteractivePatient.get(j).setStageName("");
                     }
                 }
+
+                PatientsDAO patientsDAO = new PatientsDAO();
+                String bedNo = patientsDAO.getPatientAttributeValue(activePatientModels.get(j).getPatientuuid(), PatientAttributesDTO.Columns.BED_NUMBER);
+                activePatientModels.get(j).setBedNo(bedNo);
+                filteractivePatient.get(j).setBedNo(bedNo);
 
                 int red = 2, yellow = 1, green = 0;
                 int r_count = 0, y_count = 0, g_count = 0;

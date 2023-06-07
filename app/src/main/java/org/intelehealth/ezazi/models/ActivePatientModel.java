@@ -21,6 +21,8 @@ public class ActivePatientModel {
     private boolean obsExistsFlag;
     String birthOutcomeValue;
 
+    private String bedNo;
+
 
     public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate,
                               String openmrs_id, String first_name, String middle_name,
@@ -180,5 +182,13 @@ public class ActivePatientModel {
     * */
     public void setVisibilityOrder(int visibilityOrder) {
         this.visibilityOrder = visibilityOrder;
+    }
+
+    public void setBedNo(String bedNo) {
+        this.bedNo = bedNo;
+    }
+
+    public String getBedNo() {
+        return bedNo;
     }
 }

@@ -130,7 +130,7 @@ public class PatientsDAO {
     }
 
     public boolean updatePatientToDBNew(PatientDTO patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
-        Log.d("tag", "updatePatientToDBNew:uuid :  "+uuid);
+        Log.d("tag", "updatePatientToDBNew:uuid :  " + uuid);
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -623,6 +623,22 @@ public class PatientsDAO {
         cursor.close();
 
         return gender;
+    }
+
+    public String getPatientAttributeValue(String patientUuid, PatientAttributesDTO.Columns columns) {
+        String attributeUuid = getUuidForAttribute(columns.value);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String value = "";
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid =? COLLATE NOCASE",
+                new String[]{patientUuid, attributeUuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        cursor.close();
+
+        return value;
     }
 
 }

@@ -124,6 +124,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
         holder.tvAgeGender.setText(ageInYear);
         holder.tvStageNameTextView.setText(activePatientModel.getStageName());
+        holder.tvBedNo.setText("Bed No: " + activePatientModel.getBedNo());
         if (activePatientModel.getEnddate() == null) {
             holder.getIndicatorTextView().setText(R.string.active);
             holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
@@ -380,7 +381,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private View rootView;
         private TextView ivPriscription;
         private TextView tv_not_uploaded;
-        TextView tvAgeGender, tvStageNameTextView;
+        TextView tvAgeGender, tvStageNameTextView, tvBedNo;
         private CardView cardView_todaysVisit;
 
         public ActivePatientViewHolder(View itemView) {
@@ -390,6 +391,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.tvAlertCount);
+            tvBedNo = itemView.findViewById(R.id.tvBedNumber);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
 //            btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
 //            btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
