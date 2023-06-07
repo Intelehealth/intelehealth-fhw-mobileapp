@@ -4988,8 +4988,13 @@ public class IdentificationActivity extends AppCompatActivity implements
         if (binding.hohRadioGroup.getCheckedRadioButtonId() != -1 && binding.hohRadioGroup.getCheckedRadioButtonId() == binding.hohNo.getId()) {
             if (binding.hohRelationshipSpinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) binding.hohRelationshipSpinner.getSelectedView();
-                t.setError(getString(R.string.select));
-                t.setTextColor(Color.RED);
+                try {   // AEAT-534 -> Point 6.
+                    t.setError(getString(R.string.select));
+                    t.setTextColor(Color.RED);
+                }
+                catch (Exception e) {
+                    Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
                 focusView = binding.hohRelationshipSpinner;
                 cancel = true;
                 return;
