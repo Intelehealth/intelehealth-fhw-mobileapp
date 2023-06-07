@@ -1,22 +1,31 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
+
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -24,6 +33,7 @@ import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_N
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -133,7 +143,12 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.fu_priority_tag.setVisibility(View.GONE);
             // Emergency - end
 
+            holder.shareicon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                }
+            });
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
@@ -150,6 +165,13 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 intent.putExtra("patient_photo", model.getPatient_photo());
                 intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
                 context.startActivity(intent);
+            });
+
+            holder.shareicon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sharePresc(model);
+                }
             });
         }
     }
@@ -231,6 +253,42 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         }
                 }
                 });
+    }
+
+    private void sharePresc(final PrescriptionModel model) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
+        alertdialogBuilder.setView(convertView);
+        EditText editText = convertView.findViewById(R.id.editText_mobileno);
+        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+        String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+        String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
+        if(model.getPhone_number()!=null)
+            editText.setText(model.getPhone_number());
+        sharebtn.setOnClickListener(v -> {
+            if (!editText.getText().toString().equalsIgnoreCase("")) {
+                String phoneNumber = /*"+91" +*/ editText.getText().toString();
+                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                        phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + context.getResources().getString(R.string.and_enter_your_patient_id)
+                                + model.getOpenmrs_id());
+                Log.v("whatsappMessage", whatsappMessage);
+                context.startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(whatsappMessage)));
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.please_enter_mobile_number),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.show();
     }
 
 }
