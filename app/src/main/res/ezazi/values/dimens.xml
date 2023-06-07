@@ -24,7 +24,7 @@
     <dimen name="home_logo_width">@dimen/std_100dp</dimen>
     <dimen name="home_logo_height">@dimen/std_36dp</dimen>
     <dimen name="action_menu_text_size">@dimen/std_12sp</dimen>
-    <dimen name="login_screen_padding">@dimen/std_36dp</dimen>
+    <dimen name="login_screen_padding">@dimen/std_28dp</dimen>
     <dimen name="small_btn_horizontal_padding">@dimen/std_16dp</dimen>
     <dimen name="small_btn_vertical_padding">0dp</dimen>
     <dimen name="small_btn_radius">@dimen/std_4dp</dimen>

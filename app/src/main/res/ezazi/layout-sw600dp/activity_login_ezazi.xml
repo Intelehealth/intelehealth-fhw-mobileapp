@@ -22,8 +22,8 @@
         android:id="@+id/iv_logo"
         android:layout_width="@dimen/login_logo_size"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/login_top_margin"
         android:src="@drawable/login_screen_icon"
+        app:layout_constraintBottom_toTopOf="@id/clLoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
