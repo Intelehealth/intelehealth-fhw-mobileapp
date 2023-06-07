@@ -170,6 +170,12 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             @Override
             public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
                 cpd.dismiss();
+                if(resetPasswordResModel_new.getMessage().equalsIgnoreCase("Password reset successful.")
+                        && sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, "पासवर्ड रीसेट सफल रहा।");
+                else
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, "Password reset successful.");
+
                 snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, resetPasswordResModel_new.getMessage());
                 if (resetPasswordResModel_new.getSuccess()) {
                     final Handler handler = new Handler();

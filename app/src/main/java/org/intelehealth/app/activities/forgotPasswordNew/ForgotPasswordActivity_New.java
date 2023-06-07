@@ -235,7 +235,11 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 cpd.dismiss();
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage());
+                    if(forgotPasswordApiResponseModel_new.getMessage().equalsIgnoreCase("Otp sent successfully!")
+                     && sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, "ओटीपी सफलतापूर्वक भेजा गया!");
+                    else
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, "Otp sent successfully!");
                     //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
