@@ -1245,6 +1245,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     return true;
                 case R.id.bottom_nav_add_patient:
                     Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
+                    intent.putExtra("intentType", "navigateFurther");
                     intent.putExtra("add_patient", "add_patient");
                     startActivity(intent);
                     return false;

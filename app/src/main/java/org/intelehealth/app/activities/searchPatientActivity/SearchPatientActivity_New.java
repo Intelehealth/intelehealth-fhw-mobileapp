@@ -106,6 +106,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SearchPatientActivity_New.this, PrivacyPolicyActivity_New.class);
+                intent.putExtra("intentType", "navigateFurther");
                 intent.putExtra("add_patient", "add_patient");
                 startActivity(intent);
                 finish();

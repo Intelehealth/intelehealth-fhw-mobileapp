@@ -120,6 +120,7 @@ public class VisitReceivedFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PrivacyPolicyActivity_New.class);
+                intent.putExtra("intentType", "navigateFurther");
                 intent.putExtra("add_patient", "add_patient");
                 startActivity(intent);
                 getActivity().finish();
