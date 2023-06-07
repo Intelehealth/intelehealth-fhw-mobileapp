@@ -19,6 +19,7 @@ import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -1639,6 +1640,27 @@ public final class StringUtils {
 
         return mdob_text;
     }
+
+
+    public static String getMessageTranslated(String message, String locale) { //English dob is replaced to Hindi text.
+        if (locale.equalsIgnoreCase("hi")) {
+            message = message
+                    .replace("Otp sent successfully!", "ओटीपी सफलतापूर्वक भेजा गया!")
+                    .replace("No user exists with this phone number/email.",
+                            "इस फ़ोन नंबर/ईमेल के साथ कोई उपयोगकर्ता मौजूद नहीं है।")
+                    .replace("No phoneNumber/email updated for this username.",
+                            "इस उपयोगकर्ता नाम के लिए कोई फ़ोन नंबर/ईमेल अपडेट नहीं किया गया है।")
+                    .replace("No user exists with this username.",
+                            "इस उपयोगकर्ता नाम के साथ कोई उपयोगकर्ता मौजूद नहीं है।")
+                    .replace("Otp verified successfully!", "ओटीपी सफलतापूर्वक सत्यापित!")
+                    .replace("Otp expired!", "ओटीपी एक्स्पायर्ड हो गया!")
+                    .replace("Otp incorrect!", "ओटीपी गलत है।")
+                    .replace("Password reset successful.", "पासवर्ड रीसेट सफल रहा।")
+                    .replace("No user exists!", "कोई उपयोगकर्ता मौजूद नहीं है!");
+        }
+        return message;
+    }
+
 
     public static String en_hi_dob_updated(String dob) { //English dob is replaced to Hindi text.
         String mdob_text = dob

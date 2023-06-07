@@ -42,6 +42,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.security.SecureRandom;
@@ -170,13 +171,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             @Override
             public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
                 cpd.dismiss();
-                if(resetPasswordResModel_new.getMessage().equalsIgnoreCase("Password reset successful.")
-                        && sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, "पासवर्ड रीसेट सफल रहा।");
-                else
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, "Password reset successful.");
-
-                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, resetPasswordResModel_new.getMessage());
+                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()));
                 if (resetPasswordResModel_new.getSuccess()) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
