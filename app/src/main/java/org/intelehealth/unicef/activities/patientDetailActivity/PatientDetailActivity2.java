@@ -429,7 +429,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
         // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
-        Intent intent2 = new Intent(PatientDetailActivity2.this, VisitCreationActivity.class);
+        Intent intent2 = new Intent(PatientDetailActivity2.this, VitalsActivity.class);
         String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
         String patientUuid = patientDTO.getUuid();
         intent2.putExtra("patientUuid", patientUuid);

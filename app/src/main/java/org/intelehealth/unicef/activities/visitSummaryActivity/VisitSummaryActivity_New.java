@@ -931,18 +931,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (valueArray[0] != null)
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
 
-            if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
-                        .split("• Patient denies -<br/>");
+            if (valueArray.length > 1) {
+                if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+                    String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+                            .split("• Patient denies -<br/>");
 
-                // index 0 - Reports
-                String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
-                        .split("• Patient reports -<br/>");
-                patientReports = reports[1];
-                patientDenies = assoValueBlock[1];
-                complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-            } else if (valueArray[0].contains("• Patient reports")) {
-                // todo: handle later -> comment added on 14 nov 2022
+                    // index 0 - Reports
+                    String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
+                            .split("• Patient reports -<br/>");
+                    patientReports = reports[1];
+                    patientDenies = assoValueBlock[1];
+                    complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+                } else if (valueArray[0].contains("• Patient reports")) {
+                    // todo: handle later -> comment added on 14 nov 2022
+                }
             }
 
             // todo: testing:
@@ -1762,17 +1764,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private void checkPerm() {
         if (checkAndRequestPermissions()) {
             try {
-                if(hasPrescription.equalsIgnoreCase("true")) {
+                if (hasPrescription.equalsIgnoreCase("true")) {
                     doWebViewPrint_downloadBtn();
-                }
-                else
-                {
+                } else {
                     DialogUtils dialogUtils = new DialogUtils();
                     dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
                         @Override
                         public void onDialogActionDone(int action) {
                         }
-                    });                }
+                    });
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -2650,8 +2651,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     fileList.add(new File(filename));
                 }
             }
-            if(fileList.size()==0)
-            {
+            if (fileList.size() == 0) {
                 physcialExaminationDownloadText.setVisibility(View.GONE);
             }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
@@ -3180,11 +3180,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (encounterUuidAdultIntial != null) {
             try {
                 List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
-                if(imageList.size()==0)
-                {
+                if (imageList.size() == 0) {
                     physcialExaminationDownloadText.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     for (String images : imageList) {
                         if (imagesDAO.isLocalImageUuidExists(images))
                             physcialExaminationDownloadText.setVisibility(View.GONE);
@@ -4727,7 +4725,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) +": " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -4743,7 +4741,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             fileName, new PdfPrint.CallbackPrint() {
                                 @Override
                                 public void success(String path) {
-                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) +": " + path, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.downloaded_to) + ": " + path, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
