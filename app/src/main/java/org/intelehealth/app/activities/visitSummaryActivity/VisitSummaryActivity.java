@@ -229,6 +229,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     String rxReturned = "";
     String testsReturned = "";
     String adviceReturned = "";
+    String aidOrderReturned = "";
     String doctorName = "";
     String additionalReturned = "";
     String followUpDate = "";
@@ -281,6 +282,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     CardView medicalAdviceCard;
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
+    CardView aidOrderCard;
     CardView followUpDateCard;
     CardView card_print, card_share;
     CardView saveButton;
@@ -291,6 +293,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
+    TextView aidOrderTextView;
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
@@ -658,6 +661,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
         requestedTestsCard = findViewById(R.id.cardView_tests);
         additionalCommentsCard = findViewById(R.id.cardView_additional_comments);
+        aidOrderCard = findViewById(R.id.cardView_aid_order);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
@@ -763,6 +767,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
+        aidOrderTextView = findViewById(R.id.textView_content_aid_order);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -2201,6 +2206,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
+        String aidOrder_web = stringToWeb(aidOrderReturned);
+
         String rx_web = stringToWeb(rxReturned).replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">●</p>", "");
 
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
@@ -2352,6 +2359,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_instructions)) + "</p></b></u>" + "%s<br>", advice_web));
             }
 
+            if (!aidOrder_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
+            }
+
             if (!followUp_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_follow_up_date)) + "</p></b></u>" + "%s<br>", followUp_web));
             }
@@ -2391,6 +2402,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             if (!advice_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_advice)) + "</p></b></u>" + "%s<br>", advice_web));
+            }
+
+            if (!aidOrder_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
             }
 
             if (!followUp_web.isEmpty()) {
@@ -3384,7 +3399,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"value", " conceptuuid", "comment"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -3430,11 +3445,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
                         } else {
-                            parseData(dbConceptID, dbValue);
+                            parseData(dbConceptID, dbValue, dbComment);
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -3454,11 +3470,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
+                    String dbComment = encountercursor.getString(encountercursor.getColumnIndex("comment"));
                     if (dbValue.startsWith("{")) {
                         AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
                     } else {
-                        parseData(dbConceptID, dbValue);
+                        parseData(dbConceptID, dbValue, dbComment);
                     }
                 } while (encountercursor.moveToNext());
             }
@@ -3479,7 +3496,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
-    private void parseData(String concept_id, String value) {
+    private void parseData(String concept_id, String value, String comment) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -3543,6 +3560,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 //checkForDoctor();
                 if (LocaleHelper.isArabic(this)) {
                     diagnosisTextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_PRESCRIPTION: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + comment + " - " + value;
+                } else {
+                    aidOrderReturned = comment + " - " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                aidOrderTextView.setText(aidOrderReturned);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderTextView.setGravity(Gravity.END);
                 }
                 break;
             }
@@ -4149,12 +4182,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //                    additionalCommentsCard.setVisibility(View.GONE);
 //
 //                }
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = "";
+                    aidOrderTextView.setText("");
+                    aidOrderCard.setVisibility(View.GONE);
+                }
                 if (!followUpDate.isEmpty()) {
                     followUpDate = "";
                     followUpDateTextView.setText("");
                     followUpDateCard.setVisibility(View.GONE);
                 }
-                String[] columns = {"value", " conceptuuid"};
+                String[] columns = {"value", " conceptuuid", "comment"};
                 String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
                 String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -4162,12 +4200,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
                         } else {
-                            parseData(dbConceptID, dbValue);
+                            parseData(dbConceptID, dbValue, dbComment);
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -4213,7 +4252,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
         encounterCursor.close();
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"value", " conceptuuid", "comment"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -4221,12 +4260,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
                 if (dbValue.startsWith("{")) {
                     AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
                 } else {
-                    parseData(dbConceptID, dbValue);
+                    parseData(dbConceptID, dbValue, dbComment);
                 }
             } while (visitCursor.moveToNext());
         }
@@ -4287,8 +4327,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             testsReturned = "";
             adviceReturned = "";
             additionalReturned = "";
+            aidOrderReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid"};
+            String[] columns = {"value", " conceptuuid", "comment"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -4296,7 +4337,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
+                    parseData(dbConceptID, dbValue, dbComment);
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();
@@ -4781,6 +4823,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String diagnosis_web = stringToWeb_sms(diagnosisReturned);
 
+        String aidOrder_web = stringToWeb_sms(aidOrderReturned);
+
         String followUpDateStr = "";
         if (followUpDate != null && followUpDate.contains(",")) {
             String[] spiltFollowDate = followUpDate.split(",");
@@ -4902,6 +4946,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         // If the Advice provided is not empty, only then will the details be displayed in the Prescription
         if (!advice_web.isEmpty()) {
             htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + " <br>" + "%s" + "</b><br>", advice_web));
+        }
+
+        if (!aidOrder_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
         }
 
         // If the Follow Up Date provided is not empty, only then will the details be displayed in the Prescription
