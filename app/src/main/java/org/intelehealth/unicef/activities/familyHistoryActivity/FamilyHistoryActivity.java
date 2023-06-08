@@ -133,8 +133,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_FamHist == null)
-                new_result = getFamilyHistoryVisitData();
+            if (edit_FamHist == null) new_result = getFamilyHistoryVisitData();
         }
 
         boolean past = sessionManager.isReturning();
@@ -150,8 +149,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 //            textViewTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 //            alertdialog.setCustomTitle(textViewTitle);
 
-            View layoutInflater = LayoutInflater.from(FamilyHistoryActivity.this)
-                    .inflate(R.layout.past_fam_hist_previous_details, null);
+            View layoutInflater = LayoutInflater.from(FamilyHistoryActivity.this).inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
             Log.v(TAG, new_result);
@@ -222,23 +220,26 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }
-           
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
-        setTitle(R.string.title_activity_family_history);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+//        setTitle(R.string.title_activity_family_history);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        toolbar.setTitleTextColor(Color.WHITE);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        setTitle(patientName + ": " + getTitle());
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_family_history)));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+
+//        setTitle(patientName + ": " + getTitle());
 
         FloatingActionButton fab = findViewById(R.id.fab);
         family_history_recyclerView = findViewById(R.id.family_history_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         family_history_recyclerView.setLayoutManager(linearLayoutManager);
         family_history_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -252,8 +253,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         });
 
 //        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
 
         if (hasLicense) {
             try {
@@ -328,8 +328,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         imageName = UUID.randomUUID().toString();
 
-        if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
-                familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
+        if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() && familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
             Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
         }
 
@@ -491,7 +490,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
 
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here
@@ -522,8 +520,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         if (v != null) {
             v.setVisibility(View.VISIBLE);
-            Animation bottomUp = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_up);
+            Animation bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
             v.startAnimation(bottomUp);
         }
 
