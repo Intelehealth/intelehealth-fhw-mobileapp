@@ -7,88 +7,113 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_view"
+    <!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:id="@+id/app_bar_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:theme="@style/AppTheme.AppBarOverlay">-->
+
+    <!--        <androidx.appcompat.widget.Toolbar-->
+    <!--            android:id="@+id/toolbar"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="?attr/actionBarSize"-->
+    <!--            android:background="@color/colorPrimary"-->
+    <!--            app:popupTheme="@style/AppTheme.PopupOverlay" />-->
+
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_marginTop="@dimen/margin_15"
+        android:gravity="center_vertical"
+        android:minHeight="?actionBarSize"
+        android:paddingHorizontal="@dimen/toolbar_margin_left">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="1sp"
+            android:text="Lincon Testing"
+            android:textAppearance="@style/label"
+            android:textColor="@null"
+            android:textSize="@dimen/toolbar_text_size"
+            android:textStyle="bold" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:id="@+id/tv_title_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="1sp"
+            android:text="Lincon Testing"
+            android:textAppearance="@style/caption_fu_openmrsId"
+            android:textColor="@null"
+            android:textSize="@dimen/text_13sp"
+            android:textStyle="normal" />
 
+    </RelativeLayout>
 
     <org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator
         android:id="@+id/recyclerViewIndicator"
-        android:layout_below="@+id/app_bar_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_10"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        app:spi_visibleDotCount="21"
         app:spi_dotSelectedColor="@color/colorPrimary"
-
-        android:layout_centerHorizontal="true"
-
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
-
-    </org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator>
-
+        app:spi_visibleDotCount="21" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/recyclerViewIndicator"
+        android:layout_marginTop="@dimen/margin_10"
         android:orientation="vertical"
         android:weightSum="1">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-
-        android:id="@+id/recycleFrame"
-
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pastMedical_recyclerView"
+        <FrameLayout
+            android:id="@+id/recycleFrame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent">
 
-            android:scrollbars="vertical"
-            android:visibility="visible"
-            android:fadeScrollbars="false"
-            android:scrollbarThumbVertical="@color/colorAccent"
-            android:layout_above="@+id/fab"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pastMedical_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/fab"
+                android:fadeScrollbars="false"
+                android:scrollbarThumbVertical="@color/colorAccent"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
 
+        </FrameLayout>
 
-
-
-</FrameLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight=".2"
-        android:layout_gravity="bottom|end"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/recycleFrame"
-        android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_done_24dp"
-        />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_below="@+id/recycleFrame"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_weight=".2"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_done_24dp" />
 
     </LinearLayout>
-    <include layout="@layout/content_past_medical_history"
+
+    <include
+        layout="@layout/content_past_medical_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
+        android:visibility="gone" />
 
 
 </RelativeLayout>
