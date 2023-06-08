@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
     android:weightSum="1">
 
     <LinearLayout
@@ -27,7 +27,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/margin_16"
             android:orientation="horizontal">
 
             <ImageView
@@ -35,7 +37,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_question_indicator"
+                android:src="@drawable/ui2_ic_ayu_image_blue"
                 android:visibility="visible" />
 
             <TextView
@@ -43,12 +45,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:fontFamily="@font/lato_bold"
-                tools:text="@string/since_when_have_you_had_this_symptom"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:text="@string/since_when_have_you_had_this_symptom" />
 
         </LinearLayout>
 
@@ -62,14 +64,15 @@
             android:id="@+id/rv_chips"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_10"
             android:layout_marginTop="5dp"
-
-            android:scrollbarThumbVertical="@color/colorPrimary"
-            android:fitsSystemWindows="true"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:layout_marginEnd="@dimen/margin_10"
             android:fadeScrollbars="false"
-            android:scrollbarFadeDuration="0"
+            android:fitsSystemWindows="true"
             android:nestedScrollingEnabled="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarThumbVertical="@color/colorPrimary"
             android:scrollbars="vertical" />
 
 
@@ -99,6 +102,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorPrimary1"
             android:visibility="visible"
             app:srcCompat="@drawable/ic_done_24dp" />
 

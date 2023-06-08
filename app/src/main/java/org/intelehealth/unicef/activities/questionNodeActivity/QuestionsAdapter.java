@@ -65,7 +65,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     @Override
     public void setVisibility(boolean data) {
-        showPopUp=data;
+        showPopUp = data;
     }
 
     public interface FabClickListener {
@@ -77,8 +77,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     }
 
 
-    public QuestionsAdapter(Context _context, Node node, RecyclerView _rvQuestions, String callingClass,
-                            FabClickListener _mListener, boolean isAssociateSym) {
+    public QuestionsAdapter(Context _context, Node node, RecyclerView _rvQuestions, String callingClass, FabClickListener _mListener, boolean isAssociateSym) {
         this.context = _context;
         this.currentNode = node;
         this.recyclerView = _rvQuestions;
@@ -166,14 +165,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
 
-
         holder.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (showPopUp){
-                    Toast.makeText(context,context.getString(R.string.select_all_answers),Toast.LENGTH_LONG).show();
+                if (showPopUp) {
+                    Toast.makeText(context, context.getString(R.string.select_all_answers), Toast.LENGTH_LONG).show();
 
-                }else {
+                } else {
                     _mListener.fabClickedAtEnd();
                 }
 
@@ -209,6 +207,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         }
     }
+
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -249,7 +248,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     chipList = currentNode.getOptionsList().get(0).getOptionsList();
-                }else{
+                } else {
                     Node node = currentNode.getOptionsList().get(pos);
                     for (int i = 0; i < node.getOptionsList().size(); i++) {
                         chipList.add(node.getOptionsList().get(i));
@@ -260,11 +259,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) || (isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
 
-            if(groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms") || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")) {
-                associatedSysAdapter=new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
+            if (groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms") || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")) {
+                associatedSysAdapter = new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(associatedSysAdapter);
 
-            }   else {
+            } else {
                 chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(chipsAdapter);
             }
@@ -316,10 +315,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.ui2_common_primary_bg));
             } else {
+                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.ui2_chip_type_1_bg));
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
                 //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
                 //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }
@@ -408,8 +407,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                             _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
                             notifyDataSetChanged();
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, context.getString(R.string.some_issue_with_mindmap), Toast.LENGTH_SHORT).show();
                     }
 

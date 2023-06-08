@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <NumberPicker
             android:id="@+id/dialog_2_numbers_quantity"
             android:layout_width="wrap_content"
@@ -16,6 +17,7 @@
             android:padding="@dimen/padding_card">
 
         </NumberPicker>
+
         <NumberPicker
             android:id="@+id/dialog_2_numbers_unit"
             android:layout_width="wrap_content"
@@ -24,13 +26,14 @@
             android:padding="@dimen/padding_card">
 
         </NumberPicker>
+
         <NumberPicker
             android:id="@+id/dialog_3_numbers_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_weight="4"
-            android:padding="@dimen/padding_card">
+            android:padding="@dimen/padding_card"
+            android:visibility="gone">
 
         </NumberPicker>
     </LinearLayout>
@@ -39,42 +42,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/dialog_2_numbers_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:fontFamily="@font/lato_regular"
             android:gravity="center"
-            android:padding="@dimen/padding_card"
-            android:fontFamily="@font/lato_regular"/>
+            android:padding="@dimen/padding_card" />
+
         <TextView
             android:id="@+id/dialog_2_numbers_text_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:fontFamily="@font/lato_regular"
             android:gravity="center"
-            android:padding="@dimen/padding_card"
-            android:fontFamily="@font/lato_regular"/>
+            android:padding="@dimen/padding_card" />
+
         <TextView
             android:id="@+id/dialog_2_numbers_text_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:fontFamily="@font/lato_regular"
             android:gravity="center"
-            android:padding="@dimen/padding_card"
-            android:fontFamily="@font/lato_regular"/>
+            android:padding="@dimen/padding_card" />
 
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_margin="30dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_cancel_picker"
@@ -106,15 +113,6 @@
             android:textSize="14sp" />
 
     </RelativeLayout>
-
-
-
-
-
-
-
-
-
 
 
 </LinearLayout>
