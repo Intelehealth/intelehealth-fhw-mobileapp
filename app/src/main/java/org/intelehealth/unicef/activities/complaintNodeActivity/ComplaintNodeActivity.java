@@ -113,9 +113,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
         }
+
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();
-
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -137,10 +137,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_node);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_vitals)));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
 
         activeReasons = findViewById(R.id.actv_reasons);
 
