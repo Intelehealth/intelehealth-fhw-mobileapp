@@ -89,15 +89,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     PhysicalExam physicalExam;
 
-    public QuestionsAdapter(Context _context, PhysicalExam node, RecyclerView _rvQuestions, String callingClass,
-                            FabClickListener _mListener, boolean isAssociateSym) {
+    public QuestionsAdapter(Context _context, PhysicalExam node, RecyclerView _rvQuestions, String callingClass, FabClickListener _mListener, boolean isAssociateSym) {
         this.context = _context;
         this.physicalExam = node;
         this.recyclerView = _rvQuestions;
         this._mCallingClass = callingClass;
         this._mListener = _mListener;
         this.isAssociateSym = isAssociateSym;
-
     }
 
     @Override

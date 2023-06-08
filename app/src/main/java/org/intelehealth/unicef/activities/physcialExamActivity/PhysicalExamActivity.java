@@ -125,7 +125,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-      //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
@@ -204,18 +204,22 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
 
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+//        toolbar.setTitleTextColor(Color.WHITE);
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        }
         setTitle(patientName + ": " + getTitle());
+
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_family_history)));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -261,10 +265,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             physicalExamMap.fetchItem("1");
         }
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
@@ -320,7 +323,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity_New.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("gender",mgender);
+                intent.putExtra("gender", mgender);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
@@ -393,7 +396,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
     }
-
 
 
     /**
