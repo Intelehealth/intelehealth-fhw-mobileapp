@@ -88,5 +88,7 @@
     <color name="edittextBorder">#B2AFBE</color>
     <color name="error_red">#FF475D</color>
     <color name="colorInputBgBorder">#267F7B92</color>
+    <color name="days_calendar">#19181A</color>
+
 
 </resources>

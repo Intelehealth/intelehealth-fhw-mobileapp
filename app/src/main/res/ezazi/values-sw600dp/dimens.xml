@@ -62,7 +62,7 @@
     <!-- Added by Kaveri-->
     <!--Custom toolbar UI2.0-->
     <dimen name="custom_tool_margin_start">10dp</dimen>
-    <dimen name="custom_tool_margin_top">16dp</dimen>
+    <dimen name="custom_tool_margin_top">30dp</dimen>
     <dimen name="custom_tool_title_margin_top">15dp</dimen><!-- 17-->
     <dimen name="toolbar_home_tv_title_size">18sp</dimen>
 
@@ -197,7 +197,7 @@
     <dimen name="margin_top_summary_views">18dp</dimen>
     <dimen name="layout_summary_padding_top_bt">20dp</dimen>
     <dimen name="tv_summary_title_text_size">26sp</dimen>
-    <dimen name="tv_summary_layout_margin_top">26dp</dimen>
+    <dimen name="tv_summary_layout_margin_top">40dp</dimen>
     <dimen name="ib_edit_details_size">34dp</dimen>
     <dimen name="ib_edit_details_padding">10dp</dimen>
     <dimen name="time_picker_dialog_text_size">@dimen/std_36sp</dimen>
@@ -218,4 +218,7 @@
     <dimen name="call_icon_width">@dimen/std_20dp</dimen>
     <dimen name="call_icon_height">@dimen/std_26dp</dimen>
     <dimen name="whatsapp_icon_size">@dimen/std_26dp</dimen>
+    <dimen name="patient_summary_margin_top">45dp</dimen>
+    <dimen name="patient_summary_margin_bottom">60dp</dimen>
+
 </resources>

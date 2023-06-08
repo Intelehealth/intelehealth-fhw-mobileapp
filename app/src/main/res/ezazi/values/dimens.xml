@@ -197,7 +197,7 @@
     <dimen name="margin_top_summary_views">10dp</dimen>
     <dimen name="layout_summary_padding_top_bt">16dp</dimen>
     <dimen name="tv_summary_title_text_size">18sp</dimen>
-    <dimen name="tv_summary_layout_margin_top">22dp</dimen>
+    <dimen name="tv_summary_layout_margin_top">28dp</dimen>
     <dimen name="ib_edit_details_size">20dp</dimen>
     <dimen name="ib_edit_details_padding">5dp</dimen>
     <dimen name="ib_edit_margin_end">15dp</dimen>
@@ -248,4 +248,7 @@
     <dimen name="call_icon_width">@dimen/std_14dp</dimen>
     <dimen name="call_icon_height">@dimen/std_18dp</dimen>
     <dimen name="whatsapp_icon_size">@dimen/std_14dp</dimen>
+    <dimen name="patient_summary_margin_top">25dp</dimen>
+    <dimen name="patient_summary_margin_bottom">40dp</dimen>
+
 </resources>

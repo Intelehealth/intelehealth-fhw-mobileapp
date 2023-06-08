@@ -741,13 +741,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         whichDate = mArgs.getString("whichDate");
         fillMonthsSpinner();
         fillYearSpinner();
-        //set current month as a january for new year -default
-        if (!whichDate.isEmpty() && whichDate.equalsIgnoreCase("dobPatient"))
-            setValuesToTheMonthSpinnerForDefault(1);
-        else
-            setValuesToTheMonthSpinnerForDefault(currentMonth); // default current month for other cases
 
-
+        setValuesToTheMonthSpinnerForDefault(currentMonth);
         setValuesToTheYearSpinnerForDefault(currentYear);
         fillDatesMonthsWise("default");
 
