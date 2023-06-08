@@ -885,7 +885,7 @@
     <string name="no_card">કોઈ કાર્ડ નથી</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">શું આ પરિવાર પાસે અંત્યોદય કાર્ડ/કૂપન છે?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">શું આ પરિવાર પાસે રાષ્ટ્રીય સ્વાસ્થ વીમા યોજના કાર્ડ/કૂપન છે?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">શું આ પરિવાર પાસે મનારેગા કાર્ડ/કૂપન છે?*</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">શશું તમારી પાસે મનરેગા કાર્ડ/કુપન છે?*</string>
     <string name="submit">સબમિટ કરો</string>
 
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">આપના ઘરમાં મુખ્ય રીતે રસોઈ બનાવા માટે કયા પ્ર્કારના ઈંધણનો ઉપયોગ કરવામાં આવે છે?</string>
@@ -1125,7 +1125,7 @@
     <string name="select_hours">કલાક</string>
     <string name="please_state_if_you_have_electricity_in_the_household">કૃપા કરીને જણાવો કે શું તમારા ઘરમાં વીજળી છે</string>
     <string name="no_expense">કોઈ ખર્ચ નથી</string>
-    <string name="does_this_household_have_an_ayushman_card">શું આ પરિવાર પાસે આયુષ્માન કાર્ડ છે?*</string>
+    <string name="does_this_household_have_an_ayushman_card">શું તમારી પાસે આયુષ્યમાન કાર્ડ છે?*</string>
     <string name="does_this_household_have_ration_card">શું તમારી પાસે રેશનકાર્ડ છે?*</string>
 
     <string name="third_dose">ତୃତୀୟ ଦୋଜ</string>

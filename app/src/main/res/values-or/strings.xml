@@ -743,7 +743,7 @@
     <string name="no_card">କୌଣସି କାର୍ଡ ନାହିଁ</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">ଏହି ଘରର ଏକ ଅର୍ନ୍ତୋଦୟ କାର୍ଡ / କୁପନ୍ ଅଛି କି?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">ଏହି ଘରର ଏକ ରାଷ୍ଟ୍ରିୟ  ବିମା ଯୋଜନା (RSBY) କାର୍ଡ ଅଛି କି?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">ଏହି ଘରର MGNREGA କାର୍ଡ ଅଛି କି?*</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">ତୁମର MGNREGA କାର୍ଡ ଅଛି କି ?*</string>
 
     <!--    SURVEY SCREEN - 5-->
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">ଆପଣଙ୍କ ଘର ମୁଖ୍ୟତ ରୋଷେଇ ପାଇଁ କେଉଁ ପ୍ରକାରର ଇନ୍ଧନ ବ୍ୟବହାର କରନ୍ତି?</string>
@@ -992,7 +992,7 @@
     <string name="select_hours">ଘଣ୍ଟା (ସମୟ)</string>
     <string name="please_state_if_you_have_electricity_in_the_household">ଦୟାକରି କୁହ ତୁମ ଘରେ ବିଜୁଳି ଆଲୁଅ ଅଛି କି?</string>
     <string name="no_expense">କିଛି ଖର୍ଚ୍ଚ ନାହିଁ</string>
-    <string name="does_this_household_have_an_ayushman_card">ଏହି ଘରର ଆୟୁଷମାନ କାର୍ଡ ଅଛି କି?*</string>
+    <string name="does_this_household_have_an_ayushman_card">ତୁମର ଆୟୁଷ୍ମାନ କାର୍ଡ ଅଛି କି ?*</string>
     <string name="does_this_household_have_ration_card">ତୁମର ପଡ଼ି କାର୍ଡ ଅଛି କି ?*</string>
 
     <string name="third_dose">ତୃତୀୟ ଦୋଜ</string>

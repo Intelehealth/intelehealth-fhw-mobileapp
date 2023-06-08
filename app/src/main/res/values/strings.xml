@@ -902,7 +902,7 @@
     <string name="no_card">No Card</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">Does this household have an Antodaya card/coupon?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">Does this household have a Rashtriya Swasth Bima Yojana (RSBY) card?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">Does this household have an MGNREGA card?*</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">Do you have an MGNREGA card?*</string>
     <string name="submit">Submit</string>
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">What type of fuel does your household mainly used for cooking?</string>
     <string name="electricity">Electricity</string>
@@ -1124,7 +1124,7 @@
     <string name="select_hours">Select Hours</string>
     <string name="please_state_if_you_have_electricity_in_the_household">Please state if you have electricity in the household</string>
     <string name="no_expense">No expense</string>
-    <string name="does_this_household_have_an_ayushman_card">Does this household have an Ayushman Card?*</string>
+    <string name="does_this_household_have_an_ayushman_card">Do you have an Ayushman card?*</string>
     <string name="does_this_household_have_ration_card">Do you have a Ration card?*</string>
 
     <string name="third_dose">Third Dose</string>

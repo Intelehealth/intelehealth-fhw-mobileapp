@@ -880,7 +880,7 @@
     <string name="no_card">কাৰ্ড নাই</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">এই ঘৰখনত এণ্টোদয়া কাৰ্ড/কুপন আছে নেকি?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">এই ঘৰত আছে নেকি ৰাষ্ট্ৰীয় স্বস্থ বীমা যোজনা (RSBY) কাৰ্ড?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">এই ঘৰত MGNREGA কাৰ্ড আছে নেকি?*</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">আপোনাৰ হাতত MGNREGA কাৰ্ড আছে নেকি?*</string>
     <string name="submit">দাখিল কৰক</string>
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">আপোনাৰ ঘৰখনে মূলতঃ ৰন্ধা-বঢ়াৰ বাবে কি ধৰণৰ ইন্ধন ব্যৱহাৰ কৰে?</string>
     <string name="electricity">বিদ্যুৎ</string>
@@ -1099,7 +1099,7 @@
     <string name="select_hours">ঘন্টাসমূহ নিৰ্ব্বাচন কৰক</string>
     <string name="please_state_if_you_have_electricity_in_the_household">ঘৰত বিদ্যুৎ আছে নে নাই তাক উল্লেখ কৰক</string>
     <string name="no_expense">কোনো খৰচ নাই</string>
-    <string name="does_this_household_have_an_ayushman_card">এই ঘৰত আয়ুষ্মান কাৰ্ড আছে নেকি?*</string>
+    <string name="does_this_household_have_an_ayushman_card">আপোনাৰ হাতত আয়ুষ্মান কাৰ্ড আছে নেকি?*</string>
     <string name="does_this_household_have_ration_card">আপোনাৰ Ration কাৰ্ড আছে নেকি?*</string>
 
     <string name="third_dose">তৃতীয় ড’জ</string>

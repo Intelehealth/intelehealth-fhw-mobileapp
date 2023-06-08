@@ -867,7 +867,7 @@
     <string name="no_card">कोई कार्ड नहीं</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">क्या इस परिवार के पास अंत्योदय कार्ड/कूपन है?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">क्या इस परिवार के पास राष्ट्रीय स्वास्थ्य बीमा योजना (RSBY) कार्ड है?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">क्या इस परिवार के पास मनरेगा कार्ड है?*</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">क्या आपके पास मनरेगा कार्ड है?*</string>
 
     <!--    SURVEY SCREEN - 5-->
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">आपके घर मुख्य रूप से खाना पकाने के लिए किस प्रकार के ईंधन का उपयोग करते है?</string>
@@ -1126,7 +1126,7 @@
     <string name="select_hours">घंटे चुनें</string>
     <string name="please_state_if_you_have_electricity_in_the_household">कृपया बताएं कि क्या आपके घर में बिजली है</string>
     <string name="no_expense">कोई खर्च नहीं</string>
-    <string name="does_this_household_have_an_ayushman_card">क्या इस परिवार के पास आयुष्मान कार्ड है?*</string>
+    <string name="does_this_household_have_an_ayushman_card">क्या आपके पास आयुष्मान कार्ड है?*</string>
     <string name="does_this_household_have_ration_card">क्या आपके पास राशन कार्ड है?*</string>
 
     <string name="third_dose">तीसरी खुराक</string>

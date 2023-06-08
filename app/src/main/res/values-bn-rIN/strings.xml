@@ -901,7 +901,7 @@
     <string name="no_card">কার্ড  নেই</string>
     <string name="does_this_household_have_an_antodaya_card_coupon">এই পরিবারের কি অন্তোদয় কার্ড/কুপন আছে?</string>
     <string name="does_this_household_have_a_rsby_card_coupon">এই পরিবারের কি একটি রাষ্ট্রীয় স্বাস্থ্য বিমা যোজনা (RSBY) কার্ড আছে?</string>
-    <string name="does_this_household_have_a_mgnrega_card_coupon">এই পরিবারের কি MGNREGA কার্ড আছে?</string>
+    <string name="does_this_household_have_a_mgnrega_card_coupon">আপনার কি MGNREGA কার্ড আছে?*</string>
     <string name="submit">জমা দিন</string>
     <string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">আপনার পরিবার প্রধানত রান্নার জন্য কোন ধরনের জ্বালানী ব্যবহার করে?</string>
     <string name="electricity">বিদ্যুৎ</string>
@@ -1120,7 +1120,7 @@
     <string name="select_hours">ঘন্টা নির্বাচন করুন</string>
     <string name="please_state_if_you_have_electricity_in_the_household">আপনার বাড়িতে বিদ্যুৎ আছে কিনা দয়া করে বলুন</string>
     <string name="no_expense">কোনো খরচ নেই</string>
-    <string name="does_this_household_have_an_ayushman_card">এই পরিবারের কি আয়ুষ্মান কার্ড আছে?*</string>
+    <string name="does_this_household_have_an_ayushman_card">আপনার কি আয়ুষ্মান কার্ড আছে?*</string>
     <string name="does_this_household_have_ration_card">আপনার কি রেশন কার্ড আছে?*</string>
 
     <string name="third_dose">তৃতীয় ডোজ</string>
