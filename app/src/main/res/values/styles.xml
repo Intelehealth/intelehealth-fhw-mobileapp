@@ -60,6 +60,10 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="ToolbarStyle" parent="AppTheme.AppBarOverlay">
+        <item name="android:textColorPrimary">@color/textview_color</item>
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -443,6 +447,7 @@
         <item name="android:paddingHorizontal">10dip</item>
 
     </style>
+
     <style name="myListPopupWindow" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
         <item name="android:popupBackground">@drawable/popup_menu_background</item>
     </style>

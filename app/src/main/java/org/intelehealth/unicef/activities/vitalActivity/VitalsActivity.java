@@ -89,18 +89,10 @@ public class VitalsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vitals);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
         sessionManager = new SessionManager(this);
 
-
-//        Setting the title
-        setTitle(getString(R.string.title_activity_vitals));
-        setTitle(patientName + ": " + getTitle());
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_vitals)));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
 
         mHeight = findViewById(R.id.table_height);
         mWeight = findViewById(R.id.table_weight);
@@ -141,9 +133,9 @@ public class VitalsActivity extends AppCompatActivity {
                 mWeight.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mPulse")) {
-                findViewById(R.id.tinput_bpm).setVisibility(View.VISIBLE);
+                findViewById(R.id.table_pulse).setVisibility(View.VISIBLE);
             } else {
-                findViewById(R.id.tinput_bpm).setVisibility(View.GONE);
+                findViewById(R.id.table_pulse).setVisibility(View.GONE);
             }
             if (obj.getBoolean("mBpSys")) {
                 mBpSys.setVisibility(View.VISIBLE);
@@ -159,20 +151,20 @@ public class VitalsActivity extends AppCompatActivity {
                 if (obj.getBoolean("mCelsius")) {
 
                     mTemperature = findViewById(R.id.table_temp);
-                    findViewById(R.id.tinput_f).setVisibility(View.GONE);
+                    findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
                     mTemperature = findViewById(R.id.table_temp_faren);
-                    findViewById(R.id.tinput_c).setVisibility(View.GONE);
+                    findViewById(R.id.table_temp).setVisibility(View.GONE);
                 }
             } else {
                 mTemperature.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mSpo2")) {
-                findViewById(R.id.tinput_spo).setVisibility(View.VISIBLE);
+                findViewById(R.id.table_spo2).setVisibility(View.VISIBLE);
             } else {
-                findViewById(R.id.tinput_spo).setVisibility(View.GONE);
+                findViewById(R.id.table_spo2).setVisibility(View.GONE);
             }
             if (obj.getBoolean("mBMI")) {
                 mBMI.setVisibility(View.VISIBLE);
@@ -181,9 +173,9 @@ public class VitalsActivity extends AppCompatActivity {
             }
 
             if (obj.getBoolean("mResp")) {
-                findViewById(R.id.tinput_rr).setVisibility(View.VISIBLE);
+                findViewById(R.id.table_respiratory).setVisibility(View.VISIBLE);
             } else {
-                findViewById(R.id.tinput_rr).setVisibility(View.GONE);
+                findViewById(R.id.table_respiratory).setVisibility(View.GONE);
             }
         } catch (JSONException e) {
             Toast.makeText(this, getResources().getString(R.string.config_file_error), Toast.LENGTH_SHORT).show();
@@ -489,9 +481,7 @@ public class VitalsActivity extends AppCompatActivity {
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
             mBMI.getText().clear();
-        }
-        else
-        {
+        } else {
             mBMI.getText().clear();
         }
     }
@@ -506,14 +496,13 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-        } else  {
+        } else {
             // do nothing
             mBMI.getText().clear();
         }
     }
-
 
 
     public void loadPrevious() {
@@ -551,7 +540,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mBpDia.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
-                if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
+                if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
                     //Converting Celsius to Fahrenheit
                     if (value != null && !value.isEmpty()) {
                         mTemperature.setText(convertCtoF(value));
@@ -573,7 +562,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
-        if(mBMI.getText().toString().equalsIgnoreCase("")) {
+        if (mBMI.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
@@ -583,15 +572,14 @@ public class VitalsActivity extends AppCompatActivity {
         View focusView = null;
 
         //BP vaidations added by Prajwal.
-        if(mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
+        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if(mBpSys.getText().toString().isEmpty()) {
+            if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
 //                mBpSys.setError("Enter field");
                 mBpSys.setError(getResources().getString(R.string.error_field_required));
                 return;
-            }
-            else if(mBpDia.getText().toString().isEmpty()) {
+            } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
 //                mBpDia.setError("Enter field");
                 mBpDia.setError(getResources().getString(R.string.error_field_required));
@@ -789,7 +777,7 @@ public class VitalsActivity extends AppCompatActivity {
                 }
                 if (mTemperature.getText() != null) {
 
-                    if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
+                    if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
                         //Converting Fahrenheit to Celsius
 //                        results.setTemperature((mTemperature.getText().toString()));
 
@@ -1038,7 +1026,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String ConvertFtoC(String temperature) {
 
-        if(temperature != null && temperature.length() > 0) {
+        if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
