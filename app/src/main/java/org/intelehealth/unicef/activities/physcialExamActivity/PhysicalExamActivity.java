@@ -203,7 +203,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical_exam);
-        setTitle(getString(R.string.title_activity_physical_exam));
+//        setTitle(getString(R.string.title_activity_physical_exam));
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -212,9 +212,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 //        if (getSupportActionBar() != null) {
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        }
-        setTitle(patientName + ": " + getTitle());
+//        setTitle(patientName + ": " + getTitle());
 
-        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_family_history)));
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_physical_exam)));
         ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
 
         recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
