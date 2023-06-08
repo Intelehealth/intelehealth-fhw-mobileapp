@@ -17,17 +17,21 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -79,6 +83,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     RecyclerView list_recyclerView;
     private float float_ageYear_Month;
     String mgender;
+
+    EditText activeReasons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +141,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        activeReasons = findViewById(R.id.actv_reasons);
 
         img_question = findViewById(R.id.img_question);
         tv_selectComplaint = findViewById(R.id.tv_selectComplaint);
@@ -314,6 +322,24 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 ////            }
 ////        }, 1000);
 
+        activeReasons.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (listAdapter != null) {
+                    listAdapter.filter(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     /**
@@ -342,8 +368,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.show();
-                // alertDialog.show();
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+                alertDialog.show();
+
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 //pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
@@ -355,6 +387,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.list_dialog_complaint, null);
                 alertDialogBuilder.setView(convertView);
+
                 ListView listView = convertView.findViewById(R.id.complaint_dialog_list_view);
                 listView.setDivider(null);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displaySelection);
@@ -388,8 +421,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.show();
-                //alertDialog.show();
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
+                alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+                int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+                alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+                alertDialog.show();
+
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));

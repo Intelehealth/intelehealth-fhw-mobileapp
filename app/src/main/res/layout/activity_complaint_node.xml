@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:focusableInTouchMode="true"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:focusableInTouchMode="true"
     tools:context=".activities.complaintNodeActivity.ComplaintNodeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:visibility="gone">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -25,30 +26,56 @@
 
     <!--<include layout="@layout/content_complaint_node" />-->
 
+    <RelativeLayout
+        android:id="@+id/rl_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_bar_view"
+        android:layout_margin="@dimen/margin_15"
+        android:background="@drawable/ui2_chat_bubble_square_round"
+        android:padding="@dimen/margin_16">
+
+        <EditText
+            android:id="@+id/actv_reasons"
+            style="@style/edittext_textcolor"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_height_44dp"
+            android:layout_marginTop="@dimen/hamburger_margin_start"
+            android:background="@drawable/edittext_border_blue"
+            android:drawableStart="@drawable/ui2_ic_search_icon_home"
+            android:drawablePadding="@dimen/margin_8"
+            android:hint="@string/type_or_select_reason"
+            android:inputType="textAutoComplete"
+            android:padding="@dimen/padding_10"
+            android:textColorHint="@color/edittext_hint_color"
+            android:textSize="@dimen/edittext_textsize_16sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp"
+        android:layout_below="@id/rl_background"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_below="@+id/app_bar_view">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/img_question"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_question_indicator"
-                android:visibility="gone" />
+                android:src="@drawable/ui2_ic_ayu_image_blue"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
 
             <TextView
@@ -58,23 +85,28 @@
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/lato_bold"
                 android:text="@string/what_is_the_reason_for_your_visit"
-                android:textSize="18sp"
-                android:visibility="gone" />
+                android:textColor="@color/ui2_black_text_color"
+                android:textSize="@dimen/text_18sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
 
     </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:backgroundTint="@color/colorPrimary1"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_done_24dp" />
+        app:srcCompat="@drawable/ic_done_24dp"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_recyclerView"
@@ -82,14 +114,14 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/fab"
         android:layout_below="@+id/header_view"
-        android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:scrollbars="vertical"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_marginEnd="10dp"
         android:fadeScrollbars="false"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarFadeDuration="0"
         android:scrollbarThumbVertical="@color/colorAccent"
+        android:scrollbars="vertical"
         android:visibility="gone" />
 
 </RelativeLayout>

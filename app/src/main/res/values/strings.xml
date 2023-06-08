@@ -2077,7 +2077,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="question">Question....</string>
     <string name="upload_image_from_gallery">Upload an image from gallery or take a picture</string>
     <string name="select_date">Select Date</string>
-    <string name="type_or_select_reason">Type or select reason eg. Fever</string>
+    <string name="type_or_select_reason">Type or select reason</string>
     <string name="enter_value">Enter value</string>
     <string name="enter_state">Enter state</string>
     <string name="enter_village_town_city">Enter village/town/city</string>

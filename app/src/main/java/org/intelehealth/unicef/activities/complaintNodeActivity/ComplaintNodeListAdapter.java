@@ -22,17 +22,17 @@ import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.knowledgeEngine.Node;
 
 public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNodeListAdapter.ItemViewHolder> {
-    private static final  String TAG = "CNodeListAdapter";
+    private static final String TAG = "CNodeListAdapter";
 
     private Context mContext;
     private int layoutResourceID;
     private ImmutableList<Node> mNodes;
     private List<Node> mNodesFilter;
 
-    public  ComplaintNodeListAdapter(Context context, List<Node> nodes){
+    public ComplaintNodeListAdapter(Context context, List<Node> nodes) {
         this.mContext = context;
         this.mNodesFilter = nodes;
-        this.mNodes= ImmutableList.copyOf(mNodesFilter);
+        this.mNodes = ImmutableList.copyOf(mNodesFilter);
     }
 
 
@@ -66,28 +66,25 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
             itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
             itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
         }*/
-       if(thisNode.isSelected())
-       {
-           itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-           itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
-       }
-       else
-       {
-           itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-           itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-       }
+        if (thisNode.isSelected()) {
+            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.ui2_common_primary_bg));
+        } else {
+            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.ui2_chip_type_1_bg));
+            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        }
         itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   Log.e("Pos",position+"");
+                //   Log.e("Pos",position+"");
 
-               // itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext,R.color.amber));
-                if(!thisNode.isSelected()) {
+                // itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext,R.color.amber));
+                if (!thisNode.isSelected()) {
                     thisNode.setSelected(true);
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                     itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
 
-                }else {
+                } else {
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                     thisNode.setSelected(false);
                     itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
@@ -95,7 +92,7 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
 
                 // notifyItemChanged(position);
                 //thisNode.toggleSelected();
-              //  notify();
+                //  notify();
                 notifyDataSetChanged();
 
 
@@ -114,18 +111,18 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
 
     @Override
     public int getItemCount() {
-        return (mNodesFilter!=  null? mNodesFilter.size():0 );
+        return (mNodesFilter != null ? mNodesFilter.size() : 0);
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout mChip;
         TextView mChipText;
+
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mChip = itemView.findViewById(R.id.complaint_chip);
             mChipText = itemView.findViewById(R.id.tvChipText);
         }
-
 
 
     }
@@ -134,15 +131,15 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
     // Filter Class
     public void filter(String charText) {
         Log.i(TAG, "filter: Entered Filter");
-        Log.i(TAG, "filter: "+ mNodes.size());
-        Log.i(TAG, "filter: "+ mNodesFilter.size());
+        Log.i(TAG, "filter: " + mNodes.size());
+        Log.i(TAG, "filter: " + mNodesFilter.size());
         mNodesFilter.clear();
-        Log.i(TAG, "filter: "+ mNodes.size());
-        Log.i(TAG, "filter: "+ mNodesFilter.size());
+        Log.i(TAG, "filter: " + mNodes.size());
+        Log.i(TAG, "filter: " + mNodesFilter.size());
         charText = charText.toLowerCase(Locale.getDefault());
-        Log.i(TAG, "filter: "+charText);
+        Log.i(TAG, "filter: " + charText);
         if (!charText.trim().isEmpty()) {
-            Log.i(TAG, "filter: Not Empty" );
+            Log.i(TAG, "filter: Not Empty");
             for (Node node : mNodes) {
                 Log.i(TAG, "filter: " + node.getText());
                 Log.i(TAG, "filter: " + node.findDisplay());
