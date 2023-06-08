@@ -178,7 +178,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
 
-        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_vitals)));
         ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -579,7 +578,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         questionListView.expandGroup(0);*/
-        setTitle(patientName + ": " + currentNode.findDisplay());
+//        setTitle(patientName + ": " + currentNode.findDisplay());
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(currentNode.getDisplay()));
 
     }
 
