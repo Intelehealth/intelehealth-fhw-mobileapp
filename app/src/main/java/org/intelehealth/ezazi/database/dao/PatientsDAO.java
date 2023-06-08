@@ -633,7 +633,7 @@ public class PatientsDAO {
                 new String[]{patientUuid, attributeUuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
-                attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
             }
         }
         cursor.close();
