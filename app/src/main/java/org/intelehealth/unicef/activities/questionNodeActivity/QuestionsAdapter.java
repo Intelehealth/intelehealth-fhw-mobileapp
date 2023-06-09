@@ -313,10 +313,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.ui2_common_primary_bg));
+                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.ui2_common_primary_1_bg));
             } else {
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.ui2_chip_type_1_bg));
-                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.textColorBlack));
                 //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
                 //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }

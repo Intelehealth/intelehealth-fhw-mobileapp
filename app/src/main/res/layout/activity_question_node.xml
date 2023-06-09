@@ -86,6 +86,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_10"
             android:fadeScrollbars="false"
+            android:background="@color/white"
             android:scrollbarAlwaysDrawVerticalTrack="true"
             android:scrollbarThumbVertical="@color/colorAccent"
             android:scrollbars="vertical"
