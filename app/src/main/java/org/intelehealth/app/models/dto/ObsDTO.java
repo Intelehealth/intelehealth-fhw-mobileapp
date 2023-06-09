@@ -28,9 +28,6 @@ public class ObsDTO {
     @SerializedName("creator")
     @Expose
     private String creator;
-    @SerializedName("comment")
-    @Expose
-    private String comment;
     @SerializedName("voided")
     @Expose
     private Integer voided;
@@ -102,14 +99,6 @@ public class ObsDTO {
 
     public void setObsServerModifiedDate(String obsServerModifiedDate) {
         this.obsServerModifiedDate = obsServerModifiedDate;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public String getObservationTime() {

@@ -1623,4 +1623,10 @@
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
     <string name="visit_data_loss_message">If wanted to exit the visit without losing the data, please select \"no\" and then choose \"return to patient details or home page\". Continuing with this step will end the visit and prevent entering any additional information. If the data has not been uploaded to the server, then the visit will not be recorded in the patient\'s chart.</string>
 
+    //aid order
+    <string name="aid_order_type1">Type 1. Medical Equipment Loan:</string>
+    <string name="aid_order_type2">Type 2. Free Medical Equipment:</string>
+    <string name="aid_order_type3">Type 3. Cover Medication Expenses:</string>
+    <string name="aid_order_type4">Type 4. Cover Surgical Expenses:</string>
+    <string name="aid_order_type5">Type 5. Cash Assistance: </string>
 </resources>

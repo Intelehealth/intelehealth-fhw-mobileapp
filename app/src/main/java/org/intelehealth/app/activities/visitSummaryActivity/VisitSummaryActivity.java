@@ -293,7 +293,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
-    TextView aidOrderTextView;
+    TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
@@ -767,7 +767,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
-        aidOrderTextView = findViewById(R.id.textView_content_aid_order);
+        aidOrderType1TextView = findViewById(R.id.textView_content_aid_order_type1);
+        aidOrderType2TextView = findViewById(R.id.textView_content_aid_order_type2);
+        aidOrderType3TextView = findViewById(R.id.textView_content_aid_order_type3);
+        aidOrderType4TextView = findViewById(R.id.textView_content_aid_order_type4);
+        aidOrderType5TextView = findViewById(R.id.textView_content_aid_order_type5);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -3399,7 +3403,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid", "comment"};
+        String[] columns = {"value", " conceptuuid"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -3445,12 +3449,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
                         } else {
-                            parseData(dbConceptID, dbValue, dbComment);
+                            parseData(dbConceptID, dbValue);
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -3470,12 +3473,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                    String dbComment = encountercursor.getString(encountercursor.getColumnIndex("comment"));
                     if (dbValue.startsWith("{")) {
                         AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
+                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
                     } else {
-                        parseData(dbConceptID, dbValue, dbComment);
+                        parseData(dbConceptID, dbValue);
                     }
                 } while (encountercursor.moveToNext());
             }
@@ -3496,7 +3498,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
-    private void parseData(String concept_id, String value, String comment) {
+    private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -3563,19 +3565,103 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 break;
             }
-            case UuidDictionary.AID_ORDER_PRESCRIPTION: {
+            case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
                 if (!aidOrderReturned.isEmpty()) {
-                    aidOrderReturned = aidOrderReturned + ",\n" + comment + " - " + value;
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type1) + " " + value;
                 } else {
-                    aidOrderReturned = comment + " - " + value;
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type1) + " " + value;
                 }
                 Log.d("aidOrder", aidOrderReturned);
                 if (aidOrderCard.getVisibility() != View.VISIBLE) {
                     aidOrderCard.setVisibility(View.VISIBLE);
                 }
-                aidOrderTextView.setText(aidOrderReturned);
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType1TextView.setVisibility(View.VISIBLE);
+                    if(value.contains("Others||"))
+                        value = value.replace("Others||", "Others - ");
+                }
+                aidOrderType1TextView.setText(getResources().getString(R.string.aid_order_type1) + " " + value);
                 if (LocaleHelper.isArabic(this)) {
-                    aidOrderTextView.setGravity(Gravity.END);
+                    aidOrderType1TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type2) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type2) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType2TextView.setVisibility(View.VISIBLE);
+                    if(value.contains("Others||"))
+                        value = value.replace("Others||", "Others - ");
+                }
+
+                aidOrderType2TextView.setText(getResources().getString(R.string.aid_order_type2) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType2TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type3) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type3) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType3TextView.setVisibility(View.VISIBLE);
+                }
+                aidOrderType3TextView.setText(getResources().getString(R.string.aid_order_type3) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType3TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type4) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type4) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType4TextView.setVisibility(View.VISIBLE);
+                }
+                aidOrderType4TextView.setText(getResources().getString(R.string.aid_order_type4) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType4TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_CASH_ASSISTANCE: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type5) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type5) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType5TextView.setVisibility(View.VISIBLE);
+                }
+                aidOrderType5TextView.setText(getResources().getString(R.string.aid_order_type5) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType5TextView.setGravity(Gravity.END);
                 }
                 break;
             }
@@ -4184,7 +4270,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //                }
                 if (!aidOrderReturned.isEmpty()) {
                     aidOrderReturned = "";
-                    aidOrderTextView.setText("");
+                    aidOrderType1TextView.setText("");
+                    aidOrderType2TextView.setText("");
+                    aidOrderType3TextView.setText("");
+                    aidOrderType4TextView.setText("");
+                    aidOrderType5TextView.setText("");
                     aidOrderCard.setVisibility(View.GONE);
                 }
                 if (!followUpDate.isEmpty()) {
@@ -4192,7 +4282,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     followUpDateTextView.setText("");
                     followUpDateCard.setVisibility(View.GONE);
                 }
-                String[] columns = {"value", " conceptuuid", "comment"};
+                String[] columns = {"value", " conceptuuid"};
                 String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
                 String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -4200,13 +4290,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
                         } else {
-                            parseData(dbConceptID, dbValue, dbComment);
+                            parseData(dbConceptID, dbValue);
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -4252,7 +4341,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
         encounterCursor.close();
-        String[] columns = {"value", " conceptuuid", "comment"};
+        String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -4260,13 +4349,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
                 if (dbValue.startsWith("{")) {
                     AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), dbComment);
+                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
                 } else {
-                    parseData(dbConceptID, dbValue, dbComment);
+                    parseData(dbConceptID, dbValue);
                 }
             } while (visitCursor.moveToNext());
         }
@@ -4329,7 +4417,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             additionalReturned = "";
             aidOrderReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid", "comment"};
+            String[] columns = {"value", " conceptuuid"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -4337,8 +4425,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                    String dbComment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
-                    parseData(dbConceptID, dbValue, dbComment);
+                    parseData(dbConceptID, dbValue);
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();

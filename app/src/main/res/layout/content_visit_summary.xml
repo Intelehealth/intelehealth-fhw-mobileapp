@@ -1085,10 +1085,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:visibility="gone"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true"
+            android:visibility="gone"
             tools:visibility="visible">
 
             <RelativeLayout
@@ -1120,11 +1120,85 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/textView_content_aid_order"
+                            android:id="@+id/textView_content_aid_order_type1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
                             android:text="@string/sample_text"
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/card_content_sub_text_size" />
