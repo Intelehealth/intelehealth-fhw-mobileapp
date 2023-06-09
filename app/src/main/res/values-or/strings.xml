@@ -727,6 +727,8 @@
     <string name="number_label">Number</string>
     <string name="associated_symptoms_header_visit_creation">ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ</string>
     <string name="edit">Edit</string>
+    <string name="references">References:</string>
+    <string name="already_selected_lbl">Already selected!</string>
 
 
 </resources>

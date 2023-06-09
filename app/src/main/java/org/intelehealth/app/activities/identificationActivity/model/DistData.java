@@ -12,6 +12,10 @@ public class DistData implements Serializable {
     private String name;
 
     @Expose
+    @SerializedName("name-hi")
+    private String nameHindi;
+
+    @Expose
     @SerializedName("tahasil")
     private List<String> tahasilList;
 
@@ -29,5 +33,13 @@ public class DistData implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNameHindi() {
+        return nameHindi;
+    }
+
+    public void setNameHindi(String nameHindi) {
+        this.nameHindi = nameHindi;
     }
 }

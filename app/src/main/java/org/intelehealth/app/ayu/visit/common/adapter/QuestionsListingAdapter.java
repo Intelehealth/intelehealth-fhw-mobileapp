@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,11 +43,14 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -694,6 +698,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         Log.v(TAG, "updated associate symptoms selected status");
                     }
                 }
+                VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
             }
         });
         recyclerView.setAdapter(associateSymptomsQueryAdapter);
@@ -867,6 +872,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect ");
                     mOnItemSelection.onSelect(node, index, isSkipped);
+                    VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
                 }
 
                 @Override
@@ -903,6 +909,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
                 holder.submitButton.setVisibility(View.GONE);
                 holder.skipButton.setVisibility(View.GONE);
+                VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
             } /*else if (isSuperNested) {
                 nestedQuestionsListingAdapter.addItem(selectedNode);
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
@@ -1346,6 +1353,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
                 mOnItemSelection.onSelect(node, index, true);
+                WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
 
@@ -1389,6 +1397,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     //notifyDataSetChanged();
                     mOnItemSelection.onSelect(node, index, false);
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
             }
         });
@@ -1423,6 +1432,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 mOnItemSelection.onSelect(node, index, true);
+                WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
 
@@ -1465,6 +1475,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     //notifyDataSetChanged();
                     mOnItemSelection.onSelect(node, index, false);
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
             }
         });
@@ -1505,8 +1516,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 cal.set(year, month, dayOfMonth);
                 Date date = cal.getTime();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormatLocal = new SimpleDateFormat("dd/MMM/yyyy", new Locale(new SessionManager(mContext).getAppLanguage()));
                 String dateString = simpleDateFormat.format(date);
-                displayDateButton.setText(dateString);
+                displayDateButton.setText(simpleDateFormatLocal.format(date));
+                displayDateButton.setTag(dateString);
             }
         });
         holder.skipButton.setVisibility(View.GONE);
@@ -1524,7 +1537,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String d = displayDateButton.getText().toString().trim();
+                String d = (String) displayDateButton.getTag();
                 if (!d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {

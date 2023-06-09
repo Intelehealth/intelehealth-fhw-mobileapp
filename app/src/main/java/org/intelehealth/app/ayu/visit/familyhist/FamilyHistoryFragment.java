@@ -94,7 +94,7 @@ public class FamilyHistoryFragment extends Fragment {
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
                 }
-                if(isSkipped){
+                if (isSkipped) {
                     mQuestionsListingAdapter.geItems().get(index).setSelected(false);
                     mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
                     mQuestionsListingAdapter.notifyItemChanged(index);
@@ -113,7 +113,7 @@ public class FamilyHistoryFragment extends Fragment {
 
                     mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, false,null);
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
                 }
             }
 
@@ -124,7 +124,7 @@ public class FamilyHistoryFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY,false, null);
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
             }
 
             @Override

@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_question"
                     android:lineSpacingExtra="1sp"
-                    android:text="References:"
+                    android:text="@string/references"
                     android:visibility="gone" />
 
                 <LinearLayout

@@ -54,7 +54,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
             obj = new JSONObject(Objects.requireNonNullElse(
                     FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
                     String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            String privacy_string = obj.getString("terms_and_conditions");
+            String privacy_string = new SessionManager(this).getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("terms_and_conditions_Hindi"):obj.getString("terms_and_conditions");
             tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_LEGACY));
         } catch (JSONException e) {
             e.printStackTrace();

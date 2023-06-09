@@ -12,6 +12,10 @@ public class StateData implements Serializable {
     private String state;
 
     @Expose
+    @SerializedName("state-hi")
+    private String stateHindi;
+
+    @Expose
     @SerializedName("districts")
     private List<DistData> distDataList;
 
@@ -29,5 +33,13 @@ public class StateData implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getStateHindi() {
+        return stateHindi;
+    }
+
+    public void setStateHindi(String stateHindi) {
+        this.stateHindi = stateHindi;
     }
 }
