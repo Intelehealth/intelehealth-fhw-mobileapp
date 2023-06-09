@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -890,7 +891,7 @@ public class VitalsActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-                Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+                Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity_New.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);

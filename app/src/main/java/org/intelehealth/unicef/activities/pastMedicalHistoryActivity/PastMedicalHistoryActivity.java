@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -373,7 +374,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             }
 
             // displaying all values in another activity
-            Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+            Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity_New.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);

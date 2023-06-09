@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -374,7 +375,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(insertion);
 
-            Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+            Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity_New.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);

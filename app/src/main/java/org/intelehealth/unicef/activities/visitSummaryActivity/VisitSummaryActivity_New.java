@@ -89,10 +89,15 @@ import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
+import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
+import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.activities.notification.AdapterInterface;
+import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.unicef.activities.visit.EndVisitActivity;
+import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointmentNew.MyAppointmentActivity;
@@ -554,8 +559,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 editAddDocs.setVisibility(View.VISIBLE);*/
                 editVitals.setVisibility(View.VISIBLE);
                 editComplaint.setVisibility(View.VISIBLE);
-                cc_details_edit.setVisibility(View.VISIBLE);
-                ass_symp_edit.setVisibility(View.VISIBLE);
+//                cc_details_edit.setVisibility(View.VISIBLE);
+//                ass_symp_edit.setVisibility(View.VISIBLE);
                 editPhysical.setVisibility(View.VISIBLE);
                 editFamHist.setVisibility(View.VISIBLE);
                 editMedHist.setVisibility(View.VISIBLE);
@@ -1138,7 +1143,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
+                Intent intent1 = new Intent(VisitSummaryActivity_New.this, VitalsActivity.class);
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("gender", patientGender);
@@ -1249,7 +1254,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             }
                         }
 
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, ComplaintNodeActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
@@ -1389,7 +1394,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                 FirebaseCrashlytics.getInstance().recordException(e1);
                             }
                         }
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
@@ -1518,7 +1523,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 historyDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, PastMedicalHistoryActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
@@ -1526,7 +1531,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                        intent1.putExtra("edit_PatHist", "edit");
+//                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1659,7 +1665,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity_New.this, FamilyHistoryActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("gender", patientGender);
@@ -1667,7 +1673,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
-                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                        intent1.putExtra("edit_FamHist", "edit");
+//                        intent1.putExtra("edit_FamHist", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
