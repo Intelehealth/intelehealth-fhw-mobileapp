@@ -1616,4 +1616,12 @@
     <string name="visit_data_loss_message">"\إذا أردت مغادرة الزيارة مع الحفاظ على المعلومات يرجى الضغط على "\لا"\ ثم اختيار  زر عودة لصفحة المريض أو الصفحة الرئيسية.
 المتابعة بهذا الخيار سينهي الزيارة و يمنع ادخال اي معلومات لاحقاً. إذا لم تقم برفع البيانات سابقاً فسيعد هذا إلغاءً لهذه الزيارة و عدم توثيقها."\</string>
 
+    //aid order
+    <string name="visit_summary_aid_order">امر صرف مساعدة</string>
+    <string name="aid_order_type1">إعارة أجهزة </string>
+    <string name="aid_order_type2">معدات طبية مجانية</string>
+    <string name="aid_order_type3"> تغطية ثمن أدوية </string>
+    <string name="aid_order_type4"> تغطية تكاليف عمليات جراحية </string>
+    <string name="aid_order_type5">مساعد مادية مباشرة  </string>
+
 </resources>

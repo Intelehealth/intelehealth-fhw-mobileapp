@@ -189,7 +189,6 @@
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
     <string name="visit_summary_diagnosis">Diagnosis</string>
-    <string name="visit_summary_aid_order">Aid Order</string>
     <string name="visit_summary_advice">Medical Advice</string>
     <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
     <string name="visit_summary_additional_comments">Additional Comments</string>
@@ -1624,6 +1623,7 @@
     <string name="visit_data_loss_message">If wanted to exit the visit without losing the data, please select \"no\" and then choose \"return to patient details or home page\". Continuing with this step will end the visit and prevent entering any additional information. If the data has not been uploaded to the server, then the visit will not be recorded in the patient\'s chart.</string>
 
     //aid order
+    <string name="visit_summary_aid_order">Aid Order</string>
     <string name="aid_order_type1">Type 1. Medical Equipment Loan:</string>
     <string name="aid_order_type2">Type 2. Free Medical Equipment:</string>
     <string name="aid_order_type3">Type 3. Cover Medication Expenses:</string>
