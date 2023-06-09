@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
@@ -1739,9 +1740,12 @@ public class Node implements Serializable {
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
-        final EditText dialogEditText = new EditText(context);
+        final LayoutInflater inflater = context.getLayoutInflater();
+
+        View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
+        textInput.setView(convertView);
+        EditText dialogEditText = convertView.findViewById(R.id.et_enter_value);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-        textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
