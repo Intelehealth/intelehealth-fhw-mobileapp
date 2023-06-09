@@ -124,6 +124,9 @@ public class Node implements Serializable {
     private boolean subPopUp;
     private int associated_symptoms = 0;
 
+    private boolean enableExclusiveOption;
+    private boolean isExclusiveOption;
+
     private boolean isNoSelected;
 
     private List<String> imagePathList = new ArrayList<>();
@@ -346,6 +349,9 @@ public class Node implements Serializable {
             this.optional = jsonNode.optBoolean("optional");
             this.havingNestedQuestion = jsonNode.optBoolean("havingNestedQuestion");
 
+            this.enableExclusiveOption = jsonNode.optBoolean("enable-exclusive-option");
+            this.isExclusiveOption = jsonNode.optBoolean("is-exclusive-option");
+
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -400,6 +406,8 @@ public class Node implements Serializable {
         this.optional = source.optional;
         this.isDataCaptured = source.isDataCaptured;
         this.havingNestedQuestion = source.havingNestedQuestion;
+        this.enableExclusiveOption = source.enableExclusiveOption;
+        this.isExclusiveOption = source.isExclusiveOption;
     }
 
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter, final String imagePath, final String imageName) {
@@ -3085,6 +3093,22 @@ public class Node implements Serializable {
 
     public void setHavingNestedQuestion(boolean havingNestedQuestion) {
         this.havingNestedQuestion = havingNestedQuestion;
+    }
+
+    public boolean isEnableExclusiveOption() {
+        return enableExclusiveOption;
+    }
+
+    public void setEnableExclusiveOption(boolean enableExclusiveOption) {
+        this.enableExclusiveOption = enableExclusiveOption;
+    }
+
+    public boolean isExclusiveOption() {
+        return isExclusiveOption;
+    }
+
+    public void setExclusiveOption(boolean exclusiveOption) {
+        isExclusiveOption = exclusiveOption;
     }
 
     public static void setAlertDialogBackground(Context context, AlertDialog alertDialog) {
