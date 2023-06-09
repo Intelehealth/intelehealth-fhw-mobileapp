@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.collection.ArraySet;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,12 +36,12 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +57,7 @@ public class VisitReasonCaptureFragment extends Fragment {
     private TextView mEmptyReasonLabelTextView;
     //private ImageView mClearImageView;
 
-    private Set<ReasonData> mSelectedComplains = new ArraySet<ReasonData>();
+    private List<ReasonData> mSelectedComplains = new ArrayList<>();
     private List<ReasonGroupData> mVisitReasonItemList;
     private ReasonListingAdapter mReasonListingAdapter;
 
@@ -152,7 +152,7 @@ public class VisitReasonCaptureFragment extends Fragment {
 
         for (int i = 0; i < mFinalEnabledMMList.size(); i++) {
             for (int j = 0; j < mRawReasonDataList.size(); j++) {
-                if(mFinalEnabledMMList.get(i).equalsIgnoreCase(mRawReasonDataList.get(j).getReasonName())){
+                if (mFinalEnabledMMList.get(i).equalsIgnoreCase(mRawReasonDataList.get(j).getReasonName())) {
                     mindmapsNamesFinalArray[i] = NodeAdapterUtils.formatChiefComplainWithLocaleName(mRawReasonDataList.get(j));
                     break;
                 }
@@ -172,11 +172,22 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String name = NodeAdapterUtils.getEngChiefComplainNameOnly((String) adapterView.getItemAtPosition(position));
-                if (name != null && !name.isEmpty()) {
+                if (!name.isEmpty()) {
                     ReasonData data = new ReasonData();
                     data.setReasonName(name);
                     data.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), name));
-                    mSelectedComplains.add(data);
+                    boolean isExist = false;
+                    for (int i = 0; i < mSelectedComplains.size(); i++) {
+                        if (mSelectedComplains.get(i).getReasonName().equalsIgnoreCase(name)) {
+                            isExist = true;
+                            break;
+                        }
+                    }
+                    if (!isExist)
+                        mSelectedComplains.add(data);
+                    else
+                        Toast.makeText(getActivity(), getString(R.string.already_selected_lbl), Toast.LENGTH_SHORT).show();
+
                     // cross check for list also to keep on sync both selected
                     for (int i = 0; i < mVisitReasonItemList.size(); i++) {
                         List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
@@ -192,6 +203,7 @@ public class VisitReasonCaptureFragment extends Fragment {
 
                     showSelectedComplains();
                     mVisitReasonAutoCompleteTextView.setText("");
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) getActivity());
                 }
             }
         });

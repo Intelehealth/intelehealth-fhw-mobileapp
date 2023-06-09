@@ -28,6 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_weight="1"
             android:lineSpacingExtra="1sp"
+            android:paddingEnd="@dimen/margin_16"
             android:text="@string/question" />
 
         <TextView

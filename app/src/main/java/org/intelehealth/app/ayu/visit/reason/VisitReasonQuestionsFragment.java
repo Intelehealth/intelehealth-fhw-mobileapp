@@ -177,7 +177,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
                 VisitUtils.scrollNow(recyclerView, 100, 0, 500);
 
-                VisitUtils.scrollNow(recyclerView, 1200, 0, 1000);
+                VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
 
 
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
