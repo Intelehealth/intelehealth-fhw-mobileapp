@@ -250,5 +250,9 @@
     <dimen name="whatsapp_icon_size">@dimen/std_14dp</dimen>
     <dimen name="patient_summary_margin_top">25dp</dimen>
     <dimen name="patient_summary_margin_bottom">40dp</dimen>
+    <dimen name="screen_container_padding_date">@dimen/std_4dp</dimen>
+    <dimen name="datepicker_date_text_size">@dimen/std_14sp</dimen>
+    <dimen name="horizontal_margin_calendar">16dp</dimen>
+    <dimen name="year_month_text_size">10sp</dimen>
 
 </resources>

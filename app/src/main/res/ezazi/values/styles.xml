@@ -528,11 +528,11 @@
         <item name="android:fontFamily">@font/dm_sans_regular</item>
     </style>
     <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="colorAccent">@color/yellow</item>                   <!--header background-->
         <item name="android:windowBackground">@color/colorPrimaryDark</item>     <!--calendar background-->
         <item name="android:colorControlActivated">@color/colorEmergencyBg</item> <!--selected day-->
         <item name="android:textColorPrimary">@color/colorBlack</item> <!--days of the month-->
         <item name="android:textColorSecondary">@color/days_calendar</item>    <!--days of the week-->
+        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg</item> <!--selected day-->
 
     </style>
     
