@@ -72,6 +72,7 @@ import org.intelehealth.unicef.utilities.exception.DAOException;
 import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
 
 import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+import static org.intelehealth.unicef.knowledgeEngine.Node.setAlertDialogBackground;
 
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
@@ -143,7 +144,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 dialog.dismiss();
             }
         });
-        AlertDialog alertDialog = alertDialogBuilder.show();
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        setAlertDialogBackground(this, alertDialog);
+        alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         //alertDialog.show();
 
