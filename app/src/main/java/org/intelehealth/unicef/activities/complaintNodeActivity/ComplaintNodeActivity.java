@@ -134,7 +134,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        setTitle(patientName + ": " + getTitle());
+//        setTitle(patientName + ": " + getTitle());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_node);
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -142,7 +142,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 //        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_vitals)));
+        ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.complaint_dialog_title)));
         ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
 
         activeReasons = findViewById(R.id.actv_reasons);
