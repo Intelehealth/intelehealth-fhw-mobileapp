@@ -108,7 +108,7 @@ public class SetupActivityNew extends AppCompatActivity {
     RadioButton rbProduction, rbTesting;
 
     private final String productionServerBaseURL = "tele.med.kg";
-    private final String testingServerBaseURL = "uniceftraining.intelehealth.org";
+    private final String testingServerBaseURL = "telemedui.intelehealth.org";
     private String finalBaseUrl = "";
 
     @Override
