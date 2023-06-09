@@ -221,7 +221,6 @@
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
                         android:background="@drawable/ui2_spinner_background_new"
                         android:dropDownVerticalOffset="56dp"
-                        android:entries="@array/district"
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
