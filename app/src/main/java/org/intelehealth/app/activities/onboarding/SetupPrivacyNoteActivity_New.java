@@ -147,6 +147,7 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
             @Override
             public void onClick(View textView) {
                 Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, PrivacyPolicyActivity_New.class);
+                mIntent.putExtra("intentType", "doNotNavigateFurther");
                 mIntent.putExtra("isPrivacyPolicy", true);
                 startActivity(mIntent);
             }

@@ -44,6 +44,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -235,7 +236,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 cpd.dismiss();
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage());
+                   snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()));
                     //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {

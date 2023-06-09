@@ -391,11 +391,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
     private void performLogout() {
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
-        Intent intent = new Intent(ChangePasswordActivity_New.this, LoginActivityNew.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-
+            Intent intent = new Intent(ChangePasswordActivity_New.this, LoginActivityNew.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);

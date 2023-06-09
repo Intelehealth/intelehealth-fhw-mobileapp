@@ -27,7 +27,7 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
     private static final String TAG = "PrivacyPolicyActivityNe";
     private Button btn_accept_privacy;
     private int mIntentFrom;
-    String appLanguage;
+    String appLanguage, intentType;
     SessionManager sessionManager = null;
 
     @Override
@@ -42,6 +42,7 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
         mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
+        intentType = getIntent().getStringExtra("intentType");
         ImageView ivBack = findViewById(R.id.iv_back_arrow_terms);
         btn_accept_privacy = findViewById(R.id.btn_accept_privacy);
 
@@ -55,7 +56,7 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
         });
 
         btn_accept_privacy.setOnClickListener(v -> {
-            if(mIntentFrom == AppConstants.INTENT_FROM_AYU_FOR_SETUP){
+            if(intentType.equalsIgnoreCase("doNotNavigateFurther")){
                 setResult(AppConstants.PRIVACY_POLICY_ACCEPT);
                 finish();
             }else {
