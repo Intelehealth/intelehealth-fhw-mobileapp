@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="30dp"
+    android:layout_marginBottom="@dimen/patient_summary_margin_bottom"
     android:orientation="vertical"
     android:paddingStart="@dimen/add_patient_padding_start"
     android:paddingTop="@dimen/add_patient_padding_top"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_common"
         android:layout_marginStart="@dimen/add_patient_frame_margin_start"
-        android:layout_marginTop="@dimen/add_patient_frame_margin_top"
+        android:layout_marginTop="@dimen/patient_summary_margin_top"
         android:layout_marginEnd="@dimen/add_patient_frame_margin_end"
         android:background="@drawable/container_bg_rounded"
         android:orientation="vertical"
@@ -98,7 +98,7 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_summary_views">
+            android:layout_marginTop="@dimen/screen_container_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,7 +132,7 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_summary_views">
+            android:layout_marginTop="@dimen/screen_container_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -196,7 +196,7 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_summary_views">
+            android:layout_marginTop="@dimen/screen_container_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -228,7 +228,7 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_summary_views">
+            android:layout_marginTop="@dimen/screen_container_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -286,7 +286,7 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top_summary_views">
+            android:layout_marginTop="@dimen/screen_container_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -321,7 +321,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/input_height"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/add_patient_frame_margin_start"
         android:layout_marginTop="@dimen/add_patient_frame_margin_top"
         android:layout_marginEnd="@dimen/add_patient_frame_margin_end"

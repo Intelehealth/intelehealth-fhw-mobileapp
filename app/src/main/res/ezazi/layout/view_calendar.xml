@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <DatePicker
+            android:id="@+id/calendarView"
+            style="@style/Theme.EZazi.CalendarView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clNavigator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/container_bg_rounded"
+            app:layout_constraintEnd_toEndOf="@id/calendarView"
+            app:layout_constraintStart_toStartOf="@id/calendarView"
+            app:layout_constraintTop_toTopOf="@id/calendarView">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPreviousMonth"
+                style="@style/Theme.EZazi.Button.Icon.Edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/back"
+                app:icon="@drawable/ui2_ic_calendar_previous"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNextMonth"
+                style="@style/Theme.EZazi.Button.Icon.Edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/next"
+                app:icon="@drawable/ui2_ic_calendar_next"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipMonthYearGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:checkedButton="@id/btnMonth"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/btnMonth"
+                    style="@style/Theme.EZazi.Chip.Wrap.Icon.Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/months"
+                    android:text="Fab"
+                    app:chipIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/btnYear"
+                    style="@style/Theme.EZazi.Chip.Wrap.Icon.Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/years"
+                    android:text="2023" />
+            </com.google.android.material.chip.ChipGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMonthsContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/container_bg_rounded"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/calendarView"
+            app:layout_constraintEnd_toEndOf="@id/calendarView"
+            app:layout_constraintStart_toStartOf="@id/calendarView"
+            app:layout_constraintTop_toBottomOf="@id/clNavigator">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:foregroundGravity="center"
+                android:padding="@dimen/screen_container_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:singleSelection="true" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

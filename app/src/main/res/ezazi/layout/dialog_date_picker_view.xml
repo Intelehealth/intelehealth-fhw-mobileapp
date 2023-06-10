@@ -1,118 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="@dimen/screen_container_padding">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clTimerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginEnd="@dimen/screen_container_padding"
             android:background="@drawable/timepicker_timer_bg"
             android:paddingHorizontal="@dimen/login_screen_padding"
             android:paddingVertical="@dimen/screen_container_padding"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hours"
+            <TextView
+                android:id="@+id/tv_selected_date"
                 style="@style/Theme.EZazi.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:minWidth="@dimen/icon_btn_width"
-                android:text="12"
-                android:textSize="@dimen/time_picker_dialog_text_size"
+                android:text="14 Feb, 2023"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/separator"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=":"
-                android:textSize="@dimen/time_picker_dialog_text_size"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/hours"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!--
+                        android:textSize="@dimen/time_picker_dialog_text_size"
+            -->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/minutes"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="12"
-                android:textSize="@dimen/time_picker_dialog_text_size"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/separator"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/btnAm"
-                style="@style/Theme.EZazi.Screen.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/std_16dp"
-                android:text="@string/lbl_am"
-                android:textColor="@color/color_am_pm_selector"
-                android:textSize="@dimen/heading2"
-                app:layout_constraintBottom_toTopOf="@id/btnPm"
-                app:layout_constraintStart_toEndOf="@id/minutes"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/btnPm"
-                style="@style/Theme.EZazi.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/std_16dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:text="@string/lbl_pm"
-                android:textColor="@color/color_am_pm_selector"
-                android:textSize="@dimen/heading2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/minutes"
-                app:layout_constraintTop_toBottomOf="@id/btnAm" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--        <TimePicker-->
-        <!--            android:id="@+id/timePickerInput"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:descendantFocusability="blocksDescendants"-->
-        <!--            android:headerBackground="@drawable/timepicker_timer_bg"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toStartOf="@id/timePickerClock"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TimePicker
-            android:id="@+id/timePickerClock"
+        <LinearLayout
+            android:id="@+id/dropdown_month_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:visibility="visible"
+            android:weightSum="4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clTimerView"
+            app:layout_constraintTop_toTopOf="@+id/datePicker">
+
+            <ImageButton
+                android:id="@+id/ib_prev_month"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="0.3"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ui2_ic_calendar_previous"
+                app:tint="@color/colorPrimary" />
+
+            <Spinner
+                android:id="@+id/spinner_months_calview_new"
+                style="@style/CalendarSpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_toEndOf="@+id/ib_prev_month"
+                android:layout_weight="1.7"
+                android:dropDownVerticalOffset="56dp"
+                android:gravity="start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                android:spinnerMode="dropdown"
+                android:textAlignment="viewStart"
+                android:textSize="@dimen/year_month_text_size" />
+
+            <Spinner
+                android:id="@+id/spinner_year_calview_new"
+                style="@style/CalendarSpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toStartOf="@+id/ib_next_month"
+                android:layout_toEndOf="@+id/spinner_months_calview_new"
+                android:layout_weight="1.7"
+                android:dropDownVerticalOffset="56dp"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingBottom="@dimen/margin_10"
+                android:spinnerMode="dropdown"
+                android:textAlignment="center"
+                android:textSize="@dimen/year_month_text_size" />
+
+            <ImageButton
+                android:id="@+id/ib_next_month"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:layout_weight="0.3"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ui2_ic_calendar_next"
+                app:tint="@color/colorPrimary" />
+        </LinearLayout>
+
+        <DatePicker
+            android:id="@+id/datePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/screen_container_padding"
+            android:layout_gravity="center"
+            android:layout_marginTop="-20dp"
+            android:calendarTextColor="@color/yellow"
             android:descendantFocusability="blocksDescendants"
             android:headerBackground="@drawable/timepicker_timer_bg"
-            android:numbersBackgroundColor="@color/colorContainer"
-            android:numbersSelectorColor="@color/colorEmergencyBg"
             android:orientation="horizontal"
+            android:theme="@style/my_dialog_theme"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clTimerView" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/dropdown_month_year" />
+
+    </LinearLayout>
 </layout>
