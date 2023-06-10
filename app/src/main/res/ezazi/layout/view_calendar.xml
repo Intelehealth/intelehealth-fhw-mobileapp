@@ -45,13 +45,14 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipMonthYearGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:checkedButton="@id/btnMonth"
-                app:layout_constraintBottom_toBottomOf="@id/btnNextMonth"
-                app:layout_constraintEnd_toStartOf="@id/btnNextMonth"
-                app:layout_constraintStart_toEndOf="@id/btnPreviousMonth"
-                app:layout_constraintTop_toTopOf="@id/btnNextMonth"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
@@ -73,18 +74,28 @@
             </com.google.android.material.chip.ChipGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupMonth"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMonthsContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/container_bg_rounded"
-            android:padding="@dimen/screen_container_padding"
             android:visibility="gone"
-            android:foregroundGravity="center"
             app:layout_constraintBottom_toBottomOf="@id/calendarView"
             app:layout_constraintEnd_toEndOf="@id/calendarView"
             app:layout_constraintStart_toStartOf="@id/calendarView"
-            app:layout_constraintTop_toBottomOf="@id/clNavigator"
-            app:singleSelection="true" />
+            app:layout_constraintTop_toBottomOf="@id/clNavigator">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:foregroundGravity="center"
+                android:padding="@dimen/screen_container_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:singleSelection="true" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
