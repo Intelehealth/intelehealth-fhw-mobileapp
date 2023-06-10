@@ -5,5 +5,5 @@
     <stroke
         android:width="@dimen/input_stroke_size"
         android:color="@color/gray_5_trans" />
-    <corners android:radius="@dimen/screen_container_padding" />
+    <corners android:radius="@dimen/button_corner_radius" />
 </shape>

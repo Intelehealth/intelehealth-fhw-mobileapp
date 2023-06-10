@@ -254,5 +254,6 @@
     <dimen name="datepicker_date_text_size">@dimen/std_14sp</dimen>
     <dimen name="horizontal_margin_calendar">16dp</dimen>
     <dimen name="year_month_text_size">10sp</dimen>
-
+    <dimen name="calendar_width">@dimen/wrap_content</dimen>
+    <dimen name="chip_spinner_icon_size">@dimen/std_12dp</dimen>
 </resources>

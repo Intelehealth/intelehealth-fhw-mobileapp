@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipMonth"
+        style="@style/Theme.EZazi.Chip.Wrap.Icon.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/months"
+        android:textSize="@dimen/body"
+        app:chipEndPadding="@dimen/list_container_padding"
+        app:chipIconVisible="false"
+        app:chipStartPadding="@dimen/list_container_padding"
+        tools:text="Fab" />
+</layout>
