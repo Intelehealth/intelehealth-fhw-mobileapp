@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Theme">
+        <attr name="calendarViewStyle" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="CalendarView">
+        <!-- The first day of week according to {@link java.util.Calendar}. -->
+        <attr name="firstDayOfWeek" format="integer" />
+        <!-- The minimal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="minDate" format="string" />
+        <!-- The maximal date shown by this calendar view in mm/dd/yyyy format. -->
+        <attr name="maxDate" format="string" />
+        <!-- The text appearance for the month and year in the calendar header. -->
+        <attr name="monthTextAppearance" format="reference" />
+        <!-- The text appearance for the week day abbreviation in the calendar header. -->
+        <attr name="weekDayTextAppearance" format="reference" />
+        <!-- The text appearance for the day numbers in the calendar grid. -->
+        <attr name="dateTextAppearance" format="reference" />
+        <!-- @hide The background color used for the day selection indicator. -->
+        <attr name="daySelectorColor" format="color" />
+        <!-- @hide The background color used for the day highlight indicator. -->
+        <attr name="dayHighlightColor" format="color" />
+        <!-- @hide Which style of calendar delegate to use. -->
+        <attr name="calendarViewMode">
+            <enum name="holo" value="0" />
+            <enum name="material" value="1" />
+        </attr>
+        <!-- @deprecated Whether do show week numbers. -->
+        <attr name="showWeekNumber" format="boolean" />
+        <!-- @deprecated The number of weeks to be shown. -->
+        <attr name="shownWeekCount" format="integer" />
+        <!-- @deprecated The background color for the selected week. -->
+        <attr name="selectedWeekBackgroundColor" format="color|reference" />
+        <!-- @deprecated The color for the dates of the focused month. -->
+        <attr name="focusedMonthDateColor" format="color|reference" />
+        <!-- @deprecated The color for the dates of an unfocused month. -->
+        <attr name="unfocusedMonthDateColor" format="color|reference" />
+        <!-- @deprecated The color for the week numbers. -->
+        <attr name="weekNumberColor" format="color|reference" />
+        <!-- @deprecated The color for the separator line between weeks. -->
+        <attr name="weekSeparatorLineColor" format="color|reference" />
+        <!-- @deprecated Drawable for the vertical bar shown at the beginning and at the end of the selected date. -->
+        <attr name="selectedDateVerticalBar" format="reference" />
+    </declare-styleable>
+</resources>

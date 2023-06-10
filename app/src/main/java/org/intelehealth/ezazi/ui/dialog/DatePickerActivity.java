@@ -15,15 +15,11 @@ public class DatePickerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_picker);
 
-        DatePickerDialog dialog = new DatePickerDialog.Builder(this)
+        CalendarDialog dialog = new CalendarDialog.Builder(this)
                 .title("")
                 .positiveButtonLabel(R.string.ok).build();
-        dialog.setListener((date) -> {
-            /// boolean isPM = (hours >= 12);
-            // String timeString = String.format("%02d:%02d %s", (hours == 12 || hours == 0) ? 12 : hours % 12, minutes, isPM ? "PM" : "AM");
-            // Log.d(TAG, "selectTime: timeString : " + timeString);
 
-        });
+//        dialog.setListener((day, month, year, value) -> Log.e(TAG, "Date = >" + value));
         dialog.show(getSupportFragmentManager(), "DatePicker");
     }
 }
