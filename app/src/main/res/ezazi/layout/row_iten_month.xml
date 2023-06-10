@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/months"
         android:textSize="@dimen/body"
-        app:chipEndPadding="@dimen/list_container_padding"
+        app:chipEndPadding="@dimen/month_chip_padding"
         app:chipIconVisible="false"
-        app:chipStartPadding="@dimen/list_container_padding"
+        app:chipStartPadding="@dimen/month_chip_padding"
         tools:text="Fab" />
 </layout>

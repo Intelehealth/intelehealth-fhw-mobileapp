@@ -8,10 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 
-import androidx.core.content.ContextCompat;
-
-import com.google.android.material.chip.ChipGroup;
-
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.DialogCalendarViewBinding;
 import org.intelehealth.ezazi.databinding.RowItenMonthBinding;
@@ -31,7 +27,7 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
     private static final String DISPLAY_FORMAT = "dd LLL, yyyy";
     private OnDatePickListener listener;
 
-    private Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     private Long maxDate = System.currentTimeMillis();
 
@@ -66,11 +62,17 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         calendarBinding.calendar.btnYear.setText("" + year);
         changeMonth();
         setDisplayDate();
+        calendarBinding.calendar.chipMonthYearGroup.clearCheck();
     }
 
     private void changeMonth() {
         calendarBinding.calendar.btnMonth.setText(getDateFormatter("LLL").format(calendar.getTime()));
         calendarBinding.calendar.chipGroupMonth.check(calendar.get(Calendar.MONTH));
+        calendarBinding.calendar.btnNextMonth.setVisibility(isNextButtonDisabled() ? View.GONE : View.VISIBLE);
+    }
+
+    private boolean isNextButtonDisabled() {
+        return (isMaxYear() && getMaxCalendar().get(Calendar.MONTH) == calendar.get(Calendar.MONTH));
     }
 
     public interface OnDatePickListener {
@@ -84,6 +86,12 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
     @Override
     View getContentView() {
         calendarBinding = DialogCalendarViewBinding.inflate(getLayoutInflater(), null, false);
+        setupCalendarSetting();
+        setupNavigationClickListener();
+        return calendarBinding.getRoot();
+    }
+
+    private void setupCalendarSetting() {
         calendar.setTimeInMillis(System.currentTimeMillis());
         changeMonth();
         createMonthsGrid();
@@ -99,8 +107,6 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             calendarBinding.calendar.calendarView.setFirstDayOfWeek(2);
         }
-        setupNavigationClickListener();
-        return calendarBinding.getRoot();
     }
 
     private void setupNavigationClickListener() {
@@ -111,9 +117,11 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
     }
 
     private void moveToNextMonth() {
-        getViewByName("next").performClick();
-        calendar.add(Calendar.MONTH, 1);
-        changeMonth();
+        if (maxDate > calendar.getTimeInMillis()) {
+            getViewByName("next").performClick();
+            calendar.add(Calendar.MONTH, 1);
+            changeMonth();
+        }
     }
 
     private void moveToPreviousMonth() {
@@ -126,13 +134,14 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         View yearHeader = getViewByName("date_picker_header_year");
         if (yearHeader != null) {
             yearHeader.performClick();
-            calendarBinding.calendar.chipGroupMonth.setVisibility(View.GONE);
+            calendarBinding.calendar.clMonthsContainer.setVisibility(View.GONE);
         }
     }
 
     private void showMonthPicker() {
-        boolean isVisible = calendarBinding.calendar.chipGroupMonth.isShown();
-        calendarBinding.calendar.chipGroupMonth.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+        changeMonthEnableStatus();
+        boolean isVisible = calendarBinding.calendar.clMonthsContainer.isShown();
+        calendarBinding.calendar.clMonthsContainer.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
 
     private void hideHeader() {
@@ -159,19 +168,39 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
             RowItenMonthBinding monthChip = RowItenMonthBinding.inflate(getLayoutInflater());
             monthChip.chipMonth.setText(months[i]);
             monthChip.getRoot().setId(i);
-            Log.e(TAG, "current month " + calendar.get(Calendar.MONTH));
+            monthChip.chipMonth.setEnabled(!(isMaxYear() && i > getMaxCalendar().get(Calendar.MONTH)));
             calendarBinding.calendar.chipGroupMonth.addView(monthChip.getRoot(), i);
         }
 
         calendarBinding.calendar.chipGroupMonth.check(calendar.get(Calendar.MONTH));
         calendarBinding.calendar.chipGroupMonth.setOnCheckedChangeListener((group, checkedId) -> {
             Log.e(TAG, "Selected chip " + checkedId);
-            calendar.set(Calendar.MONTH, checkedId);
-            updateCalendar();
-            calendarBinding.calendar.chipGroupMonth.setVisibility(View.GONE);
-            calendarBinding.calendar.btnMonth.setText(months[checkedId]);
+            if (checkedId > 0) {
+                calendar.set(Calendar.MONTH, checkedId);
+                updateCalendar();
+                calendarBinding.calendar.chipMonthYearGroup.clearCheck();
+                calendarBinding.calendar.clMonthsContainer.setVisibility(View.GONE);
+                calendarBinding.calendar.btnMonth.setText(months[checkedId]);
+            }
         });
+    }
 
+    private boolean isMaxYear() {
+        return (getMaxCalendar().get(Calendar.YEAR) == calendar.get(Calendar.YEAR));
+    }
+
+    private Calendar getMaxCalendar() {
+        Calendar max = Calendar.getInstance();
+        max.setTimeInMillis(maxDate);
+        return max;
+    }
+
+    private void changeMonthEnableStatus() {
+        int monthCnt = calendarBinding.calendar.chipGroupMonth.getChildCount();
+        for (int i = 0; i < monthCnt; i++) {
+            boolean monthVisibility = isMaxYear() && i > getMaxCalendar().get(Calendar.MONTH);
+            calendarBinding.calendar.chipGroupMonth.getChildAt(i).setEnabled(!monthVisibility);
+        }
     }
 
     private void updateCalendar() {
