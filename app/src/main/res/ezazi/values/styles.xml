@@ -527,13 +527,87 @@
         <item name="fontFamily">@font/dm_sans_regular</item>
         <item name="android:fontFamily">@font/dm_sans_regular</item>
     </style>
+
     <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>     <!--calendar background-->
+        <item name="android:windowBackground">@color/colorPrimaryDark
+        </item>     <!--calendar background-->
         <item name="android:colorControlActivated">@color/colorEmergencyBg</item> <!--selected day-->
         <item name="android:textColorPrimary">@color/colorBlack</item> <!--days of the month-->
         <item name="android:textColorSecondary">@color/days_calendar</item>    <!--days of the week-->
-        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg</item> <!--selected day-->
+        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg
+        </item> <!--selected day-->
 
+    </style>
+
+    <style name="CalenderViewCustom" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorAccent">@color/colorEmergencyBg</item>
+        <item name="colorPrimary">@color/darkGray</item>
+        <item name="android:textColorPrimary">@color/font_black_0</item>
+        <item name="android:textColorSecondary">@color/font_black_0</item>
+        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg</item>
+    </style>
+
+    <style name="Theme.EZazi.CalendarView" parent="Widget.MaterialComponents.MaterialCalendar">
+        <item name="android:focusedMonthDateColor">@color/red</item>
+        <item name="android:background">@drawable/container_bg_rounded</item>
+        <item name="android:theme">@style/CalenderViewCustom</item>
+        <item name="dayTodayStyle">@style/Theme.EZazi.CalendarView.Today</item>
+        <item name="calendarViewMode">material</item>
+        <item name="weekDayTextAppearance">@style/CalenderViewWeekCustomText</item>
+        <item name="dateTextAppearance">@style/CalenderViewDateCustomText</item>
+    </style>
+
+    <style name="Theme.EZazi.CalendarView.Today" parent="Widget.MaterialComponents.MaterialCalendar.Day.Today">
+        <item name="focusedMonthDateColor">@color/red</item>
+        <item name="background">@drawable/ic_normal_alert</item>
+        <item name="android:textColor">@color/font_black_0</item>
+    </style>
+
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="fontFamily">@font/dm_sans_regular</item>
+        <item name="android:fontFamily">@font/dm_sans_regular</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/font_black_0</item>
+        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/dm_sans_medium</item>
+    </style>
+
+    <style name="CalendarWidgetHeader" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.EZazi.CalendarView.Selected.Date" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/input_inner_text_size</item>
+        <item name="fontFamily">@font/dm_sans_bold</item>
+        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:background">@drawable/timepicker_timer_bg</item>
+    </style>
+
+    <style name="Theme.EZazi.Chip.Wrap" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textSize">@dimen/dialog_btn_text_size</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <style name="Theme.EZazi.Chip.Wrap.Icon.Spinner" parent="Theme.EZazi.Chip.Wrap">
+        <item name="chipIcon">@drawable/ic_calendar_spinner</item>
+        <item name="android:textColor">@color/color_am_pm_selector</item>
+        <item name="android:layoutDirection">rtl</item>
+<!--        <item name="chipIconSize">@dimen/chip_spinner_icon_size</item>-->
+        <item name="chipIconVisible">true</item>
+        <item name="chipBackgroundColor">@color/color_calendar_spinner_selector</item>
+        <item name="android:textSize">@dimen/small_input_text_size</item>
+        <item name="chipCornerRadius">@dimen/small_btn_radius</item>
+        <item name="chipIconTint">@color/color_am_pm_selector</item>
+        <item name="selectableItemBackground">@color/colorEmergencyBg</item>
     </style>
     <style name="Theme.EZazi.Scrollbar.Thumb.Primary" parent="">
         <item name="android:scrollbars">vertical</item>
