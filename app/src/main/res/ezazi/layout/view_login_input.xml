@@ -32,7 +32,7 @@
             android:inputType="textEmailAddress"
             android:maxLength="100"
             android:minHeight="@dimen/max_input_height"
-            android:text="nurse1"
+            android:textColor="@color/colorInputText"
             android:textSize="@dimen/input_inner_size" />
 
     </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>

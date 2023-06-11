@@ -21,7 +21,7 @@
         <item name="checkboxStyle">@style/Theme.EZazi.CheckBox</item>
         <item name="android:textColorPrimaryInverse">@color/colorPrimary</item>
         <item name="android:textColorSecondaryInverse">@color/darkGray</item>
-        <item name="android:textColorPrimary">@color/red</item>
+<!--        <item name="android:textColorPrimary">@color/red</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

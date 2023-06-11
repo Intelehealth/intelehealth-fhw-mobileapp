@@ -37,7 +37,13 @@ import org.intelehealth.ezazi.activities.identificationActivity.IdentificationAc
 import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.database.dao.EncounterDAO;
+import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
+import org.intelehealth.ezazi.database.dao.VisitsDAO;
+import org.intelehealth.ezazi.models.dto.EncounterDTO;
+import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.ConfigUtils;
@@ -366,8 +372,9 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                     model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
-
+                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
+                    model.setBedNo(getPatientBedNot(model.getUuid()));
+                    model.setStage(getStage(model.getUuid()));
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
@@ -549,7 +556,11 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                             model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
                             model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
+                            String bedNod = getPatientBedNot(model.getUuid());
+                            model.setBedNo(bedNod);
+                            model.setStage(getStage(model.getUuid()));
+
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -583,6 +594,11 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         return modelList;
     }
 
+    private String getPatientBedNot(String patientUuid) {
+        PatientsDAO patientsDAO = new PatientsDAO();
+        return patientsDAO.getPatientAttributeValue(patientUuid, PatientAttributesDTO.Columns.BED_NUMBER);
+    }
+
     //    private void doQueryWithProviders(String querytext, List<String> providersuuids) {
     private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
         List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
@@ -608,6 +624,8 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                         model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                         model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                         model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                        model.setBedNo(getPatientBedNot(model.getUuid()));
+                        model.setStage(getStage(model.getUuid()));
                         modelListwihtoutQuery.add(model);
 
                     } while (cursor.moveToNext());
@@ -730,6 +748,32 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
             doQuery(s);
         }
         return false;
+    }
+
+    private String getStage(String patientUuid) {
+//        String visitUuid = new VisitsDAO().getPatientVisitUuid(patientUuid);
+//        EncounterDAO encounterDAO = new EncounterDAO();
+//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter by visit uuid
+//        String completedVisitUuid = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
+//
+//        if (!completedVisitUuid.equalsIgnoreCase("")) { // birthoutcome
+//            String birthoutcome = new ObsDAO().checkBirthOutcomeObsExistsOrNot(completedVisitUuid);
+//            if (!birthoutcome.equalsIgnoreCase("")) {
+//                return birthoutcome;
+//            }
+//        }
+//
+//        if (encounterDTO.getEncounterTypeUuid() != null) {
+//            String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+//            if (latestEncounterName.toLowerCase().contains("stage2")) {
+//                return "Stage-2";
+//            } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+//                return "Stage-1";
+//            } else {
+//                return "";
+//            }
+//        }
+        return "Stage-1";
     }
 }
 

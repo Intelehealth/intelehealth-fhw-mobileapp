@@ -58,6 +58,9 @@ public class PatientDTO implements Serializable {
     @Expose
     private String gender;
 
+    private String bedNo;
+
+    private String stage;
 
     private String patientPhoto;
 
@@ -240,5 +243,21 @@ public class PatientDTO implements Serializable {
 
     public void setPatientPhoto(String patientPhoto) {
         this.patientPhoto = patientPhoto;
+    }
+
+    public void setBedNo(String bedNo) {
+        this.bedNo = bedNo;
+    }
+
+    public String getBedNo() {
+        return bedNo;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
+
+    public String getStage() {
+        return stage;
     }
 }

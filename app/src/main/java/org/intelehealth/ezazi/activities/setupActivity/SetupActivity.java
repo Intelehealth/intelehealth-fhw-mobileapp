@@ -640,6 +640,12 @@ public class SetupActivity extends AppCompatActivity {
             cancel = true;
         }
 
+        if (TextUtils.isEmpty(password)) {
+            mPasswordInputView.setError(getString(R.string.error_require_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordInputView.setError(getString(R.string.error_invalid_password));
@@ -793,7 +799,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 8;
     }
 
 //    private boolean getLocationFromServer_District(String url, String state_uuid, String location_wise) {

@@ -211,22 +211,23 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailInputView.setError(getString(R.string.enter_username));
+            mEmailInputView.setError(getString(R.string.error_require_email));
             mEmailInputView.requestFocus();
             return;
         }
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordInputView.setError(getString(R.string.enter_password));
+            mPasswordInputView.setError(getString(R.string.error_require_password));
             mPasswordInputView.requestFocus();
             return;
         }
 
-        if (password.length() < 4) {
+        if (password.length() < 8) {
             mPasswordInputView.setError(getString(R.string.error_invalid_password));
             mPasswordInputView.requestFocus();
             return;
         }
+
         mEmailSignInButton.setText(getString(R.string.please_wait_progress));
         mEmailSignInButton.setEnabled(false);
         if (NetworkConnection.isOnline(this)) {

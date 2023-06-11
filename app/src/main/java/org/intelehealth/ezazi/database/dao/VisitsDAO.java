@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.database.dao;
 
+import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -384,7 +386,7 @@ public class VisitsDAO {
 
     public boolean updateVisitCreator(String visitUUID, String createUUID) throws DAOException {
         boolean isUpdated = true;
-        Logger.logD("visitdao", "updateVisitCreator visit -" + visitUUID +" createUUID - "+ createUUID);
+        Logger.logD("visitdao", "updateVisitCreator visit -" + visitUUID + " createUUID - " + createUUID);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
@@ -548,6 +550,23 @@ public class VisitsDAO {
         db.endTransaction();
         // db.close();
         return visitDTOList;
+    }
+
+    public String getPatientVisitUuid(String patientUuid) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? GROUP BY uuid ORDER BY startdate DESC limit 1",
+                new String[]{patientUuid});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                return idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        // db.close();
+        return null;
     }
 
 }

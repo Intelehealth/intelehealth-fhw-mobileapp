@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.searchPatientActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
@@ -74,6 +75,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
 
+        @SuppressLint("SetTextI18n")
         public void bind(PatientDTO patient) {
             linearLayout.setTag(patient);
             linearLayout.setOnClickListener(this);
@@ -85,7 +87,8 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             tvPatientAge.setText(body);
             tvPatientName.setText(patientName);
             tvPatientId.setVisibility(View.VISIBLE);
-
+            tvPatientBedNo.setText("Bed No: " + patient.getBedNo());
+            tvPatientStage.setText(patient.getStage());
             if (patient.getOpenmrsId() != null)
                 tvPatientId.setText(patient.getOpenmrsId());
             else
