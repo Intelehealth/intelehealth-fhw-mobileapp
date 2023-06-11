@@ -49,12 +49,12 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <!--
+                        <intent-filter>
+                            <action android:name="android.intent.action.MAIN" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                            <category android:name="android.intent.category.LAUNCHER" />
+                        </intent-filter>-->
         </activity>
         <activity
             android:name=".activities.addNewPatient.PatientSummaryActivity"
@@ -67,7 +67,7 @@
             android:name=".activities.addNewPatient.AddNewPatientActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -295,11 +295,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-          <!--  temp <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.password.activity.ForgotPasswordActivity"

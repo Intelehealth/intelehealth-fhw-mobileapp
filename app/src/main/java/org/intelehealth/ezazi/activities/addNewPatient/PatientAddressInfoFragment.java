@@ -85,11 +85,12 @@ public class PatientAddressInfoFragment extends Fragment {
     //    ImageView ivPersonal, ivAddress, ivOther;
 //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     String[] countryArr, stateArr;
-    TextView tvErrorCountry, tvErrorState, tvErrorCityVillage;
-    MaterialCardView cardCountry, cardState, cardCityVillage;
+    TextView tvErrorCountry, tvErrorState, tvErrorCityVillage, tvErrorPostalCode;
+    MaterialCardView cardCountry, cardState, cardCityVillage, cardPostalCode;
     String mAlternateNumberString;
     TextInputLayout etLayoutCityVillage;
     String[] cityVillagesArr = null;
+    boolean isLoadFirstTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,18 +122,28 @@ public class PatientAddressInfoFragment extends Fragment {
         tvErrorCountry = view.findViewById(R.id.tv_error_country);
         tvErrorState = view.findViewById(R.id.tv_error_state);
         tvErrorCityVillage = view.findViewById(R.id.tv_error_city_village);
+        tvErrorPostalCode = view.findViewById(R.id.tv_error_postal_code);
+
+
         cardCountry = view.findViewById(R.id.card_country);
         cardState = view.findViewById(R.id.card_state);
         cardCityVillage = view.findViewById(R.id.card_city_village);
         etLayoutCityVillage = view.findViewById(R.id.et_layout_city_village);
-        autotvCity.setFilters(new InputFilter[]{filter});
+        cardPostalCode = view.findViewById(R.id.card_postal_code);
 
+        autotvCity.setFilters(new InputFilter[]{filter});
+        autotvState.setFilters(new InputFilter[]{filter});
+
+        // autotvCountry.addTextChangedListener(new MyTextWatcher(autotvCountry));
+        autotvState.addTextChangedListener(new MyTextWatcher(autotvState));
+        autotvCity.addTextChangedListener(new MyTextWatcher(autotvCity));
         setStatesForIndia();
+
 
         firstScreen = new PatientPersonalInfoFragment();
         fragment_thirdScreen = new PatientOtherInfoFragment();
         if (getArguments() != null) {
-            Log.d(TAG, "initUI: getargs is not null");
+            Log.d(TAG, "initUI: get args is not null");
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
             fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
             fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
@@ -160,6 +171,7 @@ public class PatientAddressInfoFragment extends Fragment {
     }
 
     private void setStatesForIndia() {
+
         autotvCountry.setText(getResources().getString(R.string.str_check_India));
         //For India only
         getStates();
@@ -185,6 +197,8 @@ public class PatientAddressInfoFragment extends Fragment {
 //                    mCity.setAdapter(null);
 //                }
         });
+
+
     }
 
     private void getCityVillageAsPerStateSelection(String state) {
@@ -196,6 +210,7 @@ public class PatientAddressInfoFragment extends Fragment {
                 cityVillagesArr = getResources().getStringArray(R.array.odisha_villages);
 
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mContext, R.array.odisha_villages, R.layout.custom_spinner);
+                autotvCity.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
                 autotvCity.setThreshold(1);
                 autotvCity.setAdapter(adapter);
             } else {
@@ -206,15 +221,14 @@ public class PatientAddressInfoFragment extends Fragment {
         } else {
             autotvState.setText("");
         }
-        // autotvCountry.addTextChangedListener(new MyTextWatcher(autotvCountry));
-        // autotvState.addTextChangedListener(new MyTextWatcher(autotvState));
-        // autotvCity.addTextChangedListener(new MyTextWatcher(autotvCity));
+
 
     }
 
     private void getStates() {
         stateArr = getResources().getStringArray(R.array.states_india);
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(mContext, R.array.states_india, R.layout.custom_spinner);
+        autotvState.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         autotvState.setAdapter(stateAdapter);
         autotvState.setSelection(0);
     }
@@ -226,9 +240,9 @@ public class PatientAddressInfoFragment extends Fragment {
         List<String> countriesList = Arrays.asList(getResources().getStringArray(R.array.countries));
         countryArr = getResources().getStringArray(R.array.countries);
         CountryArrayAdapter adapter = new CountryArrayAdapter(getActivity(), countriesList);
+        autotvCountry.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         autotvCountry.setThreshold(1);
         autotvCountry.setAdapter(adapter);
-        autotvCountry.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         adapter.notifyDataSetChanged();
         autotvCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -704,6 +718,20 @@ public class PatientAddressInfoFragment extends Fragment {
             tvErrorCityVillage.setVisibility(View.GONE);
             cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
+
+        String postalCode = etPostalCode.getText().toString();
+        if (!postalCode.isEmpty() && postalCode.length() != 6) {
+            etPostalCode.requestFocus();
+
+            tvErrorPostalCode.setVisibility(View.VISIBLE);
+            tvErrorPostalCode.setText(getString(R.string.enter_postal_limit));
+            cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            return;
+
+        } else {
+            tvErrorPostalCode.setVisibility(View.GONE);
+            cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -888,7 +916,7 @@ public class PatientAddressInfoFragment extends Fragment {
         return result;
     }
 
-    private String blockCharacterSet = "~#^|$%&*!@(){}[]+_.,<>?/;:=";
+    private String blockCharacterSet = "~#^|$%&*!@(){}[]+_.,<>?/;:=1234567890-";
 
     private InputFilter filter = new InputFilter() {
 

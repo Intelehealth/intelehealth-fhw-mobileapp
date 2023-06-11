@@ -223,5 +223,7 @@
     <dimen name="screen_container_padding_date">5dp</dimen>
     <dimen name="datepicker_date_text_size">@dimen/std_20sp</dimen>
     <dimen name="horizontal_margin_calendar">20dp</dimen>
+    <dimen name="margin_bottom_scroll">100dp</dimen>
+    <dimen name="dropdown_content_height">130dp</dimen>
 
 </resources>
