@@ -78,7 +78,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'com.google.android.gms:play-services-fido:18.1.0'
     implementation project(path: ':ihutils')
-    testImplementation 'junit:junit:4.13-beta-2'
+    testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
@@ -86,8 +86,8 @@ dependencies {
     //fingerprint lock
     implementation 'androidx.biometric:biometric:1.1.0'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //mvvm
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
@@ -128,7 +128,7 @@ dependencies {
     // optional - RxJava2 support
     implementation 'androidx.work:work-rxjava2:2.0.1'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.0.1'
+    androidTestImplementation 'androidx.work:work-testing:2.8.1'
 
     implementation 'com.github.hotchemi:permissionsdispatcher:2.3.2'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
