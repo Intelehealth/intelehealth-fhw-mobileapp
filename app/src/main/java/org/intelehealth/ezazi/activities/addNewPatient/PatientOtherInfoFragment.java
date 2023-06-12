@@ -1113,6 +1113,16 @@ public class PatientOtherInfoFragment extends Fragment {
 
     }
 
+//    private PatientAttributesDTO createPatientAttribute(String attrTypeUuid, String value) {
+//        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(attrTypeUuid);
+//        patientAttributesDTO.setValue(value);
+//
+//        return patientAttributesDTO;
+//    }
+
     private void onBackInsertIntopatientDTO() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("patientDTO", (Serializable) patientDTO);
