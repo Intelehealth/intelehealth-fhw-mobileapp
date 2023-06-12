@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        <item name="android:textColor">@color/red</item>
+<!--        <item name="android:textColor">@color/red</item>-->
         <item name="buttonStyle">@style/RobotoButtonStyle</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>

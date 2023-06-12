@@ -6,7 +6,7 @@
     <dimen name="screen_padding">@dimen/activity_horizontal_margin</dimen>
     <dimen name="login_screen_padding">@dimen/std_135dp</dimen>
     <dimen name="screen_container_padding">@dimen/std_20dp</dimen>
-    <dimen name="list_container_padding">@dimen/std_10dp</dimen>
+    <dimen name="list_container_padding">@dimen/std_8dp</dimen>
     <dimen name="input_height">86dp</dimen>
     <dimen name="max_input_height">86dp</dimen>
     <dimen name="input_top_margin">@dimen/std_21dp</dimen>

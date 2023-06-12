@@ -88,10 +88,11 @@
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:exported="false"
+            android:configChanges="uiMode|keyboard|orientation|screenSize|smallestScreenSize|screenLayout"
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
             android:configChanges="uiMode"
