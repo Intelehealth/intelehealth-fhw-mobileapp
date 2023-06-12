@@ -16,7 +16,7 @@
         <item name="android:textSize">@dimen/input_inner_size</item>
         <item name="boxStrokeWidth">@dimen/input_stroke_size</item>
         <item name="boxBackgroundMode">outline</item>
-        <item name="boxStrokeWidthFocused">@dimen/input_stroke_size</item>
+<!--        <item name="boxStrokeWidthFocused">@dimen/input_stroke_size</item>-->
     </style>
 
     <style name="Theme.EZazi.Input.Error" parent="TextAppearance.AppCompat">
@@ -29,6 +29,11 @@
         <item name="boxBackgroundColor">@color/colorLoginInputBg</item>
         <item name="boxStrokeColor">@color/input_focus_color</item>
         <item name="errorTextAppearance">@style/Theme.EZazi.Input.Error</item>
+    </style>
+
+    <style name="Theme.EZazi.Input.EditText">
+        <item name="backgroundTint">@null</item>
+        <item name="android:padding">0dp</item>
     </style>
 
     <style name="Theme.EZazi.Input.Login.DropDown" parent="Theme.EZazi.Input.Login">
@@ -232,6 +237,7 @@
 
     <style name="Theme.EZazi.Scrollbar.Thumb" parent="">
         <item name="android:scrollbars">vertical</item>
+        <item name="android:padding">0dp</item>
         <item name="android:scrollbarSize">@dimen/scrollbar_width</item>
         <item name="android:scrollbarThumbVertical">@color/colorScrollbar</item>
         <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>

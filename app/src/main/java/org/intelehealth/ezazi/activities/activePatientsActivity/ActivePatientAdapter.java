@@ -453,7 +453,9 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 } else {
                     List<ActivePatientModel> listfiltered = new ArrayList<>();
                     for (ActivePatientModel row : activePatientModels) {
-                        if (row.getFirst_name().toLowerCase().contains(Key.toLowerCase()) || row.getLast_name().toLowerCase().contains(Key.toLowerCase())) {
+                        if (row.getFirst_name().toLowerCase().contains(Key.toLowerCase())
+                                || row.getLast_name().toLowerCase().contains(Key.toLowerCase())
+                                || row.getOpenmrs_id().toLowerCase().contains(Key.toLowerCase())) {
                             listfiltered.add(row);
                         }
                     }

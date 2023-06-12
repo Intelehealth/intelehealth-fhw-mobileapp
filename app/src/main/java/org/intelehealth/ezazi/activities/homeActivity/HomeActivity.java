@@ -2350,8 +2350,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String charSequence) {
-        mActivePatientAdapter.getFilter().filter(charSequence);
-        search = charSequence;
+        mActivePatientAdapter.getFilter().filter(charSequence.trim());
+        search = charSequence.trim();
         return false;
     }
 }

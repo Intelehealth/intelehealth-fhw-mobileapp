@@ -31,7 +31,6 @@
     <application
         android:name="org.intelehealth.ezazi.app.IntelehealthApplication"
         android:allowBackup="false"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -82,9 +81,10 @@
         <activity
             android:name="org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity"
             android:exported="true"
+            android:configChanges="uiMode|keyboard|orientation|screenSize|smallestScreenSize|screenLayout"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:exported="false"
@@ -268,7 +268,7 @@
         </activity>
         <activity
             android:name=".activities.loginActivity.LoginActivity"
-            android:configChanges="uiMode"
+            android:configChanges="uiMode|keyboard|orientation|screenSize|smallestScreenSize|screenLayout"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -318,7 +318,7 @@
         </activity>
         <activity
             android:name=".activities.setupActivity.SetupActivity"
-            android:configChanges="uiMode"
+            android:configChanges="uiMode|keyboard|orientation|screenSize|smallestScreenSize|screenLayout"
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -327,7 +327,8 @@
             android:name=".ui.rtc.activity.EzaziChatActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.rtc.activity.VideoCallActivity"
             android:configChanges="uiMode"
