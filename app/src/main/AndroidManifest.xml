@@ -67,7 +67,7 @@
             android:name=".activities.addNewPatient.AddNewPatientActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -84,7 +84,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:exported="false"

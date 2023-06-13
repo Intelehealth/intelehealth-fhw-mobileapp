@@ -985,11 +985,16 @@
     <string name="enter_bed_no">Enter bed number</string>
     <string name="select_country">Please select country</string>
     <string name="select_state">Please select state</string>
-    <string name="select_city_village">Please select or enter city/village</string>
+    <string name="select_city_village">Please enter city/village</string>
     <string name="enter_postal_limit">Please enter 6 digits valid postal code</string>
     <string name="please_select_risk_factor">Please select risk factor</string>
     <string name="enter_hospital_other">Enter other location except Hospital &amp; Maternity</string>
     <string name="enter_hospital_other_error">Please enter other location except Hospital &amp; Maternity</string>
+    <string name="district">District*</string>
+    <string name="select_spinner">Select</string>
+    <string name="select_district">Please select district</string>
+    <string name="total_birth_count_limit">Please enter count below or equal to 15</string>
+    <string name="miscarriage_count_limit">Please enter count below or equal to 8</string>
 
 
 </resources>

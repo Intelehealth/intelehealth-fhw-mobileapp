@@ -256,5 +256,6 @@
     <dimen name="year_month_text_size">10sp</dimen>
     <dimen name="margin_bottom_scroll">50dp</dimen>
     <dimen name="dropdown_content_height">100dp</dimen>
+    <dimen name="dropdown_max_height">180dp</dimen>
 
 </resources>

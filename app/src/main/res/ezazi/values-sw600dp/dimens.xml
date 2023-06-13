@@ -225,5 +225,6 @@
     <dimen name="horizontal_margin_calendar">20dp</dimen>
     <dimen name="margin_bottom_scroll">100dp</dimen>
     <dimen name="dropdown_content_height">130dp</dimen>
+    <dimen name="dropdown_max_height">280dp</dimen>
 
 </resources>

@@ -535,5 +535,12 @@
         <item name="android:colorActivatedHighlight">@color/colorEmergencyBg</item> <!--selected day-->
 
     </style>
-    
+    <style name="Theme.EZazi.Scrollbar.Thumb.Primary" parent="">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarSize">@dimen/scrollbar_width</item>
+        <item name="android:scrollbarThumbVertical">@color/colorPrimary</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <!--        <item name="android:fadeScrollbars">false</item>-->
+        <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
+    </style>
 </resources>
