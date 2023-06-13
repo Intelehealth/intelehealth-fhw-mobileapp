@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.vitalActivity;
 
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -93,7 +95,7 @@ public class VitalsActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_vitals)));
-        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", getLocaleGender(this, patientGender), (int) float_ageYear_Month));
 
         mHeight = findViewById(R.id.table_height);
         mWeight = findViewById(R.id.table_weight);

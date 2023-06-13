@@ -60,6 +60,7 @@ import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
 import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
@@ -143,7 +144,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.complaint_dialog_title)));
-        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", getLocaleGender(this, patientGender), (int) float_ageYear_Month));
 
         activeReasons = findViewById(R.id.actv_reasons);
 

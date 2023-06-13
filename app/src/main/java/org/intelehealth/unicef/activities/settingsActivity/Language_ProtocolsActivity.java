@@ -99,8 +99,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     private void clickListeners() {
         // language spinner - start
-        langAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_names));
+        langAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_names));
         lang_spinner.setAdapter(langAdapter); // setting up language spinners.
 
         String l = sessionManager.getCurrentLang();
@@ -108,6 +107,8 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
             l = "English";
         if (l.equalsIgnoreCase("hi"))
             l = "हिंदी";
+        if (l.equalsIgnoreCase("ru"))
+            l = "Русский";
 
         int i = langAdapter.getPosition(l);
         if (!l.equalsIgnoreCase(""))
@@ -176,7 +177,6 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                 url.setText("");
                 text.setText("");
             }
-
 
 
             AlertDialog alertDialog = alertdialogBuilder.create();
@@ -314,6 +314,8 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
                     locale = "en";
                 if (locale.equalsIgnoreCase("हिंदी"))
                     locale = "hi";
+                if (locale.equalsIgnoreCase("Русский"))
+                    locale = "ru";
 
                 setLocale(locale, selected_language);
             }
@@ -364,7 +366,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     private void getMindmapDownloadURL(String url, String key) {
         // customProgressDialog.show();
         dialog(context, getResources().getDrawable(R.drawable.ui2_icon_logging_in),
-                getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing) ,
+                getResources().getString(R.string.changing_protocols), getResources().getString(R.string.wait_while_protocols_changing),
                 getResources().getString(R.string.yes), getResources().getString(R.string.no), true);
 
         ApiClient.changeApiBaseUrl(url);

@@ -3,6 +3,7 @@
 
     <string-array name="language_names">
         <item>English</item>
+        <item>Русский</item>
         <!--<item>हिंदी</item>
         <item>ଓଡିଆ</item>
         <item>తెలుగు</item>
@@ -11,15 +12,16 @@
         <item>ಕನ್ನಡ</item>
         <item>অসমীয়া</item>
         <item>മലയാളം</item>
-        <item>Русский</item>
+
         &lt;!&ndash;        <item>Cebuano</item>&ndash;&gt;
         <item>বাংলা</item>
         <item>தமிழ்</item>-->
-<!--        <item>Cebuano</item>-->
+        <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
         <item>en</item>
+        <item>ru</item>
         <!--<item>hi</item>
         <item>or</item>
         <item>te</item>
@@ -28,11 +30,11 @@
         <item>kn</item>
         <item>as</item>
         <item>ml</item>
-        <item>ru</item>
+
         &lt;!&ndash;        <item>cb</item>&ndash;&gt;
         <item>bn</item>
         <item>ta</item>-->
-<!--        <item>cb</item>-->
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -81,13 +83,12 @@
     </string-array>
 
 
-
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
 
     <string-array name="countries">
-<!--        <item>Select Country</item>-->
+        <!--        <item>Select Country</item>-->
         <item>Select</item>
         <item>Afghanistan</item>
         <item>Albania</item>
@@ -425,7 +426,7 @@
         <item>উচ্চতৰ মাধ্যমিক</item>
         <item>স্নাতক আৰু উচ্চতৰ</item>
     </string-array>
- <string-array name="education_ml">
+    <string-array name="education_ml">
         <item>വിദ്യാഭ്യാസം തിരഞ്ഞെടുക്കുക</item>
         <item>നിരക്ഷരൻ</item>
         <item>പ്രാഥമിക</item>
@@ -547,7 +548,7 @@
         <item>എസ്.ടി</item>
         <item>മറ്റുള്ളവർ</item>
     </string-array>
- <string-array name="caste_kn">
+    <string-array name="caste_kn">
         <item>ಆಯ್ಕೆಮಾಡಿ</item>
         <item>ಸಾಮಾನ್ಯ</item>
         <item>ಓ.ಬಿ.ಸಿ.</item>
@@ -624,12 +625,13 @@
         <item>എ.പി.എൽ</item>
         <item>ബിപിഎൽ</item>
     </string-array>
-<string-array name="economic_kn">
+    <string-array name="economic_kn">
         <item>ಆಯ್ಕೆಮಾಡಿ</item>
         <item>ಬಡತನ ರೇಖೆಯ ಮೇಲೆ</item>
         <item>ಬಡತನ ರೇಖೆಯ ಕೆಳಗೆ</item>
 
-    </string-array><string-array name="economic_ru">
+    </string-array>
+    <string-array name="economic_ru">
         <item>Выбирать</item>
         <item>APL</item>
         <item>BPL</item>
