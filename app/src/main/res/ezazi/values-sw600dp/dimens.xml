@@ -228,5 +228,6 @@
     <dimen name="month_chip_padding">@dimen/list_container_padding</dimen>
     <dimen name="margin_bottom_scroll">100dp</dimen>
     <dimen name="dropdown_content_height">130dp</dimen>
+    <dimen name="dropdown_max_height">280dp</dimen>
 
 </resources>

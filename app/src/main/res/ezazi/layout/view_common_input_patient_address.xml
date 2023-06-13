@@ -5,11 +5,85 @@
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_district"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding"
+            android:hint="@string/district">
+
+            <AutoCompleteTextView
+                android:id="@+id/autotv_district"
+                style="@style/Theme.EZazi.Scrollbar.Thumb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dropDownHeight="@dimen/dropdown_max_height"
+                android:dropDownSelector="@color/white"
+                android:focusable="false"
+                android:inputType="textPostalAddress"
+                android:maxLines="1"
+                android:minHeight="@dimen/max_input_height"
+                android:textAlignment="viewStart"
+                android:textSize="@dimen/input_inner_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_et_district"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/list_container_padding"
+            android:hint="@string/district">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_district"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:nextFocusForward="@id/et_address2"
+                android:singleLine="true"
+                android:textSize="@dimen/input_inner_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_district"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="This field is mandatory"
+        android:visibility="gone" />
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_city_village"
         style="@style/Theme.EZazi.Material.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/input_add_patient_margin_top">
+        android:layout_marginTop="@dimen/input_add_patient_margin_top"
+        android:visibility="gone">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -25,12 +99,40 @@
                 android:id="@+id/autotv_city"
                 style="@style/Theme.EZazi.Scrollbar.Thumb"
                 android:layout_width="match_parent"
-                android:dropDownHeight="@dimen/dropdown_content_height"
                 android:layout_height="wrap_content"
                 android:dropDownSelector="@color/white"
                 android:maxLines="1"
                 android:textSize="@dimen/input_inner_size" />
 
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_city_et"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/list_container_padding"
+            android:hint="@string/village_town_city">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_city_village"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/input_inner_size" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -128,17 +230,18 @@
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
         </com.google.android.material.textfield.TextInputLayout>
-        <TextView
-            android:id="@+id/tv_error_postal_code"
-            style="@style/Textview_Validation_Error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:lineSpacingExtra="0sp"
-            android:text="This field is mandatory"
-            android:visibility="gone" />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_postal_code"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="This field is mandatory"
+        android:visibility="gone" />
 </LinearLayout>

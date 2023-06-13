@@ -94,13 +94,14 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/autotv_state"
-                        style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        style="@style/Theme.EZazi.Scrollbar.Thumb.Primary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dropDownHeight="@dimen/dropdown_content_height"
                         android:dropDownSelector="@color/white"
                         android:inputType="textPostalAddress"
                         android:maxLines="1"
+                        android:dropDownHeight="@dimen/dropdown_max_height"
+                        android:focusable= "false"
                         android:minHeight="@dimen/max_input_height"
                         android:textAlignment="viewStart"
                         android:textSize="@dimen/input_inner_size" />
@@ -120,6 +121,9 @@
                 android:lineSpacingExtra="0sp"
                 android:text="This field is mandatory"
                 android:visibility="gone" />
+
+
+
 
             <include layout="@layout/view_common_input_patient_address" />
         </LinearLayout>

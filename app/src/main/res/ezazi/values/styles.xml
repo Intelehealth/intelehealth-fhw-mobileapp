@@ -535,14 +535,11 @@
     </style>
 
     <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="android:windowBackground">@color/colorPrimaryDark
-        </item>     <!--calendar background-->
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>     <!--calendar background-->
         <item name="android:colorControlActivated">@color/colorEmergencyBg</item> <!--selected day-->
         <item name="android:textColorPrimary">@color/colorBlack</item> <!--days of the month-->
         <item name="android:textColorSecondary">@color/days_calendar</item>    <!--days of the week-->
-        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg
-        </item> <!--selected day-->
-
+        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg</item> <!--selected day-->
     </style>
 
     <style name="CalenderViewCustom" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -607,12 +604,20 @@
         <item name="chipIcon">@drawable/ic_calendar_spinner</item>
         <item name="android:textColor">@color/color_am_pm_selector</item>
         <item name="android:layoutDirection">rtl</item>
-<!--        <item name="chipIconSize">@dimen/chip_spinner_icon_size</item>-->
+        <!--        <item name="chipIconSize">@dimen/chip_spinner_icon_size</item>-->
         <item name="chipIconVisible">true</item>
         <item name="chipBackgroundColor">@color/color_calendar_spinner_selector</item>
         <item name="android:textSize">@dimen/small_input_text_size</item>
         <item name="chipCornerRadius">@dimen/small_btn_radius</item>
         <item name="chipIconTint">@color/color_am_pm_selector</item>
         <item name="selectableItemBackground">@color/colorEmergencyBg</item>
+    </style>
+    <style name="Theme.EZazi.Scrollbar.Thumb.Primary" parent="">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarSize">@dimen/scrollbar_width</item>
+        <item name="android:scrollbarThumbVertical">@color/colorPrimary</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <!--        <item name="android:fadeScrollbars">false</item>-->
+        <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
     </style>
 </resources>

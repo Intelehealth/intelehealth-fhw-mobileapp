@@ -69,7 +69,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
-            FirebaseCrashlytics.getInstance().recordException(throwable);
+           // FirebaseCrashlytics.getInstance().recordException(throwable);
         });
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
