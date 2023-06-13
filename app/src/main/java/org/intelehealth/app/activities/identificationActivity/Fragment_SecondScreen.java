@@ -303,7 +303,7 @@ public class Fragment_SecondScreen extends Fragment {
             String countriesLanguage = "countries_" + sessionManager.getAppLanguage();
             int countries = res.getIdentifier(countriesLanguage, "array", getActivity().getApplicationContext().getPackageName());
             if (countries != 0) {
-               countryAdapter = ArrayAdapter.createFromResource(getActivity(),
+                countryAdapter = ArrayAdapter.createFromResource(getActivity(),
                         countries, R.layout.simple_spinner_item_1);
                 countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
             }
@@ -313,7 +313,6 @@ public class Fragment_SecondScreen extends Fragment {
         } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
-
 
 
         // Setting up the screen when user came from SEcond screen.
@@ -342,14 +341,10 @@ public class Fragment_SecondScreen extends Fragment {
 
             if (mCountryName.equalsIgnoreCase(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत")) {
                 mIsIndiaSelected = true;
-                setStateAdapter(mCountryName);
-                Log.v(TAG, "mStateName -" + mStateName+"??");
-                if (mStateName != null && !mStateName.isEmpty()) {
-                    mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-                    setDistAdapter(mStateName);
-                    if (mDistName != null && mDistName.isEmpty())
-                        mDistrictNameSpinner.setSelection(districtAdapter.getPosition(district));
-                }
+                Log.v(TAG, "setStateAdapter calling....344");
+                //setStateAdapter(mCountryName);
+                mStateNameEn = String.valueOf(patientDTO.getStateprovince());
+                Log.v(TAG, "mStateName -" + mStateNameEn + "??");
 
             } else {
                 mIsIndiaSelected = false;
@@ -411,10 +406,10 @@ public class Fragment_SecondScreen extends Fragment {
                 Log.v(TAG, "item - " + adapterView.getItemAtPosition(i));
                 if (i != 0) {
                     String distName = adapterView.getItemAtPosition(i).toString();
-                    if (!distName.equalsIgnoreCase(mDistName))
-                        mCityVillageET.setText("");
+//                    if (!distName.equalsIgnoreCase(mDistName))
+//                        mCityVillageET.setText("");
                     mDistName = adapterView.getItemAtPosition(i).toString();
-                    mDistNameEn = mLastSelectedDistList.get(i-1).getName();
+                    mDistNameEn = mLastSelectedDistList.get(i - 1).getName();
                     mDistrictNameErrorTextView.setVisibility(View.GONE);
                     mDistrictNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
                     mCityNameErrorTextView.setVisibility(View.GONE);
@@ -462,8 +457,9 @@ public class Fragment_SecondScreen extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
+                    Log.v(TAG, "onItemSelected - " + i);
                     mStateName = adapterView.getItemAtPosition(i).toString();
-                    mStateNameEn = mLastSelectedStateList.get(i-1).getState();
+                    mStateNameEn = mLastSelectedStateList.get(i - 1).getState();
                     mStateNameErrorTextView.setVisibility(View.GONE);
                     mStateNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
 
@@ -471,11 +467,19 @@ public class Fragment_SecondScreen extends Fragment {
 
                         mDistrictET.setVisibility(View.GONE);
                         mDistrictNameSpinner.setVisibility(View.VISIBLE);
-                        setDistAdapter(mStateName);
+                        setDistAdapter(mStateNameEn);
 
-                        if (fromThirdScreen || fromFirstScreen)
-                            mDistrictNameSpinner.setSelection(districtAdapter.getPosition(String.valueOf(district)));
-                        else
+                        if (fromThirdScreen || fromFirstScreen) {
+                            int itemPosition = 0;
+                            for (int k = 0; k < mLastSelectedDistList.size(); k++) {
+                                if (mLastSelectedDistList.get(k).getName().equalsIgnoreCase(mDistName)) {
+                                    itemPosition = k + 1;
+                                    break;
+                                }
+                            }
+                            //mDistrictNameSpinner.setSelection(districtAdapter.getPosition(String.valueOf(district)));
+                            mDistrictNameSpinner.setSelection(itemPosition);
+                        } else
                             mDistrictNameSpinner.setSelection(districtAdapter.getPosition(getResources().getString(R.string.select_spinner)));
 
 
@@ -541,14 +545,23 @@ public class Fragment_SecondScreen extends Fragment {
                         mIsIndiaSelected = true;
                         mStateEditText.setVisibility(View.GONE);
                         mStateNameSpinner.setVisibility(View.VISIBLE);
+                        Log.v(TAG, "setStateAdapter calling....599");
                         setStateAdapter(mCountryName);
 
                         mDistrictET.setVisibility(View.GONE);
                         mDistrictNameSpinner.setVisibility(View.VISIBLE);
 
-                        if (fromThirdScreen || fromFirstScreen)
-                            mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-                        else
+                        if (fromThirdScreen || fromFirstScreen) {
+                            int itemPosition = 0;
+                            for (int k = 0; k < mLastSelectedStateList.size(); k++) {
+
+                                if (mLastSelectedStateList.get(k).getState().equalsIgnoreCase(String.valueOf(patientDTO.getStateprovince()))) {
+                                    itemPosition = k + 1;
+                                    break;
+                                }
+                            }
+                            mStateNameSpinner.setSelection(itemPosition);
+                        } else
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(getResources().getString(R.string.select_spinner)));
 
 
@@ -585,11 +598,12 @@ public class Fragment_SecondScreen extends Fragment {
     private List<DistData> mLastSelectedDistList = new ArrayList<>();
 
     private void setStateAdapter(String countryName) {
+        Log.v(TAG, "setStateAdapter");
         mLastSelectedStateList = mStateDistMaster.getStateDataList();
         String[] stateList = new String[mStateDistMaster.getStateDataList().size() + 1];
         stateList[0] = getResources().getString(R.string.select_spinner);
         for (int i = 1; i <= mStateDistMaster.getStateDataList().size(); i++) {
-            stateList[i] = sessionManager.getAppLanguage().equals("en") ? mStateDistMaster.getStateDataList().get(i - 1).getState():mStateDistMaster.getStateDataList().get(i - 1).getStateHindi();
+            stateList[i] = sessionManager.getAppLanguage().equals("en") ? mStateDistMaster.getStateDataList().get(i - 1).getState() : mStateDistMaster.getStateDataList().get(i - 1).getStateHindi();
         }
 
         stateAdapter = new ArrayAdapter<String>(getActivity(),
@@ -598,14 +612,17 @@ public class Fragment_SecondScreen extends Fragment {
 
         mStateNameSpinner.setAdapter(stateAdapter);
         mStateNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+        mStateNameSpinner.setSelection(1);
     }
 
     private void setDistAdapter(String stateName) {
-        Log.v(TAG, "stateName - " + stateName);
+
+        Log.v(TAG, "setDistAdapter - " + stateName);
         List<DistData> distDataList = new ArrayList<>();
 
         for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
-            String sName = sessionManager.getAppLanguage().equals("en") ?mStateDistMaster.getStateDataList().get(i).getState() : mStateDistMaster.getStateDataList().get(i).getStateHindi();
+            //String sName = sessionManager.getAppLanguage().equals("en") ? mStateDistMaster.getStateDataList().get(i).getState() : mStateDistMaster.getStateDataList().get(i).getStateHindi();
+            String sName = mStateDistMaster.getStateDataList().get(i).getState();
             if (sName.equalsIgnoreCase(stateName)) {
                 distDataList = mStateDistMaster.getStateDataList().get(i).getDistDataList();
                 break;
@@ -616,8 +633,8 @@ public class Fragment_SecondScreen extends Fragment {
         String[] distList = new String[distDataList.size() + 1];
         distList[0] = getResources().getString(R.string.select_spinner);
         for (int i = 1; i <= distDataList.size(); i++) {
-            distList[i] = sessionManager.getAppLanguage().equals("en")  ? distDataList.get(i - 1).getName() : distDataList.get(i - 1).getNameHindi();
-            Log.v(TAG, "distList[i] - " + distList[i]);
+            distList[i] = sessionManager.getAppLanguage().equals("en") ? distDataList.get(i - 1).getName() : distDataList.get(i - 1).getNameHindi();
+            //Log.v(TAG, "distList[i] - " + distList[i]);
         }
 
         districtAdapter = new ArrayAdapter<String>(getActivity(),
@@ -638,9 +655,15 @@ public class Fragment_SecondScreen extends Fragment {
         patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
         patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
         patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
+        if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
+            patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
+        if (!sessionManager.getAppLanguage().equals("en")) {
+            patientDTO.setCountry(StringUtils.getValue(mCountryNameEn));
+            patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameEn : mStateName));
 
-        patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
+            patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistNameEn : mDistName) + ":" + mCityVillageName));
 
+        }
         patientDTO.setAddress1(mAddress1EditText.getText().toString());
         patientDTO.setAddress2(mAddress2EditText.getText().toString());
 
@@ -798,10 +821,10 @@ public class Fragment_SecondScreen extends Fragment {
             patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
             patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
             patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameSpinner.getSelectedItem().toString() : mStateName));
+            if (mDistrictNameSpinner != null && mDistrictNameSpinner.getSelectedItem() != null)
+                patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
 
-            patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistrictNameSpinner.getSelectedItem().toString() : mDistName) + ":" + mCityVillageName));
-
-            if(!sessionManager.getAppLanguage().equals("en")){
+            if (!sessionManager.getAppLanguage().equals("en")) {
                 patientDTO.setCountry(StringUtils.getValue(mCountryNameEn));
                 patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameEn : mStateName));
 

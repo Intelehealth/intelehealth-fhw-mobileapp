@@ -53,6 +53,7 @@ import org.intelehealth.app.activities.onboarding.SetupPrivacyNoteActivity_New;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONException;
@@ -96,7 +97,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
-         initFirebaseRemoteConfig();
+        initFirebaseRemoteConfig();
 
         if (sessionManager.isFirstTimeLaunch()) {
             checkPerm();
@@ -104,13 +105,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             populatingLanguages();
         } else {
 
-        //as we are implementing force update now thus commenting this.
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                nextActivity();
-            }
-        }, 3000);
+            //as we are implementing force update now thus commenting this.
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    nextActivity();
+                }
+            }, 3000);
         }
 
         saveLanguage();
@@ -206,10 +207,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                         });
                         alertDialogBuilder.show();
                     } else {
-                         checkPerm();
+                        checkPerm();
                     }
                 } else {
-                      checkPerm();
+                    checkPerm();
                 }
             }
         });
@@ -603,7 +604,20 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void showPermissionDeniedAlert(String[] permissions) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(this, 0, getString(R.string.permission_denied), getString(R.string.reject_permission_results), false, getString(R.string.retry_again),
+                getString(R.string.ok_close_now), new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                            checkPerm();
+
+                        } else {
+                            finish();
+                        }
+                    }
+                });
+        /*MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 
         // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         alertdialogBuilder.setMessage(R.string.reject_permission_results);
@@ -631,7 +645,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
     }
 
 
