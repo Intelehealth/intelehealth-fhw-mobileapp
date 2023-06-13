@@ -43,6 +43,7 @@
                         android:id="@+id/autotv_country"
                         style="@style/Theme.EZazi.Scrollbar.Thumb"
                         android:layout_width="match_parent"
+                        android:minHeight="@dimen/max_input_height"
                         android:layout_height="wrap_content"
                         android:dropDownSelector="@color/white"
                         android:hint="@string/country"
@@ -76,6 +77,7 @@
                         android:layout_height="wrap_content"
                         android:dropDownSelector="@color/white"
                         android:hint="@string/state"
+                        android:minHeight="@dimen/max_input_height"
                         android:maxLines="1"
                         android:textAlignment="viewStart"
                         android:textSize="@dimen/input_inner_size" />
