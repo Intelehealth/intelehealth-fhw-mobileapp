@@ -25,6 +25,7 @@
                 android:id="@+id/autotv_city"
                 style="@style/Theme.EZazi.Scrollbar.Thumb"
                 android:layout_width="match_parent"
+                android:dropDownHeight="@dimen/dropdown_content_height"
                 android:layout_height="wrap_content"
                 android:dropDownSelector="@color/white"
                 android:maxLines="1"
@@ -101,6 +102,7 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_postal_code"
         style="@style/Theme.EZazi.Material.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,5 +128,17 @@
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tv_error_postal_code"
+            style="@style/Textview_Validation_Error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:lineSpacingExtra="0sp"
+            android:text="This field is mandatory"
+            android:visibility="gone" />
+
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

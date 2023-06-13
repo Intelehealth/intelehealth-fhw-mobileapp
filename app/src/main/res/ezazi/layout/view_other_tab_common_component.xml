@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/textView9"
         style="@style/LabelStyleAddPatient"
@@ -36,13 +37,24 @@
                 android:id="@+id/autotv_risk_factors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
                 android:hint="@string/select_risk_factors"
+                android:inputType="none"
                 android:textSize="@dimen/input_inner_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_risk_factor"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/this_field_is_mandatory"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView10"
@@ -78,9 +90,9 @@
             android:id="@+id/option_maternity"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginEnd="@dimen/screen_container_padding"
             android:layout_marginStart="@dimen/screen_container_padding"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="1"
             android:background="@drawable/button_bg_rounded_corners"
             android:gravity="center"
             android:text="@string/maternity"
@@ -99,6 +111,48 @@
             android:textSize="@dimen/input_inner_size" />
 
     </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_hospital_other"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/screen_container_padding"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding"
+            android:gravity="center_vertical"
+            android:hint="@string/enter_hospital_other">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_hospital_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:maxLines="1"
+                android:nextFocusForward="@id/et_middle_name"
+                android:singleLine="true"
+                android:textSize="@dimen/input_inner_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_error_hospital"
+        style="@style/Textview_Validation_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/this_field_is_mandatory"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView11"
@@ -182,9 +236,9 @@
             <AutoCompleteTextView
                 android:id="@+id/autotv_secondary_doctor"
                 android:layout_width="match_parent"
-                android:inputType="none"
                 android:layout_height="wrap_content"
                 android:hint="@string/select_secondary_doctor"
+                android:inputType="none"
                 android:textSize="@dimen/input_inner_size" />
 
         </com.google.android.material.textfield.TextInputLayout>

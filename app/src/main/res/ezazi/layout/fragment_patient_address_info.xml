@@ -6,110 +6,124 @@
     android:orientation="vertical"
     android:padding="@dimen/screen_padding">
 
-    <LinearLayout
-        android:id="@+id/layout_parent"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/container_bg_rounded"
+        android:layout_above="@+id/btn_save_update_first"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/margin_bottom_scroll"
+        android:fillViewport="true"
         android:orientation="vertical"
-        android:padding="@dimen/screen_container_padding">
+        android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/layout_dropdowns"
+            android:id="@+id/layout_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:background="@drawable/container_bg_rounded"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_container_padding">
+
+            <LinearLayout
+                android:id="@+id/layout_dropdowns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_country"
+                    style="@style/Theme.EZazi.Material.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:enabled="false"
+                        android:hint="@string/country"
+                        app:endIconMode="dropdown_menu"
+                        app:endIconTint="@android:color/transparent"
+                        app:hintEnabled="true">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autotv_country"
+                            style="@style/Theme.EZazi.Scrollbar.Thumb"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:dropDownSelector="@color/white"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:text="@string/str_check_India"
+                            android:textSize="@dimen/input_inner_size" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_error_country"
+                style="@style/Textview_Validation_Error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/this_field_is_mandatory"
+                android:visibility="gone" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_country"
+                android:id="@+id/card_state"
                 style="@style/Theme.EZazi.Material.CardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/screen_container_padding">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_container_padding"
-                    android:enabled="false"
-                    android:hint="@string/country"
-                    app:endIconMode="dropdown_menu"
-                    app:endIconTint="@android:color/transparent"
-                    app:hintEnabled="true">
+                    android:hint="@string/state">
 
                     <AutoCompleteTextView
-                        android:id="@+id/autotv_country"
+                        android:id="@+id/autotv_state"
                         style="@style/Theme.EZazi.Scrollbar.Thumb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:dropDownHeight="@dimen/dropdown_content_height"
                         android:dropDownSelector="@color/white"
-                        android:inputType="none"
+                        android:inputType="textPostalAddress"
                         android:maxLines="1"
-                        android:text="@string/str_check_India"
+                        android:minHeight="@dimen/max_input_height"
+                        android:textAlignment="viewStart"
                         android:textSize="@dimen/input_inner_size" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_error_country"
-            style="@style/Textview_Validation_Error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:lineSpacingExtra="0sp"
-            android:text="@string/this_field_is_mandatory"
-            android:visibility="gone" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_state"
-            style="@style/Theme.EZazi.Material.CardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/screen_container_padding">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+            <TextView
+                android:id="@+id/tv_error_state"
+                style="@style/Textview_Validation_Error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/list_container_padding"
-                android:hint="@string/state">
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:lineSpacingExtra="0sp"
+                android:text="This field is mandatory"
+                android:visibility="gone" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/autotv_state"
-                    style="@style/Theme.EZazi.Scrollbar.Thumb"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownSelector="@color/white"
-                    android:maxLines="1"
-                    android:textAlignment="viewStart"
-                    android:textSize="@dimen/input_inner_size" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/tv_error_state"
-            style="@style/Textview_Validation_Error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:lineSpacingExtra="0sp"
-            android:text="This field is mandatory"
-            android:visibility="gone" />
-
-        <include layout="@layout/view_common_input_patient_address" />
-    </LinearLayout>
+            <include layout="@layout/view_common_input_patient_address" />
+        </LinearLayout>
+    </ScrollView>
 
     <include
         layout="@layout/view_add_patient_bottom_action_button"

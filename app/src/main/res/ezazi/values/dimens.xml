@@ -257,4 +257,7 @@
     <dimen name="calendar_width">@dimen/wrap_content</dimen>
     <dimen name="chip_spinner_icon_size">@dimen/std_12dp</dimen>
     <dimen name="month_chip_padding">@dimen/screen_container_padding</dimen>
+    <dimen name="margin_bottom_scroll">50dp</dimen>
+    <dimen name="dropdown_content_height">100dp</dimen>
+
 </resources>
