@@ -22,7 +22,6 @@
         android:id="@+id/iv_ayu_icon"
         android:layout_width="@dimen/demo1_ayu_image_width"
         android:layout_height="@dimen/demo1_ayu_image_height"
-        android:layout_below="@+id/tv_please_continue"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/demo1_ayu_img_margin_top"
         android:src="@drawable/ui2_ic_ayu_image" />
@@ -86,9 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
+                android:onClick="openTermsConditions"
                 android:text="@string/terms_conditions"
                 android:textColor="@color/ui2_link"
-                android:onClick="openTermsConditions"
                 android:textSize="@dimen/terms_link_text_size" />
 
             <TextView
