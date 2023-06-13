@@ -64,6 +64,7 @@ import org.intelehealth.ezazi.knowledgeEngine.Node;
 import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
+import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.DownloadFilesUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -91,7 +92,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PatientDetailActivity extends AppCompatActivity {
+public class PatientDetailActivity extends BaseActionBarActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
     String mGender;
@@ -139,7 +140,15 @@ public class PatientDetailActivity extends AppCompatActivity {
     TextView tvBedNumber;
 
     @Override
+    protected void onBackNavigate() {
+        Intent i = new Intent(PatientDetailActivity.this, HomeActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_patient_summary);
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
@@ -153,20 +162,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        setContentView(R.layout.activity_patient_summary);
 
-        View toolbar = findViewById(R.id.toolbar_common);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        tvTitle.setText(getResources().getString(R.string.patient_info));
-        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(PatientDetailActivity.this, HomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-            }
-        });
+
+//        View toolbar = findViewById(R.id.toolbar_common);
+//        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
+//        tvTitle.setText(getResources().getString(R.string.patient_info));
+//        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
@@ -418,6 +419,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 //        LoadFamilyMembers();
 
+    }
+
+    @Override
+    protected int getScreenTitle() {
+        return R.string.patient_info;
     }
 
     // Create all the 24 encounters at once...

@@ -3,13 +3,12 @@
     android:id="@+id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:maxLines="1"
-    android:text=""
-    android:textSize="14sp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:layout_marginTop="@dimen/list_container_padding"
+    android:layout_marginBottom="@dimen/list_container_padding"
+    android:background="@drawable/dropdown_item_selector"
+    android:padding="@dimen/list_container_padding"
+    android:singleLine="true"
+    android:textSize="@dimen/input_inner_size"
     android:fontFamily="@font/lato_regular">
 
 </TextView>

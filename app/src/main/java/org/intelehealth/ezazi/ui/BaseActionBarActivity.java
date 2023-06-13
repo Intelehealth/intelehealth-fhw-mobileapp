@@ -31,8 +31,12 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
         if (getScreenTitle() != 0)
             getSupportActionBar().setTitle(getString(getScreenTitle()));
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> onBackNavigate());
     }
 
     protected abstract @StringRes int getScreenTitle();
+
+    protected void onBackNavigate(){
+        onBackPressed();
+    }
 }
