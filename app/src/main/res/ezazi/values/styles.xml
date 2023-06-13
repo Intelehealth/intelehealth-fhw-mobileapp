@@ -8,6 +8,7 @@
         <item name="boxCornerRadiusTopEnd">@dimen/input_box_corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/input_box_corner_radius</item>
         <item name="errorEnabled">true</item>
+        <item name="errorIconTint">@android:color/transparent</item>
         <item name="errorTextColor">@color/red</item>
         <item name="boxStrokeErrorColor">@color/red</item>
         <item name="android:textColor">@color/colorInputText</item>
@@ -22,6 +23,7 @@
     <style name="Theme.EZazi.Input.Error" parent="TextAppearance.AppCompat">
         <item name="android:textAlignment">viewEnd</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:textSize">@dimen/caption</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
     </style>
 
@@ -400,10 +402,10 @@
         <item name="cardMaxElevation">0dp</item>
         <item name="strokeWidth">@dimen/input_stroke_size</item>
         <item name="strokeColor">@color/colorInputBgBorder</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingTop">-10dp</item>
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingBottom">@dimen/list_container_padding</item>
+        <item name="android:paddingTop">@dimen/list_container_padding</item>
+        <item name="android:paddingStart">@dimen/list_container_padding</item>
+        <item name="android:paddingEnd">@dimen/list_container_padding</item>
 
     </style>
 

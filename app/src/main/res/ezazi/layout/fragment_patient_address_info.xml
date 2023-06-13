@@ -102,7 +102,6 @@
                         android:focusable="false"
                         android:inputType="textPostalAddress"
                         android:maxLines="1"
-                        android:minHeight="@dimen/max_input_height"
                         android:textAlignment="viewStart"
                         android:textSize="@dimen/input_inner_size" />
 
@@ -121,9 +120,6 @@
                 android:lineSpacingExtra="0sp"
                 android:text="This field is mandatory"
                 android:visibility="gone" />
-
-
-
 
             <include layout="@layout/view_common_input_patient_address" />
         </LinearLayout>

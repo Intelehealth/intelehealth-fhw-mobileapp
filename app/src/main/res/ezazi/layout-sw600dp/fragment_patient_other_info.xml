@@ -193,6 +193,7 @@
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:maxLines="1"
+                            android:maxLength="2"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -222,6 +223,7 @@
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:maxLines="1"
+                            android:maxLength="1"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>

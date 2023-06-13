@@ -8,7 +8,8 @@
     <dimen name="screen_container_padding">@dimen/std_20dp</dimen>
     <dimen name="list_container_padding">@dimen/std_8dp</dimen>
     <dimen name="input_height">86dp</dimen>
-    <dimen name="max_input_height">86dp</dimen>
+    <dimen name="max_input_height">83dp</dimen>
+    <dimen name="max_address_input_height">70dp</dimen>
     <dimen name="input_top_margin">@dimen/std_21dp</dimen>
     <dimen name="input_label_size">@dimen/std_21sp</dimen>
     <dimen name="input_inner_size">@dimen/std_24sp</dimen>

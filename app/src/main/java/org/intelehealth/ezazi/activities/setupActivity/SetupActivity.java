@@ -640,18 +640,6 @@ public class SetupActivity extends AppCompatActivity {
             cancel = true;
         }
 
-        if (TextUtils.isEmpty(password)) {
-            mPasswordInputView.setError(getString(R.string.error_require_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordInputView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
 
 //        if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
 //            mAdminPasswordView.setError(getString(R.string.error_invalid_password));
@@ -672,6 +660,14 @@ public class SetupActivity extends AppCompatActivity {
         } else if (!isEmailValid(email)) {
             mEmailInputView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
+        } else if (TextUtils.isEmpty(password)) {
+            mPasswordInputView.setError(getString(R.string.error_require_password));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            mPasswordInputView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
         }
 
         //spinner...

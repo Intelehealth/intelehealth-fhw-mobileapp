@@ -260,5 +260,6 @@
     <dimen name="margin_bottom_scroll">50dp</dimen>
     <dimen name="dropdown_content_height">100dp</dimen>
     <dimen name="dropdown_max_height">180dp</dimen>
-
+    <dimen name="max_input_height">@dimen/std_48dp</dimen>
+    <dimen name="max_address_input_height">40dp</dimen>
 </resources>

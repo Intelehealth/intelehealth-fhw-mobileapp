@@ -28,7 +28,7 @@
                 android:focusable="false"
                 android:inputType="textPostalAddress"
                 android:maxLines="1"
-                android:minHeight="@dimen/max_input_height"
+                android:minHeight="@dimen/max_address_input_height"
                 android:textAlignment="viewStart"
                 android:textSize="@dimen/input_inner_size" />
 
@@ -115,12 +115,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/screen_container_padding">
 
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Theme.EZazi.Input.Add.Patient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/list_container_padding"
+            android:gravity="center_vertical"
             android:hint="@string/village_town_city">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -130,7 +130,6 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="text"
-                android:minHeight="@dimen/max_input_height"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
@@ -169,7 +168,6 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
-                android:minHeight="@dimen/max_input_height"
                 android:maxLines="1"
                 android:nextFocusForward="@id/et_address2"
                 android:singleLine="true"
@@ -196,7 +194,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/address_line2"
                 android:imeOptions="actionNext"
-                android:minHeight="@dimen/max_input_height"
                 android:importantForAutofill="no"
                 android:maxLines="1"
                 android:nextFocusForward="@id/et_postal_code"

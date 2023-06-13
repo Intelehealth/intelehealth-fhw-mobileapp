@@ -51,7 +51,7 @@
     <string name="error_invalid_email">This username is invalid</string>
     <string name="error_require_email">Username is required</string>
     <string name="error_require_password">Password is required</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_password">Password length should be 8 chars or more.</string>
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>

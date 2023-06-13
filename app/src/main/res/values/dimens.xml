@@ -149,7 +149,6 @@
     <dimen name="splash_bottom_text_margin">42dp</dimen>
     <dimen name="splash_bottom_text_size">@dimen/std_14sp</dimen>
     <dimen name="input_height">56dp</dimen>
-    <dimen name="max_input_height">@dimen/std_48dp</dimen>
     <dimen name="std_69dp">69dp</dimen>
     <dimen name="std_31dp">31dp</dimen>
     <dimen name="std_120dp">120dp</dimen>
