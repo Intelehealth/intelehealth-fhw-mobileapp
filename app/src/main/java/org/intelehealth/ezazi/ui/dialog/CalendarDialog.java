@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 
 import org.intelehealth.ezazi.R;
@@ -34,6 +35,12 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
     private Long minDate = 0L;
     private String dateFormat = "dd/MM/yyyy";
 
+    private DayOfWeek weekStartFromDay = DayOfWeek.MON;
+
+    public void setWeekStartFromDay(DayOfWeek weekStartFromDay) {
+        this.weekStartFromDay = weekStartFromDay;
+    }
+
     public void setMaxDate(Long maxDate) {
         this.maxDate = maxDate;
     }
@@ -55,17 +62,16 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         calendarBinding.tvSelectedDate.setText(formattedDate);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         calendar.set(year, monthOfYear, dayOfMonth);
-        calendarBinding.calendar.btnYear.setText("" + year);
         changeMonth();
         setDisplayDate();
         calendarBinding.calendar.chipMonthYearGroup.clearCheck();
     }
 
     private void changeMonth() {
+        calendarBinding.calendar.btnYear.setText(String.valueOf(calendar.get(Calendar.YEAR)));
         calendarBinding.calendar.btnMonth.setText(getDateFormatter("LLL").format(calendar.getTime()));
         calendarBinding.calendar.chipGroupMonth.check(calendar.get(Calendar.MONTH));
         calendarBinding.calendar.btnNextMonth.setVisibility(isNextButtonDisabled() ? View.GONE : View.VISIBLE);
@@ -92,21 +98,32 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
     }
 
     private void setupCalendarSetting() {
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeInMillis(maxDate);
         changeMonth();
         createMonthsGrid();
         hideHeader();
         setDisplayDate();
-        calendarBinding.calendar.calendarView.setMaxDate(maxDate);
+        calendarBinding.calendar.calendarView.setMaxDate(calendar.getTimeInMillis());
         if (minDate != 0)
             calendarBinding.calendar.calendarView.setMinDate(minDate);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             calendarBinding.calendar.calendarView.setOnDateChangedListener(this);
+        } else {
+            calendarBinding.calendar.calendarView.init(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    this
+            );
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            calendarBinding.calendar.calendarView.setFirstDayOfWeek(2);
+            calendarBinding.calendar.calendarView.setFirstDayOfWeek(weekStartFromDay.value);
+        } else {
+            calendarBinding.calendar.calendarView.getCalendarView().setFirstDayOfWeek(weekStartFromDay.value);
         }
+
+        calendarBinding.calendar.calendarView.setMinDate(minDate);
     }
 
     private void setupNavigationClickListener() {
@@ -252,6 +269,21 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
             fragment.setArguments(bundle());
             fragment.setListener(listener);
             return fragment;
+        }
+    }
+
+    public enum DayOfWeek {
+        SUN(1),
+        MON(2),
+        TUE(3),
+        WED(4),
+        THU(5),
+        FRI(6),
+        SAT(7);
+        private int value;
+
+        DayOfWeek(int value) {
+            this.value = value;
         }
     }
 }

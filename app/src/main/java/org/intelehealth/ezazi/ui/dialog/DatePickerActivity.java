@@ -7,6 +7,8 @@ import android.util.Log;
 
 import org.intelehealth.ezazi.R;
 
+import java.util.Calendar;
+
 public class DatePickerActivity extends AppCompatActivity {
     private static final String TAG = "DatePickerActivity";
 
@@ -19,7 +21,14 @@ public class DatePickerActivity extends AppCompatActivity {
                 .title("")
                 .positiveButtonLabel(R.string.ok).build();
 
-//        dialog.setListener((day, month, year, value) -> Log.e(TAG, "Date = >" + value));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, 4, 11);
+        dialog.setMaxDate(calendar.getTimeInMillis());
+        dialog.setWeekStartFromDay(CalendarDialog.DayOfWeek.SUN);
+        calendar = Calendar.getInstance();
+        calendar.set(2011, 4, 11);
+        dialog.setMinDate(calendar.getTimeInMillis());
+        dialog.setListener((day, month, year, value) -> Log.e(TAG, "Date = >" + value));
         dialog.show(getSupportFragmentManager(), "DatePicker");
     }
 }

@@ -80,6 +80,7 @@
             android:layout_height="0dp"
             android:background="@drawable/container_bg_rounded"
             android:visibility="gone"
+            android:padding="@dimen/screen_container_padding"
             app:layout_constraintBottom_toBottomOf="@id/calendarView"
             app:layout_constraintEnd_toEndOf="@id/calendarView"
             app:layout_constraintStart_toStartOf="@id/calendarView"

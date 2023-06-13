@@ -42,19 +42,19 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
-        <!--        <activity-->
-        <!--            android:name=".activities.splash_activity.SplashActivity"-->
-        <!--            android:exported="true">-->
-        <!--            <meta-data-->
-        <!--                android:name="android.app.lib_name"-->
-        <!--                android:value="" />-->
+        <activity
+            android:name=".ui.dialog.DatePickerActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
 
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.addNewPatient.PatientSummaryActivity"
             android:exported="false">
@@ -80,15 +80,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity"
-            android:exported="true"
             android:configChanges="uiMode|keyboard|orientation|screenSize|smallestScreenSize|screenLayout"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
-            android:exported="false"
             android:configChanges="uiMode|keyboard|orientation|screenSize|smallestScreenSize|screenLayout"
+            android:exported="false"
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -296,11 +296,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.password.activity.ForgotPasswordActivity"
