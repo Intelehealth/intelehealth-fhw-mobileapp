@@ -544,4 +544,9 @@ public class DateAndTimeUtils {
         }
         return age;
     }
+    public static String getCurrentDateInDDMMYYYY() {
+        Date cDate = new Date();
+        String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
+        return fDate;
+    }
 }

@@ -84,6 +84,7 @@ import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
+import org.intelehealth.ezazi.ui.dialog.CalendarDialog;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.EditTextUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -274,26 +275,20 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     private void handleClickListeners() {
         etLayoutDob.setEndIconOnClickListener(v -> {
-            Bundle args = new Bundle();
+            /*Bundle args = new Bundle();
             args.putString("whichDate", "dobPatient");
             CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
             dialog.setArguments(args);
             dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
             if (getFragmentManager() != null) {
                 dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
-            }
+            }*/
+
+            selectDob();
 
         });
         mDOB.setOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("whichDate", "dobPatient");
-            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-            dialog.setArguments(args);
-            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
-            if (getFragmentManager() != null) {
-                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
-            }
-
+            selectDob();
         });
         etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,6 +296,52 @@ public class PatientPersonalInfoFragment extends Fragment {
 
             }
         });
+    }
+
+    private void selectDob() {
+        CalendarDialog dialog = new CalendarDialog.Builder(mContext)
+                .title("")
+                .positiveButtonLabel(R.string.ok).build();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -10);
+        dialog.setMaxDate(calendar.getTimeInMillis());
+        Log.d(TAG, "selectDob: "+calendar.getTime());
+
+        dialog.setListener((day, month, year, value) -> {
+            Log.e(TAG, "Date = >" + value);
+            //dd/mm/yyyy
+            String selectedDate = value;
+            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+            if (!selectedDate.isEmpty()) {
+                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
+                //for age
+                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
+                mAgeYears = Integer.parseInt(ymdData[0]);
+                mAgeMonths = Integer.parseInt(ymdData[1]);
+                mAgeDays = Integer.parseInt(ymdData[2]);
+
+                // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+                String[] splitedDate = selectedDate.split("/");
+                mDOB.setText(dateToshow1 + " " + splitedDate[2]);
+                tvDobForDb.setText(dobToDb);
+                patientDTO.setDateofbirth(dobToDb);
+                if (mAgeYears < 9) {
+                    mAge.setText("");
+                    mDOB.setText("");
+                    tvErrorAge.setVisibility(View.VISIBLE);
+
+                } else {
+                    mAge.setText(mAgeYears + "");
+                }
+                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+                setSelectedDob(mContext, dobToDb);
+            } else {
+                Log.d(TAG, "onClick: date empty");
+            }
+        });
+        dialog.show(requireFragmentManager(), "DatePicker");
+
     }
 
 
@@ -1045,55 +1086,59 @@ public class PatientPersonalInfoFragment extends Fragment {
                 Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
             }
         } else if (requestCode == MY_REQUEST_CODE) {
-            //selectedDate  -  30/5/2023
-            if (data != null) {
+            // getSelectedDate(data);
+        }
+    }
 
-                Bundle bundle = data.getExtras();
-                String selectedDate = bundle.getString("selectedDate");
-                String whichDate = bundle.getString("whichDate");
+    private void getSelectedDate(Intent data) {
+        //selectedDate  -  30/5/2023
+        if (data != null) {
 
-                if (!whichDate.isEmpty() && whichDate.equals("dobPatient")) {
-                    try {
-                        Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
-                        Date nowDate = new Date();
-                        if (sourceDate.after(nowDate)) {
-                            mAge.setText("");
-                            mDOB.setText("");
-                            // Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
-                if (!selectedDate.isEmpty()) {
-                    dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
-//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
-                    //for age
-                    String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
-                    mAgeYears = Integer.parseInt(ymdData[0]);
-                    mAgeMonths = Integer.parseInt(ymdData[1]);
-                    mAgeDays = Integer.parseInt(ymdData[2]);
+            Bundle bundle = data.getExtras();
+            String selectedDate = bundle.getString("selectedDate");
+            String whichDate = bundle.getString("whichDate");
 
-                    // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
-                    String[] splitedDate = selectedDate.split("/");
-                    mDOB.setText(dateToshow1 + " " + splitedDate[2]);
-                    tvDobForDb.setText(dobToDb);
-                    patientDTO.setDateofbirth(dobToDb);
-                    if (mAgeYears < 9) {
+            if (!whichDate.isEmpty() && whichDate.equals("dobPatient")) {
+                try {
+                    Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
+                    Date nowDate = new Date();
+                    if (sourceDate.after(nowDate)) {
                         mAge.setText("");
                         mDOB.setText("");
-                        tvErrorAge.setVisibility(View.VISIBLE);
-
-                    } else {
-                        mAge.setText(mAgeYears + "");
+                        // Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                    Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-                    setSelectedDob(mContext, dobToDb);
-                } else {
-                    Log.d(TAG, "onClick: date empty");
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+            }
+            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+            if (!selectedDate.isEmpty()) {
+                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
+                //for age
+                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
+                mAgeYears = Integer.parseInt(ymdData[0]);
+                mAgeMonths = Integer.parseInt(ymdData[1]);
+                mAgeDays = Integer.parseInt(ymdData[2]);
+
+                // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+                String[] splitedDate = selectedDate.split("/");
+                mDOB.setText(dateToshow1 + " " + splitedDate[2]);
+                tvDobForDb.setText(dobToDb);
+                patientDTO.setDateofbirth(dobToDb);
+                if (mAgeYears < 9) {
+                    mAge.setText("");
+                    mDOB.setText("");
+                    tvErrorAge.setVisibility(View.VISIBLE);
+
+                } else {
+                    mAge.setText(mAgeYears + "");
+                }
+                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+                setSelectedDob(mContext, dobToDb);
+            } else {
+                Log.d(TAG, "onClick: date empty");
             }
         }
     }

@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/enter_username"
             android:imeOptions="actionNext"
+            android:text="nurse1"
             android:inputType="textEmailAddress"
             android:maxLength="100"
             android:minHeight="@dimen/max_input_height"

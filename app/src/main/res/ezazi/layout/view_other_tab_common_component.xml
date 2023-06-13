@@ -289,9 +289,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/bed_number"
                 android:imeOptions="actionNext"
+                android:inputType="text"
                 android:importantForAutofill="no"
                 android:maxLength="3"
-                android:inputType="number"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
