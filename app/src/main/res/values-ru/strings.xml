@@ -878,5 +878,6 @@
     <string name="terms_conditions">правилами и\n условиями</string>
     <string name="and_setup">" и "</string>
     <string name="privacy_policy_setup">политикой конфиденциальности</string>
+    <string name="setup">Установить</string>
 
 </resources>
