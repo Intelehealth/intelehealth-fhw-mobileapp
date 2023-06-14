@@ -276,7 +276,15 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             VisitsDAO visitsDAO = new VisitsDAO();
             try {
                 if (mIsEditMode) {
-                    for (int i = 0; i < mObsDTOList.size(); i++) {
+                    for (int i = 0; i < obsDTOList.size(); i++) {
+                        ObsDTO obsDTOData = obsDTOList.get(i);
+                        obsDAO.updateObs(obsDTOData);
+                    }
+
+                  /*   old logic update is not working
+
+
+                   for (int i = 0; i < mObsDTOList.size(); i++) {
                         ObsDTO obsDTOData = mObsDTOList.get(i);
                         for (int j = 0; j < obsDTOList.size(); j++) {
                             if (obsDTOData.getConceptuuid().equals(obsDTOList.get(j).getConceptuuid())) {
@@ -286,7 +294,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                                 break;
                             }
                         }
-                    }
+                    }*/
                 } else {
                     obsDAO.insertObsToDb(obsDTOList);
                 }
