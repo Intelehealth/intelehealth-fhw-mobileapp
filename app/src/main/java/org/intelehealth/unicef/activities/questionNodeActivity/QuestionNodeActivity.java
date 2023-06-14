@@ -70,6 +70,7 @@ import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
 
 import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
 import static org.intelehealth.unicef.knowledgeEngine.Node.setAlertDialogBackground;
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
 
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
@@ -178,7 +179,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
 
-        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", getLocaleGender(this, patientGender), (int) float_ageYear_Month));
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

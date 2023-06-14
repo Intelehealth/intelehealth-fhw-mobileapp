@@ -73,6 +73,7 @@ import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
 
 import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
 import static org.intelehealth.unicef.knowledgeEngine.Node.setAlertDialogBackground;
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
 
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
@@ -218,7 +219,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 //        setTitle(patientName + ": " + getTitle());
 
         ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_physical_exam)));
-        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", getLocaleGender(this, patientGender), (int) float_ageYear_Month));
 
         recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);

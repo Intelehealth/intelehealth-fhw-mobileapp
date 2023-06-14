@@ -67,6 +67,7 @@ import org.intelehealth.unicef.utilities.exception.DAOException;
 import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
 
 import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -244,7 +245,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_patient_history)));
-        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", getLocaleGender(this, patientGender), (int) float_ageYear_Month));
 
         recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);

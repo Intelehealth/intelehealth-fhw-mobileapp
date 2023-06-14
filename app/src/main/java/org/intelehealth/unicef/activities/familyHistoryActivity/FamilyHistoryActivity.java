@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.familyHistoryActivity;
 
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -234,7 +236,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(getString(R.string.title_activity_family_history)));
-        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, (int) float_ageYear_Month));
+        ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", getLocaleGender(this, patientGender), (int) float_ageYear_Month));
 
 //        setTitle(patientName + ": " + getTitle());
 
