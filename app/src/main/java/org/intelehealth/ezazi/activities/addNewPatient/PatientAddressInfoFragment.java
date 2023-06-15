@@ -39,6 +39,7 @@ import org.intelehealth.ezazi.activities.addNewPatient.model.StateDistMaster;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
+import org.intelehealth.ezazi.models.dto.PatientAttributesModel;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -104,6 +105,7 @@ public class PatientAddressInfoFragment extends Fragment {
     private StateDistMaster mStateDistMaster;
     ArrayAdapter<String> districtAdapter, stateAdapter;
     String district;
+    PatientAttributesModel patientAttributesModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -149,15 +151,15 @@ public class PatientAddressInfoFragment extends Fragment {
         etDistrict = view.findViewById(R.id.et_district);
         etCityVillage = view.findViewById(R.id.et_city_village);
 
-        autotvCity.setFilters(new InputFilter[]{filter});
+        etCityVillage.setFilters(new InputFilter[]{filter});
         autotvState.setFilters(new InputFilter[]{filter});
         autotvDistrict.setFilters(new InputFilter[]{filter});
 
 
-
-        // autotvCountry.addTextChangedListener(new MyTextWatcher(autotvCountry));
         autotvState.addTextChangedListener(new MyTextWatcher(autotvState));
         autotvDistrict.addTextChangedListener(new MyTextWatcher(autotvDistrict));
+        etCityVillage.addTextChangedListener(new MyTextWatcher(etCityVillage));
+        etPostalCode.addTextChangedListener(new MyTextWatcher(etPostalCode));
 
 
         firstScreen = new PatientPersonalInfoFragment();
@@ -172,6 +174,7 @@ public class PatientAddressInfoFragment extends Fragment {
             editDetails = getArguments().getBoolean("editDetails");
             fromSummary = getArguments().getBoolean("fromSummary");
             patientUuidUpdate = getArguments().getString("patientUuidUpdate");
+            patientAttributesModel = (PatientAttributesModel) getArguments().getSerializable("patientAttributes");
 
 
            /* if (patientID_edit != null) {
@@ -466,6 +469,7 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putString("mAlternateNumberString", mAlternateNumberString);
         bundle.putBoolean("fromSummary", fromSummary);
         bundle.putString("patientUuidUpdate", patientUuidUpdate);
+        bundle.putSerializable("patientAttributes", (Serializable) patientAttributesModel);
 
         firstScreen.setArguments(bundle); // passing data to Fragment
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_add_patient, firstScreen).commit();
@@ -614,6 +618,8 @@ public class PatientAddressInfoFragment extends Fragment {
         bundle.putBoolean("fromSummary", fromSummary);
         bundle.putString("patientUuidUpdate", patientUuidUpdate);
         bundle.putBoolean("patient_detail", patient_detail);
+        bundle.putSerializable("patientAttributes", (Serializable) patientAttributesModel);
+
         fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 //
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_add_patient, fragment_thirdScreen).commit();
@@ -681,7 +687,7 @@ public class PatientAddressInfoFragment extends Fragment {
                 }
             } else*/
 
-            if(val.length()>0){
+            if (val.length() > 0) {
                 if (this.editText.getId() == R.id.autotv_state) {
                     Log.d(TAG, "afterTextChanged: in state watchr");
                     boolean isStateInList = searchForState(val);
@@ -706,7 +712,7 @@ public class PatientAddressInfoFragment extends Fragment {
                         tvDistrictError.setVisibility(View.GONE);
                         cardDistrict.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                     }
-                } else if (this.editText.getId() == R.id.autotv_city) {
+                } else if (this.editText.getId() == R.id.et_city_village) {
                     if (val.isEmpty()) {
                         tvErrorCityVillage.setVisibility(View.VISIBLE);
                         tvErrorCityVillage.setText(getString(R.string.select_city_village));
@@ -716,6 +722,15 @@ public class PatientAddressInfoFragment extends Fragment {
                         tvErrorCityVillage.setVisibility(View.GONE);
                         cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                     }
+                } else if (!val.isEmpty() && val.length() != 6) {
+
+                    tvErrorPostalCode.setVisibility(View.VISIBLE);
+                    tvErrorPostalCode.setText(getString(R.string.enter_postal_limit));
+                    cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+                } else {
+                    tvErrorPostalCode.setVisibility(View.GONE);
+                    cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                 }
             }
 
