@@ -1240,7 +1240,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     famHistText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                 famHistText.setEnabled(false);
 
-                famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
@@ -1250,27 +1250,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
                             dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
                         else dialogEditText.setText("");
-                        /*if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
-                            dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
-                        else
-                        {
-                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                            {
-                                if (famHistory.getValue("ar") != null && !famHistory.getValue("ar").equalsIgnoreCase(""))
-                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("ar")));
-                                else
-                                    dialogEditText.setText("");
-                            }
-                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
-                            {
-                                if (famHistory.getValue("en") != null && !famHistory.getValue("en").equalsIgnoreCase(""))
-                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("en")));
-                                else
-                                    dialogEditText.setText("");
-                            }
-                            else
-                                dialogEditText.setText("");
-                        }*/
+//                        if (famHistory.getValue(sessionManager.getAppLanguage()) != null && !famHistory.getValue(sessionManager.getAppLanguage()).equalsIgnoreCase(""))
+//                            dialogEditText.setText(Html.fromHtml(famHistory.getValue(sessionManager.getAppLanguage())));
+//                        else
+//                        {
+//                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+//                            {
+//                                if (famHistory.getValue("ar") != null && !famHistory.getValue("ar").equalsIgnoreCase(""))
+//                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("ar")));
+//                                else
+//                                    dialogEditText.setText("");
+//                            }
+//                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ar"))
+//                            {
+//                                if (famHistory.getValue("en") != null && !famHistory.getValue("en").equalsIgnoreCase(""))
+//                                    dialogEditText.setText(Html.fromHtml(famHistory.getValue("en")));
+//                                else
+//                                    dialogEditText.setText("");
+//                            }
+//                            else
+//                                dialogEditText.setText("");
+//                        }
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -1296,7 +1296,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         dialogInterface.dismiss();
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
                     }
-                });
+                });*/
 
                 famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -1365,7 +1365,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 complaintText.setEnabled(false);
 
-                complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+               /* complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
@@ -1400,7 +1400,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
                         dialogInterface.dismiss();
                     }
-                });
+                });*/
 
                 complaintDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
@@ -1475,7 +1475,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                 physicalText.setEnabled(false);
 
-                physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+               /* physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
@@ -1508,7 +1508,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, dialog);
                         dialogInterface.dismiss();
                     }
-                });
+                });*/
 
                 physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
@@ -1584,7 +1584,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     historyText.setText(Html.fromHtml(patHistory.getValue(sessionManager.getAppLanguage())));
                 historyText.setEnabled(false);
 
-                historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                /*historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
@@ -1618,7 +1618,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, dialog);
                         dialogInterface.dismiss();
                     }
-                });
+                });*/
 
                 historyDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
