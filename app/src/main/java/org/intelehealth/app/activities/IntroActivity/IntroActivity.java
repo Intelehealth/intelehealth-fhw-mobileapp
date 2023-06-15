@@ -114,7 +114,7 @@ public class IntroActivity extends AppCompatActivity {
 
         btnNext.setText(R.string.next);
 
-        BASE_URL = "https://service.sila.care:3004/api/openmrs/";
+        BASE_URL = "https://training.sila.care:3004/api/openmrs/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -335,7 +335,7 @@ public class IntroActivity extends AppCompatActivity {
                                                 for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
                                                     village_name = entry;
                                                 }
-                                                TestSetup("service.sila.care", "nurse1", "Nurse@123", "", village_name);
+                                                TestSetup("training.sila.care", "nurse1", "Nurse@123", "", village_name);
                                             }
                                         }
                                     } else {

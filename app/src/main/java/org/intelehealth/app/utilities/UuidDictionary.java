@@ -32,6 +32,11 @@ public class UuidDictionary {
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
     public static final String TELEMEDICINE_DIAGNOSIS = "537bb20d-d09d-4f88-930b-cc45c7d662df";
+    public static final String AID_ORDER_MEDICAL_EQUIP_LOAN = "27247234-e4aa-4139-a34c-c0494e40719b";
+    public static final String AID_ORDER_FREE_MEDICAL_EQUIP = "f6cddc5b-974a-419d-a4d5-6a56df3ffb1f";
+    public static final String AID_ORDER_COVER_MEDICAL_EXPENSE = "b21c3e01-2272-46b3-91eb-c40896323a8d";
+    public static final String AID_ORDER_COVER_SURGICAL_EXPENSE = "4d3f1e6e-171d-4b4b-a49f-ef5125788b8c";
+    public static final String AID_ORDER_CASH_ASSISTANCE = "0bf24570-a959-4066-9354-6d553cd6161b";
     public static final String JSV_MEDICATIONS = "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca";
     //    public static final String MEDICAL_ADVICE = "0308000d-77a2-46e0-a6fa-a8c1dcbc3141"; //old uuid medical advice
     public static final String MEDICAL_ADVICE = "67a050c1-35e5-451c-a4ab-fff9d57b0db1";

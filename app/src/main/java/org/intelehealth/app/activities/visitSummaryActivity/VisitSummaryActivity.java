@@ -229,6 +229,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     String rxReturned = "";
     String testsReturned = "";
     String adviceReturned = "";
+    String aidOrderReturned = "";
     String doctorName = "";
     String additionalReturned = "";
     String followUpDate = "";
@@ -281,6 +282,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     CardView medicalAdviceCard;
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
+    CardView aidOrderCard;
     CardView followUpDateCard;
     CardView card_print, card_share;
     CardView saveButton;
@@ -291,6 +293,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
+    TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
@@ -658,6 +661,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
         requestedTestsCard = findViewById(R.id.cardView_tests);
         additionalCommentsCard = findViewById(R.id.cardView_additional_comments);
+        aidOrderCard = findViewById(R.id.cardView_aid_order);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
@@ -763,6 +767,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
+        aidOrderType1TextView = findViewById(R.id.textView_content_aid_order_type1);
+        aidOrderType2TextView = findViewById(R.id.textView_content_aid_order_type2);
+        aidOrderType3TextView = findViewById(R.id.textView_content_aid_order_type3);
+        aidOrderType4TextView = findViewById(R.id.textView_content_aid_order_type4);
+        aidOrderType5TextView = findViewById(R.id.textView_content_aid_order_type5);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -2201,6 +2210,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
+        String aidOrder_web = stringToWeb(aidOrderReturned);
+
         String rx_web = stringToWeb(rxReturned).replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">●</p>", "");
 
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
@@ -2352,6 +2363,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_instructions)) + "</p></b></u>" + "%s<br>", advice_web));
             }
 
+            if (!aidOrder_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
+            }
+
             if (!followUp_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_follow_up_date)) + "</p></b></u>" + "%s<br>", followUp_web));
             }
@@ -2391,6 +2406,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             if (!advice_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_advice)) + "</p></b></u>" + "%s<br>", advice_web));
+            }
+
+            if (!aidOrder_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
             }
 
             if (!followUp_web.isEmpty()) {
@@ -3546,6 +3565,106 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
                 break;
             }
+            case UuidDictionary.AID_ORDER_MEDICAL_EQUIP_LOAN: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type1) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type1) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType1TextView.setVisibility(View.VISIBLE);
+                    if(value.contains("Others||"))
+                        value = value.replace("Others||", "Others - ");
+                }
+                aidOrderType1TextView.setText(getResources().getString(R.string.aid_order_type1) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType1TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_FREE_MEDICAL_EQUIP: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type2) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type2) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType2TextView.setVisibility(View.VISIBLE);
+                    if(value.contains("Others||"))
+                        value = value.replace("Others||", "Others - ");
+                }
+
+                aidOrderType2TextView.setText(getResources().getString(R.string.aid_order_type2) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType2TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_COVER_MEDICAL_EXPENSE: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type3) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type3) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType3TextView.setVisibility(View.VISIBLE);
+                }
+                aidOrderType3TextView.setText(getResources().getString(R.string.aid_order_type3) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType3TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_COVER_SURGICAL_EXPENSE: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type4) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type4) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType4TextView.setVisibility(View.VISIBLE);
+                }
+                aidOrderType4TextView.setText(getResources().getString(R.string.aid_order_type4) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType4TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
+            case UuidDictionary.AID_ORDER_CASH_ASSISTANCE: {
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = aidOrderReturned + ",\n" + getResources().getString(R.string.aid_order_type5) + " " + value;
+                } else {
+                    aidOrderReturned = getResources().getString(R.string.aid_order_type5) + " " + value;
+                }
+                Log.d("aidOrder", aidOrderReturned);
+                if (aidOrderCard.getVisibility() != View.VISIBLE) {
+                    aidOrderCard.setVisibility(View.VISIBLE);
+                }
+                if (!value.isEmpty() && !value.trim().equalsIgnoreCase("")) {
+                    aidOrderType5TextView.setVisibility(View.VISIBLE);
+                }
+                aidOrderType5TextView.setText(getResources().getString(R.string.aid_order_type5) + " " + value);
+                if (LocaleHelper.isArabic(this)) {
+                    aidOrderType5TextView.setGravity(Gravity.END);
+                }
+                break;
+            }
             case UuidDictionary.JSV_MEDICATIONS: {
                 Log.i(TAG, "parseData: val:" + value);
                 Log.i(TAG, "parseData: rx" + rxReturned);
@@ -4149,6 +4268,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //                    additionalCommentsCard.setVisibility(View.GONE);
 //
 //                }
+                if (!aidOrderReturned.isEmpty()) {
+                    aidOrderReturned = "";
+                    aidOrderType1TextView.setText("");
+                    aidOrderType2TextView.setText("");
+                    aidOrderType3TextView.setText("");
+                    aidOrderType4TextView.setText("");
+                    aidOrderType5TextView.setText("");
+                    aidOrderCard.setVisibility(View.GONE);
+                }
                 if (!followUpDate.isEmpty()) {
                     followUpDate = "";
                     followUpDateTextView.setText("");
@@ -4287,6 +4415,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             testsReturned = "";
             adviceReturned = "";
             additionalReturned = "";
+            aidOrderReturned = "";
             followUpDate = "";
             String[] columns = {"value", " conceptuuid"};
             String visitSelection = "encounteruuid = ? ";
@@ -4781,6 +4910,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String diagnosis_web = stringToWeb_sms(diagnosisReturned);
 
+        String aidOrder_web = stringToWeb_sms(aidOrderReturned);
+
         String followUpDateStr = "";
         if (followUpDate != null && followUpDate.contains(",")) {
             String[] spiltFollowDate = followUpDate.split(",");
@@ -4902,6 +5033,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         // If the Advice provided is not empty, only then will the details be displayed in the Prescription
         if (!advice_web.isEmpty()) {
             htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + " <br>" + "%s" + "</b><br>", advice_web));
+        }
+
+        if (!aidOrder_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
         }
 
         // If the Follow Up Date provided is not empty, only then will the details be displayed in the Prescription

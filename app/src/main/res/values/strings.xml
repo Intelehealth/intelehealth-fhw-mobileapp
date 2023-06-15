@@ -1606,7 +1606,7 @@
     <string name="clinical_social_visits_information">The following sections are for clinical visits, for social visits, submit/ swipe right until the end of the sections to reach the note page</string>
     <string name="swipe_to_move_forward">Swipe to the right to move forward</string>
     <string name="identification_fill_required_fields">Fill required fields</string>
-    <string name="action_homepage">Homepage</string>
+    <string name="action_homepage">Home Page</string>
     <string name="past_medical_history_aid_skip_message">For aid visits, you may skip the Past Medical History</string>
     <string name="family_history_aid_skip_message">For aid visits, you may skip the Family History</string>
     <string name="vitals_aid_skip_message">For aid visits, you may skip the Vitals</string>
@@ -1622,4 +1622,11 @@
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
     <string name="visit_data_loss_message">If wanted to exit the visit without losing the data, please select \"no\" and then choose \"return to patient details or home page\". Continuing with this step will end the visit and prevent entering any additional information. If the data has not been uploaded to the server, then the visit will not be recorded in the patient\'s chart.</string>
 
+    //aid order
+    <string name="visit_summary_aid_order">Aid Order</string>
+    <string name="aid_order_type1">Type 1. Medical Equipment Loan:</string>
+    <string name="aid_order_type2">Type 2. Free Medical Equipment:</string>
+    <string name="aid_order_type3">Type 3. Cover Medication Expenses:</string>
+    <string name="aid_order_type4">Type 4. Cover Surgical Expenses:</string>
+    <string name="aid_order_type5">Type 5. Cash Assistance: </string>
 </resources>

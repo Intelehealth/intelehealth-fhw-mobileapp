@@ -641,11 +641,11 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
             mCountry.setSelection(countryAdapter.getPosition(country1));
             //   mState.setSelection(stateAdapter.getPosition(state));
             // setting state - start
-            String state = String.valueOf(sessionManager.getStateName());
+            String state = String.valueOf(StringUtils.extractEnglishStateName(sessionManager.getStateName()));
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 mState.setSelection(stateAdapter.getPosition(state));
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
-                int position = stateAdapter.getPosition(StringUtils.switch_en_to_ar_state(state));
+                int position = stateAdapter.getPosition(StringUtils.extractArabicStateName(state));
                 mState.setSelection(position);
             }
             // setting state - end
@@ -5900,7 +5900,7 @@ public class IdentificationActivity extends AppCompatActivity /*implements Surve
                 int position = villageAdapter.getPosition(villageName);
                 if (position != -1) mVillage.setSelection(position);
             } else {
-                String villageName = checkAndRemoveEndDash(sessionManager.getVillageName());
+                String villageName = checkAndRemoveEndDash(StringUtils.extractEnglishVillageName(sessionManager.getVillageName()));
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ar")) {
                     villageName = StringUtils.switch_en_to_ar_village_edit(villageName);
                 }

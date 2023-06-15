@@ -1080,6 +1080,136 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardView_aid_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/padding_card"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_heading_aid_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/visit_summary_aid_order"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_aid_order"
+                    android:padding="@dimen/padding_card">
+
+                    <!--Diagnosis-->
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_aid_order_type5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:text="@string/sample_text"
+                            android:textAlignment="viewStart"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                    </TableRow>
+
+                </TableLayout>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_follow_up_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

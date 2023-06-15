@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="@string/server_url"
-            android:text="service.sila.care"
+            android:text="training.sila.care"
             android:inputType="textAutoComplete"
             android:maxLines="1"
             android:fontFamily="@font/lato_regular"
