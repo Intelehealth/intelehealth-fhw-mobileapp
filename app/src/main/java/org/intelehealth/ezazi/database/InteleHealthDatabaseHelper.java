@@ -293,6 +293,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('ada81344-4a25-4b9b-9f63-7602673194e4','Stage2_Hour5_2')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('5a58c6dc-f009-4adc-a650-5a435799bc84','Stage2_Hour5_3')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('081e0959-ce88-414d-b4be-f6c1593395aa','Stage2_Hour5_4')");
+
+            // For SOS encounter
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('d1fb190a-9ebb-448f-8d61-dfeeb20fd931','Encounter Status')");
         }
     }
 

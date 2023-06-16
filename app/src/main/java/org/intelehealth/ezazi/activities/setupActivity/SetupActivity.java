@@ -33,7 +33,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.button.MaterialButton;
@@ -56,6 +55,7 @@ import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
+import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.Base64Utils;
 import org.intelehealth.ezazi.utilities.DialogUtils;
@@ -187,6 +187,8 @@ public class SetupActivity extends AppCompatActivity {
             inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(), 0);
             attemptLogin();
         });
+
+        addValidationListener();
 
 //        r1 = findViewById(R.id.demoMindmap);
 //        r2 = findViewById(R.id.downloadMindmap);
@@ -607,6 +609,14 @@ public class SetupActivity extends AppCompatActivity {
 //        }
 //    }
 
+
+    private void addValidationListener() {
+        new InputChangeValidationListener(mEmailInputView, this::isEmailValid)
+                .validate(getString(R.string.error_invalid_email));
+        new InputChangeValidationListener(mPasswordInputView, this::isPasswordValid)
+                .validate(getString(R.string.error_invalid_password));
+    }
+
     /**
      * Check username and password validations.
      * Get user selected location.
@@ -789,12 +799,10 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 8;
     }
 

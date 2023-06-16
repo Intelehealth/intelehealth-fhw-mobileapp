@@ -160,6 +160,7 @@ public class DateAndTimeUtils {
 
         return age;
     }
+
     //calculate year, month, days from two date
     public static String getAgeInYearMonthNew(String s, Context context) {
         if (s == null) return "";
@@ -185,23 +186,22 @@ public class DateAndTimeUtils {
         LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-
         String age = "";
         String tyears = "", tmonth = "", tdays = "";
         //String xyears = "", xmonths = "";
 
         if (period.getYears() > 0) {
-            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
-            //xyears = String.valueOf(period.getYears());
+            age = period.getYears() + " " + context.getResources().getString(R.string.years);
         }
-        if (period.getMonths() > 0) {
-            tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
-            //xmonths = String.valueOf(period.getMonths());
-        }
-        if (period.getDays() > 0)
-            tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
-        age = tyears + "-" + tmonth + "-" + tdays;
+        if (period.getMonths() > 0) {
+            age = age.length() > 0 ? "-" : "" + period.getMonths() + " " + context.getResources().getString(R.string.months);
+        }
+
+        if (period.getDays() > 0)
+            age = age.length() > 0 ? "-" : "" + period.getDays() + " " + context.getResources().getString(R.string.days);
+
+//        age = tyears + "-" + tmonth + "-" + tdays;
 
         return age;
     }
@@ -544,6 +544,7 @@ public class DateAndTimeUtils {
         }
         return age;
     }
+
     public static String getCurrentDateInDDMMYYYY() {
         Date cDate = new Date();
         String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);

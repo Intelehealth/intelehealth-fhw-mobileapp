@@ -15,6 +15,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -335,7 +337,7 @@ public class ObsDAO {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-      //  db.beginTransaction();
+        //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -350,13 +352,13 @@ public class ObsDAO {
             values.put("sync", "true");
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-     //       db.setTransactionSuccessful();
+            //       db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-     //       db.endTransaction();
+            //       db.endTransaction();
         }
 
         return isUpdated;
@@ -364,12 +366,13 @@ public class ObsDAO {
     }
 
 
-    /** MISSED_ENCOUNTER --> MISSED_OBS
+    /**
+     * MISSED_ENCOUNTER --> MISSED_OBS
+     *
      * @param encounterUuid
-     * @param creatorID
-     * since card is disabled that means that either the user has filled data or has forgotten to fill.
-     * We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
-     * If no obs created than create Missed Enc obs for this disabled encounter. Else its clear that the data was filled up.
+     * @param creatorID     since card is disabled that means that either the user has filled data or has forgotten to fill.
+     *                      We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+     *                      If no obs created than create Missed Enc obs for this disabled encounter. Else its clear that the data was filled up.
      */
     public int checkObsAndCreateMissedObs(String encounterUuid, String creatorID) {
         int isMissed = 0;
@@ -383,31 +386,29 @@ public class ObsDAO {
             // now insert a new row in obs table against this encoutneruuid and set sync to false.
             isMissed = 1; // missed
             ContentValues values = new ContentValues();
-                values.put("uuid", UUID.randomUUID().toString());
-                values.put("encounteruuid", encounterUuid);
-                values.put("creator", creatorID);
-                values.put("conceptuuid", MISSED_ENCOUNTER); // Missed Encounter
-                values.put("comment", "");
-                values.put("value", "-");
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("voided", "0");
-                values.put("sync", "false");
+            values.put("uuid", UUID.randomUUID().toString());
+            values.put("encounteruuid", encounterUuid);
+            values.put("creator", creatorID);
+            values.put("conceptuuid", MISSED_ENCOUNTER); // Missed Encounter
+            values.put("comment", "");
+            values.put("value", "-");
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "0");
+            values.put("sync", "false");
 
-                db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             //end
-        }
-        else {
+        } else {
             // if missed enc is present in that case send ismissed = 1 ie. missed enc will be dispalyed on card else send submitted.
             // this is done so as to avoid everytime replacig a new row in the db for missed enc as since earlier it was creating a new record
             // everytime for missed enc.
             String typeuuid = "";
             while (idCursor.moveToNext()) {
                 typeuuid = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
-                if(!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase(MISSED_ENCOUNTER)) {
+                if (!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase(MISSED_ENCOUNTER)) {
                     // ie. if typeuuid == MISSED_ENCOUNTER ie. missed enc already present than isMissed=1 else 2 ie. Submitted.
                     isMissed = 3; // already missed is created so check if 1 than only sync the record.
-                }
-                else {
+                } else {
                     isMissed = 2; // submitted
                     // this means that this encounter is filled with obs ie. It was answered and then disabled.
                 }
@@ -431,8 +432,7 @@ public class ObsDAO {
             // that means there is no obs for this enc which means that this encounter is missed... or not yet filled up.
             // now insert a new row in obs table against this encoutneruuid and set sync to false.
             isMissed = 1; // missed
-        }
-        else {
+        } else {
             isMissed = 2; // submitted
             // this means that this encounter is filled with obs ie. It was answered and then disabled.
         }
@@ -452,13 +452,12 @@ public class ObsDAO {
             while (idCursor.moveToNext()) {
                 valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
             }
-        }
-        else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
+        } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
             valueData = "";
         }
 
         /*if (idCursor.getCount() <= 0) {
-            *//* This means against this enc there is no obs. Which means this obs is not filled yet. *//*
+         *//* This means against this enc there is no obs. Which means this obs is not filled yet. *//*
             isMissed = 1; // no birth outcome present.
         }
         else {
@@ -481,8 +480,7 @@ public class ObsDAO {
         if (idCursor.getCount() <= 0) {
             /* This means against this enc there is no obs. Which means this obs is not filled yet. */
             isMissed = 1; // yot filled yet
-        }
-        else {
+        } else {
             isMissed = 2; // submitted
             // this means that this encounter is filled with obs ie. It was answered and then disabled.
         }
@@ -494,7 +492,7 @@ public class ObsDAO {
     public boolean insert_Obs(String encounteruuid, String creatorID, String value, String conceptId) throws DAOException {
         boolean isUpdated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-      //  db.beginTransaction();
+        //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -509,18 +507,33 @@ public class ObsDAO {
             values.put("sync", "false");
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-         //   db.setTransactionSuccessful();
+            //   db.setTransactionSuccessful();
             isUpdated = true;
-          //  Logger.logD("updated", "updatedrecords count" + insertedCount);
+            //  Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-         //   db.endTransaction();
+            //   db.endTransaction();
         }
 
         return isUpdated;
 
     }
 
+    public void createEncounterType(String encounterUuid, String value) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            try {
+                ObsDTO obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(value);
+                obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_STATUS);
+                new ObsDAO().insertObs(obsDTO);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 }

@@ -81,6 +81,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     RecyclerView recyclerView;
@@ -388,8 +390,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
         Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-
-        createNewEncounter(visitUuid, nextEncounterTypeName);
+        String encounterUuid = UUID.randomUUID().toString();
+        createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
+        new ObsDAO().createEncounterType(encounterUuid, AppConstants.TimelineEncounterType.SOS.name());
         fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
     }
 
@@ -823,12 +826,12 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         }
     };
 
-    private static void createNewEncounter(String visit_UUID, String nextEncounterTypeName) {
+    private static void createNewEncounter(String encounterUuid, String visit_UUID, String nextEncounterTypeName) {
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
         String typeUuid = encounterDAO.getEncounterTypeUuid(nextEncounterTypeName);
         Log.e(TAG, "TypeUuid=>" + typeUuid);
-        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setUuid(encounterUuid);
         encounterDTO.setVisituuid(visit_UUID);
         encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
@@ -1250,8 +1253,11 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             // now start 15mins alarm for Stage 2 -> since 30mins is cancelled for Stage 1.
             //triggerAlarm_Stage2_every15mins(visitUuid);
             //cancelStage1_Alarm(); // cancel's stage 1 alarm
-            createNewEncounter(visitUuid, "Stage2_Hour1_1");
+            String encounterUuid = UUID.randomUUID().toString();
+            createNewEncounter(encounterUuid, visitUuid, "Stage2_Hour1_1");
+            new ObsDAO().createEncounterType(encounterUuid, AppConstants.TimelineEncounterType.NORMAL.name());
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+            stageNo = 2;
             endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
         });
 
