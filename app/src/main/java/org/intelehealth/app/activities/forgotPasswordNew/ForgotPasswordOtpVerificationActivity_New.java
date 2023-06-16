@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -109,8 +110,16 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
         });
 
         rvHelpInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ChatSupportHelpActivity_New.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ChatSupportHelpActivity_New.class);
+            startActivity(intent);*/
+
+            //As socket implementation is pending thus adding this flow temporarily: JIRA Ticket IDA4-1130
+            String phoneNumber = getString(R.string.support_mobile_no_1);
+            String message = String.format(getString(R.string.help_whatsapp_string), new SessionManager(ForgotPasswordOtpVerificationActivity_New.this).getChwname());
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(
+                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                    phoneNumber, message))));
         });
 
         buttonVerifyOtp.setOnClickListener(v -> {
