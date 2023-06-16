@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tv_internet_desc_margin_top"
+            android:layout_margin="@dimen/tv_internet_desc_margin_top"
             android:gravity="center"
             android:lineHeight="@dimen/tv_internet_desc_line_height"
             android:lineSpacingExtra="@dimen/tv_internet_desc_line_spacing"
