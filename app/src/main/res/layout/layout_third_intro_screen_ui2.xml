@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <LinearLayout
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:src="@drawable/third" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/intro_heading_margin_top"
+        android:gravity="center"
+        android:lineHeight="@dimen/intro_heading_line_height"
+        android:text="@string/provide_prescriptions"
+        android:textColor="@color/textColorBlack"
+        android:textSize="@dimen/introscreen_title"
+        android:textStyle="bold" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/third" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/intro_description_margin_start"
+        android:layout_marginTop="@dimen/intro_description_margin_top"
+        android:layout_marginEnd="@dimen/intro_description_margin_end"
+        android:gravity="center"
+        android:justificationMode="inter_word"
+        android:lineHeight="@dimen/intro_description_line_height"
+        android:text="@string/provide_prescriptions_intro"
+        android:textColor="@color/textColorGray"
+        android:textSize="@dimen/introscreen_content" />
+</LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/intro_heading_margin_top"
-            android:gravity="center"
-            android:lineHeight="@dimen/intro_description_line_height"
-            android:text="@string/provide_prescriptions"
-            android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/introscreen_title"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/intro_description_margin_start"
-            android:layout_marginTop="@dimen/intro_description_margin_top"
-            android:layout_marginEnd="@dimen/intro_description_margin_end"
-            android:gravity="center"
-            android:justificationMode="inter_word"
-            android:lineHeight="@dimen/intro_description_line_height"
-            android:text="@string/provide_prescriptions_intro"
-            android:textColor="@color/textColorGray"
-            android:textSize="@dimen/introscreen_content" />
-    </LinearLayout>
 </RelativeLayout>
+
