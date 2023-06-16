@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,13 +23,16 @@ import java.util.Locale;
 
 public class ChatSupportHelpActivity_New extends AppCompatActivity {
 
+    ImageView ivBackArrow, ivIsInternet;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_support_help_ui2);
 
-
-        ImageView ivIsInternet = findViewById(R.id.iv_is_internet);
+         ivIsInternet = findViewById(R.id.iv_is_internet);
+         ivBackArrow = findViewById(R.id.iv_back_arrow_chat);
 
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
@@ -36,6 +40,13 @@ public class ChatSupportHelpActivity_New extends AppCompatActivity {
             ivIsInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }
+
+        ivBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         RecyclerView rvChatSupport = findViewById(R.id.rv_chatting);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
