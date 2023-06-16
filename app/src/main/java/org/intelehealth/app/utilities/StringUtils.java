@@ -2193,6 +2193,30 @@ public final class StringUtils {
         return val;
     }
 
+    public static String translateLocation(String val, String locale) {
+        if (locale.equalsIgnoreCase("hi")) {
+
+            switch (val) {
+                case "Telemedicine Clinic 1":
+                    val = "टेलीमेडिसिन क्लीनिक 1";
+                    break;
+                case "Telemedicine Clinic 2":
+                    val = "टेलीमेडिसिन क्लीनिक 2";
+                    break;
+                case "Telemedicine Clinic 3":
+                    val = "टेलीमेडिसिन क्लीनिक 3";
+                    break;
+                case "Remote":
+                    val = "रिमोट";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }
+
     /**
      * Ritika======
      * put only english Language into Db
