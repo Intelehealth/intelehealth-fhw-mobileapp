@@ -1613,7 +1613,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="benefits_of_walking">Benefits of walking</string>
     <string name="out_of"> out of </string>
     <string name="unclosed_visits">unclosed visits</string>
-    <string name="pending">pending</string>
+    <string name="pending">Pending</string>
     <string name="exit_app">Exit App</string>
     <string name="last_sync">Last sync</string>
     <string name="help_center">Help center</string>
@@ -1783,7 +1783,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="type_or_select_reason">Type or select reason eg. Fever</string>
     <string name="enter_value">Enter value</string>
     <string name="enter_state">Enter state</string>
-    <string name="enter_village_town_city">Enter village/town/city</string>
+    <string name="enter_village_town_city">Enter Village/Town/City</string>
     <string name="enter_patient_address">Enter patient address</string>
     <string name="enter_district">Enter district</string>
     <string name="select_education">Select Education</string>

@@ -827,7 +827,7 @@
     <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करने में असमर्थ हैं। प्रोटोकॉल डाउनलोड का पुन: प्रयास करने के लिए \'हां\' दबाएं। डेमो प्रोटोकॉल के साथ जारी रखने के लिए \'नहीं\' दबाएं।</string>
     <string name="error_login_title">लॉगिन करते समय त्रुटि</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
-    <string name="app_version_string">App Version - %1$s</string>
+    <string name="app_version_string">ऐप संस्करण - %1$s</string>
     <string name="no_visit_created">कोई विज़िट नहीं बना है</string>
     <string name="add_patient">मरीजों को जोड़ें</string>
     <string name="enter_patient_s_body_measurement_details">रोगी के शारीरिक माप के विवरण एंटर करें</string>
@@ -1163,7 +1163,7 @@
     <string name="add_a_picture">फोटो जोड़े</string>
     <string name="enable_permission_for_time_tracking">टाइम ट्रैकिंग फीचर डिस्प्ले करने के लिए कृपया जरूरी परमिशन सक्षम करें।</string>
     <string name="permissions_required">परमिशन आवश्यक</string>
-    <string name="chw_id">CHW ID:</string>
+    <string name="chw_id">सीएचडब्ल्यू आईडी:</string>
     <string name="app_reset_successfully">ऐप सफलतापूर्वक रिसेट हुआ</string>
     <string name="please_open_the_app_again">कृपया दुबारा ऐप खोलें</string>
     <string name="network_failure">नेटवर्क नहीं है!</string>

@@ -71,10 +71,10 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     @Override
     protected void onResume() {
         super.onResume();
-        loaAllAppointments();
+        loadAllAppointments();
     }
 
-    private void loaAllAppointments() {
+    private void loadAllAppointments() {
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
@@ -202,7 +202,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
                     }
 
                 }*/
-                loaAllAppointments();
+                loadAllAppointments();
             }
 
             @Override
