@@ -39,7 +39,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColorHint="@color/textColorLightGary"
-                    android:textSize="@dimen/txtsize_patdetail_16sp"
+                    android:textSize="@dimen/txtsize_patdetail_14sp"
                     app:iconifiedByDefault="false"
                     app:queryHint="@string/search_patient" />
 
@@ -156,16 +156,12 @@
 
                         />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/filter_header"
-                        android:layout_marginTop="@dimen/margin_4">
-
                         <androidx.cardview.widget.CardView
                             android:id="@+id/filter_priority_relative"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@+id/filter_header"
+                            android:layout_marginTop="@dimen/margin_4"
                             android:layout_marginEnd="@dimen/margin_10"
                             android:backgroundTint="@color/grey_button_bg"
                             app:cardCornerRadius="@dimen/corner_radius_8dp"
@@ -242,7 +238,6 @@
                         -->
 
 
-                    </RelativeLayout>
                 </RelativeLayout>
 
                 <!--Filter View - end -->
