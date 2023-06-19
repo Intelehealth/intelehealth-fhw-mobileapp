@@ -155,7 +155,7 @@
     <string name="table_bpsys" translatable="false">Cистолическое АД</string>
     <string name="table_bpdia" translatable="false">Диастолическое АД</string>
     <string name="table_temp" translatable="false">Температура (C)</string>
-    <string name="table_spo2" translatable="false">Сатурация SpO2 (%)</string>
+    <string name="table_spo2" translatable="false">SpO2 (%)</string>
 
     //Patient Search Screen
     <string name="search_hint" translatable="false">Введите для поиска пациента по имени...</string>
@@ -169,13 +169,13 @@
     <string name="title_activity_family_history" translatable="false">Семейная история</string>
     <string name="title_activity_physical_exam" translatable="false">Физический осмотр</string>
     <string name="title_activity_patient_summary" translatable="false">Краткое описание визита</string>
-    <string name="visit_summary_temperature" translatable="false">Температура(C)</string>
+    <string name="visit_summary_temperature" translatable="false">Температура (C)</string>
     <string name="visit_summary_pulseox" translatable="false">Сатурация SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty" translatable="false">Дежурный медработник</string>
     <string name="visit_summary_vitals_heading" translatable="false">Показатели</string>
     <string name="visit_summary_height_heading" translatable="false">Рост (см)</string>
     <string name="visit_summary_weight" translatable="false">Вес (кг)</string>
-    <string name="visit_summary_bmi" translatable="false">ИМТ</string>
+    <string name="visit_summary_bmi" translatable="false">Индекс ИМТ</string>
     <string name="visit_summary_bp" translatable="false">АД</string>
     <string name="visit_summary_pulse" translatable="false">Пульс</string>
     <string name="visit_summary_previous_reports" translatable="false">Предыдущие отчеты</string>
@@ -473,7 +473,7 @@
     <string name="choose_an_option_for_protocols">Выберите вариант протоколов</string>
     <string name="please_enter_your_username_and_password">Пожалуйста, введите имя пользователя и пароль</string>
     <string name="android_id">Андроид ID:</string>
-    <string name="respiratory_rate">Частота Дыхания</string>
+    <string name="respiratory_rate">Частота дыхания</string>
     <string name="click_to_download_the_images">Нажмите, чтобы загрузить изображения</string>
     <string name="doctor">Подробная информация о враче</string>
     <string name="health_worker">Семейный врач</string>
@@ -548,7 +548,7 @@
     <string name="upload_started">Загрузка...</string>
     <string name="visit_uploaded_successfully">Визит загружен успешно</string>
     <string name="visit_uploaded_failed">Будет загружен, когда будет доступен интернет</string>
-    <string name="visitID">Идентификатор визита</string>
+    <string name="visitID">ID Визита</string>
 
     <string name="end_visit_msg">Вы уверены, что хотите завершить визит?</string>
     <string name="prescription_not_downloaded_check_internet">Рецепт не загружен, проверьте подключение к интернету</string>
@@ -613,7 +613,7 @@
     <string name="dr_registration_no">Номер регистрации: </string>
     <string name="dr_phone_number">Телефонный номер: </string>
     <string name="dr_email">Электронное письмо: </string>
-    <string name="_visit_summary"> Итоги посещения</string>
+    <string name="_visit_summary">Краткое описание визита</string>
     <string name="patient_id_">Идентификатор(ID) пациента: </string>
     <string name="patient_name_title">Имя пациента: </string>
     <string name="patient_DOB">Дата рождения пациента: </string>
@@ -808,8 +808,8 @@
     <string name="app_version_string">App Version - %1$s</string>
     <string name="no_visit_created">No visit created</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
-    <string name="height_cm">Height (cm)</string>
-    <string name="weight_kg">Weight (kg)</string>
+    <string name="height_cm">Рост (см)</string>
+    <string name="weight_kg">Вес (кг)</string>
     <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
     <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
     <string name="bp_sys">BP Sys</string>
@@ -894,6 +894,14 @@
     <string name="enter_password1">Введите пароль</string>
 
     <string name="start_visit">Начальный визит</string>
+    <string name="chw_worker">Работник КСР</string>
+    <string name="notifi_reminders">Напоминания</string>
+    <string name="notifi_incompl_activity">Незавершенная деятельность</string>
+    <string name="notifi_archived_notifi">Архивные уведомления</string>
+    <string name="details">Подробности</string>
+    <string name="chief_complaint">Основная жалоба(ы)</string>
+    <string name="physical_examination">Физический осмотр</string>
+    <string name="general_exams">Общие обследования</string>
 
 
 </resources>
