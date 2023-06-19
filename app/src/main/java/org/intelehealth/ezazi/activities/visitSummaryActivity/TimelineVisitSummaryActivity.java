@@ -1255,8 +1255,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             //triggerAlarm_Stage2_every15mins(visitUuid);
             //cancelStage1_Alarm(); // cancel's stage 1 alarm
             String encounterUuid = UUID.randomUUID().toString();
-            createNewEncounter(encounterUuid, visitUuid, "Stage2_Hour1_1");
             new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID());
+            createNewEncounter(encounterUuid, visitUuid, "Stage2_Hour1_1");
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
             stageNo = 2;
             endStageButton.setText(context.getResources().getText(R.string.end2StageButton));

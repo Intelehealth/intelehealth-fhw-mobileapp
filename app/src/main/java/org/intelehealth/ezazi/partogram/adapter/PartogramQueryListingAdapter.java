@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -175,6 +176,16 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
         if (paramDateType.equalsIgnoreCase(PartogramConstants.INPUT_TXT_TYPE)) {
             dataEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+            String conceptId = mItemList.get(position).getParamInfoList().get(positionChild).getConceptUUID();
+            // Supervisor Doctor concept id matching to apply only for it
+            if (conceptId.equals("7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e")) {
+                dataEditText.setFilters(new InputFilter[]{(source, start, end, dest, dstart, dend) -> {
+                    if (source.toString().matches("[a-zA-Z 0-9]+")) {
+                        return source;
+                    } else return "";
+                }
+                });
+            }
         } else {
 
             if (paramDateType.equalsIgnoreCase(PartogramConstants.INPUT_DOUBLE_4_DIG_TYPE)) {

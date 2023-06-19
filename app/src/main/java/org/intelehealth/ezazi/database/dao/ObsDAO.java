@@ -427,24 +427,26 @@ public class ObsDAO {
         return status;
     }
 
-    public int checkObsAddedOrNt(String encounterUuid, String creatorID) {
-        int isMissed = 0;
+    public EncounterDTO.Status checkObsAddedOrNt(String encounterUuid, String creatorID) {
+        EncounterDTO.Status status = EncounterDTO.Status.MISSED;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
-                new String[]{encounterUuid, MISSED_ENCOUNTER});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid NOT IN (?, ?)",
+                new String[]{encounterUuid, MISSED_ENCOUNTER, SOS_ENCOUNTER_STATUS});
 
-        if (idCursor.getCount() <= 0) {
-            // that means there is no obs for this enc which means that this encounter is missed... or not yet filled up.
-            // now insert a new row in obs table against this encoutneruuid and set sync to false.
-            isMissed = 1; // missed
-        } else {
-            isMissed = 2; // submitted
-            // this means that this encounter is filled with obs ie. It was answered and then disabled.
-        }
+//        if (idCursor.getCount() <= 0) {
+//            // that means there is no obs for this enc which means that this encounter is missed... or not yet filled up.
+//            // now insert a new row in obs table against this encoutneruuid and set sync to false.
+//            isMissed = 1; // missed
+//        } else {
+//            isMissed = 2; // submitted
+//            // this means that this encounter is filled with obs ie. It was answered and then disabled.
+//        }
+
+        if(idCursor.getCount() > 0) return EncounterDTO.Status.SUBMITTED;
         idCursor.close();
 
-        return isMissed;
+        return status;
     }
 
     public String checkBirthOutcomeObsExistsOrNot(String encounterUuid) {
@@ -544,8 +546,8 @@ public class ObsDAO {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor idCursor = db.rawQuery("SELECT conceptuuid FROM tbl_obs where encounteruuid = ? " +
-                        "AND voided='0' AND creator =? AND conceptuuid = ?",
-                new String[]{encounterUuid, creatorID, SOS_ENCOUNTER_STATUS});
+                        "AND voided='0' AND conceptuuid = ?",
+                new String[]{encounterUuid, SOS_ENCOUNTER_STATUS});
 
         if (idCursor.getCount() > 0) {
             type = EncounterDTO.Type.SOS;
