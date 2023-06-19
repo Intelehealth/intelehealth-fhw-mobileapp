@@ -1534,6 +1534,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="confirm_end_visit_reason_message">Prescription should be shared before closing visit,are you sure you want to close the visit?</string>
     <string name="support_mobile_no_1">919503692181</string>
     <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
+    <string name="help_whatsapp_string_2">Hello, I need some assistance</string>
     <string name="update_app_protocol">Update app protocol!</string>
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
     <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>

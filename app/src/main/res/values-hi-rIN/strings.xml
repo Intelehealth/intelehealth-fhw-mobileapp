@@ -875,6 +875,7 @@
     <string name="confirm_end_visit_reason_message">विज़िट बंद करने से पहले प्रिस्क्रिप्शन शेयर किया जाना चाहिए, क्या आप विज़िट बंद करने के लिए आश्वस्त हैं?</string>
     <string name="support_mobile_no_1">919503692181</string>
     <string name="help_whatsapp_string">नमस्ते, मेरा नाम %1$s है मुझे आपकी सहायता की जरूरत है</string>
+    <string name="help_whatsapp_string_2">नमस्ते, मुझे आपकी सहायता की जरूरत है</string>
     <string name="update_app_protocol">ऐप प्रोटोकॉल अपडेट करें!</string>
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">प्रोटोकॉल डाउनलोड करने के लिए कृपया ‘लाइसेंस की’ के साथ सर्वर url एंटर करें।</string>
     <string name="previously_scheduled_appointment_details">पहले से शेड्यूल किए हुए अपॉइंटमेंट विवरण</string>

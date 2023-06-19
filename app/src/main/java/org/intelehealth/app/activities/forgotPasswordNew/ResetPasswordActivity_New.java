@@ -116,7 +116,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
             //As socket implementation is pending thus adding this flow temporarily: JIRA Ticket IDA4-1130
             String phoneNumber = getString(R.string.support_mobile_no_1);
-            String message = String.format(getString(R.string.help_whatsapp_string), new SessionManager(ResetPasswordActivity_New.this).getChwname());
+            String message = getString(R.string.help_whatsapp_string_2);
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse(
                             String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
