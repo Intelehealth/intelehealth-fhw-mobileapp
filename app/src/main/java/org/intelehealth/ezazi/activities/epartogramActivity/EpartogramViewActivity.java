@@ -18,6 +18,7 @@ import android.webkit.WebViewClient;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
 public class EpartogramViewActivity extends BaseActionBarActivity {
@@ -58,7 +59,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
 
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
-
+        webView.setVisibility(View.VISIBLE);
 
         webView.setWebViewClient(new WebViewClient() {
 
@@ -75,6 +76,8 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
                 super.onReceivedError(view, request, error);
                 if (customProgressDialog.isShowing()) {
                     customProgressDialog.dismiss();
+                    webView.setVisibility(View.GONE);
+                    showPageLoadingErrorDialog();
                 }
             }
         });
@@ -84,6 +87,29 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         Log.v("epartog", "webviewUrl: " + URL + visitUuid);
         mySwipeRefreshLayout.setOnRefreshListener(() -> webView.reload());
 
+    }
+
+    private void showPageLoadingErrorDialog() {
+        ConfirmationDialogFragment dialogFragment = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(R.string.content_webview_page_loading_issue))
+                .positiveButtonLabel(R.string.retry_again)
+                .negativeButtonLabel(R.string.action_exit)
+                .build();
+
+        dialogFragment.setListener(new ConfirmationDialogFragment.OnConfirmationActionListener() {
+            @Override
+            public void onAccept() {
+                webView.reload();
+            }
+
+            @Override
+            public void onDecline() {
+                ConfirmationDialogFragment.OnConfirmationActionListener.super.onDecline();
+                finish();
+            }
+        });
+
+        dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getCanonicalName());
     }
 
     @Override

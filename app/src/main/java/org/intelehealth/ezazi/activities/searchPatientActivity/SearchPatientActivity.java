@@ -7,7 +7,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
@@ -21,10 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +39,8 @@ import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
+import org.intelehealth.ezazi.executor.TaskCompleteListener;
+import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
@@ -59,7 +58,7 @@ import java.util.Locale;
 public class SearchPatientActivity extends BaseActionBarActivity implements SearchView.OnQueryTextListener {
     SearchView searchView;
     String query;
-    private SearchPatientAdapter recycler;
+    private SearchPatientAdapter searchPatientAdapter;
     RecyclerView recyclerView;
     SessionManager sessionManager = null;
     TextView msg;
@@ -175,18 +174,18 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (recycler.patients != null && recycler.patients.size() < limit) {
+                if (searchPatientAdapter.patients != null && searchPatientAdapter.patients.size() < limit) {
                     return;
                 }
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == searchPatientAdapter.getItemCount() - 1) {
                     Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
                     }
-                    recycler.patients.addAll(allPatientsFromDB);
-                    recycler.notifyDataSetChanged();
+                    searchPatientAdapter.patients.addAll(allPatientsFromDB);
+                    searchPatientAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -247,9 +246,10 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
 
     private void doQuery(String query) {
         try {
-            recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
+//            searchPatientAdapter = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
             fullyLoaded = true;
-            recyclerView.setAdapter(recycler);
+//            recyclerView.setAdapter(searchPatientAdapter);
+            bindAdapter(getQueryPatients(query));
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -257,29 +257,80 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         }
     }
 
+    private void bindAdapter(List<PatientDTO> patients) {
+        searchPatientAdapter = new SearchPatientAdapter(patients, SearchPatientActivity.this);
+        recyclerView.setAdapter(searchPatientAdapter);
+//        int index = patients.size() - 1;
+//        findPatientCurrentState(patients, 0);
+//        new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {
+//            @Override
+//            public List<PatientDTO> call() throws Exception {
+//                for (PatientDTO patient : patients) {
+//                    patient.setStage(getStage(patient.getUuid()));
+//                }
+//                return patients;
+//            }
+//
+//            @Override
+//            public void onComplete(List<PatientDTO> result) {
+//                TaskCompleteListener.super.onComplete(result);
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        searchPatientAdapter = new SearchPatientAdapter(result, SearchPatientActivity.this);
+//                        recyclerView.setAdapter(searchPatientAdapter);
+//                    }
+//                });
+//            }
+//        });
+    }
+
+    private void findPatientCurrentState(List<PatientDTO> patients, int index) {
+        new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {
+            @Override
+            public List<PatientDTO> call() throws Exception {
+                PatientDTO patient = patients.get(index);
+                patient.setStage(getStage(patient.getUuid()));
+                return patients;
+            }
+
+            @Override
+            public void onComplete(List<PatientDTO> result) {
+                TaskCompleteListener.super.onComplete(result);
+                if (index < result.size()) {
+                    findPatientCurrentState(result, index + 1);
+                } else {
+                    searchPatientAdapter = new SearchPatientAdapter(result, SearchPatientActivity.this);
+                    recyclerView.setAdapter(searchPatientAdapter);
+                }
+            }
+        });
+    }
+
     private void firstQuery() {
         try {
             offset = 0;
             fullyLoaded = false;
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
-            recyclerView.setAdapter(recycler);
+//            searchPatientAdapter = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
+//            recyclerView.setAdapter(searchPatientAdapter);
+            bindAdapter(getAllPatientsFromDB(offset));
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    if (recycler.patients != null && recycler.patients.size() < limit) {
+                    if (searchPatientAdapter.patients != null && searchPatientAdapter.patients.size() < limit) {
                         return;
                     }
 
-                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() - 1) {
+                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == searchPatientAdapter.getItemCount() - 1) {
                         Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                         offset += limit;
                         List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
                         if (allPatientsFromDB.size() < limit) {
                             fullyLoaded = true;
                         }
-                        recycler.patients.addAll(allPatientsFromDB);
-                        recycler.notifyDataSetChanged();
+                        searchPatientAdapter.patients.addAll(allPatientsFromDB);
+                        searchPatientAdapter.notifyDataSetChanged();
                     }
                 }
             });
@@ -374,7 +425,7 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
                     model.setBedNo(getPatientBedNot(model.getUuid()));
-                    model.setStage(getStage(model.getUuid()));
+//                    model.setStage(getStage(model.getUuid()));
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
@@ -559,7 +610,7 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
                             String bedNod = getPatientBedNot(model.getUuid());
                             model.setBedNo(bedNod);
-                            model.setStage(getStage(model.getUuid()));
+//                            model.setStage(getStage(model.getUuid()));
 
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
@@ -625,7 +676,7 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                         model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                         model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
                         model.setBedNo(getPatientBedNot(model.getUuid()));
-                        model.setStage(getStage(model.getUuid()));
+//                        model.setStage(getStage(model.getUuid()));
                         modelListwihtoutQuery.add(model);
 
                     } while (cursor.moveToNext());
@@ -640,12 +691,13 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         }
 
         try {
-            recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
-//            Log.i("db data", "" + getQueryPatients(query));
-            /*    recyclerView.addItemDecoration(new
-                        DividerItemDecoration(this,
-                        DividerItemDecoration.VERTICAL));*/
-            recyclerView.setAdapter(recycler);
+//            searchPatientAdapter = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
+////            Log.i("db data", "" + getQueryPatients(query));
+//            /*    recyclerView.addItemDecoration(new
+//                        DividerItemDecoration(this,
+//                        DividerItemDecoration.VERTICAL));*/
+//            recyclerView.setAdapter(searchPatientAdapter);
+            bindAdapter(modelListwihtoutQuery);
 
         } catch (Exception e) {
             Logger.logE("doquery", "doquery", e);
@@ -751,29 +803,38 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
     }
 
     private String getStage(String patientUuid) {
-//        String visitUuid = new VisitsDAO().getPatientVisitUuid(patientUuid);
-//        EncounterDAO encounterDAO = new EncounterDAO();
-//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter by visit uuid
-//        String completedVisitUuid = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
+        String visitUuid = new VisitsDAO().getPatientVisitUuid(patientUuid);
+        Log.e(TAG, "Visit Id =>" + visitUuid);
+        if (visitUuid != null && visitUuid.length() > 0) {
+            EncounterDAO encounterDAO = new EncounterDAO();
+            EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter by visit uuid
+            Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getUuid());
+            String completedVisitUuid = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
 //
-//        if (!completedVisitUuid.equalsIgnoreCase("")) { // birthoutcome
-//            String birthoutcome = new ObsDAO().checkBirthOutcomeObsExistsOrNot(completedVisitUuid);
-//            if (!birthoutcome.equalsIgnoreCase("")) {
-//                return birthoutcome;
+//            if (!completedVisitUuid.equalsIgnoreCase("")) { // birthoutcome
+//                String birthoutcome = new ObsDAO().checkBirthOutcomeObsExistsOrNot(completedVisitUuid);
+//                if (!birthoutcome.equalsIgnoreCase("")) {
+//                    return birthoutcome;
+//                }
 //            }
-//        }
 //
-//        if (encounterDTO.getEncounterTypeUuid() != null) {
-//            String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-//            if (latestEncounterName.toLowerCase().contains("stage2")) {
-//                return "Stage-2";
-//            } else if (latestEncounterName.toLowerCase().contains("stage1")) {
-//                return "Stage-1";
-//            } else {
-//                return "";
-//            }
-//        }
+            if (encounterDTO.getEncounterTypeUuid() != null) {
+                String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+                if (latestEncounterName.toLowerCase().contains("stage2")) {
+                    return "Stage-2";
+                } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+                    return "Stage-1";
+                } else {
+                    return "";
+                }
+            }
+        } else return "";
+
         return "Stage-1";
+    }
+
+    private String getCompletedVisitStage(){
+        return "";
     }
 }
 

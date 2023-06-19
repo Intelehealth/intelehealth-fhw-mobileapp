@@ -46,4 +46,6 @@
     <string name="select_doctor">Select Doctor</string>
     <string name="please_enter_field_value">Please enter/select at least one field value!</string>
     <string name="this_field_is_mandatory">This field is mandatory</string>
+    <string name="content_webview_page_loading_issue">Something went wrong, Please check the network connectivity and retry or exit</string>
+    <string name="action_exit">Exit</string>
 </resources>
