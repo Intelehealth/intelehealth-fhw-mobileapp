@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Filter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -27,7 +24,6 @@ import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.models.ActivePatientModel;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
-import org.intelehealth.ezazi.utilities.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -446,23 +442,17 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
 
-                String Key = charSequence.toString();
-                if (Key.isEmpty()) {
-                    filteractivePatient = activePatientModels;
-
+                String keyword = charSequence.toString();
+                List<ActivePatientModel> listfiltered = new ArrayList<>();
+                if (keyword.isEmpty()) {
+                    listfiltered = new ArrayList<>(activePatientModels);
                 } else {
-                    List<ActivePatientModel> listfiltered = new ArrayList<>();
                     for (ActivePatientModel row : activePatientModels) {
-                        if (row.getFirst_name().toLowerCase().contains(Key.toLowerCase())
-                                || row.getLast_name().toLowerCase().contains(Key.toLowerCase())
-                                || row.getOpenmrs_id().toLowerCase().contains(Key.toLowerCase())) {
-                            listfiltered.add(row);
-                        }
+                        if (row.isContains(keyword)) listfiltered.add(row);
                     }
-                    filteractivePatient = listfiltered;
                 }
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = filteractivePatient;
+                filterResults.values = listfiltered;
                 return filterResults;
 
             }

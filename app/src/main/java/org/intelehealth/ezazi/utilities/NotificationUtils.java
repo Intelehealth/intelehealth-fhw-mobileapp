@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.provider.Settings;
 
 import androidx.core.app.NotificationCompat;
@@ -161,7 +162,7 @@ public class NotificationUtils {
     private void notification5MinsBefore(Context mcontext, String patientName, Intent intent) {
         PendingIntent resultPendingIntent = PendingIntent.getActivity(mcontext,
                 5, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                getPendingIntentFlag());
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mcontext, NOTIFICATION_CHANNEL_ID_5MinsBefore);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
@@ -197,7 +198,7 @@ public class NotificationUtils {
     private void notification15MinsBefore(Context mcontext, String patientName, Intent intent) {
         PendingIntent resultPendingIntent = PendingIntent.getActivity(mcontext,
                 15, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                getPendingIntentFlag());
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mcontext, NOTIFICATION_CHANNEL_ID_15MinsBefore);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
@@ -229,4 +230,9 @@ public class NotificationUtils {
 
     }
 
+    public static int getPendingIntentFlag() {
+        return PendingIntent.FLAG_UPDATE_CURRENT;
+//        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+//                ? PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
+    }
 }

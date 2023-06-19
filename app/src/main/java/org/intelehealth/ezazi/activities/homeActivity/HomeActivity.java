@@ -14,6 +14,7 @@ import static org.intelehealth.ezazi.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.getFullMonthName;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -518,9 +519,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             syncUtils.initialSync("home");
         } else {
             // if initial setup done then we can directly set the periodic background sync job
-            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-            saveToken();
-            requestPermission();
+//            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+//            saveToken();
+//            requestPermission();
         }
         showProgressbar();
         /*END*/
@@ -700,7 +701,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                12345, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+                12345, new Intent(), getPendingIntentFlag());
         // to set different alarams for different patients.
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -708,6 +709,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),
                     30 * 1000, pendingIntent);
         }
+    }
+
+    private int getPendingIntentFlag() {
+        return PendingIntent.FLAG_UPDATE_CURRENT;
+//        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+//                ? PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
     }
 
     private void showPatientChoiceDialog(ArrayList<MultiChoiceItem> items) {
@@ -1006,6 +1013,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
             mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
                 @Override
+                @SuppressLint("Range")
                 public void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription) {
                     String encounterAdultIntialslocal = "";
                     String encounterVitalslocal = null;
@@ -1925,7 +1933,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     @Override
                     public void run() {
 
-                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+//                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
                     }
                 }, 10000);
             }
@@ -2350,8 +2358,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String charSequence) {
-        mActivePatientAdapter.getFilter().filter(charSequence.trim());
-        search = charSequence.trim();
+        String query = charSequence.trim();
+        mActivePatientAdapter.getFilter().filter(query);
+        search = query;
         return false;
     }
 }

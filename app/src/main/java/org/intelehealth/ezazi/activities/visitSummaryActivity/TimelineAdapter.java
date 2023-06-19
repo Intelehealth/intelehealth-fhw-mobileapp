@@ -53,7 +53,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     ImageView iv_prescription;
     String isVCEPresent = "";
     int isMissed = 0;
-    int issubmitted = 0;
+    private EncounterDTO.Status status = EncounterDTO.Status.PENDING;
+//    private int issubmitted = 0;
 
     public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList,
                            SessionManager sessionManager, String isVCEPresent) {
@@ -117,7 +118,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 Calendar encounterTimeCalendar = Calendar.getInstance();
                 // check for this enc any obs created if yes than show submitted...
                 obsDAO = new ObsDAO();
-                issubmitted = obsDAO.checkObsAddedOrNt(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
+//                issubmitted = obsDAO.checkObsAddedOrNt(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                 try {
                     Date timeDateType = time.contains("T") && time.contains("+") ? longTimeFormat.parse(time) : longTimeFormat_.parse(time);
                     Calendar calendar = Calendar.getInstance();
@@ -147,14 +148,16 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         // do nothing
                     }
 
+                    status = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
                         holder.cardview.setActivated(false);
                         holder.circle.setActivated(false);
                         holder.circle.setEnabled(true);
+                        int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
+                        holder.summaryNoteTextview.setText(context.getResources().getText(content));
                         holder.summary_textview.setText(context.getResources().getText(R.string.pending_obs));
-                        holder.summaryNoteTextview.setText(context.getResources().getText(R.string.tap_here_to_capture_obs));
                         holder.ivEdit.setVisibility(View.GONE);
                     } else {
                         holder.cardview.setClickable(false);
@@ -163,26 +166,40 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         /* since card is disabled that means the either the user has filled data or has forgotten to fill.
                          We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
                          If no obs created than create Missed Enc obs for this disabled encounter. */
-                        isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                        if (isMissed == 1 || isMissed == 3) {
+                        if (status == EncounterDTO.Status.MISSED) {
                             holder.cardview.setEnabled(false);
                             holder.cardview.setActivated(false);
                             holder.circle.setActivated(false);
                             holder.circle.setEnabled(false);
-                            holder.summaryNoteTextview.setText(context.getResources().getText(R.string.you_have_missed_obs));
+                            int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
+                            holder.summaryNoteTextview.setText(context.getResources().getText(content));
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setEnabled(false);
                             holder.ivEdit.setVisibility(View.GONE);
-                        } else if (isMissed == 2) {
+                        } else if (status == EncounterDTO.Status.SUBMITTED) {
                             holder.cardview.setEnabled(true);
                             holder.cardview.setActivated(true);
                             holder.circle.setActivated(true);
                             holder.circle.setEnabled(true);
-                            holder.summaryNoteTextview.setText(context.getResources().getText(R.string.you_have_captured_obs));
+                            int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
+                            holder.summaryNoteTextview.setText(context.getResources().getText(content));
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.summary_textview.setActivated(true);
                             holder.ivEdit.setVisibility(View.VISIBLE);
 
+                            Log.v("timeline", "minutes enc time: " + time);
+                            Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
+                            long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
+
+                            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+                            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+                            Log.v("timeline", "minutes : " + minutes);
+                            int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
+                            if (minutes <= limit) {
+                                holder.ivEdit.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.ivEdit.setVisibility(View.GONE);
+                            }
                         }
                     }
 
@@ -241,8 +258,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         /* since card is disabled that means the either the user has filled data or has forgotten to fill.
                          We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
                          If no obs created than create Missed Enc obs for this disabled encounter. */
-                        isMissed = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                        if (isMissed == 1 || isMissed == 3) {
+                        status = obsDAO.checkObsAndCreateMissedObs(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
+                        if (status == EncounterDTO.Status.MISSED) {
                             holder.summary_textview.setText(context.getResources().getString(R.string.missed_interval));
                             holder.summary_textview.setEnabled(false);
                             holder.summary_textview.setActivated(false);
@@ -251,13 +268,27 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                             holder.circle.setEnabled(false);
                             holder.circle.setActivated(false);
                             holder.ivEdit.setVisibility(View.GONE);
-                        } else if (isMissed == 2) {
+                        } else if (status == EncounterDTO.Status.SUBMITTED) {
                             holder.summary_textview.setEnabled(true);
                             holder.summary_textview.setActivated(true);
                             holder.cardview.setEnabled(true);
                             holder.cardview.setActivated(true);
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.ivEdit.setVisibility(View.VISIBLE);
+
+                            Log.v("timeline", "minutes enc time: " + time);
+                            Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
+                            long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
+
+                            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+                            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+                            Log.v("timeline", "minutes : " + minutes);
+                            int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
+                            if (minutes <= limit) {
+                                holder.ivEdit.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.ivEdit.setVisibility(View.GONE);
+                            }
                         }
                     }
 
@@ -266,30 +297,31 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     //
                 }
 
-                if (issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
-                    holder.cardview.setClickable(false); // added by Mithun
-                    holder.cardview.setEnabled(false);
-                    holder.cardview.setActivated(true);
-                    holder.circle.setEnabled(true);
-                    holder.circle.setActivated(true);
-                    holder.summaryNoteTextview.setText(context.getResources().getText(R.string.you_have_captured_obs));
-                    holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
-                    holder.summary_textview.setActivated(true);
-                    holder.ivEdit.setVisibility(View.VISIBLE);
-                    Log.v("timeline", "minutes enc time: " + time);
-                    Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
-                    long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
-
-                    long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-                    long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-                    Log.v("timeline", "minutes : " + minutes);
-                    int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
-                    if (minutes <= limit) {
-                        holder.ivEdit.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.ivEdit.setVisibility(View.GONE);
-                    }
-                }
+//                if (issubmitted == 2) { // This so that once submitted it should be closed and not allowed to edit again.
+//                    holder.cardview.setClickable(false); // added by Mithun
+//                    holder.cardview.setEnabled(false);
+//                    holder.cardview.setActivated(true);
+//                    holder.circle.setEnabled(true);
+//                    holder.circle.setActivated(true);
+//                    int content = getContentRes(encounterDTOList.get(position).getEncounterType(), status);
+//                    holder.summaryNoteTextview.setText(context.getResources().getText(content));
+//                    holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
+//                    holder.summary_textview.setActivated(true);
+//                    holder.ivEdit.setVisibility(View.VISIBLE);
+//                    Log.v("timeline", "minutes enc time: " + time);
+//                    Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
+//                    long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
+//
+//                    long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+//                    long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+//                    Log.v("timeline", "minutes : " + minutes);
+//                    int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
+//                    if (minutes <= limit) {
+//                        holder.ivEdit.setVisibility(View.VISIBLE);
+//                    } else {
+//                        holder.ivEdit.setVisibility(View.GONE);
+//                    }
+//                }
 
                 if (!isVCEPresent.equalsIgnoreCase("")) { // If visit complete than disable all the cards.
                     holder.cardview.setClickable(false);
@@ -376,4 +408,21 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         }
     }
 
+    private int getContentRes(EncounterDTO.Type type, EncounterDTO.Status status) {
+        return type == EncounterDTO.Type.SOS
+                ? getSosContentRes(status)
+                : getNormalContentRes(status);
+    }
+
+    private int getSosContentRes(EncounterDTO.Status status) {
+        if (status == EncounterDTO.Status.PENDING) return R.string.tap_here_to_capture_sos_obs;
+        else if (status == EncounterDTO.Status.MISSED) return R.string.you_have_missed_sos_obs;
+        else return R.string.you_have_captured_sos_obs;
+    }
+
+    private int getNormalContentRes(EncounterDTO.Status status) {
+        if (status == EncounterDTO.Status.PENDING) return R.string.tap_here_to_capture_obs;
+        else if (status == EncounterDTO.Status.MISSED) return R.string.you_have_missed_obs;
+        else return R.string.you_have_captured_obs;
+    }
 }

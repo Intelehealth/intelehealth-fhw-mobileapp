@@ -391,8 +391,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
         Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
         String encounterUuid = UUID.randomUUID().toString();
+        Log.e(TAG, "SOS Encounter uuid " + encounterUuid);
         createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
-        new ObsDAO().createEncounterType(encounterUuid, AppConstants.TimelineEncounterType.SOS.name());
+        new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID());
         fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
     }
 
@@ -1255,7 +1256,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             //cancelStage1_Alarm(); // cancel's stage 1 alarm
             String encounterUuid = UUID.randomUUID().toString();
             createNewEncounter(encounterUuid, visitUuid, "Stage2_Hour1_1");
-            new ObsDAO().createEncounterType(encounterUuid, AppConstants.TimelineEncounterType.NORMAL.name());
+            new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID());
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
             stageNo = 2;
             endStageButton.setText(context.getResources().getText(R.string.end2StageButton));
@@ -1350,7 +1351,12 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         encounterListDTO = encounterDAO.getEncountersByVisitUUID(visitUuid);
         for (int i = 0; i < encounterListDTO.size(); i++) {
             String name = encounterDAO.getEncounterTypeNameByUUID(encounterListDTO.get(i).getEncounterTypeUuid());
+            EncounterDTO.Type type = new ObsDAO().getEncounterType(encounterListDTO.get(i).getUuid(), sessionManager.getCreatorID());
+            Log.e(TAG, "Encounter Type " + type.name());
+            Log.e(TAG, "Encounter uuid " + encounterListDTO.get(i).getUuid());
+            Log.e(TAG, "Encounter Type UUID" + encounterListDTO.get(i).getEncounterTypeUuid());
             encounterListDTO.get(i).setEncounterTypeName(name);
+            encounterListDTO.get(i).setEncounterType(type);
         }
         isVCEPresent = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
 

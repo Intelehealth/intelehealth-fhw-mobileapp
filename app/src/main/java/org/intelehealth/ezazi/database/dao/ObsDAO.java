@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.database.dao;
 
 import static org.intelehealth.ezazi.utilities.UuidDictionary.BIRTH_OUTCOME;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.MISSED_ENCOUNTER;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.SOS_ENCOUNTER_STATUS;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -19,6 +20,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
+import org.intelehealth.ezazi.executor.TaskCompleteListener;
+import org.intelehealth.ezazi.executor.TaskExecutor;
+import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -374,17 +378,17 @@ public class ObsDAO {
      *                      We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
      *                      If no obs created than create Missed Enc obs for this disabled encounter. Else its clear that the data was filled up.
      */
-    public int checkObsAndCreateMissedObs(String encounterUuid, String creatorID) {
-        int isMissed = 0;
+    public EncounterDTO.Status checkObsAndCreateMissedObs(String encounterUuid, String creatorID) {
+        EncounterDTO.Status status = EncounterDTO.Status.PENDING;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
-                new String[]{encounterUuid});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
+                new String[]{encounterUuid, SOS_ENCOUNTER_STATUS});
 
         if (idCursor.getCount() <= 0) {
             // that means there is no obs for this enc which means that this encounter is missed...
             // now insert a new row in obs table against this encoutneruuid and set sync to false.
-            isMissed = 1; // missed
+            status = EncounterDTO.Status.MISSED; // missed
             ContentValues values = new ContentValues();
             values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", encounterUuid);
@@ -407,9 +411,11 @@ public class ObsDAO {
                 typeuuid = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
                 if (!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase(MISSED_ENCOUNTER)) {
                     // ie. if typeuuid == MISSED_ENCOUNTER ie. missed enc already present than isMissed=1 else 2 ie. Submitted.
-                    isMissed = 3; // already missed is created so check if 1 than only sync the record.
+                    // already missed is created so check if 1 than only sync the record.
+                    status = EncounterDTO.Status.MISSED;
                 } else {
-                    isMissed = 2; // submitted
+                    status = EncounterDTO.Status.SUBMITTED;
+                    // submitted
                     // this means that this encounter is filled with obs ie. It was answered and then disabled.
                 }
             }
@@ -418,7 +424,7 @@ public class ObsDAO {
 
         idCursor.close();
 
-        return isMissed;
+        return status;
     }
 
     public int checkObsAddedOrNt(String encounterUuid, String creatorID) {
@@ -521,19 +527,31 @@ public class ObsDAO {
 
     }
 
-    public void createEncounterType(String encounterUuid, String value) {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            try {
-                ObsDTO obsDTO = new ObsDTO();
-                obsDTO.setUuid(UUID.randomUUID().toString());
-                obsDTO.setEncounteruuid(encounterUuid);
-                obsDTO.setValue(value);
-                obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_STATUS);
-                new ObsDAO().insertObs(obsDTO);
-            } catch (DAOException e) {
-                throw new RuntimeException(e);
-            }
+    public void createEncounterType(String encounterUuid, String value, String creatorId) {
+        new TaskExecutor<Boolean>().executeTask(() -> {
+            ObsDTO obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setValue(value);
+            obsDTO.setCreator(creatorId);
+            obsDTO.setConceptuuid(UuidDictionary.SOS_ENCOUNTER_STATUS);
+            return new ObsDAO().insertObs(obsDTO);
         });
+    }
+
+    public EncounterDTO.Type getEncounterType(String encounterUuid, String creatorID) {
+        EncounterDTO.Type type = EncounterDTO.Type.NORMAL;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        Cursor idCursor = db.rawQuery("SELECT conceptuuid FROM tbl_obs where encounteruuid = ? " +
+                        "AND voided='0' AND creator =? AND conceptuuid = ?",
+                new String[]{encounterUuid, creatorID, SOS_ENCOUNTER_STATUS});
+
+        if (idCursor.getCount() > 0) {
+            type = EncounterDTO.Type.SOS;
+        }
+        idCursor.close();
+
+        return type;
     }
 }

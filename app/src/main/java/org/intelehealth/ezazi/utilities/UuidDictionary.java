@@ -127,6 +127,6 @@ public class UuidDictionary {
     public static final String BABY_STATUS = "4a1edd41-ffda-4da8-93e0-cc7af502b80e";
     public static final String MOTHER_STATUS = "69a33fc0-8bc2-4828-80d2-7e55dedd89f3";
 
-    public static final String ENCOUNTER_STATUS = "d1fb190a-9ebb-448f-8d61-dfeeb20fd931";
+    public static final String SOS_ENCOUNTER_STATUS = "d1fb190a-9ebb-448f-8d61-dfeeb20fd931";
 
 }

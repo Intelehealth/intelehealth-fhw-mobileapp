@@ -1,6 +1,8 @@
 package org.intelehealth.ezazi.models;
 
 
+import java.util.Locale;
+
 public class ActivePatientModel {
 
     String uuid;
@@ -175,11 +177,11 @@ public class ActivePatientModel {
     }
 
     /*
-    * 1 - Green
-    * 2 - Yellow
-    * 3 - Red
-    * 4 - Blink so that blink always is show above. now through desc order
-    * */
+     * 1 - Green
+     * 2 - Yellow
+     * 3 - Red
+     * 4 - Blink so that blink always is show above. now through desc order
+     * */
     public void setVisibilityOrder(int visibilityOrder) {
         this.visibilityOrder = visibilityOrder;
     }
@@ -190,5 +192,15 @@ public class ActivePatientModel {
 
     public String getBedNo() {
         return bedNo;
+    }
+
+    public String getFullName() {
+        return first_name + " " + last_name;
+    }
+
+    public boolean isContains(String query) {
+        query = query.toLowerCase(Locale.getDefault());
+        return getFullName().toLowerCase(Locale.getDefault()).contains(query)
+                || openmrs_id.toLowerCase(Locale.getDefault()).contains(query);
     }
 }

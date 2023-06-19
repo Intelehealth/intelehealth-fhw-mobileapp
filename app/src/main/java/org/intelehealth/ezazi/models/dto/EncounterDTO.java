@@ -103,4 +103,18 @@ public class EncounterDTO {
     public void setEncounterTypeName(String encounterTypeName) {
         this.encounterTypeName = encounterTypeName;
     }
+
+    private Type encounterType = Type.NORMAL;
+
+    public void setEncounterType(Type encounterType) {
+        this.encounterType = encounterType;
+    }
+
+    public Type getEncounterType() {
+        return encounterType;
+    }
+
+    public enum Type {SOS, NORMAL}
+
+    public enum Status {MISSED, SUBMITTED, PENDING}
 }
