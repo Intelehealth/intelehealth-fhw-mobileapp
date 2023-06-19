@@ -141,7 +141,7 @@
                 android:layout_marginTop="@dimen/margin_24">
 
                 <TextView
-                    android:id="@+id/tv_complain_label"
+                    android:id="@+id/tv_ass_complain_label"
                     style="@style/label_misc_txt_14sp_dark_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -113,11 +113,76 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 }
             }
         });
-        prepareSummary();
+        //prepareSummary();
+        prepareSummaryV2();
 
         return view;
     }
 
+    private void prepareSummaryV2() {
+        mSummaryLinearLayout.removeAllViews();
+        String str = mSummaryStringPastHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        String str1 = mSummaryStringFamilyHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        str = str.replaceAll("<.*?>", "");
+        str1 = str1.replaceAll("<.*?>", "");
+        System.out.println("mSummaryStringPastHistory - " + str);
+        System.out.println("mSummaryStringFamilyHistory - " + str1);
+        String[] spt = str.split("•");
+        String[] spt1 = str1.split("•");
+        List<String> list = new ArrayList<>();
+        TreeMap<String, List<String>> mapData = new TreeMap<>(Collections.reverseOrder());
+        mapData.put("Patient history", new ArrayList<>());
+        mapData.put("Family history", new ArrayList<>());
+        for (String s : spt) {
+            System.out.println(s);
+            if (!s.trim().isEmpty())
+                mapData.get("Patient history").add(s.trim());
+
+
+        }
+        for (String s : spt1) {
+            System.out.println(s);
+            if (!s.trim().isEmpty())
+                mapData.get("Family history").add(s.trim());
+
+
+        }
+
+        System.out.println(mapData);
+        for (String key : mapData.keySet()) {
+
+            String _complain = key.equalsIgnoreCase("Patient history") ? getString(R.string.title_activity_get_patient_history) :getString(R.string.title_activity_family_history) ;
+            List<String> _list = mapData.get(key);
+
+            if (!_complain.isEmpty() && !_list.isEmpty()) {
+                View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
+                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                complainLabelTextView.setText(_complain);
+                view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (key.equalsIgnoreCase("Patient history")) {
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                        } else if (key.equalsIgnoreCase("Family history")) {
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                        }
+
+                    }
+                });
+                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+                SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
+                    @Override
+                    public void onSelect(String data) {
+
+                    }
+                });
+                recyclerView.setAdapter(summaryViewAdapter);
+                mSummaryLinearLayout.addView(view);
+            }
+        }
+
+    }
     private void prepareSummary() {
         mSummaryLinearLayout.removeAllViews();
         String str = mSummaryStringPastHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";

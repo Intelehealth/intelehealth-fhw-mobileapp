@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.common.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
     private List<VisitSummaryData> mItemList = new ArrayList<VisitSummaryData>();
+    private boolean mIsSupportLocalLang = true;
 
     public interface OnItemSelection {
         public void onSelect(VisitSummaryData data);
@@ -42,7 +44,7 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ui2_summary_qa_row_item_view, parent, false);
+                .inflate(mIsSupportLocalLang ? R.layout.ui2_summary_qa_row_item_view_v2 : R.layout.ui2_summary_qa_row_item_view, parent, false);
         /**
          * First item's entrance animations.
          */
@@ -52,7 +54,7 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.summaryData = mItemList.get(position);

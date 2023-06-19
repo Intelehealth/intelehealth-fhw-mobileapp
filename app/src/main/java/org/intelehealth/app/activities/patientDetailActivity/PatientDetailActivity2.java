@@ -600,6 +600,15 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     if (previsitCursor != null && previsitCursor.moveToLast()) {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+                            try {
+                                // isInOldFormat = false;
+                                JSONObject jsonObject = new JSONObject(visitValue);
+                                visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         if (visitValue != null && !visitValue.isEmpty()) {
 
                             visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
@@ -1645,8 +1654,17 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                         if (previsitCursor != null && previsitCursor.moveToLast()) {
 
                             String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                            if (visitValue != null && !visitValue.isEmpty()) {
 
+                            if (visitValue != null && !visitValue.isEmpty()) {
+                                if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+                                    try {
+                                        // isInOldFormat = false;
+                                        JSONObject jsonObject = new JSONObject(visitValue);
+                                        visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
 
                                 String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);

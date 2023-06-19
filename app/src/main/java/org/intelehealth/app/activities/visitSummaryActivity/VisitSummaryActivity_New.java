@@ -944,9 +944,24 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // complaints data
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
+            boolean isInOldFormat = true;
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    isInOldFormat = false;
+                    JSONObject jsonObject = new JSONObject(value);
+                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             Log.v(TAG, "complaint: " + value);
-            String valueArray[] = value.split("►<b> Associated symptoms</b>:  <br/>");
+            String valueArray[] = null;
+            if (isInOldFormat)
+                valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
+            else
+                valueArray = value.split("►" + getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()) + "::");
             Log.v(TAG, "complaint: " + valueArray[0]);
+            Log.v(TAG, "complaint associated: " + valueArray[1]);
             String[] headerchips = valueArray[0].split("►");
             List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
             List<String> cc_list = new ArrayList<>();
@@ -998,9 +1013,19 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // phys exam data
         if (phyExam.getValue() != null) {
             String value = phyExam.getValue();
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.v(TAG, "phyExam : " + value);
             String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
                     .split("<b>General exams: </b><br/>");
-            physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
+            // physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
+            physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
         }
         //image download for physcialExamination documents
         Paint p = new Paint();
@@ -1012,13 +1037,35 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // medical history data
 
         // past medical hist
-        if (patHistory.getValue() != null)
-            patHistView.setText(Html.fromHtml(patHistory.getValue()));
+        if (patHistory.getValue() != null) {
+            String value = patHistory.getValue();
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.v(TAG, "patHistory : " + value);
+            patHistView.setText(Html.fromHtml(value));
+        }
         // past medical hist - end
 
         // family history
-        if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+        if (famHistory.getValue() != null) {
+            String value = famHistory.getValue();
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.v(TAG, "famHistory : " + value);
+            famHistView.setText(Html.fromHtml(value));
+        }
         // family history - end
         // medical history data - end
 
@@ -4891,4 +4938,23 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             });
 
+    private String getTranslatedAssociatedSymptomQString(String localeCode) {
+        if (localeCode.equalsIgnoreCase("hi")) {
+            return "क्या आपको निम्न लक्षण है";
+        } else if (localeCode.equalsIgnoreCase("or")) {
+            return "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?";
+        } else {
+            return "Do you have the following symptom(s)?";
+        }
+    }
+
+    private String getTranslatedGeneralExamsQString(String localeCode) {
+        if (localeCode.equalsIgnoreCase("hi")) {
+            return "सामान्य परीक्षणै";
+        } else if (localeCode.equalsIgnoreCase("or")) {
+            return "ସାଧାରଣ ପରୀକ୍ଷା";
+        } else {
+            return "General Exams";
+        }
+    }
 }

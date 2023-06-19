@@ -2758,20 +2758,20 @@ public class Node implements Serializable {
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
 
-                //                if (mOptions.get(i).getOptionsList().size() > 0) {
-                //
-                //                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
-                //
-                //                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
-                //                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
-                //
-                //                            if (!mOptions.get(i).isTerminal()) {
-                //                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                //                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
-                //                            }
-                //                        }
-                //                    }
-                //                }
+                                if (mOptions.get(i).getOptionsList().size() > 0) {
+
+                                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+
+                                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+
+                                            if (!mOptions.get(i).isTerminal()) {
+                                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                                            }
+                                        }
+                                    }
+                                }
             } else {
                 //in case of weird null exception...
             }

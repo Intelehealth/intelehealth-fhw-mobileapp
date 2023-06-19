@@ -1,5 +1,7 @@
 package org.intelehealth.app.ayu.visit;
 
+import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -67,6 +69,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ihutils.ui.CameraActivity;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -347,7 +350,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertion, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
+                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertionWithLocaleJsonString, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
                             commit();
                 }
                 break;
@@ -366,7 +369,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 if (isSavedPhysicalExam()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                            //replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                                    replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalStringLocale, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -383,7 +387,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 if (isSavedPastHistory()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistory, familyHistory, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistoryLocale, familyHistoryLocale, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -450,18 +454,37 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid, new Gson().toJson(mChiefComplainRootNodeList));
         //**********
         insertion = "";
+        insertionLocale = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
             Log.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
             String val = formatComplainRecord(node, i == mChiefComplainRootNodeList.size() - 1);
+            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0);
+            Log.v(TAG, "answerInLocale- " + answerInLocale);
+
+            stringBuilder.append(answerInLocale);
             if (val == null) {
                 return false;
             }
         }
+        insertionLocale = stringBuilder.toString();
+
         if (insertion.contains("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>")) {
             insertion = insertion.replace("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>", "<br/>►<b> Associated symptoms</b>:  <br/>");
         }
-        return insertChiefComplainToDb(insertion);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("en", insertion);
+            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+            jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
+            //}
+            insertionWithLocaleJsonString = jsonObject.toString();
+            Log.v(TAG, insertionWithLocaleJsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return insertChiefComplainToDb(insertionWithLocaleJsonString);
     }
 
     private Node mPhysicalExamNode;
@@ -662,6 +685,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     String insertion = "";
+    String insertionLocale = "";
+    String insertionWithLocaleJsonString = "";
 
     //new code for the one by one complain data capture
     public String formatComplainRecord(Node currentNode, boolean isAssociateSymptom) {
@@ -707,12 +732,12 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             //    complaintDetails.put(complaint, complaintFormatted);
 
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
-            insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+            insertion = insertion.concat(bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
         } else {
             String complaint = currentNode.getText();
             if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
 //                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
-                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+                insertion = insertion.concat(bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
             }
         }
         Log.v("formatComplainRecord", "Value - " + insertion);
@@ -869,6 +894,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     String physicalString;
+    String physicalStringLocale = "";
+    String physicalStringWithLocaleJsonString = "";
     Boolean complaintConfirmed = false;
     PhysicalExam physicalExamMap;
 
@@ -882,6 +909,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
+            physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
+                    physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
+            Log.v(TAG, "physicalStringLocale -" + physicalStringLocale);
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
 
@@ -892,15 +922,27 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     updateImageDatabase(imagePath);
                 }
             }
-
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("en", physicalString);
+                //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
+                //}
+                physicalStringWithLocaleJsonString = jsonObject.toString();
+                Log.v(TAG, physicalStringWithLocaleJsonString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         } else {
             questionsMissing();
         }
-        return insertDbPhysicalExam(physicalString);
+        return insertDbPhysicalExam(physicalStringWithLocaleJsonString);
     }
 
     private String patientHistory, familyHistory;
+    String patientHistoryLocale = "", familyHistoryLocale = "";
+    String patientHistoryWithLocaleJsonString = "", familyHistoryWithLocaleJsonString = "";
 
     /**
      * @return
@@ -911,16 +953,61 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
+        patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0);
         while (patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
+
+        familyHistory = generateFamilyHistoryAns(false);
+        familyHistoryLocale = generateFamilyHistoryAns(true);
+
+        familyHistory = familyHistory.replaceAll("null.", "");
+
+
+        while (familyHistory.contains("[Describe"))
+            familyHistory = familyHistory.replace("[Describe]", "");
+        List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
+
+        if (imagePathList != null) {
+            for (String imagePath : imagePathList) {
+                updateImageDatabase(imagePath);
+            }
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
+        try {
+            jsonObject.put("en", patientHistory);
+            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+            jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
+            //}
+            patientHistoryWithLocaleJsonString = jsonObject.toString();
+            Log.v(TAG, patientHistoryWithLocaleJsonString);
+
+
+            jsonObject1.put("en", familyHistory);
+            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+            jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
+            //}
+            familyHistoryWithLocaleJsonString = jsonObject1.toString();
+            Log.v(TAG, familyHistoryWithLocaleJsonString);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return insertDbPastHistory(patientHistoryWithLocaleJsonString, familyHistoryWithLocaleJsonString);
+    }
+
+    private String generateFamilyHistoryAns(boolean isLocale) {
+        String familyHistory = "";
         ArrayList<String> familyInsertionList = new ArrayList<>();
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = node.generateLanguage();
-                    String toInsert = node.getText() + " : " + familyString;
+                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0);
+                    String toInsert = !isLocale ? node.getText() : node.findDisplay() + " : " + familyString;
                     toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
@@ -940,19 +1027,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 familyHistory = familyHistory + " " + Node.bullet + familyInsertionList.get(i);
             }
         }
-
-        familyHistory = familyHistory.replaceAll("null.", "");
-        while (familyHistory.contains("[Describe"))
-            familyHistory = familyHistory.replace("[Describe]", "");
-        List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
-
-        if (imagePathList != null) {
-            for (String imagePath : imagePathList) {
-                updateImageDatabase(imagePath);
-            }
-        }
-
-        return insertDbPastHistory(patientHistory, familyHistory);
+        return familyHistory;
     }
 
     /*Physical exam*/
