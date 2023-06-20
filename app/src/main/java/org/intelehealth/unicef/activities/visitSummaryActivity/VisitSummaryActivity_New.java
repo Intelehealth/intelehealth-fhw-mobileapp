@@ -969,9 +969,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // phys exam data
         if (phyExam.getValue() != null) {
             String value = phyExam.getValue();
-            String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
-                    .split("<b>General exams: </b><br/>");
-            physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
+            String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
+            physFindingsView.setText(Html.fromHtml(valueArray[1]
+                    .replaceFirst("<b>", "<br/><b>")
+                    .replace("Child", "Ребенок")
+                    .replace("Neonate", "Новорожденный")
+            ));
         }
         //image download for physcialExamination documents
         Paint p = new Paint();
