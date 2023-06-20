@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -94,6 +95,39 @@ public class ObsDAO {
         try {
             values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", obsDTO.getEncounteruuid());
+            //values.put("creator", obsDTO.getCreator());
+            values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("comment", obsDTO.getComment());
+            values.put("value", obsDTO.getValue());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "0");
+            values.put("sync", "false");
+            insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            db.setTransactionSuccessful();
+            Logger.logD("updated", "updatedrecords count" + insertedCount);
+        } catch (SQLException e) {
+            isUpdated = false;
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+
+        }
+
+        return isUpdated;
+
+    }
+    public boolean insertObsNew(ObsDTO obsDTO) throws DAOException {
+        boolean isUpdated = true;
+        long insertedCount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+
+        try {
+            //values.put("uuid", UUID.randomUUID().toString());
+            values.put("uuid", obsDTO.getUuid());
+            values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
@@ -117,17 +151,18 @@ public class ObsDAO {
 
     }
 
-
     public boolean updateObs(ObsDTO obsDTO) {
+        Log.d(TAG, "1111updateObs: uuid for update : "+obsDTO.getUuid());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
+        Cursor cursor = null;
         int updatedCount = 0;
         ContentValues values = new ContentValues();
         String selection = "uuid = ?";
         try {
 
             values.put("encounteruuid", obsDTO.getEncounteruuid());
-            values.put("creator", obsDTO.getCreator());
+            //values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
@@ -136,7 +171,14 @@ public class ObsDAO {
             values.put("sync", "false");
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
+            //String selectQuery = "update  nozzle_details set " + columnName + " = '" + columnValue + "' where shiftNozzleNoApp = '" + nozzleId + "'";
 
+           /* String updateQuery = "update tbl_obs set " + "value" + " = '" + obsDTO.getValue() +"'"+ " and modified_date" + " = '" + AppConstants.dateAndTimeUtils.currentDateTime() + "' where uuid = '" + obsDTO.getUuid() + "'";
+            Log.d(TAG, "updateObs:updateQuery :  "+updateQuery);
+            db.rawQuery(updateQuery, null);
+
+*/
+            Log.d(TAG, "updateObs: updatedCount : " + updatedCount);
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             Logger.logE(TAG, "exception ", e);
@@ -145,15 +187,15 @@ public class ObsDAO {
             db.endTransaction();
 
         }
-//        If no value is not found, then update fails so insert instead.
-        if (updatedCount == 0) {
+         //        If no value is not found, then update fails so insert instead.
+       /* if (updatedCount == 0) {
+            Log.d(TAG, "updateObs: insert logic in update");
             try {
                 insertObs(obsDTO);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-        }
-
+        }*/
 
         return true;
     }
@@ -277,7 +319,7 @@ public class ObsDAO {
 
     public String getObsuuid(String encounterUuid, String conceptUuid) throws DAOException {
         String obsuuid = null;
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date,obsservermodifieddate desc limit 1 ", new String[]{conceptUuid, encounterUuid});
         try {
             if (obsCursoursor.getCount() != 0) {
@@ -335,7 +377,7 @@ public class ObsDAO {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-      //  db.beginTransaction();
+        //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -350,13 +392,13 @@ public class ObsDAO {
             values.put("sync", "true");
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-     //       db.setTransactionSuccessful();
+            //       db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-     //       db.endTransaction();
+            //       db.endTransaction();
         }
 
         return isUpdated;
@@ -364,12 +406,13 @@ public class ObsDAO {
     }
 
 
-    /** MISSED_ENCOUNTER --> MISSED_OBS
+    /**
+     * MISSED_ENCOUNTER --> MISSED_OBS
+     *
      * @param encounterUuid
-     * @param creatorID
-     * since card is disabled that means that either the user has filled data or has forgotten to fill.
-     * We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
-     * If no obs created than create Missed Enc obs for this disabled encounter. Else its clear that the data was filled up.
+     * @param creatorID     since card is disabled that means that either the user has filled data or has forgotten to fill.
+     *                      We need to check this by using the encounterUuid and checking in obs tbl if any obs is created.
+     *                      If no obs created than create Missed Enc obs for this disabled encounter. Else its clear that the data was filled up.
      */
     public int checkObsAndCreateMissedObs(String encounterUuid, String creatorID) {
         int isMissed = 0;
@@ -383,31 +426,29 @@ public class ObsDAO {
             // now insert a new row in obs table against this encoutneruuid and set sync to false.
             isMissed = 1; // missed
             ContentValues values = new ContentValues();
-                values.put("uuid", UUID.randomUUID().toString());
-                values.put("encounteruuid", encounterUuid);
-                values.put("creator", creatorID);
-                values.put("conceptuuid", MISSED_ENCOUNTER); // Missed Encounter
-                values.put("comment", "");
-                values.put("value", "-");
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("voided", "0");
-                values.put("sync", "false");
+            values.put("uuid", UUID.randomUUID().toString());
+            values.put("encounteruuid", encounterUuid);
+            values.put("creator", creatorID);
+            values.put("conceptuuid", MISSED_ENCOUNTER); // Missed Encounter
+            values.put("comment", "");
+            values.put("value", "-");
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "0");
+            values.put("sync", "false");
 
-                db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             //end
-        }
-        else {
+        } else {
             // if missed enc is present in that case send ismissed = 1 ie. missed enc will be dispalyed on card else send submitted.
             // this is done so as to avoid everytime replacig a new row in the db for missed enc as since earlier it was creating a new record
             // everytime for missed enc.
             String typeuuid = "";
             while (idCursor.moveToNext()) {
                 typeuuid = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
-                if(!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase(MISSED_ENCOUNTER)) {
+                if (!typeuuid.equalsIgnoreCase("") && typeuuid.equalsIgnoreCase(MISSED_ENCOUNTER)) {
                     // ie. if typeuuid == MISSED_ENCOUNTER ie. missed enc already present than isMissed=1 else 2 ie. Submitted.
                     isMissed = 3; // already missed is created so check if 1 than only sync the record.
-                }
-                else {
+                } else {
                     isMissed = 2; // submitted
                     // this means that this encounter is filled with obs ie. It was answered and then disabled.
                 }
@@ -431,8 +472,7 @@ public class ObsDAO {
             // that means there is no obs for this enc which means that this encounter is missed... or not yet filled up.
             // now insert a new row in obs table against this encoutneruuid and set sync to false.
             isMissed = 1; // missed
-        }
-        else {
+        } else {
             isMissed = 2; // submitted
             // this means that this encounter is filled with obs ie. It was answered and then disabled.
         }
@@ -452,13 +492,12 @@ public class ObsDAO {
             while (idCursor.moveToNext()) {
                 valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
             }
-        }
-        else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
+        } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
             valueData = "";
         }
 
         /*if (idCursor.getCount() <= 0) {
-            *//* This means against this enc there is no obs. Which means this obs is not filled yet. *//*
+         *//* This means against this enc there is no obs. Which means this obs is not filled yet. *//*
             isMissed = 1; // no birth outcome present.
         }
         else {
@@ -481,8 +520,7 @@ public class ObsDAO {
         if (idCursor.getCount() <= 0) {
             /* This means against this enc there is no obs. Which means this obs is not filled yet. */
             isMissed = 1; // yot filled yet
-        }
-        else {
+        } else {
             isMissed = 2; // submitted
             // this means that this encounter is filled with obs ie. It was answered and then disabled.
         }
@@ -494,7 +532,7 @@ public class ObsDAO {
     public boolean insert_Obs(String encounteruuid, String creatorID, String value, String conceptId) throws DAOException {
         boolean isUpdated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-      //  db.beginTransaction();
+        //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -509,18 +547,17 @@ public class ObsDAO {
             values.put("sync", "false");
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-         //   db.setTransactionSuccessful();
+            //   db.setTransactionSuccessful();
             isUpdated = true;
-          //  Logger.logD("updated", "updatedrecords count" + insertedCount);
+            //  Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-         //   db.endTransaction();
+            //   db.endTransaction();
         }
 
         return isUpdated;
 
     }
-
 }

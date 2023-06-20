@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
@@ -48,9 +49,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PartogramDataCaptureActivity extends BaseActionBarActivity {
-
+    private static final String TAG = "PartogramDataCaptureAct";
     private Button mSaveTextView, mEpartogramTextView;
     private RecyclerView mRecyclerView;
     private String mVisitUUID = "";
@@ -105,7 +107,11 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         mSaveTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveObs();
+                try {
+                    saveObs();
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -231,7 +237,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     }
 
 
-    private void saveObs() {
+    private void saveObs() throws DAOException {
+        ObsDAO obsDAO = new ObsDAO();
+
         // validation
         int count = 0;
         Log.v("PartogramData", new Gson().toJson(mItemList));
@@ -248,6 +256,10 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         obsDTOData.setConceptuuid(mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
                         obsDTOData.setValue(mItemList.get(i).getParamInfoList().get(j).getCapturedValue());
                         obsDTOData.setComment(PartogramAlertEngine.getAlertName(mItemList.get(i).getParamInfoList().get(j)));
+
+                        String uuid = obsDAO.getObsuuid(mEncounterUUID, mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
+                        obsDTOData.setUuid(uuid);
+                        Log.d(TAG, "saveObs: uuid from db new: " + uuid);
                         obsDTOList.add(obsDTOData);
                         count++;
                     }
@@ -272,46 +284,38 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 //            });
 //            alertDialogBuilder.show();
         } else {
-            ObsDAO obsDAO = new ObsDAO();
-            VisitsDAO visitsDAO = new VisitsDAO();
+
             try {
+                Log.d(TAG, "saveObs: main list size : " + obsDTOList.size());
                 if (mIsEditMode) {
+
+                    //new logic
                     for (int i = 0; i < obsDTOList.size(); i++) {
-                        ObsDTO obsDTOData = obsDTOList.get(i);
-                        obsDAO.updateObs(obsDTOData);
-                    }
-
-                  /*   old logic update is not working
-
-
-                   for (int i = 0; i < mObsDTOList.size(); i++) {
-                        ObsDTO obsDTOData = mObsDTOList.get(i);
-                        for (int j = 0; j < obsDTOList.size(); j++) {
-                            if (obsDTOData.getConceptuuid().equals(obsDTOList.get(j).getConceptuuid())) {
-                                obsDTOData.setComment(obsDTOList.get(j).getComment());
-                                obsDTOData.setValue(obsDTOList.get(j).getValue());
-                                obsDAO.updateObs(obsDTOData);
-                                break;
-                            }
+                        ObsDTO obsDTO = obsDTOList.get(i);
+                        if (obsDTO.getUuid() != null) {
+                            obsDAO.updateObs(obsDTO);
+                        } else {
+                            obsDAO.insertObs(obsDTO);
                         }
-                    }*/
+                    }
                 } else {
                     obsDAO.insertObsToDb(obsDTOList);
                 }
                 new EncounterDAO().updateEncounterSync("false", mEncounterUUID);
+
+
                 //visitsDAO.updateVisitSync(mVisitUUID, "false");
 
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                 if (isSynced) {
                     Toast.makeText(this, "Data uploaded successfully!", Toast.LENGTH_SHORT).show();
-                    /*AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload),
-                            getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);*/
+                    AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload),
+                            getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
                     finish();
                 } else {
                     Toast.makeText(this, "Unable to upload the data!", Toast.LENGTH_SHORT).show();
                 }
-
 
             } catch (DAOException e) {
                 e.printStackTrace();
