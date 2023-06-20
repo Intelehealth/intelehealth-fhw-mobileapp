@@ -285,13 +285,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private List<DocumentObject> rowListItem;
     String sign_url;
 
-    ImageButton editVitals;
-    ImageButton editComplaint, cc_details_edit, ass_symp_edit;
-    ImageButton editPhysical;
-    ImageButton editFamHist;
-    ImageButton editMedHist;
+    ImageButton cc_details_edit, ass_symp_edit;
     ImageButton editAddDocs;
     ImageButton btn_up_special_vd_header;
+
+    TextView editComplaint, editVitals, editPhysical;
+    TextView editMedHist, editFamHist;
 
     ImageView profile_image, downloadbtn;
     String profileImage = "";
@@ -2166,13 +2165,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // priority id - end
 
         // edit - start
-        editVitals = findViewById(R.id.imagebutton_edit_vitals);
-        editComplaint = findViewById(R.id.imagebutton_edit_complaint);
+        editVitals = findViewById(R.id.tv_edit_vitals);
+        editComplaint = findViewById(R.id.tv_edit_complaint);
         cc_details_edit = findViewById(R.id.cc_details_edit);
         ass_symp_edit = findViewById(R.id.ass_symp_edit);
-        editPhysical = findViewById(R.id.imagebutton_edit_physexam);
-        editFamHist = findViewById(R.id.imagebutton_edit_famhist);
-        editMedHist = findViewById(R.id.imagebutton_edit_pathist);
+        editPhysical = findViewById(R.id.tv_edit_physexam);
+        editFamHist = findViewById(R.id.tv_edit_famhist);
+        editMedHist = findViewById(R.id.tv_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         // edit - end
 

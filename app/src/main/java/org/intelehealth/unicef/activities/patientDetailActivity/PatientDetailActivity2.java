@@ -148,7 +148,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     String patientName, mGender;
     ImagesDAO imagesDAO = new ImagesDAO();
     float float_ageYear_Month;
-    ImageView profile_image, personal_edit, address_edit, others_edit;
+    ImageView profile_image;
     Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn;
@@ -156,6 +156,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     //private boolean returning;
     //private String encounterAdultIntials = "";
     //String phistory = "";
+
+    TextView personal_edit, address_edit, others_edit;
 
     String privacy_value_selected;
     String phistory = "";
@@ -494,9 +496,9 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         patienteducation = findViewById(R.id.education);
         patienteconomicstatus = findViewById(R.id.economicstatus);
 
-        personal_edit = findViewById(R.id.personal_edit);
-        address_edit = findViewById(R.id.address_edit);
-        others_edit = findViewById(R.id.others_edit);
+        personal_edit = findViewById(R.id.tv_personal_edit);
+        address_edit = findViewById(R.id.tv_address_edit);
+        others_edit = findViewById(R.id.tv_others_edit);
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
 

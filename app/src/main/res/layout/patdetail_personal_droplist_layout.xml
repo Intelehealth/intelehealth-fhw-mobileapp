@@ -79,13 +79,25 @@
                 android:textColor="@color/textview_color"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
+            <TextView
+                android:id="@+id/tv_personal_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/patdetail_editicon_height"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="@string/change"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/edit_change_patdetail" />
+
             <ImageButton
                 android:id="@+id/personal_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:background="@null"
-                android:src="@drawable/edit_change_patdetail" />
+                android:src="@drawable/edit_change_patdetail"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -112,8 +124,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/name"
                         android:drawablePadding="5dp"
+                        android:text="@string/name"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -143,8 +155,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/gender"
                         android:drawablePadding="5dp"
+                        android:text="@string/gender"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -174,8 +186,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/date_of_birth"
                         android:drawablePadding="5dp"
+                        android:text="@string/date_of_birth"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -205,8 +217,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/age"
                         android:drawablePadding="5dp"
+                        android:text="@string/age"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />
@@ -236,8 +248,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/phone_number"
                         android:drawablePadding="5dp"
+                        android:text="@string/phone_number"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/find_patient_hint_size" />

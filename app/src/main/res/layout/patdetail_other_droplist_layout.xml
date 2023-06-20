@@ -43,7 +43,8 @@
                 android:text="@string/other_details"
                 android:textAppearance="@style/patdetail_header1" />
 
-            <ImageView android:id="@+id/iv_others_drop"
+            <ImageView
+                android:id="@+id/iv_others_drop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -78,6 +79,16 @@
                 android:textColor="@null"
                 android:textSize="@null" />
 
+            <TextView
+                android:id="@+id/tv_others_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/patdetail_editicon_height"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="@string/change"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/edit_change_patdetail" />
+
             <ImageButton
                 android:id="@+id/others_edit"
                 android:layout_width="wrap_content"
@@ -85,7 +96,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="0dp"
                 android:background="@null"
-                android:src="@drawable/edit_change_patdetail" />
+                android:src="@drawable/edit_change_patdetail"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -132,8 +145,8 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
-                    android:layout_weight="2">
+                    android:layout_weight="2"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -142,8 +155,8 @@
                         android:layout_marginEnd="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
-                        android:text="@string/son_daughter_wife_of"
                         android:drawablePadding="5dp"
+                        android:text="@string/son_daughter_wife_of"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -202,9 +215,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="@dimen/margin_5"
-                        android:drawablePadding="@dimen/margin_5"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
                         android:text="@string/social_category"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
