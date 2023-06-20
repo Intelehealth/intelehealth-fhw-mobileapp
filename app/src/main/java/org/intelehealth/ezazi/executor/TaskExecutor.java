@@ -9,6 +9,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Vaghela Mithun R. on 18-06-2023 - 11:53.
@@ -21,52 +26,46 @@ import java.util.concurrent.Future;
 
 public class TaskExecutor<T> {
     private static final String TAG = "TaskExecutor";
-    private final Executor executor = Executors.newSingleThreadExecutor();
+
+    private static final int CORE_POOL_SIZE = 1;
+    private static final int MAXIMUM_POOL_SIZE = 20;
+    private static final int KEEP_ALIVE_SECONDS = 3;
+
+    private final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
+            new SynchronousQueue<>(), sThreadFactory);
+
+    private static final ThreadFactory sThreadFactory = new ThreadFactory() {
+        private final AtomicInteger mCount = new AtomicInteger(1);
+
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "AsyncTask #" + mCount.getAndIncrement());
+        }
+    };
 
     public void executeTask(TaskCompleteListener<T> callable) {
-        new Thread(() -> {
+        threadPoolExecutor.execute(() -> {
             try {
-                T data = callable.call();
-                callable.onComplete(data);
+                T result = callable.call();
+                callable.onComplete(result);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }).start();
-//        executor.execute(() -> {
-//
-//        });
-//        Future<T> future = executor.submit(callable);
-////        Future<?> future = executor.submit(() -> {
-////            try {
-////                T result = callable.call();
-////                callable.onComplete(result);
-////            } catch (Exception e) {
-////                Log.e(TAG, e.getLocalizedMessage());
-////                throw new RuntimeException(e);
-////            }
-////        });
-//        try {
-//            if (future.isDone()) {
-//                callable.onComplete(future.get());
-//            }
-//        } catch (ExecutionException | InterruptedException e) {
-//            Log.e(TAG, e.getLocalizedMessage());
-//            throw new RuntimeException(e);
-//        }
-//        executor.shutdown();
+        });
     }
 
     public void executeAll(List<TaskCompleteListener<T>> tasks) {
-//        try {
-//            List<Future<T>> futures = executor.invokeAll(tasks);
-//            for (int i = 0; i < tasks.size(); i++) {
-//                if (futures.get(i).isDone()) {
-//                    tasks.get(i).onComplete(futures.get(i).get());
-//                }
-//            }
-//            executor.shutdown();
-//        } catch (InterruptedException | ExecutionException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            List<Future<T>> futures = executorService.invokeAll(tasks);
+            for (int i = 0; i < tasks.size(); i++) {
+                if (futures.get(i).isDone()) {
+                    tasks.get(i).onComplete(futures.get(i).get());
+                }
+            }
+            executorService.shutdown();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

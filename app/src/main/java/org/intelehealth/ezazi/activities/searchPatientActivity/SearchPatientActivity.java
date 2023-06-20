@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.searchPatientActivity;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
@@ -45,6 +45,7 @@ import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.patient.PatientStageBinder;
 import org.intelehealth.ezazi.utilities.ConfigUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -257,55 +258,20 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         }
     }
 
+
     private void bindAdapter(List<PatientDTO> patients) {
-        searchPatientAdapter = new SearchPatientAdapter(patients, SearchPatientActivity.this);
-        recyclerView.setAdapter(searchPatientAdapter);
-//        int index = patients.size() - 1;
-//        findPatientCurrentState(patients, 0);
-//        new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {
-//            @Override
-//            public List<PatientDTO> call() throws Exception {
-//                for (PatientDTO patient : patients) {
-//                    patient.setStage(getStage(patient.getUuid()));
-//                }
-//                return patients;
-//            }
-//
-//            @Override
-//            public void onComplete(List<PatientDTO> result) {
-//                TaskCompleteListener.super.onComplete(result);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        searchPatientAdapter = new SearchPatientAdapter(result, SearchPatientActivity.this);
-//                        recyclerView.setAdapter(searchPatientAdapter);
-//                    }
-//                });
-//            }
-//        });
+        if (patients.size() == 0) {
+            searchPatientAdapter = new SearchPatientAdapter(patients, SearchPatientActivity.this);
+            recyclerView.setAdapter(searchPatientAdapter);
+            return;
+        }
+
+        new PatientStageBinder().bindStage(patients, results -> runOnUiThread(() -> {
+            searchPatientAdapter = new SearchPatientAdapter(results, SearchPatientActivity.this);
+            recyclerView.setAdapter(searchPatientAdapter);
+        }));
     }
 
-    private void findPatientCurrentState(List<PatientDTO> patients, int index) {
-        new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {
-            @Override
-            public List<PatientDTO> call() throws Exception {
-                PatientDTO patient = patients.get(index);
-                patient.setStage(getStage(patient.getUuid()));
-                return patients;
-            }
-
-            @Override
-            public void onComplete(List<PatientDTO> result) {
-                TaskCompleteListener.super.onComplete(result);
-                if (index < result.size()) {
-                    findPatientCurrentState(result, index + 1);
-                } else {
-                    searchPatientAdapter = new SearchPatientAdapter(result, SearchPatientActivity.this);
-                    recyclerView.setAdapter(searchPatientAdapter);
-                }
-            }
-        });
-    }
 
     private void firstQuery() {
         try {
@@ -315,6 +281,7 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
 //            recyclerView.setAdapter(searchPatientAdapter);
             bindAdapter(getAllPatientsFromDB(offset));
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
@@ -329,8 +296,11 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                         if (allPatientsFromDB.size() < limit) {
                             fullyLoaded = true;
                         }
-                        searchPatientAdapter.patients.addAll(allPatientsFromDB);
-                        searchPatientAdapter.notifyDataSetChanged();
+
+                        new PatientStageBinder().bindStage(allPatientsFromDB, patients -> runOnUiThread(() -> {
+                            searchPatientAdapter.patients.addAll(patients);
+                            searchPatientAdapter.notifyDataSetChanged();
+                        }));
                     }
                 }
             });
@@ -569,7 +539,7 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         String search = query.trim().replaceAll("\\s", "");
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         String table = "tbl_patient";
         List<String> patientUUID_List = new ArrayList<>();
 
@@ -800,41 +770,6 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
             doQuery(s);
         }
         return false;
-    }
-
-    private String getStage(String patientUuid) {
-        String visitUuid = new VisitsDAO().getPatientVisitUuid(patientUuid);
-        Log.e(TAG, "Visit Id =>" + visitUuid);
-        if (visitUuid != null && visitUuid.length() > 0) {
-            EncounterDAO encounterDAO = new EncounterDAO();
-            EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter by visit uuid
-            Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getUuid());
-            String completedVisitUuid = encounterDAO.getVisitCompleteEncounterByVisitUUID(visitUuid);
-//
-//            if (!completedVisitUuid.equalsIgnoreCase("")) { // birthoutcome
-//                String birthoutcome = new ObsDAO().checkBirthOutcomeObsExistsOrNot(completedVisitUuid);
-//                if (!birthoutcome.equalsIgnoreCase("")) {
-//                    return birthoutcome;
-//                }
-//            }
-//
-            if (encounterDTO.getEncounterTypeUuid() != null) {
-                String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-                if (latestEncounterName.toLowerCase().contains("stage2")) {
-                    return "Stage-2";
-                } else if (latestEncounterName.toLowerCase().contains("stage1")) {
-                    return "Stage-1";
-                } else {
-                    return "";
-                }
-            }
-        } else return "";
-
-        return "Stage-1";
-    }
-
-    private String getCompletedVisitStage(){
-        return "";
     }
 }
 

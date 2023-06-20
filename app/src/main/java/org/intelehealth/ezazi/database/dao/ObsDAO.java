@@ -443,7 +443,7 @@ public class ObsDAO {
 //            // this means that this encounter is filled with obs ie. It was answered and then disabled.
 //        }
 
-        if(idCursor.getCount() > 0) return EncounterDTO.Status.SUBMITTED;
+        if (idCursor.getCount() > 0) return EncounterDTO.Status.SUBMITTED;
         idCursor.close();
 
         return status;
@@ -454,6 +454,34 @@ public class ObsDAO {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid = ?",
+                new String[]{encounterUuid, BIRTH_OUTCOME});
+
+        if (idCursor.getCount() > 0) { // birth outcome present. This means that this encounter is filled with obs ie. Birth Outcome is present.
+            while (idCursor.moveToNext()) {
+                valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+            }
+        } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
+            valueData = "";
+        }
+
+        /*if (idCursor.getCount() <= 0) {
+         *//* This means against this enc there is no obs. Which means this obs is not filled yet. *//*
+            isMissed = 1; // no birth outcome present.
+        }
+        else {
+            isMissed = 2; // birth outcome present.
+            // this means that this encounter is filled with obs ie. Birth Outcome is present.
+        }*/
+        idCursor.close();
+
+        return valueData;
+    }
+
+    public String getCompletedBirthStageStatus(String encounterUuid) {
+        String valueData = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        //do some insertions or whatever you need
+        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid = ?",
                 new String[]{encounterUuid, BIRTH_OUTCOME});
 
         if (idCursor.getCount() > 0) { // birth outcome present. This means that this encounter is filled with obs ie. Birth Outcome is present.

@@ -607,4 +607,31 @@ public class EncounterDAO {
         return endDate;
     }
 
+    public String getCompletedEncounterId(String visitUUID) {
+        String isPresent = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ?",
+                new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
+
+        if (idCursor.getCount() > 0) { // that means visit complete enc is present ie. stage 2 is ended.
+            while (idCursor.moveToNext()) {
+                isPresent = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+            }
+        } else { // No visit complete encounter is present ie. visit is not completed.
+            isPresent = "";
+        }
+      /*
+        if (idCursor.getCount() <= 0) {
+            isPresent = false;
+        }
+        else {
+            isPresent = true;
+        }*/
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        return isPresent;
+    }
+
 }

@@ -553,9 +553,8 @@ public class VisitsDAO {
     }
 
     public String getPatientVisitUuid(String patientUuid) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? GROUP BY uuid ORDER BY startdate DESC limit 1",
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ?",
                 new String[]{patientUuid});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -563,8 +562,6 @@ public class VisitsDAO {
             }
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
         // db.close();
         return null;
     }

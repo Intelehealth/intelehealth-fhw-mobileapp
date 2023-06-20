@@ -82,7 +82,7 @@ public class PatientDTO implements Serializable {
     @Expose
     private Boolean syncd;
 
-   String alternateNo;
+    String alternateNo;
 
     public String getUuid() {
         return uuid;
@@ -259,5 +259,19 @@ public class PatientDTO implements Serializable {
 
     public String getStage() {
         return stage;
+    }
+
+    private String visitUuid;
+
+    public String getVisitUuid() {
+        return visitUuid;
+    }
+
+    public void setVisitUuid(String visitUuid) {
+        this.visitUuid = visitUuid;
+    }
+
+    public String getFullName() {
+        return firstname + " " + lastname;
     }
 }
