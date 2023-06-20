@@ -33,71 +33,73 @@ public class PatientStageBinder {
         executor.executeTask(new TaskCompleteListener<List<PatientDTO>>() {
             @Override
             public List<PatientDTO> call() throws Exception {
-                for (int i = 0; i < patients.size(); i++) {
-                    PatientDTO patientDTO = patients.get(i);
-                    String stage = getCompletedVisitStage(patientDTO);
-                    Log.e(TAG, "Call result=>" + stage);
-                    patientDTO.setStage(stage);
-                }
-//                for (PatientDTO patient : patients) {
-//
-//                    Log.e(TAG, "Call result=>" + stage);
-//                }
-                return patients;
-            }
-
-            @Override
-            public void onComplete(List<PatientDTO> result) {
-                TaskCompleteListener.super.onComplete(result);
-                findPatientCurrentState(result, 0);
-            }
-        });
-    }
-
-
-    private void findPatientCurrentState(List<PatientDTO> patients, int index) {
-
-        if (patients.size() == 0) return;
-        final int[] currentIndex = {index};
-
-        executor.executeTask(new TaskCompleteListener<List<PatientDTO>>() {
-            @Override
-            public List<PatientDTO> call() throws Exception {
-                PatientDTO patient = patients.get(currentIndex[0]);
-                if (patient.getStage() != null && patient.getStage().length() > 0 &&
-                        (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0)) {
-                    currentIndex[0] = currentIndex[0] + 1;
-                    if (currentIndex[0] < patients.size() - 1) {
-                        patient = patients.get(currentIndex[0]);
+                for (PatientDTO patient : patients) {
+                    String stage = getCompletedVisitStage(patient);
+                    if (stage != null && stage.length() > 0) {
+                        patient.setStage(stage);
+                    } else {
+                        getStage(patient);
                     }
-                }
 
-                getStage(patient);
+                    Log.e(TAG, "Call result=>" + patient.getStage());
+                }
                 return patients;
             }
 
             @Override
             public void onComplete(List<PatientDTO> result) {
                 TaskCompleteListener.super.onComplete(result);
-                Log.e(TAG, "onComplete: stage");
-                if (index < result.size() - 1) {
-                    findPatientCurrentState(result, currentIndex[0] + 1);
-                } else {
-                    listener.onCompleted(result);
-                }
+                listener.onCompleted(result);
             }
         });
     }
+
+
+//    private void findPatientCurrentState(final List<PatientDTO> patients, int index) {
+//
+//        if (patients.size() == 0) return;
+//        final int[] currentIndex = {index};
+//
+//        executor.executeTask(new TaskCompleteListener<List<PatientDTO>>() {
+//            @Override
+//            public List<PatientDTO> call() throws Exception {
+//                PatientDTO patient = patients.get(currentIndex[0]);
+//                Log.e(TAG, "Patient -> " + patient.getFirstname());
+//                Log.e(TAG, "Patient -> getStage " + patient.getStage());
+//                if (patient.getStage() != null && patient.getStage().length() > 0 &&
+//                        (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0)) {
+//                    currentIndex[0] = currentIndex[0] + 1;
+//                    if (currentIndex[0] < patients.size() - 1) {
+//                        patient = patients.get(currentIndex[0]);
+//                    }
+//                }
+//
+//                getStage(patient);
+//                return patients;
+//            }
+//
+//            @Override
+//            public void onComplete(List<PatientDTO> result) {
+//                TaskCompleteListener.super.onComplete(result);
+//                Log.e(TAG, "onComplete: stage");
+//                if (currentIndex[0] < result.size() - 1) {
+//                    findPatientCurrentState(result, currentIndex[0] + 1);
+//                } else {
+//                    listener.onCompleted(result);
+//                }
+//            }
+//        });
+//    }
 
     private void getStage(PatientDTO patient) {
         if (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0) return;
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(patient.getVisitUuid()); // get latest encounter by visit uuid
-        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getEncounterTypeUuid());
+//        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getEncounterTypeUuid());
         if (encounterDTO.getEncounterTypeUuid() != null) {
             String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-            Log.e(TAG, "latestEncounterName =>" + latestEncounterName);
-            Log.e(TAG, "Patient =>" + patient.getFullName());
+//            Log.e(TAG, "latestEncounterName =>" + latestEncounterName);
+//            Log.e(TAG, "Patient =>" + patient.getFullName());
             if (latestEncounterName.toLowerCase().contains("stage2")) {
                 patient.setStage("Stage-2");
             } else if (latestEncounterName.toLowerCase().contains("stage1")) {
@@ -129,6 +131,6 @@ public class PatientStageBinder {
             }
         }
 
-        return "";
+        return null;
     }
 }
