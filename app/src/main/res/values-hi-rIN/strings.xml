@@ -846,7 +846,7 @@
     <string name="ui2_medical_hist_title_text">4/4. मेडिकल हिस्ट्री विवरण</string>
     <string name="sync_strated">“सिंक शुरू हुआ! “</string>
     <string name="priority_hint">केस विज़िट में सक्रिय करें कि यह एक एमर्जेंसी है।</string>
-    <string name="mobile_no_not_provided">मोबाइल नंबर नहीं दिया गया</string>
+    <string name="mobile_no_not_provided">मोबाइल नंबर नहीं दिया गया है।</string>
     <string name="please_wait_app_reset">ऐप रिसेट होने तक कृपया प्रतीक्षा करें।</string>
     <string name="please_wait_sync_progress">ऐप सिंक होने तक कृपया प्रतीक्षा करें।</string>
     <string name="invalid_mobile_no">अमान्य मोबाइल नंबर</string>
