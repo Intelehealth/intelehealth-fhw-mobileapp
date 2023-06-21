@@ -903,6 +903,7 @@
     <string name="physical_examination">Физический осмотр</string>
     <string name="general_exams">Общие обследования</string>
     <string name="change">Изменить</string>
+    <string name="answer_following_questions">Ниже приведены обязательные вопросы, пожалуйста, ответьте на них.</string>
 
 
 </resources>
