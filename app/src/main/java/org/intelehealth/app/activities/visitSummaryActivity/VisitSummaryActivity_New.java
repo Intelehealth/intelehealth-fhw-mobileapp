@@ -1108,8 +1108,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
 
         if (special_value != null) {
-//            int spinner_position = stringArrayAdapter.getPosition(special_value);
-//            speciality_spinner.setSelection(spinner_position);
+            int spinner_position = stringArrayAdapter.getPosition(special_value);
+            speciality_spinner.setSelection(spinner_position);
 
             vd_special_value.setText(" " + Node.bullet + "  " + special_value);
             speciality_selected = special_value;
