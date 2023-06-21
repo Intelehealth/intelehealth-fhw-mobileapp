@@ -54,6 +54,7 @@ import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
@@ -373,7 +374,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         visitID_txt = findViewById(R.id.visitID);
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-        visitID_txt.setText(getResources() .getString(R.string.visitID) + " XXXX" + hideVisitUUID);
+        visitID_txt.setText(getResources().getString(R.string.visitID) + " XXXX" + hideVisitUUID);
 
         // Start Date and Time - start
         visit_startDate_txt = findViewById(R.id.visit_startDate);
@@ -488,9 +489,11 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         super.attachBaseContext(setLocale(newBase));
     }
 
+    SessionManager sessionManager;
+
     public Context setLocale(Context context) {
-        SessionManager sessionManager1 = new SessionManager(context);
-        String appLanguage = sessionManager1.getAppLanguage();
+        sessionManager = new SessionManager(context);
+        String appLanguage = sessionManager.getAppLanguage();
         Resources res = context.getResources();
         Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);
@@ -561,74 +564,108 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                         if (previsitCursor != null && previsitCursor.moveToLast()) {
 
                             String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                            boolean needToShowCoreValue = false;
+                            if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+                                try {
+                                    // isInOldFormat = false;
+                                    JSONObject jsonObject = new JSONObject(visitValue);
+                                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                                        visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                        needToShowCoreValue = false;
+                                    } else {
+                                        needToShowCoreValue = true;
+                                        visitValue = jsonObject.getString("en");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                needToShowCoreValue = true;
+                            }
                             if (visitValue != null && !visitValue.isEmpty()) {
 
-                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+                                if (needToShowCoreValue) {
+                                    visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
 
-                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+                                    String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
 
-                                visitValue = "";
-                                String colon = ":";
-                                if (complaints != null) {
-                                    for (String comp : complaints) {
-                                        if (!comp.trim().isEmpty()) {
-                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                    visitValue = "";
+                                    String colon = ":";
+                                    if (complaints != null) {
+                                        for (String comp : complaints) {
+                                            if (!comp.trim().isEmpty()) {
+                                                visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
 
+                                            }
+                                        }
+                                        if (!visitValue.isEmpty()) {
+                                            visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                            visitValue = visitValue.replaceAll("<br/>", "");
+                                            visitValue = visitValue.replaceAll("Associated symptoms", "");
+                                            //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                            visitValue = visitValue.replaceAll("<b>", "");
+                                            visitValue = visitValue.replaceAll("</b>", "");
                                         }
                                     }
-                                    if (!visitValue.isEmpty()) {
-                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                        visitValue = visitValue.replaceAll("<br/>", "");
-                                        visitValue = visitValue.replaceAll("Associated symptoms", "");
-                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                        visitValue = visitValue.replaceAll("<b>", "");
-                                        visitValue = visitValue.replaceAll("</b>", "");
-                                    }
-                                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                                    try {
+                                } else {
+                                    String chiefComplain = "";
+                                    visitValue = visitValue.replaceAll("<.*?>", "");
+                                    System.out.println(visitValue);
+                                    Log.v(TAG, visitValue);
+                                    //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
-                                        Date formatted = currentDate.parse(date);
-                                        String visitDate = currentDate.format(formatted);
-                                        //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                        PastVisitData pastVisitData = new PastVisitData();
-                                        pastVisitData.setVisitDate(visitDate);
-                                        pastVisitData.setVisitUUID(visit_id);
-                                        pastVisitData.setChiefComplain(visitValue);
-                                        pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                        pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                        mPastVisitDataList.add(pastVisitData);
-                                        Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    String[] spt = visitValue.split("►");
+                                    List<String> list = new ArrayList<>();
 
-                                    } catch (ParseException e) {
-                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                    for (String s : spt) {
+                                        if (s.isEmpty()) continue;
+                                        //String s1 =  new String(s.getBytes(), "UTF-8");
+                                        System.out.println(s);
+                                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                                        if (!s.trim().contains("Patient denies -•")) {
+                                            list.add(s);
+                                        }
+
                                     }
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    for (int i = 0; i < list.size(); i++) {
+                                        String complainName = "";
+                                        List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                                        String[] spt1 = list.get(i).split("●");
+                                        for (String value : spt1) {
+                                            if (value.contains("::")) {
+                                                if (!stringBuilder.toString().isEmpty())
+                                                    stringBuilder.append(",");
+                                                complainName = value.replace("::", "");
+                                                System.out.println(complainName);
+                                                stringBuilder.append(complainName);
+                                            }
+                                        }
+                                    }
+                                    visitValue = stringBuilder.toString();
+                                }
+                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                try {
+
+                                    Date formatted = currentDate.parse(date);
+                                    String visitDate = currentDate.format(formatted);
+                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                    PastVisitData pastVisitData = new PastVisitData();
+                                    pastVisitData.setVisitDate(visitDate);
+                                    pastVisitData.setVisitUUID(visit_id);
+                                    pastVisitData.setChiefComplain(visitValue);
+                                    pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                    pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                    mPastVisitDataList.add(pastVisitData);
+                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
+
+                                } catch (ParseException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
-                            // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
-                        /*else {
-                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            try {
-
-                                Date formatted = currentDate.parse(date);
-                                String visitDate = currentDate.format(formatted);
-                                createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                            } catch (ParseException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
-                        }*/
                         }
-                        // Called when we close org on vitals screen and Didn't select any complaints
-                    /*else {
-                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        try {
 
-                            Date formatted = currentDate.parse(date);
-                            String visitDate = currentDate.format(formatted);
-                            createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                        } catch (ParseException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }*/
+
                     }
                 } while (visitCursor.moveToPrevious());
             }

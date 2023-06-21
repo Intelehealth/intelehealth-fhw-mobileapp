@@ -175,7 +175,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
 
-                VisitUtils.scrollNow(recyclerView, 100, 0, 500);
+                VisitUtils.scrollNow(recyclerView, 300, 0, 500);
 
                 VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
 

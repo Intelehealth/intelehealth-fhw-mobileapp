@@ -16,6 +16,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -104,12 +105,15 @@ public class PastMedicalHistoryFragment extends Fragment {
 
 
                     mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
-                    recyclerView.postDelayed(new Runnable() {
+                    /*recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         }
-                    }, 100);
+                    }, 100);*/
+                    VisitUtils.scrollNow(recyclerView, 300, 0, 500);
+
+                    VisitUtils.scrollNow(recyclerView, 1400, 0, 1000);
 
                     mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                 } else {

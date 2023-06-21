@@ -43,7 +43,6 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
-import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -698,7 +697,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         Log.v(TAG, "updated associate symptoms selected status");
                     }
                 }
-                VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
+                //VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
             }
         });
         recyclerView.setAdapter(associateSymptomsQueryAdapter);
@@ -844,7 +843,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 } else {
                     skipButton.setVisibility(View.VISIBLE);
                 }*/
-            holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            linearLayoutManager.setStackFromEnd(false);
+            linearLayoutManager.setSmoothScrollbarEnabled(true);
+            holder.nestedRecyclerView.setLayoutManager(linearLayoutManager);
+
             NestedQuestionsListingAdapter nestedQuestionsListingAdapter = null;
             //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
             //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
@@ -872,7 +875,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect ");
                     mOnItemSelection.onSelect(node, index, isSkipped);
-                    VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
+                    //VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
                 }
 
                 @Override
@@ -909,7 +912,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
                 holder.submitButton.setVisibility(View.GONE);
                 holder.skipButton.setVisibility(View.GONE);
-                VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
+                //VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
             } /*else if (isSuperNested) {
                 nestedQuestionsListingAdapter.addItem(selectedNode);
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
