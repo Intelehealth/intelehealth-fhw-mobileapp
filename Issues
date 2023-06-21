@@ -1,2 +1,3 @@
 1 - Add Patient -> Other -> Hospital/Maternity->Other->input validation error should remove on text change
-2 - Patient details age no showing
+SOS - 1:20
+SELECT E.visituuid,E.uuid, E.provider_uuid, E.encounter_type_uuid, U.name, E.encounter_time FROM tbl_encounter E, tbl_uuid_dictionary U where E.visituuid ="96892258-3ae4-4c58-839a-5077b703e61a" and E.voided = '0'  and U.uuid = E.encounter_type_uuid ORDER BY DATE(encounter_time) DESC

@@ -40,8 +40,6 @@ public class PatientStageBinder {
                     } else {
                         getStage(patient);
                     }
-
-                    Log.e(TAG, "Call result=>" + patient.getStage());
                 }
                 return patients;
             }
@@ -94,8 +92,9 @@ public class PatientStageBinder {
     private void getStage(PatientDTO patient) {
         if (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0) return;
         EncounterDAO encounterDAO = new EncounterDAO();
+        Log.e(TAG, "VisitUuid Id =>" + patient.getVisitUuid());
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(patient.getVisitUuid()); // get latest encounter by visit uuid
-//        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getEncounterTypeUuid());
+        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getUuid());
         if (encounterDTO.getEncounterTypeUuid() != null) {
             String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
 //            Log.e(TAG, "latestEncounterName =>" + latestEncounterName);
@@ -112,19 +111,13 @@ public class PatientStageBinder {
 
     private String getCompletedVisitStage(PatientDTO patient) {
         String visitUuid = new VisitsDAO().getPatientVisitUuid(patient.getUuid());
-//        visitsDAO.fetchVisitUUIDFromPatientUUID(patient.getUuid());
-        Log.e(TAG, "Visit Id =>" + visitUuid);
-        Log.e(TAG, "Patient =>" + patient.getFullName());
         if (visitUuid != null && visitUuid.length() > 0) {
             patient.setVisitUuid(visitUuid);
             String completedEncounterId = new EncounterDAO().getCompletedEncounterId(visitUuid);
-            Log.e(TAG, "completedEncounterId =>" + completedEncounterId);
             if (!completedEncounterId.equalsIgnoreCase("")) { // birthoutcome
                 String birthoutcome = new ObsDAO().getCompletedBirthStageStatus(completedEncounterId);
-                Log.e(TAG, "birthoutcome =>" + birthoutcome);
                 if (!birthoutcome.equalsIgnoreCase("")) {
                     patient.setStage(birthoutcome);
-                    Log.e(TAG, "Stage =>" + birthoutcome);
                     return birthoutcome;
 
                 }

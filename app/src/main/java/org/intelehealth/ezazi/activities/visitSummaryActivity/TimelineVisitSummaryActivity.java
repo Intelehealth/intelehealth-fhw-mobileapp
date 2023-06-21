@@ -391,9 +391,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
         Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
         String encounterUuid = UUID.randomUUID().toString();
+        new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID());
         Log.e(TAG, "SOS Encounter uuid " + encounterUuid);
         createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
-        new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID());
         fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
     }
 
@@ -1352,9 +1352,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         for (int i = 0; i < encounterListDTO.size(); i++) {
             String name = encounterDAO.getEncounterTypeNameByUUID(encounterListDTO.get(i).getEncounterTypeUuid());
             EncounterDTO.Type type = new ObsDAO().getEncounterType(encounterListDTO.get(i).getUuid(), sessionManager.getCreatorID());
-            Log.e(TAG, "Encounter Type " + type.name());
-            Log.e(TAG, "Encounter uuid " + encounterListDTO.get(i).getUuid());
-            Log.e(TAG, "Encounter Type UUID" + encounterListDTO.get(i).getEncounterTypeUuid());
             encounterListDTO.get(i).setEncounterTypeName(name);
             encounterListDTO.get(i).setEncounterType(type);
         }

@@ -2,7 +2,7 @@ package org.intelehealth.ezazi.database.dao;
 
 import static org.intelehealth.ezazi.utilities.UuidDictionary.BIRTH_OUTCOME;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.MISSED_ENCOUNTER;
-import static org.intelehealth.ezazi.utilities.UuidDictionary.SOS_ENCOUNTER_STATUS;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_TYPE;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -17,11 +17,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
-import org.intelehealth.ezazi.executor.TaskCompleteListener;
 import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -123,6 +120,7 @@ public class ObsDAO {
         return isUpdated;
 
     }
+
     public boolean insertObsNew(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
@@ -158,7 +156,7 @@ public class ObsDAO {
     }
 
     public boolean updateObs(ObsDTO obsDTO) {
-        Log.d(TAG, "1111updateObs: uuid for update : "+obsDTO.getUuid());
+        Log.d(TAG, "1111updateObs: uuid for update : " + obsDTO.getUuid());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor cursor = null;
@@ -193,7 +191,7 @@ public class ObsDAO {
             db.endTransaction();
 
         }
-         //        If no value is not found, then update fails so insert instead.
+        //        If no value is not found, then update fails so insert instead.
        /* if (updatedCount == 0) {
             Log.d(TAG, "updateObs: insert logic in update");
             try {
@@ -425,7 +423,7 @@ public class ObsDAO {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
-                new String[]{encounterUuid, SOS_ENCOUNTER_STATUS});
+                new String[]{encounterUuid, ENCOUNTER_TYPE});
 
         if (idCursor.getCount() <= 0) {
             // that means there is no obs for this enc which means that this encounter is missed...
@@ -474,7 +472,7 @@ public class ObsDAO {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid NOT IN (?, ?)",
-                new String[]{encounterUuid, MISSED_ENCOUNTER, SOS_ENCOUNTER_STATUS});
+                new String[]{encounterUuid, MISSED_ENCOUNTER, ENCOUNTER_TYPE});
 
 //        if (idCursor.getCount() <= 0) {
 //            // that means there is no obs for this enc which means that this encounter is missed... or not yet filled up.
@@ -570,7 +568,7 @@ public class ObsDAO {
     public boolean insert_Obs(String encounteruuid, String creatorID, String value, String conceptId) throws DAOException {
         boolean isUpdated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-      //  db.beginTransaction();
+        //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -585,14 +583,14 @@ public class ObsDAO {
             values.put("sync", "false");
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-         //   db.setTransactionSuccessful();
+            //   db.setTransactionSuccessful();
             isUpdated = true;
-          //  Logger.logD("updated", "updatedrecords count" + insertedCount);
+            //  Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-         //   db.endTransaction();
+            //   db.endTransaction();
         }
 
         return isUpdated;
@@ -606,7 +604,7 @@ public class ObsDAO {
             obsDTO.setEncounteruuid(encounterUuid);
             obsDTO.setValue(value);
             obsDTO.setCreator(creatorId);
-            obsDTO.setConceptuuid(UuidDictionary.SOS_ENCOUNTER_STATUS);
+            obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
             return new ObsDAO().insertObs(obsDTO);
         });
     }
@@ -615,12 +613,15 @@ public class ObsDAO {
         EncounterDTO.Type type = EncounterDTO.Type.NORMAL;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        Cursor idCursor = db.rawQuery("SELECT conceptuuid FROM tbl_obs where encounteruuid = ? " +
+        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? " +
                         "AND voided='0' AND conceptuuid = ?",
-                new String[]{encounterUuid, SOS_ENCOUNTER_STATUS});
+                new String[]{encounterUuid, ENCOUNTER_TYPE});
 
         if (idCursor.getCount() > 0) {
-            type = EncounterDTO.Type.SOS;
+            while (idCursor.moveToNext()) {
+                String value = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+                if (value.equals(EncounterDTO.Type.SOS.name())) type = EncounterDTO.Type.SOS;
+            }
         }
         idCursor.close();
 

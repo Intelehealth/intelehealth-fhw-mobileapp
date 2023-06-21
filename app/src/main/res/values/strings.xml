@@ -457,8 +457,8 @@
     <string name="enter_server_url">Enter Server URL</string>
     <string name="enter_license_key"><b>Enter license key</b></string>
     <string name="invalid_url">Invalid URL</string>
-    <string name="years">years</string>
-    <string name="months">months</string>
+    <string name="years">Years</string>
+    <string name="months">Months</string>
     <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
     <string name="patient_name">Patient name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
@@ -624,7 +624,7 @@
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
-    <string name="days">days</string>
+    <string name="days">Days</string>
     <string name="contact">Contact</string>
     <string name="has_a_new_prescription">has a new prescription</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>

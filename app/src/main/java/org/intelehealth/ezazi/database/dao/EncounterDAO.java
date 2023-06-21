@@ -261,7 +261,7 @@ public class EncounterDAO {
     public EncounterDTO getEncounterByVisitUUIDLimit1(String visitUUID) {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        // db.beginTransaction();
+        // db.beginTransaction(); aa81db5e-2f59-456f-aa81-0028f11257f4
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time DESC limit 1",
                 new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
 
