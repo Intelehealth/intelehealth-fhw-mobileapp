@@ -66,7 +66,7 @@ public class ObsDAO {
         try {
             values.put("uuid", obsDTOS.getUuid());
             values.put("encounteruuid", obsDTOS.getEncounteruuid());
-            values.put("creator", obsDTOS.getCreator());
+            //values.put("creator", obsDTOS.getCreator());
             values.put("conceptuuid", obsDTOS.getConceptuuid());
             values.put("comment", obsDTOS.getComment());
             values.put("value", obsDTOS.getValue());
@@ -95,7 +95,7 @@ public class ObsDAO {
         try {
             values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", obsDTO.getEncounteruuid());
-            //values.put("creator", obsDTO.getCreator());
+            values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
@@ -117,6 +117,7 @@ public class ObsDAO {
         return isUpdated;
 
     }
+
     public boolean insertObsNew(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
@@ -152,7 +153,7 @@ public class ObsDAO {
     }
 
     public boolean updateObs(ObsDTO obsDTO) {
-        Log.d(TAG, "1111updateObs: uuid for update : "+obsDTO.getUuid());
+        Log.d(TAG, "1111updateObs: uuid for update : " + obsDTO.getUuid());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor cursor = null;
@@ -162,7 +163,7 @@ public class ObsDAO {
         try {
 
             values.put("encounteruuid", obsDTO.getEncounteruuid());
-            //values.put("creator", obsDTO.getCreator());
+            values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
@@ -187,7 +188,7 @@ public class ObsDAO {
             db.endTransaction();
 
         }
-         //        If no value is not found, then update fails so insert instead.
+        //        If no value is not found, then update fails so insert instead.
        /* if (updatedCount == 0) {
             Log.d(TAG, "updateObs: insert logic in update");
             try {
