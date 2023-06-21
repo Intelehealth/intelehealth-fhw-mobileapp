@@ -19,7 +19,8 @@
     <dimen name="actionbar_size">@dimen/std_150dp</dimen>
     <dimen name="button_text_size">@dimen/std_25sp</dimen>
     <dimen name="login_logo_size">@dimen/std_100dp</dimen>
-    <dimen name="login_top_margin">@dimen/std_143dp</dimen> <!-- previous std_143dp -->
+    <dimen name="login_top_margin">@dimen/std_143dp</dimen>
+    <dimen name="new_login_top_margin">@dimen/login_screen_padding</dimen>
     <dimen name="welcome_text_size">@dimen/std_35sp</dimen>
     <dimen name="subheading_text_size">@dimen/std_23sp</dimen>
     <dimen name="home_logo_width">@dimen/std_164dp</dimen>

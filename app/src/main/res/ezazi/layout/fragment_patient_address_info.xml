@@ -100,6 +100,7 @@
                         android:dropDownHeight="@dimen/dropdown_max_height"
                         android:dropDownSelector="@color/white"
                         android:focusable="false"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                         android:inputType="textPostalAddress"
                         android:maxLines="1"
                         android:textAlignment="viewStart"
