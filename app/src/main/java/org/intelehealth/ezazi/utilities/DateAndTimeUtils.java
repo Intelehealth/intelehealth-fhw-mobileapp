@@ -190,18 +190,17 @@ public class DateAndTimeUtils {
         String tyears = "", tmonth = "", tdays = "";
         //String xyears = "", xmonths = "";
 
-        if (period.getYears() > 0) {
-            age = period.getYears() + " " + context.getResources().getString(R.string.years);
-        }
+        if (period.getYears() > 0)
+            tyears = "" + period.getYears() + " " + context.getResources().getString(R.string.years);
 
-        if (period.getMonths() > 0) {
-            age = age.length() > 0 ? "-" : "" + period.getMonths() + " " + context.getResources().getString(R.string.months);
-        }
+        if (period.getMonths() > 0)
+            tmonth = " - " + period.getMonths()+ " " + context.getResources().getString(R.string.months);
 
         if (period.getDays() > 0)
-            age = age.length() > 0 ? "-" : "" + period.getDays() + " " + context.getResources().getString(R.string.days);
+            tdays = " - " + period.getDays()+ " " + context.getResources().getString(R.string.days);
 
-//        age = tyears + "-" + tmonth + "-" + tdays;
+        age = tyears + tmonth + tdays;
+
 
         return age;
     }
@@ -550,4 +549,5 @@ public class DateAndTimeUtils {
         String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
         return fDate;
     }
+
 }

@@ -151,9 +151,9 @@ public class PatientAddressInfoFragment extends Fragment {
         etDistrict = view.findViewById(R.id.et_district);
         etCityVillage = view.findViewById(R.id.et_city_village);
 
-        etCityVillage.setFilters(new InputFilter[]{filter});
-        autotvState.setFilters(new InputFilter[]{filter});
-        autotvDistrict.setFilters(new InputFilter[]{filter});
+       // etCityVillage.setFilters(new InputFilter[]{filter});
+      //  autotvState.setFilters(new InputFilter[]{filter});
+       // autotvDistrict.setFilters(new InputFilter[]{filter});
 
 
         autotvState.addTextChangedListener(new MyTextWatcher(autotvState));

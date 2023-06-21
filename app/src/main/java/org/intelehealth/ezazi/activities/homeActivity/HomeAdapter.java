@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
@@ -95,7 +96,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     }
                     else
                     {
-                        Intent intent = new Intent(this.context, IdentificationActivity.class);
+                        Intent intent = new Intent(this.context, AddNewPatientActivity.class);
                         this.context.startActivity(intent);
                         break;
                     }

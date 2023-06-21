@@ -131,7 +131,8 @@ public class PatientOtherInfoFragment extends Fragment {
 //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     TextView tvErrorAdmissionDate, tvErrorAdmissionTime, tvErrorTotalBirth, tvErrorTotalMiscarriage,
             tvErrorLabourOnset, tvErrorSacRupturedDate, tvErrorSacRupturedTime, tvErrorPrimaryDoctor,
-            tvErrorSecondaryDoctor, tvErrorBedNumber, tvErrorLabourDiagnosedDate, tvErrorLabourDiagnosedTime, tvErrorRiskFactor, tvErrorHospital;
+            tvErrorSecondaryDoctor, tvErrorBedNumber, tvErrorLabourDiagnosedDate, tvErrorLabourDiagnosedTime,
+            tvErrorRiskFactor, tvErrorHospital, tvErrorHospitalOther;
     MaterialCardView cardAdmissionDate, cardAdmissionTime, cardTotalBirth, cardTotalMiscarraige, cardSacRupturedDate, cardSacRupturedTime, cardPrimaryDoctor, cardSecondaryDoctor, cardBedNumber, cardDiagnosedDate, cardDiagnosedTime, dropdownRiskFactors, cardHospitalOther;
     LinearLayout layoutErrorLabourOnset, layoutSacRuptured, cardOptions;
     boolean isUnknownChecked;
@@ -274,6 +275,7 @@ public class PatientOtherInfoFragment extends Fragment {
         if (!mHospitalMaternityString.isEmpty() && mHospitalMaternityString.equalsIgnoreCase("other")) {
             etHospitalOther.setText(patientAttributesModel.getOtherHospitalString());
         }
+        etHospitalOther.setText(patientAttributesModel.getOtherHospitalString());
 
     }
 
@@ -290,7 +292,8 @@ public class PatientOtherInfoFragment extends Fragment {
         tvErrorSecondaryDoctor.setVisibility(View.GONE);
         tvErrorLabourOnset.setVisibility(View.GONE);
         tvErrorRiskFactor.setVisibility(View.GONE);
-
+        tvErrorRiskFactor.setVisibility(View.GONE);
+        tvErrorHospitalOther.setVisibility(View.GONE);
     }
 
     private void handleValidations() {
@@ -310,6 +313,7 @@ public class PatientOtherInfoFragment extends Fragment {
         tvErrorLabourDiagnosedTime = view.findViewById(R.id.tv_labour_diagnosed_time_error);
         tvErrorRiskFactor = view.findViewById(R.id.tv_error_risk_factor);
         tvErrorHospital = view.findViewById(R.id.tv_error_hospital);
+        tvErrorHospitalOther = view.findViewById(R.id.tv_error_hospital_other);
 
 
         cardAdmissionDate = view.findViewById(R.id.card_date_admission);
@@ -337,10 +341,42 @@ public class PatientOtherInfoFragment extends Fragment {
         mMembraneRupturedDateTextView.addTextChangedListener(new MyTextWatcher(mMembraneRupturedDateTextView));
         mMembraneRupturedTimeTextView.addTextChangedListener(new MyTextWatcher(mMembraneRupturedTimeTextView));
         mRiskFactorsTextView.addTextChangedListener(new MyTextWatcher(mRiskFactorsTextView));
-        etHospitalOther.addTextChangedListener(new MyTextWatcher(etHospitalOther));
+        //etHospitalOther.addTextChangedListener(new MyTextWatcher(etHospitalOther));
         mPrimaryDoctorTextView.addTextChangedListener(new MyTextWatcher(mPrimaryDoctorTextView));
         mSecondaryDoctorTextView.addTextChangedListener(new MyTextWatcher(mSecondaryDoctorTextView));
         etBedNumber.addTextChangedListener(new MyTextWatcher(etBedNumber));
+
+        etHospitalOther.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                tvErrorHospital.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvErrorHospital.setVisibility(View.GONE);
+
+                if (s.length() < 0) {
+                    tvErrorHospital.setVisibility(View.GONE);
+                    tvErrorHospitalOther.setVisibility(View.VISIBLE);
+
+                    tvErrorHospitalOther.setText(getString(R.string.enter_hospital_other_error));
+                    cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                } else {
+                    tvErrorHospital.setVisibility(View.GONE);
+                    tvErrorHospitalOther.setVisibility(View.GONE);
+                    cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvErrorHospital.setVisibility(View.GONE);
+
+            }
+        });
 
     }
 
@@ -359,6 +395,8 @@ public class PatientOtherInfoFragment extends Fragment {
             if (mHospitalMaternityString.equalsIgnoreCase("hospital")) {
                 cardHospitalOther.setVisibility(View.GONE);
                 tvErrorHospital.setVisibility(View.GONE);
+                tvErrorHospitalOther.setVisibility(View.GONE);
+
                 etHospitalOther.setText("");
 
             }
@@ -374,6 +412,7 @@ public class PatientOtherInfoFragment extends Fragment {
             if (mHospitalMaternityString.equalsIgnoreCase("maternity")) {
                 cardHospitalOther.setVisibility(View.GONE);
                 tvErrorHospital.setVisibility(View.GONE);
+                tvErrorHospitalOther.setVisibility(View.GONE);
                 etHospitalOther.setText("");
 
             }
@@ -390,14 +429,19 @@ public class PatientOtherInfoFragment extends Fragment {
             if (!mHospitalMaternityString.isEmpty() && mHospitalMaternityString.equalsIgnoreCase("other")) {
                 etHospitalOther.setVisibility(View.VISIBLE);
                 cardHospitalOther.setVisibility(View.VISIBLE);
+                tvErrorHospital.setVisibility(View.GONE);
+                tvErrorHospitalOther.setVisibility(View.GONE);
 
                 //cardOptions.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
             } else {
                 cardHospitalOther.setVisibility(View.GONE);
                 etHospitalOther.setVisibility(View.GONE);
                 tvErrorHospital.setVisibility(View.GONE);
+                tvErrorHospitalOther.setVisibility(View.GONE);
+
                 //cardOptions.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
             }
+
 
         });
 
@@ -677,6 +721,11 @@ public class PatientOtherInfoFragment extends Fragment {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void onPatientCreateClicked() {
+        PatientAttributesModel patientAttributesModel = getPatientAttributes();
+        if (!etHospitalOther.getText().toString().isEmpty()) {
+            mHospitalMaternityString = "other";
+
+        }
         Log.d(TAG, "onPatientCreateClicked: maternityString : " + mHospitalMaternityString);
         if (TextUtils.isEmpty(mAdmissionDateTextView.getText().toString())) {
             mAdmissionDateTextView.requestFocus();
@@ -842,6 +891,8 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         if (mHospitalMaternityString.isEmpty()) {
             tvErrorHospital.setVisibility(View.VISIBLE);
+            tvErrorHospitalOther.setVisibility(View.GONE);
+
             tvErrorHospital.setText(getString(R.string.hospital_matermnity_val_txt));
             //optionHospital.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
             //optionMaternity.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
@@ -849,17 +900,22 @@ public class PatientOtherInfoFragment extends Fragment {
 
             return;
 
-        } else if (mHospitalMaternityString.equalsIgnoreCase("hospital") ||mHospitalMaternityString.equalsIgnoreCase("maternity")) {
+        } else if (mHospitalMaternityString.equalsIgnoreCase("hospital") || mHospitalMaternityString.equalsIgnoreCase("maternity")) {
             etHospitalOther.setVisibility(View.GONE);
             tvErrorHospital.setVisibility(View.GONE);
             cardHospitalOther.setVisibility(View.GONE);
+            tvErrorHospitalOther.setVisibility(View.GONE);
+
+
         } else {
+            tvErrorHospital.setVisibility(View.GONE);
             mHospitalMaternityString = etHospitalOther.getText().toString();
             cardHospitalOther.setVisibility(View.VISIBLE);
             etHospitalOther.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(etHospitalOther.getText().toString())) {
-                tvErrorHospital.setVisibility(View.VISIBLE);
-                tvErrorHospital.setText(getString(R.string.enter_hospital_other_error));
+                tvErrorHospital.setVisibility(View.GONE);
+                tvErrorHospitalOther.setVisibility(View.VISIBLE);
+                tvErrorHospitalOther.setText(getString(R.string.enter_hospital_other_error));
                 cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
                 return;
 
@@ -867,6 +923,8 @@ public class PatientOtherInfoFragment extends Fragment {
                 mHospitalMaternityString = etHospitalOther.getText().toString();
                 cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                 tvErrorHospital.setVisibility(View.GONE);
+                tvErrorHospitalOther.setVisibility(View.GONE);
+
             }
             //cardOptions.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
@@ -918,6 +976,9 @@ public class PatientOtherInfoFragment extends Fragment {
             mHospitalMaternityString = etHospitalOther.getText().toString();
             cardHospitalOther.setVisibility(View.VISIBLE);
             etHospitalOther.setVisibility(View.VISIBLE);
+            tvErrorHospital.setVisibility(View.GONE);
+            tvErrorHospitalOther.setVisibility(View.GONE);
+
         }
 
         PatientsDAO patientsDAO = new PatientsDAO();
@@ -1269,15 +1330,14 @@ public class PatientOtherInfoFragment extends Fragment {
 
         patientAttributesModel.setAdmissionDate(mAdmissionDateString);
         patientAttributesModel.setActiveLabourDiagnosedDate(mActiveLaborDiagnosedDate);
-        patientAttributesModel.setSacRupturedDate(mMembraneRupturedDate);
 
         patientAttributesModel.setAdmissionTime(mAdmissionTimeString);
         patientAttributesModel.setActiveLabourDiagnosedTime(mActiveLaborDiagnosedTime);
-        patientAttributesModel.setSacRupturedTime(mMembraneRupturedTime);
 
         patientAttributesModel.setTotalBirthCount(mTotalBirthCount);
         patientAttributesModel.setTotalMiscarriageCount(mTotalMiscarriageCount);
         patientAttributesModel.setLabourOnset(mLaborOnsetString);
+        Log.d(TAG, "getPatientAttributes:mHospitalMaternityString :  " + mHospitalMaternityString);
 
         patientAttributesModel.setHospitalMaternity(mHospitalMaternityString);
         patientAttributesModel.setPrimaryDoctor(mPrimaryDoctorTextView.getText().toString());
@@ -1291,7 +1351,12 @@ public class PatientOtherInfoFragment extends Fragment {
             mMembraneRupturedTime = "";
             mMembraneRupturedDateTextView.setText("");
             mMembraneRupturedTimeTextView.setText("");
+
         }
+        patientAttributesModel.setSacRupturedDate(mMembraneRupturedDate);
+        patientAttributesModel.setSacRupturedTime(mMembraneRupturedTime);
+        patientAttributesModel.setOtherHospitalString(etHospitalOther.getText().toString());
+
 
         return patientAttributesModel;
     }
@@ -1633,8 +1698,9 @@ public class PatientOtherInfoFragment extends Fragment {
             cardHospitalOther = view.findViewById(R.id.card_hospital_other);
 
             cardHospitalOther.setVisibility(View.VISIBLE);
-            etHospitalOther.setText(mHospitalMaternityString);
             etHospitalOther.setVisibility(View.VISIBLE);
+            //check
+            etHospitalOther.setText(mHospitalMaternityString);
 
         }
     }
@@ -1676,7 +1742,7 @@ public class PatientOtherInfoFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if(val.length()>0){
+            if (val.length() > 0) {
                 if (this.editText.getId() == R.id.et_admission_date) {
                     if (val.isEmpty()) {
                         tvErrorAdmissionDate.setVisibility(View.VISIBLE);
@@ -1822,22 +1888,27 @@ public class PatientOtherInfoFragment extends Fragment {
                         dropdownRiskFactors.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     }
-                } else if (mHospitalMaternityString.isEmpty()) {
-                    tvErrorHospital.setVisibility(View.VISIBLE);
-                    tvErrorHospital.setText(getString(R.string.hospital_matermnity_val_txt));
-
                 } else if (mHospitalMaternityString.equalsIgnoreCase("other")) {
+                    tvErrorHospital.setVisibility(View.GONE);
+                    tvErrorHospitalOther.setVisibility(View.GONE);
                     val = etHospitalOther.getText().toString();
                     if (val.isEmpty()) {
-                        tvErrorHospital.setVisibility(View.VISIBLE);
-                        tvErrorHospital.setText(getString(R.string.enter_hospital_other_error));
+                        tvErrorHospital.setVisibility(View.GONE);
+                        tvErrorHospitalOther.setVisibility(View.VISIBLE);
+
+                        tvErrorHospitalOther.setText(getString(R.string.enter_hospital_other_error));
                         cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
                     } else {
                         tvErrorHospital.setVisibility(View.GONE);
+                        tvErrorHospitalOther.setVisibility(View.GONE);
                         cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     }
-                } else if (this.editText.getId() == R.id.autotv_primary_doctor) {
+                } /*else if (mHospitalMaternityString.isEmpty()) {
+                    tvErrorHospital.setVisibility(View.VISIBLE);
+                    tvErrorHospital.setText(getString(R.string.hospital_matermnity_val_txt));
+
+                } */ else if (this.editText.getId() == R.id.autotv_primary_doctor) {
                     if (val.isEmpty()) {
 
                         tvErrorPrimaryDoctor.setVisibility(View.VISIBLE);

@@ -130,6 +130,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="text"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
