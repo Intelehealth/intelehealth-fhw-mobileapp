@@ -556,6 +556,7 @@
         <item name="android:focusedMonthDateColor">@color/red</item>
         <item name="android:background">@drawable/container_bg_rounded</item>
         <item name="android:theme">@style/CalenderViewCustom</item>
+        <item name="android:scrollbars">none</item>
         <item name="dayTodayStyle">@style/Theme.EZazi.CalendarView.Today</item>
         <item name="calendarViewMode">material</item>
         <item name="weekDayTextAppearance">@style/CalenderViewWeekCustomText</item>
