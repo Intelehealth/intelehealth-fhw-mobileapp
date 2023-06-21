@@ -97,6 +97,11 @@ public class CalendarDialog extends BaseDialogFragment<Void> implements DatePick
         return calendarBinding.getRoot();
     }
 
+    @Override
+    public boolean isWrapContentDialog() {
+        return true;
+    }
+
     private void setupCalendarSetting() {
         calendar.setTimeInMillis(maxDate);
         changeMonth();

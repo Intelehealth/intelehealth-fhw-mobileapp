@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -100,6 +101,39 @@ public class ObsDAO {
         try {
             values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", obsDTO.getEncounteruuid());
+            //values.put("creator", obsDTO.getCreator());
+            values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("comment", obsDTO.getComment());
+            values.put("value", obsDTO.getValue());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "0");
+            values.put("sync", "false");
+            insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            db.setTransactionSuccessful();
+            Logger.logD("updated", "updatedrecords count" + insertedCount);
+        } catch (SQLException e) {
+            isUpdated = false;
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+
+        }
+
+        return isUpdated;
+
+    }
+    public boolean insertObsNew(ObsDTO obsDTO) throws DAOException {
+        boolean isUpdated = true;
+        long insertedCount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+
+        try {
+            //values.put("uuid", UUID.randomUUID().toString());
+            values.put("uuid", obsDTO.getUuid());
+            values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
@@ -123,17 +157,18 @@ public class ObsDAO {
 
     }
 
-
     public boolean updateObs(ObsDTO obsDTO) {
+        Log.d(TAG, "1111updateObs: uuid for update : "+obsDTO.getUuid());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
+        Cursor cursor = null;
         int updatedCount = 0;
         ContentValues values = new ContentValues();
         String selection = "uuid = ?";
         try {
 
             values.put("encounteruuid", obsDTO.getEncounteruuid());
-            values.put("creator", obsDTO.getCreator());
+            //values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("comment", obsDTO.getComment());
             values.put("value", obsDTO.getValue());
@@ -142,7 +177,14 @@ public class ObsDAO {
             values.put("sync", "false");
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
+            //String selectQuery = "update  nozzle_details set " + columnName + " = '" + columnValue + "' where shiftNozzleNoApp = '" + nozzleId + "'";
 
+           /* String updateQuery = "update tbl_obs set " + "value" + " = '" + obsDTO.getValue() +"'"+ " and modified_date" + " = '" + AppConstants.dateAndTimeUtils.currentDateTime() + "' where uuid = '" + obsDTO.getUuid() + "'";
+            Log.d(TAG, "updateObs:updateQuery :  "+updateQuery);
+            db.rawQuery(updateQuery, null);
+
+*/
+            Log.d(TAG, "updateObs: updatedCount : " + updatedCount);
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             Logger.logE(TAG, "exception ", e);
@@ -151,15 +193,15 @@ public class ObsDAO {
             db.endTransaction();
 
         }
-//        If no value is not found, then update fails so insert instead.
-        if (updatedCount == 0) {
+         //        If no value is not found, then update fails so insert instead.
+       /* if (updatedCount == 0) {
+            Log.d(TAG, "updateObs: insert logic in update");
             try {
                 insertObs(obsDTO);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-        }
-
+        }*/
 
         return true;
     }
@@ -283,7 +325,7 @@ public class ObsDAO {
 
     public String getObsuuid(String encounterUuid, String conceptUuid) throws DAOException {
         String obsuuid = null;
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date,obsservermodifieddate desc limit 1 ", new String[]{conceptUuid, encounterUuid});
         try {
             if (obsCursoursor.getCount() != 0) {
@@ -528,7 +570,7 @@ public class ObsDAO {
     public boolean insert_Obs(String encounteruuid, String creatorID, String value, String conceptId) throws DAOException {
         boolean isUpdated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        //  db.beginTransaction();
+      //  db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -543,14 +585,14 @@ public class ObsDAO {
             values.put("sync", "false");
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-            //   db.setTransactionSuccessful();
+         //   db.setTransactionSuccessful();
             isUpdated = true;
-            //  Logger.logD("updated", "updatedrecords count" + insertedCount);
+          //  Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
         } finally {
-            //   db.endTransaction();
+         //   db.endTransaction();
         }
 
         return isUpdated;

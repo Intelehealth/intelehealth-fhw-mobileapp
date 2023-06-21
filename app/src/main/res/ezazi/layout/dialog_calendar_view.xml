@@ -15,11 +15,11 @@
             android:layout_marginEnd="@dimen/screen_padding"
             android:gravity="center"
             android:padding="@dimen/screen_padding"
-            tools:text="14th Feb, 2023"
             android:textSize="@dimen/screen_title_size"
             app:layout_constraintEnd_toEndOf="@id/calendar"
             app:layout_constraintStart_toStartOf="@id/calendar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="14th Feb, 2023" />
 
 
         <include
