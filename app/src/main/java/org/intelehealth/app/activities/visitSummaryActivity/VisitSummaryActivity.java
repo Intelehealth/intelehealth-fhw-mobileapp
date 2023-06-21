@@ -2210,7 +2210,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        String aidOrder_web = stringToWeb(aidOrderReturned);
+        String formattedAidOrder = "";
+        if(aidOrderType1TextView.getVisibility() == View.VISIBLE && aidOrderType1TextView.getText().toString()!=null && !aidOrderType1TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType1TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType2TextView.getVisibility() == View.VISIBLE && aidOrderType2TextView.getText().toString()!=null && !aidOrderType2TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType2TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType3TextView.getVisibility() == View.VISIBLE && aidOrderType3TextView.getText().toString()!=null && !aidOrderType3TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType3TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType4TextView.getVisibility() == View.VISIBLE && aidOrderType4TextView.getText().toString()!=null && !aidOrderType4TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType4TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType5TextView.getVisibility() == View.VISIBLE && aidOrderType5TextView.getText().toString()!=null && !aidOrderType5TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType5TextView.getText().toString().trim();
+
+        String aidOrder_web = stringToWebAidOrder(mapDataIntoJson(formattedAidOrder.replace("\n", "<br>")));
 
         String rx_web = stringToWeb(rxReturned).replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">●</p>", "");
 
@@ -4910,7 +4922,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String diagnosis_web = stringToWeb_sms(diagnosisReturned);
 
-        String aidOrder_web = stringToWeb_sms(aidOrderReturned);
+        String formattedAidOrder = "";
+        if(aidOrderType1TextView.getVisibility() == View.VISIBLE && aidOrderType1TextView.getText().toString()!=null && !aidOrderType1TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType1TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType2TextView.getVisibility() == View.VISIBLE && aidOrderType2TextView.getText().toString()!=null && !aidOrderType2TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType2TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType3TextView.getVisibility() == View.VISIBLE && aidOrderType3TextView.getText().toString()!=null && !aidOrderType3TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType3TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType4TextView.getVisibility() == View.VISIBLE && aidOrderType4TextView.getText().toString()!=null && !aidOrderType4TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType4TextView.getText().toString().trim() + "\n-";
+        if(aidOrderType5TextView.getVisibility() == View.VISIBLE && aidOrderType5TextView.getText().toString()!=null && !aidOrderType5TextView.getText().toString().trim().equalsIgnoreCase(""))
+            formattedAidOrder = formattedAidOrder + aidOrderType5TextView.getText().toString().trim();
+
+        String aidOrder_web = stringToWebAidOrder(mapDataIntoJson(formattedAidOrder.replace("\n", "<br>")));
 
         String followUpDateStr = "";
         if (followUpDate != null && followUpDate.contains(",")) {
@@ -5123,6 +5147,20 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             String para_open = "<b style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</b><br>";
+            formatted = para_open + "- " + _input.replaceAll("\n", para_close + para_open + "- ") + para_close;
+        }
+        return formatted;
+    }
+
+    private String stringToWebAidOrder(String input) {
+        String formatted = "";
+        if (input != null && !input.isEmpty()) {
+
+            AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
+            String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
+
+            String para_open = "<style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+            String para_close = "<br>";
             formatted = para_open + "- " + _input.replaceAll("\n", para_close + para_open + "- ") + para_close;
         }
         return formatted;
