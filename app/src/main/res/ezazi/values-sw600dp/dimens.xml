@@ -170,6 +170,7 @@
     <dimen name="bottom_menu_min_height">@dimen/std_135dp</dimen>
     <dimen name="small_input_text_size">@dimen/std_14sp</dimen>
     <dimen name="obs_input_min_width">0.62</dimen>
+    <dimen name="obs_text_min_width">0.38</dimen>
     <dimen name="splash_logo_width">@dimen/wrap_content</dimen>
     <dimen name="splash_logo_height">@dimen/wrap_content</dimen>
     <dimen name="search_icon_width">@dimen/std_20dp</dimen>

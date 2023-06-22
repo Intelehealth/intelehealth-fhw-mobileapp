@@ -236,11 +236,11 @@
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:configChanges="uiMode"
+            android:exported="true"
             android:label="@string/title_search_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:exported="true">
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -278,11 +278,11 @@
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
+            android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan"
-            android:exported="true">
+            android:windowSoftInputMode="adjustNothing|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ezazi.activities.homeActivity.HomeActivity" />
@@ -296,9 +296,9 @@
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -377,7 +377,8 @@
         <service android:name="org.intelehealth.ezazi.services.MyIntentService" />
         <service android:name="org.intelehealth.ezazi.services.LastSyncIntentService" />
         <service android:name="org.intelehealth.ezazi.services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-        <service android:name="org.intelehealth.ezazi.services.firebase_services.MyFirebaseMessagingService"
+        <service
+            android:name="org.intelehealth.ezazi.services.firebase_services.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -424,7 +425,8 @@
             android:exported="true" />
 
         <receiver android:name="org.intelehealth.ezazi.utilities.NotificationReceiver" />
-        <receiver android:name=".services.EndCallReceiver"
+        <receiver
+            android:name=".services.EndCallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />

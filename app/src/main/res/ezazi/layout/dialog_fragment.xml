@@ -54,7 +54,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clDataContainer"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,9 +63,9 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/llDialogActions"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
@@ -73,7 +73,6 @@
             android:paddingVertical="@dimen/screen_container_padding"
             android:visibility="@{submitLabel == null || submitLabel.length() == 0 ? View.GONE : View.VISIBLE}"
             android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clDialogContainer">
@@ -88,9 +87,10 @@
                 android:contentDescription="@string/cancel"
                 android:text="@{dismissLabel}"
                 android:visibility="@{dismissLabel == null || dismissLabel.length() == 0 ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnSubmit"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/includeLoginInput"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/cancel" />
 
             <com.google.android.material.button.MaterialButton
@@ -99,14 +99,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dialog_btn_horizontal_margin"
-                android:layout_weight="1"
                 android:contentDescription="@string/submit"
                 android:text="@{submitLabel}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/includeLoginInput"
+                app:layout_constraintStart_toEndOf="@id/btnDismiss"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/submit" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -547,7 +547,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid); // get latest encounter.
         // String latestEncounterTypeId = encounterDTO.getEncounterTypeUuid();
-        String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+//        String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+        String latestEncounterName = encounterDAO.findCurrentStage(encounterDTO.getVisituuid());
         // TODO: check for visit complete and if yes than disable the button.
         if (isVCEPresent.equalsIgnoreCase("")) { // "" ie. not present
             endStageButton.setEnabled(true);
