@@ -115,7 +115,7 @@ public class PatientStageBinder {
             patient.setVisitUuid(visitUuid);
             String completedEncounterId = new EncounterDAO().getCompletedEncounterId(visitUuid);
             if (!completedEncounterId.equalsIgnoreCase("")) { // birthoutcome
-                String birthoutcome = new ObsDAO().getCompletedBirthStageStatus(completedEncounterId);
+                String birthoutcome = new ObsDAO().getCompletedVisitType(completedEncounterId);
                 if (!birthoutcome.equalsIgnoreCase("")) {
                     patient.setStage(birthoutcome);
                     return birthoutcome;

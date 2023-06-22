@@ -5,6 +5,7 @@ import static org.intelehealth.ezazi.utilities.UuidDictionary.MISSED_ENCOUNTER;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_TYPE;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
 import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
@@ -626,5 +628,41 @@ public class ObsDAO {
         idCursor.close();
 
         return type;
+    }
+
+    public String getCompletedVisitType(String encounterUuid) {
+        String valueData = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        String query = "SELECT value FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?)";
+        final Cursor idCursor = db.rawQuery(query, new String[]{encounterUuid, UuidDictionary.BIRTH_OUTCOME, UuidDictionary.REFER_TYPE});
+        //do some insertions or whatever you need
+//        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid = ?",
+//                new String[]{encounterUuid, BIRTH_OUTCOME});
+
+        if (idCursor.getCount() > 0) { // birth outcome present. This means that this encounter is filled with obs ie. Birth Outcome is present.
+            while (idCursor.moveToNext()) {
+                Context context = IntelehealthApplication.getAppContext();
+                valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+                if (valueData.equals(context.getString(R.string.refer_to_other_hospital))) {
+                    valueData = "ROH";
+                } else if (valueData.equals(context.getString(R.string.self_discharge_medical_advice))) {
+                    valueData = "DAMA";
+                }
+            }
+        } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
+            valueData = "";
+        }
+
+        /*if (idCursor.getCount() <= 0) {
+         *//* This means against this enc there is no obs. Which means this obs is not filled yet. *//*
+            isMissed = 1; // no birth outcome present.
+        }
+        else {
+            isMissed = 2; // birth outcome present.
+            // this means that this encounter is filled with obs ie. Birth Outcome is present.
+        }*/
+        idCursor.close();
+
+        return valueData;
     }
 }

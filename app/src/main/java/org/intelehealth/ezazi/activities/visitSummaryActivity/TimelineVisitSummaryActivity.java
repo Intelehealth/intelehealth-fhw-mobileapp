@@ -851,12 +851,17 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private String fetchOutcome(String encounterID) {
         String outcome = "";
-        String query = "SELECT * FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid = ?";
-        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterID, UuidDictionary.BIRTH_OUTCOME});
+        String query = "SELECT value FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?)";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterID, UuidDictionary.BIRTH_OUTCOME, UuidDictionary.REFER_TYPE});
         if (searchCursor.moveToFirst()) {
             do {
                 try {
                     outcome = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"));
+                    if (outcome.equals(getString(R.string.refer_to_other_hospital))) {
+                        outcome = "ROH";
+                    } else if (outcome.equals(getString(R.string.self_discharge_medical_advice))) {
+                        outcome = "DAMA";
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
