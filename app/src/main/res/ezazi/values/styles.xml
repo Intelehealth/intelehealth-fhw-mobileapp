@@ -17,7 +17,7 @@
         <item name="android:textSize">@dimen/input_inner_size</item>
         <item name="boxStrokeWidth">@dimen/input_stroke_size</item>
         <item name="boxBackgroundMode">outline</item>
-<!--        <item name="boxStrokeWidthFocused">@dimen/input_stroke_size</item>-->
+        <!--        <item name="boxStrokeWidthFocused">@dimen/input_stroke_size</item>-->
     </style>
 
     <style name="Theme.EZazi.Input.Error" parent="TextAppearance.AppCompat">
@@ -51,7 +51,8 @@
         <item name="iconEndPadding">16dp</item>
         <item name="endIconTint">@color/colorForgotPassword</item>
         <!--        <item name="passwordToggleTint">@color/colorForgotPassword</item>-->
-        <!--        <item name="passwordToggleEnabled">true</item>-->
+        <item name="passwordToggleEnabled">true</item>
+        <item name="password_visible">true</item>
         <!--        <item name="passwordToggleTintMode">src_atop</item>-->
         <item name="endIconDrawable">@drawable/ic_password_toggle</item>
     </style>
@@ -537,11 +538,15 @@
     </style>
 
     <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>     <!--calendar background-->
-        <item name="android:colorControlActivated">@color/colorEmergencyBg</item> <!--selected day-->
+        <item name="android:windowBackground">@color/colorPrimaryDark
+        </item>     <!--calendar background-->
+        <item name="android:colorControlActivated">@color/colorEmergencyBg
+        </item> <!--selected day-->
         <item name="android:textColorPrimary">@color/colorBlack</item> <!--days of the month-->
-        <item name="android:textColorSecondary">@color/days_calendar</item>    <!--days of the week-->
-        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg</item> <!--selected day-->
+        <item name="android:textColorSecondary">@color/days_calendar
+        </item>    <!--days of the week-->
+        <item name="android:colorActivatedHighlight">@color/colorEmergencyBg
+        </item> <!--selected day-->
     </style>
 
     <style name="CalenderViewCustom" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -556,6 +561,7 @@
         <item name="android:focusedMonthDateColor">@color/red</item>
         <item name="android:background">@drawable/container_bg_rounded</item>
         <item name="android:theme">@style/CalenderViewCustom</item>
+        <item name="android:scrollbars">none</item>
         <item name="dayTodayStyle">@style/Theme.EZazi.CalendarView.Today</item>
         <item name="calendarViewMode">material</item>
         <item name="weekDayTextAppearance">@style/CalenderViewWeekCustomText</item>
@@ -614,6 +620,7 @@
         <item name="chipIconTint">@color/color_am_pm_selector</item>
         <item name="selectableItemBackground">@color/colorEmergencyBg</item>
     </style>
+
     <style name="Theme.EZazi.Scrollbar.Thumb.Primary" parent="">
         <item name="android:scrollbars">vertical</item>
         <item name="android:scrollbarSize">@dimen/scrollbar_width</item>

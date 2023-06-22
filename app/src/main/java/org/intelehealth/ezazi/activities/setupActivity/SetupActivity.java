@@ -27,6 +27,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -242,6 +243,7 @@ public class SetupActivity extends AppCompatActivity {
 
             LocationArrayAdapter adapter = new LocationArrayAdapter
                     (SetupActivity.this, new ArrayList<String>());
+            mDropdownLocation.setOnItemClickListener((parent, view, position, id) -> mLocationInputView.setError(null));
             mDropdownLocation.setAdapter(adapter);
 
             if (!setupUrl.trim().isEmpty() && setupUrl.length() >= 12) {
@@ -803,7 +805,7 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 8;
+        return password.length() > 7;
     }
 
 //    private boolean getLocationFromServer_District(String url, String state_uuid, String location_wise) {

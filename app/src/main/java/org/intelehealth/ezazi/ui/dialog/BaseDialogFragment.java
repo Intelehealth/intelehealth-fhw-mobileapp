@@ -120,12 +120,17 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
         params.bottomToBottom = ConstraintSet.PARENT_ID;
         params.startToStart = ConstraintSet.PARENT_ID;
         params.endToEnd = ConstraintSet.PARENT_ID;
-        params.matchConstraintMaxHeight = height - (binding.tvDialogTitle.getHeight() + padding);
+        if (!isWrapContentDialog())
+            params.matchConstraintMaxHeight = height - (binding.tvDialogTitle.getHeight() + padding);
         return params;
     }
 
     public void changeSubmitButtonState(boolean isActive) {
         binding.btnSubmit.setEnabled(isActive);
+    }
+
+    public boolean isWrapContentDialog() {
+        return false;
     }
 
     /**

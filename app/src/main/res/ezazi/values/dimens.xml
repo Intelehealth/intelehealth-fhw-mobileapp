@@ -19,6 +19,7 @@
     <dimen name="button_text_size">@dimen/std_14sp</dimen>
     <dimen name="login_logo_size">@dimen/std_56dp</dimen>
     <dimen name="login_top_margin">@dimen/std_36dp</dimen>
+    <dimen name="new_login_top_margin">@dimen/login_screen_padding</dimen>
     <dimen name="welcome_text_size">@dimen/std_21sp</dimen>
     <dimen name="subheading_text_size">@dimen/std_16sp</dimen>
     <dimen name="home_logo_width">@dimen/std_100dp</dimen>

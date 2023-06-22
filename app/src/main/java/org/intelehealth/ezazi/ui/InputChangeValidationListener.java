@@ -36,7 +36,7 @@ public class InputChangeValidationListener implements TextWatcher {
         if (!validator.validate(s.toString())) {
             textInputLayout.setError(message);
             editText.requestFocus();
-        } else textInputLayout.setErrorEnabled(false);
+        } else textInputLayout.setError(null);
     }
 
     @Override
