@@ -91,22 +91,22 @@ public class PatientStageBinder {
 
     private void getStage(PatientDTO patient) {
         if (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0) return;
-        EncounterDAO encounterDAO = new EncounterDAO();
         Log.e(TAG, "VisitUuid Id =>" + patient.getVisitUuid());
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(patient.getVisitUuid()); // get latest encounter by visit uuid
-        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getUuid());
-        if (encounterDTO.getEncounterTypeUuid() != null) {
-            String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-//            Log.e(TAG, "latestEncounterName =>" + latestEncounterName);
-//            Log.e(TAG, "Patient =>" + patient.getFullName());
-            if (latestEncounterName.toLowerCase().contains("stage2")) {
-                patient.setStage("Stage-2");
-            } else if (latestEncounterName.toLowerCase().contains("stage1")) {
-                patient.setStage("Stage-1");
-            } else {
-                patient.setStage("");
-            }
-        } else patient.setStage("");
+        String latestEncounterName = new EncounterDAO().findCurrentStage(patient.getVisitUuid());
+        Log.e(TAG, "latestEncounterName =>" + latestEncounterName);
+        Log.e(TAG, "Patient =>" + patient.getFullName());
+        if (latestEncounterName.toLowerCase().contains("stage2")) {
+            patient.setStage("Stage-2");
+        } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+            patient.setStage("Stage-1");
+        } else {
+            patient.setStage("");
+        }
+//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(patient.getVisitUuid()); // get latest encounter by visit uuid
+//        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getUuid());
+//        if (encounterDTO.getEncounterTypeUuid() != null) {
+//
+//        } else patient.setStage("");
     }
 
     private String getCompletedVisitStage(PatientDTO patient) {

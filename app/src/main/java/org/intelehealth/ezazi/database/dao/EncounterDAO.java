@@ -160,6 +160,22 @@ public class EncounterDAO {
         return name;
     }
 
+    public String findCurrentStage(String visitUuid) {
+        if (visitUuid == null) return "";
+        String name = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery("SELECT U.name FROM tbl_encounter E, tbl_uuid_dictionary U where E.visituuid = ? COLLATE NOCASE" +
+                " and E.voided = '0'  and U.uuid = E.encounter_type_uuid ORDER BY U.name DESC LIMIT 1", new String[]{visitUuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            }
+        }
+        cursor.close();
+
+        return name;
+    }
+
 
     public List<EncounterDTO> unsyncedEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
