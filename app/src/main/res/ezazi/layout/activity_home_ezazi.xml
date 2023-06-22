@@ -11,7 +11,6 @@
         layout="@layout/content_home_ezazi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/bottom_menu_min_height"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <!--<include layout="@layout/content_home" />-->

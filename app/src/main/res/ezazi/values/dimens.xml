@@ -224,7 +224,7 @@
     <dimen name="light_vector_height">175dp</dimen>
     <dimen name="high_alert_top_padding">@dimen/std_12dp</dimen>
     <dimen name="alert_stroke_size">3dp</dimen>
-    <dimen name="home_list_bottom_padding">@dimen/std_24dp</dimen>
+    <dimen name="home_list_bottom_padding">@dimen/std_20dp</dimen>
 
     <!-- newly added-->
     <dimen name="btn_add_patient_margin_bottom">30dp</dimen>
@@ -263,4 +263,5 @@
     <dimen name="dropdown_max_height">180dp</dimen>
     <dimen name="max_input_height">@dimen/std_48dp</dimen>
     <dimen name="max_address_input_height">40dp</dimen>
+
 </resources>

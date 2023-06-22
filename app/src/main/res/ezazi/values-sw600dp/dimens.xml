@@ -29,9 +29,9 @@
     <dimen name="small_btn_horizontal_padding">@dimen/std_31dp</dimen>
     <dimen name="small_btn_vertical_padding">@dimen/std_16dp</dimen>
     <dimen name="bottom_menu_text_size">@dimen/std_18sp</dimen>
-    <dimen name="bottom_menu_icon_size">@dimen/std_48dp</dimen>
+    <dimen name="bottom_menu_icon_size">@dimen/std_40dp</dimen>
     <dimen name="alert_icon_size">70dp</dimen>
-    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/std_100dp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/std_84dp</dimen>
     <dimen name="heading1">@dimen/std_22sp</dimen>
     <dimen name="heading2">@dimen/std_20sp</dimen>
     <dimen name="body">@dimen/std_18sp</dimen>
@@ -205,7 +205,7 @@
     <dimen name="time_picker_dialog_text_size">@dimen/std_36sp</dimen>
     <dimen name="high_alert_top_padding">@dimen/screen_container_padding</dimen>
     <dimen name="alert_stroke_size">5dp</dimen>
-    <dimen name="home_list_bottom_padding">@dimen/std_16dp</dimen>
+    <dimen name="home_list_bottom_padding">@dimen/std_8dp</dimen>
     <!-- newly added-->
     <dimen name="btn_add_patient_margin_bottom">50dp</dimen>
     <dimen name="btn_add_patient_margin_top">50dp</dimen>
