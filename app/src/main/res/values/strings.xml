@@ -2117,4 +2117,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="testing">Testing</string>
     <string name="server">Server</string>
     <string name="citizen_id">Citizen ID</string>
+    
+    <string name="no_data_added">No data added</string>
+    <string name="close_all">Close all</string>
+    <string name="open_all">Open all</string>
+
 </resources>

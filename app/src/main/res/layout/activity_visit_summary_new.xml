@@ -293,8 +293,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/chw_worker"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/chw_worker"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -324,8 +324,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/visitID"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/visitID"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -356,6 +356,19 @@
                 android:layout_below="@+id/cardview_head"
                 android:layout_marginTop="@dimen/margin_40dp">
 
+                <TextView
+                    android:id="@+id/tv_close_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:drawablePadding="@dimen/margin_5"
+                    android:text="@string/close_all"
+                    android:textColor="@color/textColorGray"
+                    app:drawableEndCompat="@drawable/ui2_ic_chevron_down" />
+
+
                 <ImageButton
                     android:id="@+id/openall_btn"
                     android:layout_width="wrap_content"
@@ -365,9 +378,16 @@
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
                     android:background="@null"
                     android:onClick="openAll"
-                    android:src="@drawable/close_all_btn" />
+                    android:src="@drawable/close_all_btn"
+                    android:visibility="gone" />
 
-                <include layout="@layout/visit_summary_itemscard" />
+                <include
+                    android:id="@+id/layout_visit_summary"
+                    layout="@layout/visit_summary_itemscard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_close_all"
+                    android:layout_marginTop="0dp" />
 
             </RelativeLayout>
             <!--Vitals and Other cards - end-->

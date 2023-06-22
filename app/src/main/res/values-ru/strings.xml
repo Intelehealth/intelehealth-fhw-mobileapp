@@ -887,9 +887,9 @@
     <string name="production">Производство</string>
     <string name="testing">Тестирование</string>
     <string name="location_new">Местоположение</string>
+    <string name="password">Пароль</string>
     <string name="start_typing_location">Начните набирать текст или выберите местоположение</string>
     <string name="username">Имя пользователя</string>
-    <string name="password">Пароль</string>
     <string name="enter_username1">Введите ваше имя пользователя</string>
     <string name="enter_password1">Введите пароль</string>
 
@@ -905,5 +905,13 @@
     <string name="change">Изменить</string>
     <string name="answer_following_questions">Ниже приведены обязательные вопросы, пожалуйста, ответьте на них.</string>
 
+    <string name="no_data_added">Данные не добавлены</string>
+    <string name="add_additional_documents">Добавьте дополнительные документы</string>
+    <string name="add_additional_documents_like">Добавьте дополнительные документы, такие как заключения , рецепты и т.д.\u000D</string>
+    <string name="doctor_speciality">Специальность врача</string>
+    <string name="priority_visits">Приоритетные визиты</string>
+
+    <string name="close_all">Закрыть всё</string>
+    <string name="open_all">Открыть все</string>
 
 </resources>

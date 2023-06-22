@@ -86,6 +86,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="@string/change"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 app:drawableStartCompat="@drawable/edit_change_patdetail" />
 
