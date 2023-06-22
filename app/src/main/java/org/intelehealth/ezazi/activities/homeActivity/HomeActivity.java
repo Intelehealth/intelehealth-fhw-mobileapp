@@ -894,7 +894,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 encounterUUID = encounterDTO.getUuid();
 
                 if (!encUUID_visitComplete.equalsIgnoreCase("")) { // birthoutcome
-                    String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
+//                    String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
+                    String birthoutcome = obsDAO.getCompletedVisitType(encUUID_visitComplete);
                     if (!birthoutcome.equalsIgnoreCase("")) {
                         activePatientModels.get(j).setBirthOutcomeValue(birthoutcome);
                         filteractivePatient.get(j).setBirthOutcomeValue(birthoutcome);
@@ -903,7 +904,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
                 if (encounterDTO.getEncounterTypeUuid() != null) {
-                    String latestEncounterName = new EncounterDAO().getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
+                    String latestEncounterName = new EncounterDAO().findCurrentStage(encounterDTO.getVisituuid());
                     if (latestEncounterName.toLowerCase().contains("stage2")) {
                         activePatientModels.get(j).setStageName("Stage-2");
                         filteractivePatient.get(j).setStageName("Stage-2");
