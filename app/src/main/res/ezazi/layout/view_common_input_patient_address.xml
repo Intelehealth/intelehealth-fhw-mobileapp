@@ -128,7 +128,6 @@
                 android:id="@+id/et_city_village"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:inputType="text"

@@ -41,6 +41,7 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
+import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.Base64Utils;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -118,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         txt_cant_login = findViewById(R.id.tvActionForgotPassword);
         mEmailInputView = findViewById(R.id.etUsernameLayout);
         mPasswordInputView = findViewById(R.id.etPasswordLayout);
+        addValidationListener();
         txt_cant_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +197,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void addValidationListener() {
+        new InputChangeValidationListener(mEmailInputView, this::isEmailValid)
+                .validate(getString(R.string.error_invalid_email));
+        new InputChangeValidationListener(mPasswordInputView, this::isPasswordValid)
+                .validate(getString(R.string.error_invalid_password));
+    }
+
+    private boolean isEmailValid(String email) {
+        return true;// !TextUtils.isEmpty(email);
+    }
+
     /**
      * Returns void.
      * This method checks if valid username and password are given as input.
@@ -247,8 +260,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return boolean
      */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 7;
     }
 
     public void cantLogin() {
