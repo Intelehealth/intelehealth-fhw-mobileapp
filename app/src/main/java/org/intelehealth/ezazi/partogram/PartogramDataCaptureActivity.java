@@ -152,11 +152,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 intent.putExtra("visituuid", mVisitUUID);
                 startActivity(intent);
             } else {
-                new ConfirmationDialogFragment.Builder(this)
-                        .content(getString(R.string.this_option_available_tablet_device))
-                        .positiveButtonLabel(R.string.ok)
-                        .hideNegativeButton(true)
-                        .build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
+                new ConfirmationDialogFragment.Builder(this).content(getString(R.string.this_option_available_tablet_device)).positiveButtonLabel(R.string.ok).hideNegativeButton(true).build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
             }
 
 //            int dpi = context.getResources().getConfiguration().densityDpi;
@@ -246,32 +242,35 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
-                if (mItemList.get(i).getParamInfoList().get(j).getCapturedValue() != null
-                        && !mItemList.get(i).getParamInfoList().get(j).getCapturedValue().isEmpty()) {
 
-                    if (!mItemList.get(i).getParamInfoList().get(j).getParamName().equalsIgnoreCase("Initial")) {
-                        ObsDTO obsDTOData = new ObsDTO();
-                        obsDTOData.setCreator(new SessionManager(this).getCreatorID());
-                        obsDTOData.setEncounteruuid(mEncounterUUID);
-                        obsDTOData.setConceptuuid(mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
-                        obsDTOData.setValue(mItemList.get(i).getParamInfoList().get(j).getCapturedValue());
-                        obsDTOData.setComment(PartogramAlertEngine.getAlertName(mItemList.get(i).getParamInfoList().get(j)));
+                if (!mItemList.get(i).getParamInfoList().get(j).getParamName().equalsIgnoreCase("Initial")) {
+                    ObsDTO obsDTOData = new ObsDTO();
+                    obsDTOData.setCreator(new SessionManager(this).getCreatorID());
+                    obsDTOData.setEncounteruuid(mEncounterUUID);
+                    obsDTOData.setConceptuuid(mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
+                    obsDTOData.setValue(mItemList.get(i).getParamInfoList().get(j).getCapturedValue());
+                    obsDTOData.setComment(PartogramAlertEngine.getAlertName(mItemList.get(i).getParamInfoList().get(j)));
 
-                        String uuid = obsDAO.getObsuuid(mEncounterUUID, mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
-                        obsDTOData.setUuid(uuid);
-                        Log.d(TAG, "saveObs: uuid from db new: " + uuid);
+                    String uuid = obsDAO.getObsuuid(mEncounterUUID, mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
+                    obsDTOData.setUuid(uuid);
+
+                    if (uuid != null && !uuid.isEmpty()) {
+                        //update
                         obsDTOList.add(obsDTOData);
-                        count++;
+
+                    } else {
+                        //insert
+                        if (mItemList.get(i).getParamInfoList().get(j).getCapturedValue() != null && !mItemList.get(i).getParamInfoList().get(j).getCapturedValue().isEmpty()) {
+                            obsDTOList.add(obsDTOData);
+                        }
                     }
+                    count++;
                 }
             }
         }
 
         if (obsDTOList.isEmpty()) {
-            ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                    .content(getString(R.string.please_enter_field_value))
-                    .positiveButtonLabel(R.string.ok)
-                    .build();
+            ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).content(getString(R.string.please_enter_field_value)).positiveButtonLabel(R.string.ok).build();
             dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
 //            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -310,8 +309,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                 if (isSynced) {
                     Toast.makeText(this, "Data uploaded successfully!", Toast.LENGTH_SHORT).show();
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload),
-//                            getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
+                    AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
                     finish();
                 } else {
                     Toast.makeText(this, "Unable to upload the data!", Toast.LENGTH_SHORT).show();
@@ -357,13 +355,12 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         setEditData();
 
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
-                (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
-                    @Override
-                    public void onSelect(PartogramItemData partogramItemData) {
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(PartogramItemData partogramItemData) {
 
-                    }
-                });
+            }
+        });
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
@@ -391,13 +388,12 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         }
         setEditData();
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
-                (mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
-                    @Override
-                    public void onSelect(PartogramItemData partogramItemData) {
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(PartogramItemData partogramItemData) {
 
-                    }
-                });
+            }
+        });
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
@@ -422,9 +418,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         }
         setEditData();
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter
-                (mRecyclerView, this, mItemList, partogramItemData -> {
-                });
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
+        });
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 
