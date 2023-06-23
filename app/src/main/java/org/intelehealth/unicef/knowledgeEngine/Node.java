@@ -889,9 +889,9 @@ public class Node implements Serializable {
                     }
                 } else {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        node.setLanguage(node.getLanguage().replace("_", context.getString(R.string.question_not_answered)));
                     } else {
-                        node.addLanguage("Question not answered");
+                        node.addLanguage(context.getString(R.string.question_not_answered));
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                 }
@@ -913,9 +913,9 @@ public class Node implements Serializable {
                     }
                 } else {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        node.setLanguage(node.getLanguage().replace("_", context.getString(R.string.question_not_answered)));
                     } else {
-                        node.addLanguage("Question not answered");
+                        node.addLanguage(context.getString(R.string.question_not_answered));
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                 }
@@ -1131,9 +1131,9 @@ public class Node implements Serializable {
                     } else {
                         node.setSelected(true);
                         if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                            node.setLanguage(node.getLanguage().replace("_", context.getString(R.string.question_not_answered)));
                         } else {
-                            node.addLanguage("Question not answered");
+                            node.addLanguage(context.getString(R.string.question_not_answered));
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                     }
@@ -1279,9 +1279,9 @@ public class Node implements Serializable {
                     node.setSelected(false);
                     //} else {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        node.setLanguage(node.getLanguage().replace("_", context.getString(R.string.question_not_answered)));
                     } else {
-                        node.addLanguage("Question not answered");
+                        node.addLanguage(context.getString(R.string.question_not_answered));
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                     //   node.setSelected(true);
@@ -1525,9 +1525,9 @@ public class Node implements Serializable {
                         node.setSelected(false);
                     } else {
                         if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                            node.setLanguage(node.getLanguage().replace("_", context.getString(R.string.question_not_answered)));
                         } else {
-                            node.addLanguage("Question not answered");
+                            node.addLanguage(context.getString(R.string.question_not_answered));
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
