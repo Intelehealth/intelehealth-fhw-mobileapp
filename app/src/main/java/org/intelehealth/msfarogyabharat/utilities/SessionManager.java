@@ -108,7 +108,7 @@ public class SessionManager {
     }
 
     public String getPullExcutedTime() {
-        return pref.getString(PULL_EXECUTED_TIME, "2006-08-22 22:21:48 ");
+        return pref.getString(PULL_EXECUTED_TIME, "2006-08-22 22:21:48");
     }
 
     public void setPullExcutedTime(String pullExcutedTime) {
