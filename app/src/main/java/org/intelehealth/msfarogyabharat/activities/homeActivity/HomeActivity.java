@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
-
+    public static final String MSF_PULL_ISSUE = "MSF_PULL_ISSUE";
     TextView lastSyncTextView;
     TextView lastSyncAgo;
     Button manualSyncButton;
@@ -158,6 +158,8 @@ public class HomeActivity extends AppCompatActivity {
         filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);*/
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
+
 
 //        checkAppVer();  //auto-update feature.
 
@@ -336,8 +338,7 @@ public class HomeActivity extends AppCompatActivity {
             mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-
+            mSyncProgressDialog.setMax(100);
             mSyncProgressDialog.show();
 
             initialSyncExecutor.execute(() -> syncUtils.initialSync("home"));
@@ -1055,4 +1056,16 @@ public class HomeActivity extends AppCompatActivity {
         executorService.shutdown();
         initialSyncExecutor.shutdownNow();
     }
+
+    private final Observer<Integer> syncLiveData = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer progress) {
+            if (mSyncProgressDialog != null) {
+                mSyncProgressDialog.setProgress(progress);
+                Logger.logD(MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
+
+            }
+        }
+    };
+
 }

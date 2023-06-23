@@ -23,6 +23,7 @@ import org.intelehealth.msfarogyabharat.models.dto.ResponseDTO;
 import org.intelehealth.msfarogyabharat.models.dto.VisitDTO;
 import org.intelehealth.msfarogyabharat.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.msfarogyabharat.models.pushResponseApiCall.PushResponseApiCall;
+import org.intelehealth.msfarogyabharat.syncModule.SyncProgress;
 import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.NotificationID;
@@ -55,6 +56,7 @@ public class SyncDAO {
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
     String appLanguage;
+    private static final SyncProgress liveDataSync = new SyncProgress();
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
@@ -179,6 +181,7 @@ public class SyncDAO {
                         Logger.logD(MSF_PULL_ISSUE, "background pageno: " + nextPageNo + " totalCount: " + totalCount);
                         if (nextPageNo != -1) {
                             pullData_Background(context, nextPageNo);
+                            return;
                         }
                         else {
                             // do nothing - move ahead.
@@ -287,16 +290,19 @@ public class SyncDAO {
                         // Step 3. on insert done and notifi call from this packet of page0 and limit 100 again call the pull().
                         int nextPageNo = response.body().getData().getPageNo();
                         int totalCount = response.body().getData().getTotalCount();
-                        int percentage = 0;
+                        int percentage = 0; // this should be only in initialSync....
                         Logger.logD(MSF_PULL_ISSUE, "pageno: " + nextPageNo + " totalCount: " + totalCount);
                         if (nextPageNo != -1) {
                             percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0/totalCount);
                             Logger.logD(MSF_PULL_ISSUE, "percentage: " + percentage);
+                            setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);
+                            return;
                         }
                         else {
                             percentage = 100;
                             Logger.logD(MSF_PULL_ISSUE, "percentage page -1: " + percentage);
+                            setProgress(percentage);
                             sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
 
                             // Adding handlers here so that we can show these toasts on the main thread - Added by Arpan Sircar
@@ -558,5 +564,13 @@ public class SyncDAO {
             hasPrescription = true;
 
         return hasPrescription;
+    }
+
+    public static void setProgress(int progress) {
+        liveDataSync.updateProgress(progress);
+    }
+
+    public static SyncProgress getSyncProgress_LiveData() {
+        return liveDataSync;
     }
 }
