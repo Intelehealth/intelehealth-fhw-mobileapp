@@ -644,7 +644,7 @@ public class ObsDAO {
                 Context context = IntelehealthApplication.getAppContext();
                 valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
                 if (valueData.equals(context.getString(R.string.refer_to_other_hospital))) {
-                    valueData = "ROH";
+                    valueData = "RTOH";
                 } else if (valueData.equals(context.getString(R.string.self_discharge_medical_advice))) {
                     valueData = "DAMA";
                 }
