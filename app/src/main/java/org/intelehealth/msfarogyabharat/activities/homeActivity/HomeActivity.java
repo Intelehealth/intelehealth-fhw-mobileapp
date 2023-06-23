@@ -28,6 +28,8 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -132,6 +134,10 @@ public class HomeActivity extends AppCompatActivity {
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     ExecutorService initialSyncExecutor = Executors.newSingleThreadExecutor();
 
+    private ProgressBar sync_progress_bar;
+    private RelativeLayout sync_relativelayout;
+    private TextView sync_counter_txtview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +164,6 @@ public class HomeActivity extends AppCompatActivity {
         filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);*/
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-        SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
 
 
 //        checkAppVer();  //auto-update feature.
@@ -166,6 +171,10 @@ public class HomeActivity extends AppCompatActivity {
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         lastSyncAgo = findViewById(R.id.lastsyncago);
+        sync_progress_bar = findViewById(R.id.sync_progress_bar);
+        sync_counter_txtview = findViewById(R.id.sync_counter_txtview);
+        sync_relativelayout = findViewById(R.id.sync_relativelayout);
+
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         // c1 = findViewById(R.id.cardview_newpat);
@@ -335,14 +344,18 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         if (sessionManager.isFirstTimeLaunched()) {
-            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+            /*mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setMax(100);
-            mSyncProgressDialog.show();
+            mSyncProgressDialog.show();*/
 
+            SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
+            Logger.logD(MSF_PULL_ISSUE, "isfirstTimelaunch");
+            sync_relativelayout.setVisibility(View.VISIBLE);
             initialSyncExecutor.execute(() -> syncUtils.initialSync("home"));
         } else {
+            sync_relativelayout.setVisibility(View.GONE);
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         }
@@ -841,8 +854,9 @@ public class HomeActivity extends AppCompatActivity {
 
             if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
-                if (sessionManager.isFirstTimeLaunched()) {
+                if (sessionManager.isFirstTimeLaunched()) { // true
                     if (flagType == AppConstants.SYNC_FAILED) {
+                        Logger.logD(MSF_PULL_ISSUE, "BR sync fail");
                         hideSyncProgressBar(false);
                         /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
                         finish();*/
@@ -858,6 +872,7 @@ public class HomeActivity extends AppCompatActivity {
 
                                 .show();
                     } else {
+                        Logger.logD(MSF_PULL_ISSUE, "BR sync passed");
                         mTempSyncHelperList.add(flagType);
                         if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)
 //                                && mTempSyncHelperList.contains(AppConstants.SYNC_PUSH_DATA_DONE)
@@ -875,8 +890,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private void hideSyncProgressBar(boolean isSuccess) {
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
-        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-            mSyncProgressDialog.dismiss();
+     //   if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+     //       mSyncProgressDialog.dismiss();
             if (isSuccess) {
 
                 sessionManager.setFirstTimeLaunched(false);
@@ -890,7 +905,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }, 10000);
             }
-        }
+    //    }
     }
 
     private void getMindmapDownloadURL(String url, String key) {
@@ -1060,10 +1075,17 @@ public class HomeActivity extends AppCompatActivity {
     private final Observer<Integer> syncLiveData = new Observer<Integer>() {
         @Override
         public void onChanged(Integer progress) {
-            if (mSyncProgressDialog != null) {
-                mSyncProgressDialog.setProgress(progress);
+            Logger.logD(MSF_PULL_ISSUE, "onchanged of livedata again called up");
+            if (sync_progress_bar != null) {
+                sync_progress_bar.setProgress(progress);
+                sync_counter_txtview.setText(progress + "%");
                 Logger.logD(MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
 
+                if (progress == 100) {
+                    SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
+                    Logger.logD(MSF_PULL_ISSUE, "progress is 100 so close");
+                    sync_relativelayout.setVisibility(View.GONE);
+                }
             }
         }
     };

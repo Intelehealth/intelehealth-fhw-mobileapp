@@ -516,6 +516,36 @@
 
         </ScrollView>
 
+        <RelativeLayout
+            android:id="@+id/sync_relativelayout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_centerInParent="true">
+
+            <ProgressBar
+                android:id="@+id/sync_progress_bar"
+                style="@style/CircularDeterminateProgressBar"
+                android:background="@drawable/circle_badge"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:indeterminateOnly="false"
+                android:progressDrawable="@drawable/progress_circle"
+                android:rotation="-90"
+                tools:progress="60" />
+
+            <TextView
+                android:id="@+id/sync_counter_txtview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <!--<include layout="@layout/content_home" />-->
