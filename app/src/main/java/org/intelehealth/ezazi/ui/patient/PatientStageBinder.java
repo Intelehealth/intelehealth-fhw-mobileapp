@@ -91,10 +91,7 @@ public class PatientStageBinder {
 
     private void getStage(PatientDTO patient) {
         if (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0) return;
-        Log.e(TAG, "VisitUuid Id =>" + patient.getVisitUuid());
         String latestEncounterName = new EncounterDAO().findCurrentStage(patient.getVisitUuid());
-        Log.e(TAG, "latestEncounterName =>" + latestEncounterName);
-        Log.e(TAG, "Patient =>" + patient.getFullName());
         if (latestEncounterName.toLowerCase().contains("stage2")) {
             patient.setStage("Stage-2");
         } else if (latestEncounterName.toLowerCase().contains("stage1")) {

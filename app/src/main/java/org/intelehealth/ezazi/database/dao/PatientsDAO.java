@@ -456,7 +456,7 @@ public class PatientsDAO {
 
     public String getUuidForAttribute(String attr) {
         String attributeUuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -627,7 +627,7 @@ public class PatientsDAO {
 
     public String getPatientAttributeValue(String patientUuid, PatientAttributesDTO.Columns columns) {
         String attributeUuid = getUuidForAttribute(columns.value);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         String value = "";
         Cursor cursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid =? COLLATE NOCASE",
                 new String[]{patientUuid, attributeUuid});

@@ -34,14 +34,10 @@ import org.intelehealth.ezazi.activities.identificationActivity.IdentificationAc
 import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
-import org.intelehealth.ezazi.database.dao.EncounterDAO;
-import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
-import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.executor.TaskCompleteListener;
 import org.intelehealth.ezazi.executor.TaskExecutor;
-import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
@@ -72,6 +68,10 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
     //    EditText toolbarET;
 //    ImageView toolbarClear, toolbarSearch, toolbarFilter;
     LinearLayoutManager reLayoutManager;
+
+    private interface OnSearchCompleteListener {
+        void onSearchCompleted(List<PatientDTO> results);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,12 +181,14 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == searchPatientAdapter.getItemCount() - 1) {
                     Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
-                    List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
-                    if (allPatientsFromDB.size() < limit) {
-                        fullyLoaded = true;
-                    }
-                    searchPatientAdapter.patients.addAll(allPatientsFromDB);
-                    searchPatientAdapter.notifyDataSetChanged();
+                    getAllPatientsFromDB(offset, results -> {
+                        if (results.size() < limit) {
+                            fullyLoaded = true;
+                        }
+                        searchPatientAdapter.patients.addAll(results);
+                        searchPatientAdapter.notifyDataSetChanged();
+                    });
+
                 }
             }
         });
@@ -250,7 +252,8 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
 //            searchPatientAdapter = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
             fullyLoaded = true;
 //            recyclerView.setAdapter(searchPatientAdapter);
-            bindAdapter(getQueryPatients(query));
+//            bindAdapter(getQueryPatients(query));
+            searchFromAttributes(query, results -> bindAdapter(results));
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -279,7 +282,8 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
             fullyLoaded = false;
 //            searchPatientAdapter = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
 //            recyclerView.setAdapter(searchPatientAdapter);
-            bindAdapter(getAllPatientsFromDB(offset));
+            getAllPatientsFromDB(offset, results -> bindAdapter(results));
+
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
@@ -292,15 +296,17 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                     if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == searchPatientAdapter.getItemCount() - 1) {
                         Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                         offset += limit;
-                        List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
-                        if (allPatientsFromDB.size() < limit) {
-                            fullyLoaded = true;
-                        }
+                        getAllPatientsFromDB(offset, results -> {
+                            if (results.size() < limit) {
+                                fullyLoaded = true;
+                            }
 
-                        new PatientStageBinder().bindStage(allPatientsFromDB, patients -> runOnUiThread(() -> {
-                            searchPatientAdapter.patients.addAll(patients);
-                            searchPatientAdapter.notifyDataSetChanged();
-                        }));
+                            new PatientStageBinder().bindStage(results, patients -> runOnUiThread(() -> {
+                                searchPatientAdapter.patients.addAll(patients);
+                                searchPatientAdapter.notifyDataSetChanged();
+                            }));
+                        });
+
                     }
                 }
             });
@@ -379,31 +385,46 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         lvItems.setAdapter(searchAdapter);
     }
 
-    public List<PatientDTO> getAllPatientsFromDB(int offset) {
-        List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
-        try {
-            if (searchCursor.moveToFirst()) {
-                do {
-                    PatientDTO model = new PatientDTO();
-                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                    model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
-                    model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
-                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                    model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
-                    model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
-                    model.setBedNo(getPatientBedNot(model.getUuid()));
+    public void getAllPatientsFromDB(int offset, OnSearchCompleteListener listener) {
+        new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {
+            @Override
+            public List<PatientDTO> call() throws Exception {
+                List<PatientDTO> modelList = new ArrayList<PatientDTO>();
+                SQLiteDatabase database = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+                String table = "tbl_patient";
+                String columns = "uuid, openmrs_id, first_name, last_name, middle_name, date_of_birth";
+                final Cursor searchCursor = database.rawQuery("SELECT " + columns + " FROM " + table + " ORDER BY first_name ASC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
+                try {
+                    if (searchCursor.moveToFirst()) {
+                        do {
+                            PatientDTO model = new PatientDTO();
+                            model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                            model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                            model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                            model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
+                            model.setBedNo(getPatientBedNot(model.getUuid()));
 //                    model.setStage(getStage(model.getUuid()));
-                    modelList.add(model);
-                } while (searchCursor.moveToNext());
+                            modelList.add(model);
+                        } while (searchCursor.moveToNext());
+                    }
+                    searchCursor.close();
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (!searchCursor.isClosed()) searchCursor.close();
+                }
+                return modelList;
             }
-            searchCursor.close();
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        return modelList;
+
+            @Override
+            public void onComplete(List<PatientDTO> result) {
+                TaskCompleteListener.super.onComplete(result);
+                if (listener != null) listener.onSearchCompleted(result);
+            }
+        });
+
 
     }
 
@@ -533,6 +554,140 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
 
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
+    }
+
+    private void searchFromAttributes(String query, OnSearchCompleteListener listener) {
+        SQLiteDatabase database = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        TaskExecutor<List<String>> executor = new TaskExecutor<>();
+        executor.executeTask(new TaskCompleteListener<List<String>>() {
+            @Override
+            public List<String> call() throws Exception {
+                List<String> patientUUID_List = new ArrayList<>();
+                final Cursor search_mobile_cursor = database.rawQuery("SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value = ?",
+                        new String[]{query});
+                /* DISTINCT will get remove the duplicate values. The duplicate value will come when you have created
+                 * a patient with mobile no. 12345 and patient is pushed than later you edit the mobile no to
+                 * 12344 or something. In this case, the local db maintains two separate rows both with value: 12344 */
+                //if no data is present against that corresponding cursor than cursor count returns = 0 ... i.e cursor_count = 0 ...
+                try {
+                    if (search_mobile_cursor.moveToFirst()) {
+                        do {
+                            patientUUID_List.add(search_mobile_cursor.getString
+                                    (search_mobile_cursor.getColumnIndexOrThrow("patientuuid")));
+                        }
+                        while (search_mobile_cursor.moveToNext());
+                    }
+                } catch (Exception e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                } finally {
+                    search_mobile_cursor.close();
+                }
+                return patientUUID_List;
+            }
+
+            @Override
+            public void onComplete(List<String> result) {
+                TaskCompleteListener.super.onComplete(result);
+                if (result.size() > 0)
+                    searchPatientByAttributes(result, query, listener);
+                else searchPatientFromTable(query, listener);
+            }
+        });
+    }
+
+    private void searchPatientByAttributes(List<String> attributeIds, String search, OnSearchCompleteListener listener) {
+        SQLiteDatabase database = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {
+            @Override
+            public List<PatientDTO> call() throws Exception {
+                List<PatientDTO> modelList = new ArrayList<>();
+                String table = "tbl_patient";
+                String columns = "uuid, openmrs_id, first_name, last_name, middle_name, date_of_birth";
+                for (int i = 0; i < attributeIds.size(); i++) {
+//                    final Cursor searchCursor = database.rawQuery("SELECT " + columns + " FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
+//                            new String[]{attributeIds.get(i)});
+                    final Cursor searchCursor = database.rawQuery("SELECT " + columns + " FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' ORDER BY first_name ASC",
+                            new String[]{attributeIds.get(i)});
+                    //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
+                    try {
+                        if (searchCursor.moveToFirst()) {
+                            do {
+                                PatientDTO model = new PatientDTO();
+                                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                                model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                                model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                                model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
+                                model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                                model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                                model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
+                                String bedNod = getPatientBedNot(model.getUuid());
+                                model.setBedNo(bedNod);
+                                modelList.add(model);
+                            } while (searchCursor.moveToNext());
+                        }
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    } finally {
+                        searchCursor.close();
+                    }
+                }
+                return modelList;
+            }
+
+            @Override
+            public void onComplete(List<PatientDTO> result) {
+                TaskCompleteListener.super.onComplete(result);
+                runOnUiThread(() -> {
+                    if (listener != null) listener.onSearchCompleted(result);
+                });
+            }
+        });
+    }
+
+    private void searchPatientFromTable(String search, OnSearchCompleteListener listener) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        new TaskExecutor<List<PatientDTO>>().executeTask(new TaskCompleteListener<List<PatientDTO>>() {
+            @Override
+            public List<PatientDTO> call() throws Exception {
+                List<PatientDTO> modelList = new ArrayList<>();
+                String table = "tbl_patient";
+                String columns = "uuid, openmrs_id, first_name, last_name, middle_name, date_of_birth";
+//                final Cursor searchCursor = db.rawQuery("SELECT " + columns + " FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
+//                        null);
+                final Cursor searchCursor = db.rawQuery("SELECT " + columns + " FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' ORDER BY first_name ASC",
+                        null);
+                //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
+                try {
+                    if (searchCursor.moveToFirst()) {
+                        do {
+                            PatientDTO model = new PatientDTO();
+                            model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                            model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                            model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
+                            model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                            model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            modelList.add(model);
+                        } while (searchCursor.moveToNext());
+                    }
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                } finally {
+                    searchCursor.close();
+                }
+                return modelList;
+            }
+
+            @Override
+            public void onComplete(List<PatientDTO> result) {
+                TaskCompleteListener.super.onComplete(result);
+                runOnUiThread(() -> {
+                    if (listener != null) listener.onSearchCompleted(result);
+                });
+            }
+        });
     }
 
     public List<PatientDTO> getQueryPatients(String query) {

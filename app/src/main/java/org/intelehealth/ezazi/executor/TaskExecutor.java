@@ -49,7 +49,8 @@ public class TaskExecutor<T> {
                 T result = callable.call();
                 callable.onComplete(result);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Log.e(TAG, e.getLocalizedMessage());
+//                throw new RuntimeException(e);
             }
         });
     }
@@ -65,7 +66,8 @@ public class TaskExecutor<T> {
             }
             executorService.shutdown();
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            Log.e(TAG, e.getLocalizedMessage());
+//            throw new RuntimeException(e);
         }
     }
 }
