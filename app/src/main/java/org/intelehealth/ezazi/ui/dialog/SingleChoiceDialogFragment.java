@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.ui.dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +38,11 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
 
     @Override
     public void onSubmit() {
-        listener.onItemSelected(adapter.getSelected(), args.getContent().get(adapter.getSelected()));
+        if (adapter.getSelected() != -1) {
+            listener.onItemSelected(adapter.getSelected(), args.getContent().get(adapter.getSelected()));
+        } else {
+            Toast.makeText(getContext(), "Please select item", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
