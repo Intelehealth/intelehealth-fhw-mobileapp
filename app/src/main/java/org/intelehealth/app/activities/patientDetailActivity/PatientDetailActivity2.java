@@ -12,6 +12,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.app.utilities.StringUtils.mSwitch_hi_en_te_State_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
@@ -88,6 +89,8 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.identificationActivity.model.DistData;
+import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -112,6 +115,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -1050,7 +1054,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             country = getResources().getString(R.string.no_country_added);
         }
-        patientcountry.setText(country);
+        patientcountry.setText(StringUtils.switch_hi_en_country(country, sessionManager.getAppLanguage()));
 
         // setting state
         String state;
@@ -1059,7 +1063,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             state = getResources().getString(R.string.no_state_added);
         }
-        patientstate.setText(state);
+        patientstate.setText(mSwitch_hi_en_te_State_edit(state,sessionManager.getAppLanguage()));
 
         // setting district and city
         String[] district_city = patientDTO.getCityvillage().trim().split(":");
@@ -1071,7 +1075,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
 
         if (district != null) {
-            patientdistrict.setText(district);
+            patientdistrict.setText(getDistrictTranslated(state, district));
         } else {
             patientdistrict.setText(getResources().getString(R.string.no_district_added));
         }
@@ -1336,8 +1340,31 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().equals("")) {
             patientoccupation.setText(patientDTO.getOccupation());
         } else {
-            patientoccupation.setText("");
+            patientoccupation.setText(getString(R.string.not_provided));
         }
+    }
+
+    private String getDistrictTranslated(String state, String district) {
+        StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
+        List<DistData> distDataList = new ArrayList<>();
+        String desiredVal = district;
+
+        for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
+            String sName = mStateDistMaster.getStateDataList().get(i).getState();
+            if (sName.equalsIgnoreCase(state)) {
+                distDataList = mStateDistMaster.getStateDataList().get(i).getDistDataList();
+                break;
+            }
+        }
+
+        for (int i = 0; i <= distDataList.size(); i++) {
+            if(distDataList.get(i).getName().equalsIgnoreCase(district)) {
+                desiredVal = distDataList.get(i).getNameHindi();
+                break;
+            }
+        }
+
+        return desiredVal;
     }
 
     // profile pic download

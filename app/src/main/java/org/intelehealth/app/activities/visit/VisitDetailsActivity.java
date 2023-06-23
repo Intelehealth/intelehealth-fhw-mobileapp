@@ -163,6 +163,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
         try {
             pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
+            if(pat_phoneno.equalsIgnoreCase("N/A"))
+                pat_phoneno = "";
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -661,7 +663,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
      */
     // TODO: check with Sagar for this message to be passed...
     private void whatsapp_feature(String phoneno) {
-        if (phoneno != null) {
+        if (phoneno != null && !phoneno.equalsIgnoreCase("")) {
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse(
                             String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
@@ -677,7 +679,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
      * @param phoneno
      */
     private void calling_feature(String phoneno) {
-        if (phoneno != null) {
+        if (phoneno!= null && !phoneno.equalsIgnoreCase("")) {
             Intent i1 = new Intent(Intent.ACTION_DIAL);
             i1.setData(Uri.parse("tel:" + phoneno));
             startActivity(i1);

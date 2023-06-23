@@ -1463,7 +1463,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
     <string name="sync_strated">"Sync started! "</string>
     <string name="priority_hint">Enable this in case visit is an Emergency.</string>
-    <string name="mobile_no_not_provided">Mobile number not provided</string>
+    <string name="mobile_no_not_provided">Mobile number not provided.</string>
     <string name="please_wait_app_reset">Please wait a moment while the app is being reset.</string>
     <string name="please_wait_sync_progress">Please wait a moment while the app is being synced</string>
     <string name="invalid_mobile_no">Invalid mobile number</string>
@@ -1534,6 +1534,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="confirm_end_visit_reason_message">Prescription should be shared before closing visit,are you sure you want to close the visit?</string>
     <string name="support_mobile_no_1">919503692181</string>
     <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
+    <string name="help_whatsapp_string_2">Hello, I need some assistance</string>
     <string name="update_app_protocol">Update app protocol!</string>
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
     <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
@@ -1613,7 +1614,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="benefits_of_walking">Benefits of walking</string>
     <string name="out_of"> out of </string>
     <string name="unclosed_visits">unclosed visits</string>
-    <string name="pending">pending</string>
+    <string name="pending">Pending</string>
     <string name="exit_app">Exit App</string>
     <string name="last_sync">Last sync</string>
     <string name="help_center">Help center</string>
@@ -1783,7 +1784,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="type_or_select_reason">Type or select reason eg. Fever</string>
     <string name="enter_value">Enter value</string>
     <string name="enter_state">Enter state</string>
-    <string name="enter_village_town_city">Enter village/town/city</string>
+    <string name="enter_village_town_city">Enter Village/Town/City</string>
     <string name="enter_patient_address">Enter patient address</string>
     <string name="enter_district">Enter district</string>
     <string name="select_education">Select Education</string>

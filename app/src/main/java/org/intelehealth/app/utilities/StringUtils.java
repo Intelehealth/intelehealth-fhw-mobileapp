@@ -2193,6 +2193,30 @@ public final class StringUtils {
         return val;
     }
 
+    public static String translateLocation(String val, String locale) {
+        if (locale.equalsIgnoreCase("hi")) {
+
+            switch (val) {
+                case "Telemedicine Clinic 1":
+                    val = "टेलीमेडिसिन क्लीनिक 1";
+                    break;
+                case "Telemedicine Clinic 2":
+                    val = "टेलीमेडिसिन क्लीनिक 2";
+                    break;
+                case "Telemedicine Clinic 3":
+                    val = "टेलीमेडिसिन क्लीनिक 3";
+                    break;
+                case "Remote":
+                    val = "रिमोट";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }
+
     /**
      * Ritika======
      * put only english Language into Db
@@ -2237,8 +2261,13 @@ public final class StringUtils {
             }
 
         }
-        if (locale.equalsIgnoreCase("or")) {
-//todo ritika Change After requirement
+
+        return val;
+    }
+
+    public static String switch_hi_en_country(String val, String locale)
+    {
+        if (locale.equalsIgnoreCase("hi")) {
             switch (val) {
                 case "India":
                     val = "इंडिया";
@@ -2256,7 +2285,6 @@ public final class StringUtils {
         }
         return val;
     }
-
 
     /**
      * Ritika======
@@ -2754,6 +2782,105 @@ public final class StringUtils {
 
             }
         } else {
+            return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_en_dictrict(String val, String locale) {
+        if (locale.equalsIgnoreCase("hi")) {
+            switch (val) {
+                case "Andhra Pradesh":
+                    val = "आंध्र प्रदेश";
+                    break;
+                case "Arunachal Pradesh":
+                    val = "अरुणाचल प्रदेश";
+                    break;
+                case "Assam":
+                    val = "असम";
+                    break;
+                case "Bihar":
+                    val = "बिहार";
+                    break;
+                case "Chhattisgarh":
+                    val = "छत्तीसगढ";
+                    break;
+                case "Goa":
+                    val = "गोवा";
+                    break;
+                case "Gujarat":
+                    val = "गुजरात";
+                    break;
+                case "Haryana":
+                    val = "हरयाणा";
+                    break;
+                case "Himachal Pradesh":
+                    val = "हिमाचल प्रदेश";
+                    break;
+                case "Jammu &amp; Kashmir":
+                    val = "जम्मू कश्मीर";
+                    break;
+                case "Jharkhand":
+                    val = "झारखंड";
+                    break;
+                case "Karnataka":
+                    val = "कर्नाटक";
+                    break;
+                case "Kerala":
+                    val = "केरल";
+                    break;
+                case "Madhya Pradesh":
+                    val = "मध्य प्रदेश";
+                    break;
+                case "Maharashtra":
+                    val = "महाराष्ट्र";
+                    break;
+                case "Manipur":
+                    val = "मणिपुर";
+                    break;
+                case "Meghalaya":
+                    val = "मेघालय";
+                    break;
+                case "Mizoram":
+                    val = "मिजोरम";
+                    break;
+                case "Nagaland":
+                    val = "नगालैंड";
+                    break;
+                case "Odisha":
+                    val = "उड़ीसा";
+                    break;
+                case "Punjab":
+                    val = "पंजाब";
+                    break;
+                case "Rajasthan":
+                    val = "राजस्थान";
+                    break;
+                case "Sikkim":
+                    val = "सिक्किम";
+                    break;
+                case "Tamil Nadu":
+                    val = "तमिलनाडु";
+                    break;
+                case "Telangana":
+                    val = "तेलंगाना";
+                    break;
+                case "Tripura":
+                    val = "त्रिपुरा";
+                    break;
+                case "Uttar Pradesh":
+                    val = "उत्तर प्रदेश";
+                    break;
+                case "Uttarakhand":
+                    val = "उत्तराखंड";
+                    break;
+                case "West Bengal":
+                    val = "पश्चिम बंगाल";
+                    break;
+            }
+
+        }
+        else {
             return val;
         }
         return val;

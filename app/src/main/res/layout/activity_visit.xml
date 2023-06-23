@@ -104,7 +104,7 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager_appointments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/tablayout_appointments"
         android:visibility="visible"
         android:layout_marginTop="@dimen/margin_24"

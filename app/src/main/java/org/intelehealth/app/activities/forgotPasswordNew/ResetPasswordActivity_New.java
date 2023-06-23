@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -110,8 +111,16 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         });
 
         rvHelpInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(ResetPasswordActivity_New.this, ChatSupportHelpActivity_New.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(ResetPasswordActivity_New.this, ChatSupportHelpActivity_New.class);
+            startActivity(intent);*/
+
+            //As socket implementation is pending thus adding this flow temporarily: JIRA Ticket IDA4-1130
+            String phoneNumber = getString(R.string.support_mobile_no_1);
+            String message = getString(R.string.help_whatsapp_string_2);
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(
+                            String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                    phoneNumber, message))));
         });
 
         manageErrorFields();

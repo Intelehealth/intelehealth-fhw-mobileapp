@@ -26,7 +26,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import java.util.Locale;
 
 public class MostSearchedVideosActivity_New extends AppCompatActivity {
-    private static final String TAG = "MostSearchedVideosActiv";
+    private static final String TAG = "MostSearchedVideosActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

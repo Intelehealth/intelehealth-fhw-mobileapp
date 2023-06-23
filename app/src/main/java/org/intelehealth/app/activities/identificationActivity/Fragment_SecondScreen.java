@@ -137,6 +137,7 @@ public class Fragment_SecondScreen extends Fragment {
 
         //mCityNameSpinner = view.findViewById(R.id.city_spinner);
         mCityVillageET = view.findViewById(R.id.city_village_edittext);
+        mCityVillageET.setFilters(new InputFilter[]{new InputFilter.AllCaps()}); //all capital input
 
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
         mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50

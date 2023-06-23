@@ -298,6 +298,7 @@
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/common_edittext_margin_top"
                         android:background="@drawable/edittext_border"
+                        android:textAllCaps="true"
                         android:hint="@string/enter_village_town_city"
                         android:inputType="text"
                         android:maxLines="1"

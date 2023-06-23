@@ -169,9 +169,9 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_today = followUpModels.size();
             if (totalCounts_today <= 0) {
-                mTodayRelativeLayout.setVisibility(View.GONE);
+                today_nodata.setVisibility(View.VISIBLE);
             } else {
-                mTodayRelativeLayout.setVisibility(View.VISIBLE);
+                today_nodata.setVisibility(View.GONE);
             }
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
             rv_today.setNestedScrollingEnabled(false);
@@ -216,9 +216,9 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_week = followUpModels.size();
             if (totalCounts_week <= 0)
-                mWeekRelativeLayout.setVisibility(View.GONE);
+                week_nodata.setVisibility(View.VISIBLE);
             else
-                mWeekRelativeLayout.setVisibility(View.VISIBLE);
+                week_nodata.setVisibility(View.GONE);
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
             rv_week.setNestedScrollingEnabled(false);
             rv_week.setAdapter(adapter_new);
@@ -234,9 +234,9 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             followUpModels = getChiefComplaint(followUpModels);
             totalCounts_month = followUpModels.size();
             if (totalCounts_month <= 0)
-                mMonthRelativeLayout.setVisibility(View.GONE);
+                month_nodata.setVisibility(View.VISIBLE);
             else
-                mMonthRelativeLayout.setVisibility(View.VISIBLE);
+                month_nodata.setVisibility(View.GONE);
             adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
             rv_month.setNestedScrollingEnabled(false);
             rv_month.setAdapter(adapter_new);

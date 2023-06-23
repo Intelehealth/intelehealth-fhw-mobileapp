@@ -44,6 +44,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -231,7 +232,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         }*/
         mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
-        tvLocation.setText(sessionManager.getLocationName());
+        tvLocation.setText(StringUtils.translateLocation(sessionManager.getLocationName(), sessionManager.getAppLanguage()));
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ui2_ic_location_home, 0);
         TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);
         ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
