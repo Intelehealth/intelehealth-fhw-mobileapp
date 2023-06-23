@@ -648,7 +648,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (havingNestedQuestion) {
             //if (isSuperNested) {
             //if(mNestedLevel%2==0){
-            holder.superNestedRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            linearLayoutManager.setStackFromEnd(false);
+            linearLayoutManager.setSmoothScrollbarEnabled(true);
+            holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
             int nestedLevel = mNestedLevel + 1;
             NestedQuestionsListingAdapter nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, new OnItemSelection() {
                 @Override

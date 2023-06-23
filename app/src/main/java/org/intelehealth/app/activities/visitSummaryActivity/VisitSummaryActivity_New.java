@@ -947,9 +947,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             boolean isInOldFormat = true;
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
-                    isInOldFormat = false;
                     JSONObject jsonObject = new JSONObject(value);
-                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        isInOldFormat = true;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -958,8 +963,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             String valueArray[] = null;
             if (isInOldFormat)
                 valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
-            else
-                valueArray = value.split("►" + getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()) + "::");
+            else {
+                String c1 = "►" + getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage());
+                Log.v(TAG, "complaint c1: " + c1);
+                valueArray = value.split(c1);
+                valueArray[1] = valueArray[1].split("::")[1];
+            }
             Log.v(TAG, "complaint: " + valueArray[0]);
             Log.v(TAG, "complaint associated: " + valueArray[1]);
             String[] headerchips = valueArray[0].split("►");
@@ -1013,19 +1022,29 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // phys exam data
         if (phyExam.getValue() != null) {
             String value = phyExam.getValue();
+            boolean isInOldFormat = true;
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
-                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        isInOldFormat = true;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
             Log.v(TAG, "phyExam : " + value);
-            String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
-                    .split("<b>General exams: </b><br/>");
-            // physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
-            physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
+            if (isInOldFormat) {
+                String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
+                        .split("<b>General exams: </b><br/>");
+                physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
+            } else {
+                physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
+            }
         }
         //image download for physcialExamination documents
         Paint p = new Paint();
@@ -1042,7 +1061,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
-                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        // isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        //isInOldFormat = true;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1058,7 +1083,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
-                    value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        //isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        //isInOldFormat = true;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

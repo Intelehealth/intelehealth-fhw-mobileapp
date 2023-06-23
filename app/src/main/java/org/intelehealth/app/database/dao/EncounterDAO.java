@@ -29,6 +29,8 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -546,6 +548,24 @@ public class EncounterDAO {
                 db.setTransactionSuccessful();
                 db.endTransaction();
             }
+        boolean needToShowCoreValue = false;
+        if (complaintValue.startsWith("{") && complaintValue.endsWith("}")) {
+            try {
+                // isInOldFormat = false;
+                JSONObject jsonObject = new JSONObject(complaintValue);
+                if (jsonObject.has("l-" + new SessionManager(IntelehealthApplication.getAppContext()).getAppLanguage())) {
+                    complaintValue = jsonObject.getString("l-" + new SessionManager(IntelehealthApplication.getAppContext()).getAppLanguage());
+                    needToShowCoreValue = false;
+                } else {
+                    needToShowCoreValue = true;
+                    complaintValue = jsonObject.getString("en");
+                }
+                complaintValue = jsonObject.getString("en");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         return complaintValue;
     }
 
