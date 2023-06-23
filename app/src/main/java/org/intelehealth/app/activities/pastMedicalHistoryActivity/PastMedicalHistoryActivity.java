@@ -108,7 +108,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory;
+    String patientHistory = "";
     String phistory = "";
 
     boolean flag = false;
@@ -528,9 +528,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 patientHistoryData.put("ar", patientHistoryArabic);
                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
                 patientHistory = gson.toJson(patientHistoryData);
-                updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
+                // update details of patient's visit, when edit button on VisitSummary is pressed
             }
 
+            updateDatabase(patientHistory);
             // displaying all values in another activity
             Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
@@ -666,7 +667,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
             obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB));
-
             obsDAO.updateObs(obsDTO);
 
         } catch (DAOException dao) {

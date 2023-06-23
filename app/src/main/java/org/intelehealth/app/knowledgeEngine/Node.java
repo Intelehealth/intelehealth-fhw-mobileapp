@@ -1812,8 +1812,8 @@ public class Node implements Serializable {
                 if (mOptions.get(i).isSelected()) {
                     String test = mOptions.get(i).getLanguage();
 
-                    if (language.equalsIgnoreCase("ar"))
-                        test = mOptions.get(i).getDisplay_arabic();
+                    /*if (language.equalsIgnoreCase("ar"))
+                        test = mOptions.get(i).getDisplay_arabic();*/
 
                     if (!test.isEmpty()) {
                         if (test.equals("%")) {
@@ -1839,9 +1839,9 @@ public class Node implements Serializable {
                                 }
                             } else {
                                 if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
-                                    if (language.equalsIgnoreCase("ar") && !mOptions.get(i).getDisplay_arabic().startsWith("["))
+                                    /*if (language.equalsIgnoreCase("ar") && !mOptions.get(i).getDisplay_arabic().startsWith("["))
                                         stringsList.add(mOptions.get(i).getDisplay_arabic());
-                                    else
+                                    else*/
                                         stringsList.add(mOptions.get(i).getLanguage());
                                 } else {
                                     stringsList.add(mOptions.get(i).findDisplay(language));

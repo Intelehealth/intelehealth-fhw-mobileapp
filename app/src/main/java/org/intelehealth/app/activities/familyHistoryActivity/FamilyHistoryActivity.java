@@ -489,7 +489,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
 
         if (intentTag != null && intentTag.equals("edit")) {
-            updateDatabase(insertion);
+            updateDatabase(insertion, intentTag);
 
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
@@ -567,10 +567,30 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
     }
 
-    private void updateDatabase(String string) {
+    private void updateDatabase(String string, String intentTag) {
 
         //the following changes are being done under ticket SYR-127. Check out ticket description for more details... - Nishita Goyal
-        if (!string.isEmpty() && !string.equalsIgnoreCase("") && !string.equalsIgnoreCase(" ")) {
+        if (!string.isEmpty() && !string.equalsIgnoreCase("") && !string.equalsIgnoreCase(" ") && !intentTag.equalsIgnoreCase("edit")) {
+            ObsDTO obsDTO = new ObsDTO();
+            ObsDAO obsDAO = new ObsDAO();
+            try {
+                obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+                obsDTO.setEncounteruuid(encounterAdultIntials);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(string);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB));
+                obsDAO.updateObs(obsDTO);
+            } catch (DAOException dao) {
+                FirebaseCrashlytics.getInstance().recordException(dao);
+            }
+            EncounterDAO encounterDAO = new EncounterDAO();
+            try {
+                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+                encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        } else if (intentTag.equalsIgnoreCase("edit")) {
             ObsDTO obsDTO = new ObsDTO();
             ObsDAO obsDAO = new ObsDAO();
             try {
