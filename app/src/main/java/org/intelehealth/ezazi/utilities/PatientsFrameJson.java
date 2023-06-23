@@ -155,7 +155,7 @@ public class PatientsFrameJson {
                 Ob ob = new Ob();
                 for (ObsDTO obs : obsDTOList) {
                     if (obs != null && obs.getValue() != null) {
-                        if (!obs.getValue().isEmpty()) {
+                       // if (!obs.getValue().isEmpty()) {  // commented for the case - if user update any value with empty field then it should proceed
                             ob = new Ob();
                             //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
 
@@ -165,7 +165,7 @@ public class PatientsFrameJson {
                             ob.setComment(obs.getComment());
                             obsList.add(ob);
 
-                        }
+                     //   }
                     }
                 }
                 encounter.setObs(obsList);

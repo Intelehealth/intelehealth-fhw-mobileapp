@@ -309,7 +309,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                 if (isSynced) {
                     Toast.makeText(this, "Data uploaded successfully!", Toast.LENGTH_SHORT).show();
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
+                   // AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
                     finish();
                 } else {
                     Toast.makeText(this, "Unable to upload the data!", Toast.LENGTH_SHORT).show();
