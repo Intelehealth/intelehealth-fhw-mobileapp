@@ -42,6 +42,7 @@ public class UuidDictionary {
     public static final String MEDICAL_ADVICE = "67a050c1-35e5-451c-a4ab-fff9d57b0db1";
     public static final String REQUESTED_TESTS = "23601d71-50e6-483f-968d-aeef3031346d";
     public static final String ADDITIONAL_COMMENTS = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String DISCHARGE_ORDER = "b682c5de-bcac-4e70-a6d9-789034194d99";
 
     public static final String COMPLEX_IMAGE_AD = "07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba";
 

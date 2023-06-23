@@ -232,6 +232,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     String aidOrderReturned = "";
     String doctorName = "";
     String additionalReturned = "";
+    String dischargeOrderReturned = "";
     String followUpDate = "";
 
     ImageButton editVitals;
@@ -282,6 +283,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     CardView medicalAdviceCard;
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
+    CardView dischargeOrderCard;
     CardView aidOrderCard;
     CardView followUpDateCard;
     CardView card_print, card_share;
@@ -293,6 +295,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
+    TextView dischargeOrderTextView;
     TextView aidOrderType1TextView, aidOrderType2TextView, aidOrderType3TextView, aidOrderType4TextView, aidOrderType5TextView;
     TextView followUpDateTextView;
     //added checkbox flag .m
@@ -661,6 +664,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
         requestedTestsCard = findViewById(R.id.cardView_tests);
         additionalCommentsCard = findViewById(R.id.cardView_additional_comments);
+        dischargeOrderCard = findViewById(R.id.cardView_discharge_order);
         aidOrderCard = findViewById(R.id.cardView_aid_order);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
@@ -767,6 +771,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
+        dischargeOrderTextView = findViewById(R.id.textView_content_discharge_order);
         aidOrderType1TextView = findViewById(R.id.textView_content_aid_order_type1);
         aidOrderType2TextView = findViewById(R.id.textView_content_aid_order_type2);
         aidOrderType3TextView = findViewById(R.id.textView_content_aid_order_type3);
@@ -2212,13 +2217,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String formattedAidOrder = "";
         if(aidOrderType1TextView.getVisibility() == View.VISIBLE && aidOrderType1TextView.getText().toString()!=null && !aidOrderType1TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType1TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType1TextView.getText().toString().trim() + "\n";
         if(aidOrderType2TextView.getVisibility() == View.VISIBLE && aidOrderType2TextView.getText().toString()!=null && !aidOrderType2TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType2TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType2TextView.getText().toString().trim() + "\n";
         if(aidOrderType3TextView.getVisibility() == View.VISIBLE && aidOrderType3TextView.getText().toString()!=null && !aidOrderType3TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType3TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType3TextView.getText().toString().trim() + "\n";
         if(aidOrderType4TextView.getVisibility() == View.VISIBLE && aidOrderType4TextView.getText().toString()!=null && !aidOrderType4TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType4TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType4TextView.getText().toString().trim() + "\n";
         if(aidOrderType5TextView.getVisibility() == View.VISIBLE && aidOrderType5TextView.getText().toString()!=null && !aidOrderType5TextView.getText().toString().trim().equalsIgnoreCase(""))
             formattedAidOrder = formattedAidOrder + aidOrderType5TextView.getText().toString().trim();
 
@@ -3760,17 +3765,31 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             case UuidDictionary.ADDITIONAL_COMMENTS: {
 
-                additionalCommentsCard.setVisibility(View.GONE);
+//                additionalCommentsCard.setVisibility(View.VISIBLE);
 
-//                if (!additionalReturned.isEmpty()) {
-//                    additionalReturned = additionalReturned + "," + value;
-//                } else {
-//                    additionalReturned = value;
-//                }
-////                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
-////                    additionalCommentsCard.setVisibility(View.VISIBLE);
-////                }
-//                additionalCommentsTextView.setText(additionalReturned);
+                if (!additionalReturned.isEmpty()) {
+                    additionalReturned = additionalReturned + "," + value;
+                } else {
+                    additionalReturned = value;
+                }
+                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
+                    additionalCommentsCard.setVisibility(View.VISIBLE);
+                }
+                additionalCommentsTextView.setText(additionalReturned);
+                //checkForDoctor();
+                break;
+            }
+            case UuidDictionary.DISCHARGE_ORDER: {
+
+                if (!dischargeOrderReturned.isEmpty()) {
+                    dischargeOrderReturned = dischargeOrderReturned + "," + value;
+                } else {
+                    dischargeOrderReturned = value;
+                }
+                if (dischargeOrderCard.getVisibility() != View.VISIBLE) {
+                    dischargeOrderCard.setVisibility(View.VISIBLE);
+                }
+                dischargeOrderTextView.setText(dischargeOrderReturned);
                 //checkForDoctor();
                 break;
             }
@@ -4427,6 +4446,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             testsReturned = "";
             adviceReturned = "";
             additionalReturned = "";
+            dischargeOrderReturned = "";
             aidOrderReturned = "";
             followUpDate = "";
             String[] columns = {"value", " conceptuuid"};
@@ -4924,13 +4944,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String formattedAidOrder = "";
         if(aidOrderType1TextView.getVisibility() == View.VISIBLE && aidOrderType1TextView.getText().toString()!=null && !aidOrderType1TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType1TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType1TextView.getText().toString().trim() + "\n";
         if(aidOrderType2TextView.getVisibility() == View.VISIBLE && aidOrderType2TextView.getText().toString()!=null && !aidOrderType2TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType2TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType2TextView.getText().toString().trim() + "\n";
         if(aidOrderType3TextView.getVisibility() == View.VISIBLE && aidOrderType3TextView.getText().toString()!=null && !aidOrderType3TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType3TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType3TextView.getText().toString().trim() + "\n";
         if(aidOrderType4TextView.getVisibility() == View.VISIBLE && aidOrderType4TextView.getText().toString()!=null && !aidOrderType4TextView.getText().toString().trim().equalsIgnoreCase(""))
-            formattedAidOrder = formattedAidOrder + aidOrderType4TextView.getText().toString().trim() + "\n-";
+            formattedAidOrder = formattedAidOrder + aidOrderType4TextView.getText().toString().trim() + "\n";
         if(aidOrderType5TextView.getVisibility() == View.VISIBLE && aidOrderType5TextView.getText().toString()!=null && !aidOrderType5TextView.getText().toString().trim().equalsIgnoreCase(""))
             formattedAidOrder = formattedAidOrder + aidOrderType5TextView.getText().toString().trim();
 
@@ -5161,7 +5181,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             String para_open = "<style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "<br>";
-            formatted = para_open + "- " + _input.replaceAll("\n", para_close + para_open + "- ") + para_close;
+            formatted = para_open + "- " + _input.replaceAll("\n", para_close + para_open);
+            formatted = formatted.replaceAll("<br>", "<br>- ");
+            if(formatted.trim().endsWith("-"))
+                formatted = formatted.substring(0,formatted.lastIndexOf("-"));
         }
         return formatted;
     }
