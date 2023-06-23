@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -23,6 +26,8 @@ import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
 public class EpartogramViewActivity extends BaseActionBarActivity {
     private WebView webView;
+    private static final String TAG = "EpartogramViewActivity";
+
     private String patientUuid, visitUuid;
     private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
     //    https://ezazi.intelehealth.org/intelehealth/index.html#/dashboard/visit-summary/af35030a-cbf0-426c-9c61-4b9677ccb3b2
@@ -48,6 +53,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         mySwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipeContainer);
         customProgressDialog = new CustomProgressDialog(EpartogramViewActivity.this);
 
+        webView.setWebViewClient(webClient);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
@@ -61,32 +67,57 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         webView.setScrollbarFadingEnabled(false);
         webView.setVisibility(View.VISIBLE);
 
-        webView.setWebViewClient(new WebViewClient() {
-
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
-            public void onPageFinished(WebView view, String url) {
-                mySwipeRefreshLayout.setRefreshing(false);
-                if (customProgressDialog.isShowing()) {
-                    customProgressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
-                if (customProgressDialog.isShowing()) {
-                    customProgressDialog.dismiss();
-                    webView.setVisibility(View.GONE);
-                    showPageLoadingErrorDialog();
-                }
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Log.e(TAG, "onConsoleMessage: ");
+                return super.onConsoleMessage(consoleMessage);
             }
         });
-
         customProgressDialog.show();
         webView.loadUrl(URL + visitUuid);
         Log.v("epartog", "webviewUrl: " + URL + visitUuid);
         mySwipeRefreshLayout.setOnRefreshListener(() -> webView.reload());
 
+    }
+
+    private WebViewClient webClient = new WebViewClient() {
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            mySwipeRefreshLayout.setRefreshing(false);
+            if (customProgressDialog.isShowing()) {
+                customProgressDialog.dismiss();
+            }
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            Log.e(TAG, "onReceivedError: ");
+            super.onReceivedError(view, request, error);
+            handleError();
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            Log.e(TAG, "onReceivedError: ");
+            super.onReceivedHttpError(view, request, errorResponse);
+            handleError();
+        }
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            Log.e(TAG, "onReceivedError: ");
+            super.onReceivedError(view, errorCode, description, failingUrl);
+            handleError();
+        }
+    };
+
+    private void handleError() {
+        if (customProgressDialog.isShowing()) {
+            customProgressDialog.dismiss();
+        }
+        webView.setVisibility(View.GONE);
+        showPageLoadingErrorDialog();
     }
 
     private void showPageLoadingErrorDialog() {
