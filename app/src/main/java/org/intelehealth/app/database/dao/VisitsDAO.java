@@ -277,7 +277,7 @@ public class VisitsDAO {
 
     private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
-        VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
+//        VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -287,7 +287,7 @@ public class VisitsDAO {
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
-
+                VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
                 speciality.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 speciality.setAttributeType(cursor.getString
                         (cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));

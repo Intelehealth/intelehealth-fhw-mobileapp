@@ -1,6 +1,7 @@
 package org.intelehealth.app.database.dao;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.Uuid_Value;
 import org.intelehealth.app.models.dto.ProviderAttributeListDTO;
@@ -112,6 +114,38 @@ public class ProviderAttributeLIstDAO {
                 if (isDoctorConsultSpecialty) {
                     listDTOArrayList.add(0, dto.getValue());
                 } else {
+                    if(!dto.getValue().equalsIgnoreCase("Admin") || !dto.getValue().equalsIgnoreCase("إداري"))
+                        listDTOArrayList.add(dto.getValue());
+                }
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return listDTOArrayList;
+    }
+
+    public List<String> getAllValuesForSecond(String appLanguage) {
+        List<String> listDTOArrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
+                "attributetypeuuid = ? AND voided = ?", selectionArgs); //checking....
+
+        ProviderAttributeListDTO dto = new ProviderAttributeListDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                dto = new ProviderAttributeListDTO();
+                String specialtyValue = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                if(specialtyValue.equalsIgnoreCase("Admin")) {
+                    if (appLanguage.equalsIgnoreCase("ar")) {
+                        dto.setValue(StringUtils.getProviderNameInArabic(specialtyValue));
+                    } else {
+                        dto.setValue(specialtyValue);
+                    }
                     listDTOArrayList.add(dto.getValue());
                 }
             }
@@ -122,6 +156,7 @@ public class ProviderAttributeLIstDAO {
         db.close();
         return listDTOArrayList;
     }
+
 
 
     public List<Uuid_Value> getSpeciality_Uuid_Value() {

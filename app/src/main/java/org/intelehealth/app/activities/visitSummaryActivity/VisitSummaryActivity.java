@@ -188,6 +188,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
     String speciality_selected = "";
+    String second_speciality_selected = "";
 
     boolean uploaded = false;
     boolean downloaded = false;
@@ -208,6 +209,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private float float_ageYear_Month;
 
     Spinner speciality_spinner;
+    Spinner second_speciality_spinner;
 
     SQLiteDatabase db;
 
@@ -305,7 +307,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     Button btnSignSubmit;
     Base64Utils base64Utils = new Base64Utils();
 
-    Boolean isPastVisit = false, isVisitSpecialityExists = false;
+    Boolean isPastVisit = false, isVisitSpecialityExists = false, isVisitSecondSpecialityExists = false;
     Boolean isReceiverRegistered = false;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -646,7 +648,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             @Override
             public void onClick(View v) {
                 doQuery();
-                if (speciality_selected == null || speciality_selected.isEmpty() || "Select Specialization".equalsIgnoreCase(speciality_selected)) {
+                if ((speciality_selected == null || speciality_selected.isEmpty() || "Select Specialization".equalsIgnoreCase(speciality_selected))) {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -766,6 +768,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
         speciality_spinner = findViewById(R.id.speciality_spinner);
+        second_speciality_spinner = findViewById(R.id.second_speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
@@ -782,16 +785,21 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
-        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+        isVisitSpecialityExists = speciality_row_exist_check(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+        isVisitSecondSpecialityExists = speciality_row_exist_check(visitUuid, "8100ec1a-063b-47d5-9781-224d835fc688");
         if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
+        if (isVisitSecondSpecialityExists) second_speciality_spinner.setEnabled(false);
+
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
         List<String> items = providerAttributeLIstDAO.getAllValues(sessionManager1.getAppLanguage());
+        List<String> second_speciality_items = providerAttributeLIstDAO.getAllValuesForSecond(sessionManager1.getAppLanguage());
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+        String second_special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "8100ec1a-063b-47d5-9781-224d835fc688");
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -805,6 +813,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             speciality_spinner.setAdapter(stringArrayAdapter);
         }
 
+        if (second_speciality_items != null) {
+            second_speciality_items.add(0, getString(R.string.select_specialization_text));
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+            second_speciality_spinner.setAdapter(stringArrayAdapter);
+        } else {
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.second_speciality_values));
+            second_speciality_spinner.setAdapter(stringArrayAdapter);
+        }
+
         if (special_value != null) {
             int spinner_position = 0;
             if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
@@ -813,6 +830,18 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 spinner_position = stringArrayAdapter.getPosition(special_value);
             }
             speciality_spinner.setSelection(spinner_position);
+        } else {
+
+        }
+
+        if (second_special_value != null) {
+            int spinner_position = 0;
+            if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
+                spinner_position = stringArrayAdapter.getPosition(org.intelehealth.app.utilities.StringUtils.getProviderNameInArabic(second_special_value));
+            } else {
+                spinner_position = stringArrayAdapter.getPosition(second_special_value);
+            }
+            second_speciality_spinner.setSelection(spinner_position);
         } else {
 
         }
@@ -834,13 +863,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             }
         });
-        //end - spinner - speciality...
 
-
-        //   VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-//        if (hasPrescription.equalsIgnoreCase("true")) {
-//            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
-//        }
+        second_speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                second_speciality_selected = org.intelehealth.app.utilities.StringUtils.getProviderNameInEnglish(adapterView.getItemAtPosition(i).toString());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         obsImgdir = new File(AppConstants.IMAGE_PATH);
@@ -941,13 +973,34 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     return;
                 }
 
-                isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                if(speciality_spinner.getSelectedItemPosition()==0 && second_speciality_spinner.getSelectedItemPosition()==0) {
+                    showSelectSpecialtyErrorDialog();
+                    return;
+                }
+                isVisitSpecialityExists = speciality_row_exist_check(visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+                isVisitSecondSpecialityExists = speciality_row_exist_check(visitUUID, "8100ec1a-063b-47d5-9781-224d835fc688");
+
+                if (second_speciality_spinner.getSelectedItemPosition() != 0) {
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    boolean isUpdateVisitDone = false;
+                    try {
+                        if (!isVisitSecondSpecialityExists) {
+                            isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, second_speciality_selected, "8100ec1a-063b-47d5-9781-224d835fc688");
+                        }
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (isVisitSecondSpecialityExists) second_speciality_spinner.setEnabled(false);
+
+                }
+
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
                         if (!isVisitSpecialityExists) {
-                            isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, speciality_selected);
+                            isUpdateVisitDone = speciality_attributes.insertVisitAttributes(visitUuid, speciality_selected, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
@@ -957,7 +1010,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 
                     if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
-
+                }
 
                     if (flag.isChecked()) {
                         try {
@@ -983,9 +1036,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         idCursor.close();
                     }
 
-                    if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                    }
-
                     if (visitUUID == null || visitUUID.isEmpty()) {
                         String visitIDSelection = "uuid = ?";
                         String[] visitIDArgs = {visitUuid};
@@ -995,29 +1045,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         }
                         if (visitIDCursor != null) visitIDCursor.close();
                     }
-//                String[] columnsToReturn = {"startdate"};
-//                String visitIDorderBy = "startdate";
-//                String visitIDSelection = "uuid = ?";
-//                String[] visitIDArgs = {visitUuid};
-//                Cursor visitIDCursor1 = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-//                visitIDCursor1.moveToLast();
-//                String startDateTime = visitIDCursor1.getString(visitIDCursor1.getColumnIndexOrThrow("startdate"));
-//                visitIDCursor1.close();
-
-                    if (!flag.isChecked()) {
-                        //
-                    }
 
                     if (NetworkConnection.isOnline(getApplication())) {
                         Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
-
-//                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.uploading_visit_data_notif), 3, VisitSummaryActivity.this);
-                        SyncDAO syncDAO = new SyncDAO();
-//                    ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
-//                    pd.setTitle(getString(R.string.syncing_visitDialog));
-//                    pd.show();
-//                    pd.setCancelable(false);
-
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -1032,26 +1062,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                                     //
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
-                                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+                                    isVisitSecondSpecialityExists = speciality_row_exist_check(visitUUID, "8100ec1a-063b-47d5-9781-224d835fc688");
                                     if (isVisitSpecialityExists)
                                         speciality_spinner.setEnabled(false);
+                                    if (isVisitSecondSpecialityExists)
+                                        second_speciality_spinner.setEnabled(false);
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
                                 }
                                 uploaded = true;
-//                            pd.dismiss();
-//                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.upload_completed), Toast.LENGTH_SHORT).show();
                             }
                         }, 4000);
                     } else {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
-                } else {
-                    showSelectSpeciliatyErrorDialog();
                 }
-
-            }
         });
 
         if (intentTag != null && intentTag.equals("prior")) {
@@ -1854,11 +1881,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
-    private boolean speciality_row_exist_check(String uuid) {
+    private boolean speciality_row_exist_check(String uuid, String specialityUuid) {
         boolean isExists = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND visit_attribute_type_uuid = ?", new String[]{uuid, specialityUuid});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -4548,10 +4575,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     }
 
-    private void showSelectSpeciliatyErrorDialog() {
-        TextView t = (TextView) speciality_spinner.getSelectedView();
+    private void showSelectSpecialtyErrorDialog() {
+        /*TextView t = (TextView) speciality_spinner.getSelectedView();
         t.setError(getString(R.string.please_select_specialization_msg));
-        t.setTextColor(Color.RED);
+        t.setTextColor(Color.RED);*/
 
         AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this).setMessage(getResources().getString(R.string.please_select_specialization_msg)).setCancelable(false).setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
             @Override

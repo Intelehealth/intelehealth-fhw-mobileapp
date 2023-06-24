@@ -27,6 +27,11 @@
         <item>نسائية</item>
     </string-array>
 
+    <string-array name="second_speciality_values">
+        <item>حدد التخصص</item>
+        <item>إداري</item>
+    </string-array>
+
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
