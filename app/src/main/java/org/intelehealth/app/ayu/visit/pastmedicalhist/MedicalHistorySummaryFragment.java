@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.adapter.SummarySingleViewAdapter;
+import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -127,8 +129,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
         str1 = str1.replaceAll("<.*?>", "");
         System.out.println("mSummaryStringPastHistory - " + str);
         System.out.println("mSummaryStringFamilyHistory - " + str1);
-        String[] spt = str.split("•");
-        String[] spt1 = str1.split("•");
+        String[] spt = str.split("●");
+        String[] spt1 = str1.split("●");
         List<String> list = new ArrayList<>();
         TreeMap<String, List<String>> mapData = new TreeMap<>(Collections.reverseOrder());
         mapData.put("Patient history", new ArrayList<>());
@@ -171,9 +173,56 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-                SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
+                List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                for (int i = 0; i < _list.size(); i++) {
+
+                    String[] qa = _list.get(i).split("•");
+                    if (qa.length == 2) {
+                        String k = qa[0].trim();
+                        String v = qa[1].trim();
+                        Log.v("V", v);
+                        if(v.contains(":") && v.split(":").length>1){
+                            v = v.split(":")[1];
+                        }
+                        VisitSummaryData summaryData = new VisitSummaryData();
+                        summaryData.setQuestion(k);
+                        summaryData.setDisplayValue(v);
+                        visitSummaryDataList.add(summaryData);
+                    } else {
+                        //String k = value.split("•")[0].trim();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        String k1 = "";
+                        String lastString = "";
+                        for (int j = 0; j < qa.length; j++) {
+                            String v1 = qa[j];
+                            if (lastString.equals(v1)) continue;
+                            //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                            stringBuilder.append(v1);
+                            lastString = v1;
+                            if (j % 2 != 0) {
+                                String v = qa[j].trim();
+                                if(v.contains(":") && v.split(":").length>1){
+                                    v = v.split(":")[1];
+                                }
+                                VisitSummaryData summaryData = new VisitSummaryData();
+                                summaryData.setQuestion(k1);
+                                summaryData.setDisplayValue(v);
+                                visitSummaryDataList.add(summaryData);
+
+                            } else {
+                                k1 = qa[j].trim();
+                            }
+                        }
+
+                    }
+
+
+                }
+
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+
                     @Override
-                    public void onSelect(String data) {
+                    public void onSelect(VisitSummaryData data) {
 
                     }
                 });

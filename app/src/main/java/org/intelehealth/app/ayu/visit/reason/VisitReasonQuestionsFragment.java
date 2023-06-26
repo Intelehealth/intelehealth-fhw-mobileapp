@@ -126,7 +126,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
         }
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int index, boolean isSkipped) {
+            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
                 Log.v("onSelect QuestionsListingAdapter", "node - " + node.getText());
                 // avoid the scroll for old data change
@@ -166,12 +166,12 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
                 }
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
-                    linearLayoutManager.setStackFromEnd(false);
+                    //linearLayoutManager.setStackFromEnd(false);
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
                         mQuestionsListingAdapter.addItem(mCurrentNode);
                     mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                 } else {
-                    linearLayoutManager.setStackFromEnd(true);
+                    //linearLayoutManager.setStackFromEnd(false);
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
 
@@ -181,6 +181,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
 
                 mActionListener.onProgress((int) 60 / mCurrentNode.getOptionsList().size());
+                linearLayoutManager.setStackFromEnd(false);
             }
 
             @Override
@@ -221,13 +222,13 @@ public class VisitReasonQuestionsFragment extends Fragment {
                     mCurrentNode = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex);
                 }
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
-                    linearLayoutManager.setStackFromEnd(false);
+                    //linearLayoutManager.setStackFromEnd(false);
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
                         mQuestionsListingAdapter.addItem(mCurrentNode);
                     mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                     pendingForAddAll = false;
                 } else {
-                    linearLayoutManager.setStackFromEnd(true);
+                    //linearLayoutManager.setStackFromEnd(true);
                     mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
                 }
             }

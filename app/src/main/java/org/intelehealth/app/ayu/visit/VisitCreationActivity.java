@@ -470,11 +470,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
         insertionLocale = stringBuilder.toString();
 
+
         if (insertion.contains("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>")) {
             insertion = insertion.replace("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>", "<br/>►<b> Associated symptoms</b>:  <br/>");
         }
         JSONObject jsonObject = new JSONObject();
         try {
+            insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
             jsonObject.put("en", insertion);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
@@ -909,8 +911,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
-            physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
-                    physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
+            //physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
+             //       physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
+            physicalStringLocale = physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
             Log.v(TAG, "physicalStringLocale -" + physicalStringLocale);
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
@@ -924,6 +927,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
             JSONObject jsonObject = new JSONObject();
             try {
+                physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
                 jsonObject.put("en", physicalString);
                 //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
@@ -978,6 +982,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObject1 = new JSONObject();
         try {
+            patientHistoryLocale = VisitUtils.replaceEnglishCommonString(patientHistoryLocale, sessionManager.getAppLanguage());
+
             jsonObject.put("en", patientHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
@@ -985,6 +991,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             patientHistoryWithLocaleJsonString = jsonObject.toString();
             Log.v(TAG, patientHistoryWithLocaleJsonString);
 
+            familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
 
             jsonObject1.put("en", familyHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {

@@ -147,9 +147,10 @@ public class VisitReasonSummaryFragment extends Fragment {
             for (String s : spt) {
                 if (s.isEmpty()) continue;
                 //String s1 =  new String(s.getBytes(), "UTF-8");
-                System.out.println(s);
+                System.out.println("Chunk - " + s);
                 //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                if (s.trim().contains("Patient denies -•")) {
+                //if (s.trim().contains("Patient denies -•")) {
+                if (s.trim().contains(getTranslatedPatientDenies(lCode))) {
                     associatedSymptomsString = s;
                     System.out.println("associatedSymptomsString - " + associatedSymptomsString);
                 } else {
@@ -168,27 +169,42 @@ public class VisitReasonSummaryFragment extends Fragment {
                         System.out.println(complainName);
                     } else {
                         String[] qa = value.split("•");
-                        String k = value.split("•")[0].trim();
-                        StringBuilder stringBuilder = new StringBuilder();
-                        String lastString = "";
-                        for (int j = 1; j < qa.length; j++) {
-                            String v1 = qa[j];
-                            if (lastString.equals(v1)) continue;
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
-                            stringBuilder.append(v1);
-                            lastString = v1;
+                        if (qa.length == 2) {
+                            String k = value.split("•")[0].trim();
+                            String v = value.split("•")[1].trim();
+                            VisitSummaryData summaryData = new VisitSummaryData();
+                            summaryData.setQuestion(k);
+                            summaryData.setDisplayValue(v);
+                            visitSummaryDataList.add(summaryData);
+                        } else {
 
+
+                            //String k = value.split("•")[0].trim();
+                            StringBuilder stringBuilder = new StringBuilder();
+                            String key = "";
+                            String lastString = "";
+                            for (int j = 0; j < qa.length; j++) {
+                                String v1 = qa[j];
+                                if (lastString.equals(v1)) continue;
+                                //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                                stringBuilder.append(v1);
+                                lastString = v1;
+                                if (j % 2 != 0) {
+                                    String v = qa[j].trim();
+                                    VisitSummaryData summaryData = new VisitSummaryData();
+                                    summaryData.setQuestion(key);
+                                    summaryData.setDisplayValue(v);
+                                    visitSummaryDataList.add(summaryData);
+
+                                } else {
+                                    key = qa[j].trim();
+                                }
+                            }
                         }
-
-
-                        String v = stringBuilder.toString().trim();
-                        VisitSummaryData summaryData = new VisitSummaryData();
-                        summaryData.setQuestion(k);
-                        summaryData.setDisplayValue(v);
-                        visitSummaryDataList.add(summaryData);
                     }
 
                 }
+
                 if (!complainName.isEmpty() && !visitSummaryDataList.isEmpty()) {
                     View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
                     TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
@@ -217,7 +233,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             String title = associatedSymptomsString.split("::")[0];
             associatedSymptomsString = associatedSymptomsString.split("::")[1];
             mAssociateSymptomsLabelTextView.setText(title);
-            String[] sections = associatedSymptomsString.split("Patient denies -");
+            String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
 
 
             Log.v(TAG, associatedSymptomsString);
@@ -230,14 +246,14 @@ public class VisitReasonSummaryFragment extends Fragment {
                 String patientReportsDenies = sections[i]; // Patient reports & // Patient denies
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
                 TextView keyTextView = view.findViewById(R.id.tv_question_label);
-                keyTextView.setText(i==0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
+                keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
                 TextView valueTextView = view.findViewById(R.id.tv_answer_value);
                 valueTextView.setText(patientReportsDenies);
-                if (patientReportsDenies.isEmpty()) {
+               /* if (patientReportsDenies.isEmpty()) {
                     view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
                 } else {
                     view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
-                }
+                }*/
                 mAssociateSymptomsLinearLayout.addView(view);
             }
 
@@ -266,6 +282,16 @@ public class VisitReasonSummaryFragment extends Fragment {
             return "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?";
         } else {
             return "Do you have the following symptom(s)?";
+        }
+    }
+
+    private String getTranslatedPatientDenies(String localeCode) {
+        if (localeCode.equalsIgnoreCase("hi")) {
+            return "पेशेंट ने मना कर दिया -";
+        } else if (localeCode.equalsIgnoreCase("or")) {
+            return "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -";
+        } else {
+            return "Patient denies -";
         }
     }
 

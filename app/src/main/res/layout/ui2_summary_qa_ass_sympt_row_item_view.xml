@@ -29,7 +29,8 @@
             android:layout_width="6dip"
             android:layout_height="6dip"
             android:layout_marginEnd="@dimen/padding_5"
-            android:src="@drawable/ic_baseline_lens_24" />
+            android:src="@drawable/ic_baseline_lens_24"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_answer_value"

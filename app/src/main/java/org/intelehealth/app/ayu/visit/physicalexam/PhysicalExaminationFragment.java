@@ -119,7 +119,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int index, boolean isSkipped) {
+            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
@@ -157,7 +157,7 @@ public class PhysicalExaminationFragment extends Fragment {
                 } else {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
                 }
-
+                linearLayoutManager.setStackFromEnd(false);
             }
 
             @Override

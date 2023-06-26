@@ -804,7 +804,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         });
     }
-
+private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
     private void setViewsData() {
         physicalDoumentsUpdates();
 
@@ -955,6 +955,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         value = jsonObject.getString("en");
                         isInOldFormat = true;
                     }
+                    complaintLocalString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1033,6 +1034,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         value = jsonObject.getString("en");
                         isInOldFormat = true;
                     }
+                    physicalExamLocaleString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1068,6 +1070,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         value = jsonObject.getString("en");
                         //isInOldFormat = true;
                     }
+                    patientHistoryLocaleString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1090,6 +1093,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         value = jsonObject.getString("en");
                         //isInOldFormat = true;
                     }
+                    familyHistoryLocaleString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1276,7 +1280,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                    complaintText.setText(Html.fromHtml(complaintLocalString));
                 }
                 complaintText.setEnabled(false);
 
@@ -1420,7 +1424,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
                 if (phyExam.getValue() != null)
-                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                    physicalText.setText(Html.fromHtml(physicalExamLocaleString));
                 physicalText.setEnabled(false);
 
                 /*physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1560,7 +1564,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 final TextView historyText = convertView.findViewById(R.id.textView_entry);
                 if (patHistory.getValue() != null)
-                    historyText.setText(Html.fromHtml(patHistory.getValue()));
+                    historyText.setText(Html.fromHtml(patientHistoryLocaleString));
                 historyText.setEnabled(false);
 
                 /*historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1693,7 +1697,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 final TextView famHistText = convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                    famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
                 famHistText.setEnabled(false);
 
                 /*famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {

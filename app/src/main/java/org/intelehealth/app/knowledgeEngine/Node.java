@@ -3272,5 +3272,20 @@ public class Node implements Serializable {
     public void setCompareDuplicateNode(String compareDuplicateNode) {
         this.compareDuplicateNode = compareDuplicateNode;
     }
+
+    /**
+     * unselect all nested Node recursively
+     */
+    public void unselectAllNestedNode(){
+        if(optionsList!=null){
+            for (int i = 0; i < optionsList.size(); i++) {
+                optionsList.get(i).setSelected(false);
+                optionsList.get(i).setDataCaptured(false);
+                if(optionsList.get(i).optionsList!=null){
+                    optionsList.get(i).unselectAllNestedNode();
+                }
+            }
+        }
+    }
 }
 

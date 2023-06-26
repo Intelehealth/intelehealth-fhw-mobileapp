@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
-import org.intelehealth.app.ayu.visit.common.adapter.SummarySingleViewAdapter;
+import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -151,13 +152,51 @@ public class PhysicalExamSummaryFragment extends Fragment {
                 });
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-                SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
+                List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                String k1 = "";
+                String lastString = "";
+
+                for (int i = 0; i < _list.size(); i++) {
+                    Log.v("PH0", _list.get(i));
+                    String val = _list.get(i);
+                    String v1 = val;
+                    if (lastString.equals(v1)) continue;
+                    //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                    //stringBuilder.append(v1);
+                    lastString = v1;
+                    if (i % 2 != 0) {
+                        String v = val.trim();
+                        if (v.contains(":") && v.split(":").length > 1) {
+                            v = v.split(":")[1];
+                        }
+                        VisitSummaryData summaryData = new VisitSummaryData();
+                        summaryData.setQuestion(k1);
+                        summaryData.setDisplayValue(v);
+                        visitSummaryDataList.add(summaryData);
+
+                    } else {
+                        k1 = val.trim();
+                    }
+                    }
+
+
+
+
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+
+                    @Override
+                    public void onSelect(VisitSummaryData data) {
+
+                    }
+                });
+                recyclerView.setAdapter(summaryViewAdapter);
+               /* SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
                     @Override
                     public void onSelect(String data) {
 
                     }
                 });
-                recyclerView.setAdapter(summaryViewAdapter);
+                recyclerView.setAdapter(summaryViewAdapter);*/
                 mSummaryLinearLayout.addView(view);
             }
         }
