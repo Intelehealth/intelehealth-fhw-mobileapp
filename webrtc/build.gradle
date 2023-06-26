@@ -17,7 +17,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     compileSdkVersion 30
-    buildToolsVersion '28.0.3'
     dataBinding {
         enabled true
     }
@@ -25,8 +24,6 @@ android {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

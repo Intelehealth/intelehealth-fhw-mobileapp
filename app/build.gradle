@@ -14,14 +14,14 @@ static def getDateTime() {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "org.intelehealth.ezazi"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 56
         buildToolsVersion('29.0.2')
         versionName '3.3.6'
