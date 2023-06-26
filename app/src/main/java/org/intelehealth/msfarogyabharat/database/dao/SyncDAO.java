@@ -268,6 +268,7 @@ public class SyncDAO {
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
+                    Logger.logD(MSF_PULL_ISSUE, "last syc time: " + response.body().getData().getPullexecutedtime());
                 }
                 if (response.isSuccessful()) {
 
@@ -401,7 +402,8 @@ public class SyncDAO {
                 for (int j = 0; j < activePatientList.size(); j++) {
                     if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
                         Log.e("GET-ID", "" + NotificationID.getID());
-                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + activePatientList.get(j).getLast_name(),
+                        AppConstants.notificationUtils.DownloadDone
+                                (IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + activePatientList.get(j).getLast_name(),
                                 IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription), NotificationID.getID(), IntelehealthApplication.getAppContext());
                     }
                 }

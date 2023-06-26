@@ -345,20 +345,22 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         if (sessionManager.isFirstTimeLaunched()) {
-            /*mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
             mSyncProgressDialog.setMax(100);
-            mSyncProgressDialog.show();*/
+            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mSyncProgressDialog.setIndeterminate(false);
+            mSyncProgressDialog.show();
 
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             Logger.logD(MSF_PULL_ISSUE, "isfirstTimelaunch");
-            sync_relativelayout.setVisibility(View.VISIBLE);
-            blur_relative.setAlpha(0.3f);
+            /*sync_relativelayout.setVisibility(View.VISIBLE);
+            blur_relative.setAlpha(0.3f);*/
             initialSyncExecutor.execute(() -> syncUtils.initialSync("home"));
         } else {
-            sync_relativelayout.setVisibility(View.GONE);
-            blur_relative.setAlpha(1f);
+            /*sync_relativelayout.setVisibility(View.GONE);
+            blur_relative.setAlpha(1f);*/
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         }
@@ -893,8 +895,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private void hideSyncProgressBar(boolean isSuccess) {
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
-     //   if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-     //       mSyncProgressDialog.dismiss();
+        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            mSyncProgressDialog.dismiss();
             if (isSuccess) {
 
                 sessionManager.setFirstTimeLaunched(false);
@@ -908,7 +910,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }, 10000);
             }
-    //    }
+        }
     }
 
     private void getMindmapDownloadURL(String url, String key) {
@@ -1079,6 +1081,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public void onChanged(Integer progress) {
             Logger.logD(MSF_PULL_ISSUE, "onchanged of livedata again called up");
+/*
             if (sync_progress_bar != null) {
                 sync_progress_bar.setProgress(progress);
                 sync_counter_txtview.setText(progress + "%");
@@ -1089,6 +1092,20 @@ public class HomeActivity extends AppCompatActivity {
                     Logger.logD(MSF_PULL_ISSUE, "progress is 100 so close");
                     sync_relativelayout.setVisibility(View.GONE);
                     blur_relative.setAlpha(1f);
+                }
+            }
+*/
+            if (mSyncProgressDialog != null) {
+                mSyncProgressDialog.setProgress(progress);
+              //  sync_counter_txtview.setText(progress + "%");
+                Logger.logD(MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
+
+                if (progress == 100) {
+                    SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
+                    Logger.logD(MSF_PULL_ISSUE, "progress is 100 so close");
+                  //  mSyncProgressDialog.dismiss();
+                    /*sync_relativelayout.setVisibility(View.GONE);
+                    blur_relative.setAlpha(1f);*/
                 }
             }
         }
