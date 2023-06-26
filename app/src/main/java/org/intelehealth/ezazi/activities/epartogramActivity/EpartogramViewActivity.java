@@ -6,15 +6,19 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.webkit.ConsoleMessage;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -29,9 +33,9 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     private static final String TAG = "EpartogramViewActivity";
 
     private String patientUuid, visitUuid;
-    private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
+    private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#//";
     //    https://ezazi.intelehealth.org/intelehealth/index.html#/dashboard/visit-summary/af35030a-cbf0-426c-9c61-4b9677ccb3b2
-    // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";
+    // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";epartogram
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
     private CustomProgressDialog customProgressDialog;
@@ -53,27 +57,22 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         mySwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipeContainer);
         customProgressDialog = new CustomProgressDialog(EpartogramViewActivity.this);
 
-        webView.setWebViewClient(webClient);
+        webView.setWebViewClient(webViewClient);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
+//        webView.getSettings().setLoadWithOverviewMode(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+        }
+//        webView.getSettings().setUseWideViewPort(true);
 
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
-        webView.getSettings().setDomStorageEnabled(true);
+//        webView.getSettings().setSupportZoom(true);
+//        webView.getSettings().setBuiltInZoomControls(true);
+//        webView.getSettings().setDisplayZoomControls(false);
+//        webView.getSettings().setDomStorageEnabled(true);
 
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
         webView.setVisibility(View.VISIBLE);
-
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.e(TAG, "onConsoleMessage: ");
-                return super.onConsoleMessage(consoleMessage);
-            }
-        });
         customProgressDialog.show();
         webView.loadUrl(URL + visitUuid);
         Log.v("epartog", "webviewUrl: " + URL + visitUuid);
@@ -81,7 +80,42 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
 
     }
 
-    private WebViewClient webClient = new WebViewClient() {
+    private final WebViewClient webViewClient = new WebViewClient(){
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            mySwipeRefreshLayout.setRefreshing(false);
+            if (customProgressDialog.isShowing()) {
+                customProgressDialog.dismiss();
+            }
+        }
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            Log.i("WEB_VIEW_TEST", "error code:" + errorCode);
+            super.onReceivedError(view, errorCode, description, failingUrl);
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Log.i("WEB_VIEW_TEST", "error code:" + error.getErrorCode());
+            }
+            super.onReceivedError(view, request, error);
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Log.i("WEB_VIEW_TEST", "error code:" + errorResponse.getStatusCode());
+            }
+            super.onReceivedHttpError(view, request, errorResponse);
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            super.onReceivedSslError(view, handler, error);
+        }
+    };
+    private final WebViewClient webClient = new WebViewClient() {
         @Override
         public void onPageFinished(WebView view, String url) {
             mySwipeRefreshLayout.setRefreshing(false);
@@ -93,22 +127,24 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             Log.e(TAG, "onReceivedError: ");
-            super.onReceivedError(view, request, error);
             handleError();
         }
 
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             Log.e(TAG, "onReceivedError: ");
-            super.onReceivedHttpError(view, request, errorResponse);
             handleError();
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             Log.e(TAG, "onReceivedError: ");
-            super.onReceivedError(view, errorCode, description, failingUrl);
             handleError();
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return true;
         }
     };
 

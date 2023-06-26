@@ -115,7 +115,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     private LayoutParams getConstraintLayoutParams() {
         int height = getResources().getDimensionPixelOffset(R.dimen.dialog_max_height);
         int padding = getResources().getDimensionPixelOffset(R.dimen.screen_container_padding) * 5;
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
         params.topToTop = ConstraintSet.PARENT_ID;
         params.bottomToBottom = ConstraintSet.PARENT_ID;
         params.startToStart = ConstraintSet.PARENT_ID;

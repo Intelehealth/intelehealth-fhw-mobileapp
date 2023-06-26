@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -23,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -131,6 +135,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_timeline_ezazi);
+        observeKeyboardEvent();
         super.onCreate(savedInstanceState);
         initUI();
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);
@@ -1128,21 +1133,21 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
 //        String referOptions[] = {getString(R.string.birth_weight), getString(R.string.apgar_1min),
 //                getString(R.string.apgar_5min), getString(R.string.sex), getString(R.string.baby_status), getString(R.string.mother_status)};
-        DialogStage2AdditionalDataEzaziBinding binding = DialogStage2AdditionalDataEzaziBinding.inflate(getLayoutInflater(), null, false);
+        DialogStage2AdditionalDataEzaziBinding binding = DialogStage2AdditionalDataEzaziBinding.inflate(getLayoutInflater(), null, true);
         showCustomViewDialog(R.string.additional_information, binding.getRoot(), () -> {
-            String birthW = binding.birthWeight.getText().toString(),
-                    apgar1min = binding.apgar1min.getText().toString(),
-                    apgar5min = binding.apgar5min.getText().toString(),
-                    sexValue = binding.sex.getText().toString(),
-                    babyStatus = binding.babyStatus.getText().toString(),
-                    motherStatus = binding.motherStatus.getText().toString();
-
-            // call visitcompleteenc and add obs for additional values entered...
-            try {
-                isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
+//            String birthW = binding.birthWeight.getText().toString(),
+//                    apgar1min = binding.apgar1min.getText().toString(),
+//                    apgar5min = binding.apgar5min.getText().toString(),
+//                    sexValue = binding.sex.getText().toString(),
+//                    babyStatus = binding.babyStatus.getText().toString(),
+//                    motherStatus = binding.motherStatus.getText().toString();
+//
+//            // call visitcompleteenc and add obs for additional values entered...
+//            try {
+//                isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//            }
 
             if (isAdded) {
                 Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();
@@ -1470,5 +1475,24 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
+    }
+
+    private void observeKeyboardEvent() {
+//        getWindow().setDecorFitsSystemWindows(false);
+        View decorView = getWindow().getDecorView();
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect r = new Rect();
+            decorView.getWindowVisibleDisplayFrame(r);
+
+            int height = decorView.getHeight();
+            if (height - r.bottom > height * 0.1399) {
+                //keyboard is open
+                Log.e(TAG, "onGlobalLayout: keyboard open");
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            } else {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                Log.e(TAG, "onGlobalLayout: keyboard close");
+            }
+        });
     }
 }

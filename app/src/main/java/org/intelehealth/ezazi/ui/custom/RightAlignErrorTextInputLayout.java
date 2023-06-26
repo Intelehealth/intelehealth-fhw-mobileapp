@@ -51,26 +51,6 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
         super.setErrorEnabled(enabled);
         TextView errorView = findViewById(R.id.textinput_error);
         if (errorView != null) errorView.setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
-//        if (!enabled) {
-//            return;
-//        }
-//
-//        try {
-//            Field errorViewField = TextInputLayout.class.getDeclaredField("mErrorView");
-//            errorViewField.setAccessible(true);
-//            TextView errorView = (TextView) errorViewField.get(this);
-//            if (errorView != null) {
-//                errorView.setGravity(Gravity.END);
-//                errorView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//                params.gravity = Gravity.END;
-//                errorView.setLayoutParams(params);
-//            }
-//        }
-//        catch (Exception e) {
-//            // At least log what went wrong
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -78,31 +58,5 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
         super.setError(errorText);
         TextView errorView = findViewById(R.id.textinput_error);
         if (errorView != null) errorView.setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
-
-//        for (int i = 0; i < getChildCount(); i++) {
-//            Log.e(TAG, "getChild " + +(i + 1));
-//            Log.e(TAG, "Id " + getChildAt(i).getId());
-//            Log.e(TAG, "tag " + getChildAt(i).getTag());
-////            parent.getChildAt(i).setVisibility(View.GONE);
-//            int resId = getChildAt(i).getId();
-//            if (resId > -1)
-//                Log.e(TAG, "ResName=>" + Resources.getSystem().getResourceEntryName(resId));
-//
-//            if (getChildAt(i) instanceof ViewGroup) {
-//                findChild((ViewGroup) getChildAt(i));
-//            }
-//        }
     }
-
-//    private void findChild(ViewGroup group) {
-//        for (int i = 0; i < group.getChildCount(); i++) {
-//            Log.e(TAG, "ViewGroup getChild " + (i + 1));
-//            Log.e(TAG, "ViewGroup Id " + group.getChildAt(i).getId());
-//            Log.e(TAG, "ViewGroup tag " + group.getChildAt(i).getTag());
-////            parent.getChildAt(i).setVisibility(View.GONE);
-//            int resId = group.getChildAt(i).getId();
-//            if (resId > -1)
-//                Log.e(TAG, "ViewGroup ResName=>" + Resources.getSystem().getResourceEntryName(resId));
-//        }
-//    }
 }

@@ -80,18 +80,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity"
-            android:configChanges="uiMode|keyboard|orientation|screenSize|smallestScreenSize|screenLayout"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
+            android:configChanges="screenLayout|uiMode|orientation|keyboard"
             android:exported="false"
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBr"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.prescription.PrescriptionActivity"
