@@ -118,4 +118,13 @@ public class VisitDTO {
     public void setAttributes(List<VisitAttribute_Speciality> attributes) {
         this.attributes = attributes;
     }
+
+    public enum CompletedStatus {
+        LIVE_BIRTH("Live Birth"), STILL_BIRTH("Still Birth"), RTOH("RTOH"), DAMA("DAMA");
+        public String value;
+
+        CompletedStatus(String value) {
+            this.value = value;
+        }
+    }
 }

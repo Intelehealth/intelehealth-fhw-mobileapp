@@ -568,7 +568,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 // do not hing
             }
         } else {
-            String outcome = fetchOutcome(isVCEPresent);
+            String outcome = new ObsDAO().getCompletedVisitType(isVCEPresent);
             endStageButton.setVisibility(View.INVISIBLE);
             if (!outcome.equalsIgnoreCase("")) {
                 outcomeTV.setVisibility(View.VISIBLE);
@@ -853,28 +853,28 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     }
 
-    private String fetchOutcome(String encounterID) {
-        String outcome = "";
-        String query = "SELECT value FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?)";
-        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterID, UuidDictionary.BIRTH_OUTCOME, UuidDictionary.REFER_TYPE});
-        if (searchCursor.moveToFirst()) {
-            do {
-                try {
-                    outcome = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"));
-                    if (outcome.equals(getString(R.string.refer_to_other_hospital))) {
-                        outcome = "ROH";
-                    } else if (outcome.equals(getString(R.string.self_discharge_medical_advice))) {
-                        outcome = "DAMA";
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            while (searchCursor.moveToNext());
-        }
-        searchCursor.close();
-        return outcome;
-    }
+//    private String fetchOutcome(String encounterID) {
+//        String outcome = "";
+//        String query = "SELECT value FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?)";
+//        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterID, UuidDictionary.BIRTH_OUTCOME, UuidDictionary.REFER_TYPE});
+//        if (searchCursor.moveToFirst()) {
+//            do {
+//                try {
+//                    outcome = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"));
+//                    if (outcome.equals(getString(R.string.refer_to_other_hospital))) {
+//                        outcome = "ROH";
+//                    } else if (outcome.equals(getString(R.string.self_discharge_medical_advice))) {
+//                        outcome = "DAMA";
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            while (searchCursor.moveToNext());
+//        }
+//        searchCursor.close();
+//        return outcome;
+//    }
 
 
     private void birthOutcomeSelectionDialog() {

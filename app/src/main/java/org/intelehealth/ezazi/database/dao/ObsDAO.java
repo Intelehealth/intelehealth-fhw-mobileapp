@@ -23,6 +23,7 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
 import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
+import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -644,9 +645,9 @@ public class ObsDAO {
                 Context context = IntelehealthApplication.getAppContext();
                 valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
                 if (valueData.equals(context.getString(R.string.refer_to_other_hospital))) {
-                    valueData = "RTOH";
+                    valueData = VisitDTO.CompletedStatus.RTOH.value;
                 } else if (valueData.equals(context.getString(R.string.self_discharge_medical_advice))) {
-                    valueData = "DAMA";
+                    valueData = VisitDTO.CompletedStatus.DAMA.value;
                 }
             }
         } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
