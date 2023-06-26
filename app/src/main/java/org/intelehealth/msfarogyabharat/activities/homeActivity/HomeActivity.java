@@ -135,7 +135,7 @@ public class HomeActivity extends AppCompatActivity {
     ExecutorService initialSyncExecutor = Executors.newSingleThreadExecutor();
 
     private ProgressBar sync_progress_bar;
-    private RelativeLayout sync_relativelayout;
+    private RelativeLayout sync_relativelayout, blur_relative;
     private TextView sync_counter_txtview;
 
     @Override
@@ -174,6 +174,7 @@ public class HomeActivity extends AppCompatActivity {
         sync_progress_bar = findViewById(R.id.sync_progress_bar);
         sync_counter_txtview = findViewById(R.id.sync_counter_txtview);
         sync_relativelayout = findViewById(R.id.sync_relativelayout);
+        blur_relative = findViewById(R.id.blur_relative);
 
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -353,9 +354,11 @@ public class HomeActivity extends AppCompatActivity {
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             Logger.logD(MSF_PULL_ISSUE, "isfirstTimelaunch");
             sync_relativelayout.setVisibility(View.VISIBLE);
+            blur_relative.setAlpha(0.3f);
             initialSyncExecutor.execute(() -> syncUtils.initialSync("home"));
         } else {
             sync_relativelayout.setVisibility(View.GONE);
+            blur_relative.setAlpha(1f);
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         }
@@ -1085,6 +1088,7 @@ public class HomeActivity extends AppCompatActivity {
                     SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
                     Logger.logD(MSF_PULL_ISSUE, "progress is 100 so close");
                     sync_relativelayout.setVisibility(View.GONE);
+                    blur_relative.setAlpha(1f);
                 }
             }
         }
