@@ -120,6 +120,6 @@ public class AppConstants {
 
     }
 
-    public static final String SUPPORT_CONTACT_NUMBER = "+996990655777";//"+917005308163";
+    public static final String SUPPORT_CONTACT_NUMBER = "+996990991911";//"+917005308163";
 }
 

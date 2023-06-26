@@ -141,8 +141,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
-    TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+    TextView findPatients_textview, todaysVisits_textview, activeVisits_textview, videoLibrary_textview, help_textview;
     private ObjectAnimator syncAnimator;
     private TextView mActiveVitCountTextView, mTodayVisitCountTextView;
 
@@ -263,7 +262,7 @@ public class HomeActivity extends AppCompatActivity {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,     getBaseContext().getResources().getDisplayMetrics());
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         catchFCMMessageData();
         setTitle(R.string.title_activity_login);
@@ -323,14 +322,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = AppConstants.SUPPORT_CONTACT_NUMBER;
-                String message =
-                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                String message = getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
+                        /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
 
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(
-                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                        phoneNumberWithCountryCode, message))));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s&text=%s", phoneNumberWithCountryCode, message))));
             }
         });
 
@@ -438,15 +433,12 @@ public class HomeActivity extends AppCompatActivity {
 
     //function for handling the video library feature...
     private void videoLibrary() {
-        if (!sessionManager.getLicenseKey().isEmpty())
-            hasLicense = true;
+        if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
@@ -613,10 +605,7 @@ public class HomeActivity extends AppCompatActivity {
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
 
-                        dialog.setTitle(getString(R.string.enter_license_key))
-                                .setView(promptsView)
-                                .setPositiveButton(getString(R.string.button_ok), null)
-                                .setNegativeButton(getString(R.string.button_cancel), null);
+                        dialog.setTitle(getString(R.string.enter_license_key)).setView(promptsView).setPositiveButton(getString(R.string.button_ok), null).setNegativeButton(getString(R.string.button_cancel), null);
 
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.setView(promptsView, 20, 0, 20, 0);
@@ -759,11 +748,10 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
 
             case R.id.fingerprintLock:
-                if(item.isChecked()) {
+                if (item.isChecked()) {
                     sessionManager.setEnableAppLock(false);
                     item.setChecked(false);
-                }
-                else {
+                } else {
                     sessionManager.setEnableAppLock(true);
                     item.setChecked(true);
                 }
@@ -830,8 +818,7 @@ public class HomeActivity extends AppCompatActivity {
         //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-                && Locale.getDefault().toString().equals("en")) {
+        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -") && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
         super.onResume();
@@ -910,37 +897,34 @@ public class HomeActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+            resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                @Override
+                public void onNext(DownloadMindMapRes res) {
+                    customProgressDialog.dismiss();
+                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                                Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
-                                mindmapURL = res.getMindmap().trim();
-                                sessionManager.setLicenseKey(key);
-                                checkExistingMindMaps();
+                        Log.e("MindMapURL", "Successfully get MindMap URL");
+                        mTask = new DownloadMindMaps(context, mProgressDialog);
+                        mindmapURL = res.getMindmap().trim();
+                        sessionManager.setLicenseKey(key);
+                        checkExistingMindMaps();
 
-                            } else {
-                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    } else {
+                        Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
-                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
-                        }
+                @Override
+                public void onError(Throwable e) {
+                    customProgressDialog.dismiss();
+                    Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                }
 
-                        @Override
-                        public void onComplete() {
+                @Override
+                public void onComplete() {
 
-                        }
-                    });
+                }
+            });
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
@@ -998,60 +982,52 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
-                    @Override
-                    public void onSuccess(CheckAppUpdateRes res) {
-                        int latestVersionCode = 0;
-                        if (!res.getLatestVersionCode().isEmpty()) {
-                            latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
-                        }
+        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
+            @Override
+            public void onSuccess(CheckAppUpdateRes res) {
+                int latestVersionCode = 0;
+                if (!res.getLatestVersionCode().isEmpty()) {
+                    latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
+                }
 
-                        if (latestVersionCode > versionCode) {
-                            android.app.AlertDialog.Builder builder;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                            } else {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this);
-                            }
-
-
-                            builder.setTitle(getResources().getString(R.string.new_update_available))
-                                    .setCancelable(false)
-                                    .setMessage(getResources().getString(R.string.update_app_note))
-                                    .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                            try {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                            } catch (ActivityNotFoundException anfe) {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                            }
-
-                                        }
-                                    })
-
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setCancelable(false);
-
-                            Dialog dialog = builder.show();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                                TextView tv = (TextView) dialog.findViewById(textViewId);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                            }
-                        }
+                if (latestVersionCode > versionCode) {
+                    android.app.AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new android.app.AlertDialog.Builder(HomeActivity.this);
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("Error", "" + e);
+
+                    builder.setTitle(getResources().getString(R.string.new_update_available)).setCancelable(false).setMessage(getResources().getString(R.string.update_app_note)).setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                    try {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                    } catch (ActivityNotFoundException anfe) {
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                    }
+
+                                }
+                            })
+
+                            .setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false);
+
+                    Dialog dialog = builder.show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+                        TextView tv = (TextView) dialog.findViewById(textViewId);
+                        tv.setTextColor(getResources().getColor(R.color.white));
                     }
-                })
-        );
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("Error", "" + e);
+            }
+        }));
 
     }
 
@@ -1068,9 +1044,7 @@ public class HomeActivity extends AppCompatActivity {
                         hideSyncProgressBar(false);
                         /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
                         finish();*/
-                        new AlertDialog.Builder(HomeActivity.this)
-                                .setMessage(R.string.failed_initial_synced)
-                                .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        new AlertDialog.Builder(HomeActivity.this).setMessage(R.string.failed_initial_synced).setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         finish();
@@ -1140,10 +1114,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void updateUIForCounts() {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
-                "FROM tbl_visit a, tbl_patient b " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " + "FROM tbl_visit a, tbl_patient b " + "WHERE a.patientuuid = b.uuid " + "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
         Cursor c1 = db.rawQuery(query, null);
 
         mActiveVitCountTextView.setText("( " + String.valueOf(c1.getCount()) + " )");
@@ -1151,11 +1122,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender " +
-                "FROM tbl_visit a, tbl_patient b  " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'   " +
-                "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
+        query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender " + "FROM tbl_visit a, tbl_patient b  " + "WHERE a.patientuuid = b.uuid " + "AND a.startdate LIKE '" + currentDate + "T%'   " + "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
         Logger.logD(TAG, query);
         Cursor c2 = db.rawQuery(query, null);
         mTodayVisitCountTextView.setText("( " + String.valueOf(c2.getCount()) + " )");
@@ -1172,8 +1139,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + this.getPackageName()));
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
                 startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
             } else {
                 //Permission Granted-System will work
@@ -1196,11 +1162,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onAttachedToWindow() {
         Window window = getWindow();
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-        );
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         super.onAttachedToWindow();
     }
