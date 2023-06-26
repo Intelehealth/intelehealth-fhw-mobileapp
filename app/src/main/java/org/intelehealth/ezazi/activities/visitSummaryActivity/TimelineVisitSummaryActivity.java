@@ -85,8 +85,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     RecyclerView recyclerView;

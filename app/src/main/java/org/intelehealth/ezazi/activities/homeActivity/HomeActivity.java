@@ -1715,6 +1715,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
     private void getMindmapDownloadURL(String url, String key) {
+        Log.d(TAG, "getMindmapDownloadURL: " + url);
         customProgressDialog.show();
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
