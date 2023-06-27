@@ -6,7 +6,7 @@
     <string name="hint_required" translatable="false">Обязательно</string>
     <string name="hint_optional" translatable="false">Необязательно</string>
     <string name="tag_optional" translatable="false">необязательно</string>
-    <string name="generic_ok">Ладно</string>
+    <string name="generic_ok">OK</string>
     <string name="generic_cancel">Отменить</string>
     <string name="generic_yes">Да</string>
     <string name="generic_no">Нет</string>
@@ -275,7 +275,7 @@
     <string name="permission_camera_never_askagain" translatable="false">Разрешение доступа к камере было отклонено и больше не будет запрашиваться.</string>
     <string name="button_allow" translatable="false">Разрешить</string>
     <string name="button_deny" translatable="false">Запретить</string>
-    <string name="button_ok" translatable="false">Ладно</string>
+    <string name="button_ok" translatable="false">OK</string>
     <string name="button_cancel" translatable="false">Отменить</string>
     <string name="picture_taken" translatable="false">Снимок сделан</string>
     <string name="switch_flash" translatable="false">Переключить вспышку</string>
@@ -484,7 +484,7 @@
     <string name="end_all_visit">Завершить все посещения</string>
     <string name="filter_by_creator">Фильтр по создателю</string>
     <string name="planet_name">Название планеты</string>
-    <string name="ok">Ладно</string>
+    <string name="ok">OK</string>
     <string name="cancel">Отменить</string>
     <string name="unable_to_end">Невозможно закончить</string>
     <string name="upload_before_end_visit_active"> Посещения. Пожалуйста, загрузите посещение перед попыткой его завершения.</string>
