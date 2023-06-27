@@ -32,32 +32,16 @@ public class PatientDataBinder {
                 model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
                 model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                 model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(model.getUuid())));
+                model.setPhonenumber(StringUtils.mobileNumberEmpty(searchCursor.getString(searchCursor.getColumnIndexOrThrow("phoneNumber"))));
                 model.setBedNo(searchCursor.getString(searchCursor.getColumnIndexOrThrow("bedNo")));
+                String birthStatus = searchCursor.getString(searchCursor.getColumnIndexOrThrow("birthStatus"));
+                if (birthStatus != null) model.setStage(birthStatus);
+                else
+                    model.setStage(searchCursor.getString(searchCursor.getColumnIndexOrThrow("stage")));
                 patients.add(model);
             } while (searchCursor.moveToNext());
         }
 
         return patients;
-    }
-
-    private String phoneNumber(String patientuuid) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        String phone = null;
-        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
-        try {
-            if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
-
-                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-
-                }
-            }
-        } catch (SQLException s) {
-            FirebaseCrashlytics.getInstance().recordException(s);
-        }
-        idCursor.close();
-
-        return phone;
     }
 }

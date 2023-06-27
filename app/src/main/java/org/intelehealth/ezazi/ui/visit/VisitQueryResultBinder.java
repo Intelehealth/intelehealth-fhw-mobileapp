@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.builder.PatientQueryBuilder;
 import org.intelehealth.ezazi.models.ActivePatientModel;
-import org.intelehealth.ezazi.utilities.StringUtils;
-import org.intelehealth.ezazi.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;

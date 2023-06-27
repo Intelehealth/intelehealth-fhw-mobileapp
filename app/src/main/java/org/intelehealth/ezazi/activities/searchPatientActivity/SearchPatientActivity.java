@@ -270,16 +270,13 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
 
 
     private void bindAdapter(List<PatientDTO> patients) {
-        if (patients.size() == 0) {
-            searchPatientAdapter = new SearchPatientAdapter(patients, SearchPatientActivity.this);
-            recyclerView.setAdapter(searchPatientAdapter);
-            return;
-        }
+        searchPatientAdapter = new SearchPatientAdapter(patients, SearchPatientActivity.this);
+        recyclerView.setAdapter(searchPatientAdapter);
 
-        new PatientStageBinder().bindStage(patients, results -> runOnUiThread(() -> {
-            searchPatientAdapter = new SearchPatientAdapter(results, SearchPatientActivity.this);
-            recyclerView.setAdapter(searchPatientAdapter);
-        }));
+//        new PatientStageBinder().bindStage(patients, results -> runOnUiThread(() -> {
+//            searchPatientAdapter = new SearchPatientAdapter(results, SearchPatientActivity.this);
+//            recyclerView.setAdapter(searchPatientAdapter);
+//        }));
     }
 
 
@@ -307,11 +304,12 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
                             if (results.size() < limit) {
                                 fullyLoaded = true;
                             }
-
-                            new PatientStageBinder().bindStage(results, patients -> runOnUiThread(() -> {
-                                searchPatientAdapter.patients.addAll(patients);
-                                searchPatientAdapter.notifyDataSetChanged();
-                            }));
+                            searchPatientAdapter.patients.addAll(results);
+                            searchPatientAdapter.notifyDataSetChanged();
+//                            new PatientStageBinder().bindStage(results, patients -> runOnUiThread(() -> {
+//                                searchPatientAdapter.patients.addAll(patients);
+//                                searchPatientAdapter.notifyDataSetChanged();
+//                            }));
                         });
 
                     }
