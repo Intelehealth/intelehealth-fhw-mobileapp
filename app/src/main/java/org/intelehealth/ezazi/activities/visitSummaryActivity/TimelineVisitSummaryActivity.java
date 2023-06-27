@@ -1133,19 +1133,19 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //                getString(R.string.apgar_5min), getString(R.string.sex), getString(R.string.baby_status), getString(R.string.mother_status)};
         DialogStage2AdditionalDataEzaziBinding binding = DialogStage2AdditionalDataEzaziBinding.inflate(getLayoutInflater(), null, true);
         showCustomViewDialog(R.string.additional_information, binding.getRoot(), () -> {
-//            String birthW = binding.birthWeight.getText().toString(),
-//                    apgar1min = binding.apgar1min.getText().toString(),
-//                    apgar5min = binding.apgar5min.getText().toString(),
-//                    sexValue = binding.sex.getText().toString(),
-//                    babyStatus = binding.babyStatus.getText().toString(),
-//                    motherStatus = binding.motherStatus.getText().toString();
-//
-//            // call visitcompleteenc and add obs for additional values entered...
-//            try {
-//                isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
-//            } catch (DAOException e) {
-//                e.printStackTrace();
-//            }
+            String birthW = binding.birthWeight.getText().toString(),
+                    apgar1min = binding.apgar1min.getText().toString(),
+                    apgar5min = binding.apgar5min.getText().toString(),
+                    sexValue = binding.sex.getText().toString(),
+                    babyStatus = binding.babyStatus.getText().toString(),
+                    motherStatus = binding.motherStatus.getText().toString();
+
+            // call visitcompleteenc and add obs for additional values entered...
+            try {
+                isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
 
             if (isAdded) {
                 Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();

@@ -12,6 +12,7 @@ import static org.intelehealth.ezazi.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.getFullMonthName;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -67,8 +68,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -84,6 +83,7 @@ import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActi
 import org.intelehealth.ezazi.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.builder.PatientQueryBuilder;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
@@ -95,7 +95,6 @@ import org.intelehealth.ezazi.models.DownloadMindMapRes;
 import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
-import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
@@ -108,11 +107,10 @@ import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
-import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
 import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
 import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
 import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
-import org.intelehealth.ezazi.utilities.DialogUtils;
+import org.intelehealth.ezazi.ui.visit.VisitQueryResultBinder;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -204,7 +202,6 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     boolean fullyLoaded = false;
     EncounterDAO encounterDAO = new EncounterDAO();
     EncounterDTO encounterDTO = null;
-    String encounterUUID = "";
     ObsDAO obsDAO = new ObsDAO();
     List<ObsDTO> obsDTOList = null;
 
@@ -884,49 +881,49 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             getVisits();
             findViewById(R.id.tvEmpty).setVisibility(View.GONE);
             mActiveVisitsRecyclerView.setVisibility(View.VISIBLE);
-            List<ActivePatientModel> activePatientModels = doQuery(offset);
-            List<ActivePatientModel> filteractivePatient = doQuery(offset);
+            List<ActivePatientModel> activePatientModels = new VisitQueryResultBinder().executeActiveVisitsQuery(offset, limit);   //doQuery(offset);
 
             // #-- Alert logic -- start
             for (int j = 0; j < activePatientModels.size(); j++) {
-                encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter by visit uuid
-                encUUID_visitComplete = encounterDAO.getVisitCompleteEncounterByVisitUUID(activePatientModels.get(j).getUuid());
-                encounterUUID = encounterDTO.getUuid();
+//                encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(activePatientModels.get(j).getUuid()); // get latest encounter by visit uuid
+//                encUUID_visitComplete = encounterDAO.getVisitCompleteEncounterByVisitUUID(activePatientModels.get(j).getUuid());
+//                encounterUUID = encounterDTO.getUuid();
 
-                if (!encUUID_visitComplete.equalsIgnoreCase("")) { // birthoutcome
-//                    String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
-                    String birthoutcome = obsDAO.getCompletedVisitType(encUUID_visitComplete);
-                    if (!birthoutcome.equalsIgnoreCase("")) {
-                        activePatientModels.get(j).setBirthOutcomeValue(birthoutcome);
-                        filteractivePatient.get(j).setBirthOutcomeValue(birthoutcome);
-                    }
-                }
+//                if (!encUUID_visitComplete.equalsIgnoreCase("")) { // birthoutcome
+////                    String birthoutcome = obsDAO.checkBirthOutcomeObsExistsOrNot(encUUID_visitComplete);
+//                    String birthoutcome = obsDAO.getCompletedVisitType(encUUID_visitComplete);
+//                    if (!birthoutcome.equalsIgnoreCase("")) {
+//                        activePatientModels.get(j).setBirthOutcomeValue(birthoutcome);
+//                        filteractivePatient.get(j).setBirthOutcomeValue(birthoutcome);
+//                    }
+//                }
 
 
-                if (encounterDTO.getEncounterTypeUuid() != null) {
-                    String latestEncounterName = new EncounterDAO().findCurrentStage(encounterDTO.getVisituuid());
-                    if (latestEncounterName.toLowerCase().contains("stage2")) {
-                        activePatientModels.get(j).setStageName("Stage-2");
-                        filteractivePatient.get(j).setStageName("Stage-2");
-                    } else if (latestEncounterName.toLowerCase().contains("stage1")) {
-                        activePatientModels.get(j).setStageName("Stage-1");
-                        filteractivePatient.get(j).setStageName("Stage-1");
-                    } else {
-                        activePatientModels.get(j).setStageName("");
-                        filteractivePatient.get(j).setStageName("");
-                    }
-                }
+//                if (encounterDTO.getEncounterTypeUuid() != null) {
+//                    String latestEncounterName = new EncounterDAO().findCurrentStage(encounterDTO.getVisituuid());
+//                    if (latestEncounterName.toLowerCase().contains("stage2")) {
+//                        activePatientModels.get(j).setStageName("Stage-2");
+//                        filteractivePatient.get(j).setStageName("Stage-2");
+//                    } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+//                        activePatientModels.get(j).setStageName("Stage-1");
+//                        filteractivePatient.get(j).setStageName("Stage-1");
+//                    } else {
+//                        activePatientModels.get(j).setStageName("");
+//                        filteractivePatient.get(j).setStageName("");
+//                    }
+//                }
 
-                PatientsDAO patientsDAO = new PatientsDAO();
-                String bedNo = patientsDAO.getPatientAttributeValue(activePatientModels.get(j).getPatientuuid(), PatientAttributesDTO.Columns.BED_NUMBER);
-                activePatientModels.get(j).setBedNo(bedNo);
-                filteractivePatient.get(j).setBedNo(bedNo);
+//                PatientsDAO patientsDAO = new PatientsDAO();
+//                String bedNo = patientsDAO.getPatientAttributeValue(activePatientModels.get(j).getPatientuuid(), PatientAttributesDTO.Columns.BED_NUMBER);
+//                activePatientModels.get(j).setBedNo(bedNo);
+//                filteractivePatient.get(j).setBedNo(bedNo);
 
                 int red = 2, yellow = 1, green = 0;
                 int r_count = 0, y_count = 0, g_count = 0;
                 int count = 0;
 
                 // alert logic - start
+                String encounterUUID = activePatientModels.get(j).getLatestEncounterId();
                 if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) {
                     obsDTOList = obsDAO.obsCommentList(encounterUUID);
                     if (obsDTOList != null) {
@@ -959,27 +956,20 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
                     // set count of total to this visit to which it belongs to...
                     activePatientModels.get(j).setAlertFlagTotal(count);
-                    filteractivePatient.get(j).setAlertFlagTotal(count);
 
                     if (count > 22) { // Red
                         activePatientModels.get(j).setVisibilityOrder(3);
-                        filteractivePatient.get(j).setVisibilityOrder(3);
                     } else if (count >= 15) { // Yellow
                         activePatientModels.get(j).setVisibilityOrder(2);
-                        filteractivePatient.get(j).setVisibilityOrder(2);
                     } else { // Green
                         activePatientModels.get(j).setVisibilityOrder(1);
-                        filteractivePatient.get(j).setVisibilityOrder(1);
                     }
 
-                    if (encounterUUID != null && !encounterUUID.equalsIgnoreCase("")) { // blinking part
+                    if (!encounterUUID.equalsIgnoreCase("")) { // blinking part
                         int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
                         if (issubmitted == 1) { // not yet filled
                             activePatientModels.get(j).setObsExistsFlag(true);
-                            filteractivePatient.get(j).setObsExistsFlag(true);
-
                             activePatientModels.get(j).setVisibilityOrder(4);
-                            filteractivePatient.get(j).setVisibilityOrder(4);
                         }
                     }
 
@@ -988,25 +978,23 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             }
 
             // #-- Alert logic -- end
-            Collections.sort(activePatientModels, new Comparator<ActivePatientModel>() {
-                @Override
-                public int compare(ActivePatientModel t1, ActivePatientModel t2) {
-                    Integer i1 = t1.getVisibilityOrder();
-                    Integer i2 = t2.getVisibilityOrder();
-                    return i2.compareTo(i1);
-                }
+            Collections.sort(activePatientModels, (t1, t2) -> {
+                Integer i1 = t1.getVisibilityOrder();
+                Integer i2 = t2.getVisibilityOrder();
+                return i2.compareTo(i1);
             });
 
             // #-- Alert logic -- end
-            Collections.sort(filteractivePatient, new Comparator<ActivePatientModel>() {
-                @Override
-                public int compare(ActivePatientModel t1, ActivePatientModel t2) {
-                    Integer i1 = t1.getVisibilityOrder();
-                    Integer i2 = t2.getVisibilityOrder();
-                    return i2.compareTo(i1);
-                }
-            });
+//            Collections.sort(filteractivePatient, new Comparator<ActivePatientModel>() {
+//                @Override
+//                public int compare(ActivePatientModel t1, ActivePatientModel t2) {
+//                    Integer i1 = t1.getVisibilityOrder();
+//                    Integer i2 = t2.getVisibilityOrder();
+//                    return i2.compareTo(i1);
+//                }
+//            });
 
+            List<ActivePatientModel> filteractivePatient = new ArrayList<>(activePatientModels);
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, filteractivePatient, HomeActivity.this, listPatientUUID, sessionManager);
             mActiveVisitsRecyclerView.setAdapter(mActivePatientAdapter);
 
@@ -2120,6 +2108,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
     /*EZAZI*/
 
+
     /**
      * This method retrieves visit details about patient for a particular date.
      *
@@ -2130,12 +2119,14 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
-                "FROM tbl_visit a, tbl_patient b " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.creator = '" + myCreatorUUID + "'" +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate DESC  limit ? offset ?";
+                " FROM tbl_visit a, tbl_patient b, tbl_encounter E " +
+                " WHERE a.patientuuid = b.uuid AND a.uuid = E.visituuid " +
+                " AND a.creator = '" + myCreatorUUID + "'" +
+                " AND a.enddate is NULL OR a.enddate='' AND E.encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE +
+                "' GROUP BY a.uuid ORDER BY a.startdate DESC  limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
-
+//        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time DESC limit 1",
+//                new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {

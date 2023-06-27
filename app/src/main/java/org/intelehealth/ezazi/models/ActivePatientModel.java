@@ -25,6 +25,8 @@ public class ActivePatientModel {
 
     private String bedNo;
 
+    private String latestEncounterId;
+
 
     public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate,
                               String openmrs_id, String first_name, String middle_name,
@@ -196,6 +198,14 @@ public class ActivePatientModel {
 
     public String getFullName() {
         return first_name + " " + last_name;
+    }
+
+    public void setLatestEncounterId(String latestEncounterId) {
+        this.latestEncounterId = latestEncounterId;
+    }
+
+    public String getLatestEncounterId() {
+        return latestEncounterId;
     }
 
     public boolean isContains(String query) {
