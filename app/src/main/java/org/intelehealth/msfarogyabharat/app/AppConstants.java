@@ -34,7 +34,7 @@ public class AppConstants {
     public static String CONFIG_FILE_NAME = "config.json";
     public static final String IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
     public static final String MESSAGE_PROGRESS = "message_progress";
-    public static final int PAGE_LIMIT = 100;
+    public static final int PAGE_LIMIT = 500;
 
 
     //App vitals constants

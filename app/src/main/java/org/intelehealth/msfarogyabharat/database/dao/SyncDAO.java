@@ -138,8 +138,8 @@ public class SyncDAO {
     public boolean pullData_Background(final Context context, int pageNo) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
-        db = mDbHelper.getReadableDatabase();
-
+        if (db == null)
+            db = mDbHelper.getReadableDatabase();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
@@ -172,7 +172,7 @@ public class SyncDAO {
 
                     if (sync) {
                         // Step 2. once inserted successsfully, call the presc notification code from below.
-                        triggerNotificationForPrescription(response);
+                      //  triggerNotificationForPrescription(response);
 
 
                         // Step 3. on insert done and notifi call from this packet of page0 and limit 100 again call the pull().
@@ -252,7 +252,8 @@ public class SyncDAO {
         final Handler handler = new Handler(context.getMainLooper());
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
-        db = mDbHelper.getReadableDatabase();
+        if (db == null)
+            db = mDbHelper.getReadableDatabase();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
@@ -286,7 +287,7 @@ public class SyncDAO {
                     }
                     if (sync) {
                         // Step 2. once inserted successsfully, call the presc notification code from below.
-                        triggerNotificationForPrescription(response);
+                     //   triggerNotificationForPrescription(response);
 
                         // Step 3. on insert done and notifi call from this packet of page0 and limit 100 again call the pull().
                         int nextPageNo = response.body().getData().getPageNo();
@@ -412,7 +413,8 @@ public class SyncDAO {
     }
 
     private void getPatients(List<ActivePatientModel> activePatientList) {
-
+     //   SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        db.beginTransaction();
         String query =
                 "SELECT   a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                         "FROM tbl_visit a, tbl_patient b " +
@@ -438,9 +440,11 @@ public class SyncDAO {
                             hasPrescription
                     ));
                 } while (cursor.moveToNext());
+                db.setTransactionSuccessful();
             }
         }
         cursor.close();
+        db.endTransaction();
     }
 
     public boolean pushDataApi() {
@@ -556,15 +560,20 @@ public class SyncDAO {
     }
 
     private Boolean getHasPrescription(Cursor cursor) {
+     //   SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        db.beginTransaction();
         boolean hasPrescription = false;
         String query1 = "Select count(*) from tbl_encounter where encounter_type_uuid = 'bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' AND visituuid = ?";
         Cursor mCount = db.rawQuery(query1, new String[]{cursor.getString(cursor.getColumnIndexOrThrow("uuid"))});
         mCount.moveToFirst();
         int count = mCount.getInt(0);
         mCount.close();
-        if (count == 1)
+        if (count == 1) {
             hasPrescription = true;
+            db.setTransactionSuccessful();
+        }
 
+        db.endTransaction();
         return hasPrescription;
     }
 
