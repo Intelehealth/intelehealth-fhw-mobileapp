@@ -138,8 +138,9 @@ public class SyncDAO {
     public boolean pullData_Background(final Context context, int pageNo) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
+    //    db = mDbHelper.getWriteDb();
         if (db == null)
-            db = mDbHelper.getReadableDatabase();
+            db = mDbHelper.getWriteDb();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
@@ -172,8 +173,7 @@ public class SyncDAO {
 
                     if (sync) {
                         // Step 2. once inserted successsfully, call the presc notification code from below.
-                      //  triggerNotificationForPrescription(response);
-
+                        triggerNotificationForPrescription(response);
 
                         // Step 3. on insert done and notifi call from this packet of page0 and limit 100 again call the pull().
                         int nextPageNo = response.body().getData().getPageNo();
@@ -252,8 +252,9 @@ public class SyncDAO {
         final Handler handler = new Handler(context.getMainLooper());
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
+      //  db = mDbHelper.getWriteDb();
         if (db == null)
-            db = mDbHelper.getReadableDatabase();
+            db = mDbHelper.getWriteDb();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
@@ -287,7 +288,7 @@ public class SyncDAO {
                     }
                     if (sync) {
                         // Step 2. once inserted successsfully, call the presc notification code from below.
-                     //   triggerNotificationForPrescription(response);
+                        triggerNotificationForPrescription(response);
 
                         // Step 3. on insert done and notifi call from this packet of page0 and limit 100 again call the pull().
                         int nextPageNo = response.body().getData().getPageNo();
@@ -440,10 +441,10 @@ public class SyncDAO {
                             hasPrescription
                     ));
                 } while (cursor.moveToNext());
-                db.setTransactionSuccessful();
             }
         }
         cursor.close();
+        db.setTransactionSuccessful();
         db.endTransaction();
     }
 
@@ -570,9 +571,9 @@ public class SyncDAO {
         mCount.close();
         if (count == 1) {
             hasPrescription = true;
-            db.setTransactionSuccessful();
         }
 
+        db.setTransactionSuccessful();
         db.endTransaction();
         return hasPrescription;
     }

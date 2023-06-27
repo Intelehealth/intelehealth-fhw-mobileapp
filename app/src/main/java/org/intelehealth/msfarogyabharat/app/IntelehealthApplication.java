@@ -88,7 +88,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             Log.i(TAG, "onCreate: Parse init");
 
             InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+            SQLiteDatabase localdb = mDbHelper.getWriteDb();
             mDbHelper.onCreate(localdb);
         }
         registerActivityLifecycleCallbacks(this);
