@@ -2,8 +2,8 @@ package org.intelehealth.ezazi.ui.rtc.activity;
 
 import android.content.Intent;
 
-import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.ezazi.R;
+import org.intelehealth.klivekit.ui.activity.ChatActivity;
 
 /**
  * Created by Vaghela Mithun R. on 24-05-2023 - 18:34.
