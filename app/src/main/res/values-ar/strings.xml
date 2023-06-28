@@ -190,6 +190,7 @@
     <string name="visit_summary_advice">النصائح الطبية</string>
     <string name="visit_summary_tests_prescribed">الاختبارات/الإحالات</string>
     <string name="visit_summary_additional_comments">تعليقات اضافية</string>
+    <string name="visit_summary_discharge_order">تخريج الحالة</string>
     <string name="visit_summary_heading_name">اسم</string>
     <string name="visit_summary_heading_id">بطاقة تعريف</string>
     <string name="visit_summary_button_download">تنزيل التوصيات الجديدة</string>

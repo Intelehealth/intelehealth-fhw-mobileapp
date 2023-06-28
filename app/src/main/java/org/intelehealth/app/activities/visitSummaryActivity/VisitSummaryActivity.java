@@ -815,7 +815,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (second_speciality_items != null) {
             second_speciality_items.add(0, getString(R.string.select_specialization_text));
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, second_speciality_items);
             second_speciality_spinner.setAdapter(stringArrayAdapter);
         } else {
             stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.second_speciality_values));

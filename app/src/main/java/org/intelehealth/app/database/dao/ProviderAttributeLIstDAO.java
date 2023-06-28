@@ -114,7 +114,7 @@ public class ProviderAttributeLIstDAO {
                 if (isDoctorConsultSpecialty) {
                     listDTOArrayList.add(0, dto.getValue());
                 } else {
-                    if(!dto.getValue().equalsIgnoreCase("Admin") || !dto.getValue().equalsIgnoreCase("إداري"))
+                    if(!dto.getValue().equalsIgnoreCase("Admin") && !dto.getValue().equalsIgnoreCase("إداري"))
                         listDTOArrayList.add(dto.getValue());
                 }
             }
