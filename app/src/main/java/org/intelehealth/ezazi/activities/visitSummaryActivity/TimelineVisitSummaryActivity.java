@@ -133,7 +133,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_timeline_ezazi);
-        observeKeyboardEvent();
+//        observeKeyboardEvent();
         super.onCreate(savedInstanceState);
         initUI();
 //        adapter = new TimelineAdapter(context, intent, encounterDTO, sessionManager);

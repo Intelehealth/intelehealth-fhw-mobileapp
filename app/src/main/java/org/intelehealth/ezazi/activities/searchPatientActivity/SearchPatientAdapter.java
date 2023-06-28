@@ -55,6 +55,12 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         return patients.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateList(List<PatientDTO> patients) {
+        this.patients = patients;
+        notifyDataSetChanged();
+    }
+
     class Myholder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ConstraintLayout linearLayout;
         private TextView tvPatientName;
