@@ -113,6 +113,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         if (nodeGroup.getText().equalsIgnoreCase("Associated symptoms")
                 || nodeGroup.getText().equalsIgnoreCase("जुड़े लक्षण")
                 || nodeGroup.getText().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
+                || nodeGroup.getText().equalsIgnoreCase("संबद्ध लक्षणे")
                 || nodeGroup.getText().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")) {
             convertView = mInflater.inflate(R.layout.list_expandable_item_radio, null);
 

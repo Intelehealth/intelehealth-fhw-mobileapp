@@ -3332,6 +3332,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
                     followUpDate = followUpDate.replace("Remark", "ಟೀಕೆ");
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+                    followUpDate = followUpDate.replace("Remark", "टिप्पणी");
 
                 followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {

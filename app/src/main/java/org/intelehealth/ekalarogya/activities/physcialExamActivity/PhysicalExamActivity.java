@@ -451,6 +451,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             if (!physicalExamMap.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !physicalExamMap.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
                     && !physicalExamMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
                     && !physicalExamMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !physicalExamMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
                     && !physicalExamMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")

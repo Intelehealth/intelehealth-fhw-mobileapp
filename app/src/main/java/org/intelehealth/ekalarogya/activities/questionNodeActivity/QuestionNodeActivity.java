@@ -294,6 +294,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
                     && !currentNode.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
+                    && !currentNode.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
                     && !currentNode.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
                     && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
@@ -389,6 +390,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 complaint_REG = currentNode.getDisplay_bengali();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
                 complaint_REG = currentNode.getDisplay_kannada();
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+                complaint_REG = currentNode.getDisplay_marathi();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
                 complaint_REG = currentNode.getDisplay_oriya();
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
@@ -654,6 +657,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು"))
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                        .equalsIgnoreCase("संबद्ध लक्षणे"))
+                        || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
                         || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                         .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
@@ -708,6 +713,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত উপসর্গ(গুলি) আছে?");
                 assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣಗಳನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
+                assoSympObj.put("display-mr", "तुम्हाला खालील लक्षण (लक्षणे) आहेत का?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
                 assoSympObj.put("display-gu", "તમે નીચેનાં લક્ષણ(લક્ષણો) છે?");
                 assoSympObj.put("display-as", "আপোনাৰ তলত দিয়া লক্ষণ(সমূহ) আছেনে?");
@@ -720,6 +726,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
                 finalAssoSympObj.put("display-bn", "সংশ্লিষ্ট উপসর্গ");
                 finalAssoSympObj.put("display-kn", "ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು");
+                finalAssoSympObj.put("display-mr", "संबद्ध लक्षणे");
                 finalAssoSympObj.put("display-gu", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");
                 finalAssoSympObj.put("perform-physical-exam", "");

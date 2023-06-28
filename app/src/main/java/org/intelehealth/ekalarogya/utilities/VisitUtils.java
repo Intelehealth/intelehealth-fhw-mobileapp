@@ -19,6 +19,9 @@ public class VisitUtils {
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(activityContext);
                 if (new SessionManager(activityContext).getAppLanguage().equalsIgnoreCase("kn"))
                     followUpDate = followUpDate.replace("Remark", "ಟೀಕೆ");
+                if (new SessionManager(activityContext).getAppLanguage().equalsIgnoreCase("mr"))
+                    followUpDate = followUpDate.replace("Remark", "टिप्पणी");
+
 
                 followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder)
                         + followUpDate);
