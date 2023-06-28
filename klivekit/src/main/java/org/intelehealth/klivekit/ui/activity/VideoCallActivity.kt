@@ -130,7 +130,7 @@ class VideoCallActivity : CoreVideoCallActivity() {
         return if (isMuted) {
             ContextCompat.getDrawable(this@VideoCallActivity, R.drawable.ic_mic_off)
         } else {
-            ContextCompat.getDrawable(this@VideoCallActivity, R.drawable.call_status_11)
+            ContextCompat.getDrawable(this@VideoCallActivity, R.drawable.selector_active_speaker)
         }
     }
 

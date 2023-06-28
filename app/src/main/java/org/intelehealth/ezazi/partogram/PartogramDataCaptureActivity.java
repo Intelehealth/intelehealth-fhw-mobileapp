@@ -4,7 +4,6 @@ import static org.intelehealth.ezazi.partogram.PartogramConstants.STAGE_1;
 import static org.intelehealth.ezazi.partogram.PartogramConstants.STAGE_2;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,21 +15,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
-import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
-import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
@@ -41,7 +35,7 @@ import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
-import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.LiveVideoCallActivity;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -49,7 +43,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     private static final String TAG = "PartogramDataCaptureAct";
@@ -205,7 +198,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
-                Intent in = new Intent(PartogramDataCaptureActivity.this, VideoCallActivity.class);
+                Intent in = new Intent(PartogramDataCaptureActivity.this, LiveVideoCallActivity.class);
                 String roomId = mPatientUuid;
                 String doctorName = "";
                 String nurseId = encounterDTO.getProvideruuid();

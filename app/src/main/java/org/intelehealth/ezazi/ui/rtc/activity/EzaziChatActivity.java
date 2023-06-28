@@ -1,10 +1,8 @@
 package org.intelehealth.ezazi.ui.rtc.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ezazi.R;
 
 /**
@@ -26,6 +24,6 @@ public class EzaziChatActivity extends ChatActivity {
 
     @Override
     protected Intent getVideoIntent() {
-        return new Intent(this, VideoCallActivity.class);
+        return new Intent(this, LiveVideoCallActivity.class);
     }
 }

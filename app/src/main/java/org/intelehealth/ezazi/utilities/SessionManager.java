@@ -1,8 +1,14 @@
 package org.intelehealth.ezazi.utilities;
 
+import static com.codeglo.coyamore.data.PreferenceHelper.RTC_DATA;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.google.gson.Gson;
+
+import org.intelehealth.klivekit.model.RtcArgs;
 
 import java.util.Set;
 
@@ -463,6 +469,23 @@ public class SessionManager {
     public void setOxytocinValue(String oxytocinValue) {
         editor.putString(OXYTOCIN_VALUE, oxytocinValue);
         editor.commit();
+    }
+
+    // To avoid incoming call duplication error
+    public void setRtcData(RtcArgs args) {
+        editor.putString(RTC_DATA, new Gson().toJson(args));
+        editor.commit();
+    }
+
+    // get the visit edit cache data as json string
+    public RtcArgs getRtcData() {
+        RtcArgs rtcArgs = null;
+        String rtcJson = pref.getString(RTC_DATA, "");
+        if (rtcJson.length() > 0) {
+            rtcArgs = new Gson().fromJson(rtcJson, RtcArgs.class);
+        }
+
+        return rtcArgs;
     }
 
 }

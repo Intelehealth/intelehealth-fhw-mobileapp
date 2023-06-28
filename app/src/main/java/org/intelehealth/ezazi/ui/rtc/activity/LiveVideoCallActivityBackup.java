@@ -8,7 +8,6 @@ import static io.socket.client.Socket.EVENT_DISCONNECT;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -22,22 +21,16 @@ import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.apprtc.SimpleSdpObserver;
 import org.intelehealth.apprtc.data.Constants;
-import org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.ActivityVideoCallEzaziBinding;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -74,7 +67,7 @@ import io.socket.client.Socket;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class VideoCallActivity extends AppCompatActivity {
+public class LiveVideoCallActivityBackup extends AppCompatActivity {
     private static final String TAG = "CompleteActivity";
     private static final int RC_CALL = 111;
     public static final String VIDEO_TRACK_ID = "ARDAMSv0";
@@ -208,7 +201,7 @@ public class VideoCallActivity extends AppCompatActivity {
                     localAudioTrack.setEnabled(!localAudioTrack.enabled());
                     v.setActivated(localAudioTrack.enabled());
                     int label = localAudioTrack.enabled() ? org.intelehealth.apprtc.R.string.audio_on_lbl : org.intelehealth.apprtc.R.string.audio_off_lbl;
-                    Toast.makeText(VideoCallActivity.this, getString(label), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LiveVideoCallActivityBackup.this, getString(label), Toast.LENGTH_SHORT).show();
 //                    if (localAudioTrack.enabled()) {
 //                        v.setActivated(true);
 ////                        binding.audioImv.setImageResource(org.intelehealth.apprtc.R.drawable.ic_baseline_mic_24);
@@ -237,7 +230,7 @@ public class VideoCallActivity extends AppCompatActivity {
                     videoTrackFromCamera.setEnabled(!videoTrackFromCamera.enabled());
                     v.setActivated(videoTrackFromCamera.enabled());
                     int label = videoTrackFromCamera.enabled() ? org.intelehealth.apprtc.R.string.video_on_lbl : org.intelehealth.apprtc.R.string.video_off_lbl;
-                    Toast.makeText(VideoCallActivity.this, getString(label), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LiveVideoCallActivityBackup.this, getString(label), Toast.LENGTH_SHORT).show();
 //                    if (videoTrackFromCamera.enabled()) {
 //                        binding.videoImv.setImageResource(org.intelehealth.apprtc.R.drawable.ic_baseline_videocam_24);
 //                        Toast.makeText(CompleteActivity.this, getString(org.intelehealth.apprtc.R.string.video_on_lbl), Toast.LENGTH_SHORT).show();
@@ -373,7 +366,7 @@ public class VideoCallActivity extends AppCompatActivity {
             if (allGranted) {
                 start();
             } else {
-                Toast.makeText(VideoCallActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LiveVideoCallActivityBackup.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
                 finish();
             }
 
@@ -419,7 +412,7 @@ public class VideoCallActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(VideoCallActivity.this, getString(org.intelehealth.apprtc.R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LiveVideoCallActivityBackup.this, getString(org.intelehealth.apprtc.R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
             }
         });
         stopRinging();
@@ -547,7 +540,7 @@ public class VideoCallActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(VideoCallActivity.this, "Doctor Joined!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LiveVideoCallActivityBackup.this, "Doctor Joined!", Toast.LENGTH_SHORT).show();
                             binding.videoCallView.statusTv.setVisibility(View.GONE);
                         }
                     });
@@ -619,7 +612,7 @@ public class VideoCallActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(VideoCallActivity.this, "Disconnected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LiveVideoCallActivityBackup.this, "Disconnected!", Toast.LENGTH_SHORT).show();
 
                     }
                 });

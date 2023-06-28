@@ -28,19 +28,27 @@
             app:layout_constraintStart_toStartOf="@id/container"
             app:layout_constraintTop_toTopOf="@id/container">
 
-            <org.webrtc.SurfaceViewRenderer
+            <io.livekit.android.renderer.SurfaceViewRenderer
                 android:id="@+id/incoming_surface_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
             <TextView
+                android:id="@+id/tvRemoteUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="16dp"
+                android:textColor="#fff" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivRemoteSpeakerStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
-                android:layout_margin="16dp"
-                android:text=""
-                android:textColor="#fff" />
+                android:layout_margin="@dimen/screen_container_padding"
+                app:srcCompat="@drawable/selector_active_speaker" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivPartnerProfile"
@@ -62,7 +70,7 @@
             app:layout_constraintBottom_toBottomOf="@id/incoming_surface_view_frame"
             app:layout_constraintEnd_toEndOf="@id/incoming_surface_view_frame">
 
-            <org.webrtc.SurfaceViewRenderer
+            <io.livekit.android.renderer.SurfaceViewRenderer
                 android:id="@+id/self_surface_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -70,20 +78,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
+                android:layout_gravity="top|start"
                 android:layout_margin="@dimen/screen_container_padding"
                 android:text="@string/you"
                 android:textColor="#fff"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/mic_off_indicator_size"
-                android:layout_height="@dimen/mic_off_indicator_size"
+                android:id="@+id/ivLocalSpeakerStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
                 android:layout_margin="@dimen/screen_container_padding"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_mic_off"
-                app:tint="@color/red" />
+                app:srcCompat="@drawable/selector_active_speaker" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivSelfProfile"

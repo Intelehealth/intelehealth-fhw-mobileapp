@@ -83,7 +83,6 @@ import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActi
 import org.intelehealth.ezazi.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
-import org.intelehealth.ezazi.builder.PatientQueryBuilder;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
@@ -109,7 +108,7 @@ import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
 import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
-import org.intelehealth.ezazi.ui.rtc.activity.VideoCallActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.LiveVideoCallActivity;
 import org.intelehealth.ezazi.ui.visit.VisitQueryResultBinder;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -133,7 +132,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -258,7 +256,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
                 } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
                     //Log.d(TAG, "actionType : VIDEO_CALL");
-                    Intent in = new Intent(this, VideoCallActivity.class);
+                    Intent in = new Intent(this, LiveVideoCallActivity.class);
                     String roomId = remoteMessage.getString("roomId");
                     String doctorName = remoteMessage.getString("doctorName");
                     String nurseId = remoteMessage.getString("nurseId");
