@@ -2260,7 +2260,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n").replace(Node.bullet, ""));
 
-        //String advice_web = stringToWeb(adviceReturned);
         String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
@@ -2293,8 +2292,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
-
-//        String comments_web = stringToWeb(additionalReturned);
+        String discharge_order_web = stringToWeb(dischargeOrderReturned);
+        String comments_web = stringToWeb(additionalReturned);
 
 
         String followUpDateStr = "";
@@ -2407,8 +2406,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_instructions)) + "</p></b></u>" + "%s<br>", advice_web));
             }
 
+            if (!comments_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"additional_comments_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_additional_comments)) + "</p></b></u>" + "%s<br>", comments_web));
+            }
+
             if (!aidOrder_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
+            }
+
+            if (!discharge_order_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"discharge_order_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_discharge_order)) + "</p></b></u>" + "%s<br>", discharge_order_web));
             }
 
             if (!followUp_web.isEmpty()) {
@@ -2452,8 +2459,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_advice)) + "</p></b></u>" + "%s<br>", advice_web));
             }
 
+            if (!comments_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"additional_comments_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_additional_comments)) + "</p></b></u>" + "%s<br>", comments_web));
+            }
+
             if (!aidOrder_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
+            }
+
+            if (!discharge_order_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"discharge_order_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_discharge_order)) + "</p></b></u>" + "%s<br>", discharge_order_web));
             }
 
             if (!followUp_web.isEmpty()) {
@@ -4968,6 +4983,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Log.d("Hyperlink", "hyper_print: " + advice_web);
 
         String diagnosis_web = stringToWeb_sms(diagnosisReturned);
+        String discharge_order_web = stringToWeb_sms(dischargeOrderReturned);
+        String comments_web = stringToWeb(additionalReturned);
+
 
         String formattedAidOrder = "";
         if(aidOrderType1TextView.getVisibility() == View.VISIBLE && aidOrderType1TextView.getText().toString()!=null && !aidOrderType1TextView.getText().toString().trim().equalsIgnoreCase(""))
@@ -5106,8 +5124,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + " <br>" + "%s" + "</b><br>", advice_web));
         }
 
+        if (!comments_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"additional_comments_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_additional_comments)) + "</p></b></u>" + "%s<br>", comments_web));
+        }
+
         if (!aidOrder_web.isEmpty()) {
             htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
+        }
+
+        if (!discharge_order_web.isEmpty()) {
+            htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"discharge_order_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_discharge_order)) + "</p></b></u>" + "%s<br>", discharge_order_web));
         }
 
         // If the Follow Up Date provided is not empty, only then will the details be displayed in the Prescription
