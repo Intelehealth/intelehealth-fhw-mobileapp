@@ -83,8 +83,8 @@ import java.util.UUID;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-public class ChatActivity extends AppCompatActivity {
-    private static final String TAG = ChatActivity.class.getName();
+public class ChatActivityBackup extends AppCompatActivity {
+    private static final String TAG = ChatActivityBackup.class.getName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     private List<JSONObject> mChatList = new ArrayList<JSONObject>();
     private RecyclerView mRecyclerView;
@@ -152,7 +152,7 @@ public class ChatActivity extends AppCompatActivity {
         mLoadingLinearLayout = findViewById(R.id.loading_layout);
         mEmptyLinearLayout = findViewById(R.id.empty_view);
         mRecyclerView = findViewById(R.id.chats_rcv);
-        mLayoutManager = new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, true);
+        mLayoutManager = new LinearLayoutManager(ChatActivityBackup.this, LinearLayoutManager.VERTICAL, true);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
@@ -603,7 +603,7 @@ public class ChatActivity extends AppCompatActivity {
         final String imagePath = file.getAbsolutePath();
         final String imageName = UUID.randomUUID().toString();
         mLastSelectedImageName = imageName;
-        Intent cameraIntent = new Intent(ChatActivity.this, VideoCallActivity.class);
+        Intent cameraIntent = new Intent(ChatActivityBackup.this, VideoCallActivity.class);
         File filePath = new File(imagePath);
         if (!filePath.exists()) {
             boolean res = filePath.mkdirs();
@@ -628,7 +628,7 @@ public class ChatActivity extends AppCompatActivity {
 
                         Log.v(TAG, "currentPhotoPath : " + currentPhotoPath);
                         if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                            Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivityBackup.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
                             return;
                         }
                         try {
@@ -644,7 +644,7 @@ public class ChatActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
+                        AwsS3Utils.saveFileToS3Cloud(ChatActivityBackup.this, mVisitUUID, currentPhotoPath);
                     }
                 }
             });
@@ -666,28 +666,28 @@ public class ChatActivity extends AppCompatActivity {
 
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo_lbl), getString(R.string.choose_from_gallery_lbl), getResources().getString(R.string.choose_documents), getString(R.string.cancel_lbl)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivityBackup.this);
         builder.setTitle(getResources().getString(R.string.select));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
                     if (mImageCount >= 5) {
-                        Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_5_image), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivityBackup.this, getResources().getString(R.string.max_5_image), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     cameraStart();
 
                 } else if (item == 1) {
                     if (mImageCount >= 5) {
-                        Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_5_image), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivityBackup.this, getResources().getString(R.string.max_5_image), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     galleryStart();
 
                 } else if (item == 2) {
                     if (mPDFCount >= 2) {
-                        Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_2_image), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivityBackup.this, getResources().getString(R.string.max_2_image), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     browseStartForPdf();
@@ -753,7 +753,7 @@ public class ChatActivity extends AppCompatActivity {
                             //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             Log.i(TAG, currentPhotoPath);
                             if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                                Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChatActivityBackup.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             try {
@@ -769,10 +769,10 @@ public class ChatActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
+                            AwsS3Utils.saveFileToS3Cloud(ChatActivityBackup.this, mVisitUUID, currentPhotoPath);
 
                         } else {
-                            Toast.makeText(ChatActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivityBackup.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -806,7 +806,7 @@ public class ChatActivity extends AppCompatActivity {
                                 //End
                                 currentPDFPath = mFile.getPath();
                                 if (!RealPathUtil.isFileLessThan1MB(mFile)) {
-                                    Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast_mb), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivityBackup.this, getResources().getString(R.string.max_doc_size_toast_mb), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                                 Log.v(TAG, "currentPDFPath" + currentPDFPath);
@@ -823,7 +823,7 @@ public class ChatActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPDFPath);
+                                AwsS3Utils.saveFileToS3Cloud(ChatActivityBackup.this, mVisitUUID, currentPDFPath);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
