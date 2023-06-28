@@ -4121,6 +4121,27 @@ public class Node implements Serializable {
                     .replaceAll("ಅಕ್ಟೋಬರ್", "Oct")
                     .replaceAll("ನವೆಂಬರ್", "Nov")
                     .replaceAll("ಡಿಸೆಂಬರ್", "Dec");
+        }else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
+
+            displayStr = displayStr.replaceAll("मिनिट", "Minutes")
+                    .replaceAll("तास", "Hours")
+                    .replaceAll("दिवस", "Days")
+                    .replaceAll("आठवडे", "Weeks")
+                    .replaceAll("महिने", "Months")
+                    .replaceAll("वर्षे", "Years")
+
+                    .replaceAll("जानेवारी", "Jan")
+                    .replaceAll("फेब्रुवारी", "Feb")
+                    .replaceAll("मार्च", "Mar")
+                    .replaceAll("एप्रिल", "Apr")
+                    .replaceAll("मे", "May")
+                    .replaceAll("जून", "Jun")
+                    .replaceAll("जुलै", "Jul")
+                    .replaceAll("ऑगस्ट", "Aug")
+                    .replaceAll("सप्टेंबर", "Sep")
+                    .replaceAll("ऑक्टोबर", "Oct")
+                    .replaceAll("नोव्हेंबर", "Nov")
+                    .replaceAll("डिसेंबर", "Dec");
         }
         else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
             displayStr = displayStr.replaceAll("મિનિટ", "Minutes")
@@ -4247,6 +4268,26 @@ public class Node implements Serializable {
                     .replaceAll("Oct", "ಅಕ್ಟೋಬರ್")
                     .replaceAll("Nov", "ನವೆಂಬರ್")
                     .replaceAll("Dec", "ಡಿಸೆಂಬರ್");
+        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
+            displayStr = displayStr.replaceAll("Minutes", "मिनिट")
+                    .replaceAll("Hours", "तास")
+                    .replaceAll("Days", "दिवस")
+                    .replaceAll("Weeks", "आठवडे")
+                    .replaceAll("Months", "महिने")
+                    .replaceAll("Years", "वर्षे")
+
+                    .replaceAll("Jan", "जानेवारी")
+                    .replaceAll("Feb", "फेब्रुवारी")
+                    .replaceAll("Mar", "मार्च")
+                    .replaceAll("Apr", "एप्रिल")
+                    .replaceAll("May", "मे")
+                    .replaceAll("Jun", "जून")
+                    .replaceAll("Jul", "जुलै")
+                    .replaceAll("Aug", "ऑगस्ट")
+                    .replaceAll("Sep", "सप्टेंबर")
+                    .replaceAll("Oct", "ऑक्टोबर")
+                    .replaceAll("Nov", "नोव्हेंबर")
+                    .replaceAll("Dec", "डिसेंबर");
         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("gu")) {
             displayStr = displayStr.replaceAll("Minutes", "મિનિટ")
                     .replaceAll("Hours", "કલાકો")

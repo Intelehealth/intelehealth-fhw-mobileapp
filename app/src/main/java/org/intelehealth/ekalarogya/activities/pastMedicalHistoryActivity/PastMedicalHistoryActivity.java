@@ -108,7 +108,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     String patientHistory, patientHistoryHindi, patientHistoryOdiya,
             patientHistoryGujrati,patientHistoryAssamese,
-    patientHistoryBengali, patientHistoryKannada;
+    patientHistoryBengali, patientHistoryKannada, patientHistoryMarathi;
     String phistory = "", pHistoryOnly_REG = "";
 
     boolean flag = false;
@@ -458,6 +458,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             patientHistoryAssamese = "";
             patientHistoryBengali = "";
             patientHistoryKannada = "";
+            patientHistoryMarathi = "";
             List<String> imagePathList = patientHistoryMap.getImagePathList();
 
             if (imagePathList != null) {
@@ -489,6 +490,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                         } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
                             patientHistoryKannada = patientHistoryMap.generateLanguage("kn");
                             ConfirmationDialog(patientHistory, patientHistoryKannada);
+                        } else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
+                            patientHistoryMarathi = patientHistoryMap.generateLanguage("mr");
+                            ConfirmationDialog(patientHistory, patientHistoryMarathi);
                         } else {
                             ConfirmationDialog(patientHistory, patientHistory);
                         }
@@ -537,6 +541,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     } else if (sessionManager.getCurrentLang().equalsIgnoreCase("kn")) {
                         patientHistoryKannada = patientHistoryMap.generateLanguage("kn");
                         ConfirmationDialog(patientHistory, patientHistoryKannada);
+                    } else if (sessionManager.getCurrentLang().equalsIgnoreCase("mr")) {
+                        patientHistoryMarathi = patientHistoryMap.generateLanguage("mr");
+                        ConfirmationDialog(patientHistory, patientHistoryMarathi);
                     } else {
                         ConfirmationDialog(patientHistory, patientHistory);
                     }

@@ -1,0 +1,1006 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name" translatable="false">एकल आरोग्य</string>
+<string name="generic_the_flipping_word_next" translatable="false">पुढे</string>
+<string name="hint_required" translatable="false">आवश्यक</string>
+<string name="hint_optional" translatable="false">पर्यायी</string>
+<string name="tag_optional" translatable="false">पर्यायी</string>
+<string name="generic_ok">ठीक आहे</string>
+<string name="generic_cancel">रद्द करा</string>
+<string name="generic_yes">होय</string>
+<string name="generic_no">नाही</string>
+<string name="generic_back" translatable="false">मागे</string>
+<string name="generic_coming_soon" translatable="false">लवकरच येत आहे .....</string>
+<string name="action_print" translatable="false">प्रिंट</string>
+<string name="action_sms" translatable="false">एसएमएस</string>
+<string name="action_home" translatable="false">मुख्यपृष्ठ</string>
+<string name="action_settings" translatable="false">सेटिंग्ज</string>
+<string name="generic_warning" translatable="false">महत्वाची सूचना</string>
+<string name="generic_update" translatable="false">अपडेट करा</string>
+<string name="generic_deleted" translatable="false">हटविले</string>
+
+<string name="db_first_name" translatable="false">नाव</string>
+<string name="db_middle_name" translatable="false">वडिलांचे/पतीचे/मधले नाव</string>
+<string name="db_last_name" translatable="false">आडनाव</string>
+<string name="db_dob" translatable="false">जन्मतारीख</string>
+<string name="db_phone_number" translatable="false">फोन नंबर/दूरध्वनी क्रमांक</string>
+<string name="db_address_line1" translatable="false">पत्ता - ओळ १</string>
+<string name="db_address_line2" translatable="false">पत्ता - ओळ २</string>
+<string name="db_city" translatable="false">शहराचे/गावाचे नाव</string>
+<string name="db_state" translatable="false">राज्य/प्रभाग</string>
+<string name="db_postal_code" translatable="false">पिन कोड</string>
+<string name="db_country" translatable="false">देशाचे नाव</string>
+<string name="db_gender" translatable="false">लिंग</string>
+<string name="db_patient_id1" translatable="false">रुग्णाविषयी माहिती_१</string>
+<string name="db_patient_id2" translatable="false">रुग्णाविषयी माहिती_२</string>
+<string name="db_patient_id3" translatable="false">रुग्णाविषयी माहिती_३</string>
+<string name="title_activity_login" translatable="false">एकल आरोग्य</string>
+<string name="prompt_email" translatable="false">वापरकर्ता नाव</string>
+<string name="prompt_password" translatable="false">पासवर्ड</string>
+<string name="prompt_admin_password" translatable="false">प्रशासक पासवर्ड</string>
+<string name="action_sign_in" translatable="false">लॉगिन</string>
+<string name="action_sign_in_short" translatable="false">साइन इन करा</string>
+<string name="url_invalid" translatable="false">आपली URL तपासा.</string>
+<string name="prefix_invalid" translatable="false">भिन्न उपसर्ग निवडा!</string>
+<string name="error_invalid_email" translatable="false">हे वापरकर्तानाव अवैध आहे</string>
+<string name="error_invalid_password" translatable="false">हा संकेतशब्द खूप छोटा आहे</string>
+<string name="error_incorrect_password" translatable="false">कृपया भरा केलेले वापरकर्तानाव आणि संकेतशब्द तपासा</string>
+<string name="error_field_required" translatable="false">हे क्षेत्र आवश्यक आहे</string>
+<string name="error_network" translatable="false">नेटवर्क त्रुटि</string>
+<string name="error_location_not_selected" translatable="false">कृपया उपलब्ध यादी मधून योग्य स्थान निवडा</string>
+<string name="error_location_not_fetched" translatable="false">स्थानांची यादी दाखवण्यास अक्षम</string>
+<string name="permission_rationale" translatable="false">ईमेल पूर्णता प्रदान करण्यासाठी संपर्क परवानग्यांची आवश्यकता आहे.</string>
+<string name="device_id" translatable="false">डिव्हाइस आयडी:</string>
+<string name="cant_login_user" translatable="false">लॉग इन करू शकत नाही?</string>
+<string name="email_link" translatable="false">कृपया आपला पासवर्ड रीसेट करण्यासाठी आपल्या सिस्टम प्रशासकाशी संपर्क साधा किंवा समर्थन@intelehealth.io वर ईमेल पाठवा</string>
+<string name="contact_whatsapp">कृपया आपला पासवर्ड रीसेट करण्यासाठी आपल्या सिस्टम प्रशासकाशी संपर्क साधा</string>
+
+<string name="title_home_screen" translatable="false">मुख्यपृष्ठ</string>
+<string name="button_new_pt">नवीन रुग्ण</string>
+<string name="button_find_pt" translatable="false">रुग्ण शोधा</string>
+<string name="button_diagnostic_tests" translatable="false">निदान चाचण्या</string>
+<string name="button_active_pt" translatable="false">रुग्ण तपासणी साठी सक्रिय/उपलब्ध </string>
+<string name="menu_option_sync" translatable="false">रीफ्रेश डेटा</string>
+<string name="menu_option_settings" translatable="false">सेटिंग्ज</string>
+<string name="menu_option_end_of_day" translatable="false">दिवसाचा शेवट</string>
+<string name="menu_option_logout" translatable="false">बाहेर पडणे</string>
+<string name="menu_option_hw_profile" translatable="false">वापरकर्ता प्रोफाइल</string>
+
+<string name="title_activity_identification" translatable="false">नवीन रुग्ण जोडा</string>
+<string name="identification_screen_prompt_first_name">पहिले नाव *</string>
+<string name="identification_screen_prompt_middle_name">मधले नाव</string>
+<string name="identification_screen_prompt_last_name">आडनाव *</string>
+<string name="identification_screen_prompt_address">पत्ता ओळ 1</string>
+<string name="identification_screen_prompt_address2">पत्ता ओळ 2</string>
+<string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
+<string name="admin_password_dialog_heading" translatable="false">प्रशासन संकेतशब्द भरा करा</string>
+<string name="identification_screen_prompt_gender" translatable="false">लिंग *</string>
+<string name="identification_screen_checkbox_male">पुरुष</string>
+<string name="identification_screen_checkbox_female">स्त्री</string>
+<string name="identification_screen_prompt_birthday">जन्म तारीख*</string>
+<string name="identification_screen_prompt_age">वय: *</string>
+<string name="identification_screen_prompt_time">वेळः</string>
+<string name="identification_screen_prompt_city">गाव / नगर / शहर *</string>
+<string name="identification_screen_prompt_state">राज्य *</string>
+<string name="identification_screen_prompt_caste" translatable="false">जाति</string>
+<string name="identification_screen_prompt_economic_status" translatable="false">आर्थिक स्थिति</string>
+<string name="identification_screen_prompt_education" translatable="false">शैक्षणिक पातळी</string>
+<string name="identification_screen_prompt_country" translatable="false">देश *</string>
+<string name="identification_screen_prompt_postal_code" translatable="false">पिनकोड</string>
+<string name="identification_screen_prompt_relationship" translatable="false">मुलगा / मुलगी / पत्नी</string>
+<string name="identification_screen_prompt_occupation" translatable="false">व्यवसाय</string>
+<string name="identification_screen_snack_patient_created" translatable="false">रुग्ण तयार केला! सर्व्हरवर अपलोड करत आहे.</string>
+<string name="identification_screen_error_data_fields" translatable="false"> त्रुटी: डेटा फील्ड योग्यरित्या स्वरूपित केलेली नाहीत</string>
+<string name="identification_screen_dialog_age" translatable="false">कृपया वर्षांमध्ये वय भरा</string>
+<string name="identification_screen_dialog_error_dob" translatable="false">आजच्या तारखेसाठी जन्मतारीख निश्चित केली आहे</string>
+<string name="identification_screen_dialog_error_gender" translatable="false">लिंग निवडलेले नाही</string>
+<string name="identification_screen_required_fields" translatable="false">कृपया आवश्यक फील्ड भरा</string>
+<string name="identification_screen_error_dob" translatable="false">वैध डीओबी भरा</string>
+<string name="identification_screen_error_age" translatable="false">वैध वय भरा</string>
+<string name="identification_screen_text_years" translatable="false">वर्ष</string>
+<string name="identification_screen_text_months" translatable="false">महिने</string>
+<string name="identification_screen_picker_years" translatable="false">वर्ष</string>
+<string name="identification_screen_picker_hours" translatable="false">तास</string>
+<string name="identification_screen_picker_months" translatable="false">महिने</string>
+<string name="identification_screen_picker_minute" translatable="false">मिनिट</string>
+<string name="title_activity_active_patient" translatable="false">सक्रिय भेटी</string>
+<string name="title_activity_get_patient_history" translatable="false">रुग्णांचा इतिहास</string>
+<string name="title_activity_search_patient" translatable="false">पेशंट लुकअप</string>
+<string name="title_activity_complaint_select" translatable="false">तक्रारी निवडा</string>
+<string name="title_activity_complaint_questions" translatable="false">सर्व प्रश्नांची उत्तरे द्या</string>
+<string name="title_activity_complaint_node">तक्रारी निवडा</string>
+<string name="complaint_category_selected" translatable="false">निवडलेल्या श्रेणी:</string>
+<string name="complaint_complaint_selected" translatable="false">निवडलेल्या तक्रारी:</string>
+<string name="complaint_dialog_title">भेटीचे कारण</string>
+<string name="complaint_required" translatable="false">तक्रार निवडणे आवश्यक आहे!</string>
+<string name="title_activity_question_node" translatable="false"> प्रश्ननोड क्रिया</string>
+<string name="complaint_change_selected" translatable="false">सुधारित करा</string>
+<string name="question_answer_all" translatable="false">आपली खात्री आहे की आपण सर्व प्रश्नांची उत्तरे दिली आहेत.</string>
+<string name="question_answer_all_phy_exam" translatable="false">कृपया सर्व सामान्य परीक्षांच्या प्रश्नांची उत्तरे द्या.</string>
+<string name="question_duration_picker" translatable="false">कृपया कालावधी भरा</string>
+<string name="question_text_input" translatable="false">कृपया मजकूर भरा</string>
+<string name="question_date_picker" translatable="false">कृपया तारीख निवडा</string>
+<string name="question_location_picker" translatable="false">कृपया स्थाने निवडा</string>
+<string name="question_number_picker" translatable="false">कृपया क्रमांक भरा</string>
+<string name="question_area_picker" translatable="false">कृपया क्षेत्र भरा (रुंदी X लांबी)</string>
+<string name="question_range_picker" translatable="false">कृपया एक श्रेणी भरा</string>
+<string name="question_frequency_picker" translatable="false">कृपया किती वेळा भरा</string>
+<string name="title_activity_vitals" translatable="false">महत्वपूर्ण</string>
+<string name="table_hw" translatable="false">शरीराची मोजमापं</string>
+<string name="table_height" translatable="false">उंची (सेमी)</string>
+<string name="table_weight" translatable="false">वजन (किलो)</string>
+<string name="table_bmi" translatable="false">बीएमआय</string>
+<string name="table_pulse" translatable="false">नाडी (बीपीएम)</string>
+<string name="table_bp" translatable="false">महत्वाची मोजमापं / चिन्हं</string>
+<string name="table_bpsys" translatable="false">बीपी सिस (mmHg)</string>
+<string name="table_bpdia" translatable="false">बीपी डाय (mmHg)</string>
+<string name="table_temp" translatable="false">तापमान (सी)</string>
+<string name="table_spo2" translatable="false">SpO2 (%)</string>
+<string name="weight_loss_alert_msg">तुमच्या उंचीनुसार तुमचे वजन कमी आहे.</string>
+<string name="weight_gain_alert_msg">तुमच्या उंचीनुसार तुमचे वजन जास्त आहे.</string>
+<string name="doctor_advice_alert_msg">तुम्हाला डॉक्टरांकडून दूरध्वनी वरून सल्ला घ्यायचा आहे का?</string>
+<string name="vital_alert_save_button">जतन करा</string>
+<string name="vital_alert_continue_button">होय, पुढे सुरू ठेवा</string>
+<string name="vital_alert_bp_dia_button">तुमचे डायस्टोलिक बीपी सामान्य नाही.</string>
+<string name="vital_alert_bp_sys_button">तुमचे सिस्टोलिक बीपी सामान्य नाही.</string>
+<string name="vital_alert_spo2_button">तुमचा SpO2 सामान्य नाही.</string>
+<string name="vital_alert_pulse_button">तुमची पल्स सामान्य नाही.</string>
+<string name="vital_alert_resp_button">तुमचा श्वसन दर सामान्य नाही.</string>
+<string name="vital_alert_temperature_button">तुमचे तापमान सामान्य नाही.</string>
+<string name="vital_alert_hgb_button">तुमचा HGB सामान्य नाही.</string>
+<string name="vital_alert_sugar_random_button">तुमची साखर यादृच्छिक पातळी सामान्य नाही.</string>
+<string name="vital_alert_sugar_fasting_button">तुमची साखर उपवास पातळी सामान्य नाही.</string>
+<string name="vital_alert_sugar_aftermeal_button">जेवणानंतर तुमची साखरेची पातळी सामान्य नाही.</string>
+<string name="vital_alert_required_field_button">सबमिट करण्यासाठी किमान एक माहिती प्रवेशित करणे आवश्यक आहे</string>
+<string name="search_hint" translatable="false">नावानुसार रूग्ण शोधण्यासाठी टाइप करा…</string>
+<string name="action_search" translatable="false">शोधा</string>
+<string name="alert_none_found" translatable="false">कृपया वापरकर्तानाव आणि संकेतशब्द भरा केलेला तपासा</string><string name="title_activity_patient_history" translatable="false">मागील वैद्यकीय इतिहास</string>
+<string name="title_activity_family_history" translatable="false">कौटुंबिक इतिहास</string>
+<string name="title_activity_physical_exam" translatable="false">शारीरिक परीक्षा</string>
+<string name="title_activity_patient_summary" translatable="false">भेट सारांश</string>
+<string name="visit_summary_temperature" translatable="false">तापमान (सी)</string>
+<string name="visit_summary_pulseox" translatable="false">एसपीओ 2 (%)</string>
+<string name="visit_summary_hw_on_duty" translatable="false">सीएचडब्ल्यू ऑन ड्यूटी</string>
+<string name="visit_summary_vitals_heading" translatable="false">महत्वपूर्ण</string>
+<string name="visit_summary_height_heading" translatable="false">उंची (सेमी)</string>
+<string name="visit_summary_weight" translatable="false">वजन (किलो)</string>
+<string name="visit_summary_bmi" translatable="false">बीएमआय</string>
+<string name="visit_summary_bp" translatable="false">बी.पी.</string>
+<string name="visit_summary_pulse" translatable="false">नाडी</string>
+<string name="visit_summary_previous_reports" translatable="false">मागील अहवाल</string>
+<string name="visit_summary_medical_history">वैद्यकीय इतिहास</string>
+<string name="visit_summary_family_history" translatable="false">कौटुंबिक इतिहास</string>
+<string name="visit_summary_on_examination" translatable="false">परीक्षेवर</string>
+<string name="visit_summary_complaint" translatable="false">भेटीचे कारण</string>
+<string name="visit_summary_vitals" translatable="false">महत्वपूर्ण</string>
+<string name="visit_summary_doctor_details" translatable="false">डॉक्टर तपशील</string>
+<string name="visit_summary_rx" translatable="false">लिहून दिलेली औषधे</string>
+<string name="visit_summary_diagnosis" translatable="false">निदान</string>
+<string name="visit_summary_advice" translatable="false">वैद्यकीय सल्ला</string>
+<string name="visit_summary_tests_prescribed" translatable="false">चाचण्या / संदर्भ</string>
+<string name="visit_summary_additional_comments" translatable="false">अतिरिक्त टिप्पण्या</string>
+<string name="visit_summary_heading_name" translatable="false">नाव</string>
+<string name="visit_summary_heading_id" translatable="false">आयडी</string>
+<string name="visit_summary_button_download" translatable="false">डाउनलोड करा</string>
+<string name="visit_summary_button_upload" translatable="false">अपलोड करा</string>
+<string name="name_button_download" translatable="false">बटण डाउनलोड</string>
+<string name="visit_summary_follow_up_date" translatable="false">पाठपुरावा तारीख</string>
+<string name="visit_summary_follow_up_reminder" translatable="false">कृपया रुग्णाला त्यांच्या पाठपुरावा तारखेची आठवण करून द्या:</string>
+<string name="visit_summary_upload_reminder" translatable="false">कृपया भेट समाप्त करण्याचा प्रयत्न करण्यापूर्वी प्रथम अपलोड करा.</string>
+<string name="title_activity_diagnostic_tests_list" translatable="false">निदान चाचणी निवडा</string>
+<string name="wash_hands">आपले हात धुण्यास लक्षात ठेवा</string>
+<string name="header_patient_detail" translatable="false">रुग्णांची माहिती</string>
+<string name="button_history" translatable="false">रुग्णांचा इतिहास</string>
+<string name="title_activity_patient_detail" translatable="false">रुग्ण तपशील</string>
+<string name="header_medical_history" translatable="false">इतिहास</string>
+<string name="button_new_visit" translatable="false">नवीन डॉक्टर सल्ला भेट सुरू करा</string>
+<string name="button_sevika_advice" translatable="false">नवीन सेविका सल्ला भेट सुरू करा</string>
+<string name="header_previous_visits" translatable="false">मागील भेटी</string>
+<string name="header_patient_history" translatable="false">वैद्यकीय इतिहास</string>
+<string name="header_family_history" translatable="false">कौटुंबिक इतिहास</string>
+<string name="string_no_hist" translatable="false">आजाराचा इतिहास नाही</string>
+<string name="row_patient_id" translatable="false">पेशंट आयडी</string>
+<string name="row_dob" translatable="false">डीओबी</string>
+<string name="row_age" translatable="false">वय</string>
+<string name="row_address">पत्ता</string>
+<string name="row_phone_number" translatable="false">फोन नंबर</string>
+<string name="row_open_visit" translatable="false">भेट देण्यासाठी उघडण्यासाठी क्लिक करा</string>
+<string name="title_activity_settings" translatable="false">सेटिंग्ज</string>
+
+<string name="pref_header_general" translatable="false">सामान्य</string>
+<string name="pref_title_social_recommendations" translatable="false">सामाजिक शिफारसी सक्षम करा</string>
+<string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact based on your message history</string>
+<string name="pref_title_display_name" translatable="false">प्रदर्शन नाव</string>
+<string name="pref_default_display_name" translatable="false">जॉन स्मिथ</string>
+
+<string name="pref_header_data_sync" translatable="false">डेटा आणि रीफ्रेश</string>
+<string name="pref_title_server_url" translatable="false">सर्व्हर URL</string>
+<string name="pref_title_id_prefix" translatable="false">स्थान उपसर्ग</string>
+
+<string name="pref_header_notifications" translatable="false">अधिसूचना</string>
+<string name="pref_title_new_message_notifications" translatable="false">नवीन संदेश सूचना</string>
+<string name="pref_title_ringtone" translatable="false">रिंगटोन</string>
+<string name="pref_ringtone_silent" translatable="false">मूक</string>
+<string name="pref_title_vibrate" translatable="false">कंपन</string>
+<string name="toast_crash" translatable="false">अनुप्रयोग त्रुटी आली</string>
+<string name="title_activity_setup" translatable="false">सेटअप</string>
+<string name="error_login_str" translatable="false">लॉगिन त्रुटी</string>
+<string name="enter_url_str" translatable="false">Url प्रविष्ट करा</string>
+<string name="title_activity_camera" translatable="false">कॅमेरा</string>
+<string name="title_activity_today_patient" translatable="false">आजची भेट</string>
+<string name="title_activity_additional_documents">अतिरिक्त कागदपत्रे</string>
+<string name="title_activity_video_library" translatable="false">व्हिडिओ लायब्ररी</string>
+<string name="visit_summary_patient_details" translatable="false">भेट द्या तपशील</string>
+
+<string name="setup_internet" translatable="false">सेटअपसाठी एक मजबूत इंटरनेट कनेक्शन आवश्यक आहे.</string>
+<string name="generic_manual_entry" translatable="false">व्यक्तिचलित प्रवेशिका</string>
+<string name="generic_erase_redo" translatable="false">पुसून टाका आणि पुन्हा करा</string>
+<string name="visit_summary_edit_vitals" translatable="false">आपण त्वचेच्या स्क्रीनवरून त्वचे पुन्हा करू शकता</string>
+<string name="permission_camera_rationale" translatable="false">कॅमेरा पूर्वावलोकन दर्शविण्यासाठी कॅमेरा परवानगी आवश्यक आहे.</string>
+<string name="permission_camera_denied" translatable="false">कॅमेर्‍याची परवानगी नाकारली गेली. कृपया कॅमेर्‍यावर प्रवेश करण्यासाठी हे मंजूर करण्याचा विचार करा!</string>
+<string name="permission_camera_never_askagain" translatable="false">पुन्हा कधीही विचारू नका सह कॅमेरा परवानगी नाकारली गेली.</string>
+<string name="button_allow" translatable="false">परवानगी द्या</string>
+<string name="button_deny" translatable="false">नकार द्या</string>
+<string name="button_ok" translatable="false">ठीक आहे</string>
+<string name="button_cancel" translatable="false">रद्द करा</string>
+<string name="picture_taken" translatable="false">चित्र घेतले</string>
+<string name="switch_flash" translatable="false">स्विच फ्लॅश</string>
+<string name="switch_camera" translatable="false">कॅमेरा स्विच करा</string>
+<string name="flash_auto" translatable="false">फ्लॅश ऑटो</string>
+<string name="flash_off" translatable="false">फ्लॅश बंद</string>
+<string name="flash_on" translatable="false">फ्लॅश चालू</string>
+<string name="permission_sms_rationale" translatable="false">एसएमएस पाठविण्यासाठी एसएमएस परवानगी आवश्यक आहे.</string>
+<string name="permission_sms_denied" translatable="false">एसएमएस परवानगी नाकारली गेली. कृपया अर्जातून एसएमएस पाठविण्यासाठी हे देण्याचा विचार करा!</string>
+<string name="permission_sms_never_askagain" translatable="false">पुन्हा कधीही विचारू नका सह एसएमएस परवानगी नाकारली गेली.</string>
+<string name="button_save" translatable="false">जतन करा</string>
+<string name="button_delete" translatable="false">हटवा</string>
+<string name="camera_dialog_default" translatable="false">कृपया चांगल्या प्रकाश परिस्थितीमध्ये फक्त दस्तऐवज फोटो क्लिक करा. जर कागदजत्र फोटो स्पष्ट नसेल तर कृपया दस्तऐवज फोटो पुन्हा घ्या.</string>
+<string name="offline_credentials_unavailable" translatable="false">ऑफलाइन लॉगिन उपलब्ध नाही.</string>
+<string name="offline_user_does_not_match" translatable="false">वापरकर्ता जुळत नाही.</string>
+<string name="offline_authentication_not_possible" translatable="false">ऑफलाइन प्रमाणीकरण करण्यात अक्षम.</string>
+<string name="admin_authentication_not_possible" translatable="false">प्रमाणीकृत करण्यात अक्षम.</string>
+<string name="login_location_select" translatable="false">स्थान निवडा</string>
+<string name="prompt_licensekey" translatable="false">लायसन्स की भरा</string>
+<string name="setup_use_demo_mindmap" translatable="false">डेमो प्रोटोकॉल वापरा</string>
+<string name="setup_download_mindmap" translatable="false">प्रोटोकॉल डाउनलोड करा</string>
+<string name="please_wait_progress" translatable="false">कृपया थांबा</string>
+<string name="downloading_protocols" translatable="false">प्रोटोकॉल डाउनलोड करीत आहे</string>
+<string name="logging_in" translatable="false">लॉग इन करत आहे</string>
+<string name="error_downloading_protocols" translatable="false">मनाचे नकाशे डाउनलोड करण्यात त्रुटी</string>
+<string name="sync_stopped" translatable="false">थांबलो</string>
+<string name="sync_in_progress" translatable="false">प्रगतीपथावर</string>
+<string name="sync_complete" translatable="false">पूर्ण</string>
+<string name="sync_error" translatable="false">त्रुटी: अशी कोणतीही स्थिती नाही</string>
+<string name="id_number" translatable="false">आयडी नंबर</string>
+<string name="uploading" translatable="false">अपलोड करीत आहे...</string>
+<string name="downloading" translatable="false">डाउनलोड करीत आहे ...</string>
+<string name="visit" translatable="false">भेट</string>
+<string name="visit_update" translatable="false">भेट द्या अद्यतन</string>
+<string name="patient">पेशंट</string>
+<string name="patient_update" translatable="false">पेशंट अपडेट</string>
+<string name="patient_images" translatable="false">रुग्ण प्रोफाइल प्रतिमा</string>
+<string name="visit_images" translatable="false">प्रतिमा भेट द्या</string>
+<string name="prescription" translatable="false">प्रिस्क्रिप्शन</string>
+<string name="error_no_data" translatable="false">कृपया भेट समाप्त करण्याचा प्रयत्न करण्यापूर्वी प्रथम डाउनलोड करा.</string>
+<string name="error_phone_number" translatable="false">फोन नंबर रिक्त असू शकत नाही</string>
+<string name="action_end_visit" translatable="false">भेट समाप्त</string>
+<string name="error_sms" translatable="false">एसएमएस अयशस्वी, कृपया नंतर पुन्हा प्रयत्न करा!</string>
+<string name="sms_success" translatable="false">एसएमएस पाठविला!</string>
+<string name="question_update_details" translatable="false">आपण तपशील अपडेट करू इच्छिता?</string>
+<string name="backup_completed" translatable="false">बॅकअप पूर्ण!</string>
+<string name="hide_text">लपवा</string>
+<string name="show_text">दाखवा</string>
+<string name="new_patient">नवीन पेशंट</string>
+<string name="find_patient">रुग्ण शोधा</string>
+<string name="video_library">व्हिडिओ लायब्ररी</string>
+<string name="error_no_sd" translatable="false">हे वैशिष्ट्य केवळ एसडी कार्ड असलेल्या डिव्हाइसवर उपलब्ध आहे.</string>
+<string name="error_admin_password" translatable="false">प्रशासन संकेतशब्द चुकीचा</string>
+<string name="error_no_file" translatable="false">या निर्देशिकेत कोणत्याही फायली नाहीत</string>
+<string name="error_no_camera" translatable="false">कोणताही कॅमेरा स्थापित केलेला नाही.</string>
+<string name="error_delete" translatable="false">हटविताना त्रुटी</string>
+<string name="error_offline_login" translatable="false">ऑफलाइन लॉगिन अयशस्वी</string>
+<string name="success_offline_login" translatable="false">ऑफलाइन लॉगिन यशस्वी</string>
+<string name="invalidate_offline_login" translatable="false">ऑफलाइन लॉगिन अवैध</string>
+<string name="patient_upload_error" translatable="false">पेशंट अपलोड झाला नाही</string>
+<string name="patient_not_registered" translatable="false">रुग्ण नोंदणीकृत नाही</string>
+<string name="action_sync_all" translatable="false">रीफ्रेश डेटा</string>
+<string name="weight_error" translatable="false">वजन %1$s किलोपेक्षा कमी असावे </string>
+<string name="height_error" translatable="false">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
+<string name="spo2_error" translatable="false">SpO2 %1$s आणि %2$s मध्‍ये असले पाहिजे</string>
+<string name="pulse_error" translatable="false">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
+<string name="bpsys_error" translatable="false">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
+<string name="bpdia_error" translatable="false">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
+<string name="resp_error" translatable="false">श्वसन दर %1$s आणि %2$s दरम्यान असावा</string>
+<string name="temp_error" translatable="false">तापमान %1$s आणि %2$s दरम्यान असले पाहिजे</string>
+<string name="not_provided">दिले नाही</string>
+<string name="exit_survey_label" translatable="false">तुमचा अनुभव कसा होता?</string>
+<string name="exit_survey_prompt" translatable="false">आपल्या टिप्पण्या येथे भरा</string>
+<string name="exit_survey_skip" translatable="false">वगळा</string>
+<string name="exit_survey_submit" translatable="false">प्रस्तुत करणे</string>
+<string name="exit_survey_toast">कृपया सबमिट करण्यापूर्वी हसू निवडा</string>
+<string name="db_backup_complete" translatable="false">डेटाबेस बॅकअप पूर्ण!</string>
+<string name="db_restore_complete" translatable="false">डेटाबेस पुनर्संचय पूर्ण!</string>
+<string name="cloud_upload_header" translatable="false">क्लाऊडवर डेटाबेस अपलोड करीत आहे</string>
+<string name="no_network" translatable="false">इंटरनेट कनेक्शन उपलब्ध नाही</string>
+<string name="no_data" translatable="false">बॅकअपसाठी कोणताही डेटा नाही!</string>
+<string name="local_backup_failed" translatable="false">स्थानिक बॅकअप उपलब्ध नाही</string>
+<string name="local_backup_restore" translatable="false">स्थानिक बॅकअप वरून पुनर्संचयित करीत आहे</string>
+<string name="cloud_restore_header" translatable="false">फॉर्म मेघ पुनर्संचयित करा</string>
+<string name="restore_data" translatable="false">डेटा पुनर्संचयित करीत आहे</string>
+<string name="error_existing_data" translatable="false">डेटाबेस मध्ये डेटा आहे, पुनर्संचयित करू शकत नाही!</string>
+<string name="cloud_download_data" translatable="false">मेघ वरून डेटाबेस डाउनलोड करीत आहे</string>
+<string name="force_restore_header" translatable="false">मेघ वरून डेटा पुनर्संचयित करणे (सक्ती)</string>
+<string name="database_upload" translatable="false">डेटाबेस अपलोड</string>
+<string name="database_uploading" translatable="false">डेटाबेस अपलोड करीत आहे</string>
+<string name="database_upload_complete" translatable="false">डेटाबेस अपलोड पूर्ण</string>
+<string name="database_upload_failed" translatable="false">डेटाबेस अपलोड अयशस्वी</string>
+<string name="db_backup_unavailable" translatable="false">डेटाबेस बॅकअप उपलब्ध नाही</string>
+<string name="db_file_write_error" translatable="false">बॅकअप फाइल लिहिताना त्रुटी</string>
+<string name="local_restore_alert_title" translatable="false">बॅकअप पुनर्संचयित</string>
+<string name="local_restore_alert_message" translatable="false">स्थानिक बॅकअप सापडला आहे. आपण पुनर्संचयित करू इच्छिता?</string>
+<string name="image_downloading_service_title" translatable="false">डाउनलोड करत आहे</string>
+<string name="image_downloading_service_message" translatable="false">प्रतिमा डेटा डाउनलोड करीत आहे</string>
+<string name="image_downloading_service_complete_title" translatable="false">प्रतिमा डेटा डाउनलोड पूर्ण</string>
+<string name="image_downloading_service_complete_message" translatable="false">सर्व प्रतिमा फायली डाउनलोड केल्या गेल्या आहेत</string>
+<string name="image_downloading_service_process_message" translatable="false">डाउनलोड केले</string>
+<string name="error_img_unavailable" translatable="false">प्रतिमा उपलब्ध नाही</string>
+<string name="error_img_download_failed" translatable="false">प्रतिमा डाउनलोड अयशस्वी</string>
+<string name="user_logged_in" translatable="false">आधीपासून लॉग इन केले!</string>
+<string name="user_logged_in_other_device" translatable="false">आधीपासून लॉग इन आहे. कृपया अन्य डिव्हाइसमधून लॉग आउट करा.</string>
+<string name="user_logged_out" translatable="false">सर्व्हरवरून लॉग आउट केले</string>
+<string name="user_login_check_success" translatable="false">लॉगिन यशस्वी!</string>
+<string name="user_login_error" translatable="false">दुसरा वापरकर्ता या ठिकाणी लॉग इन आहे. कृपया प्रशासकाशी संपर्क साधा</string>
+<string name="user_server_unreachable" translatable="false">डिव्हाइस ऑफलाइन. लॉगिन सत्यापनासाठी सर्व्हर तपासू शकत नाही</string>
+<string name="title_activity_splash_acticity" translatable="false">Splash Activity</string>
+<string name="title_activity_home" translatable="false">मुख्यपृष्ठ क्रियाकलाप</string>
+<string name="title_activity_sync" translatable="false">अ‍ॅक्टिव्हिटी रिफ्रेश</string>
+<string name="title_activity_privacy_notice" translatable="false">गोपनीयता सूचना</string>
+<string name="title_activity_visit_summary" translatable="false">भेटसुमरीअॅक्टिव्हिटी</string>
+<string name="title_activity_past_medical_history" translatable="false">पेस्टमेडिकलहिस्टोरीअॅक्टिव्हिटी</string>
+<string name="title_activity_patient_survey" translatable="false">पेशंटसुरव्हीएक्टिव्हिटी</string>
+<string name="privacy_toast">कृपया एक पर्याय निवडा</string>
+<string name="temperature_f">तापमान (℉)</string>
+<string name="sync_now">रीफ्रेश</string>
+<string name="lastsync">लास्टसिंक</string>
+<string name="enter_password">आपला संकेतशब्द भरा</string>
+<string name="enter_username">आपले वापरकर्तानाव भरा</string>
+<string name="patient_denies">रुग्ण नकार देतो</string>
+<string name="patient_reports">रुग्ण अहवाल</string>
+<string name="associated_symptoms">संबद्ध लक्षणे</string>
+<string name="enter_server_url">सर्व्हर URL भरा</string>
+<string name="enter_license_key"><b>लायसन्स की भरा</b></string>
+<string name="invalid_url">अवैध URL</string>
+<string name="years">वर्षे</string>
+<string name="months">महिने</string>
+<string name="please_wait_till_sync_is_completed">कृपया रीफ्रेश होईपर्यंत प्रतीक्षा करा</string>
+<string name="patient_name">रुग्णांचे नाव</string>
+<string name="son_daughter_wife_of">मुलगा / मुलगी / पत्नी</string>
+<string name="occupation">व्यवसाय</string>
+<string name="economic_status">आर्थिक स्थिती</string>
+<string name="education_level">शैक्षणिक पातळी</string>
+<string name="caste">जाती</string>
+<string name="previous_visits">मागील भेटी</string>
+<string name="accept">स्वीकारा</string>
+<string name="reject">नाकारणे</string>
+<string name="next">पुढे</string>
+<string name="which_server_would_you_like_to_connect_to">आपण कोणत्या सर्व्हरशी कनेक्ट होऊ इच्छिता?</string>
+<string name="enter_url">URL भरा</string>
+<string name="choose_a_location_to_login">लॉगिन करण्यासाठी एक स्थान निवडा</string>
+<string name="choose_an_option_for_protocols">प्रोटोकॉलसाठी एक पर्याय निवडा</string>
+<string name="please_enter_your_username_and_password">कृपया आपले युजर आयडी आणि पासवर्ड भरा</string>
+<string name="android_id">Android Id:</string>
+<string name="respiratory_rate">श्वसन दर (per minute)</string>
+<string name="click_to_download_the_images">प्रतिमा डाउनलोड करण्यासाठी क्लिक करा</string>
+<string name="doctor">डॉक्टर तपशील</string>
+<string name="health_worker">आरोग्य कर्मचारी</string>
+<string name="priority">प्राधान्य</string>
+<string name="server_url">सर्व्हर url</string>
+<string name="sync">रीफ्रेश</string>
+<string name="update_protocols">प्रोटोकॉल अपडेट करा</string>
+<string name="end_all_visit">सर्व भेट समाप्त करा</string>
+<string name="filter_by_creator">निर्मात्याद्वारे फिल्टर करा</string>
+<string name="planet_name">ग्रह नाव</string>
+<string name="ok">ठीक आहे</string>
+<string name="cancel">रद्द करा</string>
+<string name="unable_to_end">समाप्त करण्यास अक्षम</string>
+<string name="upload_before_end_visit_active">भेट द्या. कृपया भेट समाप्त करण्याचा प्रयत्न करण्यापूर्वी भेट अपलोड करा.</string>
+<string name="active">सक्रिय</string>
+<string name="closed">बंद</string>
+<string name="syncInProgress">रिफ्रेश होत आहे</string>
+<string name="please_wait">कृपया थांबा...</string>
+<string name="sync_notif_title">रीफ्रेश</string>
+<string name="sync_background_completed">रीफ्रेशबॅकग्राउंड पूर्ण</string>
+<string name="sync_not_available">रीफ्रेश उपलब्ध नाही</string>
+<string name="please_connect_to_internet">कृपया इंटरनेट कनेक्शनशी कनेक्ट व्हा!</string>
+<string name="image_upload">प्रतिमा अपलोड</string>
+<string name="image_upload_failed">इमेजअपलोड अयशस्वी</string>
+<string name="sure_to_exit">आपली खात्री आहे की आपण बाहेर पडू इच्छिता?</string>
+<string name="sure_to_logout">आपली खात्री आहे की आपण लॉगआउट करू इच्छिता?</string>
+<string name="lastsync_normal">शेवटचे रीफ्रेश</string>
+<string name="update_patient_identification">पेशंट अपडेट करा</string>
+<string name="are_you_want_go_back">आपण नक्की परत जाऊ इच्छिता?</string>
+<string name="error">त्रुटी</string>
+<string name="patient_data_upload">रुग्ण डेटा अपलोड</string>
+<string name="patient_image_download_notifi">रुग्णांची प्रतिमा डाउनलोड</string>
+<string name="image_download_complete_notifi">चे प्रतिमा डाउनलोड पूर्ण.</string>
+<string name="no_prior_visits">पूर्वीची भेट नाही.</string>
+<string name="end_visit_notif">भेट समाप्त करा</string>
+<string name="visit_ended_notif">भेट संपली</string>
+<string name="this_question_only_one_answer">या प्रश्नाचे एकच उत्तर असू शकते.</string>
+<string name="uploading_to_doctor_notif">डॉक्टरकडे अपलोड करत आहे.</string>
+<string name="visit_data_upload">भेट डेटा अपलोड करा</string>
+<string name="uploading_visit_data_notif">भेट डेटा अपलोड करीत आहे</string>
+<string name="uploaded_visit_data_notif">अपलोड केलेला डेटा</string>
+<string name="failed_to_upload">अपलोड करण्यात अयशस्वी</string>
+<string name="upload_completed">अपलोड पूर्ण झाले</string>
+<string name="check_your_connectivity">आपली कनेक्टिव्हिटी तपासा</string>
+<string name="download_from_doctor">डॉक्टरांकडून डाउनलोड करा</string>
+<string name="prescription_downloaded">प्रिस्क्रिप्शन डाउनलोड केले</string>
+<string name="downloading_prescription">प्रिस्क्रिप्शन डाउनलोड करीत आहे</string>
+<string name="visit_data_failed">भेट डेटा अपलोड करण्यात अयशस्वी</string>
+<string name="patient_data_failed">रुग्ण डेटा अपलोड करण्यात अयशस्वी</string>
+<string name="privacy_notice_title">गोपनीयता सूचना</string>
+<string name="no_data_active_patients">या आरोग्य कर्मचा .्याची कोणतीही रुग्ण नोंद आढळली नाही.</string>
+<string name="syncing_visitDialog">रीफ्रेश</string>
+<string name="successfully_synced_notif">यशस्वीरित्या रीफ्रेश</string>
+<string name="languages">भाषा</string>
+<string name="current_language">सद्य भाषा</string>
+<string name="protocols_downloaded_successfully">प्रोटोकॉल यशस्वीरित्या डाउनलोड केले!</string>
+<string name="no_protocols_found">कोणतेही प्रोटोकॉल आढळले नाहीत</string>
+<string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करताना समस्या आली, कृपया सिस्टम प्रशासकाशी संपर्क साधा</string>
+<string name="last_synced">अंतिम रीफ्रेश -</string>
+<string name="today_visits">आजची भेट</string>
+<string name="active_visits">सक्रिय भेटी</string>
+<string name="day">दिवस</string>
+<string name="hour">तास</string>
+<string name="minute">मिनिट</string>
+<string name="s"></string>
+<string name="ago">पूर्वी</string>
+<string name="successfully_synced">यशस्वीरित्या रीफ्रेश झाले</string>
+<string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
+<string name="visit_not_uploaded">भेटीची माहिती अपलोड झाली नाही</string>
+<string name="upload_started">अपलोड करीत आहे ...</string>
+<string name="visit_uploaded_successfully">भेटीची माहिती यशस्वीरित्या अपलोड केली आहे</string>
+<string name="visit_uploaded_failed">इंटरनेट उपलब्ध असेल तेव्हा अपलोड केले जाईल</string>
+<string name="visitID">भेट क्रमांक</string>
+<string name="end_visit_msg">आपली खात्री आहे की आपण भेट समाप्त करू इच्छिता?</string>
+<string name="prescription_not_downloaded_check_internet">प्रिस्क्रिप्शन डाउनलोड केलेले नाही, इंटरनेट कनेक्शन तपासा</string>
+<string name="privacy_reject_toast">आपण संमतीशिवाय रुग्णाची नोंदणी करू शकत नाही</string>
+<string name="not_answered">उत्तर दिले नाही</string>
+<string name="new_update_available">नवीन अद्यतन उपलब्ध</string>
+<string name="update_app_note">नवीन वैशिष्ट्यांसह नवीन आवृत्ती उपलब्ध आहे कृपया अनुप्रयोग अपडेट करा</string>
+<string name="update">\अपडेट करा</string>
+<string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हॅलो, इंटेलहेल्थ वापरल्याबद्दल धन्यवाद. तुमचे प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा"</string>
+<string name="and_enter_your_patient_id">"आणि तुमचा पेशंट आयडी क्रमांक भरा -"</string>
+    <!--New Ayu Related Changes-->
+<string name="what_is_the_reason_for_your_visit">आपल्या भेटीचे कारण काय आहे?</string>
+<string name="swipe_down_to_return">पुढील साठी मागील / अप खाली स्वाइप करा</string>
+<string name="swipe_up">पुढील साठी स्वाइप करा</string>
+<string name="swipe_down">मागील साठी खाली स्वाइप करा</string>
+<string name="have_symptom">आपल्याकडे हे लक्षण आहे?</string>
+    <!--New UI changes 2.1-->
+<string name="personal_information">वैयक्तिक माहिती</string>
+<string name="address_details">पत्ता तपशील</string>
+<string name="txt_others">इतर</string>
+<string name="do_you_need_help_please_contact_us">तुम्हाला मदत हवी आहे का? कृपया आमच्याशी संपर्क साधा!</string>
+<string name="whatsapp_helpline">व्हॉट्सअ‍ॅप हेल्पलाइन</string>
+<string name="Whatsapp_Help_Cardview">मदत</string>
+<string name="skip">वगळा</string>
+<string name="start">प्रारंभ करा</string>
+<string name="who_is_this_napplication_for">हे app अप्लिकेशन कोणासाठी आहे?</string>
+<string name="custom_setup">सेटअप</string>
+<string name="demo_version">डेमो आवृत्ती</string>
+<string name="sample_text">नमुना मजकूर</string>
+<string name="test_2_vibha_onplus_6t_10fke_7">चाचणी 2 विभा ऑनप्लस 6 टी, 10 एफकेई -7</string>
+<string name="age_11_years_5_months">वय: 11 वर्षे, 5 महिने</string>
+<string name="active_defaultTag">सक्रिय</string>
+<string name="since_when_have_you_had_this_symptom">आपल्याला हे लक्षण कधीपासून आहे?</string>
+<string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">हॅलो\n\n मी आययू, डिजिटल आरोग्य सहाय्यक. चला सुरू करुया!</string>
+<string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">हॅलो\n\n मी आययू, डिजिटल आरोग्य सहाय्यक. चला सुरू करुया!</string>
+<string name="hello_my_name_is">"नमस्कार, माझे नाव आहे "</string>
+<string name="i_need_assistance">"आणि मला काही मदत हवी आहे."</string>
+<string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
+<string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
+<string name="intelehealth_a_telemedicine_platform">आरोग्य संपदा हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+<string name="intelehealth_name">आरोग्य संपदा</string>
+<string name="Ayu_name">आयु</string>
+<string name="close_button">बंद</string>
+<string name="active_tag_patientDetail">सक्रिय</string>
+<string name="associated_symptoms_patientDetail">संबद्ध लक्षणे</string>
+<string name="device_ID">डिव्हाइस आयडी:</string>
+<string name="enter_valid_license_url">वैध परवाना url भरा</string>
+<string name="please_enter_url_and_key">कृपया URL आणि की भरा</string>
+<string name="please_enter_valid_license_key">कृपया एक वैध परवाना संकेतांक  भरा</string>
+<string name="permission_denied">परवानगी नाकारली \ n</string>
+<string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
+<string name="current_time"><![CDATA[\"वर्तमान वेळ => \"]]></string>
+<string name="temperature_C">"तापमान(C):"</string>
+<string name="temperature_F">तापमान (℉)</string>
+<string name="no_history_family_found">कुटुंबातील आजाराचा कोणताही इतिहास प्रदान केलेला नाही.</string>
+<string name="no_history_patient_illness_found">रूग्णाच्या आजाराचा कोणताही इतिहास दिलेला नाही.</string>
+<string name="dr_registration_no">नॊदणी क्रमांक:</string>
+<string name="dr_phone_number">फोन नंबर:</string>
+<string name="dr_email">ईमेल:</string>
+<string name="_visit_summary">भेट सारांश</string>
+<string name="patient_id_">पेशंट आयडी:</string>
+<string name="patient_name_title">रुग्णाचे नाव:</string>
+<string name="patient_DOB">रुग्ण डीओबी:</string>
+<string name="error_non_decimal_no_added">त्रुटी: दशांश नसलेला क्रमांक भरा.</string>
+<string name="download_protocols">प्रोटोकॉल डाउनलोड करीत आहे</string>
+<string name="mindmap_internect_connection">मायन्डमॅप्स डाउनलोड करण्यासाठी आपल्याला इंटरनेट कनेक्टिव्हिटीची आवश्यकता आहे, कृपया आपले इंटरनेट चालू करा</string>
+<string name="days">दिवस</string>
+<string name="contact">संपर्क</string>
+<string name="has_a_new_prescription">नवीन प्रिस्क्रिप्शन आहे</string>
+<string name="whatsapp_presc_toast">फाईल एक्सप्लोररकडून प्रिस्क्रिप्शन पीडीएफ निवडा - अंतर्गत स्टोरेज / एकलआरोग्य_पीडीएफ</string>
+<string name="enter_mobile_number_to_share_prescription">आपण प्रिस्क्रिप्शन सामायिक करू इच्छित मोबाइल नंबर भरा.</string>
+<string name="share">सामायिक करा</string>
+<string name="please_enter_mobile_number">कृपया मोबाइल नंबर भरा</string>
+<string name="download_prescription_first_before_sharing">सामायिक करण्यापूर्वी प्रिस्क्रिप्शन डाउनलोड करा</string>
+<string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* मी, आरोग्य कर्मचारी, खात्री देते की मी रुग्णाला/ माहिती देणाऱ्याला गोपनीयतेची सूचना आणि संमती फॉर्म वाचून दाखवला आहे</string>
+<string name="enter_10_digits">10 अंक भरा</string>
+<string name="please_read_out_privacy_consent_first">कृपया प्रथम गोपनीयता संमती वाचा.</string>
+<string name="view_print">पहा / मुद्रित करा</string>
+<string name="refresh">रीफ्रेश</string>
+<string name="family_member">कुटुंब सदस्य</string>
+<string name="no_family_member_registered">कुटुंबातील कोणत्याही सदस्याने नोंदणी केली नाही</string>
+<string name="document_">"रिपोर्ट/कागदपत्रे -"</string>
+<string name="gender">लिंग</string>
+<string name="are_you_head_of_the_family">आपण कुटुंब प्रमुख आहात?</string>
+<string name="what_is_your_occupation">काय काम करतात?*</string>
+<string name="do_you_have_a_bank_account">आपल्याकडे बँक खाते आहे? *</string>
+<string name="what_kind_of_mobile_phone_do_you_personally_own">आपल्याकडे वैयक्तिकरित्या कोणत्या प्रकारचा मोबाइल फोन आहे? *</string>
+<string name="phone_ownership">फोन मालकी</string>
+<string name="do_you_or_any_of_your_family_member_use_whatsapp">आपण किंवा तुमच्या कुटुंबातील कोणी व्हॉट्सअ‍ॅप वापरत आहात? *</string>
+<string name="total_number_of_members_in_the_household">कुटुंबातील एकूण सदस्यांची संख्या *</string>
+<string name="enter_number">क्रमांक भरा</string>
+<string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">सामान्यत: किती सदस्य आपल्या घरात राहतात किंवा आता आपल्याबरोबर राहत आहेत *</string>
+<string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">आपल्या घराच्या सदस्यांसाठी पिण्याच्या पाण्याचा मुख्य स्त्रोत काय आहे?*</string>
+<string name="what_do_you_do_to_make_drinking_water_safer">पिण्याचे पाणी अधिक सुरक्षित करण्यासाठी आपण काय करता? *</string>
+<string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">तेथे जाण्यासाठी, पाणी मिळविण्यासाठी आणि एका सहलीमध्ये परत येण्यास किती वेळ लागेल? *</string>
+<string name="declined">उत्तर देण्यास नकार दिला</string>
+<string name="enter_time">वेळ भरा</string>
+<string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">मागील दोन आठवड्यांत, या स्त्रोताचे पाणी कमीतकमी एक दिवसभर उपलब्ध नव्हते काय? *</string>
+<string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">आपल्या घरातील सदस्य सहसा कोणत्या प्रकारची शौचालय सुविधा वापरतात? *</string>
+<string name="select_the_structure_of_house">घराची रचना निवडा *</string>
+<string name="how_much_hectars_of_cultivable_land_your_family_owns">आपल्या कुटुंबाची किती हेक्टर शेती योग्य आहे? *</string>
+<string name="enter_answer">उत्तर भरा</string>
+<string name="enter_occupation">व्यवसाय भरा</string>
+<string name="select">निवडा</string>
+<string name="Minute">मिनिट</string>
+<string name="Hours">तास</string>
+<string name="Days">दिवस</string>
+<string name="Weeks">आठवडे</string>
+<string name="Months">महिने</string>
+<string name="Years">वर्षे</string>
+<string name="image_saved">प्रतिमा यशस्वीरित्या जतन केली!</string>
+<string name="emergency_confirmation">आपण ही भेट तात्काळ म्हणून सेट करू इच्छिता?</string>
+<string name="per_Hour">प्रती तास</string>
+<string name="per_Day">प्रती दिन</string>
+<string name="per_Week">प्रति आठवडा</string>
+<string name="per_Month">दर महिन्याला</string>
+<string name="per_Year">दर वर्षी</string>
+<string name="failed_initial_synced">रीफ्रेश करण्यात अयशस्वी, आपले इंटरनेट कनेक्शन तपासा. कृपया अॅप रीस्टार्ट करा.</string>
+<string name="something_went_wrong">काहीतरी चूक झाली. कृपया समर्थनाशी संपर्क साधा</string>
+<string name="have_you_taken_a_covid_vaccine">तुम्ही कोविडची लस घेतली आहे का?*</string>
+<string name="select_option_vaccination_dialog">लसीकरणासाठी पर्याय निवडा</string>
+<string name="warning_app_update">कृपया अॅप नवीनतम आवृत्तीवर अपडेट करा.</string>
+<string name="identification_screen_prompt_village">गाव*</string>
+<string name="blood_grp"> रक्त गट:</string>
+<string name="visit_summary_hemoglobin" translatable="false">एचजीबी</string>
+<string name="visit_summary_sugar" translatable="false">साखरेची पातळी (यादृच्छिक)</string>
+<string name="visit_summary_sugarfast" translatable="false">साखरेची पातळी (उपवास/जेवणानंतर)</string>
+<string name="visit_summary_blood" translatable="false">रक्त गट</string>
+<string name="hemoglobin_error" translatable="false">हिमोग्लोबिन %1$s आणि %2$s च्या दरम्यान असावे</string>
+<string name="sugar_error" translatable="false">साखरेची पातळी %1$s आणि %2$s दरम्यान असावी</string>
+<string name="blood_error" translatable="false">कृपया रक्तगट निवडा</string>
+<string name="table_sugar_fasting" translatable="false">रक्तातील साखरेची पातळी (आहार सेवना पूर्वी)</string>
+<string name="table_sugar_aftermeal" translatable="false">रक्तातील साखरेची पातळी (जेवणानंतर)</string>
+<string name="table_hemoglobin" translatable="false">हिमोग्लोबिन</string>
+<string name="table_bld_grp" translatable="false">रक्त गट</string>
+<string name="table_sugar_level" translatable="false">रक्तातील साखरेची पातळी -mg/dL(यादृच्छिक)</string>
+<string name="hw_totalpatient_str" translatable="false">भेट सुरु केली</string>
+<string name="hw_completeconsultation_str" translatable="false">वैद्यकीय सल्ला प्राप्त झाला</string>
+<string name="hw_visitprogress_str" translatable="false">भेट सुरु आहे</string>
+<string name="hw_personal_info_str" translatable="false">वैयक्तिक माहिती</string>
+<string name="hw_state_str" translatable="false">राज्य</string>
+<string name="hw_mobile_str" translatable="false">मोबाईल</string>
+<string name="hw_whatsapp_str" translatable="false">व्हॉट्सअॅप</string>
+<string name="hw_email_str" translatable="false">ईमेल</string>
+<string name="start_newvisit_confirmation_msg">तुम्ही नक्की डॉक्टरांचा सल्ला सुरू करू इच्छिता?</string>
+<string name="prescription_notprovided_msg">डॉक्टरांनी प्रिस्क्रिप्शन दिलेले नाही. कृपया भेट संपण्यासाठी प्रिस्क्रिप्शनची प्रतीक्षा करा.</string>
+<string name="start_newadvice_confirmation_msg">तुम्ही नक्की सेविका सल्ला सुरू करू इच्छिता?</string>
+<string name="choose_lang_title">तुमची भाषा निवडा</string>
+<string name="save_button">जतन करा</string>
+<string name="setup_select_state_str">राज्य निवडा</string>
+<string name="setup_select_dropdown_state_msg">ड्रॉपडाउनमधून राज्य निवडा</string>
+<string name="setup_select_district_str">जिल्हा निवडा</string>
+<string name="setup_select_dropdown_district_msg">ड्रॉपडाउनमधून जिल्हा निवडा</string>
+<string name="setup_select_sanch_str">संच निवडा</string>
+<string name="setup_select_dropdown_sanch_msg">ड्रॉपडाउनमधून संच निवडा</string>
+<string name="setup_select_village_str">गाव निवडा</string>
+<string name="setup_select_dropdown_village_msg">ड्रॉपडाउनमधून गाव निवडा</string>
+<string name="visit_closed">भेट समाप्त</string>
+<string name="gender_male">पुरुष</string>
+<string name="gender_female">महिला</string>
+<string name="loading_more">अधिक लोड करत आहे...</string>
+<string name="take_photo">फोटो काधा</string>
+<string name="choose_from_gallery">गॅलरीमधून निवडा</string>
+<string name="hw_profile_image_picker_title">आरोग्य कर्मचारी प्रोफाइल प्रतिमा!</string>
+<string name="hw_qualification_hint">शैक्षणिक पात्रता</string>
+<string name="hw_aboutme_hint">माझ्याबद्दल</string>
+<string name="chat_fab">चॅट फॅब</string>
+<string name="notification_title">रिअलटाइम सिंक चालू आहे!</string>
+    <!--APPOINTMENT Module strings START -->
+<string name="book_appointment">भेट नोंदवा</string>
+<string name="reschedule_appointment">अपॉइंटमेंट पुन्हा शेड्यूल करा</string>
+<string name="appointment_booking_confirmation_txt">तुम्ही हा स्लॉट बुक करणार आहात का?</string>
+<string name="appointment_booking_cancel_confirmation_txt">तुम्हाला भेट रद्द करण्याची खात्री आहे का?</string>
+<string name="cancel_appointment">अपॉइंटमेंट रद्द करा</string>
+<string name="slot_empty_message">निवडलेल्या तारखेसाठी आणि विशेषतेसाठी अपॉइंटमेंट स्लॉट उपलब्ध नाही!</string>
+<string name="appointment_empty_message">तुमच्याकडे कोणतीही भेट नोंदलेली नाही!</string>
+<string name="appointment_listing_title">अपॉइंटमेंट सूची</string>
+<string name="appointment_booking_title">अपॉइंटमेंट बुकिंग</string>
+<string name="appointment_for"> साठी भेट</string>
+<string name="please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट निवडा</string>
+<string name="please_select_speciality">कृपया स्पेशॅलिटी निवडा!</string>
+<string name="speciality_str">वैद्यक चिकित्सा प्रकार (स्पेशॅलिटी)</string>
+<string name="doctor_appointments">डॉक्टर अपॉइंटमेंट्स</string>
+<string name="slot_info">स्लॉट माहिती</string>
+<string name="appointment_booked">अपॉइंटमेंट बुक केली आहे</string>
+<string name="minutes_txt">मिनिटे</string>
+<string name="booked_txt">बुक केले</string>
+<string name="cancelled_txt">रद्द केले</string>
+<string name="please_upload_visit">कृपया भेटीची बुकिंग करण्यापूर्वी प्रथम भेट अपलोड करा.</string>
+<string name="appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
+<string name="appointment_booked_failed">अपॉइंटमेंट बुक करण्यात अयशस्वी!</string>
+<string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करण्यात अयशस्वी!</string>
+<string name="appointment_cancelled_success_txt">अपॉइंटमेंट यशस्वीरित्या रद्द करण्यात आली!</string>
+<string name="please_select_your_reschedule_reason">कृपया तुमचे रीशेड्यूल कारण निवडा</string>
+<string name="please_select_your_cancel_reason">कृपया तुमचे रद्द करण्याचे कारण निवडा</string>
+<string name="doctor_is_not_available">डॉक्टर उपलब्ध नाहीत</string>
+<string name="patient_is_not_available">पेशंट उपलब्ध नाही</string>
+<string name="others">इतर</string>
+<string name="please_enter_the_reason_details">कृपया कारण तपशील प्रविष्ट करा</string>
+<string name="save_amp_proceed"><![CDATA[जतन करा आणि पुढे जा]]></string>
+<string name="please_enter_reason_txt">कृपया कारण प्रविष्ट करा!</string>
+    <!--END APPOINTMENT-->
+    <!--    SURVEY STRINGS - START-->
+<string name="household_structure_type">घराच्या रचनेचा प्रकार*</string>
+<string name="kucha">कच्चे</string>
+<string name="pucca">पक्के</string>
+<string name="name_of_head_of_household">कुंटूब प्रमुखांचे नाव</string>
+<string name="religion">धर्म</string>
+<string name="hindu">हिंदू</string>
+<string name="muslim">मुसलमान</string>
+<string name="christian">ख्रिश्चन</string>
+<string name="sikh">शीख</string>
+<string name="buddhist_neo_buddhist">बौद्ध किंवा नव-बौद्ध</string>
+<string name="jain">जैन</string>
+<string name="jewish">ज्यू</string>
+<string name="parsi_zoroastrian">पारशी किंवा पारशी</string>
+<string name="no_religion">धर्म नाही</string>
+<string name="schedule_caste">अनुसूचित जाती</string>
+<string name="schedule_tribe">अनुसूचित जमाती</string>
+<string name="survey_other_backward_caste">इतर मागास जाती (OBC)</string>
+<string name="survey_general">सामान्य</string>
+<string name="number_of_smartphones_in_the_house">घरातील स्मार्टफोनची संख्या</string>
+<string name="number_of_feature_phones_in_the_house">घरातील साधारण (फीचर) फोनची संख्या</string>
+<string name="no_of_earning_members_in_the_household">घरातील कमावत्या सदस्यांची संख्या</string>
+<string name="primary_source_of_income">उत्पन्नाचा प्राथमिक स्त्रोत</string>
+<string name="sale_of_cereal_production">अन्नधान्य उत्पादन (गहू, मका, बार्ली), नगदी  पिके (कापूस, ऊस, जूट), किंवा भाज्या आणि फळे विक्री</string>
+<string name="sale_of_animals_or_animal_products">प्राणी / प्राणी उत्पादने विक्री</string>
+<string name="agricultural_wage_labor_employed_for_farm_work">शेतमजुरी</string>
+<string name="salaried_worker_fixed_monthly_salary">पगारदार कर्मचारी (निश्चित मासिक वेतन) - सरकार, खाजगी, इ.</string>
+<string name="self_employed_non_agricultural_petty_business">स्वयंरोजगार (बिगर शेती/ किरकोळ व्यवसाय)</string>
+<string name="daily_labor_unskilled_work_agricultural_non_agricultural">दैनंदिन मजूर (अकुशल काम - कृषी, कृषी सोडून इतर)</string>
+<string name="nrega">रोजगार हमी योजना/ नरेगा</string>
+<string name="seasonal_labor">हंगामी श्रम</string>
+<string name="no_paid_work">कोणतेही सशुल्क काम नाही</string>
+<string name="pension">पेंशन</string>
+<string name="remittances_checkbox">प्रेषण</string>
+<string name="other_source_of_income_please_specify">उत्पन्नाचे इतर स्त्रोत (कृपया निर्दिष्ट करा)</string>
+<string name="survey_yes">होय</string>
+<string name="survey_no">नाही</string>
+<string name="does_the_house_have_electricity">घरात वीज आहे का?</string>
+<string name="no_of_hours_per_day">दररोज तासांची संख्या</string>
+<string name="no_of_days_per_week">दर आठवड्याला दिवसांची संख्या</string>
+<string name="load_shedding">लोडशेडिंग</string>
+<string name="is_there_a_toilet_in_the_house">घरात शौचालय आहे का?</string>
+<string name="is_there_running_water_available_in_the_house">घरात वाहते पाणी उपलब्ध आहे का? (नळ/ पाईप द्वारे)?</string>
+<string name="availability_of_water_supply">पाणी पुरवठ्याची उपलब्धता</string>
+<string name="does_the_household_have_a_bank_account">कुटुंबाचे बँक खाते आहे का?</string>
+<string name="amount_of_cultivable_land_owned_by_the_household">कुटुंबाच्या मालकीच्या शेतीयोग्य जमिनीचे प्रमाण</string>
+<string name="zero_one">० - १</string>
+<string name="one_two">१ - २</string>
+<string name="two_five">२ - ५</string>
+<string name="five_ten">५ - १०</string>
+<string name="more_than_10">10 पेक्षा जास्त</string>
+<string name="units">युनिट्स (उदा: mg)</string>
+<string name="bigha">बिघा</string>
+<string name="acre">एकर</string>
+<string name="gunta">गुंठा</string>
+<string name="hectare">हेक्टर</string>
+<string name="average_annual_household_income">घरातील सरासरी वार्षिक उत्पन्न/मिळकत</string>
+<string name="zero_thirty_thousand">0 – 30,000</string>
+<string name="thirty_fifty_thousand">30,000 – 50,000</string>
+<string name="fifty_thousand_one_lakh">50,000 – 1,00,000</string>
+<string name="one_lakh_two_lakh_fifty_thousand">1,00,000 – 2,50,000</string>
+<string name="more_than_two_lakh_fifty_thousand">2,50,000 पेक्षा जास्त</string>
+<string name="average_expenditure_on_health">आरोग्यावर सरासरी खर्च</string>
+<string name="zero_three_thousand">0 - 3,000</string>
+<string name="one_three_thousand">1 - 3,000</string>
+<string name="three_five_thousand">3,000 - 5,000</string>
+<string name="five_ten_thousand">5,000 – 10,000</string>
+<string name="ten_twenty_five_thousand">10,000 - 25,000</string>
+<string name="more_than_twenty_five_thousand">25,000 पेक्षा जास्त</string>
+<string name="average_expenditure_on_education">शिक्षणावरील वार्षिक खर्च</string>
+<string name="prev">मागे</string>
+<string name="distance_to_sub_centre_in_walking_time">उपकेंद्रापर्यंतचे अंतर (केंद्रापर्यंत चालत जाण्यासाठी लागणारा वेळ)</string>
+<string name="within_5_minutes">5 मिनिटांत</string>
+<string name="five_fifteen_minutes">5 – 15 मिनिटे</string>
+<string name="fifteen_thirty_minutes">15 – 30 मिनिटे</string>
+<string name="more_than_thirty_minutes">30 मिनिटांपेक्षा जास्त</string>
+<string name="within_1_km">1 किलोमीटर आत</string>
+<string name="one_three_km">1-3 किमी</string>
+<string name="three_five_km">3 - 5 किमी</string>
+<string name="more_than_five_km">5 किमी पेक्षा जास्त</string>
+<string name="distance_to_nearest_primary_health_centers">जवळच्या प्राथमिक आरोग्य केंद्रापासून अंतर (KMS मध्ये)*</string>
+<string name="distance_to_nearest_community_health_centre_in_walking_time">जवळच्या सामुदायिक आरोग्य केंद्रापासून अंतर*</string>
+<string name="within_3_km">3 किलोमीटर अंतरावर</string>
+<string name="three_six_km">3 - 6 किमी</string>
+<string name="more_than_10km">10 किमी पेक्षा जास्त</string>
+<string name="distance_to_nearest_district_hospital">जवळच्या जिल्हा रुग्णालयापर्यंतचे अंतर</string>
+<string name="six_ten_km">6 - 10 किमी</string>
+<string name="within_5_km">५ किमीच्या आत</string>
+<string name="five_ten_km">5 - 10 किमी</string>
+<string name="ten_twenty_km">10 - 20 किमी</string>
+<string name="twenty_thirty_km">20 - 30 किमी</string>
+<string name="more_than_thirty_km">30 किमी पेक्षा जास्त</string>
+<string name="distance_to_the_nearest_medical_store">जवळच्या मेडिकल स्टोअरचे अंतर*</string>
+<string name="distance_to_the_nearest_pathological_lab">जवळच्या पॅथॉलॉजिकल लॅबचे अंतर*</string>
+<string name="distance_to_the_nearest_private_clinic_with_mbbs_doctor">जवळच्या खाजगी दवाखान्याचे अंतर (एमबीबीएस डॉक्टरसह)*</string>
+<string name="distance_to_the_nearest_private_clinic_with_alternate_medical">जवळच्या खाजगी दवाखान्याचे अंतर (पर्यायी वैद्यकीय व्यावसायिकांसह - BAMS, BHMS, आयुर्वेद इ.)*</string>
+<string name="does_any_member_of_the_household_have_a_bank_account_or_post_office_account">या घरातील कोणत्याही सदस्याचे बँक खाते किंवा पोस्ट ऑफिस खाते आहे का?</string>
+<string name="do_not_know">माहित नाही</string>
+<string name="does_this_household_have_a_bpl_card_coupon">या घरात बीपीएल कार्ड / कूपन आहे का?</string>
+<string name="yes_card_seen">होय, कार्ड पाहिले</string>
+<string name="yes_card_not_seen">होय, कार्ड पाहिले नाही</string>
+<string name="no_card">कोणतेही कार्ड नाही</string>
+<string name="does_this_household_have_an_antodaya_card_coupon">या कुटुंबाकडे अंतोदय कार्ड/कूपन आहे का?</string>
+<string name="does_this_household_have_a_rsby_card_coupon">या कुटुंबाकडे राष्ट्रीय आरोग्य विमा योजना (RSBY) कार्ड आहे का?</string>
+<string name="does_this_household_have_a_mgnrega_card_coupon">या कुटुंबाकडे मनरेगा कार्ड आहे का?*</string>
+<string name="submit">सबमिट करा</string>
+<string name="what_type_of_fuel_does_your_household_mainly_use_for_cooking">मुख्यतः स्वयंपाक करण्यासाठी वापरले जाणारे इंधन</string>
+<string name="electricity">वीज</string>
+<string name="lpg_natural_gas">एलपीजी / नैसर्गिक वायू</string>
+<string name="biogas_checkbox">बायोगॅस</string>
+<string name="kerosene">केरोसिन</string>
+<string name="coal_lignite">कोळसा / लिग्नाइट</string>
+<string name="wood">लाकूड</string>
+<string name="charcoal">चारकोल</string>
+<string name="straw_shrubs_grass">पेंढा / पाला - पाचोळा, झुडुपे  / गवत</string>
+<string name="agricultural_crop_waste">कृषी पीक कचरा</string>
+<string name="dung_cakes">गवऱ्या</string>
+<string name="other_specify">इतर (स्पष्ट करा)</string>
+<string name="what_is_the_main_source_of_lighting_in_this_household">या घरात प्रकाशाचा मुख्य स्त्रोत काय आहे?</string>
+<string name="lantern">कंदील</string>
+<string name="kerosene_lamp">केरोसिन दिवा</string>
+<string name="candle">मेणबत्ती</string>
+<string name="electric">इलेक्ट्रिक</string>
+<string name="lpg">एलपीजी</string>
+<string name="solar_energy">सौर ऊर्जा</string>
+<string name="none">काहीही नाही</string>
+<string name="piped_into_dwelling">घरामध्येच पाइपद्वारे</string>
+<string name="piped_into_yard_plot">अंगणात किंवा आसपास परिसरात पाइपद्वारे</string>
+<string name="public_tap_standpipe">सार्वजनिक नळ / स्टँडपाइप</string>
+<string name="tube_well_borehole">कूपनलिका / विंधन विहीर / बोअरवेल</string>
+<string name="protected_well_checkbox">संरक्षित विहिर</string>
+<string name="unprotected_well">असंरक्षित विहिर</string>
+<string name="protected_spring">संरक्षित झऱ्याचे पाणीी</string>
+<string name="unprotected_spring">असंरक्षित झऱ्याचे पाणी</string>
+<string name="rainwater">पावसाचे पाणी</string>
+<string name="tanker_truck">टँकर ट्रक</string>
+<string name="cart_with_small_tank">लहान टाकी-गाडी</string>
+<string name="surface_water">पृष्ठभागाचे पाणी</string>
+<string name="common_hand_pump">सामान्य हात पंप/ हापसा</string>
+<string name="hand_pump_at_home"> हँड पंप (घरी)</string>
+<string name="survey_what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याच्या पाण्याचा मुख्य स्त्रोत कोणता आहे?</string>
+<string name="how_much_time_does_it_take_to_walk_till_the_water_source_from_your_home">तुमच्या घरापासून पाण्याच्या स्त्रोतापर्यंत चालायला किती वेळ लागतो?</string>
+<string name="number_of_minutes">मिनिटांची संख्या</string>
+<string name="do_you_treat_your_water_in_any_way_to_make_it_safer_to_drink">तुम्ही तुमचे पाणी पिण्यास सुरक्षित करण्यासाठी कोणत्याही प्रकारे उपचार करता का?</string>
+<string name="what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink">पिण्याचे पाणी सुरक्षित/शुद्ध करण्यासाठी आपण काय करता?</string>
+<string name="boil">उकळणे</string>
+<string name="use_alum">तुरटी वापरणे</string>
+<string name="add_bleach_chlorine_tablets_drops">ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स</string>
+<string name="strain_through_a_cloth">कापडाने गाळणे</string>
+<string name="use_water_filter_ceramic_sand_composite_etc">पाणी फिल्टर वापरा (सिरेमिक / वाळू / संयुक्त / इ.)</string>
+<string name="use_electronic_purifier">इलेक्ट्रॉनिक फिल्टरचा वापर</string>
+<string name="let_it_stand_and_settle">पाणी स्थिर होईपर्यंत  थांबणे</string>
+<string name="flush_to_piped_sewer_system">पाईप केलेले गटार</string>
+<string name="flush_to_septic_tank">सेप्टिक टँक असलेले</string>
+<string name="flush_to_pit_latrine">शोषखड्डा</string>
+<string name="flush_to_somewhere_else">कुठेतरी इतर</string>
+<string name="flush_dont_know_where">माहीत नाही कुठे</string>
+<string name="ventilated_improved_pit_biogas_latrine">हवेशीर सुधारित खड्डा (व्हीआयपी)/ बायोगॅस शौचालय</string>
+<string name="pit_latrine_with_slab">स्लॅबसह पिट शौचालय</string>
+<string name="pit_latrine_without_slab_open_pit">स्लॅबशिवाय खड्डा / उघडा-खड्डा शौचालय</string>
+<string name="twin_pit_composting_toilet">टट्विण(दुहेरी) पिट/ कंपोस्टिंग टॉयलेट</string>
+<string name="dry_toilet">कोरडे शौचालय</string>
+<string name="no_facility_uses_open_space_or_field">कोणतीही सुविधा वापरत नाही / खुली जागा किंवा शेत वापरतो</string>
+<string name="in_the_past_week_has_anyone_in_your_household_had_to_defecate_in_the_open_due_to_any_reason">मागील आठवड्यात तुमच्या घरातील कोणालाही (मुलांसह) कोणत्याही कारणामुळे उघड्यावर शौचास जावे लागले आहे का?</string>
+<string name="what_was_the_main_reason_due_to_which_you_had_to_relieve_yourself_in_the_open">कोणते मुख्य कारण होते ज्यामुळे तुम्हाला उघड्यावर जावे लागले?</string>
+<string name="no_water_available_in_the_toilet">शौचालयात पाणी उपलब्ध नाही</string>
+<string name="no_electricity_available_in_the_toilet">टॉयलेटमध्ये वीज उपलब्ध नाही</string>
+<string name="toilet_is_often_occupied_by_other_members">अनेकदा इतर सदस्य शौचालयाचा वापर करत असतात</string>
+<string name="problem_in_toilet_plumbing">टॉयलेट प्लंबिंगमध्ये समस्या</string>
+<string name="other_reasons_specify">इतर कारणे (निर्दिष्ट करा)</string>
+<string name="on_what_occasions_did_you_wash_your_hands_with_soap_since_this_time_yesterday">काल या वेळेपासून तुम्ही कोणत्या प्रसंगी साबणाने हात धुतले?</string>
+<string name="no_soap_available_in_the_household">घरामध्ये साबण उपलब्ध नाही</string>
+<string name="soap_available_in_the_household_but_did_not_use_it_to_wash_hands">घरोघरी साबण उपलब्ध आहे पण हात धुण्यासाठी वापरला नाही</string>
+<string name="before_cooking">स्वयंपाक करण्यापूर्वी</string>
+<string name="after_handling_food">अन्न हाताळल्यानंतर</string>
+<string name="before_eating">खाण्यापूर्वी</string>
+<string name="after_using_toilet">शौचालय वापरल्यानंतर</string>
+<string name="what_kind_of_food_items_were_cooked_in_the_past_twenty_four_hours">तुमच्या घरात गेल्या २४ तासात कोणत्या प्रकारचे अन्नपदार्थ शिजवले/तयार केले गेले</string>
+<string name="starch_staple_food">पिष्टमय पदार्थ मुख्य अन्न</string>
+<string name="beans_and_peas">फरसबी /बीन्स  आणि मटार</string>
+<string name="nuts_and_cheese">दाणे आणि चीज, शेंगदाणे, जर्दाळू, बदाम, पिस्ता, नारळ, तिळाचे बी, कमळाचे बी, फणसाचे बी, काजू, अक्रोड, मोहरी, सूर्यफूल बी, भोपळ्याच्या बिया)</string>
+<string name="dairy">दुधाचे पदार्थ</string>
+<string name="eggs">अंडी</string>
+<string name="flesh_food">मांसाहारी आहार</string>
+<string name="any_vegetables">कोणत्याही भाज्या</string>
+<string name="surveyDialogTitle">यशस्वीरित्या सेव्ह झाले</string>
+<string name="surveyDialogMessage">सर्वे यशस्वीरित्या जोडला गेला</string>
+<string name="start_household_survey">घरगुती सर्वेक्षण सुरू करा</string>
+<string name="what_is_your_relationship_with_the_head_of_household">घरच्या प्रमुखाशी तुमचे नाते काय?*</string>
+<string name="spouse">जोडीदार</string>
+<string name="son_daughter">मुलगा किंवा मुलगी</string>
+<string name="son_daughter_in_law">मुलगा किंवा सून</string>
+<string name="grandchild">नातवंडे</string>
+<string name="father_mother">वडील किंवा आई</string>
+<string name="father_mother_in_law">सासरे किंवा सासू</string>
+<string name="brother_sister">भाऊ किंवा बहीण</string>
+<string name="brother_sister_in_law">भाऊ किंवा वहिनी</string>
+<string name="niece_nephew">भाची किंवा भाची</string>
+<string name="grandparent_grandparent_in_law">आजोबा किंवा आजी-आजोबा-सासरे</string>
+<string name="other_relative">इतर नातेवाईक</string>
+<string name="adopted_foster_stepchild">दत्तक/पालनपोषण/सावत्र मूल</string>
+<string name="domestic_servant">घरगुती सेवक</string>
+<string name="other_not_related">इतर संबंधित नाही</string>
+<string name="not_stated">सांगितलेले नाही</string>
+<string name="what_is_your_marital_status">तुमची वैवाहिक स्थिती काय आहे?*</string>
+<string name="currently_married">सध्या विवाहित</string>
+    <!--    <string name="married_gauna_not_performed">विवाहित, परंतु अजून माहेरी राहते          </string>-->
+<string name="married">लग्न झाले</string>
+<string name="unmarried">अविवाहित</string>
+<string name="widowed">विधवा</string>
+<string name="divorced">घटस्फोटित</string>
+<string name="separated">विभक्त</string>
+<string name="deserted">परित्यक्त/क्ता</string>
+<string name="never_married">कधीही लग्न केले नाही</string>
+<string name="cannot_read_and_write">लिहिता-वाचता येत नाही</string>
+<string name="can_read_and_write">वाचू आणि लिहू शकतो</string>
+<string name="primary_education_till_class_five">प्राथमिक शिक्षण (वर्ग 5 पर्यंत)</string>
+<string name="middle_school_sixth_eighth">माध्यमिक शाळा (६ वी ते ८ वी)</string>
+<string name="passed_secondary_school">माध्यमिक शाळा उत्तीर्ण (इयत्ता 10वी बोर्ड)</string>
+<string name="passed_senior_secondary_school">उच्च माध्यमिक शाळा (इयत्ता 12वी बोर्ड) उत्तीर्ण</string>
+<string name="graduate">पदवीधर</string>
+<string name="postgraduate">पदव्युत्तर शिक्षण</string>
+<string name="graduation_and_above">पदवी आणि त्यावरील</string>
+<string name="salaried_government_job">पगारदार सरकारी नोकरी</string>
+<string name="salaried_private_job">पगारदार खाजगी नोकरी</string>
+<string name="petty_business_shop_owner">लहान व्यवसाय / दुकान मालक</string>
+<string name="technician_craftsman_other_skilled_work">तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)</string>
+<string name="agricultural_farmer">कृषी शेतकरी</string>
+<string name="tenant_farmer_agricultural_daily_wage_worker">भाडेकरी शेतकरी / कृषी दैनिक वेतन कार्यकर्ता</string>
+<string name="daily_wage_worker_unskilled_workers">रोजंदारी कामगार (अकुशल कामगार)</string>
+<string name="household_work">घरगुती काम</string>
+<string name="student">विद्यार्थी</string>
+<string name="unemployed">बेरोजगार</string>
+<string name="retired_with_pension">सेवानिवृत्त (पेंशनसह)</string>
+<string name="retired_without_pension">सेवानिवृत्त (पेंशनशिवाय)</string>
+<string name="not_applicable">लागू नाही</string>
+<string name="shared">सामायिक केलेले</string>
+<string name="owns_smartphone">स्मार्टफोनचे मालक</string>
+<string name="owns_feature_phone">मालकीचे वैशिष्ट्य</string>
+<string name="own_smartphone">स्वतःचा स्मार्टफोन</string>
+<string name="own_feature_phone">स्वतःचा साधारण फोन</string>
+<string name="shared_smartphone">सामायिक स्मार्टफोन</string>
+<string name="shared_feature_phone">सामायिक साधारण फोन</string>
+<string name="yes_family_member">होय (कुटुंब सदस्य)</string>
+<string name="yes_personal">होय (वैयक्तिक)</string>
+<string name="when_was_the_last_time_you_got_your_bp_checked">तुमची बीपी या आधी कधी तपासली होती?*</string>
+<string name="when_was_the_last_time_you_got_your_sugar_level_checked">तुम्ही तुमची साखर पातळी या आधी कधी तपासली?*</string>
+<string name="when_was_the_last_time_you_got_your_hb_level_checked">तुमची एचबी पातळी या आधी कधी तपासली गेली?*</string>
+<string name="when_was_the_last_time_your_bmi_was_checked">तुमचा BMI (उंची आणि वजन) या आधी कधी तपासला गेला?*</string>
+<string name="never_checked">कधीही तपासले नाही</string>
+<string name="in_past_one_week">गेल्या एका आठवड्यात</string>
+<string name="within_last_month">गेल्या महिन्यात</string>
+<string name="between_one_month_to_three_months_ago">1 महिना ते 3 महिन्यांदरम्यान</string>
+<string name="between_three_months_to_six_months_ago">3 महिने ते 6 महिन्यांदरम्यान</string>
+<string name="more_than_six_months">6 महिन्यांहून अधिक</string>
+<string name="identification_screen_checkbox_other">इतर</string>
+<string name="medical_history">वैद्यकीय इतिहास*</string>
+<string name="hypertension">उच्च रक्तदाब</string>
+<string name="diabetes">मधुमेह</string>
+<string name="arthritis">संधिवात*</string>
+<string name="anaemia">रक्ताल्पता*</string>
+<string name="any_surgeries">काही शस्त्रक्रिया?*</string>
+<string name="reason_for_surgery_specify_the_reason">शस्त्रक्रियेचे कारण (कारण निर्दिष्ट करा)*</string>
+<string name="smoking_status">धूम्रपान स्थिती*</string>
+<string name="does_the_person_smoke">व्यक्ती धूम्रपान करते का?</string>
+<string name="smoker">धुम्रपान करतो</string>
+<string name="non_smoker">धुम्रपान करत नाही        </string>
+<string name="five_ten_bids_cigarette">5 - 10 बिड्या / सिगारेट</string>
+<string name="more_than_ten_bids_cigarette">10 पेक्षा जास्त बिडी/सिगारेट</string>
+<string name="rate_of_smoking">धूम्रपानाची वारंवारता</string>
+<string name="how_long_have_you_been_smoking">तुम्ही किती काळापासून धूम्रपान करत आहात</string>
+<string name="less_than_a_year">एका वर्षापेक्षा कमी</string>
+<string name="from_one_year_to_five_year">1 वर्षापासून 5 वर्षांपर्यंत</string>
+<string name="from_five_years_to_ten_years">5 ते 10 वर्षांपर्यंत</string>
+<string name="more_than_ten_years">10 वर्षांपेक्षा जास्त</string>
+<string name="history_of_alcohol_consumption">मद्य सेवनाचा इतिहास*</string>
+<string name="is_there_a_history_of_alcohol_consumption_in_the_household">तुम्ही कधी दारू चे सेवन केले आहे का?</string>
+<string name="no_denied">नाही किंवा नाकारले</string>
+<string name="rate_of_alcohol_consumption">मद्य सेवनाची वारंवारता</string>
+<string name="zero_five_times">0-5 वेळा</string>
+<string name="five_ten_times">5-10 वेळा</string>
+<string name="more_than_10_times">10 पेक्षा जास्त वेळा</string>
+<string name="how_long_have_you_been_consuming_alcohol">तुम्ही किती काळापासून दारूचे सेवन करत आहात?</string>
+<string name="edit_dialog_button">सुधार करा</string>
+<string name="delete_dialog_button">हटवा</string>
+    <!--    SURVEY STRINGS - END-->
+<string name="all_fields_are_mandatory">सर्व रकाने अनिवार्य आहेत</string>
+<string name="please_fill_up_all_required_fields">कृपया सर्व आवश्यक माहिती रकाने भरा</string>
+<string name="medical_history_cannot_be_empty">वैद्यकीय इतिहास रिक्त असू शकत नाही</string>
+<string name="smoking_history_cannot_be_empty">धूम्रपान इतिहास रिक्त असू शकत नाही</string>
+<string name="alcohol_consumption_history_cannot_be_empty">अल्कोहोल वापर इतिहास रिक्त असू शकत नाही</string>
+<string name="does_the_village_get_water_under_the_jal_jeevan_yojana_scheme">जल जीवन योजना योजनेंतर्गत गावाला पाणी मिळते का?</string>
+<string name="nal_jal_yojana">नल जल योजना</string>
+<string name="how_much_cultivable_land_does_your_family_own">तुमच्या कुटुंबाच्या मालकीची किती शेतीयोग्य जमीन आहे?</string>
+<string name="bp">बीपी*</string>
+<string name="less_than_5_cigarettes">5 पेक्षा कमी बिडी/सिगारेट</string>
+<string name="denied_to_answer">उत्तर देण्यास नकार दिला</string>
+<string name="survey_denied_to_answer">उत्तर देण्यास नकार दिला</string>
+<string name="frequency_of_consumption">सेवनाची/वापराची वारंवारता</string>
+<string name="daily">रोज</string>
+<string name="once_a_week">आठवड्यातून एकदा</string>
+<string name="twice_a_week">आठवड्यातून दोनदा</string>
+<string name="occasionally_once_a_month_or_less">कधीकधी (महिन्यातून एकदा किंवा कमी)</string>
+<string name="please_state_if_you_are_the_head_of_the_family">कृपया तुम्ही कुटुंबाचे प्रमुख आहात का ते सांगा</string>
+<string name="no_of_members_living_cannot_be_greater_than_total_number_of_members">राहणाऱ्या सदस्यांची संख्या घरातील एकूण सदस्यांच्या संख्येपेक्षा जास्त असू शकत नाही</string>
+<string name="please_select_the_main_source_of_drinking_water">कृपया पिण्याच्या पाण्याचा मुख्य स्त्रोत निवडा</string>
+<string name="please_select_the_methods_of_purifying_water">कृपया पाणी शुद्ध करण्याच्या पद्धती निवडा</string>
+<string name="please_state_if_you_have_running_water_in_the_household">तुमच्या घरी वाहता पाणीपुरवठा असल्यास कृपया माहिती द्या        </string>
+<string name="select_hours">तास निवडा</string>
+<string name="please_state_if_you_have_electricity_in_the_household">कृपया तुमच्या घरामध्ये वीज आहे का ते सांगा</string>
+<string name="no_expense">खर्च नाही</string>
+<string name="does_this_household_have_an_ayushman_card">या कुटुंबाकडे आयुष्मान कार्ड आहे का?*</string>
+<string name="does_this_household_have_ration_card">तुमच्याकडे रेशन कार्ड आहे का?*</string>
+<string name="third_dose">तिसरा डोस</string>
+<string name="zero_fifty_ml">0 - 50 मिली</string>
+<string name="fifty_hundred_ml">50 - 100 मिली</string>
+<string name="hundred_two_hundred_fifty_ml">100 - 250 मिली</string>
+<string name="two_hundred_fifty_five_hundred_ml">250 - 500 मिली</string>
+<string name="more_than_five_hundred_ml">500 मिली पेक्षा जास्त</string>
+<string name="answer_following_questions">खालील प्रश्न अनिवार्य आहेत, कृपया त्यांची उत्तरे द्या.</string>
+<string name="dr_specility_generalphysician">जनरल फिजिशियन</string>
+<string name="update_hw_profile">यशस्वीरित्या अद्यतनित केले</string>
+<string name="enter_valid_email">वैध ईमेल पत्ता प्रविष्ट करा</string>
+<string name="enter_valid_gender">लिंग पुरुष किंवा स्त्री प्रविष्ट करा</string>
+<string name="does_person_chew_tobacco">व्यक्ती तंबाखू चघळते का?</string>
+<string name="history_of_tobacco_consumption">तंबाखू सेवनाचा इतिहास</string>
+<string name="tobacco_consumption_cannot_empty">तंबाखू सेवन इतिहास रिक्त असू शकत नाही</string>
+<string name="not_sure">खात्री नाही</string>
+<string name="handmade_purifier">हँड मेड प्युरिफायर</string>
+<string name="do_nothing">काही करत नाही</string>
+<string name="landless">भूमिहीन</string>एकल तुमच्या गावात प्राथमिक आरोग्य सेवा पुरवण्यासाठी एक टेलिमेडिसिन कार्यक्रम सुरू करत आहे - HB चाचणी, BP चाचणी, साखर चाचणी आणि आवश्यकतेनुसार डॉक्टरांचा सल्ला. तुम्हाला आमची सेवा घ्यायला आवडेल का?
+<string name="lantern_kerosenelamp_candle">कंदील/केरोसिन दिवा/मेणबत्ती</string>
+<string name="describe_hand_wash_practise">तुमच्या हात धुण्याच्या सवयीचे वर्णन करा</string>
+<string name="use_soap">साबण वापरतो</string>
+<string name="use_other_means_wash_hands">हात धुण्यासाठी इतर साधनांचा वापर करतो</string>
+<string name="wash_after_using_toilet">शौचालय वापरल्यानंतर हात स्वच्छ धुतो </string>
+<string name="wash_before_cooking">स्वयंपाक करण्यापूर्वी हात स्वच्छ धुतो </string>
+<string name="wash_before_after_eating">खाण्यापूर्वी आणि नंतर हात स्वच्छ धुतो </string>
+<string name="is_the_source_drinking_water_within_30_minutes">घरापासून पिण्याच्या पाण्याच्या स्रोतांमधील अंतर जाऊन-येऊन ३० मिनिटांच्या आत पार करता येण्यासारखे आहे का?</string>
+</resources>

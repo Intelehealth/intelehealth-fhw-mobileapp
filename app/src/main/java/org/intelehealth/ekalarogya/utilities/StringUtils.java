@@ -187,6 +187,10 @@ public final class StringUtils {
             val = switch_kn_caste(val);
             val = switch_kn_economic(val);
             val = switch_kn_education(val);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            val = switch_mr_caste(val);
+            val = switch_mr_economic(val);
+            val = switch_mr_education(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_caste(val);
             val = switch_gu_economic(val);
@@ -236,6 +240,14 @@ public final class StringUtils {
                 default:
                     return val;
             }
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            switch (checkbox_text) {
+                case "उत्तर देण्यास नकार दिला":
+                    val = "Declined to answer";
+                    break;
+                default:
+                    return val;
+            }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             switch (checkbox_text) {
                 case "જવાબ આપવાનો ઇનકાર કર્યો"://----replace with gujrati
@@ -270,7 +282,7 @@ public final class StringUtils {
             val = switch_or_en_vaccination(val);
         }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             val = switch_bn_en_vaccination(val);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {    // vaccin que is removed so marathi not added.
             val = switch_kn_en_vaccination(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_en_vaccination(val);
@@ -325,6 +337,16 @@ public final class StringUtils {
             val = switch_kn_en_wateravail(val);
             val = switch_kn_en_toiletfacil(val);
             val = switch_kn_en_housestructure(val);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            val = switch_mr_en_occupation(val);
+            val = switch_mr_en_bankaccount(val);
+            val = switch_mr_en_mobile(val);
+            val = switch_mr_en_whatsapp(val);
+            val = switch_mr_en_sourcewater(val);
+            val = switch_mr_en_watersafe(val);
+            val = switch_mr_en_wateravail(val);
+            val = switch_mr_en_toiletfacil(val);
+            val = switch_mr_en_housestructure(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_en_occupation(val);
             val = switch_gu_en_bankaccount(val);
@@ -397,6 +419,24 @@ public final class StringUtils {
         }
         return val;
     }
+
+    public static String switch_mr_housestructure_edit(String val) {
+        switch (val) {
+            case "Kutcha House":
+                val = "कच्चा घर";
+                break;
+            case "Pakka House":
+                val = "पक्का घर";
+                break;
+            case "Homeless":
+                val = "बेघर";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
 
     public static String switch_or_housestructure_edit(String val) {
         switch (val) {
@@ -483,13 +523,29 @@ public final class StringUtils {
     }
     public static String switch_kn_en_housestructure(String val) {
         switch (val) {
-            case "ಕುಚಾ":
+            case "ಕಚ್ಚಾ ಮನೆ":
                 val = "Kutcha House";
                 break;
-            case "ಪಕ್ಕಾ":
+            case "ಪಕ್ಕಾ ಮನೆ":
                 val = "Pakka House";
                 break;
             case "ಮನೆಯಿಲ್ಲದವರು":
+                val = "Homeless";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_en_housestructure(String val) {
+        switch (val) {
+            case "कच्चा घर":
+                val = "Kutcha House";
+                break;
+            case "पक्का घर":
+                val = "Pakka House";
+                break;
+            case "बेघर":
                 val = "Homeless";
                 break;
             default:
@@ -618,6 +674,31 @@ public final class StringUtils {
                 break;
             case "Declined to answer":
                 val = "ಉತ್ತರಿಸಲು ನಿರಾಕರಿಸಿದರು";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_toiletfacil_edit(String val) {
+        switch (val) {
+            case "Open Defacation":
+                val = "उघड्यावर शौच";
+                break;
+            case "Own a toilet but it is unusable":
+                val = "स्वतःचे शौचालय आहे पण ते निरुपयोगी आहे";
+                break;
+            case "Use toilet at home":
+                val = "घरात शौचालय वापरा";
+                break;
+            case "Use Community Toilet":
+                val = "सामुदायिक शौचालय वापरा";
+                break;
+            case "Shared Toilet with other households":
+                val = "इतर कुटुंबांसह सामायिक शौचालय";
+                break;
+            case "Declined to answer":
+                val = "उत्तर देण्यास नकार दिला";
                 break;
             default:
                 return val;
@@ -778,6 +859,31 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_en_toiletfacil(String val) {
+        switch (val) {
+            case "उघड्यावर शौच":
+                val = "Open Defacation";
+                break;
+            case "स्वतःचे शौचालय आहे पण ते निरुपयोगी आहे":
+                val = "Own a toilet but it is unusable";
+                break;
+            case "घरात शौचालय वापरा":
+                val = "Use toilet at home";
+                break;
+            case "सामुदायिक शौचालय वापरा":
+                val = "Use Community Toilet";
+                break;
+            case "इतर कुटुंबांसह सामायिक शौचालय":
+                val = "Shared Toilet with other households";
+                break;
+            case "उत्तर देण्यास नकार दिला":
+                val = "Declined to answer";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_en_toiletfacil(String val) {
         switch (val) {
@@ -907,6 +1013,25 @@ public final class StringUtils {
                 val = "No";
                 break;
             case "ಗೊತ್ತಿಲ್ಲ":
+                val = "Don\'t know";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_en_wateravail(String val) {
+        switch (val) {
+            case "उत्तर देण्यास नकार दिला":
+                val = "Declined to answer";
+                break;
+            case "होय":
+                val = "Yes";
+                break;
+            case "नाही":
+                val = "No";
+                break;
+            case "माहीत नाही":
                 val = "Don\'t know";
                 break;
             default:
@@ -1047,6 +1172,34 @@ public final class StringUtils {
                 val = "Strain Through A Cloth";
                 break;
             case "ವಾಟರ್ ಫಿಲ್ಟರ್ ಬಳಸಿ":
+                val = "Water Filter";
+                break;
+           /* case "ইলেকট্রনিক পিউরিফায়ার ব্যবহার করুন":
+                val = "Use Electronic Purifier";
+                break;
+            case "লেট ইট স্ট্যান্ড অ্যান্ড সেটেল":
+                val = "Let It Stand And Settle";
+                break;*/
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_en_watersafe(String val) {
+        switch (val) {
+            case "उकळणे"://----replace with Hindi
+                val = "Boiling";
+                break;
+            case "तुरटी वापरणे":
+                val = "Use Alum";
+                break;
+            case "ब्लीच / क्लोरीन गोळ्या/ ड्रॉप्स":
+                val = "Add bleach";
+                break;
+            case "कापडाने गाळणे":
+                val = "Strain Through A Cloth";
+                break;
+            case "पाणी फिल्टर वापरा (सिरेमिक / वाळू / संयुक्त / इ.)":
                 val = "Water Filter";
                 break;
            /* case "ইলেকট্রনিক পিউরিফায়ার ব্যবহার করুন":
@@ -1297,6 +1450,58 @@ public final class StringUtils {
                 val = "Hand Pump At Home";
                 break;
             case "ನಲ್ ಜಲ ಯೋಜನೆ":
+                val = "Nal Jal Yojana";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_en_sourcewater(String val) {
+        switch (val) {
+            case "घरामध्येच पाइपद्वारे"://-------replace with hindi
+                val = "Piped Into Dwelling";
+                break;
+            case "अंगणात किंवा आसपास परिसरात पाइपद्वारे":
+                val = "Piped Into Yard or Plot";
+                break;
+            case "सार्वजनिक नळ / स्टँडपाइप":
+                val = "Public Tap or Standpipe";
+                break;
+            case "कूपनलिका / विंधन विहीर / बोअरवेल":
+                val = "Tube Well or Borehole";
+                break;
+            case "संरक्षित विहिर":
+                val = "Protected Well";
+                break;
+            case "असंरक्षित विहिर":
+                val = "Unprotected Well";
+                break;
+            case "संरक्षित झऱ्याचे पाणीी":
+                val = "Protected Spring";
+                break;
+            case "असंरक्षित झऱ्याचे पाणी":
+                val = "Unprotected Spring";
+                break;
+            case "पावसाचे पाणी":
+                val = "Rainwater";
+                break;
+            case "टँकर ट्रक":
+                val = "Tanker Truck";
+                break;
+            case "लहान टाकी-गाडी":
+                val = "Cart With Small Truck";
+                break;
+            case "पृष्ठभागाचे पाणी":
+                val = "Surface Water";
+                break;
+            case "सामान्य हात पंप/ हापसा":
+                val = "Common Hand Pump";
+                break;
+            case " हँड पंप (घरी)":
+                val = "Hand Pump At Home";
+                break;
+            case "नल जल योजना":
                 val = "Nal Jal Yojana";
                 break;
             default:
@@ -1602,6 +1807,52 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_en_occupation(String val) {
+        switch (val) {
+            case "पगारदार सरकारी नोकरी"://----------replace with Hindi
+                val = "Salaried Government Job";
+                break;
+            case "पगारदार खाजगी नोकरी":
+                val = "Salaried Private Job";
+                break;
+            case "लहान व्यवसाय / दुकान मालक":
+                val = "Petty Business or Shop Owner";
+                break;
+            case "तंत्रज्ञ किंवा कारागीर किंवा इतर कुशल काम (ड्रायव्हर, मेसन इ.)":
+                val = "Technician or Craftsman or Other Skilled Work (Driver, Mason, etc.)";
+                break;
+            case "कृषी शेतकरी":
+                val = "Agricultural Farmer";
+                break;
+            case "भाडेकरी शेतकरी / कृषी दैनिक वेतन कार्यकर्ता":
+                val = "Tenant Farmer or Agricultural Daily Wage Worker";
+                break;
+            case "रोजंदारी कामगार (अकुशल कामगार)":
+                val = "Daily Wage Worker (Unskilled Worker)";
+                break;
+            case "घरगुती काम":
+                val = "Household Work";
+                break;
+            case "विद्यार्थी":
+                val = "Student";
+                break;
+            case "बेरोजगार":
+                val = "Unemployed";
+                break;
+            case "सेवानिवृत्त (पेंशनसह)":
+                val = "Retired (With Pension)";
+                break;
+            case "सेवानिवृत्त (पेंशनशिवाय)":
+                val = "Retired (Without Pension)";
+                break;
+            case "लागू नाही":
+                val = "Not Applicable";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_en_occupation(String val) {
         switch (val) {
@@ -1793,6 +2044,22 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_en_bankaccount(String val) {
+        switch (val) {
+            case "उत्तर देण्यास नकार दिला":
+                val = "Declined to answer";
+                break;
+            case "होय":
+                val = "Yes";
+                break;
+            case "नाही":
+                val = "No";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_en_bankaccount(String val) {
         switch (val) {
@@ -1911,6 +2178,28 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_en_mobile(String val) {
+        switch (val) {
+            case "काहीही नाही":///-------replace with Hindi
+                val = "None";
+                break;
+            case "स्वतःचा स्मार्टफोन":
+                val = "Own Smartphone";
+                break;
+            case "स्वतःचा साधारण फोन":
+                val = "Own Feature Phone";
+                break;
+            case "सामायिक स्मार्टफोन":
+                val = "Shared Smartphone";
+                break;
+            case "सामायिक साधारण फोन":
+                val = "Shared Feature Phone";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_en_mobile(String val) {
         switch (val) {
@@ -2022,6 +2311,22 @@ public final class StringUtils {
                 val = "Yes (Personal)";
                 break;
             case "ಅಲ್ಲ":
+                val = "No";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_en_whatsapp(String val) {
+        switch (val) {
+            case "होय (कुटुंब सदस्य)"://------replace with Hindi
+                val = "Yes (Family Member)";
+                break;
+            case "होय (वैयक्तिक)":
+                val = "Yes (Personal)";
+                break;
+            case "नाही":
                 val = "No";
                 break;
             default:
@@ -2174,6 +2479,37 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_education(String val) {
+        switch (val) {
+            case "लिहिता-वाचता येत नाही"://------
+                val = "Cannot read or write";
+                break;
+            case "वाचू आणि लिहू शकतो":
+                val = "Can read and write";
+                break;
+            case "प्राथमिक शिक्षण (वर्ग 5 पर्यंत)":
+                val = "Primary education (Till Class 5)";
+                break;
+            case "माध्यमिक शाळा (६ वी ते ८ वी)":
+                val = "Middle school (6th - 8th)";
+                break;
+            case "माध्यमिक शाळा उत्तीर्ण (इयत्ता 10वी बोर्ड)":
+                val = "Passed secondary school (Class 10th boards)";
+                break;
+            case "उच्च माध्यमिक शाळा (इयत्ता 12वी बोर्ड) उत्तीर्ण":
+                val = "Passed senior secondary school (Class 12th boards)";
+                break;
+            case "पदवीधर":
+                val = "Graduate";
+                break;
+            case "पदव्युत्तर शिक्षण":
+                val = "Postgraduate";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_education(String val) {
         switch (val) {
@@ -2310,6 +2646,19 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_economic(String val) {
+        switch (val) {
+            case "दारिद्र्यरेषेच्या वर":
+                val = "APL";
+                break;
+            case "दारिद्र्यरेषेखालील":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_economic(String val) {
         switch (val) {
@@ -2413,6 +2762,28 @@ public final class StringUtils {
                 break;
             case "Graduation & Higher":
                 val = "ಪದವಿ ಮತ್ತು ಉನ್ನತ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "निरक्षर";
+                break;
+            case "Primary":
+                val = "प्राथमिक";
+                break;
+            case "Secondary":
+                val = "दुय्यम";
+                break;
+            case "Higher Secondary":
+                val = "उच्च माध्यमिक";
+                break;
+            case "Graduation & Higher":
+                val = "पदवी आणि उच्च";
                 break;
             default:
                 return val;
@@ -2528,6 +2899,19 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "दारिद्र्यरेषेच्या वर";
+                break;
+            case "BPL":
+                val = "दारिद्र्यरेषेखालील";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_economic_edit(String val) {
         switch (val) {
@@ -2630,6 +3014,28 @@ public final class StringUtils {
                 val = "ST";
                 break;
             case "ಇತರರು":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_caste(String val) {
+        switch (val) {
+            case "सामान्य":
+                val = "General";
+                break;
+            case "इतर मागास जाती (OBC)":
+                val = "OBC";
+                break;
+            case "अनुसूचित जाती":
+                val = "SC";
+                break;
+            case "अनुसूचित जमाती":
+                val = "ST";
+                break;
+            case "इतर":
                 val = "others";
                 break;
             default:
@@ -2752,6 +3158,22 @@ public final class StringUtils {
                 break;
             case "No":
                 val = "ಅಲ್ಲ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_bankaccount_edit(String val) {
+        switch (val) {
+            case "Declined to answer":
+                val = "उत्तर देण्यास नकार दिला";
+                break;
+            case "Yes":
+                val = "होय";
+                break;
+            case "No":
+                val = "नाही";
                 break;
             default:
                 return val;
@@ -3721,6 +4143,28 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_mr_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "सामान्य";
+                break;
+            case "OBC":
+                val = "इतर मागास जाती (OBC)";
+                break;
+            case "SC":
+                val = "अनुसूचित जाती";
+                break;
+            case "ST":
+                val = "अनुसूचित जमाती";
+                break;
+            case "others":
+                val = "इतर";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_or_caste_edit(String val) {
         switch (val) {
@@ -3937,6 +4381,23 @@ public final class StringUtils {
 
         return mdob_text;
     }
+    public static String en__mr_dob(String dob) { //English dob is replaced to Hindi text.
+        String mdob_text = dob
+                .replace("January", "जानेवारी")
+                .replace("February", "फेब्रुवारी")
+                .replace("March", "मार्च")
+                .replace("April", "एप्रिल")
+                .replace("May", "मे")
+                .replace("June", "जून")
+                .replace("July", "जुलै")
+                .replace("August", "ऑगस्ट")
+                .replace("September", "सप्टेंबर")
+                .replace("October", "ऑक्टोबर")
+                .replace("November", "नोव्हेंबर")
+                .replace("December", "डिसेंबर");
+
+        return mdob_text;
+    }
 
     public static String en__or_dob(String dob) { //English dob is replaced to Odiya text.
         String mdob_text = dob
@@ -4058,6 +4519,22 @@ public final class StringUtils {
                     .replace("ನವೆಂಬರ್", "November")
                     .replace("ಡಿಸೆಂಬರ್", "December");
             return dob;
+        } else if (locale.equalsIgnoreCase("mr")) {
+            //Odiya
+            String dob = dobString
+                    .replace("जानेवारी", "January")
+                    .replace("फेब्रुवारी", "February")
+                    .replace("मार्च", "March")
+                    .replace("एप्रिल", "April")//ଅପ୍ରେଲ
+                    .replace("मे", "May")//ମଇ
+                    .replace("जून", "June")
+                    .replace("जुलै", "July")
+                    .replace("ऑगस्ट", "August")
+                    .replace("सप्टेंबर", "September")
+                    .replace("ऑक्टोबर", "October")
+                    .replace("नोव्हेंबर", "November")
+                    .replace("डिसेंबर", "December");
+            return dob;
         } else if (locale.equalsIgnoreCase("gu")) {
             //replace with gujrati
             String dob = dobString
@@ -4162,6 +4639,35 @@ public final class StringUtils {
                     break;
                 case "Saturday":
                     val = "ಶನಿವಾರ";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        if (locale.equalsIgnoreCase("mr")) {
+
+            switch (val) {
+                case "Sunday":
+                    val = "रविवार";
+                    break;
+                case "Monday":
+                    val = "सोमवार";
+                    break;
+                case "Tuesday":
+                    val = "मंगळवार";
+                    break;
+                case "Wednesday":
+                    val = "बुधवार";
+                    break;
+                case "Thursday":
+                    val = "गुरुवार";
+                    break;
+                case "Friday":
+                    val = "शुक्रवार";
+                    break;
+                case "Saturday":
+                    val = "शनिवार";
                     break;
                 default:
                     return val;
@@ -4346,6 +4852,20 @@ public final class StringUtils {
                     break;
                 case "cancelled":
                     val = "ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        if (locale.equalsIgnoreCase("mr")) {
+
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "बुक केले";
+                    break;
+                case "cancelled":
+                    val = "रद्द केले";
                     break;
                 default:
                     return val;
@@ -5725,7 +6245,26 @@ public final class StringUtils {
                     .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ");
             currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
 //            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            currentNodeVal = currentNode.formQuestionAnswer(0);
+            currentNodeVal = currentNodeVal
+                    .replace("Question not answered", "प्रश्नाचे उत्तर मिळाले नाही")
+                    .replace("Patient reports -", "रुग्ण अहवाल -")
+                    .replace("Patient denies -", "रुग्ण नकार देतो -")
+                    .replace("Minutes", "मिनिट")
+                    .replace("Hours", "तास").replace("Days", "दिवस")
+                    .replace("Weeks", "आठवडे").replace("Months", "महिने")
+                    .replace("Years", "वर्षे")
+                    .replace("times per hour", "प्रति तास वेळा")
+                    .replace("time per day", "प्रती दिन वेळा")
+                    .replace("times per week", "प्रति आठवडा वेळा")
+                    .replace("times per month", "दर महिन्याला")
+                    .replace("times per year", "दर वर्षी");
+            currentNodeVal = Node.dateformat_en_hi_or_gu_as(currentNodeVal, sessionManager);
+//            alertDialogBuilder.setMessage(Html.fromHtml(currentNodeVal));
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             currentNodeVal = currentNode.formQuestionAnswer(0);
             currentNodeVal = currentNodeVal
                     .replace("Question not answered", "પপ্ৰশ্নৰ উত্তৰ নাই")
