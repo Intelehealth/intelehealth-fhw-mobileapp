@@ -34,13 +34,6 @@ public class PatientQueryBuilder extends QueryBuilder {
 //        WHERE LOWER (fullName)  LIKE LOWER('%abc%') OR P.openmrs_id LIKE LOWER('%ABC%')
 //        COLLATE NOCASE GROUP BY P.uuid  ORDER BY P.first_name ASC
         String query = selectQuery()
-//                .where(" P.first_name LIKE '%" + keyword + "%' " +
-//                        "OR P.middle_name LIKE '%" + keyword + "%' " +
-//                        "OR P.last_name LIKE '%" + keyword + "%' " +
-//                        "OR (P.first_name || P.middle_name) LIKE '%" + keyword + "%' " +
-//                        "OR (P.middle_name || P.last_name) LIKE '%" + keyword + "%' " +
-//                        "OR (P.first_name || P.last_name) LIKE '%" + keyword + "%' " +
-//                        "OR P.openmrs_id LIKE '%" + keyword + "%' ")
                 .where(" LOWER(fullName) LIKE LOWER('%" + keyword + "%') " + "OR LOWER(P.openmrs_id) LIKE LOWER('%" + keyword + "%') ")
                 .groupBy("P.uuid")
                 .orderBy("P.first_name")

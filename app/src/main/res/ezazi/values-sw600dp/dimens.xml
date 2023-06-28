@@ -232,5 +232,5 @@
     <dimen name="margin_bottom_scroll">100dp</dimen>
     <dimen name="dropdown_content_height">130dp</dimen>
     <dimen name="dropdown_max_height">280dp</dimen>
-
+    <dimen name="dialog_input_min_height">54dp</dimen>
 </resources>

@@ -328,7 +328,9 @@
         <item name="android:background">@drawable/round_corner_gray_stroke_light</item>
         <item name="android:textSize">@dimen/small_input_text_size</item>
         <item name="android:textColor">@color/darkGray</item>
-        <item name="android:padding">@dimen/screen_container_padding</item>
+        <item name="android:minHeight">@dimen/dialog_input_min_height</item>
+        <item name="android:paddingStart">@dimen/screen_container_padding</item>
+        <item name="android:paddingEnd">@dimen/screen_container_padding</item>
     </style>
 
     <style name="Theme.EZazi.Input.NoLabel" parent="Theme.EZazi.Input">

@@ -264,5 +264,5 @@
     <dimen name="dropdown_max_height">180dp</dimen>
     <dimen name="max_input_height">@dimen/std_48dp</dimen>
     <dimen name="max_address_input_height">40dp</dimen>
-
+    <dimen name="dialog_input_min_height">40dp</dimen>
 </resources>
