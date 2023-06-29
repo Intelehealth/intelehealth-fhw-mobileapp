@@ -1494,6 +1494,26 @@ public class IdentificationActivity extends AppCompatActivity implements
                             spinner_vaccination.setSelection(spinner_position);
                         }
                     }
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+
+                    if (patient1.getVaccination().equalsIgnoreCase("No")) {
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        spinner_vaccination.setSelection(0);
+                    } else {
+                        if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                            framelayout_vaccine_question.setVisibility(View.GONE);
+                            framelayout_vaccination.setVisibility(View.GONE);
+                            int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                            spinner_vaccination.setSelection(spinner_position);
+                            radioYes.setChecked(false);
+                            radioNo.setChecked(false);
+                        } else {
+                            vaccination_Transl = StringUtils.switch_mr_vaccination_edit(patient1.getVaccination());
+                            framelayout_vaccination.setVisibility(View.VISIBLE);
+                            int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                            spinner_vaccination.setSelection(spinner_position);
+                        }
+                    }
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
 
                     if (patient1.getVaccination().equalsIgnoreCase("No")) {

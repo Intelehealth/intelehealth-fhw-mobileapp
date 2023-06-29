@@ -32,6 +32,13 @@
         <item>Third dose</item>
     </string-array>
 
+    <string-array name="vaccination_spinner_mr">
+        <item>निवडा</item>
+        <item>पहिला डोस</item>
+        <item>दुसरा डोस</item>
+        <item>तिसरा डोस</item>
+    </string-array>
+
     <string-array name="vaccination_spinner_hi">
         <item>चयन करें</item>
         <item>पहला टिका</item>

@@ -282,8 +282,10 @@ public final class StringUtils {
             val = switch_or_en_vaccination(val);
         }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             val = switch_bn_en_vaccination(val);
-        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {    // vaccin que is removed so marathi not added.
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
             val = switch_kn_en_vaccination(val);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {    // vaccin que is removed so marathi not added.
+            val = switch_mr_en_vaccination(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_en_vaccination(val);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
@@ -3641,6 +3643,23 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_mr_en_vaccination(String val) {
+        switch (val) {
+            case "पहिला डोस":
+                val = "First dose";
+                break;
+            case "दुसरा डोस":
+                val = "Second dose";
+                break;
+            case "तिसरा डोस":
+                val = "Third dose";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_or_en_vaccination(String val) {
         switch (val) {
             case "ପ୍ରଥମ ଡୋଜ୍":
@@ -3735,6 +3754,22 @@ public final class StringUtils {
                 break;
             case "Third dose":
                 val = "ಮೂರನೇ ಡೋಸ್";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_vaccination_edit(String val) {
+        switch (val) {
+            case "First dose":
+                val = "पहिला डोस";
+                break;
+            case "Second dose":
+                val = "दुसरा डोस";
+                break;
+            case "Third dose":
+                val = "तिसरा डोस";
                 break;
             default:
                 return val;
