@@ -333,7 +333,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.rtc.activity.LiveVideoCallActivity"
+            android:name=".ui.rtc.activity.EzaziVideoCallActivity"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

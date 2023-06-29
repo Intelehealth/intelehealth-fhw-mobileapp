@@ -22,7 +22,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
-import org.intelehealth.ezazi.ui.rtc.activity.LiveVideoCallActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,7 +55,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().containsKey("actionType")) {
             if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
                 Log.d(TAG, "actionType : VIDEO_CALL");
-                Intent in = new Intent(this, LiveVideoCallActivity.class);
+                Intent in = new Intent(this, EzaziVideoCallActivity.class);
                 String roomId = remoteMessage.getData().get("roomId");
                 String doctorName = remoteMessage.getData().get("doctorName");
                 String nurseId = remoteMessage.getData().get("nurseId");

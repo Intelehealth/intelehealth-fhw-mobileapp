@@ -20,6 +20,7 @@ import org.intelehealth.klivekit.ui.activity.CoreVideoCallActivity
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  */
+
 open class LiveVideoCallActivity : CoreVideoCallActivity() {
     private lateinit var binding: ActivityVideoCallEzaziBinding
     override fun onCreate(savedInstanceState: Bundle?) {

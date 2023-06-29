@@ -24,6 +24,6 @@ public class EzaziChatActivity extends ChatActivity {
 
     @Override
     protected Intent getVideoIntent() {
-        return new Intent(this, LiveVideoCallActivity.class);
+        return new Intent(this, EzaziVideoCallActivity.class);
     }
 }

@@ -35,7 +35,7 @@ import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
-import org.intelehealth.ezazi.ui.rtc.activity.LiveVideoCallActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -198,7 +198,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
-                Intent in = new Intent(PartogramDataCaptureActivity.this, LiveVideoCallActivity.class);
+                Intent in = new Intent(PartogramDataCaptureActivity.this, EzaziVideoCallActivity.class);
                 String roomId = mPatientUuid;
                 String doctorName = "";
                 String nurseId = encounterDTO.getProvideruuid();

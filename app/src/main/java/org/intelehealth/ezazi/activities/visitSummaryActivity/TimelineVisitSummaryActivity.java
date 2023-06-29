@@ -58,7 +58,7 @@ import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
-import org.intelehealth.ezazi.ui.rtc.activity.LiveVideoCallActivity;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
@@ -340,7 +340,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
         RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
         RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-        Intent in = new Intent(TimelineVisitSummaryActivity.this, LiveVideoCallActivity.class);
+        Intent in = new Intent(TimelineVisitSummaryActivity.this, EzaziVideoCallActivity.class);
         String roomId = patientUuid;
         String nurseId = encounterDTO.getProvideruuid();
         in.putExtra("roomId", roomId);
