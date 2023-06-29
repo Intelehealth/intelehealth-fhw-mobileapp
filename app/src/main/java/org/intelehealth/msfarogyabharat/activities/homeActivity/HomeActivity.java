@@ -28,6 +28,8 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,7 +109,7 @@ public class HomeActivity extends AppCompatActivity {
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
-
+    public static final String MSF_PULL_ISSUE = "MSF_PULL_ISSUE";
     TextView lastSyncTextView;
     TextView lastSyncAgo;
     Button manualSyncButton;
@@ -131,6 +133,10 @@ public class HomeActivity extends AppCompatActivity {
             activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, myCases_textView, missedCallRecordingTV;
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     ExecutorService initialSyncExecutor = Executors.newSingleThreadExecutor();
+
+    private ProgressBar sync_progress_bar;
+    private RelativeLayout sync_relativelayout, blur_relative;
+    private TextView sync_counter_txtview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,11 +165,17 @@ public class HomeActivity extends AppCompatActivity {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
+
 //        checkAppVer();  //auto-update feature.
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         lastSyncAgo = findViewById(R.id.lastsyncago);
+        sync_progress_bar = findViewById(R.id.sync_progress_bar);
+        sync_counter_txtview = findViewById(R.id.sync_counter_txtview);
+        sync_relativelayout = findViewById(R.id.sync_relativelayout);
+        blur_relative = findViewById(R.id.blur_relative);
+
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         // c1 = findViewById(R.id.cardview_newpat);
@@ -336,12 +348,19 @@ public class HomeActivity extends AppCompatActivity {
             mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-
+            mSyncProgressDialog.setMax(100);
+            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mSyncProgressDialog.setIndeterminate(false);
             mSyncProgressDialog.show();
 
+            SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
+            Logger.logD(MSF_PULL_ISSUE, "isfirstTimelaunch");
+            /*sync_relativelayout.setVisibility(View.VISIBLE);
+            blur_relative.setAlpha(0.3f);*/
             initialSyncExecutor.execute(() -> syncUtils.initialSync("home"));
         } else {
+            /*sync_relativelayout.setVisibility(View.GONE);
+            blur_relative.setAlpha(1f);*/
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         }
@@ -840,8 +859,9 @@ public class HomeActivity extends AppCompatActivity {
 
             if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
-                if (sessionManager.isFirstTimeLaunched()) {
+                if (sessionManager.isFirstTimeLaunched()) { // true
                     if (flagType == AppConstants.SYNC_FAILED) {
+                        Logger.logD(MSF_PULL_ISSUE, "BR sync fail");
                         hideSyncProgressBar(false);
                         /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
                         finish();*/
@@ -857,6 +877,7 @@ public class HomeActivity extends AppCompatActivity {
 
                                 .show();
                     } else {
+                        Logger.logD(MSF_PULL_ISSUE, "BR sync passed");
                         mTempSyncHelperList.add(flagType);
                         if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)
 //                                && mTempSyncHelperList.contains(AppConstants.SYNC_PUSH_DATA_DONE)
@@ -1055,4 +1076,39 @@ public class HomeActivity extends AppCompatActivity {
         executorService.shutdown();
         initialSyncExecutor.shutdownNow();
     }
+
+    private final Observer<Integer> syncLiveData = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer progress) {
+            Logger.logD(MSF_PULL_ISSUE, "onchanged of livedata again called up");
+/*
+            if (sync_progress_bar != null) {
+                sync_progress_bar.setProgress(progress);
+                sync_counter_txtview.setText(progress + "%");
+                Logger.logD(MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
+
+                if (progress == 100) {
+                    SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
+                    Logger.logD(MSF_PULL_ISSUE, "progress is 100 so close");
+                    sync_relativelayout.setVisibility(View.GONE);
+                    blur_relative.setAlpha(1f);
+                }
+            }
+*/
+            if (mSyncProgressDialog != null) {
+                mSyncProgressDialog.setProgress(progress);
+              //  sync_counter_txtview.setText(progress + "%");
+                Logger.logD(MSF_PULL_ISSUE, "% -> " + String.valueOf(progress));
+
+                if (progress == 100) {
+                    SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
+                    Logger.logD(MSF_PULL_ISSUE, "progress is 100 so close");
+                  //  mSyncProgressDialog.dismiss();
+                    /*sync_relativelayout.setVisibility(View.GONE);
+                    blur_relative.setAlpha(1f);*/
+                }
+            }
+        }
+    };
+
 }

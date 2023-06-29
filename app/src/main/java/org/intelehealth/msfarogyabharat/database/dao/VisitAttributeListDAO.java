@@ -91,7 +91,7 @@ public class VisitAttributeListDAO {
     {
         String isValue = "";
         Log.d("specc", "spec_fun: "+ VISITUUID);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",

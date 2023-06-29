@@ -305,7 +305,7 @@ public class VisitsDAO {
 
     public List<VisitDTO> getAllVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit", null);
         VisitDTO visitDTO = new VisitDTO();

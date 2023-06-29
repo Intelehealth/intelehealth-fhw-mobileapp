@@ -26,7 +26,7 @@ public class SyncUtils {
         executorService.execute(() -> {
             SyncDAO syncDAO = new SyncDAO();
             Logger.logD(TAG, "Pull Started");
-            syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+            syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, 0); // pageNo = 0 since its the first call.
             Logger.logD(TAG, "Pull ended");
         });
     }
@@ -36,7 +36,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
         syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0); //only this new function duplicate // pageNo = 0 since first call to function.
 
         imagesPushDAO.patientProfileImagesPush();
 //        imagesPushDAO.obsImagesPush();
@@ -86,7 +86,7 @@ public class SyncUtils {
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             Logger.logD(TAG, "Pull Started");
-            pullDataExecutor.execute(() -> syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity));
+            pullDataExecutor.execute(() -> syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, 0)); // pageNo = 0 since its first call.
             Logger.logD(TAG, "Pull ended");
         }, 3000);
 

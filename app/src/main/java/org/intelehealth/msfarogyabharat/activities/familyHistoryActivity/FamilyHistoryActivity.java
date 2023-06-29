@@ -283,7 +283,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private String getFamilyHistoryVisitData() {
         String result = "";
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String[] columns = {"value", " conceptuuid"};
 

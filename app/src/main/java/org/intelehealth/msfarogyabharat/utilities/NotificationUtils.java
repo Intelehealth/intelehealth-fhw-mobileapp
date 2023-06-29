@@ -4,6 +4,8 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
+
 import androidx.core.app.NotificationCompat;
 
 import org.intelehealth.msfarogyabharat.R;
@@ -13,6 +15,7 @@ public class NotificationUtils {
 
 
     private String channelId = "1";
+    private String channelId_init = "100";
     private String channelName = "intelehealth";
     private int mId = 1;
     Context context;
@@ -126,5 +129,14 @@ public class NotificationUtils {
                 .setContentText(text).build();
         mNotifyManager.notify(mId, mBuilder.build());
 
+    }
+
+    public void createNotificationChannel(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager nm = context.getSystemService(NotificationManager.class);
+
+            NotificationChannel channel = new NotificationChannel(channelId_init, channelName, NotificationManager.IMPORTANCE_HIGH);
+            nm.createNotificationChannel(channel);
+        }
     }
 }

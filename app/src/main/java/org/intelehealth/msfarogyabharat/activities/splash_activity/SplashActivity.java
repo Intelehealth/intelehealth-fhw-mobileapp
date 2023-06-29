@@ -31,6 +31,7 @@ import org.intelehealth.msfarogyabharat.BuildConfig;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.IntroActivity.IntroActivity;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
+import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.dataMigration.SmoothUpgrade;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
@@ -108,6 +109,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkPerm() {
+        AppConstants.notificationUtils.createNotificationChannel(this);
         PermissionListener permissionlistener = new PermissionListener() {
 
             @Override

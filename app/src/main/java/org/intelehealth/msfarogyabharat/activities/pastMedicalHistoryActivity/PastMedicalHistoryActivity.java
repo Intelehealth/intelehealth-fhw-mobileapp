@@ -565,7 +565,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {
