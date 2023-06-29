@@ -176,7 +176,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                 "O.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
                 "WHERE V.enddate IS NOT NULL " +
                // "and O.value != ('<b>General exams: </b><br/>•  Do you want us to follow-up? - No.') " +
-                "and speciality in ('Diabetes', 'Dietician') " + // Note: adding this coz somehow speciality coming as Telemed loca 1.
+                "and VA.visit_attribute_type_uuid != '0e798578-96c1-450b-9927-52e45485b151' " + // Note: adding this coz somehow speciality coming as Telemed loca 1.
                // "GROUP BY V.patientuuid " +
                 "ORDER BY V.startdate DESC";
 
