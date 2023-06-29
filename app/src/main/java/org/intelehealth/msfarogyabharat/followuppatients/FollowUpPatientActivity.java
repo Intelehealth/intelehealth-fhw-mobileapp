@@ -154,10 +154,20 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
 //        String newQuery = "SELECT v.enddate FROM tbl_patient a, tbl_visit b where a.uuid = b.patientuuid";
       //  String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') AND o.value is NOT NULL ORDER BY startdate DESC";
-      //  String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', (Select conceptuuid from tbl_obs Where d.uuid = encounteruuid AND value like '%Do you want us to follow-up?%')) ORDER BY startdate DESC) as sub GROUP BY patientuuid ORDER BY startdate DESC";
+
+        /*  String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name,
+          b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value
+          FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c
+          WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid
+          AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid
+          AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86',
+          (Select conceptuuid from tbl_obs Where d.uuid = encounteruuid
+          AND value like '%Do you want us to follow-up?%')) ORDER BY startdate DESC)
+          as sub GROUP BY patientuuid ORDER BY startdate DESC";*/
+
 //        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate like '%Sep 12, 2021%' or v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
 
-        String query = "SELECT DISTINCT V.uuid, V.sync, V.patientuuid, V.startdate, V.enddate, P.first_name, " +
+        String query = "SELECT distinct V.uuid, V.sync, V.patientuuid, V.startdate, V.enddate, P.first_name, " +
                 "P.middle_name, P.last_name, P.date_of_birth, P.openmrs_id, VA.value AS speciality, O.value  FROM tbl_visit V " +
                 "INNER JOIN tbl_patient P ON P.uuid = V.patientuuid " +
                 "INNER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid " +
@@ -165,10 +175,24 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                 "INNER JOIN tbl_obs O ON O.encounteruuid = E.uuid AND " +
                 "O.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
                 "WHERE V.enddate IS NOT NULL " +
+               // "and O.value != ('<b>General exams: </b><br/>•  Do you want us to follow-up? - No.') " +
+                "and speciality in ('Diabetes', 'Dietician') " + // Note: adding this coz somehow speciality coming as Telemed loca 1.
+               // "GROUP BY V.patientuuid " +
                 "ORDER BY V.startdate DESC";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-      //  db.beginTransaction();
+/*
+        String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
+                "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
+                "WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid " +
+                "AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid " +
+                "AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', " +
+                "'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') ORDER BY startdate DESC) " +
+                "as sub GROUP BY patientuuid ORDER BY startdate DESC";
+*/
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             Logger.logD("MSF_PULL_ISSUE", "1st time query launch....: " + System.currentTimeMillis());
@@ -177,6 +201,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     Logger.logD("MSF_PULL_ISSUE", "followup code is runnnign....: ");
                     String visitStartDateFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate"));
                     String visitFollowup = "";
+                  //  String vvv = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"));
                     if (searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"))
                             .contains(" Do you want us to follow-up? - Yes")) {
                         visitType = "Diabetes Follow-up";
@@ -185,7 +210,12 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                         Date requiredFormat = new SimpleDateFormat("dd-MMM-yyyy").parse(visitFollowup);
                         SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                         visitFollowup = outputDateFormat.format(requiredFormat);
-                    } else {
+                    }
+                  /*  else if (searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"))
+                            .contains(" Do you want us to follow-up? - No")) {
+                        visitFollowup = "";
+                    }*/
+                    else {
                         visitFollowup = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
                     }
 
@@ -421,12 +451,12 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             }
             while (searchCursor.moveToNext());
         }
-        else {
+      /*  else {
             Logger.logD("MSF_PULL_ISSUE", "followup not move ot next ....: ");
             searchCursor.close();
-          //  db.setTransactionSuccessful();
-          //  db.endTransaction();
-        }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }*/
 
         Logger.logD("MSF_PULL_ISSUE", "on query execute complete for followup....: " + System.currentTimeMillis());
 
@@ -457,6 +487,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 //        } catch (DAOException e) {
 //            e.printStackTrace();
 //        }
+        searchCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return modelList;
 
     }

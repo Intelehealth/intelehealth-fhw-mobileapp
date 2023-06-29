@@ -111,7 +111,8 @@ public class FollowUpNotificationWorker extends Worker {
 
         db.beginTransaction();
       //  String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', (Select conceptuuid from tbl_obs Where d.uuid = encounteruuid AND value like '%Do you want us to follow-up?%')) ORDER BY startdate DESC) as sub GROUP BY patientuuid ORDER BY startdate DESC";
-        String query = "SELECT DISTINCT V.uuid, V.sync, V.patientuuid, V.startdate, V.enddate, P.first_name, " +
+
+        String query = "SELECT distinct V.uuid, V.sync, V.patientuuid, V.startdate, V.enddate, P.first_name, " +
                 "P.middle_name, P.last_name, P.date_of_birth, P.openmrs_id, VA.value AS speciality, O.value  FROM tbl_visit V " +
                 "INNER JOIN tbl_patient P ON P.uuid = V.patientuuid " +
                 "INNER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid " +
@@ -119,7 +120,12 @@ public class FollowUpNotificationWorker extends Worker {
                 "INNER JOIN tbl_obs O ON O.encounteruuid = E.uuid AND " +
                 "O.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
                 "WHERE V.enddate IS NOT NULL " +
+              //  "and O.value != ('<b>General exams: </b><br/>•  Do you want us to follow-up? - No.') " +
+                "and speciality in ('Diabetes', 'Dietician') " +    // Note: adding this coz somehow speciality coming as Telemed loca 1.
+                // "GROUP BY V.patientuuid " +
                 "ORDER BY V.startdate DESC";
+
+
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
