@@ -12,9 +12,9 @@ public class RestartServiceReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v(TAG, "onReceive");
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(context, CallListenerBackgroundService.class);
-            context.startService(serviceIntent);
-        }
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            Intent serviceIntent = new Intent(context, CallListenerBackgroundService.class);
+//            context.startService(serviceIntent);
+//        }
     }
 }

@@ -21,6 +21,7 @@ import com.parse.Parse;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.database.InteleHealthDatabaseHelper;
+import org.intelehealth.ezazi.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ezazi.utilities.SessionManager;
 
 import io.reactivex.plugins.RxJavaPlugins;
@@ -46,6 +47,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
+
+    private RealTimeDataChangedObserver dataChangedObserver;
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
@@ -69,7 +73,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
-           // FirebaseCrashlytics.getInstance().recordException(throwable);
+            // FirebaseCrashlytics.getInstance().recordException(throwable);
         });
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
@@ -98,6 +102,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             mDbHelper.onCreate(localdb);
         }
         registerActivityLifecycleCallbacks(this);
+        dataChangedObserver = new RealTimeDataChangedObserver(this);
+        dataChangedObserver.startObserver();
     }
 
     private void configureCrashReporting() {
@@ -106,7 +112,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-       // FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+        // FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
 
     }
 
@@ -162,10 +168,16 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
         Button button1 = (Button) builderDialog.getWindow().findViewById(android.R.id.button1);
         Button button2 = (Button) builderDialog.getWindow().findViewById(android.R.id.button2);
-        if(textView != null)
+        if (textView != null)
             textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
         alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        if (dataChangedObserver != null) dataChangedObserver.stopObserver();
     }
 }

@@ -30,11 +30,35 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         archivesBaseName = "eZAZI " + versionName + " - " + getDateTime()
+
+        def serverUrl = "SERVER_URL"
+        def realTimeFbUrl = "REAL_TIME_FB_URL"
+        def liveKitUrl = "LIVE_KIT_URL"
+
+        def endPointPropertyFile = file('../endpoint.properties')
+        def property = new Properties()
+
+        if (endPointPropertyFile.canRead()) {
+            property.load(new FileInputStream(endPointPropertyFile))
+        }
+
+        String devServer = property['DEV_SERVER_URL'].toString()
+        String devRealTimeFb = property['DEV_REAL_TIME_FB_URL'].toString()
+        String devLiveKit = property['DEV_LIVE_KIT_URL'].toString()
+
+        println("SERVER_URL ----> $devServer")
+        println("REAL_TIME_FB_URL ------> $devRealTimeFb")
+        println("LIVE_KIT_URL ------> $devLiveKit")
+
+        buildConfigField "String", serverUrl, devServer
+        buildConfigField "String", realTimeFbUrl, devRealTimeFb
+        buildConfigField 'String', liveKitUrl, devLiveKit
     }
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
     buildTypes {
         release {
             lintOptions {
