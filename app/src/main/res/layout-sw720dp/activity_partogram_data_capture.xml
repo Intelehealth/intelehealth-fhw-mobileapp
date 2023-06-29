@@ -73,7 +73,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:contentDescription="@string/chat_fab"
-        android:src="@drawable/ic_baseline_videocam_24"
+        android:src="@drawable/ic_video_call"
         app:backgroundTint="@color/colorYellow_2" />
 
 

@@ -51,7 +51,7 @@ import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringEncryption;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
-import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;

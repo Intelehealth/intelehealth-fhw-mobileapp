@@ -73,8 +73,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.apprtc.data.Manager;
-import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientAdapter;
 import org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageActivity;
@@ -120,6 +118,10 @@ import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.klivekit.utils.RtcUtilsKt;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -293,6 +295,10 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     in.putExtra("isInComingRequest", true);
                     in.putExtra("doctorname", doctorName);
                     in.putExtra("nurseId", nurseId);
+
+                    RtcArgs args = remoteMessage.getParcelable(RtcUtilsKt.RTC_ARGS);
+                    args.setIncomingCall(true);
+                    in.putExtra(RtcUtilsKt.RTC_ARGS, args);
 
                     int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
                     if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {

@@ -20,7 +20,7 @@ android {
     }
     defaultConfig {
         applicationId "org.intelehealth.ezazi"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 33
         versionCode 56
         buildToolsVersion('29.0.2')

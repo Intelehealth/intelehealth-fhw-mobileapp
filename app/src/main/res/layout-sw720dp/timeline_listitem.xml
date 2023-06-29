@@ -64,7 +64,6 @@
                 android:id="@+id/vl_1"
                 android:layout_width="2dp"
                 android:layout_height="160dp"
-                android:layout_above="@+id/vl_2"
                 android:layout_marginStart="31dp"
                 android:layout_toEndOf="@id/time1"
                 android:background="#33000000" />
@@ -131,7 +130,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:background="@drawable/ic_baseline_lens_24_green"
+                        android:background="@drawable/ic_edit"
                         android:padding="8dip"
                         android:src="@drawable/ic_mode_edit_white_48px" />
                 </RelativeLayout>
@@ -165,8 +164,6 @@
                 android:id="@+id/vl_2"
                 android:layout_width="2dp"
                 android:layout_height="130dp"
-                android:layout_above="@+id/vl_3"
-                android:layout_below="@+id/vl_1"
                 android:layout_marginStart="21dp"
                 android:layout_toEndOf="@id/time2"
                 android:background="#33000000" />
@@ -244,8 +241,6 @@
                 android:id="@+id/vl_3"
                 android:layout_width="2dp"
                 android:layout_height="130dp"
-                android:layout_above="@+id/vl_4"
-                android:layout_below="@+id/vl_2"
                 android:layout_marginStart="21dp"
                 android:layout_toEndOf="@id/time3"
                 android:background="#33000000" />
@@ -322,8 +317,6 @@
                 android:id="@+id/vl_4"
                 android:layout_width="2dp"
                 android:layout_height="130dp"
-                android:layout_below="@+id/vl_3"
-                android:layout_alignBottom="@id/frame4"
                 android:layout_marginStart="21dp"
                 android:layout_toEndOf="@id/time4"
                 android:background="#33000000" />

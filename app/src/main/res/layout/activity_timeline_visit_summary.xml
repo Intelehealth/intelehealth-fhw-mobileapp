@@ -62,7 +62,7 @@
         android:layout_marginBottom="40dip"
         android:layout_toStartOf="@+id/btnFlipCamera"
         android:contentDescription="@string/chat_fab"
-        android:src="@drawable/ic_baseline_videocam_24"
+        android:src="@drawable/ic_video_call"
         app:backgroundTint="@color/colorYellow_2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

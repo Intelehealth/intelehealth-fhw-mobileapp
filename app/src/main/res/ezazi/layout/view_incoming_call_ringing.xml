@@ -45,7 +45,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_baseline_call_24_white" />
+                app:srcCompat="@drawable/ic_call_accept" />
         </com.skyfishjy.library.RippleBackground>
 
         <LinearLayout
@@ -67,10 +67,10 @@
                     android:layout_width="70dip"
                     android:layout_height="70dip"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/ic_baseline_lens_24_red"
+                    android:background="@color/red"
                     android:contentDescription="@string/call_end_button"
                     android:padding="16dip"
-                    app:srcCompat="@drawable/ic_baseline_call_24_white" />
+                    app:srcCompat="@drawable/ic_call_end" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,10 +95,10 @@
                     android:layout_width="70dip"
                     android:layout_height="70dip"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/ic_baseline_lens_24_green"
+                    android:background="@color/green"
                     android:contentDescription="@string/call_end_button"
                     android:padding="16dip"
-                    app:srcCompat="@drawable/ic_baseline_call_24_white" />
+                    app:srcCompat="@drawable/ic_call_accept" />
 
                 <TextView
                     android:layout_width="wrap_content"

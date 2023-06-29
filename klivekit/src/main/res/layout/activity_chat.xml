@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="org.intelehealth.apprtc.ChatActivity">
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/header_ll"
@@ -175,7 +174,7 @@
         <ImageView
             android:layout_width="100dip"
             android:layout_height="100dip"
-            app:srcCompat="@drawable/message_icon" />
+            app:srcCompat="@drawable/vc_new_chat_icon" />
 
         <TextView
             android:id="@+id/empty_tv"
