@@ -27,6 +27,7 @@ import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
@@ -222,7 +223,7 @@ public class CardGenerationEngine {
             Intent intent = new Intent(IntelehealthApplication.getAppContext(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(IntelehealthApplication.getAppContext(), 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    NotificationUtils.getPendingIntentFlag());
         }
         String channelId = "CHANNEL_ID_1";
 

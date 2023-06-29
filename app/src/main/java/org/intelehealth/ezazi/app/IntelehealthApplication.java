@@ -118,7 +118,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
+        // Test 1 G
     }
 
     @Override

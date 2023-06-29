@@ -41,7 +41,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-            ?: throw NullPointerException("args is null!")
+            ?: throw NullPointerException("arg is null!")
         VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
     }
 

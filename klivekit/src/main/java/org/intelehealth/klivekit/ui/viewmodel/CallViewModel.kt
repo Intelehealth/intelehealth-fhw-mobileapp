@@ -65,14 +65,14 @@ open class CallViewModel(
         videoTrackCaptureDefaults = LocalVideoTrackOptions(
             deviceId = "",
             position = CameraPosition.FRONT,
-            captureParams = VideoPreset43.HD.capture,
+            captureParams = VideoPreset169.QVGA.capture,
         ),
         audioTrackPublishDefaults = AudioTrackPublishDefaults(
             audioBitrate = 20_000,
             dtx = true,
         ),
         videoTrackPublishDefaults = VideoTrackPublishDefaults(
-            videoEncoding = VideoPreset43.HD.encoding,
+            videoEncoding = VideoPreset169.QVGA.encoding,
         ),
         adaptiveStream = true
     )
@@ -470,11 +470,11 @@ open class CallViewModel(
         withContext(coroutineContext) {
             remoteParticipant = room.remoteParticipants.values.firstOrNull()
             mutableRemoteVideoTrack.postValue(remoteParticipant?.let { getVideoTrack(it) })
-            remoteParticipant?.let { observeSpeaking(it) }
-            remoteParticipant?.let { getRemoteParticipantIdentity(it) }
+//            remoteParticipant?.let { observeSpeaking(it) }
+//            remoteParticipant?.let { getRemoteParticipantIdentity(it) }
 //            remoteParticipant?.let { observeRemoteParticipantAudioTrack(it) }
-            remoteParticipant?.let { checkRemoteParticipantConnectivity(it) }
-            remoteParticipant?.let { updateVideoTrack(it) }
+//            remoteParticipant?.let { checkRemoteParticipantConnectivity(it) }
+//            remoteParticipant?.let { updateVideoTrack(it) }
         }
     }
 

@@ -153,7 +153,7 @@ public class NotificationUtils {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        if(time == 5)
+        if (time == 5)
             notification5MinsBefore(mcontext, patientName, intent);
         else if (time == 15)
             notification15MinsBefore(mcontext, patientName, intent);
@@ -231,8 +231,7 @@ public class NotificationUtils {
     }
 
     public static int getPendingIntentFlag() {
-        return PendingIntent.FLAG_UPDATE_CURRENT;
-//        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-//                ? PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                ? PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
     }
 }

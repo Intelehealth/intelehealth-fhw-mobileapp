@@ -33,9 +33,9 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
     private static final String TAG = "EpartogramViewActivity";
 
     private String patientUuid, visitUuid;
-    private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#//";
+    private static final String URL = "https://ezazi.intelehealth.org/intelehealth/index.html#/epartogram/";
     //    https://ezazi.intelehealth.org/intelehealth/index.html#/dashboard/visit-summary/af35030a-cbf0-426c-9c61-4b9677ccb3b2
-    // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";epartogram
+    // "df07db0d-d9b9-4597-a9e5-d62d3cff3d45/705397d4-0c62-4f26-bd53-2dd8523d5d1b";
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
     private CustomProgressDialog customProgressDialog;
@@ -59,16 +59,16 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
 
         webView.setWebViewClient(webViewClient);
         webView.getSettings().setJavaScriptEnabled(true);
-//        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         }
-//        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setUseWideViewPort(true);
 
-//        webView.getSettings().setSupportZoom(true);
-//        webView.getSettings().setBuiltInZoomControls(true);
-//        webView.getSettings().setDisplayZoomControls(false);
-//        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setDomStorageEnabled(true);
 
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
@@ -80,7 +80,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
 
     }
 
-    private final WebViewClient webViewClient = new WebViewClient(){
+    private final WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onPageFinished(WebView view, String url) {
             mySwipeRefreshLayout.setRefreshing(false);
@@ -88,6 +88,7 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
                 customProgressDialog.dismiss();
             }
         }
+
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             Log.i("WEB_VIEW_TEST", "error code:" + errorCode);

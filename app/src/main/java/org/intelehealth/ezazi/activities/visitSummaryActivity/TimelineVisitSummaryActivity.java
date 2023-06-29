@@ -62,6 +62,7 @@ import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
+import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -1304,7 +1305,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
         // to set different alarms for different patients.
         // vistiuuid: 0 - 4 index for stage 2
         alarmManager.cancel(pendingIntent);
@@ -1316,7 +1317,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag());
         // to set different alarms for different patients.
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
@@ -1413,7 +1414,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
         // to set different alarams for different patients.
 
         /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -1439,7 +1440,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_30min " + visitUuid.replaceAll("[^\\d]", ""));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, PendingIntent.FLAG_UPDATE_CURRENT); // to set different alarams for different patients.
+                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag()); // to set different alarams for different patients.
 
         /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {

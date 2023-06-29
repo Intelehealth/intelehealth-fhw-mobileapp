@@ -23,6 +23,7 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
+import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -96,7 +97,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     chatIntent.putExtra("fromUuid", fromUUId);
                     chatIntent.putExtra("toUuid", toUUId);
                     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
+                            NotificationUtils.getPendingIntentFlag());
                     sendNotification(remoteMessage, pendingIntent);
 
 
@@ -147,7 +148,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+                    NotificationUtils.getPendingIntentFlag());
         }
         String channelId = "CHANNEL_ID";
 

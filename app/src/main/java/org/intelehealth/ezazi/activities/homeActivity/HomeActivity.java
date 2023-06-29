@@ -112,6 +112,7 @@ import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
+import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringUtils;
@@ -702,7 +703,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                12345, new Intent(), getPendingIntentFlag());
+                12345, new Intent(), NotificationUtils.getPendingIntentFlag());
         // to set different alarams for different patients.
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -710,12 +711,6 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),
                     30 * 1000, pendingIntent);
         }
-    }
-
-    private int getPendingIntentFlag() {
-        return PendingIntent.FLAG_UPDATE_CURRENT;
-//        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-//                ? PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
     }
 
     private void showPatientChoiceDialog(ArrayList<MultiChoiceItem> items) {
