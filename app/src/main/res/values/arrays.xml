@@ -1437,7 +1437,7 @@
     </string-array>
 
     <string-array name="blood_group_kn">
-        <item>कृपया निवडा</item>
+        <item>ದಯವಿಟ್ಟು ಆಯ್ಕೆ ಮಾಡು</item>
         <item>A+</item>
         <item>A-</item>
         <item>B+</item>
@@ -1449,7 +1449,7 @@
     </string-array>
 
     <string-array name="blood_group_mr">
-        <item>ದಯವಿಟ್ಟು ಆಯ್ಕೆ ಮಾಡು</item>
+        <item>कृपया निवडा</item>
         <item>A+</item>
         <item>A-</item>
         <item>B+</item>
