@@ -120,11 +120,10 @@ public class FollowUpNotificationWorker extends Worker {
                 "INNER JOIN tbl_obs O ON O.encounteruuid = E.uuid AND " +
                 "O.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
                 "WHERE V.enddate IS NOT NULL " +
-                // "and O.value != ('<b>General exams: </b><br/>•  Do you want us to follow-up? - No.') " +
                 "and VA.visit_attribute_type_uuid != '0e798578-96c1-450b-9927-52e45485b151' " + // Note: adding this coz somehow speciality coming as Telemed loca 1.
-                // "GROUP BY V.patientuuid " +
+                "and instr(O.value, 'Do you want us to follow-up? - No') <= 0 " +    // this will remove all the strings containging No answer for followup.
                 "ORDER BY V.startdate DESC";
-
+            // Note: filtering query as much as possible to speed you data fetching.
 
         final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
