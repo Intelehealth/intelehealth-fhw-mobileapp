@@ -2310,8 +2310,20 @@ public final class StringUtils {
                 case "Bihar":
                     val = "बिहार";
                     break;
+                case "Chandigarh (UT)":
+                    val = "चंडीगढ़";
+                    break;
                 case "Chhattisgarh":
                     val = "छत्तीसगढ";
+                    break;
+                case "Dadra and Nagar Haveli (UT)":
+                    val = "दादरा और नगर हवेली";
+                    break;
+                case "Daman and Diu (UT)":
+                    val = "दमन और दीव";
+                    break;
+                case "Delhi (NCT)":
+                    val = "दिल्ली";
                     break;
                 case "Goa":
                     val = "गोवा";
@@ -2320,13 +2332,13 @@ public final class StringUtils {
                     val = "गुजरात";
                     break;
                 case "Haryana":
-                    val = "हरयाणा";
+                    val = "हरियाणा";
                     break;
                 case "Himachal Pradesh":
                     val = "हिमाचल प्रदेश";
                     break;
-                case "Jammu &amp; Kashmir":
-                    val = "जम्मू कश्मीर";
+                case "Jammu and Kashmir":
+                    val = "जम्मू और कश्मीर";
                     break;
                 case "Jharkhand":
                     val = "झारखंड";
@@ -2336,6 +2348,9 @@ public final class StringUtils {
                     break;
                 case "Kerala":
                     val = "केरल";
+                    break;
+                case "Lakshadweep (UT)":
+                    val = "लक्षद्वीप";
                     break;
                 case "Madhya Pradesh":
                     val = "मध्य प्रदेश";
@@ -2356,7 +2371,10 @@ public final class StringUtils {
                     val = "नगालैंड";
                     break;
                 case "Odisha":
-                    val = "उड़ीसा";
+                    val = "ओडिशा";
+                    break;
+                case "Puducherry (UT)":
+                    val = "पुडुचेरी (यूटी)";
                     break;
                 case "Punjab":
                     val = "पंजाब";
@@ -2385,7 +2403,8 @@ public final class StringUtils {
                 case "West Bengal":
                     val = "पश्चिम बंगाल";
                     break;
-//us  State
+
+                    //us states
 
                 case "Alabama":
                     val = "अलाबामा";

@@ -1113,7 +1113,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             state = getResources().getString(R.string.no_state_added);
         }
-        patientstate.setText(mSwitch_hi_en_te_State_edit(state,sessionManager.getAppLanguage()));
+        patientstate.setText(getStateTranslated(state,sessionManager.getAppLanguage()));
 
         // setting district and city
         String[] district_city = patientDTO.getCityvillage().trim().split(":");
@@ -1125,7 +1125,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
 
         if (district != null) {
-            patientdistrict.setText(getDistrictTranslated(state, district));
+            patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
         } else {
             patientdistrict.setText(getResources().getString(R.string.no_district_added));
         }
@@ -1394,7 +1394,26 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
     }
 
-    private String getDistrictTranslated(String state, String district) {
+    private String getStateTranslated(String state, String language) {
+        StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
+
+        String desiredVal = state;
+
+        for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
+            String sName = mStateDistMaster.getStateDataList().get(i).getState();
+            if (sName.equalsIgnoreCase(state)) {
+                if(language.equalsIgnoreCase("hi"))
+                    desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
+                else if(language.equalsIgnoreCase("en"))
+                    desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
+                break;
+            }
+        }
+
+        return desiredVal;
+    }
+
+    private String getDistrictTranslated(String state, String district, String language) {
         StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
         List<DistData> distDataList = new ArrayList<>();
         String desiredVal = district;
@@ -1409,7 +1428,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         for (int i = 0; i <= distDataList.size(); i++) {
             if(distDataList.get(i).getName().equalsIgnoreCase(district)) {
-                desiredVal = distDataList.get(i).getNameHindi();
+                if(language.equalsIgnoreCase("hi"))
+                    desiredVal = distDataList.get(i).getNameHindi();
+                else if(language.equalsIgnoreCase("en"))
+                    desiredVal = distDataList.get(i).getName();
                 break;
             }
         }
