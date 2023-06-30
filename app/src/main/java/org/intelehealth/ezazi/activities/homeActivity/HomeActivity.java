@@ -708,8 +708,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),
-                    30 * 1000, pendingIntent);
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    Calendar.getInstance().getTimeInMillis(),
+                    30 * 1000,
+                    pendingIntent
+            );
         }
     }
 
@@ -1586,10 +1590,10 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
-//        if (CallListenerBackgroundService.isInstanceCreated()) {
-//            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-//            context.stopService(serviceIntent);
-//        }
+        if (CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            context.stopService(serviceIntent);
+        }
     }
 
 
@@ -1934,11 +1938,11 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
 
     private void requestPermission() {
-//        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-//        if (!CallListenerBackgroundService.isInstanceCreated()) {
-//            //CallListenerBackgroundService.getInstance().stopForegroundService();
-//            context.startService(serviceIntent);
-//        }
+        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            //CallListenerBackgroundService.getInstance().stopForegroundService();
+            context.startService(serviceIntent);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -1954,11 +1958,11 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
-//        if (!CallListenerBackgroundService.isInstanceCreated()) {
-//            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-//            context.startService(serviceIntent);
-//        }
+        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            context.startService(serviceIntent);
+        }
     }
 
     @Override

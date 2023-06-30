@@ -104,85 +104,85 @@ public class CallListenerBackgroundService extends Service {
         //do heavy work on a background thread
         startCounterJob();
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
-        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL");
-        if (myRef != null)
-            //myRef.setValue("Hello, World!");
-            // Read from the database
-            myRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    HashMap value = (HashMap) dataSnapshot.getValue();
-                    //{doctorName=Demo doctor1, nurseId=8d61869b-14d7-4c16-9c7a-a6f1aaaa3c0d, roomId=df412e7e-9020-49ed-9712-1937ad46af9b, timestamp=1628564570611}
-                    Log.d(TAG, "Value is: " + value);
-                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    // Vibrate for 500 milliseconds
-               /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-                } else {
-                    //deprecated in API 26
-                    v.vibrate(500);
-                }*/
-                    if (value == null) return;
-                    Map<String, String> log = new HashMap<>();
-                    log.put("TAG", "CallListenerBackgroundService");
-                    log.put("action", "onDataChange");
-                    log.put("value", new Gson().toJson(value));
-                    FirebaseRealTimeDBUtils.logData(log);
-                    String device_token = String.valueOf(value.get("device_token"));
-                   // if (!device_token.equals(refreshedFCMTokenID)) return;  // commented for ezazi only
-                    Bundle bundle = new Bundle();
-                    bundle.putString("doctorName", String.valueOf(value.get("doctorName")));
-                    bundle.putString("nurseId", String.valueOf(value.get("nurseId")));
-                    bundle.putString("roomId", String.valueOf(value.get("roomId")));
-                    bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
-                    bundle.putString("actionType", "VIDEO_CALL");
-
-                    boolean isOldNotification = false;
-                    if (value.containsKey("timestamp")) {
-                        String timestamp = String.valueOf(value.get("timestamp"));
-
-                        Date date = new Date();
-                        if (timestamp != null) {
-                            date.setTime(Long.parseLong(timestamp));
-                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
-                            dateFormatter.setTimeZone(TimeZone.getDefault());
-
-                            try {
-                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
-                                long seconds = 0;
-                                if (ourDate != null) {
-                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
-                                }
-                                Log.v(TAG, "Current time - " + new Date());
-                                Log.v(TAG, "Notification time - " + ourDate);
-                                Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 30) {
-                                    isOldNotification = true;
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    if (!isOldNotification) {
-                        Intent intent = new Intent(CallListenerBackgroundService.this, CallRTCNotifyReceiver.class);
-                        intent.putExtras(bundle);
-                        intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
-                        sendBroadcast(intent);
-                    }
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Failed to read value
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
+//        FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
+//        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL");
+//        if (myRef != null)
+//            //myRef.setValue("Hello, World!");
+//            // Read from the database
+//            myRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    // This method is called once with the initial value and again
+//                    // whenever data at this location is updated.
+//                    HashMap value = (HashMap) dataSnapshot.getValue();
+//                    //{doctorName=Demo doctor1, nurseId=8d61869b-14d7-4c16-9c7a-a6f1aaaa3c0d, roomId=df412e7e-9020-49ed-9712-1937ad46af9b, timestamp=1628564570611}
+//                    Log.d(TAG, "Value is: " + value);
+//                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//                    // Vibrate for 500 milliseconds
+//               /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+//                } else {
+//                    //deprecated in API 26
+//                    v.vibrate(500);
+//                }*/
+//                    if (value == null) return;
+//                    Map<String, String> log = new HashMap<>();
+//                    log.put("TAG", "CallListenerBackgroundService");
+//                    log.put("action", "onDataChange");
+//                    log.put("value", new Gson().toJson(value));
+//                    FirebaseRealTimeDBUtils.logData(log);
+//                    String device_token = String.valueOf(value.get("device_token"));
+//                   // if (!device_token.equals(refreshedFCMTokenID)) return;  // commented for ezazi only
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("doctorName", String.valueOf(value.get("doctorName")));
+//                    bundle.putString("nurseId", String.valueOf(value.get("nurseId")));
+//                    bundle.putString("roomId", String.valueOf(value.get("roomId")));
+//                    bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
+//                    bundle.putString("actionType", "VIDEO_CALL");
+//
+//                    boolean isOldNotification = false;
+//                    if (value.containsKey("timestamp")) {
+//                        String timestamp = String.valueOf(value.get("timestamp"));
+//
+//                        Date date = new Date();
+//                        if (timestamp != null) {
+//                            date.setTime(Long.parseLong(timestamp));
+//                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+//                            dateFormatter.setTimeZone(TimeZone.getDefault());
+//
+//                            try {
+//                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
+//                                long seconds = 0;
+//                                if (ourDate != null) {
+//                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+//                                }
+//                                Log.v(TAG, "Current time - " + new Date());
+//                                Log.v(TAG, "Notification time - " + ourDate);
+//                                Log.v(TAG, "seconds - " + seconds);
+//                                if (seconds >= 30) {
+//                                    isOldNotification = true;
+//                                }
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//                    if (!isOldNotification) {
+//                        Intent intent = new Intent(CallListenerBackgroundService.this, CallRTCNotifyReceiver.class);
+//                        intent.putExtras(bundle);
+//                        intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
+//                        sendBroadcast(intent);
+//                    }
+//
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    // Failed to read value
+//                    Log.w(TAG, "Failed to read value.", error.toException());
+//                }
+//            });
 
 
         return START_NOT_STICKY;

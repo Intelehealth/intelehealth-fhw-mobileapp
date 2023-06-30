@@ -12,7 +12,7 @@ public class UuidDictionary {
     public static final String PHYSICAL_EXAMINATION = "e1761e85-9b50-48ae-8c4d-e6b7eeeba084";
     public static final String HEIGHT = "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String WEIGHT = "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-//    public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    //    public static final String PULSE = "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 //    public static final String SYSTOLIC_BP = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 //    public static final String DIASTOLIC_BP = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 //    public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";

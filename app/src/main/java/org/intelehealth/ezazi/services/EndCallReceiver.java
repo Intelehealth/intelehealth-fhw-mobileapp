@@ -18,17 +18,17 @@ public class EndCallReceiver extends BroadcastReceiver {
             return;
         }
 
-//        String state = bundle.getString(TelephonyManager.EXTRA_STATE);
+        String state = bundle.getString(TelephonyManager.EXTRA_STATE);
 
-//        if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-//            Intent serviceIntent = new Intent(context, CallListenerBackgroundService.class);
-//
-//            Log.v("EndCallReceiver", "Call ended");
-//            if (CallListenerBackgroundService.isInstanceCreated()) {
-//                context.stopService(serviceIntent);
-//            }
-//            context.startService(serviceIntent);
-//        }
+        if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+            Intent serviceIntent = new Intent(context, CallListenerBackgroundService.class);
+
+            Log.v("EndCallReceiver", "Call ended");
+            if (CallListenerBackgroundService.isInstanceCreated()) {
+                context.stopService(serviceIntent);
+            }
+            context.startService(serviceIntent);
+        }
 
     }
 }
