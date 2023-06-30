@@ -173,6 +173,8 @@ public class PhysicalExam extends Node {
                     titles.add(node.getDisplay_bengali() + " : " + subNode.getDisplay_bengali());
                 else if (appLanguage.equalsIgnoreCase("kn"))
                     titles.add(node.getDisplay_kannada() + " : " + subNode.getDisplay_kannada());
+                else if (appLanguage.equalsIgnoreCase("mr"))
+                    titles.add(node.getDisplay_marathi() + " : " + subNode.getDisplay_marathi());
                 else if (appLanguage.equalsIgnoreCase("or"))
                     titles.add(node.getDisplay_oriya() + " : " + subNode.getDisplay_oriya());
                 else if (appLanguage.equalsIgnoreCase("gu"))
@@ -343,6 +345,8 @@ public class PhysicalExam extends Node {
                     display_REG = node.getDisplay_bengali();
                 else if (appLanguage.equalsIgnoreCase("kn"))
                     display_REG = node.getDisplay_kannada();
+                else if (appLanguage.equalsIgnoreCase("mr"))
+                    display_REG = node.getDisplay_marathi();
                 else if (appLanguage.equalsIgnoreCase("or"))
                     display_REG = node.getDisplay_oriya();
                 else if (appLanguage.equalsIgnoreCase("gu"))
