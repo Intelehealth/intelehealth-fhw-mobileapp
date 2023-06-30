@@ -21,6 +21,20 @@
         android:orientation="vertical">
 
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/prescription_status"
+            android:text="@string/prescription_pending"
+            android:textSize="14sp"
+            android:fontFamily="@font/lato_regular"
+            android:layout_gravity="end"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="@dimen/padding_card"
+            android:background="@drawable/presc_status_red" />
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView_patient_details"
             android:layout_width="match_parent"

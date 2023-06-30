@@ -1630,4 +1630,9 @@
     <string name="aid_order_type3">Type 3. Cover Medication Expenses:</string>
     <string name="aid_order_type4">Type 4. Cover Surgical Expenses:</string>
     <string name="aid_order_type5">Type 5. Cash Assistance: </string>
+
+    <string name="prescription_pending">Prescription Pending</string>
+    <string name="prescription_in_progress">Prescription In-Progress</string>
+    <string name="prescription_received">Prescription Received</string>
+
 </resources>

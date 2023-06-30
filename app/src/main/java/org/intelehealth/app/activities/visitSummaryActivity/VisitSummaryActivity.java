@@ -272,6 +272,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     String baseDir;
     String filePathPhyExam;
     File obsImgdir;
+    TextView presc_status;
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
@@ -348,7 +349,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private TextView physcialExaminationDownloadText;
 
     ImageView ivPrescription;
-    private String hasPrescription = "";
+    private String hasPrescription = "", hasPartialPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
    /* TextView tv_device_selected;
@@ -553,7 +554,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
-//            hasPrescription = intent.getStringExtra("hasPrescription");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
             physicalExams.clear();
@@ -632,9 +632,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         });
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
-//we can remove by data binding
-
-        //we can remove by data binding
         mDoctorAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBooking);
         mCancelAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingCancel);
         mInfoAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingInfo);
@@ -674,7 +671,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
         saveButton = findViewById(R.id.card_save);
-
+        presc_status = findViewById(R.id.prescription_status);
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
@@ -3462,7 +3459,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"value", " conceptuuid", "comment"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -3506,13 +3503,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor != null && visitCursor.moveToFirst()) {
                     do {
-                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        if (dbValue.startsWith("{")) {
-                            AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                        } else {
-                            parseData(dbConceptID, dbValue);
+                        String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
+                        if(comment==null || comment.trim().isEmpty()) {
+                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                            if (dbValue.startsWith("{")) {
+                                AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                                parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                            } else {
+                                parseData(dbConceptID, dbValue);
+                            }
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -3530,13 +3530,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         try {
             if (encountercursor != null && encountercursor.moveToFirst()) {
                 do {
-                    String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
-                    String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                    if (dbValue.startsWith("{")) {
-                        AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                    } else {
-                        parseData(dbConceptID, dbValue);
+                    String comment = encountercursor.getString(encountercursor.getColumnIndex("comment"));
+                    if(comment==null || comment.trim().isEmpty()) {
+                        String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
+                        String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
+                        if (dbValue.startsWith("{")) {
+                            AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                        } else {
+                            parseData(dbConceptID, dbValue);
+                        }
                     }
                 } while (encountercursor.moveToNext());
             }
@@ -3725,14 +3728,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
-                Log.i(TAG, "parseData: val:" + value);
-                Log.i(TAG, "parseData: rx" + rxReturned);
                 if (!rxReturned.trim().isEmpty()) {
                     rxReturned = rxReturned + "\n\n" + value;
                 } else {
                     rxReturned = value;
                 }
-                Log.i(TAG, "parseData: rxfin" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
@@ -3860,6 +3860,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     ClsDoctorDetails objClsDoctorDetails;
 
     private void parseDoctorDetails(String dbValue) {
+        hasPrescription = "true";
+        presc_status.setText(getResources().getString(R.string.prescription_received));
+        presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_green));
+        hasPartialPrescription = "false";
         Gson gson = new Gson();
         objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
@@ -4355,20 +4359,25 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     followUpDateTextView.setText("");
                     followUpDateCard.setVisibility(View.GONE);
                 }
-                String[] columns = {"value", " conceptuuid"};
+                String[] columns = {"value", " conceptuuid", "comment"};
                 String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
                 String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor.moveToFirst()) {
                     do {
-                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        hasPrescription = "true"; //if any kind of prescription data is present...
-                        if (dbValue.startsWith("{")) {
-                            AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                        } else {
-                            parseData(dbConceptID, dbValue);
+                        String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
+                        if(comment==null || comment.trim().isEmpty()) {
+                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                            hasPartialPrescription = "true"; //if any kind of prescription data is present...
+                            presc_status.setText(getResources().getString(R.string.prescription_in_progress));
+                            presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
+                            if (dbValue.startsWith("{")) {
+                                AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                                parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                            } else {
+                                parseData(dbConceptID, dbValue);
+                            }
                         }
                     } while (visitCursor.moveToNext());
                 }
@@ -4414,20 +4423,25 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
         encounterCursor.close();
-        String[] columns = {"value", " conceptuuid"};
+        String[] columns = {"value", " conceptuuid", "comment"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                hasPrescription = "true"; //if any kind of prescription data is present...
-                if (dbValue.startsWith("{")) {
-                    AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
-                } else {
-                    parseData(dbConceptID, dbValue);
+                String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
+                if(comment==null || comment.trim().isEmpty()) {
+                    String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                    String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                    hasPartialPrescription= "true"; //if any kind of prescription data is present...
+                    presc_status.setText(getResources().getString(R.string.prescription_in_progress));
+                    presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
+                    if (dbValue.startsWith("{")) {
+                        AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
+                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue());
+                    } else {
+                        parseData(dbConceptID, dbValue);
+                    }
                 }
             } while (visitCursor.moveToNext());
         }
@@ -4491,15 +4505,18 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             dischargeOrderReturned = "";
             aidOrderReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid"};
+            String[] columns = {"value", " conceptuuid", "comment"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
             if (visitCursor.moveToFirst()) {
                 do {
-                    String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                    String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue);
+                    String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
+                    if(comment==null || comment.trim().isEmpty()) {
+                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        parseData(dbConceptID, dbValue);
+                    }
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();

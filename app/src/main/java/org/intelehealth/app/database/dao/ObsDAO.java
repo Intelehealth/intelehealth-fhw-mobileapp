@@ -66,6 +66,7 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTOS.getConceptuuid());
             values.put("value", obsDTOS.getValue());
             values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
+            values.put("comment", obsDTOS.getComment());
             values.put("modified_date", obsDTOS.getEncounterTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");

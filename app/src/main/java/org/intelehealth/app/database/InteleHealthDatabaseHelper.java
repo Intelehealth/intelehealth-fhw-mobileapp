@@ -150,6 +150,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "creator TEXT," +
             "voided TEXT DEFAULT '0'," +
             "obsservermodifieddate TEXT," +
+            "comment TEXT," +
             "modified_date TEXT," +
             "created_date TEXT DEFAULT CURRENT_TIMESTAMP ," +
             "sync TEXT DEFAULT 'false' " +

@@ -28,6 +28,9 @@ public class ObsDTO {
     @SerializedName("creator")
     @Expose
     private String creator;
+    @SerializedName("comment")
+    @Expose
+    private String comment;
     @SerializedName("voided")
     @Expose
     private Integer voided;
@@ -107,6 +110,14 @@ public class ObsDTO {
 
     public void setObservationTime(String observationTime) {
         this.observationTime = observationTime;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     JSONObject jsonObject = new JSONObject();
