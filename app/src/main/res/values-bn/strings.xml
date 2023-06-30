@@ -744,5 +744,6 @@
     <string name="edit">Edit</string>
     <string name="references">References:</string>
     <string name="already_selected_lbl">Already selected!</string>
+    <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
 
 </resources>

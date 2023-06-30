@@ -304,7 +304,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         else skipButton.setVisibility(View.GONE);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
-            editText.setText(node.getLanguage());
+            if (node.getLanguage().contains(" : "))
+                editText.setText(node.getLanguage().split(" : ")[1]);
+            else
+                editText.setText(node.getLanguage());
+
         }
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,12 +329,31 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                        if (node.getLanguage().contains("_")) {
+
+                        if (node.isDataCaptured()) {
+                            if (node.getLanguage().contains(" : ")) {
+                                node.addLanguage(node.getLanguage().split(":")[0] + " : " + editText.getText().toString());
+                            } else {
+                                node.addLanguage(editText.getText().toString());
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                        } else {
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                            } else if (node.getLanguage().contains("%")) {
+                                node.addLanguage(editText.getText().toString());
+                            } else {
+                                node.addLanguage(node.getLanguage() + " : " + editText.getText().toString());
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                        }
+
+                       /* if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
                         } else {
                             node.addLanguage(node.getText().replace("[Describe]", "") + " : " + editText.getText().toString());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
+                        }*/
                         node.setSelected(true);
                         node.setDataCaptured(true);
 

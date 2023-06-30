@@ -184,4 +184,14 @@ public class VisitUtils {
         }
     }
 
+    public static String getTranslatedAssociatedSymptomQString(String localeCode) {
+        if (localeCode.equalsIgnoreCase("hi")) {
+            return "क्या आपको निम्न लक्षण है";
+        } else if (localeCode.equalsIgnoreCase("or")) {
+            return "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?";
+        } else {
+            return "Do you have the following symptom(s)?";
+        }
+    }
+
 }

@@ -61,6 +61,12 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             genericViewHolder.index = position;
             genericViewHolder.questionTextView.setText(genericViewHolder.summaryData.getQuestion());
             genericViewHolder.answerTextView.setText(genericViewHolder.summaryData.getDisplayValue());
+            if(genericViewHolder.summaryData.getDisplayValue().isEmpty() || genericViewHolder.summaryData.getDisplayValue()==null){
+                genericViewHolder.answerTextView.setVisibility(View.GONE);
+            }else {
+                genericViewHolder.answerTextView.setVisibility(View.VISIBLE);
+
+            }
 
         }
     }

@@ -1440,5 +1440,6 @@
     <string name="associated_symptoms_header_visit_creation">जुड़े लक्षण</string>
     <string name="edit">एडिट</string>
     <string name="references">निर्देश:</string>
-    <string name="already_selected_lbl">Already selected!</string>
+    <string name="already_selected_lbl">पहले से ही चयनित!</string>
+    <string name="please_submit_to_proceed_next_step">कृपया अगले चरण पर आगे बढ़ने के लिए सबमिट करें</string>
 </resources>

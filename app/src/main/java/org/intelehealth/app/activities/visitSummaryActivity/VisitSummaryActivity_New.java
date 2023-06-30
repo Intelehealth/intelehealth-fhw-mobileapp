@@ -98,6 +98,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -115,6 +116,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -804,7 +806,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         });
     }
-private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
+
+    private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
+
     private void setViewsData() {
         physicalDoumentsUpdates();
 
@@ -960,18 +964,24 @@ private String complaintLocalString = "", physicalExamLocaleString = "", patient
                     e.printStackTrace();
                 }
             }
+            Log.v(TAG, "isInOldFormat: " + isInOldFormat);
             Log.v(TAG, "complaint: " + value);
             String valueArray[] = null;
-            if (isInOldFormat)
+            boolean isAssociateSymptomFound = false;
+            if (isInOldFormat) {
                 valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
-            else {
+                isAssociateSymptomFound = valueArray.length >= 2;
+            } else {
                 String c1 = "►" + getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage());
                 Log.v(TAG, "complaint c1: " + c1);
                 valueArray = value.split(c1);
-                valueArray[1] = valueArray[1].split("::")[1];
+                isAssociateSymptomFound = valueArray.length >= 2;
+                if (isAssociateSymptomFound)
+                    valueArray[1] = valueArray[1].split("::")[1];
             }
+
             Log.v(TAG, "complaint: " + valueArray[0]);
-            Log.v(TAG, "complaint associated: " + valueArray[1]);
+            Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
             String[] headerchips = valueArray[0].split("►");
             List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
             List<String> cc_list = new ArrayList<>();
@@ -991,19 +1001,30 @@ private String complaintLocalString = "", physicalExamLocaleString = "", patient
 
             if (valueArray[0] != null)
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+            if (isAssociateSymptomFound) {
+                if (isInOldFormat) {
 
-            if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
-                        .split("• Patient denies -<br/>");
 
-                // index 0 - Reports
-                String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
-                        .split("• Patient reports -<br/>");
-                patientReports = reports[1];
-                patientDenies = assoValueBlock[1];
-                complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-            } else if (valueArray[0].contains("• Patient reports")) {
-                // todo: handle later -> comment added on 14 nov 2022
+                    if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+                        String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+                                .split("• Patient denies -<br/>");
+
+                        // index 0 - Reports
+                        String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
+                                .split("• Patient reports -<br/>");
+                        patientReports = reports[1];
+                        patientDenies = assoValueBlock[1];
+                        complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+                    } else if (valueArray[0].contains("• Patient reports")) {
+                        // todo: handle later -> comment added on 14 nov 2022
+                    }
+
+                } else {
+                    String associatedSymptomsString = valueArray[1];//.split("::")[1];
+                    String[] sections = associatedSymptomsString.split(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()));
+                    patientReports = sections[0];
+                    patientDenies = sections[1];
+                }
             }
 
             // todo: testing:

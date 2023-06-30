@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class DateAndTimeUtils {
@@ -143,8 +145,7 @@ public class DateAndTimeUtils {
             tyears = String.valueOf(period.getValue(0));
             age = tyears;
             Log.d("TAG", "getAge_FollowUp: s : " + age);
-        }
-        else {
+        } else {
             age = "0";
         }
 
@@ -937,5 +938,60 @@ public class DateAndTimeUtils {
         int minutes = (int) ((timeInMilliseconds / (1000 * 60)) % 60);
         int hours = (int) ((timeInMilliseconds / (1000 * 60 * 60)) % 24);
         return String.format(Locale.ENGLISH, "%dh %dm", hours, minutes);
+    }
+
+    public static String[] findDateFromStringDDMMMYYY(String str) {
+        //23-JUN-1996
+        String strPattern = "\\d{2}['/']\\w{3}['/']\\d{4}";
+        return findDate(str, strPattern);
+    }
+
+    public static String[] findDateFromStringDDMMYYY(String str) {
+        //23-JUN-1996
+        String strPattern = "\\d{2}['/']\\d{2}['/']\\d{4}";
+        return findDate(str, strPattern);
+    }
+
+    public static String[] findDate(String str, String strPattern) {
+        //23-JUN-1996
+        Log.v("UTILS", "findDate - "+str);
+        str = str.replaceAll("<.*?>", "");
+        Log.v("UTILS", "findDate celan html- "+str);
+        String result = "";
+        Pattern pattern = Pattern.compile(strPattern);
+        Matcher matcher = pattern.matcher(str);
+        StringBuilder stringBuilder = new StringBuilder();
+        while (matcher.find()) {
+            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
+            stringBuilder.append(matcher.group());
+        }
+        result = stringBuilder.toString();
+        Log.v("UTILS", "findDate - "+result);
+        if (!result.isEmpty()) {
+            return result.split(",");
+        } else {
+            return null;
+        }
+
+    }
+
+    public static String formatInLocalDateForDDMMMYYYY(String inputDate, String localeCode) {
+        String dateFormatted = "";
+        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - "+inputDate);
+        //input date must be in dd/mm/yyyy format
+        if (inputDate != null && !inputDate.isEmpty()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy", new Locale("en"));
+            Date d = null;
+            try {
+                d = sdf.parse(inputDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MMM/yyyy", new Locale(localeCode));
+            dateFormatted = sdf2.format(d);
+
+        }
+        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - "+dateFormatted);
+        return dateFormatted;
     }
 }

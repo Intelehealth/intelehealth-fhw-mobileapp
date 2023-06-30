@@ -97,6 +97,7 @@ import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -665,7 +666,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                                     //String s1 =  new String(s.getBytes(), "UTF-8");
                                     System.out.println(s);
                                     //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                    if (!s.trim().contains("Patient denies -•")) {
+                                    if (!s.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
                                         list.add(s);
                                     }
 
@@ -1113,7 +1114,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             state = getResources().getString(R.string.no_state_added);
         }
-        patientstate.setText(mSwitch_hi_en_te_State_edit(state,sessionManager.getAppLanguage()));
+        patientstate.setText(mSwitch_hi_en_te_State_edit(state, sessionManager.getAppLanguage()));
 
         // setting district and city
         String[] district_city = patientDTO.getCityvillage().trim().split(":");
@@ -1408,7 +1409,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
 
         for (int i = 0; i <= distDataList.size(); i++) {
-            if(distDataList.get(i).getName().equalsIgnoreCase(district)) {
+            if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
                 desiredVal = distDataList.get(i).getNameHindi();
                 break;
             }
@@ -1789,7 +1790,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                                         //String s1 =  new String(s.getBytes(), "UTF-8");
                                         System.out.println(s);
                                         //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                        if (!s.trim().contains("Patient denies -•")) {
+                                        if (!s.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
                                             list.add(s);
                                         }
 

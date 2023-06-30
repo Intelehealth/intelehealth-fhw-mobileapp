@@ -153,7 +153,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
         System.out.println(mapData);
         for (String key : mapData.keySet()) {
 
-            String _complain = key.equalsIgnoreCase("Patient history") ? getString(R.string.title_activity_get_patient_history) :getString(R.string.title_activity_family_history) ;
+            String _complain = key.equalsIgnoreCase("Patient history") ? getString(R.string.title_activity_get_patient_history) : getString(R.string.title_activity_family_history);
             List<String> _list = mapData.get(key);
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
@@ -175,43 +175,63 @@ public class MedicalHistorySummaryFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
-
+                    Log.v("K", "_list.get(i) - " + _list.get(i));
                     String[] qa = _list.get(i).split("•");
                     if (qa.length == 2) {
                         String k = qa[0].trim();
                         String v = qa[1].trim();
-                        Log.v("V", v);
-                        if(v.contains(":") && v.split(":").length>1){
+                        Log.v("K", "k - " + k);
+                        Log.v("V", "V - " + v);
+                        if (v.contains(":") && v.split(":").length > 1) {
                             v = v.split(":")[1];
                         }
                         VisitSummaryData summaryData = new VisitSummaryData();
-                        summaryData.setQuestion(k);
-                        summaryData.setDisplayValue(v);
+                        summaryData.setQuestion(k.isEmpty() ? v : k);
+                        summaryData.setDisplayValue(k.isEmpty() ? "" : v);
                         visitSummaryDataList.add(summaryData);
                     } else {
                         //String k = value.split("•")[0].trim();
                         StringBuilder stringBuilder = new StringBuilder();
                         String k1 = "";
                         String lastString = "";
-                        for (int j = 0; j < qa.length; j++) {
-                            String v1 = qa[j];
-                            if (lastString.equals(v1)) continue;
-                            //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
-                            stringBuilder.append(v1);
-                            lastString = v1;
-                            if (j % 2 != 0) {
-                                String v = qa[j].trim();
-                                if(v.contains(":") && v.split(":").length>1){
-                                    v = v.split(":")[1];
-                                }
-                                VisitSummaryData summaryData = new VisitSummaryData();
-                                summaryData.setQuestion(k1);
-                                summaryData.setDisplayValue(v);
-                                visitSummaryDataList.add(summaryData);
+                        if (key.equalsIgnoreCase("Patient history")) {
+                            for (int j = 0; j < qa.length; j++) {
+                                String v1 = qa[j];
+                                Log.v("V", v1);
+                                if (lastString.equals(v1)) continue;
+                                //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                                stringBuilder.append(v1);
+                                lastString = v1;
+                                if (j % 2 != 0) {
+                                    String v = qa[j].trim();
+                                    if (v.contains(":") && v.split(":").length > 1) {
+                                        v = v.split(":")[1];
+                                    }
+                                    VisitSummaryData summaryData = new VisitSummaryData();
+                                    summaryData.setQuestion(k1);
+                                    summaryData.setDisplayValue(v);
+                                    visitSummaryDataList.add(summaryData);
 
-                            } else {
-                                k1 = qa[j].trim();
+                                } else {
+                                    k1 = qa[j].trim();
+                                }
                             }
+                        } else {
+                            for (int j = 0; j < qa.length; j++) {
+                                Log.v("QA", "qa - " + qa[j]);
+                                if (j == 0) {
+                                    k1 = qa[j];
+                                } else {
+                                    if (!stringBuilder.toString().isEmpty())
+                                        stringBuilder.append(Node.bullet_arrow);
+                                    stringBuilder.append(qa[j]);
+                                }
+
+                            }
+                            VisitSummaryData summaryData = new VisitSummaryData();
+                            summaryData.setQuestion(k1);
+                            summaryData.setDisplayValue(stringBuilder.toString());
+                            visitSummaryDataList.add(summaryData);
                         }
 
                     }
@@ -232,6 +252,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
         }
 
     }
+
     private void prepareSummary() {
         mSummaryLinearLayout.removeAllViews();
         String str = mSummaryStringPastHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";

@@ -1,11 +1,13 @@
 package org.intelehealth.app.ayu.visit.familyhist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -87,10 +89,28 @@ public class FamilyHistoryFragment extends Fragment {
         complainBasicInfo.setFamilyHistory(true);
         mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
+        if (mIsEditMode) {
+            view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
+
+                }
+            });
+            view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                }
+            });
+        }
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int index, boolean isSkipped,Node parentNode) {
+            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
@@ -117,7 +137,10 @@ public class FamilyHistoryFragment extends Fragment {
 
                     mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
+                    if (!mIsEditMode)
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
+                    else
+                        Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                 }
                 linearLayoutManager.setStackFromEnd(false);
             }
@@ -129,7 +152,10 @@ public class FamilyHistoryFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
+                if (!mIsEditMode)
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
+                else
+                    Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
             }
 
             @Override

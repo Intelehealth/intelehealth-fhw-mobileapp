@@ -380,7 +380,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
-                mOnItemSelection.onSelect(node, index, true,null);
+                mOnItemSelection.onSelect(node, index, true, null);
             }
         });
 
@@ -412,7 +412,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     node.setSelected(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, index, false,null);
+                    mOnItemSelection.onSelect(node, index, false, null);
                 }
             }
         });
@@ -459,7 +459,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
-                mOnItemSelection.onSelect(node, index, true,null);
+                mOnItemSelection.onSelect(node, index, true, null);
             }
         });
 
@@ -486,7 +486,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     node.setSelected(true);
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, index, false,null);
+                    mOnItemSelection.onSelect(node, index, false, null);
                 }
             }
         });
@@ -885,7 +885,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             holder.nextRelativeLayout.setVisibility(View.GONE);
                         }
                     }*/
-                    if (parentNode!=null && parentNode.isHavingNestedQuestion()) {
+                    if (parentNode != null && parentNode.isHavingNestedQuestion()) {
                         holder.isParallelMultiNestedNode = true;
                         holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                     }
@@ -1005,8 +1005,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 // *****************
                 OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                     @Override
-                    public void onSelect(Node node) {
-                        VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+                    public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                        if (!isLoadingForNestedEditData)
+                            VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
                         ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
                         mItemList.get(index).setSelected(false);
                         for (int i = 0; i < options.size(); i++) {
@@ -1020,17 +1021,29 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
                             type = "options";
                         }
-                        Log.v(TAG, "Type - " + type);
+                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
+                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
                         if (!type.isEmpty() && node.isSelected()) {
 
                             holder.singleComponentContainer.removeAllViews();
                             holder.singleComponentContainer.setVisibility(View.VISIBLE);
+
                         } else {
                             holder.singleComponentContainer.removeAllViews();
                             //holder.superNestedContainerLinearLayout.removeAllViews();
+                            boolean isAnyOtherOptionSelected = false;
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    isAnyOtherOptionSelected = true;
+                                    break;
+                                }
+                            }
+
                             if (mItemList.get(index).isMultiChoice()) {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                                holder.submitButton.setVisibility(View.VISIBLE);
+                                if (!isAnyOtherOptionSelected)
+                                    holder.submitButton.setVisibility(View.VISIBLE);
                             } else {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1038,16 +1051,25 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        notifyItemChanged(index);
+                                        if (!isLoadingForNestedEditData)
+                                            notifyItemChanged(index);
                                     }
                                 }, 100);
-                                mOnItemSelection.onSelect(node, index, false, selectedNode);
+                                if (!isLoadingForNestedEditData)
+                                    mOnItemSelection.onSelect(node, index, false, selectedNode);
                             }
 
                             if (mItemList.get(index).isRequired()) {
                                 holder.skipButton.setVisibility(View.GONE);
                             } else {
-                                holder.skipButton.setVisibility(View.VISIBLE);
+                                if (!isAnyOtherOptionSelected)
+                                    holder.skipButton.setVisibility(View.VISIBLE);
+                            }
+
+                            if (node.isExcludedFromMultiChoice()) {
+                                holder.nestedRecyclerView.setVisibility(View.GONE);
+                                if (!isLoadingForNestedEditData)
+                                    notifyItemChanged(index);
                             }
                             return;
                         }
@@ -1113,6 +1135,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 });
                 holder.recyclerView.setAdapter(optionsChipsGridAdapter);
+
 
             }
             /*for (int i = 0; i < options.size(); i++) {
@@ -1388,7 +1411,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
 
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
-            editText.setText(node.getLanguage());
+            //  editText.setText(node.getLanguage());
+            if (node.getLanguage().contains(" : "))
+                editText.setText(node.getLanguage().split(" : ")[1]);
+            else
+                editText.setText(node.getLanguage());
         }
 
         Button skipButton = view.findViewById(R.id.btn_skip);
@@ -1400,7 +1427,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
-                mOnItemSelection.onSelect(node, index, true,null);
+                mOnItemSelection.onSelect(node, index, true, null);
                 WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
@@ -1412,14 +1439,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else if (node.getLanguage().contains("%")) {
-                            node.addLanguage(editText.getText().toString());
+                        if (node.isDataCaptured()) {
+                            if (node.getLanguage().contains(" : ")) {
+                                node.addLanguage(node.getLanguage().split(":")[0] + " : " + editText.getText().toString());
+                            } else {
+                                node.addLanguage(editText.getText().toString());
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
                         } else {
-                            node.addLanguage(node.getLanguage() + " : " + editText.getText().toString());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                            } else if (node.getLanguage().contains("%")) {
+                                node.addLanguage(editText.getText().toString());
+                            } else {
+                                node.addLanguage(node.getLanguage() + " : " + editText.getText().toString());
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
                         }
+
                         node.setSelected(true);
                         holder.node.setSelected(true);
 
@@ -1444,7 +1481,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index, false,null);
+                    mOnItemSelection.onSelect(node, index, false, null);
                     WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
             }
@@ -1479,7 +1516,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View view) {
                 node.setSelected(false);
                 node.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, index, true,null);
+                mOnItemSelection.onSelect(node, index, true, null);
                 WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
@@ -1522,7 +1559,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index, false,null);
+                    mOnItemSelection.onSelect(node, index, false, null);
                     WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
             }
@@ -1579,7 +1616,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
-                mOnItemSelection.onSelect(node, index, true,null);
+                mOnItemSelection.onSelect(node, index, true, null);
             }
         });
 
@@ -1609,7 +1646,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     holder.node.setDataCaptured(true);
 
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index, false,null);
+                    mOnItemSelection.onSelect(node, index, false, null);
                 }
             }
         });
@@ -1676,7 +1713,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View view) {
                     if (mItemList.get(index).isSelected())
-                        mOnItemSelection.onSelect(node, index, false,null);
+                        mOnItemSelection.onSelect(node, index, false, null);
                     else
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
@@ -1685,7 +1722,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View view) {
                     if (mItemList.get(index).isSelected())
-                        mOnItemSelection.onSelect(node, index, false,null);
+                        mOnItemSelection.onSelect(node, index, false, null);
                     else
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
@@ -1702,7 +1739,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).getOptionsList().get(i).setDataCaptured(false);
                         }
                     notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, index, true,null);
+                    mOnItemSelection.onSelect(node, index, true, null);
 
                 }
             });
