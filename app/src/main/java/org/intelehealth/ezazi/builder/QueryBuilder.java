@@ -43,7 +43,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder inOrderOf(String inOrderOf) {
+    public QueryBuilder orderIn(String inOrderOf) {
         this.inOrderOf = inOrderOf;
         return this;
     }

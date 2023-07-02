@@ -830,21 +830,22 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         EncounterDTO encounterDTO = new EncounterDTO();
         String typeUuid = encounterDAO.getEncounterTypeUuid(nextEncounterTypeName);
         Log.e(TAG, "TypeUuid=>" + typeUuid);
-        encounterDTO.setUuid(encounterUuid);
-        encounterDTO.setVisituuid(visit_UUID);
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-        encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
-        encounterDTO.setEncounterTypeUuid(typeUuid);
-        encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
-        encounterDTO.setVoided(0);
-        encounterDTO.setPrivacynotice_value("true");
+        if (typeUuid != null && typeUuid.length() > 0) {
+            encounterDTO.setUuid(encounterUuid);
+            encounterDTO.setVisituuid(visit_UUID);
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
+            encounterDTO.setEncounterTypeUuid(typeUuid);
+            encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
+            encounterDTO.setVoided(0);
+            encounterDTO.setPrivacynotice_value("true");
 
-        try {
-            encounterDAO.createEncountersToDB(encounterDTO);
-        } catch (DAOException e) {
-            e.printStackTrace();
+            try {
+                encounterDAO.createEncountersToDB(encounterDTO);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
 //    private String fetchOutcome(String encounterID) {

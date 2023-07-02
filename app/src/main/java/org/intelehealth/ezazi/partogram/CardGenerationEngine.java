@@ -1,17 +1,20 @@
 package org.intelehealth.ezazi.partogram;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -135,11 +138,7 @@ public class CardGenerationEngine {
         try {
             MediaPlayer mediaPlayer = MediaPlayer.create(IntelehealthApplication.getAppContext(), R.raw.al_1);
             mediaPlayer.start();
-            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                @Override
-                public void onSeekComplete(MediaPlayer mp) {
-
-                }
+            mediaPlayer.setOnSeekCompleteListener(mp -> {
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,7 +253,6 @@ public class CardGenerationEngine {
             // or other notification behaviors after this
             notificationManager.createNotificationChannel(channel);
         }
-
 
         notificationManager.notify(100, notificationBuilder.build());
 

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteException;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.builder.QueryBuilder;
 import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
@@ -528,9 +529,17 @@ public class VisitsDAO {
 
     public List<VisitDTO> getAllActiveVisitsForMe(String creatorID) {
         List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//        db.beginTransaction();
+        String query = new QueryBuilder().select("uuid, patientuuid,locationuuid, startdate, enddate, creator, visit_type_uuid")
+                .from("tbl_visit")
+                .where("uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
+                        "AND voided = '0' AND creator = '" + creatorID + "'")
+                .groupBy("uuid")
+                .orderBy("startdate")
+                .orderIn("DESC").build();
+//        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
+        Cursor idCursor = db.rawQuery(query, null);
         VisitDTO visitDTO = new VisitDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -546,8 +555,8 @@ public class VisitsDAO {
             }
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
         // db.close();
         return visitDTOList;
     }

@@ -30,6 +30,7 @@ import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.partogram.PartogramCounterJob;
+import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 
 import java.text.ParseException;
@@ -87,7 +88,7 @@ public class CallListenerBackgroundService extends Service {
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, HomeActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+                PendingIntent.getActivity(this, 0, notificationIntent, NotificationUtils.getPendingIntentFlag());
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.notification_title))

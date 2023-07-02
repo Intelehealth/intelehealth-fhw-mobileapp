@@ -37,7 +37,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                 .where(" LOWER(fullName) LIKE LOWER('%" + keyword + "%') " + "OR LOWER(P.openmrs_id) LIKE LOWER('%" + keyword + "%') ")
                 .groupBy("P.uuid")
                 .orderBy("P.first_name")
-                .inOrderOf("ASC")
+                .orderIn("ASC")
                 .build();
         Log.e(TAG, "searchQuery => " + query);
         return query;
@@ -47,7 +47,7 @@ public class PatientQueryBuilder extends QueryBuilder {
         String query = selectQuery()
                 .groupBy("P.uuid")
                 .orderBy("P.first_name")
-                .inOrderOf("ASC")
+                .orderIn("ASC")
                 .limit(limit)
                 .offset(offset)
                 .build();
@@ -138,7 +138,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                         "AND V.voided = '0' AND V.creator = '" + myCreatorUUID + "'")
                 .groupBy("V.uuid")
                 .orderBy("V.modified_date")
-                .inOrderOf("DESC")
+                .orderIn("DESC")
                 .limit(limit)
                 .offset(offset)
                 .build();
