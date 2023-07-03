@@ -44,8 +44,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import livekit.LivekitModels.SpeakerInfo
+import org.intelehealth.klivekit.httpclient.OkHttpClientProvider
 import org.intelehealth.klivekit.utils.extensions.flatMapLatestOrNull
 import org.intelehealth.klivekit.utils.extensions.hide
+import org.webrtc.EglBase
+import org.webrtc.HardwareVideoEncoderFactory
 import kotlin.coroutines.coroutineContext
 
 open class CallViewModel(
@@ -77,12 +80,18 @@ open class CallViewModel(
         adaptiveStream = true
     )
 
-    val audioHandler = AudioSwitchHandler(application)
+    private val audioHandler = AudioSwitchHandler(application)
     val room = LiveKit.create(
         appContext = application.applicationContext,
         options = options,
         overrides = LiveKitOverrides(
-            audioHandler = audioHandler
+            okHttpClient = OkHttpClientProvider().provideOkHttpClient(),
+            audioHandler = audioHandler,
+            videoEncoderFactory = HardwareVideoEncoderFactory(
+                EglBase.create().eglBaseContext,
+                false,
+                true
+            )
         )
     )
 
@@ -260,6 +269,26 @@ open class CallViewModel(
     private fun onConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
         if (it.participant is RemoteParticipant)
             mutableRemoteConnectionQuality.postValue(it.quality)
+    }
+
+    private fun manageTrackPublicationOnConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
+        viewModelScope.launch {
+            when (it.quality) {
+                ConnectionQuality.POOR -> {
+                    Timber.e { "${it.quality} => Unpublishing" }
+                    room.localParticipant.getTrackPublication(Track.Source.CAMERA)?.let {
+                        room.localParticipant.unpublishTrack(it.track!!, false)
+                    }
+                }
+
+                ConnectionQuality.EXCELLENT,
+                ConnectionQuality.GOOD,
+                ConnectionQuality.UNKNOWN -> {
+                    Timber.e { "${it.quality} => republishTracks" }
+                    room.localParticipant.republishTracks()
+                }
+            }
+        }
     }
 
     private suspend fun onDataReceived(roomEvent: RoomEvent.DataReceived) {

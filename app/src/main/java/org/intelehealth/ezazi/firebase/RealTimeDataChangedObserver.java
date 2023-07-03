@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -50,6 +51,7 @@ public class RealTimeDataChangedObserver {
     private DatabaseReference databaseReference;
 
     public void startObserver() {
+        Log.d(TAG, "startObserver: ");
         sessionManager = new SessionManager(context);
         FirebaseDatabase database = FirebaseDatabase.getInstance(BuildConfig.REAL_TIME_FB_URL);
         String databaseUrl = AppConstants.getFirebaseRTDBRootRef() + sessionManager.getProviderID() + "/VIDEO_CALL";
@@ -58,6 +60,7 @@ public class RealTimeDataChangedObserver {
     }
 
     private void startReceiver(boolean isValid, Bundle bundle, RtcArgs rtcArgs) {
+        Log.d(TAG, "startReceiver: ");
         if (isValid) {
             Intent intent = new Intent(context, CallRTCNotifyReceiver.class);
             intent.putExtras(bundle);
@@ -68,6 +71,7 @@ public class RealTimeDataChangedObserver {
     }
 
     private RtcArgs convertToRtcArg(HashMap<?, ?> value) {
+        Log.d(TAG, "convertToRtcArg: ");
         Gson gson = new Gson();
         RtcArgs rtcArgs = gson.fromJson(gson.toJson(value), RtcArgs.class);
         if (rtcArgs == null) return null;
@@ -78,6 +82,7 @@ public class RealTimeDataChangedObserver {
     }
 
     private Bundle convertToBundle(HashMap<?, ?> value) {
+        Log.d(TAG, "convertToBundle: ");
         Bundle bundle = new Bundle();
         bundle.putString("doctorName", String.valueOf(value.get("doctorName")));
         bundle.putString("nurseId", String.valueOf(value.get("nurseId")));
@@ -88,6 +93,7 @@ public class RealTimeDataChangedObserver {
     }
 
     private boolean isDuplicate(SessionManager sessionManager, RtcArgs args) {
+        Log.d(TAG, "isDuplicate: ");
         RtcArgs previous = sessionManager.getRtcData();
         if (previous != null && Objects.equals(previous.getAppToken(), args.getAppToken())) {
             Timber.tag(TAG).d("Both are same => return");
@@ -124,7 +130,7 @@ public class RealTimeDataChangedObserver {
         return false;
     }
 
-    private ValueEventListener valueEventListener = new ValueEventListener() {
+    private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             observeDataChange(snapshot);

@@ -13,7 +13,7 @@ import java.lang.RuntimeException
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class SocketManager(private val url: String?) {
+open class SocketManager(private val url: String?) {
     var socket: Socket? = null
 
     init {
