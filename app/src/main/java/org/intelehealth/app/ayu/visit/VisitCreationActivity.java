@@ -61,6 +61,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -340,7 +341,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     else if (caseNo == STEP_2_VISIT_REASON_QUESTION) {
                         //showFamilyHistoryFragment(isEditMode);
                     } else if (caseNo == STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS) {
-                        showFamilyHistoryFragment(isEditMode);
+                        //showFamilyHistoryFragment(isEditMode);
                     }
                 }
                 break;
@@ -470,11 +471,19 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
         insertionLocale = stringBuilder.toString();
 
+
         if (insertion.contains("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>")) {
             insertion = insertion.replace("<br/> ►<b>Associated symptoms</b>: <br/>►<b> Associated symptoms</b>:  <br/>", "<br/>►<b> Associated symptoms</b>:  <br/>");
         }
         JSONObject jsonObject = new JSONObject();
         try {
+            insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
+            String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
+            if (matchDate != null) {
+                for (String date : matchDate) {
+                    insertionLocale= insertionLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                }
+            }
             jsonObject.put("en", insertion);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
@@ -909,8 +918,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
-            physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
-                    physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
+            //physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
+            //       physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
+            physicalStringLocale = physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
             Log.v(TAG, "physicalStringLocale -" + physicalStringLocale);
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
@@ -924,6 +934,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             }
             JSONObject jsonObject = new JSONObject();
             try {
+                physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
+                String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(physicalStringLocale);
+                if (matchDate != null) {
+                    for (String date : matchDate) {
+                        physicalStringLocale= physicalStringLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                    }
+                }
                 jsonObject.put("en", physicalString);
                 //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
@@ -978,6 +995,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObject1 = new JSONObject();
         try {
+            patientHistoryLocale = VisitUtils.replaceEnglishCommonString(patientHistoryLocale, sessionManager.getAppLanguage());
+
+            String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(patientHistoryLocale);
+            if (matchDate != null) {
+                for (String date : matchDate) {
+                    patientHistoryLocale = patientHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                }
+            }
+
             jsonObject.put("en", patientHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
@@ -985,6 +1011,14 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             patientHistoryWithLocaleJsonString = jsonObject.toString();
             Log.v(TAG, patientHistoryWithLocaleJsonString);
 
+            familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
+
+            String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
+            if (matchDate1 != null) {
+                for (String date : matchDate1) {
+                    familyHistoryLocale =  familyHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                }
+            }
 
             jsonObject1.put("en", familyHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
@@ -1007,8 +1041,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0);
-                    String toInsert = !isLocale ? node.getText() : node.findDisplay() + " : " + familyString;
-                    toInsert = toInsert.replaceAll(Node.bullet, "");
+                    String toInsert = (!isLocale ? node.getText() : node.findDisplay() )+ " : " + familyString;
+                    //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
                     if (org.apache.commons.lang3.StringUtils.right(toInsert, 2).equals(", ")) {

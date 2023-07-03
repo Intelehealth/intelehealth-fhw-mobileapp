@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -85,6 +86,7 @@ public class PhysicalExaminationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_physical_examination, container, false);
+
         if (mIsEditMode) {
             view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
             view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
@@ -119,7 +121,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
         mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
             @Override
-            public void onSelect(Node node, int index, boolean isSkipped) {
+            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 // avoid the scroll for old data change
                 if (mCurrentComplainNodeOptionsIndex - index >= 1) {
                     return;
@@ -155,9 +157,12 @@ public class PhysicalExaminationFragment extends Fragment {
                     mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
                     // }
                 } else {
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+                    if (!mIsEditMode)
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+                    else
+                        Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                 }
-
+                linearLayoutManager.setStackFromEnd(false);
             }
 
             @Override
@@ -167,7 +172,10 @@ public class PhysicalExaminationFragment extends Fragment {
 
             @Override
             public void onAllAnswered(boolean isAllAnswered) {
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
+                if (!mIsEditMode)
+                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+                else
+                    Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -191,7 +199,6 @@ public class PhysicalExaminationFragment extends Fragment {
                 if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                     mCurrentComplainNodeOptionsIndex++;
                     mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0));
-
 
 
                 } else {

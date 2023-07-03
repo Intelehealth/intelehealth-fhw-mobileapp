@@ -3,7 +3,7 @@ package org.intelehealth.app.ayu.visit.common;
 import org.intelehealth.app.knowledgeEngine.Node;
 
 public interface OnItemSelection {
-    void onSelect(Node node, int index, boolean isSkipped);
+    void onSelect(Node node, int index, boolean isSkipped, Node selectedNode);
 
     void needTitleChange(String title);
 

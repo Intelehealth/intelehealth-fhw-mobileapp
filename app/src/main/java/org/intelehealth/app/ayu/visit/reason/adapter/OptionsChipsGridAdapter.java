@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.reason.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,10 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     private Context mContext;
     private Node mParentNode;
     private List<Node> mItemList = new ArrayList<Node>();
+    private List<String> mEditTimeLoadedIds = new ArrayList<String>();
 
     public interface OnItemSelection {
-        public void onSelect(Node data);
+        public void onSelect(Node data, boolean isLoadingForNestedEditData);
     }
 
     private OnItemSelection mOnItemSelection;
@@ -56,17 +58,27 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
-            genericViewHolder.node = mItemList.get(position);
-            genericViewHolder.index = position;
-            genericViewHolder.tvName.setText(mItemList.get(position).findDisplay());
+            genericViewHolder.index = genericViewHolder.getAbsoluteAdapterPosition();
+            genericViewHolder.node = mItemList.get(genericViewHolder.index);
+            genericViewHolder.tvName.setText(mItemList.get(genericViewHolder.index).findDisplay());
 
             //Log.v("node", String.valueOf(genericViewHolder.node.isSelected()));
-
 
 
             if (genericViewHolder.node.isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String id = mItemList.get(genericViewHolder.index).getId();
+                        if (!mEditTimeLoadedIds.contains(id)) {
+                            mEditTimeLoadedIds.add(id);
+                            mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
+                        }
+
+                    }
+                }, 1000);
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));
@@ -74,12 +86,11 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (genericViewHolder.node.isNeedToHide()) {
                     genericViewHolder.tvName.setEnabled(false);
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
-                }else{
+                } else {
                     genericViewHolder.tvName.setEnabled(true);
                     genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
                 }
             }
-
 
 
         }
@@ -133,7 +144,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                         }
                         mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
                     }
-                    mOnItemSelection.onSelect(mItemList.get(index));
+                    mOnItemSelection.onSelect(mItemList.get(index), false);
                     notifyDataSetChanged();
                 }
             });

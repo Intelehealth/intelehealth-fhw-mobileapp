@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     private static final int TYPE_FOOTER = 2;
     private Context mContext;
     private List<Node> mItemList = new ArrayList<Node>();
+    private RecyclerView mRootRecyclerView, mRecyclerView;
 
     public interface AssociateSymptomsOnItemSelection {
         public void onSelect(Node data);
@@ -50,10 +52,12 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
     private AssociateSymptomsOnItemSelection mOnItemSelection;
 
-    public AssociateSymptomsQueryAdapter(RecyclerView recyclerView, Context context, List<Node> itemList, AssociateSymptomsOnItemSelection onItemSelection) {
+    public AssociateSymptomsQueryAdapter( Context context,RecyclerView rootRecyclerView,RecyclerView recyclerView, List<Node> itemList, AssociateSymptomsOnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
+        mRootRecyclerView = rootRecyclerView;
+        mRecyclerView = recyclerView;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
     }
 
@@ -143,7 +147,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         rootComplainBasicInfoHashMap.put(0, complainBasicInfo);
                         genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, new OnItemSelection() {
                             @Override
-                            public void onSelect(Node node, int index, boolean isSkipped) {
+                            public void onSelect(Node node, int index, boolean isSkipped,Node parentNode) {
+
                                 Log.v(TAG, "currentComplainNodeOptionsIndex - " + genericViewHolder.currentComplainNodeOptionsIndex);
                                 Log.v(TAG, "mItemList.get(position).getOptionsList().size() - " + mItemList.get(position).getOptionsList().size());
                                 Log.v(TAG, "index - " + index);
@@ -170,6 +175,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                     genericViewHolder.currentComplainNodeOptionsIndex = 0;
 
                                 }*/
+                                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 600);
                             }
 
                             @Override
@@ -298,7 +304,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         else skipButton.setVisibility(View.GONE);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
-            editText.setText(node.getLanguage());
+            if (node.getLanguage().contains(" : "))
+                editText.setText(node.getLanguage().split(" : ")[1]);
+            else
+                editText.setText(node.getLanguage());
+
         }
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,13 +317,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 holder.node.setSelected(false);
                 holder.node.setDataCaptured(false);
                 // scroll little bit
-                holder.recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        holder.recyclerView.smoothScrollBy(0, 300);
-                    }
-                }, 100);
+                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
             }
         });
 
@@ -325,12 +329,31 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                        if (node.getLanguage().contains("_")) {
+
+                        if (node.isDataCaptured()) {
+                            if (node.getLanguage().contains(" : ")) {
+                                node.addLanguage(node.getLanguage().split(":")[0] + " : " + editText.getText().toString());
+                            } else {
+                                node.addLanguage(editText.getText().toString());
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                        } else {
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                            } else if (node.getLanguage().contains("%")) {
+                                node.addLanguage(editText.getText().toString());
+                            } else {
+                                node.addLanguage(node.getLanguage() + " : " + editText.getText().toString());
+                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            }
+                        }
+
+                       /* if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
                         } else {
                             node.addLanguage(node.getText().replace("[Describe]", "") + " : " + editText.getText().toString());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
+                        }*/
                         node.setSelected(true);
                         node.setDataCaptured(true);
 
@@ -357,13 +380,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                 }
                 // scroll little bit
-                holder.recyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        holder.recyclerView.smoothScrollBy(0, 300);
-                    }
-                }, 100);
+                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
 
             }
         });
@@ -429,6 +446,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             public void onClick(View view) {
                 node.setSelected(false);
                 //mOnItemSelection.onSelect(node, index);
+                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
             }
         });
 
@@ -461,6 +479,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                     //notifyDataSetChanged();
                     //mOnItemSelection.onSelect(node, index);
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
                 }
             }
         });

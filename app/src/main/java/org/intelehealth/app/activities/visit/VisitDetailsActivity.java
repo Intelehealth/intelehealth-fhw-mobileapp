@@ -624,7 +624,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                                         //String s1 =  new String(s.getBytes(), "UTF-8");
                                         System.out.println(s);
                                         //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                        if (!s.trim().contains("Patient denies -•")) {
+                                        if (!s.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
                                             list.add(s);
                                         }
 
