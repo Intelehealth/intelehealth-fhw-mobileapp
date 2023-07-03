@@ -290,7 +290,7 @@ public class ObsDAO {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ?",
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
                 new String[]{encounteruuid});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {

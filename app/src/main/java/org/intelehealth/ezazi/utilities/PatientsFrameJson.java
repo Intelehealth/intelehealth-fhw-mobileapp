@@ -132,51 +132,53 @@ public class PatientsFrameJson {
         for (EncounterDTO encounterDTO : encounterDTOList) {
             Encounter encounter = new Encounter();
 
-            encounter = new Encounter();
-            encounter.setUuid(encounterDTO.getUuid());
-            encounter.setEncounterDatetime(encounterDTO.getEncounterTime());//visit start time
-            encounter.setEncounterType(encounterDTO.getEncounterTypeUuid());//right know it is static
-            encounter.setPatient(visitsDAO.patientUuidByViistUuid(encounterDTO.getVisituuid()));
-            encounter.setVisit(encounterDTO.getVisituuid());
-            encounter.setVoided(encounterDTO.getVoided());
+            if(encounterDTO.getEncounterTypeUuid()!=null && !encounterDTO.getEncounterTypeUuid().isEmpty()){
+                encounter = new Encounter();
+                encounter.setUuid(encounterDTO.getUuid());
+                encounter.setEncounterDatetime(encounterDTO.getEncounterTime());//visit start time
+                encounter.setEncounterType(encounterDTO.getEncounterTypeUuid());//right know it is static
+                encounter.setPatient(visitsDAO.patientUuidByViistUuid(encounterDTO.getVisituuid()));
+                encounter.setVisit(encounterDTO.getVisituuid());
+                encounter.setVoided(encounterDTO.getVoided());
 
-            List<EncounterProvider> encounterProviderList = new ArrayList<>();
-            EncounterProvider encounterProvider = new EncounterProvider();
-            encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
-            //  encounterProvider.setProvider(session.getProviderID());
-            encounterProvider.setProvider(encounterDTO.getProvideruuid());
-            Log.d("DTO", "DTO:frame " + encounterProvider.getProvider());
-            encounterProviderList.add(encounterProvider);
-            encounter.setEncounterProviders(encounterProviderList);
+                List<EncounterProvider> encounterProviderList = new ArrayList<>();
+                EncounterProvider encounterProvider = new EncounterProvider();
+                encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
+                //  encounterProvider.setProvider(session.getProviderID());
+                encounterProvider.setProvider(encounterDTO.getProvideruuid());
+                Log.d("DTO", "DTO:frame " + encounterProvider.getProvider());
+                encounterProviderList.add(encounterProvider);
+                encounter.setEncounterProviders(encounterProviderList);
 
-            if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
-                List<Ob> obsList = new ArrayList<>();
-                List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
-                Ob ob = new Ob();
-                for (ObsDTO obs : obsDTOList) {
-                    if (obs != null && obs.getValue() != null) {
-                        // if (!obs.getValue().isEmpty()) {  // commented for the case - if user update any value with empty field then it should proceed
-                        ob = new Ob();
-                        //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
+                if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
+                    List<Ob> obsList = new ArrayList<>();
+                    List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
+                    Ob ob = new Ob();
+                    for (ObsDTO obs : obsDTOList) {
+                        if (obs != null && obs.getValue() != null) {
+                            // if (!obs.getValue().isEmpty()) {  // commented for the case - if user update any value with empty field then it should proceed
+                            ob = new Ob();
+                            //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
 
-                        ob.setUuid(obs.getUuid());
-                        ob.setConcept(obs.getConceptuuid());
-                        ob.setValue(obs.getValue());
-                        ob.setComment(obs.getComment());
-                        obsList.add(ob);
+                            ob.setUuid(obs.getUuid());
+                            ob.setConcept(obs.getConceptuuid());
+                            ob.setValue(obs.getValue());
+                            ob.setComment(obs.getComment());
+                            obsList.add(ob);
 
-                        //   }
+                            //   }
+                        }
                     }
+                    encounter.setObs(obsList);
                 }
-                encounter.setObs(obsList);
+
+                encounter.setLocation(session.getLocationUuid());
+
+                // encounterList.add(encounter);
+                //if (speciality_row_exist_check(encounter.getVisit())){
+                encounterList.add(encounter);
+                //}
             }
-
-            encounter.setLocation(session.getLocationUuid());
-
-            // encounterList.add(encounter);
-            //if (speciality_row_exist_check(encounter.getVisit())){
-            encounterList.add(encounter);
-            //}
 
         }
 
