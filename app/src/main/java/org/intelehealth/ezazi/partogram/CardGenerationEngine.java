@@ -66,66 +66,64 @@ public class CardGenerationEngine {
                 String latestEncounterTime = encounterDTO.getEncounterTime(); //eg. 2022-06-30T19:58:05.935+0530
                 if (latestEncounterTime == null) continue;
                 String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid()); //eg. Stage1_Hour1_1
-
-                SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-                SimpleDateFormat f3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                Date latestEncounterDate = latestEncounterTime.contains("T") || latestEncounterTime.contains("+") ? f2.parse(latestEncounterTime) : f3.parse(latestEncounterTime);
-
-                Calendar c2 = Calendar.getInstance();
-                c2.setTime(latestEncounterDate);
-                c2.set(Calendar.SECOND, 0);
-                c2.set(Calendar.MILLISECOND, 0);
-                Calendar now = Calendar.getInstance();
-                now.setTime(new Date());
-                now.set(Calendar.SECOND, 0);
-                now.set(Calendar.MILLISECOND, 0);
-
-
                 Log.v(TAG, "latestEncounterTime - " + latestEncounterTime);
                 Log.v(TAG, "latestEncounterName - " + latestEncounterName);
+                if (latestEncounterName != null && latestEncounterName.length() > 0) {
+                    SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+                    SimpleDateFormat f3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                    Date latestEncounterDate = latestEncounterTime.contains("T") || latestEncounterTime.contains("+") ? f2.parse(latestEncounterTime) : f3.parse(latestEncounterTime);
 
-                long diff = now.getTimeInMillis() - c2.getTimeInMillis();//as given
+                    Calendar c2 = Calendar.getInstance();
+                    c2.setTime(latestEncounterDate);
+                    c2.set(Calendar.SECOND, 0);
+                    c2.set(Calendar.MILLISECOND, 0);
+                    Calendar now = Calendar.getInstance();
+                    now.setTime(new Date());
+                    now.set(Calendar.SECOND, 0);
+                    now.set(Calendar.MILLISECOND, 0);
 
-                long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-                long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-                Log.v(TAG, "minutes - " + minutes);
-                Log.v(TAG, "seconds - " + seconds);
+                    long diff = now.getTimeInMillis() - c2.getTimeInMillis();//as given
 
-                Map<String, String> log = new HashMap<>();
-                log.put("TAG", TAG);
-                log.put("action", "scanForNewCardEligibility");
-                log.put("visitUid", visitUid);
-                log.put("latestEncounterTime", latestEncounterTime);
-                log.put("latestEncounterName", latestEncounterName);
-                log.put("minutes", String.valueOf(minutes));
-                FirebaseRealTimeDBUtils.logData(log);
+                    long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+                    Log.v(TAG, "minutes - " + minutes);
+                    Log.v(TAG, "seconds - " + seconds);
 
-                if (latestEncounterName.toLowerCase().contains("stage1")) {
-                    if (minutes >= 30) {
-                        // get next encounter name
-                        String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
-                        if (nextEncounterTypeName != null) {
-                            Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-                            createNewEncounter(visitUid, nextEncounterTypeName);
+                    Map<String, String> log = new HashMap<>();
+                    log.put("TAG", TAG);
+                    log.put("action", "scanForNewCardEligibility");
+                    log.put("visitUid", visitUid);
+                    log.put("latestEncounterTime", latestEncounterTime);
+                    log.put("latestEncounterName", latestEncounterName);
+                    log.put("minutes", String.valueOf(minutes));
+                    FirebaseRealTimeDBUtils.logData(log);
+
+                    if (latestEncounterName.toLowerCase().contains("stage1")) {
+                        if (minutes >= 30) {
+                            // get next encounter name
+                            String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
+                            if (nextEncounterTypeName != null) {
+                                Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+                                createNewEncounter(visitUid, nextEncounterTypeName);
+                            }
+                        } else if (minutes == 29) {
+                            SyncUtils syncUtils = new SyncUtils();
+                            syncUtils.syncBackground();
                         }
-                    } else if (minutes == 29) {
-                        SyncUtils syncUtils = new SyncUtils();
-                        syncUtils.syncBackground();
-                    }
-                } else if (latestEncounterName.toLowerCase().contains("stage2")) {
-                    if (minutes >= 15) {
-                        // get next encounter name
-                        String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
-                        if (nextEncounterTypeName != null) {
-                            Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-                            createNewEncounter(visitUid, nextEncounterTypeName);
+                    } else if (latestEncounterName.toLowerCase().contains("stage2")) {
+                        if (minutes >= 15) {
+                            // get next encounter name
+                            String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
+                            if (nextEncounterTypeName != null) {
+                                Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+                                createNewEncounter(visitUid, nextEncounterTypeName);
+                            }
+                        } else if (minutes == 14) {
+                            SyncUtils syncUtils = new SyncUtils();
+                            syncUtils.syncBackground();
                         }
-                    } else if (minutes == 14) {
-                        SyncUtils syncUtils = new SyncUtils();
-                        syncUtils.syncBackground();
                     }
                 }
-
             }
 
         } catch (ParseException e) {
@@ -148,40 +146,41 @@ public class CardGenerationEngine {
     private static void createNewEncounter(String visit_UUID, String nextEncounterTypeName) {
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
+        String encounterTypeUuid = encounterDAO.getEncounterTypeUuid(nextEncounterTypeName);
+        if (encounterTypeUuid != null && encounterTypeUuid.length() > 0) {
+            encounterDTO.setUuid(UUID.randomUUID().toString());
+            encounterDTO.setVisituuid(visit_UUID);
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
+            encounterDTO.setEncounterTypeUuid(encounterTypeUuid);
+            encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
+            encounterDTO.setVoided(0);
+            encounterDTO.setPrivacynotice_value("true");
 
-        encounterDTO.setUuid(UUID.randomUUID().toString());
-        encounterDTO.setVisituuid(visit_UUID);
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-        encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(nextEncounterTypeName));
-        encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
-        encounterDTO.setVoided(0);
-        encounterDTO.setPrivacynotice_value("true");
+            Map<String, String> log = new HashMap<>();
+            log.put("TAG", TAG);
+            log.put("action", "createNewEncounter");
+            log.put("value", new Gson().toJson(encounterDAO));
+            log.put("nextEncounterTypeName", nextEncounterTypeName);
+            FirebaseRealTimeDBUtils.logData(log);
 
-        Map<String, String> log = new HashMap<>();
-        log.put("TAG", TAG);
-        log.put("action", "createNewEncounter");
-        log.put("value", new Gson().toJson(encounterDAO));
-        log.put("nextEncounterTypeName", nextEncounterTypeName);
-        FirebaseRealTimeDBUtils.logData(log);
+            try {
+                boolean status = encounterDAO.createEncountersToDB(encounterDTO);
+                if (status) {
+                    Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
+                    IntelehealthApplication.getAppContext().sendBroadcast(intent);
 
-        try {
-            boolean status = encounterDAO.createEncountersToDB(encounterDTO);
-            if (status) {
-                Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
-                IntelehealthApplication.getAppContext().sendBroadcast(intent);
+                    sendNotification("Alert!", "Time to collect the History data!", null);
+                    int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                    if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                        playSound();
+                    }
 
-                sendNotification("Alert!", "Time to collect the History data!", null);
-                int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                if (callState == TelephonyManager.CALL_STATE_IDLE) {
-                    playSound();
                 }
-
+            } catch (DAOException e) {
+                e.printStackTrace();
             }
-        } catch (DAOException e) {
-            e.printStackTrace();
         }
-
     }
 
     private static String getNextEncounterTypeName(String encounterTypeName) {

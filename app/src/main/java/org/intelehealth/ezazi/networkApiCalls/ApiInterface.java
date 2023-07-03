@@ -20,6 +20,7 @@ import org.intelehealth.ezazi.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.ezazi.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.ezazi.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ezazi.models.statewise_location.State;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -72,9 +73,9 @@ public interface ApiInterface {
 
     @Headers({"Accept: application/json"})
     @POST
-    Single<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url,
-                                                                  @Header("Authorization") String authHeader,
-                                                                  @Body PushRequestApiCall pushRequestApiCall);
+    Call<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url,
+                                                                @Header("Authorization") String authHeader,
+                                                                @Body PushRequestApiCall pushRequestApiCall);
 
     @GET
     Observable<ResponseBody> PERSON_PROFILE_PIC_DOWNLOAD(@Url String url,
@@ -128,7 +129,7 @@ public interface ApiInterface {
             @Header("Authorization") String authHeader);
 
     @DELETE
-    Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
+    Observable<Response<Void>> DELETE_PRESCOBS_ITEM(
             @Url String url,
             @Header("Authorization") String authHeader);
 

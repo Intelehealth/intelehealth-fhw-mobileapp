@@ -1,1 +1,85 @@
-No data for SELECT * FROM tbl_uuid_dictionary where name = 'Stage2_Hour6_1'
+{
+  "data": {
+    "encounterlist": [
+      {
+        "syncd": false,
+        "uuid": "c1841779-235f-4286-894e-a7c218b14d9c",
+        "voided": 0
+      },
+      {
+        "syncd": false,
+        "uuid": "5ef0c3be-dcee-4a6a-927b-ec2acf8fdb69",
+        "voided": 0
+      },
+      {
+        "syncd": false,
+        "uuid": "d615f3ae-4894-4f33-8433-996ba9db6905",
+        "voided": 0
+      },
+      {
+        "syncd": false,
+        "uuid": "48f7b180-5917-4777-a9f1-12b9952fde32",
+        "voided": 0
+      },
+      {
+        "syncd": false,
+        "uuid": "e2af2e90-b922-46c3-acf7-1f1df96d3635",
+        "voided": 0
+      },
+      {
+        "syncd": true,
+        "uuid": "eba1e5b5-7da6-409e-a4a6-28baa7d922ed",
+        "voided": 0
+      },
+      {
+        "syncd": true,
+        "uuid": "80904d47-909b-4a39-8f5a-05d02d54549d",
+        "voided": 0
+      },
+      {
+        "syncd": true,
+        "uuid": "39da4bd1-e199-4c5f-829c-d93205904b6e",
+        "voided": 0
+      },
+      {
+        "syncd": true,
+        "uuid": "b843d86b-101a-4d89-a4dd-8f7085338944",
+        "voided": 0
+      },
+      {
+        "syncd": false,
+        "uuid": "479471fb-5a94-4d33-a1c7-7e56c0c716bb",
+        "voided": 0
+      }
+    ],
+    "patientlist": [
+      
+    ],
+    "personList": [
+      
+    ],
+    "visitlist": [
+      {
+        "syncd": true,
+        "uuid": "f6f9c31b-d8d2-4ab5-bc43-c6fa8a5ec98f"
+      },
+      {
+        "syncd": true,
+        "uuid": "c7ecbfd1-0564-4048-9a82-09a17217621f"
+      },
+      {
+        "syncd": true,
+        "uuid": "f343fe03-cc8e-4a0e-9618-5d76bd05bfc8"
+      },
+      {
+        "syncd": true,
+        "uuid": "843b54ae-31d1-45f0-a182-0d486b9f7f76"
+      },
+      {
+        "syncd": true,
+        "uuid": "a95d9b0d-0825-4165-8ec6-b414c85063db"
+      }
+    ]
+  },
+  "status": "OK"
+}

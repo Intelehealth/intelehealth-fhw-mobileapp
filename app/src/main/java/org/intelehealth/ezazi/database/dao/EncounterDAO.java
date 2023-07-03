@@ -57,23 +57,25 @@ public class EncounterDAO {
 
     private boolean createEncounters(EncounterDTO encounter, SQLiteDatabase db) throws DAOException {
         boolean isCreated = false;
-        if (isEncounterAlreadyAvailable(encounter.getVisituuid(), encounter.getEncounterTypeUuid())) {
-            return isCreated;
-        }
         ContentValues values = new ContentValues();
+        values.put("uuid", encounter.getUuid());
+        values.put("visituuid", encounter.getVisituuid());
+        values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
+        values.put("provider_uuid", encounter.getProvideruuid());
+        values.put("encounter_time", encounter.getEncounterTime());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", encounter.getSyncd());
+        values.put("voided", encounter.getVoided());
+        values.put("privacynotice_value", encounter.getPrivacynotice_value());
         try {
 
-            values.put("uuid", encounter.getUuid());
-            values.put("visituuid", encounter.getVisituuid());
-            values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
-            values.put("provider_uuid", encounter.getProvideruuid());
-            values.put("encounter_time", encounter.getEncounterTime());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("sync", encounter.getSyncd());
-            values.put("voided", encounter.getVoided());
-            values.put("privacynotice_value", encounter.getPrivacynotice_value());
-            Log.d("VALUES:", "VALUES: " + values);
-            createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (isEncounterAlreadyAvailable(encounter.getVisituuid(), encounter.getEncounterTypeUuid())) {
+                db.update("tbl_encounter", values, "uuid = ?", new String[]{encounter.getUuid()});
+                return true;
+            } else {
+                Log.d("VALUES:", "VALUES: " + values);
+                createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            }
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
@@ -96,14 +98,11 @@ public class EncounterDAO {
 
     public boolean createEncountersToDB(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
-        if (isEncounterAlreadyAvailable(encounter.getVisituuid(), encounter.getEncounterTypeUuid())) {
-            return isCreated;
-        }
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
-        ContentValues values = new ContentValues();
-        try {
+        if (encounter.getEncounterTypeUuid() != null && encounter.getEncounterTypeUuid().length() > 0) {
+            SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+            db.beginTransaction();
 
+            ContentValues values = new ContentValues();
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_time", encounter.getEncounterTime());
@@ -114,20 +113,29 @@ public class EncounterDAO {
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
 
-            createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (isEncounterAlreadyAvailable(encounter.getVisituuid(), encounter.getEncounterTypeUuid())) {
+                db.update("tbl_encounter", values, "uuid = ?", new String[]{encounter.getUuid()});
+                db.setTransactionSuccessful();
+                db.endTransaction();
+                return true;
+            } else {
+                try {
+                    createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-            if (createdRecordsCount != 0)
-                isCreated = true;
-            db.setTransactionSuccessful();
+                    if (createdRecordsCount != 0)
+                        isCreated = true;
+                    db.setTransactionSuccessful();
 
-        } catch (SQLException e) {
-            isCreated = false;
-            throw new DAOException(e.getMessage(), e);
+                } catch (SQLException e) {
+                    isCreated = false;
+                    throw new DAOException(e.getMessage(), e);
 
-        } finally {
-            db.endTransaction();
-
+                } finally {
+                    db.endTransaction();
+                }
+            }
         }
+
         return isCreated;
     }
 
@@ -525,6 +533,7 @@ public class EncounterDAO {
             values.put("encounter_time", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
             values.put("encounter_type_uuid", ENCOUNTER_VISIT_COMPLETE);
             values.put("provider_uuid", providerUUID);
+//            values.put("modified_date", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
             values.put("sync", "false");
             values.put("voided", 0);
 

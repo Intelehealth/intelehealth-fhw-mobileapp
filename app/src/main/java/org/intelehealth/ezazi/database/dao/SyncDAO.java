@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -33,6 +34,7 @@ import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.ezazi.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -159,7 +161,7 @@ public class SyncDAO {
                             }
 
                             if (listPatientUUID.size() > 0) {
-                              //  triggerVisitNotification(listPatientUUID);
+                                //  triggerVisitNotification(listPatientUUID);
                             }
                         }
                     } else {
@@ -228,11 +230,10 @@ public class SyncDAO {
                         if (fromActivity.equalsIgnoreCase("home")) {
                             Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                           // Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
-                        }
-                        else if(fromActivity.equalsIgnoreCase("timeline")) {
+                            // Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
+                        } else if (fromActivity.equalsIgnoreCase("timeline")) {
                             Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
-                        }else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
                         }
@@ -246,8 +247,7 @@ public class SyncDAO {
                             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
-                        }
-                        else if (fromActivity.equalsIgnoreCase("timeline")) {
+                        } else if (fromActivity.equalsIgnoreCase("timeline")) {
                             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
                             Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
@@ -280,7 +280,7 @@ public class SyncDAO {
                             }
 
                             if (listPatientUUID.size() > 0) {
-                              //  triggerVisitNotification(listPatientUUID);
+                                //  triggerVisitNotification(listPatientUUID);
                             }
                         }
                     } else {
@@ -309,8 +309,7 @@ public class SyncDAO {
         return true;
     }
 
-    public void setLocale(String appLanguage)
-    {
+    public void setLocale(String appLanguage) {
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -373,63 +372,81 @@ public class SyncDAO {
         EncounterDAO encounterDAO = new EncounterDAO();
 
 
-        PushRequestApiCall pushRequestApiCall;
+//        PushRequestApiCall pushRequestApiCall;
         PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
-        pushRequestApiCall = patientsFrameJson.frameJson();
+        PushRequestApiCall pushRequestApiCall1 = patientsFrameJson.frameJson();
         final boolean[] isSucess = {true};
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
-        Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall1));
+        Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall1));
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url" + url);
 //        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //        push only happen if any one data exists.
-        if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty()) {
-            Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
-            pushResponseApiCallObservable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
-                        @Override
-                        public void onSuccess(PushResponseApiCall pushResponseApiCall) {
-                            Logger.logD(TAG, "success" + pushResponseApiCall);
-                            for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
-                                try {
-                                    patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
-                                    Log.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
-                                } catch (DAOException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
+        if (!pushRequestApiCall1.getVisits().isEmpty() || !pushRequestApiCall1.getPersons().isEmpty() || !pushRequestApiCall1.getPatients().isEmpty() || !pushRequestApiCall1.getEncounters().isEmpty()) {
+            Log.e(TAG, "pushDataApi: ");
+            Call<PushResponseApiCall> call = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall1);
+            call.enqueue(new Callback<PushResponseApiCall>() {
+                @Override
+                public void onResponse(Call<PushResponseApiCall> call, Response<PushResponseApiCall> response) {
+                    if (response.isSuccessful()) {
+                        PushResponseApiCall pushResponseApiCall = response.body();
+                        Logger.logD(TAG, "success" + pushResponseApiCall);
+                        Log.e(TAG, "onSuccess: mithun" + new Gson().toJson(pushResponseApiCall));
+                        for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
+                            try {
+                                patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                Log.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
                             }
-
-                            for (int i = 0; i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
-                                try {
-                                    visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
-                                } catch (DAOException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
-                            }
-
-                            for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
-                                try {
-                                    encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
-                                    Log.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
-                                } catch (DAOException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
-                            }
-                            isSucess[0] = true;
-                            sessionManager.setSyncFinished(true);
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Logger.logD(TAG, "Onerror " + e.getMessage());
-                            isSucess[0] = false;
-                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        for (int i = 0; i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
+                            try {
+                                visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
                         }
-                    });
+
+                        for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
+                            try {
+                                encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                Log.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+                        }
+                        isSucess[0] = true;
+                        sessionManager.setSyncFinished(true);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PushResponseApiCall> call, Throwable t) {
+                    Logger.logD(TAG, "Onerror " + t.getMessage());
+                    isSucess[0] = false;
+                    IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                            .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                }
+            });
+
+
+//                call.subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
+//                            @Override
+//                            public void onSuccess(PushResponseApiCall pushResponseApiCall) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//
+//                            }
+//                        });
             sessionManager.setPullSyncFinished(true);
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));

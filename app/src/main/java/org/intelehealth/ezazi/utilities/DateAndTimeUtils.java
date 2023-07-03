@@ -35,6 +35,7 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if (date == null) return 0;
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");

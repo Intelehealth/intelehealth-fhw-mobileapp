@@ -207,10 +207,10 @@ public class CallListenerBackgroundService extends Service {
         cancelCounterJob();
         Calendar calendar = Calendar.getInstance();
         int sec = calendar.get(Calendar.SECOND);
-        if(sec <=30) {
+        if (sec <= 30) {
             mPartogramCounterJob = new PartogramCounterJob(2592000000L, 60 * 1000);
             mPartogramCounterJob.start();
-        }else{
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

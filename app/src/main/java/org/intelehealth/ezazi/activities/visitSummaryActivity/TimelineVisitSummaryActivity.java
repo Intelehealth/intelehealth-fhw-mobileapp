@@ -375,23 +375,25 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private void collectEmergencyData() {
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
         String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid());
-        Log.v(TAG, "latestEncounterName - " + latestEncounterName);
-        if (!latestEncounterName.toLowerCase().contains("stage") && !latestEncounterName.toLowerCase().contains("hour"))
-            return;
-        String[] parts = latestEncounterName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
-        if (parts.length != 3) return;
-        int stageNumber = Integer.parseInt(parts[0]);
-        int hourNumber = Integer.parseInt(parts[1]) + 1;
-        int cardNumber = 1;//Integer.parseInt(parts[2]);
+        if (latestEncounterName != null && latestEncounterName.length() > 0) {
+            Log.v(TAG, "latestEncounterName - " + latestEncounterName);
+            if (!latestEncounterName.toLowerCase().contains("stage") && !latestEncounterName.toLowerCase().contains("hour"))
+                return;
+            String[] parts = latestEncounterName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
+            if (parts.length != 3) return;
+            int stageNumber = Integer.parseInt(parts[0]);
+            int hourNumber = Integer.parseInt(parts[1]) + 1;
+            int cardNumber = 1;//Integer.parseInt(parts[2]);
 
 
-        String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
-        Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-        String encounterUuid = UUID.randomUUID().toString();
-        new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID());
-        Log.e(TAG, "SOS Encounter uuid " + encounterUuid);
-        createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
-        fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+            String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
+            Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+            String encounterUuid = UUID.randomUUID().toString();
+            new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID());
+            Log.e(TAG, "SOS Encounter uuid " + encounterUuid);
+            createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
+            fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
+        }
     }
 
     @Override
@@ -1000,7 +1002,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         ////
         // Now get this encounteruuid and create refer obs table.
-        if (!encounterUuid.equalsIgnoreCase("") && !encounterUuid.isEmpty()) {
+        if (!encounterUuid.isEmpty()) {
             ObsDAO obsDAO = new ObsDAO();
             ObsDTO obsDTO;
             List<ObsDTO> obsDTOList = new ArrayList<>();
@@ -1069,7 +1071,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private boolean insertVisitCompleteEncounterAndObs_ReferHospital(String visitUuid, String referType,
                                                                      String hospitalName, String doctorName, String note) throws DAOException {
-        boolean isInserted = false;
+        boolean isInserted = true;
         String encounterUuid = "";
         encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
 
@@ -1078,7 +1080,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         ////
         // Now get this encounteruuid and create refer obs table.
-        if (!encounterUuid.equalsIgnoreCase("") && !encounterUuid.isEmpty()) {
+        if (!encounterUuid.isEmpty()) {
             ObsDAO obsDAO = new ObsDAO();
             ObsDTO obsDTO;
             List<ObsDTO> obsDTOList = new ArrayList<>();
