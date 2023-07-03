@@ -537,7 +537,18 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         showVisitID();  // display visit ID.
 
         if (intentTag != null && !intentTag.isEmpty()) {
-            boolean isAllowForEdit = true;
+
+
+            boolean isCompletedExitedSurvey = false;
+            boolean isPrescriptionReceived = false;
+            isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+            try {
+                isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUUID);
+                isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitUUID);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+            boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
             // Edit btn visibility based on user coming from Visit Details screen - Start
             //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
             if (!isAllowForEdit) {
@@ -599,13 +610,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         }
 
-        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
 
         if (!isVisitSpecialityExists) {
             doc_speciality_card.setVisibility(View.VISIBLE);
             special_vd_card.setVisibility(View.GONE);
-
-
+            flag.setEnabled(true);
+            flag.setClickable(true);
+        } else {
+            flag.setEnabled(false);
+            flag.setClickable(false);
         }
         btn_bottom_printshare.setVisibility(View.GONE);
         btn_bottom_vs.setVisibility(View.VISIBLE);
@@ -1183,8 +1196,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists)
+        if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
+            flag.setEnabled(false);
+            flag.setClickable(false);
+        } else {
+            flag.setEnabled(true);
+            flag.setClickable(true);
+        }
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -2640,8 +2659,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
             // Additional Notes - End
 
-            if (isVisitSpecialityExists)
+            if (isVisitSpecialityExists) {
                 speciality_spinner.setEnabled(false);
+                flag.setEnabled(false);
+                flag.setClickable(false);
+            } else {
+                flag.setEnabled(true);
+                flag.setClickable(true);
+            }
 
             if (flag.isChecked()) {
                 try {
@@ -2712,8 +2737,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             showVisitID();
                             Log.d("visitUUID", "showVisitID: " + visitUUID);
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                            if (isVisitSpecialityExists)
+                            if (isVisitSpecialityExists) {
                                 speciality_spinner.setEnabled(false);
+                                flag.setEnabled(false);
+                                flag.setClickable(false);
+                            } else {
+                                flag.setEnabled(true);
+                                flag.setClickable(true);
+                            }
+                            fetchingIntent();
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " +
                                     getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);

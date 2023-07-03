@@ -456,7 +456,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
-        if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
+        if (height!=null && weight!=null && height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
                 weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
 
             mBMITextView.setText("");

@@ -171,8 +171,10 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     private void clickListeners() {
         // language spinner - start
         langAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.language_names));
+                R.layout.simple_spinner_item_1, getResources().getStringArray(R.array.language_names));
+        langAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
         lang_spinner.setAdapter(langAdapter); // setting up language spinners.
+        lang_spinner.setPopupBackgroundDrawable(getDrawable(R.drawable.popup_menu_background));
 
         String l = sessionManager.getAppLanguage();
         if (l.equalsIgnoreCase("en"))

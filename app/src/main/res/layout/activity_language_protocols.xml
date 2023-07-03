@@ -180,14 +180,17 @@
                         android:layout_alignParentEnd="true"
                         android:entries="@array/language_names"
                         android:paddingStart="@dimen/fu_margin_start"
+                        android:popupBackground="@drawable/spinner_popup"
+                        android:spinnerMode="dropdown"
+                        android:dropDownVerticalOffset="50dp"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
                         android:paddingBottom="@dimen/margin_10"
-                        android:spinnerMode="dialog" />
+                         />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/reset_lang_relative"
+                    android:id="@+id/reset_lang_relative_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lang_relative"

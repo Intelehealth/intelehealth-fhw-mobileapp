@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/card_add_patient_home_height"
             android:layout_marginStart="@dimen/common_all_card_start_margin"
-            android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:layout_marginTop="@dimen/margin_12"
             android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:backgroundTint="@color/cardTintDarkBlue"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_all_card_start_margin"
-            android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:backgroundTint="@color/cardTintLightGreen"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
@@ -121,7 +121,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card_prescription"
+                android:id="@+id/card_prescription_inner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_all_card_top_margin"
@@ -173,7 +173,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ui2_image_prescription_green_bg"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
 
                 <ImageView
                     android:id="@+id/imageview_prescription_img"
@@ -186,7 +186,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ui2_image_prescription_green"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_received_no" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -195,7 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_all_card_start_margin"
-            android:layout_marginTop="@dimen/common_all_card_top_margin"
+            android:layout_marginTop="@dimen/margin_8"
             android:layout_marginEnd="@dimen/common_all_card_end_margin"
             android:backgroundTint="@color/colorAccentCloseVisit"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
@@ -251,10 +251,10 @@
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_below="@+id/textview_close_visit"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentEnd="true" android:layout_marginTop="@dimen/margin_8"
                     android:src="@drawable/ui2_ic_close_visit"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit_no" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -263,10 +263,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/options_cards_start_margin"
-
-            android:layout_marginTop="@dimen/options_card_margin_top"
-            android:layout_marginEnd="@dimen/options_cards_end_margin"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closedVisitsCardView">
@@ -312,7 +310,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/options_heading_margin_top"
+                        android:layout_marginTop="@dimen/margin_8"
                         android:text="@string/appointments"
                         android:textSize="@dimen/common_sub_headings_home"
                         android:textStyle="bold"
@@ -370,7 +368,7 @@
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/options_heading_margin_top"
+                        android:layout_marginTop="@dimen/margin_8"
                         android:text="@string/follow_up_visits"
                         android:textSize="@dimen/common_sub_headings_home"
                         android:textStyle="bold"
@@ -400,4 +398,4 @@
           layout="@layout/ui2_layout_common_bottom_nav" />
 -->
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

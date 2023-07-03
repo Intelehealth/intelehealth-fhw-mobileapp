@@ -730,7 +730,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/doc_speciality_title"
+                        android:id="@+id/doc_speciality_title_1"
                         style="@style/vs_title_head_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -748,7 +748,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/margin_8"
-                        android:layout_toEndOf="@+id/doc_speciality_title"
+                        android:layout_toEndOf="@+id/doc_speciality_title_1"
                         android:background="@null"
                         android:src="@drawable/question_mark_helpicon" />
 
