@@ -55,7 +55,7 @@
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
-    <string name="error_location_not_selected">Please select a value form the location dropdown</string>
+    <string name="error_location_not_selected">Please select the location.</string>
     <string name="error_location_not_fetched">Unable to fetch locations</string>
     <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
     </string>

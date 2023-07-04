@@ -82,7 +82,7 @@ public class RealTimeDataChangedObserver {
     }
 
     private Bundle convertToBundle(HashMap<?, ?> value) {
-        Log.d(TAG, "convertToBundle: ");
+        Log.d(TAG, "convertToBundle: " + new Gson().toJson(value));
         Bundle bundle = new Bundle();
         bundle.putString("doctorName", String.valueOf(value.get("doctorName")));
         bundle.putString("nurseId", String.valueOf(value.get("nurseId")));
@@ -93,7 +93,7 @@ public class RealTimeDataChangedObserver {
     }
 
     private boolean isDuplicate(SessionManager sessionManager, RtcArgs args) {
-        Log.d(TAG, "isDuplicate: ");
+        Log.d(TAG, "isDuplicate: " + new Gson().toJson(args));
         RtcArgs previous = sessionManager.getRtcData();
         if (previous != null && Objects.equals(previous.getAppToken(), args.getAppToken())) {
             Timber.tag(TAG).d("Both are same => return");
@@ -147,9 +147,9 @@ public class RealTimeDataChangedObserver {
         // This method is called once with the initial value and again
         // whenever data at this location is updated.
         HashMap<?, ?> value = (HashMap<?, ?>) snapshot.getValue();
-        Timber.tag(TAG).d("Value is: " + value);
-
         if (value == null) return;
+        Log.e(TAG, "observeDataChange: value " + value.toString());
+
         Map<String, String> log = new HashMap<>();
         log.put(TAG, "RealTimeDataChangedObserver");
         log.put(TAG, "onDataChange");

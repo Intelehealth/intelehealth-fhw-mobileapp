@@ -583,7 +583,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     if (selectedItems.size() > 0) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < selectedItems.size(); i++) {
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
+                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
                             stringBuilder.append(selectedItems.get(i));
 
                         }
@@ -611,7 +611,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     if (selectedItems.size() > 0) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < selectedItems.size(); i++) {
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(",");
+                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
                             stringBuilder.append(selectedItems.get(i));
 
                         }
