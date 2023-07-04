@@ -68,17 +68,18 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (genericViewHolder.node.isSelected()) {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.white));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        String id = mItemList.get(genericViewHolder.index).getId();
-                        if (!mEditTimeLoadedIds.contains(id)) {
-                            mEditTimeLoadedIds.add(id);
-                            mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
-                        }
+                if (mItemList.get(genericViewHolder.index).getOptionsList() != null && !mItemList.get(genericViewHolder.index).getOptionsList().isEmpty())
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            String id = mItemList.get(genericViewHolder.index).getId();
+                            if (!mEditTimeLoadedIds.contains(id)) {
+                                mEditTimeLoadedIds.add(id);
+                                mOnItemSelection.onSelect(mItemList.get(genericViewHolder.index), true);
+                            }
 
-                    }
-                }, 1000);
+                        }
+                    }, 1000);
             } else {
                 genericViewHolder.tvName.setBackgroundResource(R.drawable.edittext_border_blue);
                 genericViewHolder.tvName.setTextColor(mContext.getResources().getColor(R.color.ui2_black_text_color));

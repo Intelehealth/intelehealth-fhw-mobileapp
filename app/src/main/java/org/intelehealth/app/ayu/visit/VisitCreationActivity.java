@@ -225,6 +225,27 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private void makeReadyForEdit() {
         findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
+        // init all resources
+        mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
+        }.getType());
+
+        mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
+        }.getType());
+
+        if (!sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty())
+            physicalExamMap = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid), PhysicalExam.class);
+        else
+            loadPhysicalExam();
+
+        if (!sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty())
+            mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
+        else
+            mPastMedicalHistoryNode = loadPastMedicalHistory();
+
+        if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
+            mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
+        else
+            mFamilyHistoryNode = loadFamilyHistory();
         switch (mEditFor) {
             case STEP_1_VITAL:
                 getSupportFragmentManager().beginTransaction().
@@ -232,11 +253,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         commit();
                 break;
             case STEP_2_VISIT_REASON:
-                mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
-                }.getType());
 
-                mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
-                }.getType());
 
                 //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 //mStep2ProgressBar.setProgress(40);
@@ -253,19 +270,14 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 //mPhysicalExamNode =
                 //loadPhysicalExam();
-                physicalExamMap = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid), PhysicalExam.class);
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mIsEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
                         commit();
                 break;
             case STEP_4_PAST_MEDICAL_HISTORY:
-                mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
-                mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
                 showPastMedicalHistoryFragment(mIsEditMode);
                 break;
             case STEP_5_FAMILY_HISTORY:
-                mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
-                mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
                 showFamilyHistoryFragment(mIsEditMode);
                 break;
         }
@@ -481,7 +493,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
             if (matchDate != null) {
                 for (String date : matchDate) {
-                    insertionLocale= insertionLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                    insertionLocale = insertionLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
                 }
             }
             jsonObject.put("en", insertion);
@@ -938,7 +950,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(physicalStringLocale);
                 if (matchDate != null) {
                     for (String date : matchDate) {
-                        physicalStringLocale= physicalStringLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                        physicalStringLocale = physicalStringLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
                     }
                 }
                 jsonObject.put("en", physicalString);
@@ -1016,7 +1028,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) {
                 for (String date : matchDate1) {
-                    familyHistoryLocale =  familyHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
+                    familyHistoryLocale = familyHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
                 }
             }
 
@@ -1041,7 +1053,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0);
-                    String toInsert = (!isLocale ? node.getText() : node.findDisplay() )+ " : " + familyString;
+                    String toInsert = (!isLocale ? node.getText() : node.findDisplay()) + " : " + familyString;
                     //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");

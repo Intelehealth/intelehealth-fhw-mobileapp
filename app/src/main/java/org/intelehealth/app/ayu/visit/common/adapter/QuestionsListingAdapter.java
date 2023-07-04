@@ -196,13 +196,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.nextRelativeLayout.setVisibility(View.GONE);
             //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
 
-            if (mIsForPhysicalExam) {
-                genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
-
-            } else {
-                genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mContext.getString(R.string.questions))); //"1 of 10 questions"
-
-            }
+            genericViewHolder.tvQuestionCounter.setText("");
             if (position == mItemList.size() - 1) {
                 genericViewHolder.spinKitView.setVisibility(View.VISIBLE);
                 genericViewHolder.bodyLayout.setVisibility(View.GONE);
@@ -228,6 +222,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void setData(int position, GenericViewHolder genericViewHolder) {
         Log.v(TAG, "setData");
+        if (mIsForPhysicalExam) {
+            genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
+
+        } else {
+            genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mContext.getString(R.string.questions))); //"1 of 10 questions"
+
+        }
+
         if (genericViewHolder.node.findPopup() != null && !genericViewHolder.node.findPopup().isEmpty()) {
             genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
 
@@ -1002,6 +1004,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
                 }
+                VisitUtils.scrollNow(mRecyclerView, 1400, 0, 600);
                 // *****************
                 OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                     @Override
@@ -1068,8 +1071,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                             if (node.isExcludedFromMultiChoice()) {
                                 holder.nestedRecyclerView.setVisibility(View.GONE);
-                                if (!isLoadingForNestedEditData)
+                                if (!isLoadingForNestedEditData) {
                                     notifyItemChanged(index);
+                                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
+                                }
                             }
                             return;
                         }
