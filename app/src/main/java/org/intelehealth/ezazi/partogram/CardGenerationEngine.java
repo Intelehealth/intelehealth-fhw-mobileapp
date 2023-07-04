@@ -25,6 +25,7 @@ import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
+import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
@@ -156,6 +157,8 @@ public class CardGenerationEngine {
             encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
             encounterDTO.setVoided(0);
             encounterDTO.setPrivacynotice_value("true");
+
+//            new ObsDAO().createEncounterType(encounterDTO.getUuid(), EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID());
 
             Map<String, String> log = new HashMap<>();
             log.put("TAG", TAG);

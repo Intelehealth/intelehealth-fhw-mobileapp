@@ -990,8 +990,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         }
     }
 
-    private boolean insertStage2_AdditionalData(String visitUuid, String birthoutcome, String birthWeight, String apgar_1min, String apgar_5min,
-                                                String sex, String baby_status, String mother_status) throws DAOException {
+    private boolean insertStage2_AdditionalData(String visitUuid, String birthoutcome, String birthWeight, String apgar1min, String apgar5Min,
+                                                String sex, String babyStatus, String mother_status) throws DAOException {
 
         boolean isInserted = false;
         String encounterUuid = "";
@@ -1016,52 +1016,64 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             obsDTOList.add(obsDTO);
 
             // 1. Birth Weight
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(birthWeight);
-            obsDTO.setConceptuuid(UuidDictionary.BIRTH_WEIGHT);
-            obsDTOList.add(obsDTO);
+            if (birthWeight != null && birthWeight.length() > 0) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(birthWeight);
+                obsDTO.setConceptuuid(UuidDictionary.BIRTH_WEIGHT);
+                obsDTOList.add(obsDTO);
+            }
 
             // 2. Apgar 1 min
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(apgar_1min);
-            obsDTO.setConceptuuid(UuidDictionary.APGAR_1_MIN);
-            obsDTOList.add(obsDTO);
+            if (apgar1min != null && apgar1min.length() > 0) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(apgar1min);
+                obsDTO.setConceptuuid(UuidDictionary.APGAR_1_MIN);
+                obsDTOList.add(obsDTO);
+            }
 
             // 3. Apgar 5min
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(apgar_5min);
-            obsDTO.setConceptuuid(UuidDictionary.APGAR_5_MIN);
-            obsDTOList.add(obsDTO);
+            if (apgar5Min != null && !apgar5Min.isEmpty()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(apgar5Min);
+                obsDTO.setConceptuuid(UuidDictionary.APGAR_5_MIN);
+                obsDTOList.add(obsDTO);
+            }
 
             // 4. Sex
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(sex);
-            obsDTO.setConceptuuid(UuidDictionary.SEX);
-            obsDTOList.add(obsDTO);
+            if (sex != null && !sex.isEmpty()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(sex);
+                obsDTO.setConceptuuid(UuidDictionary.SEX);
+                obsDTOList.add(obsDTO);
+            }
 
             // 5. Baby Status
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(baby_status);
-            obsDTO.setConceptuuid(UuidDictionary.BABY_STATUS);
-            obsDTOList.add(obsDTO);
+            if (babyStatus != null && !babyStatus.isEmpty()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(babyStatus);
+                obsDTO.setConceptuuid(UuidDictionary.BABY_STATUS);
+                obsDTOList.add(obsDTO);
+            }
 
             // 6. Mother Status
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(mother_status);
-            obsDTO.setConceptuuid(UuidDictionary.MOTHER_STATUS);
-            obsDTOList.add(obsDTO);
+            if (mother_status != null && !mother_status.isEmpty()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(mother_status);
+                obsDTO.setConceptuuid(UuidDictionary.MOTHER_STATUS);
+                obsDTOList.add(obsDTO);
+            }
 
             isInserted = obsDAO.insertObsToDb(obsDTOList);
         }
@@ -1094,28 +1106,34 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             obsDTOList.add(obsDTO);
 
             // 2. Refer Hospital Name
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(hospitalName);
-            obsDTO.setConceptuuid(UuidDictionary.REFER_HOSPITAL);
-            obsDTOList.add(obsDTO);
+            if (hospitalName != null && hospitalName.length() > 0) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(hospitalName);
+                obsDTO.setConceptuuid(UuidDictionary.REFER_HOSPITAL);
+                obsDTOList.add(obsDTO);
+            }
 
             // 3. Refer Doctor Name
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(doctorName);
-            obsDTO.setConceptuuid(UuidDictionary.REFER_DR_NAME);
-            obsDTOList.add(obsDTO);
+            if (doctorName != null && doctorName.length() > 0) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(doctorName);
+                obsDTO.setConceptuuid(UuidDictionary.REFER_DR_NAME);
+                obsDTOList.add(obsDTO);
+            }
 
             // 4. Refer Note
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(note);
-            obsDTO.setConceptuuid(UuidDictionary.REFER_NOTE);
-            obsDTOList.add(obsDTO);
+            if (note != null && note.length() > 0) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(UUID.randomUUID().toString());
+                obsDTO.setEncounteruuid(encounterUuid);
+                obsDTO.setValue(note);
+                obsDTO.setConceptuuid(UuidDictionary.REFER_NOTE);
+                obsDTOList.add(obsDTO);
+            }
 
             isInserted = obsDAO.insertObsToDb(obsDTOList);
         }
