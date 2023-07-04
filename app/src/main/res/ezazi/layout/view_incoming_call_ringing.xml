@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
-
+        android:background="@color/white"
+        android:padding="@dimen/action_bar_size">
 
         <TextView
             android:id="@+id/caller_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="48dip"
             android:text="Doctor"
             android:textColor="@color/gray_5"
             android:textSize="28sp"
@@ -40,80 +40,39 @@
             app:rb_rippleAmount="4"
             app:rb_scale="6">
 
-            <ImageView
-                android:id="@+id/centerImage"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+            <TextView
+                android:id="@+id/tvCallerIdentity"
+                android:layout_width="@dimen/std_72dp"
+                android:layout_height="@dimen/std_72dp"
                 android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_call_accept" />
+                android:background="@drawable/rounded_blue_bg_shape"
+                android:gravity="center"
+                android:text="A"
+                android:textColor="@color/white"
+                android:textSize="@dimen/std_36sp"
+                android:textStyle="bold" />
         </com.skyfishjy.library.RippleBackground>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabDeclineCall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="230dip"
-            android:layout_marginBottom="48dip"
-            android:padding="16dip"
-            android:weightSum="2">
+            android:contentDescription="@string/decline"
+            android:src="@drawable/ic_call_end"
+            app:backgroundTint="@color/red"
+            app:tint="@null" />
 
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:id="@+id/in_call_reject_imv"
-                    android:layout_width="70dip"
-                    android:layout_height="70dip"
-                    android:layout_centerInParent="true"
-                    android:background="@color/red"
-                    android:contentDescription="@string/call_end_button"
-                    android:padding="16dip"
-                    app:srcCompat="@drawable/ic_call_end" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/in_call_reject_imv"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dip"
-                    android:text="Decline"
-                    android:textColor="@color/gray_4"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:id="@+id/in_call_accept_imv"
-                    android:layout_width="70dip"
-                    android:layout_height="70dip"
-                    android:layout_centerInParent="true"
-                    android:background="@color/green"
-                    android:contentDescription="@string/call_end_button"
-                    android:padding="16dip"
-                    app:srcCompat="@drawable/ic_call_accept" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/in_call_accept_imv"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dip"
-                    android:text="Accept"
-                    android:textColor="@color/gray_4"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAcceptCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/accept"
+            android:src="@drawable/ic_call_accept"
+            app:backgroundTint="@color/green"
+            app:tint="@null" />
     </RelativeLayout>
 </layout>

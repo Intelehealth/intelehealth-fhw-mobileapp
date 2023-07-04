@@ -83,3 +83,50 @@
   },
   "status": "OK"
 }
+
+Socket Url :3004?userId=5a700f00-eca8-4fe2-bbbd-a2d4e5c3622a&name=5a700f00-eca8-4fe2-bbbd-a2d4e5c3622a
+21:03:39.258  D  Shutting down VM
+21:03:39.259  E  FATAL EXCEPTION: main
+                 Process: org.intelehealth.ezazi, PID: 15584
+                 java.lang.RuntimeException: Unable to start activity ComponentInfo{org.intelehealth.ezazi/org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity}: java.net.URISyntaxException: Expected scheme name at index 0: :3004?userId=5a700f00-eca8-4fe2-bbbd-a2d4e5c3622a&name=5a700f00-eca8-4fe2-bbbd-a2d4e5c3622a
+                 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3645)
+                 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3782)
+                 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:101)
+                 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135)
+                 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95)
+                 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2307)
+                 	at android.os.Handler.dispatchMessage(Handler.java:106)
+                 	at android.os.Looper.loopOnce(Looper.java:201)
+                 	at android.os.Looper.loop(Looper.java:288)
+                 	at android.app.ActivityThread.main(ActivityThread.java:7872)
+                 	at java.lang.reflect.Method.invoke(Native Method)
+                 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548)
+                 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:936)
+                 Caused by: java.net.URISyntaxException: Expected scheme name at index 0: :3004?userId=5a700f00-eca8-4fe2-bbbd-a2d4e5c3622a&name=5a700f00-eca8-4fe2-bbbd-a2d4e5c3622a
+                 	at java.net.URI$Parser.fail(URI.java:2893)
+                 	at java.net.URI$Parser.failExpecting(URI.java:2899)
+                 	at java.net.URI$Parser.parse(URI.java:3091)
+                 	at java.net.URI.<init>(URI.java:584)
+                 	at io.socket.client.IO.socket(IO.java:42)
+                 	at io.socket.client.IO.socket(IO.java:38)
+                 	at org.intelehealth.klivekit.socket.SocketManager.connect(SocketManager.kt:25)
+                 	at org.intelehealth.klivekit.ui.viewmodel.SocketViewModel.connect(SocketViewModel.kt:105)
+                 	at org.intelehealth.klivekit.ui.activity.CoreVideoCallActivity.observerSocketEvent(CoreVideoCallActivity.kt:164)
+                 	at org.intelehealth.klivekit.ui.activity.CoreVideoCallActivity.onCreate(CoreVideoCallActivity.kt:83)
+                 	at org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity.onCreate(EzaziVideoCallActivity.java:38)
+                 	at android.app.Activity.performCreate(Activity.java:8305)
+                 	at android.app.Activity.performCreate(Activity.java:8284)
+                 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1417)
+                 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3626)
+                 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3782) 
+                 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:101) 
+                 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135) 
+                 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95) 
+                 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2307) 
+                 	at android.os.Handler.dispatchMessage(Handler.java:106) 
+                 	at android.os.Looper.loopOnce(Looper.java:201) 
+                 	at android.os.Looper.loop(Looper.java:288) 
+                 	at android.app.ActivityThread.main(ActivityThread.java:7872) 
+                 	at java.lang.reflect.Method.invoke(Native Method) 
+                 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:548) 
+                 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:936) 

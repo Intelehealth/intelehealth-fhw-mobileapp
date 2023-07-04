@@ -59,15 +59,15 @@ public class RealTimeDataChangedObserver {
         databaseReference.addValueEventListener(valueEventListener);
     }
 
-    private void startReceiver(boolean isValid, Bundle bundle, RtcArgs rtcArgs) {
+    private void startReceiver(Bundle bundle, RtcArgs rtcArgs) {
         Log.d(TAG, "startReceiver: ");
-        if (isValid) {
-            Intent intent = new Intent(context, CallRTCNotifyReceiver.class);
-            intent.putExtras(bundle);
-            intent.putExtra(RtcUtilsKt.RTC_ARGS, rtcArgs);
-            intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
-            context.sendBroadcast(intent);
-        }
+//        if (isValid) {
+        Intent intent = new Intent(context, CallRTCNotifyReceiver.class);
+        intent.putExtras(bundle);
+        intent.putExtra(RtcUtilsKt.RTC_ARGS, rtcArgs);
+        intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
+        context.sendBroadcast(intent);
+//        }
     }
 
     private RtcArgs convertToRtcArg(HashMap<?, ?> value) {
@@ -76,7 +76,7 @@ public class RealTimeDataChangedObserver {
         RtcArgs rtcArgs = gson.fromJson(gson.toJson(value), RtcArgs.class);
         if (rtcArgs == null) return null;
         rtcArgs.setUrl(BuildConfig.LIVE_KIT_URL);
-        rtcArgs.setSocketUrl(Constants.BASE_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseId());
+        rtcArgs.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseId());
         rtcArgs.setActionType("VIDEO_CALL");
         return rtcArgs;
     }
@@ -175,7 +175,7 @@ public class RealTimeDataChangedObserver {
             isOldNotification = verifyTimestamp(timestamp);
         }
 
-        startReceiver(isOldNotification, bundle, rtcArgs);
+        startReceiver(bundle, rtcArgs);
     }
 
     public void stopObserver() {

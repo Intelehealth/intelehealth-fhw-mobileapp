@@ -40,7 +40,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         if (isArgsInitiate()) {
             setupActionBar();
             initView();
-//            initClickListener();
+            initClickListener();
         }
 
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
@@ -58,8 +58,8 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         binding.videoCallView.callActionView.btnMicOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleMicrophone());
         binding.videoCallView.callActionView.btnVideoOnOff.setOnClickListener(view -> getVideoCallViewModel().toggleCamera());
         binding.videoCallView.callActionView.btnFlipCamera.setOnClickListener(view -> getVideoCallViewModel().flipCamera());
-        binding.incomingCallView.inCallRejectImv.setOnClickListener(view -> declineCall());
-        binding.incomingCallView.inCallRejectImv.setOnClickListener(view -> acceptCall());
+        binding.incomingCallView.fabDeclineCall.setOnClickListener(view -> declineCall());
+        binding.incomingCallView.fabAcceptCall.setOnClickListener(view -> acceptCall());
     }
 
     private void initView() {
@@ -70,7 +70,8 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
             }
             String callType = "Ongoing Call";
             if (args.isIncomingCall()) callType = "Incoming Call";
-            binding.incomingCallView.callerNameTv.setText(callType);
+            binding.incomingCallView.callerNameTv.setText(doctorName);
+            binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvRemoteUsername.setText(doctorName);
         }
     }
@@ -108,7 +109,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     @Override
     public void onCallAccept() {
         super.onCallAccept();
-        binding.incomingCallView.getRoot().setVisibility(View.VISIBLE);
+        binding.incomingCallView.getRoot().setVisibility(View.GONE);
         binding.incomingCallView.rippleBackgroundContent.stopRippleAnimation();
     }
 
