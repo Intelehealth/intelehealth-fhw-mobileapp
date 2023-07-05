@@ -56,6 +56,7 @@ import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
+import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.Base64Utils;
@@ -68,6 +69,8 @@ import org.intelehealth.ezazi.utilities.StringEncryption;
 import org.intelehealth.ezazi.utilities.TextThemeUtils;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -154,7 +157,7 @@ public class SetupActivity extends AppCompatActivity {
 
         setupUrl = getString(R.string.setupUrl);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-
+        TokenRefreshUtils.refreshToken(this);
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        toolbar.setNavigationOnClickListener(view -> {
@@ -1463,6 +1466,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
+                                            saveToken();
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
 //                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
@@ -1808,6 +1812,12 @@ public class SetupActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.show();
         //alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
 
 }
