@@ -527,6 +527,22 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String node_ru__or_dob(String dob) { //English dob is replaced to russian text.
+        return dob
+                .replace("Jan", "Январь")
+                .replace("Feb", "Февраль")
+                .replace("Mar", "Март")
+                .replace("Apr", "апреля")
+                .replace("May", "Май")
+                .replace("Jun", "июнь")
+                .replace("Jul", "июль")
+                .replace("Aug", "август")
+                .replace("Sep", "сентябрь")
+                .replace("Oct", "Октябрь")
+                .replace("Nov", "Ноябрь")
+                .replace("Dec", "Декабрь");
+    }
+
     public static String hi_or__en_month(int month_index) {
         String dob_string = "";
 
