@@ -134,8 +134,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         Drawable d = Drawable.createFromStream(ims, null);
                         // set image to ImageView
                         holder.physical_exam_image_view.setImageDrawable(d);
-                        holder.physical_exam_image_view.setMinimumHeight(500);
-                        holder.physical_exam_image_view.setMinimumWidth(500);
+                        holder.physical_exam_image_view.setMinimumHeight(700);
+                        holder.physical_exam_image_view.setMinimumWidth(700);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         holder.physical_exam_image_view.setVisibility(View.GONE);

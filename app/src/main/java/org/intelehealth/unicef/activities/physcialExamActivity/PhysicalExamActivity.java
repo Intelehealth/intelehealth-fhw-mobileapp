@@ -605,8 +605,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                         Drawable d = Drawable.createFromStream(ims, null);
                         // set image to ImageView
                         imageView.setImageDrawable(d);
-                        imageView.setMinimumHeight(500);
-                        imageView.setMinimumWidth(500);
+                        imageView.setMinimumHeight(700);
+                        imageView.setMinimumWidth(700);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         imageView.setVisibility(View.GONE);

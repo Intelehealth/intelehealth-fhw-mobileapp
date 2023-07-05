@@ -37,6 +37,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     interface OnActionListener {
         void onEndVisitClicked(TodayPatientModel todayPatientModel, boolean hasPrescription);
     }
+
     private OnActionListener actionListener;
     List<TodayPatientModel> todayPatientModelList;
     Context context;
@@ -74,7 +75,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 //        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
         Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, todayPatientModel.getGender()) + ")</b>");
 
-        if (todayPatientModel.getSync().equalsIgnoreCase("0")){
+        if (todayPatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -115,7 +116,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         boolean enableEndVisit = false;
         for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (todayPatientModelList.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+            if (todayPatientModelList.get(position).getHasPrescription()) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
                 enableEndVisit = true;
