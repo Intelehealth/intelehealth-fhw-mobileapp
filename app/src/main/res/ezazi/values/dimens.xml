@@ -151,7 +151,7 @@
     <dimen name="when_diagnosed_margin_bottom">-5dp</dimen>
     <dimen name="when_diagnosed_margin_height">30dp</dimen>
     <dimen name="dialog_max_width">@dimen/std_330dp</dimen>
-    <dimen name="dialog_max_height">@dimen/std_407dp</dimen>
+    <dimen name="dialog_max_height">@dimen/std_430dp</dimen>
     <dimen name="search_icon_padding">@dimen/std_12dp</dimen>
     <dimen name="small_btn_min_width">@dimen/std_72dp</dimen>
     <dimen name="actionbar_screen_title_size">@dimen/std_14sp</dimen>

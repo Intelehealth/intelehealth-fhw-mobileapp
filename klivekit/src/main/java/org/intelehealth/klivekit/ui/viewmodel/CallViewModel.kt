@@ -205,15 +205,17 @@ open class CallViewModel(
     }
 
     private fun onRemoteParticipantTrackUnpublished(it: RoomEvent.TrackUnpublished) {
-        if (it.participant is RemoteParticipant) {
-            mutableCameraEnabled.postValue(getParticipantStatusMap(it.participant, false))
-        }
+//        if (it.participant is RemoteParticipant) {
+        mutableCameraEnabled.postValue(getParticipantStatusMap(it.participant, false))
+//        }
     }
 
     private fun onRemoteParticipantTrackPublished(it: RoomEvent.TrackPublished) {
-        if (it.participant is RemoteParticipant) {
-            mutableCameraEnabled.postValue(getParticipantStatusMap(it.participant, true))
-        }
+//        if (it.participant is RemoteParticipant) {
+        mutableCameraEnabled.postValue(getParticipantStatusMap(it.participant, true))
+//        }else {
+//
+//        }
     }
 
     private fun onParticipantMuted(it: RoomEvent.TrackMuted) {

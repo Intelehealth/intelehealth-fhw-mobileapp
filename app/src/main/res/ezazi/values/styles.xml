@@ -289,7 +289,7 @@
     </style>
 
     <style name="Theme.EZazi.Button.Icon.Blue" parent="Theme.EZazi.Button.Icon">
-        <item name="backgroundTint">@color/colorIconButtonBg</item>
+        <item name="backgroundTint">@color/color_activated_deactived_action</item>
         <item name="strokeColor">@color/color_icon_btn_stroke</item>
         <item name="iconPadding">0dp</item>
         <item name="android:paddingStart">@dimen/timeline_bottom_menu_horizontal_padding</item>
@@ -617,7 +617,7 @@
         <!--        <item name="chipIconSize">@dimen/chip_spinner_icon_size</item>-->
         <item name="chipIconVisible">true</item>
         <item name="chipBackgroundColor">@color/color_calendar_spinner_selector</item>
-        <item name="android:textSize">@dimen/small_input_text_size</item>
+        <item name="android:textSize">@dimen/caption</item>
         <item name="chipCornerRadius">@dimen/small_btn_radius</item>
         <item name="chipIconTint">@color/color_am_pm_selector</item>
         <item name="selectableItemBackground">@color/colorEmergencyBg</item>

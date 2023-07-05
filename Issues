@@ -1,3 +1,5 @@
+https://ezazi.intelehealth.org:3000/api/getToken?name=%3CdoctorUuid%3E&roomId=%3CpatientUuid%3E&nurseName=%3CnurseUuid%3E
+
 {
   "data": {
     "encounterlist": [

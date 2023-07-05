@@ -7,8 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:paddingTop="@dimen/action_bar_size"
-        android:paddingBottom="@dimen/action_bar_size">
+        android:paddingTop="@dimen/action_btn_min_width"
+        android:paddingBottom="@dimen/action_btn_min_width">
 
         <TextView
             android:id="@+id/caller_name_tv"
@@ -57,19 +57,20 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:paddingHorizontal="@dimen/action_bar_size">
+            android:layout_alignParentBottom="true">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabDeclineCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/action_btn_min_width"
                 android:contentDescription="@string/decline"
                 android:src="@drawable/ic_call_end"
                 app:backgroundTint="@color/red"
+                app:fabCustomSize="@dimen/video_call_action_btn_min_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/fabAcceptCall"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@null" />
@@ -78,9 +79,11 @@
                 android:id="@+id/fabAcceptCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/action_btn_min_width"
                 android:contentDescription="@string/accept"
                 android:src="@drawable/ic_call_accept"
                 app:backgroundTint="@color/green"
+                app:fabCustomSize="@dimen/video_call_action_btn_min_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/fabDeclineCall"

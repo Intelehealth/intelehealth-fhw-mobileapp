@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
                 android:layout_margin="@dimen/screen_container_padding"
+                android:background="@drawable/rounded_icon_white_bg"
                 app:srcCompat="@drawable/selector_active_speaker" />
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -65,9 +66,8 @@
             android:layout_width="@dimen/rtc_self_view_width"
             android:layout_height="@dimen/rtc_self_view_height"
             android:layout_margin="@dimen/screen_container_padding"
-            app:cardBackgroundColor="@color/colorIncomingCallBg"
             app:cardCornerRadius="@dimen/container_corner_radius"
-            app:cardElevation="@dimen/std_4dp"
+            app:cardElevation="@dimen/std_8dp"
             app:layout_constraintBottom_toBottomOf="@id/incoming_surface_view_frame"
             app:layout_constraintEnd_toEndOf="@id/incoming_surface_view_frame">
 
@@ -96,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|end"
                     android:layout_margin="@dimen/screen_container_padding"
+                    android:background="@drawable/rounded_icon_white_bg"
                     app:srcCompat="@drawable/selector_active_speaker" />
 
                 <com.google.android.material.imageview.ShapeableImageView

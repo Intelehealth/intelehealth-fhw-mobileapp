@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.ActivityVideoCallEzaziBinding;
 import org.intelehealth.klivekit.ui.activity.CoreVideoCallActivity;
+import org.intelehealth.klivekit.utils.CallType;
 
 import io.livekit.android.renderer.SurfaceViewRenderer;
 import io.livekit.android.room.participant.ConnectionQuality;
@@ -26,6 +27,7 @@ import io.livekit.android.room.track.VideoTrack;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
+
 public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     public static final String TAG = "LiveVideoCallActivity";
 
@@ -68,9 +70,9 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
             if (!args.getDoctorName().startsWith("Dr")) {
                 doctorName = "Dr." + doctorName;
             }
-            String callType = "Ongoing Call";
-            if (args.isIncomingCall()) callType = "Incoming Call";
-            binding.incomingCallView.callingHintsTv.setText(callType);
+            CallType callType = CallType.OUTGOING;
+            if (args.isIncomingCall()) callType = CallType.INCOMING;
+            binding.incomingCallView.callingHintsTv.setText(callType.getValue());
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvRemoteUsername.setText(doctorName);
@@ -79,6 +81,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
 
     @Override
     public void attachLocalVideo(@NonNull VideoTrack videoTrack) {
+        binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
         videoTrack.addRenderer(binding.videoCallView.selfSurfaceView);
     }
 
@@ -97,6 +100,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     @NonNull
     @Override
     public SurfaceViewRenderer getRemoteVideoRender() {
+        binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
         return binding.videoCallView.incomingSurfaceView;
     }
 
@@ -136,7 +140,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     public void onCameraStatusChanged(boolean enabled) {
         super.onCameraStatusChanged(enabled);
         binding.videoCallView.callActionView.btnVideoOnOff.setActivated(!enabled);
-        binding.videoCallView.selfSurfaceView.setVisibility(!enabled ? View.VISIBLE : View.GONE);
+        binding.videoCallView.selfSurfaceView.setVisibility(enabled ? View.VISIBLE : View.GONE);
         binding.videoCallView.ivSelfProfile.setVisibility(!enabled ? View.VISIBLE : View.GONE);
     }
 
@@ -170,14 +174,14 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     @Override
     public void onRemoteParticipantCameraChange(boolean isHide) {
         super.onRemoteParticipantCameraChange(isHide);
-        binding.videoCallView.incomingSurfaceView.setVisibility(isHide ? View.VISIBLE : View.GONE);
-        binding.videoCallView.ivSelfProfile.setVisibility(!isHide ? View.VISIBLE : View.GONE);
+        binding.videoCallView.incomingSurfaceView.setVisibility(isHide ? View.GONE : View.VISIBLE);
+        binding.videoCallView.ivPartnerProfile.setVisibility(isHide ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onRemoteParticipantMicChange(boolean isMuted) {
         super.onRemoteParticipantMicChange(isMuted);
-        Drawable drawable = getCurrentMicStatusIcon(!isMuted);
+        Drawable drawable = getCurrentMicStatusIcon(isMuted);
         binding.videoCallView.ivRemoteSpeakerStatus.setImageDrawable(drawable);
     }
 
