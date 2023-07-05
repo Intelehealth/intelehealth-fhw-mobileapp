@@ -801,5 +801,6 @@
     <string name="hospital_type">Тип больницы</string>
     <string name="secondary">Вторичный</string>
     <string name="tertiary">третичный</string>
+    <string name="type_to_search">введите для поиска…</string>
 
 </resources>

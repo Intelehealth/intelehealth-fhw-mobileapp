@@ -314,6 +314,9 @@ public class HomeActivity extends AppCompatActivity {
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
+        TextView appointmentsTextView = findViewById(R.id.appointment_textview);
+        appointmentsTextView.setText(R.string.doctor_appointments);
+
         // manualSyncButton.setText(R.string.sync_now);
 //        manualSyncButton.setText(R.string.refresh);
 

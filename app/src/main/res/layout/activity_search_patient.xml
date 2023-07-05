@@ -29,7 +29,7 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Type to Search.."
+                        android:hint="@string/type_to_search"
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:background="@null"
@@ -90,14 +90,13 @@
                 android:id="@+id/no_records_found_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="No records found"
-                android:textSize="20sp"
+                android:layout_centerInParent="true"
                 android:fontFamily="@font/lato_bold"
                 android:textColor="@color/font_black_2"
-                android:layout_centerInParent="true"
+                android:textSize="20sp"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_centerHorizontal="true"/>
+                tools:text="No records found"
+                tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle"

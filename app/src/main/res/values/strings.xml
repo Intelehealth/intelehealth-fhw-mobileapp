@@ -800,4 +800,5 @@
     <string name="hospital_type">Hospital Type</string>
     <string name="secondary">Secondary</string>
     <string name="tertiary">Tertiary</string>
+    <string name="type_to_search">Type to Search…</string>
 </resources>
