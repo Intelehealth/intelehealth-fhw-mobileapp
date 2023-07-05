@@ -70,6 +70,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
             }
             String callType = "Ongoing Call";
             if (args.isIncomingCall()) callType = "Incoming Call";
+            binding.incomingCallView.callingHintsTv.setText(callType);
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvRemoteUsername.setText(doctorName);
@@ -83,6 +84,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
 
     @Override
     public void attachRemoteVideo(@NonNull VideoTrack videoTrack) {
+        binding.videoCallView.incomingSurfaceView.setVisibility(View.VISIBLE);
         videoTrack.addRenderer(binding.videoCallView.incomingSurfaceView);
     }
 
@@ -135,7 +137,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         super.onCameraStatusChanged(enabled);
         binding.videoCallView.callActionView.btnVideoOnOff.setActivated(!enabled);
         binding.videoCallView.selfSurfaceView.setVisibility(!enabled ? View.VISIBLE : View.GONE);
-        binding.videoCallView.selfSurfaceView.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        binding.videoCallView.ivSelfProfile.setVisibility(!enabled ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -193,7 +195,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         }
     }
 
-    private OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+    private final OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
             showAppClosingDialog();

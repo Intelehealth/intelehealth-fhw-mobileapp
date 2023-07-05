@@ -349,7 +349,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        checkAppVer();  //auto-update feature.
+//        checkAppVer();  //auto-update feature.
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         /*NEW*/
@@ -1601,7 +1601,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onResume() {
         super.onResume();
         //registerReceiver(reMyreceive, filter);
-        checkAppVer();  //auto-update feature.
+//        checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
                 && Locale.getDefault().toString().equals("en")) {

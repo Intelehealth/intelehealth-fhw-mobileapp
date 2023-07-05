@@ -259,7 +259,7 @@ open class CallViewModel(
     }
 
     private fun onParticipantReconnected(it: RoomEvent.Reconnected) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     private fun onParticipantReconnecting(it: RoomEvent.Reconnecting) {

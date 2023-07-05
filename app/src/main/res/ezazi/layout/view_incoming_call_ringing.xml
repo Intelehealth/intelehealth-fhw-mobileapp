@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:padding="@dimen/action_bar_size">
+        android:paddingTop="@dimen/action_bar_size"
+        android:paddingBottom="@dimen/action_bar_size">
 
         <TextView
             android:id="@+id/caller_name_tv"
@@ -53,26 +54,38 @@
                 android:textStyle="bold" />
         </com.skyfishjy.library.RippleBackground>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabDeclineCall"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:contentDescription="@string/decline"
-            android:src="@drawable/ic_call_end"
-            app:backgroundTint="@color/red"
-            app:tint="@null" />
+            android:paddingHorizontal="@dimen/action_bar_size">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAcceptCall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:contentDescription="@string/accept"
-            android:src="@drawable/ic_call_accept"
-            app:backgroundTint="@color/green"
-            app:tint="@null" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabDeclineCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/decline"
+                android:src="@drawable/ic_call_end"
+                app:backgroundTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fabAcceptCall"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@null" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabAcceptCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/accept"
+                android:src="@drawable/ic_call_accept"
+                app:backgroundTint="@color/green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fabDeclineCall"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@null" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </layout>
