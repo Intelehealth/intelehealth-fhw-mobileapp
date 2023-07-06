@@ -1,4 +1,18 @@
-https://ezazi.intelehealth.org:3000/api/getToken?name=%3CdoctorUuid%3E&roomId=%3CpatientUuid%3E&nurseName=%3CnurseUuid%3E
+https://ezazi.intelehealth.org:3000/api/getToken?
+name=doctorUuid
+&roomId=patientUuid
+&nurseName=nurseUuid
+
+socket.emitEvent("create_or_join_hw", {
+      patientId: this.data.patientId,
+      connectToDrId: this.data.connectToDrId,
+      visitId: "test-visit-uuid",
+      nurseName: 'Zee Test Nurse',
+      patientName: "Test Chat Patient",
+      patientPersonUuid: 'testuuid',
+      patientOpenMrsId: 'TESTID-12',
+      token: "webapp side from getToken API"
+    }) (edited)
 
 {
   "data": {

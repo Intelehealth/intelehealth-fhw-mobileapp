@@ -1,1 +1,11 @@
 1 - After completed the visit, health worker or doctor can use the webrtc feature?
+2 - Current HW can close the visit and add observation for visit which is created by other nurse.
+
+Discussion points
+- End Shift active from server side, require input from program team.
+- End stage flow changes for birth outcome, require clarity from program team
+(https://docs.google.com/spreadsheets/d/1XfXvVjvzGyZm9L5RmmXsbn5nMJmESO_qwgtqO3t9h6M/edit#gid=0)
+- If second stage encounter reach to max limit than what the action should we take here,
+  need to discuss with program team
+- Current nurse have the all right to update patient visit which is created by other nurse
+  with same location.

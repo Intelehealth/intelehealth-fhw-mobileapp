@@ -20,6 +20,7 @@ import org.intelehealth.ezazi.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.ezazi.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.ezazi.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ezazi.models.statewise_location.State;
+import org.intelehealth.ezazi.ui.rtc.model.UserToken;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -136,4 +137,13 @@ public interface ApiInterface {
     @GET
     Call<OxytocinResponseModel> GET_OXYTOCIN_UNIT(@Url String url);
 
+    @GET("api/getToken")
+    Call<UserToken> getVideoAppToken(
+            @Query("name") String doctorUuid,
+            @Query("roomId") String patientUuid,
+            @Query("nurseName") String nurseUuid
+    );
+//    name=doctorUuid
+//&roomId=patientUuid
+//&nurseName=nurseUuid
 }

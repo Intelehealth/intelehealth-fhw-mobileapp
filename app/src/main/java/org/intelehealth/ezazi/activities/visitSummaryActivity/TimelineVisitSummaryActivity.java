@@ -59,6 +59,7 @@ import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
+import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
@@ -66,6 +67,7 @@ import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -338,11 +340,19 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      * @param doctorName String
      */
     private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
+        // Call gettoken api
+
+
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
         Intent in = new Intent(TimelineVisitSummaryActivity.this, EzaziVideoCallActivity.class);
         String roomId = patientUuid;
+        RtcArgs args = new RtcArgs();
+        args.setVisitId(visitUuid);
+        args.setDoctorName(doctorName);
+        args.setDoctorUuid(doctors.get(doctorName));
+//        new CallInitializer().initiateVideoCall();
         String nurseId = encounterDTO.getProvideruuid();
         in.putExtra("roomId", roomId);
         in.putExtra("isInComingRequest", false);

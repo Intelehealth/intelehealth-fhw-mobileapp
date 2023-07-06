@@ -12,12 +12,17 @@ import org.intelehealth.klivekit.utils.RemoteActionType
  **/
 @Parcelize
 data class RtcArgs(
+    var patientId: String? = null,
+    var patientPersonUuid: String? = null,
+    var patientOpenMrsId: String? = null,
     var id: String? = null,
     var url: String? = null,
     var socketUrl: String? = null,
     var token: String? = null,
     var roomId: String? = null,
     var doctorName: String? = null,
+    var nurseName: String? = null,
+    var patientName: String? = null,
     var nurseId: String? = null,
     var doctorUuid: String? = null,
     var visitId: String? = null,
