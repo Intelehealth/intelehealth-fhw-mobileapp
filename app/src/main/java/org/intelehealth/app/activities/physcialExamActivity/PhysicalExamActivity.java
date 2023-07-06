@@ -665,13 +665,12 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     }
 
     private void triggerConfirmation() {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
-        } else {
-            alertDialogBuilder.setMessage(Html.fromHtml(physicalExamMap.generateFindings()));
-        }
+        String physicalString_REG = physicalExamMap.generateFindings_REG(sessionManager.getAppLanguage());
+        // Regional langauge physical exam string for HW.
 
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(Html.fromHtml(physicalString_REG));
+        
         // Handle positive button click
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, ((dialog, which) -> {
             dialog.dismiss();
