@@ -631,4 +631,5 @@
         <!--        <item name="android:fadeScrollbars">false</item>-->
         <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
     </style>
+
 </resources>

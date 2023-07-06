@@ -8,20 +8,19 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import org.intelehealth.ezazi.database.InteleHealthDatabaseHelper;
+import org.intelehealth.ezazi.networkApiCalls.ApiClient;
+import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.syncModule.LastSyncWork;
+import org.intelehealth.ezazi.syncModule.SyncWorkManager;
 import org.intelehealth.ezazi.syncModule.VisitSummaryWork;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidGenerator;
-import org.intelehealth.ezazi.networkApiCalls.ApiClient;
-import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
-import org.intelehealth.ezazi.syncModule.SyncWorkManager;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
@@ -64,6 +63,12 @@ public class AppConstants {
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static NotificationUtils notificationUtils = new NotificationUtils();
     public static final long INTERVAL_TWENTY_FIVE_MINUTES = 1500000L;
+
+    //App url
+    public static final String APP_URL = "ezazi.intelehealth.org";
+    public static final String PROTOCOL = "https://";
+
+    public static final String PORT_NUMBER = "3004";
 
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;

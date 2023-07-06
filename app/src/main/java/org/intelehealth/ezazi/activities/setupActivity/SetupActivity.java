@@ -27,7 +27,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -58,6 +57,7 @@ import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
+import org.intelehealth.ezazi.ui.password.activity.ForgotPasswordActivity;
 import org.intelehealth.ezazi.utilities.Base64Utils;
 import org.intelehealth.ezazi.utilities.DialogUtils;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
@@ -172,6 +172,8 @@ public class SetupActivity extends AppCompatActivity {
         mEmailInputView = findViewById(R.id.etUsernameLayout);
         mPasswordInputView = findViewById(R.id.etPasswordLayout);
         mEmailView = findViewById(R.id.et_email);
+
+
         // populateAutoComplete(); TODO: create our own autocomplete code
 
 
@@ -181,8 +183,11 @@ public class SetupActivity extends AppCompatActivity {
 //        mUrlField = findViewById(R.id.editText_URL);
 
         mLoginButton = findViewById(R.id.btnSetup);
-        findViewById(R.id.includeForgotPassword).setOnClickListener(view -> cantLogin());
-
+        findViewById(R.id.includeForgotPassword).setOnClickListener(v -> {
+            Intent intent = new Intent(SetupActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+            //cantLogin());
+        });
         mLoginButton.setOnClickListener(v -> {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(), 0);

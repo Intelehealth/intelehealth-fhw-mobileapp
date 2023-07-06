@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Space contains text -->
+    <item android:state_checked="true" android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorLoginInputBg" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="?attr/colorError" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+            <padding android:bottom="@dimen/small_button_padding" android:left="@dimen/small_button_padding" android:right="@dimen/small_button_padding" android:top="@dimen/small_button_padding" />
+        </shape>
+    </item>
+    <!--Space is the next space for character input -->
+    <item android:state_focused="true" android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorLoginInputBg" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="?attr/colorError" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+            <padding android:bottom="@dimen/small_button_padding" android:left="@dimen/small_button_padding" android:right="@dimen/small_button_padding" android:top="@dimen/small_button_padding" />
+        </shape>
+    </item>
+    <!-- PinEntryEditText is focused -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorLoginInputBg" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="?attr/colorError" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+            <padding android:bottom="@dimen/small_button_padding" android:left="@dimen/small_button_padding" android:right="@dimen/small_button_padding" android:top="@dimen/small_button_padding" />
+        </shape>
+    </item>
+    <!-- PinEntryEditText is not focused -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorLoginInputBg" />
+            <stroke android:width="@dimen/input_stroke_size" android:color="?attr/colorError" />
+            <corners android:radius="@dimen/screen_container_padding" />
+            <size android:width="@dimen/max_input_height" android:height="@dimen/max_input_height" />
+            <padding android:bottom="@dimen/small_button_padding" android:left="@dimen/small_button_padding" android:right="@dimen/small_button_padding" android:top="@dimen/small_button_padding" />
+        </shape>
+    </item>
+</selector>

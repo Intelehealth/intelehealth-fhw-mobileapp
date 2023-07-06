@@ -265,4 +265,8 @@
     <dimen name="max_input_height">@dimen/std_48dp</dimen>
     <dimen name="max_address_input_height">40dp</dimen>
     <dimen name="dialog_input_min_height">40dp</dimen>
+    <dimen name="code_picker_margin_top">8dp</dimen>
+    <dimen name="code_picker_padding_bottom">8dp</dimen>
+    <dimen name="code_picker_text_size">12sp</dimen>
+
 </resources>
