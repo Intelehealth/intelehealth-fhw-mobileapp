@@ -138,7 +138,7 @@ public interface ApiInterface {
             @Header("Authorization") String authHeader);
 
     @DELETE
-    Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
+    Observable<Response<Void>> DELETE_PRESCOBS_ITEM(
             @Url String url,
             @Header("Authorization") String authHeader);
 
@@ -167,7 +167,4 @@ public interface ApiInterface {
             @Query("roomId") String patientUuid,
             @Query("nurseName") String nurseUuid
     );
-//    name=doctorUuid
-//&roomId=patientUuid
-//&nurseName=nurseUuid
 }
