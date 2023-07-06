@@ -233,4 +233,8 @@
     <dimen name="dropdown_content_height">130dp</dimen>
     <dimen name="dropdown_max_height">280dp</dimen>
     <dimen name="dialog_input_min_height">54dp</dimen>
+    <dimen name="code_picker_margin_top">8dp</dimen>
+    <dimen name="code_picker_padding_bottom">34dp</dimen>
+    <dimen name="code_picker_text_size">20sp</dimen>
+
 </resources>

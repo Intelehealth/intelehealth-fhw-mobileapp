@@ -1,11 +1,14 @@
 package org.intelehealth.ezazi.utilities;
 
+import android.util.Log;
+
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 
 public class UrlModifiers {
     private SessionManager sessionManager = null;
 
     public String loginUrl(String CLEAN_URL) {
+        Log.d("TAG", "loginUrl: CLEAN_URL :"+CLEAN_URL);
 
         String urlModifier = "session";
 

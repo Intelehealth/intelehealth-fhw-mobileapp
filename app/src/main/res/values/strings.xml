@@ -996,6 +996,10 @@
     <string name="select_district">Please select district</string>
     <string name="total_birth_count_limit">Please enter count below or equal to 15</string>
     <string name="miscarriage_count_limit">Please enter count below or equal to 8</string>
+    <string name="otp_sent">OTP sent successfully</string>
+    <string name="otp_verified">Otp verified successfully</string>
+    <string name="password_reset_success">Password reset successful</string>
+
 
 
 </resources>

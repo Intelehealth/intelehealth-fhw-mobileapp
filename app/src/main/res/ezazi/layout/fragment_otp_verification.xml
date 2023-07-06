@@ -13,6 +13,7 @@
             layout="@layout/view_forgot_password_header" />
 
         <include
+            android:id="@+id/contentOtpVerification"
             layout="@layout/content_otp_verification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

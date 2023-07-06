@@ -48,4 +48,10 @@
     <string name="this_field_is_mandatory">This field is mandatory</string>
     <string name="content_webview_page_loading_issue">Something went wrong, Please check the network connectivity and retry or exit</string>
     <string name="action_exit">Exit</string>
+
+    <string name="please_enter_pin">Please enter received OTP</string>
+    <string name="enter_new_password">Please enter new password</string>
+    <string name="reenter_password">Please reenter password</string>
+    <string name="password_not_matching">New password and confirm password doesn\'t match</string>
+
 </resources>

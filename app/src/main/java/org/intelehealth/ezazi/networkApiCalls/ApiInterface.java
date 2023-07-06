@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.networkApiCalls;
 
 
+import org.intelehealth.ezazi.core.ApiResponse;
 import org.intelehealth.ezazi.models.CheckAppUpdateRes;
 import org.intelehealth.ezazi.models.DownloadMindMapRes;
 import org.intelehealth.ezazi.models.Location;
@@ -22,6 +23,11 @@ import org.intelehealth.ezazi.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ezazi.models.statewise_location.State;
 import org.intelehealth.ezazi.ui.rtc.model.UserToken;
 
+import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
+import org.intelehealth.ezazi.ui.password.model.PasswordResponseModel;
+import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;
+import org.intelehealth.ezazi.ui.password.model.VerifyOtpRequestModel;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -30,6 +36,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -130,12 +138,28 @@ public interface ApiInterface {
             @Header("Authorization") String authHeader);
 
     @DELETE
-    Observable<Response<Void>> DELETE_PRESCOBS_ITEM(
+    Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
             @Url String url,
             @Header("Authorization") String authHeader);
 
     @GET
     Call<OxytocinResponseModel> GET_OXYTOCIN_UNIT(@Url String url);
+
+    @POST("/api/auth/requestOtp")
+    Call<ApiResponse<PasswordResponseModel>> requestOTP(@Body RequestOTPModel requestOTPModel);
+
+    @POST("/api/auth/verifyOtp")
+    Call<ApiResponse<PasswordResponseModel>> verifyOtp(@Body VerifyOtpRequestModel verifyOtpRequestModel);
+
+    @POST("/api/auth/resetPassword/{userUuid}")
+    Call<ApiResponse<PasswordResponseModel>> resetPassword(@Path("userUuid") String userUuid,
+                                                           @Body ChangePasswordRequestModel changePasswordRequestModel);
+
+   /* @POST("/api/auth/resetPassword/{userUuid}")
+    @FormUrlEncoded
+    Call<ApiResponse<PasswordResponseModel>> resetPassword(@Path("userUuid") String userUuid,
+                                                           @Field("newPassword") String newPassword
+    );*/
 
     @GET("api/getToken")
     Call<UserToken> getVideoAppToken(
