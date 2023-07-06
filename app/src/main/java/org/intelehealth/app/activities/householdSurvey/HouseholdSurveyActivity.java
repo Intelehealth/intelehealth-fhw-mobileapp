@@ -57,7 +57,6 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
     private int mStageNumber = 1;
     private boolean mIsEditMode = false;
     private Context context;
-
     private ActivityHouseholdSurveyBinding mScreenBinding;
     private String mPatientUUid = "";
     private String mPatientAIDType = "";
@@ -73,17 +72,6 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         View view = mScreenBinding.getRoot();
         setContentView(view);
         sessionManager = new SessionManager(this);
-//        setTitle(getString(R.string.livelihood_needs_assessment));
-
-       /* getSupportFragmentManager().beginTransaction()
-                .replace(R.id.framelayout_container, new FirstScreenFragment())
-                .commit();*/
-
-       /* Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid");
-        }*/
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPatientUUid = getIntent().getStringExtra("patientUuid");
         aidType = getIntent().getStringExtra("aidType");
@@ -114,22 +102,6 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
                 setTitle("Community General Need Survey");
         }
 
-        String attributeTypeUuidForAidType = new PatientsDAO().getUuidForAttribute("patient aid type");// get aid typed from patient attributes;
-      /*  try {
-            String value = new PatientsDAO().getPatientAttributeValueByTypeUUID(mPatientUUid, attributeTypeUuidForAidType);
-            AidTypeAnswerValue answerValue = new Gson().fromJson(value, AidTypeAnswerValue.class);
-            if (answerValue == null || answerValue.getEnValues().size() == 0 || answerValue.getArValues().size() == 0) {
-                Toast.makeText(context, getString(R.string.aid_types_missing), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            Log.v("answerValue", answerValue.getEnValues().get(0));
-
-            mPatientAidTypes = answerValue.getEnValues();
-            Log.v("answerValue", "aidArray: " + mPatientAidTypes + "");
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }*/
-
         mPatientAidTypes.add(aidType);
         Log.v("answerValue", "aidArray: " + mPatientAidTypes + "");
 
@@ -142,14 +114,12 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
         mScreenBinding.rvQuery.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         if (mIsTriageMode) {
             mSurveyData = new Gson().fromJson(FileUtils.encodeJSON(this, "triage_survery_data.json").toString(), SurveyData.class);
-
             mScreenBinding.headerLayout.setVisibility(View.GONE);
             mScreenBinding.tvSurveySectionName.setVisibility(View.GONE);
             setTitle(getString(R.string.triage_survey));
         } else {
             SurveyData surveyData = new Gson().fromJson(FileUtils.encodeJSON(this, "survery_data.json").toString(), SurveyData.class);
             mScreenBinding.headerLayout.setVisibility(View.VISIBLE);
-
             mSurveyData = new SurveyData();
             List<Survey> surveyQuestions = new ArrayList<>();
             mSurveyData.setSurveyQuestions(surveyQuestions);
@@ -199,7 +169,6 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-//            answerChecking(true);
             onBackPressed();
             return true;
         }
@@ -208,8 +177,6 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onBackPressed() {
-        //the logic for this needs to be changed, so commenting it for now.
-//        answerChecking(true);
         finish();
     }
 
@@ -322,6 +289,14 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
     private List<PatientAttributesDTO> filterAnsweredQuestions(boolean isDraftMode) {
         PatientsDAO patientsDAO = new PatientsDAO();
         List<PatientAttributesDTO> attributesDTOList = new ArrayList<>();
+        String survey_attribute_uuid = getSurveyUuid(aidType);
+        PatientAttributesDTO patientAttributesDTO1 = new PatientAttributesDTO();
+        patientAttributesDTO1.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO1.setPatientuuid(mPatientUUid);
+        patientAttributesDTO1.setPersonAttributeTypeUuid(survey_attribute_uuid);
+        patientAttributesDTO1.setValue("True");
+        patientAttributesDTO1.setDraftStatus(String.valueOf(isDraftMode));
+        attributesDTOList.add(patientAttributesDTO1);
         for (int i = 0; i < mSurveyData.getSurveyQuestions().size(); i++) {
             for (int j = 0; j < mSurveyData.getSurveyQuestions().get(i).getQuestions().size(); j++) {
                 String question = mSurveyData.getSurveyQuestions().get(i).getQuestions().get(j).getQuestion().trim();
@@ -340,6 +315,30 @@ public class HouseholdSurveyActivity extends AppCompatActivity implements View.O
 
         }
         return attributesDTOList;
+    }
+
+    private String getSurveyUuid(String aidType) {
+        String uuid = "";
+        switch (aidType) {
+            case "Community Health Need Assessment":
+                uuid = "2dd511d5-a9ae-4158-b319-816ec2398564";
+                break;
+            case "General Aid":
+                uuid = "920e2685-988e-44e0-9646-bcfaf6d6ddcf";
+                break;
+            case "Student Aid":
+                uuid = "6e6a0c73-9bd3-48bc-a419-c8fda6d2ec09";
+                break;
+            case "Emergency Need Evaluation":
+                uuid = "baaa803a-4cf7-40c6-be97-3841531af67b";
+                break;
+            case "Community General Need Survey":
+                uuid = "a603c52a-5b0e-4573-9738-90e14ae73518";
+                break;
+            default:
+                return uuid;
+        }
+        return uuid;
     }
 
     private void saveSurvey(List<PatientAttributesDTO> attributesDTOList, boolean isDraftMode) {

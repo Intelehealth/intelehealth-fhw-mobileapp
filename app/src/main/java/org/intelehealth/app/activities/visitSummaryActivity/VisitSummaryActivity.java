@@ -798,7 +798,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
         String second_special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "8100ec1a-063b-47d5-9781-224d835fc688");
         //Hashmap to List<String> add all value
-        ArrayAdapter<String> stringArrayAdapter;
+        ArrayAdapter<String> stringArrayAdapter, stringArrayAdapter1;
 
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         if (items != null) {
@@ -812,11 +812,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (second_speciality_items != null) {
             second_speciality_items.add(0, getString(R.string.select_specialization_text));
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, second_speciality_items);
-            second_speciality_spinner.setAdapter(stringArrayAdapter);
+            stringArrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, second_speciality_items);
+            second_speciality_spinner.setAdapter(stringArrayAdapter1);
         } else {
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.second_speciality_values));
-            second_speciality_spinner.setAdapter(stringArrayAdapter);
+            stringArrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.second_speciality_values));
+            second_speciality_spinner.setAdapter(stringArrayAdapter1);
         }
 
         if (special_value != null) {
@@ -834,9 +834,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (second_special_value != null) {
             int spinner_position = 0;
             if (sessionManager1.getAppLanguage().equalsIgnoreCase("ar")) {
-                spinner_position = stringArrayAdapter.getPosition(org.intelehealth.app.utilities.StringUtils.getProviderNameInArabic(second_special_value));
+                spinner_position = stringArrayAdapter1.getPosition(org.intelehealth.app.utilities.StringUtils.getProviderNameInArabic(second_special_value));
             } else {
-                spinner_position = stringArrayAdapter.getPosition(second_special_value);
+                spinner_position = stringArrayAdapter1.getPosition(second_special_value);
             }
             second_speciality_spinner.setSelection(spinner_position);
         } else {
@@ -2058,23 +2058,6 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         startService(intent);
 
     }
-
-
-    private String stringToWeb(String input) {
-        Log.v("VS", input);
-        String formatted = "";
-        if (input != null && !input.isEmpty()) {
-            //AnswerValue answerValue = new Gson().fromJson(input, AnswerValue.class);
-            //String _input = LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue();
-
-            String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
-            String para_close = "</p>";
-            formatted = para_open + Node.big_bullet + input.replaceAll("\n", para_close + para_open + Node.big_bullet) + para_close;
-        }
-
-        return formatted;
-    }
-
 
     public String parseDateToddMMyyyy(String time) {
         String inputPattern = "dd-MM-yyyy";
@@ -5239,8 +5222,24 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             String para_close = "</b><br>";
             formatted = para_open + "- " + _input.replaceAll("\n", para_close + para_open + "- ") + para_close;
         }
+        if(formatted.trim().endsWith("-"))
+            formatted = formatted.substring(0,formatted.lastIndexOf("-"));
         return formatted;
     }
+
+    private String stringToWeb(String input) {
+        Log.v("VS", input);
+        String formatted = "";
+        if (input != null && !input.isEmpty()) {
+            if(input.endsWith("\n"))
+                input = input.substring(0,input.lastIndexOf("\n"));
+            String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+            String para_close = "</p>";
+            formatted = para_open + Node.big_bullet + input.replaceAll("\n", para_close + para_open + Node.big_bullet) + para_close;
+        }
+        return formatted;
+    }
+
 
     private String stringToWebAidOrder(String input) {
         String formatted = "";
