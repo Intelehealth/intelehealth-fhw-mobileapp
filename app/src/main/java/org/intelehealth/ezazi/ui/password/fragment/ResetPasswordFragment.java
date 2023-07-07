@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class ResetPasswordFragment extends Fragment {
     private View focusView = null;
     private CustomProgressDialog customProgressDialog;
     private Context mContext;
+    String userUuid = "";
 
     public ResetPasswordFragment() {
         super(R.layout.fragment_reset_password);
@@ -51,6 +53,9 @@ public class ResetPasswordFragment extends Fragment {
         mNewPassword = binding.contentResetPassword.etNewPassword;
         mConfirmPassword = binding.contentResetPassword.etConfirmPassword;
 
+            userUuid = ResetPasswordFragmentArgs.fromBundle(getArguments()).getUserUuid();
+        Log.d(TAG, "onViewCreated: userUuid : "+userUuid);
+
         binding.btnSave.setOnClickListener(view1 -> {
             if (areValidFields())
                 resetPassword();
@@ -60,17 +65,11 @@ public class ResetPasswordFragment extends Fragment {
     }
 
     private void resetPassword() {
-        PasswordViewModel viewModel = new ViewModelProvider(requireActivity(), ViewModelProvider.Factory.from(PasswordViewModel.initializer)).get(PasswordViewModel.class);
-
-        viewModel.requestOTPResponseData.observe(requireActivity(), verifyOtpResultData -> {
-            if (verifyOtpResultData.getUserUuid() != null) {
-                viewModel.resetPassword(verifyOtpResultData.getUserUuid(), new ChangePasswordRequestModel(mNewPassword.getText().toString()));
-
-            }
-        });
-
-        observeData(viewModel);
-
+        if (!userUuid.isEmpty()) {
+            PasswordViewModel viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)).get(PasswordViewModel.class);
+            viewModel.resetPassword(userUuid, new ChangePasswordRequestModel(mNewPassword.getText().toString()));
+            observeData(viewModel);
+        }
     }
 
     private void observeData(PasswordViewModel viewModel) {
@@ -84,7 +83,7 @@ public class ResetPasswordFragment extends Fragment {
                     Intent intent = new Intent(requireActivity(), SetupActivity.class);
                     startActivity(intent);
                 }
-            }, 1500);
+            }, 1000);
 
         });
         //observe loading
@@ -98,8 +97,11 @@ public class ResetPasswordFragment extends Fragment {
             }
         });
 
-        viewModel.resetPasswordFailureResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+        });
+        //api failure
+        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
         });
     }
 

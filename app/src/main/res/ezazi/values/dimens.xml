@@ -266,7 +266,9 @@
     <dimen name="max_address_input_height">40dp</dimen>
     <dimen name="dialog_input_min_height">40dp</dimen>
     <dimen name="code_picker_margin_top">8dp</dimen>
-    <dimen name="code_picker_padding_bottom">8dp</dimen>
     <dimen name="code_picker_text_size">12sp</dimen>
+    <dimen name="code_picker_padding_top">0dp</dimen>
+    <dimen name="code_picker_padding_bottom">7dp</dimen>
+    <dimen name="code_picker_padding_start_end">5dp</dimen>
 
 </resources>
