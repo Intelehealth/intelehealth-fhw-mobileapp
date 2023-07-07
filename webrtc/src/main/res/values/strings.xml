@@ -51,4 +51,5 @@
     <string name="no">No</string>
     <string name="permission_denied">Permission Denied!</string>
     <string name="room_id_validation_txt">Please enter room-id</string>
+    <string name="type_text_here">Type text here…</string>
 </resources>

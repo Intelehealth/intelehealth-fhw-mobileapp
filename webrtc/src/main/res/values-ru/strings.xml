@@ -24,4 +24,5 @@
     <string name="no">Нет</string>
     <string name="permission_denied">В доступе отказано!</string>
     <string name="room_id_validation_txt">Пожалуйста, введите номер комнаты</string>
+    <string name="type_text_here"> Введите текст…</string>
 </resources>

@@ -79,7 +79,7 @@
             android:layout_toRightOf="@+id/camera_imv"
             android:background="@drawable/round_corner_16_gray_light"
             android:gravity="center_vertical"
-            android:hint="Type text here ..."
+            android:hint="@string/type_text_here"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="4"
