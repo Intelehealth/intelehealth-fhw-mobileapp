@@ -72,7 +72,6 @@ public class OTPVerificationFragment extends Fragment {
         binding.btnContinue.setOnClickListener(view1 -> {
             if (areValidFields())
                 verifyOTP();
-
         });
 
         pinEntryEditText.addTextChangedListener(new TextWatcher() {
@@ -118,7 +117,7 @@ public class OTPVerificationFragment extends Fragment {
     private void observeData(PasswordViewModel viewModel) {
         //success
         viewModel.verifyOtpData.observe(requireActivity(), verifyOtpResultData -> {
-            if (verifyOtpResultData.getUserUuid() != null) {
+            if (verifyOtpResultData != null && verifyOtpResultData.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_verified), Toast.LENGTH_SHORT).show();
                 // NavDirections navDir = OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment();
                 if (Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.fragmentOtpVerification)

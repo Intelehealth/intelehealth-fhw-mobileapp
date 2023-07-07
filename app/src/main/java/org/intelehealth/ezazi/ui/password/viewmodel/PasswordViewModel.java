@@ -2,25 +2,24 @@ package org.intelehealth.ezazi.ui.password.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.core.BaseViewModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
-import org.intelehealth.ezazi.ui.password.listener.APIExecuteListener;
+import org.intelehealth.ezazi.ui.password.data.ForgotPasswordRepository;
 import org.intelehealth.ezazi.ui.password.data.ForgotPasswordServiceDataSource;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
 import org.intelehealth.ezazi.ui.password.model.PasswordResponseModel;
 import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;
 import org.intelehealth.ezazi.ui.password.model.VerifyOtpRequestModel;
-import org.intelehealth.ezazi.ui.password.data.ForgotPasswordRepository;
 
 /**
  * Created by Kaveri Zaware on 03-07-2023
  * email - kaveri@intelehealth.org
  **/
-public class PasswordViewModel extends ViewModel {
+public class PasswordViewModel extends BaseViewModel {
     private static final String TAG = "ForgotPasswordViewModel";
     private final ForgotPasswordRepository repository;
 
@@ -30,18 +29,8 @@ public class PasswordViewModel extends ViewModel {
     public final MutableLiveData<RequestOTPModel> requestOtpModel = new MutableLiveData<RequestOTPModel>();
     private final MutableLiveData<PasswordResponseModel> verifyOtpResultData = new MutableLiveData<PasswordResponseModel>();
     public LiveData<PasswordResponseModel> verifyOtpData = verifyOtpResultData;
-
     private final MutableLiveData<PasswordResponseModel> changePasswordResultData = new MutableLiveData<PasswordResponseModel>();
     public LiveData<PasswordResponseModel> changePasswordResponse = changePasswordResultData;
-
-    private final MutableLiveData<Boolean> loadingData = new MutableLiveData<>();
-    public LiveData<Boolean> loading = loadingData;
-    private final MutableLiveData<String> failResult = new MutableLiveData<String>();
-    public LiveData<String> failDataResult = failResult;
-
-    private final MutableLiveData<Throwable> errorResult = new MutableLiveData<Throwable>();
-    public LiveData<Throwable> errorDataResult = errorResult;
-
 
 
     public PasswordViewModel(ForgotPasswordRepository repository) {
@@ -62,85 +51,30 @@ public class PasswordViewModel extends ViewModel {
     );
 
     public void requestOtp(RequestOTPModel requestOTPModel) {
-        repository.requestOTP(new APIExecuteListener<PasswordResponseModel>() {
+        repository.requestOTP(new ExecutionListener<PasswordResponseModel>() {
             @Override
             public void onSuccess(PasswordResponseModel result) {
                 requestOTPResponse.postValue(result);
                 requestOtpModel.postValue(requestOTPModel);
             }
-
-            @Override
-            public void onLoading(boolean isLoading) {
-                loadingData.postValue(isLoading);
-            }
-
-            @Override
-            public void onFail(String message) {
-                failResult.setValue(message);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-
-
         }, requestOTPModel);
     }
 
     public void verifyOtp(VerifyOtpRequestModel verifyOtpRequestModel) {
-        repository.verifyOtp(new APIExecuteListener<PasswordResponseModel>() {
+        repository.verifyOtp(new ExecutionListener<PasswordResponseModel>() {
             @Override
             public void onSuccess(PasswordResponseModel result) {
                 verifyOtpResultData.postValue(result);
-
             }
-
-            @Override
-            public void onLoading(boolean isLoading) {
-                loadingData.postValue(isLoading);
-            }
-
-            @Override
-            public void onFail(String message) {
-                failResult.setValue(message);
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-
-
         }, verifyOtpRequestModel);
     }
 
     public void resetPassword(String userUuid, ChangePasswordRequestModel changePasswordRequestModel) {
-        repository.resetPassword(new APIExecuteListener<PasswordResponseModel>() {
+        repository.resetPassword(new ExecutionListener<PasswordResponseModel>() {
             @Override
             public void onSuccess(PasswordResponseModel result) {
                 changePasswordResultData.postValue(result);
-
             }
-
-            @Override
-            public void onLoading(boolean isLoading) {
-                loadingData.postValue(isLoading);
-            }
-
-            @Override
-            public void onFail(String message) {
-                failResult.setValue(message);
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-
-
         }, userUuid, changePasswordRequestModel);
     }
 

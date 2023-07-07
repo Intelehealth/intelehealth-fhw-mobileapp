@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ajalt.timberkt.Timber
-import com.twilio.audioswitch.AudioDevice
 import io.livekit.android.ConnectOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
@@ -31,7 +29,6 @@ import io.livekit.android.room.track.LocalVideoTrack
 import io.livekit.android.room.track.LocalVideoTrackOptions
 import io.livekit.android.room.track.Track
 import io.livekit.android.room.track.VideoPreset169
-import io.livekit.android.room.track.VideoPreset43
 import io.livekit.android.room.track.VideoTrack
 import io.livekit.android.util.LoggingLevel
 import io.livekit.android.util.flow
@@ -43,7 +40,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import livekit.LivekitModels.SpeakerInfo
 import org.intelehealth.klivekit.httpclient.OkHttpClientProvider
 import org.intelehealth.klivekit.utils.extensions.flatMapLatestOrNull
 import org.intelehealth.klivekit.utils.extensions.hide
@@ -143,6 +139,9 @@ open class CallViewModel(
     private val mutableRemoteParticipantDisconnected = MutableLiveData(false)
     val remoteParticipantDisconnected = mutableRemoteParticipantDisconnected.hide()
 
+    private val mutableParticipantConnected = MutableLiveData(false)
+    val participantConnected = mutableParticipantConnected.hide()
+
     private val mutableCallDisconnectedReason = MutableLiveData<DisconnectReason?>()
     val remoteCallDisconnectedReason = mutableCallDisconnectedReason.hide()
 
@@ -180,6 +179,7 @@ open class CallViewModel(
             when (it) {
                 is RoomEvent.FailedToConnect -> mutableError.value = it.error
                 is RoomEvent.Disconnected -> onDisconnected(it)
+                is RoomEvent.ParticipantConnected -> onParticipantConnected(it)
                 is RoomEvent.DataReceived -> onDataReceived(it)
                 is RoomEvent.ParticipantDisconnected -> onParticipantDisconnected(it)
                 is RoomEvent.TrackSubscribed -> collectTrackStats(it)
@@ -198,6 +198,11 @@ open class CallViewModel(
         }
     }
 
+    private fun onParticipantConnected(it: RoomEvent.ParticipantConnected) {
+        mutableParticipantConnected.postValue(true)
+    }
+
+
     private fun onParticipantSpeakerChanged(it: RoomEvent.ActiveSpeakersChanged) {
         it.speakers.firstOrNull()?.let {
             mutableIsSpeakingStatus.postValue(getParticipantStatusMap(it, it.isSpeaking))
@@ -211,11 +216,9 @@ open class CallViewModel(
     }
 
     private fun onRemoteParticipantTrackPublished(it: RoomEvent.TrackPublished) {
-//        if (it.participant is RemoteParticipant) {
-        mutableCameraEnabled.postValue(getParticipantStatusMap(it.participant, true))
-//        }else {
-//
-//        }
+        getVideoTrack(it.participant)?.let {
+            updateParticipantVideoTrack(it)
+        }
     }
 
     private fun onParticipantMuted(it: RoomEvent.TrackMuted) {

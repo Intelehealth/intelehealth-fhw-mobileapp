@@ -13,22 +13,15 @@ import java.lang.RuntimeException
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-open class SocketManager(private val url: String?) {
+open class SocketManager() {
     var socket: Socket? = null
+    var emitterListener: ((event: String) -> Emitter.Listener)? = null
 
-    init {
-        Timber.e { "Socket Url $url" }
-    }
-
-    fun connect(emitter: (String) -> Emitter.Listener) {
+    fun connect(url: String?) {
         url ?: throw RuntimeException("Socket url required to initiate room")
         socket = IO.socket(url)
         socket?.on(EVENT_CONNECT, emitter(EVENT_CONNECT))
         socket?.on(EVENT_DISCONNECT, emitter(EVENT_DISCONNECT))
-        socket?.on(EVENT_VIDEO_ON, emitter(EVENT_VIDEO_ON))
-        socket?.on(EVENT_VIDEO_OFF, emitter(EVENT_VIDEO_OFF))
-        socket?.on(EVENT_AUDIO_ON, emitter(EVENT_AUDIO_ON))
-        socket?.on(EVENT_AUDIO_OFF, emitter(EVENT_AUDIO_OFF))
         socket?.on(EVENT_IS_READ, emitter(EVENT_IS_READ))
         socket?.on(EVENT_UPDATE_MESSAGE, emitter(EVENT_UPDATE_MESSAGE))
         socket?.on(EVENT_IP_ADDRESS, emitter(EVENT_IP_ADDRESS))
@@ -47,16 +40,16 @@ open class SocketManager(private val url: String?) {
         socket?.connect() ?: Timber.e { "Socket is null" }
     }
 
+    private fun emitter(event: String) = Emitter.Listener {
+        emitterListener?.invoke(event)?.call(it)
+    }
+
     fun emit(event: String, args: Any? = null) {
         Timber.e { "Socket $event args $args" }
         socket?.emit(event, args) ?: Timber.e { "Socket $event not sent " }
     }
 
     fun disconnect() {
-        socket?.off(EVENT_VIDEO_ON)
-        socket?.off(EVENT_VIDEO_OFF)
-        socket?.off(EVENT_AUDIO_ON)
-        socket?.off(EVENT_AUDIO_OFF)
         socket?.off(EVENT_IS_READ)
         socket?.off(EVENT_UPDATE_MESSAGE)
         socket?.off(EVENT_IP_ADDRESS)
@@ -80,10 +73,6 @@ open class SocketManager(private val url: String?) {
     fun isConnected(): Boolean = socket?.connected() ?: false
 
     companion object {
-        const val EVENT_VIDEO_ON = "videoOn"
-        const val EVENT_VIDEO_OFF = "videoOff"
-        const val EVENT_AUDIO_ON = "audioOn"
-        const val EVENT_AUDIO_OFF = "audioOff"
         const val EVENT_IS_READ = "isread"
         const val EVENT_UPDATE_MESSAGE = "updateMessage"
         const val EVENT_IP_ADDRESS = "ipaddr"

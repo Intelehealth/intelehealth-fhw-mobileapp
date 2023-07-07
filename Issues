@@ -1,3 +1,6 @@
+1 - Observer should initiate only one time, not each click
+2 - Set same flow for login screen
+
 https://ezazi.intelehealth.org:3000/api/getToken?
 name=doctorUuid
 &roomId=patientUuid

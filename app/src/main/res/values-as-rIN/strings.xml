@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="generic_the_flipping_word_next" translatable="false">পৰবর্তী</string>
     <string name="hint_required" translatable="false">প্রয়োজনীয়</string>
     <string name="hint_optional" translatable="false">.ইচ্ছাধীন</string>
@@ -114,7 +114,7 @@
     <string name="table_bpsys" translatable="false">বিপি চিচ</string>
     <string name="table_bpdia" translatable="false">বিপি দিইয়</string>
     <string name="table_temp" translatable="false">তাপমাত্রা (চি)</string>
-    <string name="table_spo" translatable="false">SpO2 (%)</string>
+    <string name="table_spo" translatable="false" tools:ignore="ExtraTranslation">SpO2 (%)</string>
     <string name="search_hint" translatable="false">নাম অনুসাৰে ৰোগীৰ সন্ধান কৰোতে প্ৰকাৰ কৰা…</string>
     <string name="action_search" translatable="false">অনুসন্ধান কৰা</string>
     <string name="alert_none_found" translatable="false">অনুগ্রহ কৰি ব্যবহাৰকাৰীৰ নাম আৰু পাচওয়ার্ড চেক কৰা</string>
@@ -486,8 +486,8 @@
     <string name="Weeks">সপ্তাহ</string>
     <string name="Months">মাহ</string>
     <string name="Years">বছৰ</string>
-    <string name="image_saved">চিত্রটো সাফল্যেৰ লগত সংৰক্ষিত হৈছে!</string>
-    <string name="emergency_confirmation">আপুনি কি এই দর্শনটো জৰুৰী হিচাবে চেট কৰিব বিচাৰে ?</string>
+    <string name="image_saved" tools:ignore="ExtraTranslation">চিত্রটো সাফল্যেৰ লগত সংৰক্ষিত হৈছে!</string>
+    <string name="emergency_confirmation" tools:ignore="ExtraTranslation">আপুনি কি এই দর্শনটো জৰুৰী হিচাবে চেট কৰিব বিচাৰে ?</string>
     <string name="per_Hour">প্রতি ঘন্টা</string>
     <string name="per_Day">প্রতিদিন</string>
     <string name="per_Week">প্রতি সপ্তাহে</string>
@@ -507,7 +507,7 @@
     <string name="enter_license_key">লাইচেঞ্চ কি\' প্ৰবিষ্ট কৰক</string>
     <string name="weight_error">ওজন %1$s কিগ্ৰাতকৈ কম হ\'ব লাগে</string>
     <string name="height_error">উচ্চতা 0 ৰ পৰা %1$s ছেমিৰ ভিতৰত হ\'ব লাগে</string>
-    <string name="spo_error">এছপিও2 %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগিব</string>
+    <string name="spo_error" tools:ignore="ExtraTranslation">এছপিও2 %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগিব</string>
     <string name="pulse_error">পালচ %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
     <string name="bpsys_error">চিষ্টোলিক চাপ %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
     <string name="bpdia_error">ডায়েষ্টলিক চাপ %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>

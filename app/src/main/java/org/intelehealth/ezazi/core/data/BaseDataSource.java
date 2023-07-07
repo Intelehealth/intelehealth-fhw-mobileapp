@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import org.intelehealth.ezazi.core.ApiResponse;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.ui.password.listener.APIExecuteListener;
+import org.intelehealth.ezazi.ui.password.listener.OnAPISuccessListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,21 +25,21 @@ public class BaseDataSource {
         this.apiInterface = apiInterface;
     }
 
-    private <E, C> void enqueueCall(APIExecuteListener<E> executeListener, Call<C> call) {
+    private <T, S> void enqueueCall(APIExecuteListener<T> executeListener, Call<S> call, OnAPISuccessListener<S> successListener) {
         executeListener.onLoading(true);
-        call.enqueue(new Callback<C>() {
+        call.enqueue(new Callback<S>() {
             @Override
-            public void onResponse(@NonNull Call<C> call, @NonNull Response<C> response) {
+            public void onResponse(@NonNull Call<S> call, @NonNull Response<S> response) {
                 executeListener.onLoading(false);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        executeListener.onSuccess((E) response.body());
+                        successListener.onSuccess(response.body());
                     } else executeListener.onFail("No data found");
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<C> call, Throwable t) {
+            public void onFailure(@NonNull Call<S> call, Throwable t) {
                 executeListener.onLoading(false);
                 executeListener.onError(t);
             }
@@ -46,7 +47,7 @@ public class BaseDataSource {
     }
 
     public <T> void executeCall(APIExecuteListener<T> executeListener, Call<ApiResponse<T>> call) {
-        enqueueCall(executeListener, call);
+        enqueueCall(executeListener, call, result -> executeListener.onSuccess(result.getData()));
 //        executeListener.onLoading(true);
 //        call.enqueue(new Callback<ApiResponse<T>>() {
 //            @Override
@@ -69,25 +70,7 @@ public class BaseDataSource {
 
     public <T> void executeDirectCall(APIExecuteListener<T> executeListener, Call<T> call) {
         Log.e(TAG, "executeDirectCall: ");
-        enqueueCall(executeListener, call);
-//        executeListener.onLoading(true);
-//        call.enqueue(new Callback<T>() {
-//            @Override
-//            public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-//                executeListener.onLoading(false);
-//                if (response.isSuccessful()) {
-//                    if (response.body() != null) {
-//                        executeListener.onSuccess(response.body());
-//                    } else executeListener.onFail("No data found");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<T> call, Throwable t) {
-//                executeListener.onLoading(false);
-//                executeListener.onError(t);
-//            }
-//        });
+        enqueueCall(executeListener, call, result -> executeListener.onSuccess(result));
     }
 
 }

@@ -17,7 +17,7 @@ import java.lang.RuntimeException
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class ChatSocket(private val url: String?) : SocketManager(url) {
+class ChatSocket(private val url: String?) : SocketManager() {
     var messageListener: MessageListener? = null
     var conversationListener: ConversationListener? = null
 
@@ -30,7 +30,7 @@ class ChatSocket(private val url: String?) : SocketManager(url) {
     }
 
     fun connect() {
-        connect(this::emitter)
+        connect(url)
     }
 
     private fun connected(status: Array<Any>) {

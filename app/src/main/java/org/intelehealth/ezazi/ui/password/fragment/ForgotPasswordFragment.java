@@ -64,7 +64,6 @@ public class ForgotPasswordFragment extends Fragment {
         mCountryCodePicker = binding.contentForgotPassword.countrycodeSpinner;
         mPhoneNumberEditText = binding.contentForgotPassword.etEmail;
 
-
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText);
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
         setMobileNumberLimit();
@@ -96,7 +95,7 @@ public class ForgotPasswordFragment extends Fragment {
     private void observeData(PasswordViewModel viewModel) {
         //success
         viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
-            if (requestOTPResult.getUserUuid() != null) {
+            if (requestOTPResult != null && requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
 
                 NavDirections directions = ForgotPasswordFragmentDirections.forgotToOtpVerificationFragment(requestOTPModel);

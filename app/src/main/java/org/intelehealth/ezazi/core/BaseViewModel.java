@@ -1,14 +1,10 @@
 package org.intelehealth.ezazi.core;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.intelehealth.ezazi.ui.password.listener.OnAPISuccessListener;
-
-import retrofit2.Call;
+import org.intelehealth.ezazi.ui.password.listener.APIExecuteListener;
 
 
 /**
@@ -26,7 +22,20 @@ public class BaseViewModel extends ViewModel {
     private final MutableLiveData<Throwable> errorResult = new MutableLiveData<Throwable>();
     public LiveData<Throwable> errorDataResult = errorResult;
 
-    public <T> void executeCall(OnAPISuccessListener<T> successListener) {
+    public abstract class ExecutionListener<T> implements APIExecuteListener<T> {
+        @Override
+        public void onLoading(boolean isLoading) {
+            loadingData.postValue(isLoading);
+        }
 
+        @Override
+        public void onFail(String message) {
+            failResult.postValue(message);
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            errorResult.postValue(throwable);
+        }
     }
 }

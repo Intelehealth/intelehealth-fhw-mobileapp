@@ -103,6 +103,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //        }
         videoCallViewModel.runningCallDuration.observe(this) { onCallCountDownStart(it) }
         videoCallViewModel.micEnabled.observe(this) { updateMicrophoneStatus(it) }
+        videoCallViewModel.participantConnected.observe(this) { onParticipantConnected(it) }
         videoCallViewModel.cameraEnabled.observe(this) { updateCameraStatus(it) }
         videoCallViewModel.localVideoTrack.observe(this) { it?.let { attachLocalVideo(it) } }
         videoCallViewModel.remoteVideoTrack.observe(this) { it?.let { it1 -> attachRemoteVideo(it1) } }
@@ -123,6 +124,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    open fun onParticipantConnected(it: Boolean?) {
+        Timber.d { "onParticipantConnected $it" }
     }
 
     open fun onCameraPositionChanged(cameraPosition: CameraPosition) {

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
@@ -111,17 +112,27 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
 
     @Override
     public void attachLocalVideo(@NonNull VideoTrack videoTrack) {
+        Timber.tag(TAG).e("attachLocalVideo: " + videoTrack.getName());
         binding.videoCallView.selfSurfaceView.setVisibility(View.VISIBLE);
         videoTrack.addRenderer(binding.videoCallView.selfSurfaceView);
     }
 
     @Override
     public void attachRemoteVideo(@NonNull VideoTrack videoTrack) {
-        binding.videoCallView.incomingSurfaceView.setVisibility(View.VISIBLE);
-        if (!args.isIncomingCall()) {
-            onCallAccept();
-        }
+        Timber.tag(TAG).e("attachRemoteVideo: " + videoTrack.getName());
         videoTrack.addRenderer(binding.videoCallView.incomingSurfaceView);
+    }
+
+    @Override
+    public void onParticipantConnected(@Nullable Boolean it) {
+        super.onParticipantConnected(it);
+        if (Boolean.TRUE.equals(it)) {
+            binding.videoCallView.incomingSurfaceView.setVisibility(View.VISIBLE);
+            if (!args.isIncomingCall()) {
+                onCallAccept();
+                stopRingtone();
+            }
+        }
     }
 
     @NonNull
@@ -151,6 +162,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         binding.incomingCallView.getRoot().setVisibility(View.VISIBLE);
         binding.incomingCallView.rippleBackgroundContent.startRippleAnimation();
         binding.incomingCallView.fabAcceptCall.setVisibility(View.GONE);
+        playRingtone();
     }
 
     @Override

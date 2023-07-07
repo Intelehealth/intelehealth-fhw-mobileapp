@@ -21,16 +21,10 @@ import org.json.JSONObject
  * Mob   : +919727206702
  **/
 class SocketViewModel(private val args: RtcArgs) : ViewModel() {
-    private val socketManager = SocketManager(args.socketUrl)
-
-    private val mutableEventAudioOnOff = MutableLiveData(true)
-    val eventAudioOnOff = mutableEventAudioOnOff.hide()
+    private val socketManager = SocketManager()
 
     private val mutableEventBye = MutableLiveData(false)
     val eventBye = mutableEventBye.hide()
-
-    private val mutableIncomingCAll = MutableLiveData(false)
-    val eventCall = mutableIncomingCAll.hide()
 
     private val mutableEventCreated = MutableLiveData(false)
     val eventCreated = mutableEventCreated.hide()
@@ -76,10 +70,7 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
 
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
-            SocketManager.EVENT_AUDIO_OFF -> updateAudioStatus(it, SocketManager.EVENT_AUDIO_OFF)
-            SocketManager.EVENT_AUDIO_ON -> updateAudioStatus(it, SocketManager.EVENT_AUDIO_ON)
             SocketManager.EVENT_BYE -> sayByeToWeb()
-            SocketManager.EVENT_CALL -> connectWithDoctor()
             SocketManager.EVENT_CREATED -> executeInUIThread { mutableEventCreated.postValue(true) }
             SocketManager.EVENT_FULL -> {}
             SocketManager.EVENT_IP_ADDRESS -> {}
@@ -94,20 +85,19 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
                 mutableEventUpdateMessage.postValue(it)
             }
 
-            SocketManager.EVENT_VIDEO_OFF -> updateVideoStatus(it, SocketManager.EVENT_VIDEO_OFF)
             SocketManager.EVENT_ALL_USER -> checkActiveUser(it, SocketManager.EVENT_ALL_USER)
-            SocketManager.EVENT_VIDEO_ON -> updateVideoStatus(it, SocketManager.EVENT_VIDEO_ON)
             Socket.EVENT_CONNECT -> connected(it)
             Socket.EVENT_DISCONNECT -> executeInUIThread { mutableSocketDisconnected.postValue(true) }
         }
     }
 
     private fun checkActiveUser(it: Array<Any>?, eventAllUser: String) {
-
+        Timber.d { "Active users => ${Gson().toJson(it)}" }
     }
 
     fun connect() {
-        socketManager.connect(this::emitter)
+        socketManager.emitterListener = this::emitter
+        socketManager.connect(args.socketUrl)
     }
 
     private fun connected(status: Array<Any>) {
@@ -125,7 +115,7 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
                 put("patientName", args.patientName)
                 put("patientPersonUuid", args.patientPersonUuid)
                 put("patientOpenMrsId", args.patientOpenMrsId)
-                put("token", args.appToken)
+                put("token", args.token)
             })
         }
     }
@@ -134,36 +124,6 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
         executeInUIThread {
             mutableEventBye.postValue(true)
             emit("bye")
-        }
-    }
-
-    private fun updateAudioStatus(it: Array<Any>?, event: String) {
-        it ?: return
-        executeInUIThread {
-            val jsonObject = JSONObject(it[0].toString())
-            val flag = jsonObject.getBoolean("fromWebapp")
-            if (flag && event == SocketManager.EVENT_AUDIO_OFF) {
-                mutableEventAudioOnOff.postValue(false)
-            } else if (flag && event == SocketManager.EVENT_AUDIO_ON) {
-                mutableEventAudioOnOff.postValue(true)
-            } else {
-                mutableEventAudioOnOff.postValue(true)
-            }
-        }
-    }
-
-    private fun updateVideoStatus(it: Array<Any>?, event: String) {
-        it ?: return
-        executeInUIThread {
-            val jsonObject = JSONObject(it[0].toString())
-            val flag = jsonObject.getBoolean("fromWebapp")
-            if (flag && event == SocketManager.EVENT_VIDEO_OFF) {
-                mutableEventVideoOnOff.postValue(false)
-            } else if (flag && event == SocketManager.EVENT_VIDEO_ON) {
-                mutableEventVideoOnOff.postValue(true)
-            } else {
-                mutableEventVideoOnOff.postValue(true)
-            }
         }
     }
 

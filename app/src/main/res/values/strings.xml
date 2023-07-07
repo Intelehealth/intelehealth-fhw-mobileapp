@@ -1001,5 +1001,50 @@
     <string name="password_reset_success">Password reset successful</string>
 
 
+    <string name="gender">Gendar</string>
+    <string name="are_you_head_of_the_family">Are you head of the family?</string>
+    <string name="what_is_your_occupation">What is your occupation?</string>
+    <string name="do_you_have_a_bank_account">Do you have bank account?</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use Whatsapp?</string>
+    <string name="total_number_of_members_in_the_household">Total number of members in the household</string>
+    <string name="enter_number">Enter number</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now?</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">What do you do to make drinking water safer?</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there get water and come back in one trip?</string>
+    <string name="declined">Declined</string>
+    <string name="enter_time">Enter time</string>
+    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">In the past two weeks was the water from this source not available for at least one full day</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?</string>
+    <string name="select_the_structure_of_house">Select the structure of house</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?</string>
+    <string name="enter_answer">Enter answer</string>
+    <string name="enter_occupation">Enter Occupation</string>
+    <string name="please_select_specialization">Please select specialization</string>
+    <string name="speciality">Speciality</string>
+    <string name="select_speciality">Select Speciality</string>
+    <string name="image_saved">Image Save</string>
+    <string name="emergency_confirmation">Emergency Confirmation</string>
+    <string name="table_spo" translatable="false">SpO2 (%)</string>
+    <string name="spo_error">SpO2  %1$s  %2$s </string>
 
+    <string name="error_medical_visit_data">దయచేసి వైద్య సలహాను ఎంచుకోండి లేదా నమోదు చేయండి</string>
+    <string name="text_patient_and_advice_created">రోగి &amp; వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
+    <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
+
+    <string name="vaccination_guidance">Vaccination Guidance</string>
+    <string name="concern_about_covid_re_infection">COVID concern</string>
+    <string name="managing_breathlessness">Managing Breathlessness</string>
+    <string name="managing_issues_with_voice">managing_issues_with_voice</string>
+    <string name="managing_eating_drinking">managing_eating_drinking</string>
+    <string name="dealing_problems">dealing_problems</string>
+    <string name="managing_mental_health">managing_mental_health</string>
+    <string name="exercises">exercises</string>
+    <string name="txt_additional_info">txt_additional_info</string>
+    <string name="medical_advice">medical_advice</string>
+
+    <string name="text_medical_advice" >text_medical_advice</string>
+    <string name="text_new_visit" >text_new_visit</string>
+    <string name="text_new_advice" >text_new_advice</string>
 </resources>

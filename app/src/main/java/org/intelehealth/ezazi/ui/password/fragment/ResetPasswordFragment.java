@@ -53,12 +53,11 @@ public class ResetPasswordFragment extends Fragment {
         mNewPassword = binding.contentResetPassword.etNewPassword;
         mConfirmPassword = binding.contentResetPassword.etConfirmPassword;
 
-            userUuid = ResetPasswordFragmentArgs.fromBundle(getArguments()).getUserUuid();
-        Log.d(TAG, "onViewCreated: userUuid : "+userUuid);
+        userUuid = ResetPasswordFragmentArgs.fromBundle(getArguments()).getUserUuid();
+        Log.d(TAG, "onViewCreated: userUuid : " + userUuid);
 
         binding.btnSave.setOnClickListener(view1 -> {
-            if (areValidFields())
-                resetPassword();
+            if (areValidFields()) resetPassword();
         });
 
         addValidationListener();
@@ -75,15 +74,18 @@ public class ResetPasswordFragment extends Fragment {
     private void observeData(PasswordViewModel viewModel) {
         viewModel.changePasswordResponse.observe(requireActivity(), changePasswordResultData -> {
             Toast.makeText(mContext, getResources().getString(R.string.password_reset_success), Toast.LENGTH_SHORT).show();
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //navigate to login screen
-                    Intent intent = new Intent(requireActivity(), SetupActivity.class);
-                    startActivity(intent);
-                }
-            }, 1000);
+            Intent intent = new Intent(requireActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    //navigate to login screen
+//                    Intent intent = new Intent(requireActivity(), SetupActivity.class);
+//                    startActivity(intent);
+//                }
+//            }, 1000);
 
         });
         //observe loading
