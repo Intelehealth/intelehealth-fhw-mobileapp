@@ -8,6 +8,7 @@ import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
 import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
 
 import static org.intelehealth.app.app.AppConstants.key;
+import static org.intelehealth.app.utilities.EditTextUtils.*;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -52,6 +54,7 @@ import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ConceptAttributeListDAO;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.EditTextUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,6 +97,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
+
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
             bloodGlucose_editText, bloodGlucose_editText_fasting, bloodGlucoseRandom_editText, bloodGlucosePostPrandial_editText,
             haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
@@ -105,7 +109,8 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     AlertDialog alertDialog;
     int btnClick = 0;
     ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
-
+    public static final int HEIGHT_DECIMAL_PLACE_MAX_COUNT = 1;
+    public static final int WEIGHT_DECIMAL_PLACE_MAX_COUNT = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -277,12 +282,15 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
             @Override
             public void afterTextChanged(Editable s) {
-                calculateBMI();
                 if (mHeight.getText().toString().startsWith(".")) {
                     mHeight.setText("");
+                    return;
                 } else {
 
                 }
+                decimalPlacesCount(mHeight, s, HEIGHT_DECIMAL_PLACE_MAX_COUNT);
+                calculateBMI();
+                //
             }
         });
 
@@ -365,12 +373,13 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 if (mWeight.getText().toString().startsWith(".")) {
                     mWeight.setText("");
+                    return;
                 } else {
 
                 }
+                decimalPlacesCount(mWeight, s, WEIGHT_DECIMAL_PLACE_MAX_COUNT);
                 calculateBMI();
             }
         });
@@ -801,6 +810,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
         });
     }
+
 
     private String checkForOldBill() {
         String billEncounterUuid = "";
