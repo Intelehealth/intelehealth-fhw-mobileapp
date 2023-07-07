@@ -1,8 +1,12 @@
 package org.intelehealth.ezazi.ui.rtc.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -12,10 +16,15 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.databinding.ActivityVideoCallEzaziBinding;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.ui.activity.CoreVideoCallActivity;
 import org.intelehealth.klivekit.utils.CallType;
+import org.intelehealth.klivekit.utils.RemoteActionType;
+import org.intelehealth.klivekit.utils.RtcUtilsKt;
 
 import io.livekit.android.renderer.SurfaceViewRenderer;
 import io.livekit.android.room.participant.ConnectionQuality;
@@ -29,6 +38,24 @@ import io.livekit.android.room.track.VideoTrack;
  **/
 
 public class EzaziVideoCallActivity extends CoreVideoCallActivity {
+
+    public static void startVideoCallActivity(Context context, RtcArgs args) {
+
+        args.setUrl(BuildConfig.LIVE_KIT_URL);
+        args.setActionType(RemoteActionType.VIDEO_CALL.name());
+        args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseId());
+
+        Intent intent = new Intent(context, EzaziVideoCallActivity.class);
+        intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        int callState = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+            context.startActivity(intent);
+        }
+    }
+
     public static final String TAG = "LiveVideoCallActivity";
 
     private ActivityVideoCallEzaziBinding binding;

@@ -1,8 +1,7 @@
-package org.intelehealth.ezazi.ui.password.repository;
+package org.intelehealth.ezazi.ui.password.data;
 
-import org.intelehealth.ezazi.core.BaseRepository;
 import org.intelehealth.ezazi.ui.password.listener.APIExecuteListener;
-import org.intelehealth.ezazi.ui.password.listener.ForgotPasswordServiceDataSource;
+import org.intelehealth.ezazi.ui.password.data.ForgotPasswordServiceDataSource;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
 import org.intelehealth.ezazi.ui.password.model.PasswordResponseModel;
 import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;

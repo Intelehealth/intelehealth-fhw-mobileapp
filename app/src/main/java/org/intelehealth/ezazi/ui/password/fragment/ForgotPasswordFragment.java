@@ -6,7 +6,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,8 +18,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
-import org.intelehealth.ezazi.core.BaseViewModel;
 import org.intelehealth.ezazi.databinding.FragmentForgotPasswordBinding;
 import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;

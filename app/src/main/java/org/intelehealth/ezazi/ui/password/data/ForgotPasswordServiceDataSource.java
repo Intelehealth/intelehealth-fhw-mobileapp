@@ -1,8 +1,9 @@
-package org.intelehealth.ezazi.ui.password.listener;
+package org.intelehealth.ezazi.ui.password.data;
 
 import org.intelehealth.ezazi.core.ApiResponse;
 import org.intelehealth.ezazi.core.data.BaseDataSource;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
+import org.intelehealth.ezazi.ui.password.listener.APIExecuteListener;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
 import org.intelehealth.ezazi.ui.password.model.PasswordResponseModel;
 import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;

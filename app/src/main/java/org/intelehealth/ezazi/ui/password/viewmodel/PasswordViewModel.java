@@ -1,25 +1,20 @@
 package org.intelehealth.ezazi.ui.password.viewmodel;
 
-import android.util.Log;
-import android.view.View;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.core.ApiResponse;
-import org.intelehealth.ezazi.core.BaseViewModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.ui.password.listener.APIExecuteListener;
-import org.intelehealth.ezazi.ui.password.listener.ForgotPasswordServiceDataSource;
+import org.intelehealth.ezazi.ui.password.data.ForgotPasswordServiceDataSource;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
 import org.intelehealth.ezazi.ui.password.model.PasswordResponseModel;
 import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;
 import org.intelehealth.ezazi.ui.password.model.VerifyOtpRequestModel;
-import org.intelehealth.ezazi.ui.password.repository.ForgotPasswordRepository;
+import org.intelehealth.ezazi.ui.password.data.ForgotPasswordRepository;
 
 /**
  * Created by Kaveri Zaware on 03-07-2023

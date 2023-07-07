@@ -24,6 +24,7 @@ data class RtcArgs(
     var nurseName: String? = null,
     var patientName: String? = null,
     var nurseId: String? = null,
+    @SerializedName("connectToDrId")
     var doctorUuid: String? = null,
     var visitId: String? = null,
     var doctorId: String? = null,

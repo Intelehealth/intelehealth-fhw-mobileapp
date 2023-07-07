@@ -1,5 +1,11 @@
 package org.intelehealth.ezazi.ui.rtc.call;
 
+import org.intelehealth.ezazi.core.data.BaseDataSource;
+import org.intelehealth.ezazi.networkApiCalls.ApiClient;
+import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
+import org.intelehealth.ezazi.ui.password.listener.OnAPISuccessListener;
+import org.intelehealth.ezazi.ui.rtc.data.RtcTokenDataSource;
+import org.intelehealth.ezazi.ui.rtc.model.UserToken;
 import org.intelehealth.klivekit.model.RtcArgs;
 
 /**
@@ -8,13 +14,22 @@ import org.intelehealth.klivekit.model.RtcArgs;
  * Mob   : +919727206702
  **/
 public class CallInitializer {
+    public interface OnCallInitializedListener {
+        void onInitialized(RtcArgs args);
+    }
+
     private final RtcArgs args;
 
     public CallInitializer(RtcArgs args) {
         this.args = args;
     }
 
-    public void initiateVideoCall() {
-
+    public void initiateVideoCall(OnCallInitializedListener listener) {
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        new RtcTokenDataSource(apiService).getRtcToken(result -> {
+            args.setToken(result.getToken());
+            args.setAppToken(result.getAppToken());
+            listener.onInitialized(args);
+        }, args);
     }
 }

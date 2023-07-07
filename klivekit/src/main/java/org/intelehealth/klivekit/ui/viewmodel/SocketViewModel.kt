@@ -114,10 +114,17 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
 
     private fun connectWithDoctor() {
         executeInUIThread {
-            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, JSONObject().apply {
-                put("room", args.roomId)
-                put("connectToDrId", args.doctorUuid)
-            })
+            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, Gson().toJson(args))
+//            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, JSONObject().apply {
+//                put("patientId", args.patientId)
+//                put("connectToDrId", args.doctorUuid)
+//                put("visitId", args.visitId)
+//                put("nurseName", args.nurseName)
+//                put("patientName", args.patientName)
+//                put("patientPersonUuid", args.patientPersonUuid)
+//                put("patientOpenMrsId", args.patientOpenMrsId)
+//                put("token", args.token)
+//            })
         }
     }
 

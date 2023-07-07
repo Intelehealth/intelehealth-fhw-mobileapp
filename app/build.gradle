@@ -184,5 +184,7 @@ dependencies {
         // androidx.appcompat as a dependency in your app.
         exclude group: 'androidx.appcompat', module: 'appcompat'
     }
+
+    implementation 'com.hbb20:ccp:2.6.1'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

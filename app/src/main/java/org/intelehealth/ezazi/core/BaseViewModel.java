@@ -2,37 +2,31 @@ package org.intelehealth.ezazi.core;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
-import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.core.data.BaseDataSource;
-import org.intelehealth.ezazi.networkApiCalls.ApiClient;
-import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
+import org.intelehealth.ezazi.ui.password.listener.OnAPISuccessListener;
+
+import retrofit2.Call;
+
 
 /**
  * Created by Kaveri Zaware on 06-07-2023
  * email - kaveri@intelehealth.org
  **/
-public class BaseViewModel<T> extends ViewModel {
+public class BaseViewModel extends ViewModel {
     private static final String TAG = "BaseViewModel";
-    public Class<T> tClass;
+    private final MutableLiveData<Boolean> loadingData = new MutableLiveData<>();
+    public LiveData<Boolean> loading = loadingData;
 
-    public BaseViewModel(Class<T> tClass) {
-        this.tClass = tClass;
+    private final MutableLiveData<String> failResult = new MutableLiveData<String>();
+    public LiveData<String> failDataResult = failResult;
+
+    private final MutableLiveData<Throwable> errorResult = new MutableLiveData<Throwable>();
+    public LiveData<Throwable> errorDataResult = errorResult;
+
+    public <T> void executeCall(OnAPISuccessListener<T> successListener, Call<T> call) {
+
     }
-
-    public static final ViewModelInitializer<BaseViewModel> initializer = new ViewModelInitializer<>(
-            BaseViewModel.class,
-            creationExtras -> {
-                String BASE_URL =AppConstants.PROTOCOL + AppConstants.APP_URL + ":" + AppConstants.PORT_NUMBER;
-                Log.d(TAG, "baseurl for password: " + BASE_URL);
-                ApiClient.changeApiBaseUrl(BASE_URL);
-                ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-                BaseDataSource dataSource = new BaseDataSource(apiService);
-                BaseRepository baseRepository = new BaseRepository(dataSource);
-                return new BaseViewModel(baseRepository.getClass());
-            }
-    );
-
 }

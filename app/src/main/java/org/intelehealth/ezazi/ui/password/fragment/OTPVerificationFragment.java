@@ -17,7 +17,6 @@ import androidx.navigation.Navigation;
 import com.alimuzaffar.lib.pin.PinEntryEditText;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.core.BaseViewModel;
 import org.intelehealth.ezazi.databinding.FragmentOtpVerificationBinding;
 import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;
 import org.intelehealth.ezazi.ui.password.model.VerifyOtpRequestModel;
@@ -78,7 +77,7 @@ public class OTPVerificationFragment extends Fragment {
 
     private void verifyOTP() {
         PasswordViewModel viewModel = new ViewModelProvider(
-                requireActivity(), ViewModelProvider.Factory.from(BaseViewModel.initializer)
+                requireActivity(), ViewModelProvider.Factory.from(PasswordViewModel.initializer)
         ).get(PasswordViewModel.class);
 
         RequestOTPModel requestOTPModel = viewModel.requestOtpModel.getValue();

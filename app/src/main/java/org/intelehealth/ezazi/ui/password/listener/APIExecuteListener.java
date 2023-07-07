@@ -1,7 +1,5 @@
 package org.intelehealth.ezazi.ui.password.listener;
 
-import org.intelehealth.ezazi.core.ApiResponse;
-
 /**
  * Created by Kaveri Zaware on 03-07-2023
  * email - kaveri@intelehealth.org

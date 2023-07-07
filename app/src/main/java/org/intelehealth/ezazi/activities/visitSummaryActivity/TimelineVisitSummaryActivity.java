@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
@@ -68,6 +69,8 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.utils.RemoteActionType;
+import org.intelehealth.klivekit.utils.RtcUtilsKt;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -346,28 +349,34 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
 //        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
 //        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-        Intent in = new Intent(TimelineVisitSummaryActivity.this, EzaziVideoCallActivity.class);
+//        Intent in = new Intent(TimelineVisitSummaryActivity.this, EzaziVideoCallActivity.class);
+
+        String nurseId = encounterDTO.getProvideruuid();
         String roomId = patientUuid;
+
         RtcArgs args = new RtcArgs();
         args.setVisitId(visitUuid);
         args.setDoctorName(doctorName);
         args.setDoctorUuid(doctors.get(doctorName));
-//        new CallInitializer().initiateVideoCall();
-        String nurseId = encounterDTO.getProvideruuid();
-        in.putExtra("roomId", roomId);
-        in.putExtra("isInComingRequest", false);
-        in.putExtra("doctorname", doctorName);
-        in.putExtra("nurseId", nurseId);
-        in.putExtra("startNewCall", true);
-        in.putExtra("doctorUUID", doctors.get(doctorName));
+        args.setIncomingCall(false);
+        args.setNurseId(nurseId);
+        args.setRoomId(roomId);
+        new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(TimelineVisitSummaryActivity.this, args1));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-        if (callState == TelephonyManager.CALL_STATE_IDLE) {
-            startActivity(in);
-        }
+//        in.putExtra("roomId", roomId);
+//        in.putExtra("isInComingRequest", false);
+//        in.putExtra("doctorname", doctorName);
+//        in.putExtra("nurseId", nurseId);
+//        in.putExtra("startNewCall", true);
+//        in.putExtra("doctorUUID", doctors.get(doctorName));
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        }
+//        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+//            startActivity(in);
+//        }
     }
 
     private void showEmergencyDialog() {

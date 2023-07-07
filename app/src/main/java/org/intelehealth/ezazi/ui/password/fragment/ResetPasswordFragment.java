@@ -19,7 +19,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
-import org.intelehealth.ezazi.core.BaseViewModel;
 import org.intelehealth.ezazi.databinding.FragmentResetPasswordBinding;
 import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
@@ -61,7 +60,7 @@ public class ResetPasswordFragment extends Fragment {
     }
 
     private void resetPassword() {
-        PasswordViewModel viewModel = new ViewModelProvider(requireActivity(), ViewModelProvider.Factory.from(BaseViewModel.initializer)).get(PasswordViewModel.class);
+        PasswordViewModel viewModel = new ViewModelProvider(requireActivity(), ViewModelProvider.Factory.from(PasswordViewModel.initializer)).get(PasswordViewModel.class);
 
         viewModel.requestOTPResponseData.observe(requireActivity(), verifyOtpResultData -> {
             if (verifyOtpResultData.getUserUuid() != null) {
