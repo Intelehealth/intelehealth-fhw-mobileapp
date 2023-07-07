@@ -2,16 +2,20 @@ package org.intelehealth.ezazi.ui.password.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavArgs;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.alimuzaffar.lib.pin.PinEntryEditText;
@@ -39,6 +43,9 @@ public class OTPVerificationFragment extends Fragment {
 
     private PinEntryEditText pinEntryEditText;
     private Context mContext;
+    private TextView tvResendOtp;
+    private PasswordViewModel viewModel;
+    private OTPVerificationFragmentArgs requiredArgs;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -47,7 +54,21 @@ public class OTPVerificationFragment extends Fragment {
         pinEntryEditText = binding.contentOtpVerification.pinEntryEditText;
         customProgressDialog = new CustomProgressDialog(requireActivity());
         mContext = requireActivity();
+        tvResendOtp = binding.contentOtpVerification.tvResend;
 
+        getRequiredArguments();
+        resendOtpTimer();
+
+        viewModel = new ViewModelProvider(
+                this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)
+        ).get(PasswordViewModel.class);
+
+
+        handleClickListeners();
+
+    }
+
+    private void handleClickListeners() {
         binding.btnContinue.setOnClickListener(view1 -> {
             if (areValidFields())
                 verifyOTP();
@@ -72,15 +93,15 @@ public class OTPVerificationFragment extends Fragment {
 
             }
         });
+        tvResendOtp.setOnClickListener(v -> resendOtpApiCall());
+    }
 
+    private void getRequiredArguments() {
+        requiredArgs = OTPVerificationFragmentArgs.fromBundle(getArguments());
     }
 
     private void verifyOTP() {
-        PasswordViewModel viewModel = new ViewModelProvider(
-                requireActivity(), ViewModelProvider.Factory.from(PasswordViewModel.initializer)
-        ).get(PasswordViewModel.class);
-
-        RequestOTPModel requestOTPModel = viewModel.requestOtpModel.getValue();
+        RequestOTPModel requestOTPModel = requiredArgs.getRequestOtpModel();
         VerifyOtpRequestModel requestModel = new VerifyOtpRequestModel();
         if (requestOTPModel != null) {
             requestModel.setOtpFor(ForgotPasswordFragment.OTPForString);
@@ -99,23 +120,15 @@ public class OTPVerificationFragment extends Fragment {
         viewModel.verifyOtpData.observe(requireActivity(), verifyOtpResultData -> {
             if (verifyOtpResultData.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_verified), Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(requireView()).navigate(org.intelehealth.ezazi.ui.password.fragment.OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment());
-            }
-        });
-
-        //observe loading - progress dialog
-        viewModel.loading.observe(requireActivity(), aBoolean -> {
-            if (aBoolean) {
-                customProgressDialog.show();
-            } else {
-                if (customProgressDialog.isShowing()) {
-                    customProgressDialog.dismiss();
-                }
+                // NavDirections navDir = OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment();
+                if (Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.fragmentOtpVerification)
+                    Navigation.findNavController(requireView()).navigate(OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment(verifyOtpResultData.getUserUuid()));
             }
         });
 
         //failure - success - false
-        viewModel.otpVerifyFailureResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+            pinEntryEditText.setText("");
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
     }
@@ -131,6 +144,51 @@ public class OTPVerificationFragment extends Fragment {
             result = true;
         }
         return result;
+    }
+
+    private void resendOtpTimer() {
+        pinEntryEditText.setText("");
+        tvResendOtp.setEnabled(false);
+        String resendTime = getResources().getString(R.string.resend_otp_in);
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
+                tvResendOtp.setText(time);
+            }
+
+            public void onFinish() {
+                tvResendOtp.setEnabled(true);
+                tvResendOtp.setText(getResources().getString(R.string.lbl_resend));
+
+            }
+
+        }.start();
+    }
+
+    private void resendOtpApiCall() {
+
+        RequestOTPModel observedOtpDataModel = requiredArgs.getRequestOtpModel();
+
+        if (observedOtpDataModel != null) {
+            RequestOTPModel requestOTPModel = new RequestOTPModel(ForgotPasswordFragment.OTPForString, observedOtpDataModel.getPhoneNumber(), observedOtpDataModel.getCountryCode());
+            viewModel.requestOtp(requestOTPModel);
+        }
+        viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
+            if (requestOTPResult.getUserUuid() != null) {
+                Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        //failure - success - false
+        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+            Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+        });
+
+        //api failure
+        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
+        });
     }
 
 }

@@ -36,15 +36,11 @@ public class PasswordViewModel extends ViewModel {
 
     private final MutableLiveData<Boolean> loadingData = new MutableLiveData<>();
     public LiveData<Boolean> loading = loadingData;
+    private final MutableLiveData<String> failResult = new MutableLiveData<String>();
+    public LiveData<String> failDataResult = failResult;
 
-    private final MutableLiveData<String> otpFailureResultData = new MutableLiveData<String>();
-    public LiveData<String> otpFailureResult = otpFailureResultData;
-
-    private final MutableLiveData<String> otpVerifyFailureResultData = new MutableLiveData<String>();
-    public LiveData<String> otpVerifyFailureResult = otpVerifyFailureResultData;
-    private final MutableLiveData<String> resetPasswordFailureResultData = new MutableLiveData<String>();
-    public LiveData<String> resetPasswordFailureResult = resetPasswordFailureResultData;
-
+    private final MutableLiveData<Throwable> errorResult = new MutableLiveData<Throwable>();
+    public LiveData<Throwable> errorDataResult = errorResult;
 
 
 
@@ -80,7 +76,7 @@ public class PasswordViewModel extends ViewModel {
 
             @Override
             public void onFail(String message) {
-                otpFailureResultData.setValue(message);
+                failResult.setValue(message);
             }
 
             @Override
@@ -107,7 +103,7 @@ public class PasswordViewModel extends ViewModel {
 
             @Override
             public void onFail(String message) {
-                otpVerifyFailureResultData.setValue(message);
+                failResult.setValue(message);
 
             }
 
@@ -135,7 +131,7 @@ public class PasswordViewModel extends ViewModel {
 
             @Override
             public void onFail(String message) {
-                resetPasswordFailureResultData.setValue(message);
+                failResult.setValue(message);
 
             }
 

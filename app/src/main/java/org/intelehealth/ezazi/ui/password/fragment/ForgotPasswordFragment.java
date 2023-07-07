@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.ui.password.fragment;
 
 import android.content.Context;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,7 +41,7 @@ public class ForgotPasswordFragment extends Fragment {
     public static final String OTPForString = "password";
     private CustomProgressDialog customProgressDialog;
     private Context mContext;
-
+    private RequestOTPModel requestOTPModel;
 
     public ForgotPasswordFragment() {
         super(R.layout.fragment_forgot_password);
@@ -82,10 +84,10 @@ public class ForgotPasswordFragment extends Fragment {
 
     private void requestOTP() {
         PasswordViewModel viewModel = new ViewModelProvider(
-                requireActivity(), ViewModelProvider.Factory.from(PasswordViewModel.initializer)
+                this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)
         ).get(PasswordViewModel.class);
 
-        RequestOTPModel requestOTPModel = new RequestOTPModel(OTPForString, mPhoneNumberEditText.getText().toString(), mSelectedCountryCode);
+        requestOTPModel = new RequestOTPModel(OTPForString, mPhoneNumberEditText.getText().toString(), mSelectedCountryCode);
         viewModel.requestOtp(requestOTPModel);
 
         observeData(viewModel);
@@ -96,7 +98,9 @@ public class ForgotPasswordFragment extends Fragment {
         viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
             if (requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(requireView()).navigate(ForgotPasswordFragmentDirections.forgotToOtpVerificationFragment());
+
+                NavDirections directions = ForgotPasswordFragmentDirections.forgotToOtpVerificationFragment(requestOTPModel);
+                Navigation.findNavController(requireView()).navigate(directions);
             }
 
         });
@@ -113,8 +117,12 @@ public class ForgotPasswordFragment extends Fragment {
         });
 
         //failure - success - false
-        viewModel.otpFailureResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+        });
+
+        //api failure
+        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
         });
     }
 
