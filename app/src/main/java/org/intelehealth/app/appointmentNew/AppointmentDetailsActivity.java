@@ -60,6 +60,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
+import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.PrescriptionModel;
@@ -70,11 +71,15 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -269,11 +274,69 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         String chief_complaint_value = getChiefComplaint(visitID);
         Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
         if (chief_complaint_value != null && !chief_complaint_value.isEmpty()) {
-            int first = chief_complaint_value.indexOf("<b>");
-            int last = chief_complaint_value.indexOf("</b>");
-            Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
-            chief_complaint_value = chief_complaint_value.substring(first, last + 4);
-            tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
+
+
+            boolean needToShowCoreValue = false;
+            if (chief_complaint_value.startsWith("{") && chief_complaint_value.endsWith("}")) {
+                try {
+                    // isInOldFormat = false;
+                    JSONObject jsonObject = new JSONObject(chief_complaint_value);
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        chief_complaint_value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        needToShowCoreValue = false;
+                    } else {
+                        needToShowCoreValue = true;
+                        chief_complaint_value = jsonObject.getString("en");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                needToShowCoreValue = true;
+            }
+
+            if (needToShowCoreValue) {
+                int first = chief_complaint_value.indexOf("<b>");
+                int last = chief_complaint_value.indexOf("</b>");
+                Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
+                chief_complaint_value = chief_complaint_value.substring(first, last + 4);
+                tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
+            }else{
+                chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
+                System.out.println(chief_complaint_value);
+                Log.v(TAG, chief_complaint_value);
+                //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+
+                String[] spt = chief_complaint_value.split("►");
+                List<String> list = new ArrayList<>();
+
+                for (String s : spt) {
+                    if (s.isEmpty()) continue;
+                    //String s1 =  new String(s.getBytes(), "UTF-8");
+                    System.out.println(s);
+                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                    if (!s.trim().contains(org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                        list.add(s);
+                    }
+
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < list.size(); i++) {
+                    String complainName = "";
+                    List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                    String[] spt1 = list.get(i).split("●");
+                    for (String value : spt1) {
+                        if (value.contains("::")) {
+                            if (!stringBuilder.toString().isEmpty())
+                                stringBuilder.append(",");
+                            complainName = value.replace("::", "");
+                            System.out.println(complainName);
+                            stringBuilder.append(complainName);
+                        }
+                    }
+                }
+                tvChiefComplaintTxt.setText(stringBuilder.toString());
+            }
         }
 
         tvDrSpeciality.setText(visit_speciality);

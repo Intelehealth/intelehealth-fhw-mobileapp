@@ -2,9 +2,11 @@ package org.intelehealth.app.ayu.visit.common.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,12 +63,21 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             genericViewHolder.index = position;
             genericViewHolder.questionTextView.setText(genericViewHolder.summaryData.getQuestion());
             genericViewHolder.answerTextView.setText(genericViewHolder.summaryData.getDisplayValue());
+            genericViewHolder.answerTextView.setTypeface(genericViewHolder.answerTextView.getTypeface(), Typeface.NORMAL);
             if(genericViewHolder.summaryData.getDisplayValue().isEmpty() || genericViewHolder.summaryData.getDisplayValue()==null){
                 genericViewHolder.answerTextView.setVisibility(View.GONE);
+                genericViewHolder.bulletImageView.setVisibility(View.GONE);
+                genericViewHolder.questionTextView.setTextColor(mContext.getResources().getColor(R.color.black));
+                genericViewHolder.questionTextView.setTypeface(genericViewHolder.questionTextView.getTypeface(), Typeface.BOLD);
             }else {
                 genericViewHolder.answerTextView.setVisibility(View.VISIBLE);
+                genericViewHolder.bulletImageView.setVisibility(View.VISIBLE);
+                genericViewHolder.questionTextView.setTextColor(mContext.getResources().getColor(R.color.gray_4));
+                genericViewHolder.questionTextView.setTypeface(genericViewHolder.questionTextView.getTypeface(), Typeface.NORMAL);
 
             }
+
+
 
         }
     }
@@ -78,11 +89,13 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView questionTextView, answerTextView;
+        ImageView bulletImageView;
         VisitSummaryData summaryData;
         int index;
 
         GenericViewHolder(View itemView) {
             super(itemView);
+            bulletImageView = itemView.findViewById(R.id.blt_view);
             questionTextView = itemView.findViewById(R.id.tv_question_label);
             answerTextView = itemView.findViewById(R.id.tv_answer_value);
         }

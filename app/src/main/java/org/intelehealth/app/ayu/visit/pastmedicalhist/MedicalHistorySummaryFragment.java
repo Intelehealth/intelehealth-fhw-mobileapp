@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.pastmedicalhist;
 
+import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import android.animation.ObjectAnimator;
@@ -164,9 +165,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (key.equalsIgnoreCase("Patient history")) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
                         } else if (key.equalsIgnoreCase("Family history")) {
-                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
+                            mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, VisitCreationActivity.STEP_5_FAMILY_HISTORY);
                         }
 
                     }
@@ -190,12 +191,16 @@ public class MedicalHistorySummaryFragment extends Fragment {
                         summaryData.setDisplayValue(k.isEmpty() ? "" : v);
                         visitSummaryDataList.add(summaryData);
                     } else {
+                        boolean isOddSequence = qa.length % 2 != 0;
+                        Log.v("isOddSequence", qa.length+" = " + isOddSequence);
                         //String k = value.split("•")[0].trim();
                         StringBuilder stringBuilder = new StringBuilder();
                         String k1 = "";
                         String lastString = "";
                         if (key.equalsIgnoreCase("Patient history")) {
+
                             for (int j = 0; j < qa.length; j++) {
+                                boolean isLastItem = j == qa.length - 1;
                                 String v1 = qa[j];
                                 Log.v("V", v1);
                                 if (lastString.equals(v1)) continue;
@@ -207,13 +212,21 @@ public class MedicalHistorySummaryFragment extends Fragment {
                                     if (v.contains(":") && v.split(":").length > 1) {
                                         v = v.split(":")[1];
                                     }
+
+
                                     VisitSummaryData summaryData = new VisitSummaryData();
                                     summaryData.setQuestion(k1);
+
                                     summaryData.setDisplayValue(v);
                                     visitSummaryDataList.add(summaryData);
 
+
                                 } else {
-                                    k1 = qa[j].trim();
+                                    if (isLastItem && isOddSequence) {
+                                        visitSummaryDataList.get(visitSummaryDataList.size() - 1).setDisplayValue(visitSummaryDataList.get(visitSummaryDataList.size() - 1).getDisplayValue() + bullet_arrow + qa[j].trim());
+                                    } else {
+                                        k1 = qa[j].trim();
+                                    }
                                 }
                             }
                         } else {
@@ -223,7 +236,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
                                     k1 = qa[j];
                                 } else {
                                     if (!stringBuilder.toString().isEmpty())
-                                        stringBuilder.append(Node.bullet_arrow);
+                                        stringBuilder.append(bullet_arrow);
                                     stringBuilder.append(qa[j]);
                                 }
 

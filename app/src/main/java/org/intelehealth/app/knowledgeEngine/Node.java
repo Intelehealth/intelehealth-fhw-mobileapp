@@ -2722,9 +2722,15 @@ public class Node implements Serializable {
                     question = bullet + " " + mOptions.get(i).findDisplay();
                 }
                 String answer = mOptions.get(i).getLanguage();
+                Log.i(TAG, "ipt: +++++++++++++++++++++++++++ isTerminal - " + mOptions.get(i).isTerminal());
+                Log.i(TAG, "ipt: level - " + level);
+                Log.i(TAG, "ipt: getInputType " + mOptions.get(i).getInputType());
+                Log.i(TAG, "ipt: findDisplay " + mOptions.get(i).findDisplay());
+                Log.i(TAG, "ipt: getText " + mOptions.get(i).getText());
+                Log.i(TAG, "ipt: -------------------answer " + answer);
                 if (mOptions.get(i).isTerminal()) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
-                        Log.i(TAG, "ipt: " + mOptions.get(i).getInputType());
+
                         if (mOptions.get(i).getInputType().equals("camera")) {
                         } else {
                             if (!answer.isEmpty()) {
@@ -2742,8 +2748,10 @@ public class Node implements Serializable {
                         stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                     }
                 } else {
+
                     stringsList.add(question + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
@@ -2758,20 +2766,20 @@ public class Node implements Serializable {
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
 
-                                if (mOptions.get(i).getOptionsList().size() > 0) {
+                if (mOptions.get(i).getOptionsList().size() > 0) {
 
-                                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
 
-                                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
-                                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
 
-                                            if (!mOptions.get(i).isTerminal()) {
-                                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
-                                            }
-                                        }
-                                    }
-                                }
+                            if (!mOptions.get(i).isTerminal()) {
+                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                            }
+                        }
+                    }
+                }
             } else {
                 //in case of weird null exception...
             }
@@ -2783,9 +2791,10 @@ public class Node implements Serializable {
                     stringsListNoSelected.add("Patient denies -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
-                Log.e("List", "" + stringsListNoSelected);
+                Log.e(TAG, "ipt: " + stringsListNoSelected);
             }
         }
+
 
         if (stringsListNoSelected.size() > 0) {
             stringsList.addAll(stringsListNoSelected);
@@ -2799,10 +2808,10 @@ public class Node implements Serializable {
             }
 
         }
-        Log.i(TAG, "formQuestionAnswer: " + mLanguage);
+        Log.i(TAG, "ipt: formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = "Question not answered" + next_line;
+            mLanguage = bullet_hollow + "Question not answered" + next_line;
         }
 
         return mLanguage;
@@ -3276,12 +3285,12 @@ public class Node implements Serializable {
     /**
      * unselect all nested Node recursively
      */
-    public void unselectAllNestedNode(){
-        if(optionsList!=null){
+    public void unselectAllNestedNode() {
+        if (optionsList != null) {
             for (int i = 0; i < optionsList.size(); i++) {
                 optionsList.get(i).setSelected(false);
                 optionsList.get(i).setDataCaptured(false);
-                if(optionsList.get(i).optionsList!=null){
+                if (optionsList.get(i).optionsList != null) {
                     optionsList.get(i).unselectAllNestedNode();
                 }
             }

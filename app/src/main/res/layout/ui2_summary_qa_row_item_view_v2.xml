@@ -9,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="horizontal" android:gravity="center_vertical"
         android:weightSum="2">
 
         <ImageView
-            android:layout_width="12dip"
-            android:layout_height="12dip"
-            android:layout_marginTop="@dimen/padding_5"
-            android:layout_marginEnd="@dimen/padding_5"
+            android:id="@+id/blt_view"
+            android:layout_width="10dip"
+            android:layout_height="10dip"
+            android:layout_marginEnd="@dimen/margin_8"
             android:src="@drawable/ic_baseline_lens_24" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="1sp"
-            android:paddingEnd="@dimen/margin_16"
+            android:paddingEnd="@dimen/margin_8"
             android:text="@string/question" />
 
 
@@ -36,9 +36,8 @@
         style="@style/label_misc_txt_14sp_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginStart="20dip"
         android:lineSpacingExtra="1sp"
-        android:text="@string/answer_information"
-        android:textStyle="bold" />
+        android:text="@string/answer_information" />
 
 </LinearLayout>

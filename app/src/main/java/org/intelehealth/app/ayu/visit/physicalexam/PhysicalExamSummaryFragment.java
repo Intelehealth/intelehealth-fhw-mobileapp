@@ -176,10 +176,16 @@ public class PhysicalExamSummaryFragment extends Fragment {
 
                     } else {
                         k1 = val.trim();
+                        if(k1.contains("-●")){
+                            String[] temp = k1.split("-●");
+                            VisitSummaryData summaryData = new VisitSummaryData();
+                            summaryData.setQuestion(temp[0]);
+                            summaryData.setDisplayValue("");
+                            visitSummaryDataList.add(summaryData);
+                            k1 = temp[1];
+                        }
                     }
-                    }
-
-
+                }
 
 
                 SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
