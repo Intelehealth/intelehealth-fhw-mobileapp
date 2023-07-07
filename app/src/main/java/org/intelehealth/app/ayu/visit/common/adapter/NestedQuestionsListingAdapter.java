@@ -1309,7 +1309,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onClick(View view) {
                 String d = (String) displayDateButton.getTag();
-                if (!d.contains("/")) {
+                if (d == null || d.equalsIgnoreCase("null") || !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     /*Calendar cal = Calendar.getInstance();

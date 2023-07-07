@@ -1035,8 +1035,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 } else {
                     String associatedSymptomsString = valueArray[1];//.split("::")[1];
                     String[] sections = associatedSymptomsString.split(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()));
-                    patientReports = sections[0];
-                    patientDenies = sections[1];
+                    if(sections.length>=2) {
+                        patientReports = sections[0];
+                        patientDenies = sections[1];
+                    }
                 }
             }
 

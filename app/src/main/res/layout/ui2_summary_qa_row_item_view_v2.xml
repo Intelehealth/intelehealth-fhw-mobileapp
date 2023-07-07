@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/tv_question_label"
-            style="@style/label_misc_txt_14sp"
+            style="@style/label_misc_txt_14sp_dark_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="1sp"

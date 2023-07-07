@@ -211,6 +211,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="label_misc_txt_14sp_dark_1">
+        <item name="android:textColor">#8F8F8F</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
     <style name="label_misc_txt_14sp_dark">
         <item name="android:textColor">#1B163A</item>
         <item name="android:textSize">14sp</item>

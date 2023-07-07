@@ -74,108 +74,112 @@ public class FamilyHistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_family_history, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        linearLayoutManager.setStackFromEnd(true);
-        linearLayoutManager.setReverseLayout(false);
-        linearLayoutManager.setSmoothScrollbarEnabled(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        mCurrentRootOptionList = mCurrentNode.getOptionsList();
+        if (mCurrentNode != null) {
+            RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            linearLayoutManager.setStackFromEnd(true);
+            linearLayoutManager.setReverseLayout(false);
+            linearLayoutManager.setSmoothScrollbarEnabled(true);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            mCurrentRootOptionList = mCurrentNode.getOptionsList();
 
-        ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
-        complainBasicInfo.setComplainName("Family History");
-        complainBasicInfo.setOptionSize(mCurrentRootOptionList.size());
-        complainBasicInfo.setFamilyHistory(true);
-        mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
+            ComplainBasicInfo complainBasicInfo = new ComplainBasicInfo();
+            complainBasicInfo.setComplainName("Family History");
+            complainBasicInfo.setOptionSize(mCurrentRootOptionList.size());
+            complainBasicInfo.setFamilyHistory(true);
+            mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
-        if (mIsEditMode) {
-            view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+            if (mIsEditMode) {
+                view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
+
+                    }
+                });
+                view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getActivity().setResult(Activity.RESULT_OK);
+                        getActivity().finish();
+                    }
+                });
+            }
+
+            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
                 @Override
-                public void onClick(View view) {
+                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+                    // avoid the scroll for old data change
+                    if (mCurrentComplainNodeOptionsIndex - index >= 1) {
+                        return;
+                    }
+                    if (isSkipped) {
+                        mQuestionsListingAdapter.geItems().get(index).setSelected(false);
+                        mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
+                        mQuestionsListingAdapter.notifyItemChanged(index);
+                    }
+                    //Log.v("onSelect", "node - " + node.getText());
+                    if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1) {
+                        mCurrentComplainNodeOptionsIndex++;
 
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
-
-                }
-            });
-            view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getActivity().setResult(Activity.RESULT_OK);
-                    getActivity().finish();
-                }
-            });
-        }
-
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
-            @Override
-            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
-                // avoid the scroll for old data change
-                if (mCurrentComplainNodeOptionsIndex - index >= 1) {
-                    return;
-                }
-                if (isSkipped) {
-                    mQuestionsListingAdapter.geItems().get(index).setSelected(false);
-                    mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
-                    mQuestionsListingAdapter.notifyItemChanged(index);
-                }
-                //Log.v("onSelect", "node - " + node.getText());
-                if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1) {
-                    mCurrentComplainNodeOptionsIndex++;
-
-                    mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+                        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
                     /*recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
                         }
                     }, 100);*/
-                    VisitUtils.scrollNow(recyclerView, 300, 0, 500);
+                        VisitUtils.scrollNow(recyclerView, 300, 0, 500);
 
-                    VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
+                        VisitUtils.scrollNow(recyclerView, 1400, 0, 1400);
 
-                    mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
-                } else {
+                        mActionListener.onProgress((int) 100 / mCurrentRootOptionList.size());
+                    } else {
+                        if (!mIsEditMode)
+                            mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
+                        else
+                            Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+                    }
+                    linearLayoutManager.setStackFromEnd(false);
+                }
+
+                @Override
+                public void needTitleChange(String title) {
+                    mActionListener.onTitleChange(title);
+                }
+
+                @Override
+                public void onAllAnswered(boolean isAllAnswered) {
                     if (!mIsEditMode)
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
                     else
                         Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
                 }
-                linearLayoutManager.setStackFromEnd(false);
-            }
 
-            @Override
-            public void needTitleChange(String title) {
-                mActionListener.onTitleChange(title);
-            }
+                @Override
+                public void onCameraRequest() {
 
-            @Override
-            public void onAllAnswered(boolean isAllAnswered) {
-                if (!mIsEditMode)
-                    mActionListener.onFormSubmitted(VisitCreationActivity.STEP_5_HISTORY_SUMMARY, mIsEditMode, null);
-                else
-                    Toast.makeText(getActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
-            }
+                }
 
-            @Override
-            public void onCameraRequest() {
+                @Override
+                public void onImageRemoved(int index, String image) {
 
-            }
+                }
+            });
 
-            @Override
-            public void onImageRemoved(int index, String image) {
+            recyclerView.setAdapter(mQuestionsListingAdapter);
+            if (mIsEditMode) {
+                mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
+                mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size() - 1;
+            } else {
+                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
 
             }
-        });
-
-        recyclerView.setAdapter(mQuestionsListingAdapter);
-        if (mIsEditMode) {
-            mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
-            mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size() - 1;
         } else {
-            mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
-
+            Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
         }
         return view;
     }

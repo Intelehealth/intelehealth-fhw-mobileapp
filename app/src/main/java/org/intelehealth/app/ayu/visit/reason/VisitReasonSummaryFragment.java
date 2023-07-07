@@ -230,9 +230,13 @@ public class VisitReasonSummaryFragment extends Fragment {
             }
 
             // ASSOCIATED SYMPTOMS
-            String title = associatedSymptomsString.split("::")[0];
-            associatedSymptomsString = associatedSymptomsString.split("::")[1];
-            mAssociateSymptomsLabelTextView.setText(title);
+            String[] tempAS = associatedSymptomsString.split("::");
+            if(tempAS.length>=2) {
+                String title = tempAS[0];
+                mAssociateSymptomsLabelTextView.setText(title);
+
+                associatedSymptomsString = tempAS[1];
+            }
             String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
 
 
