@@ -26,7 +26,7 @@ public class BaseViewModel extends ViewModel {
     private final MutableLiveData<Throwable> errorResult = new MutableLiveData<Throwable>();
     public LiveData<Throwable> errorDataResult = errorResult;
 
-    public <T> void executeCall(OnAPISuccessListener<T> successListener, Call<T> call) {
+    public <T> void executeCall(OnAPISuccessListener<T> successListener) {
 
     }
 }

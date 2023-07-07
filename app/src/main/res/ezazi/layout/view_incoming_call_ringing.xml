@@ -63,7 +63,6 @@
                 android:id="@+id/fabDeclineCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/action_btn_min_width"
                 android:contentDescription="@string/decline"
                 android:src="@drawable/ic_call_end"
                 app:backgroundTint="@color/red"

@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.ui.rtc.call;
 
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.core.data.BaseDataSource;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
@@ -25,6 +26,8 @@ public class CallInitializer {
     }
 
     public void initiateVideoCall(OnCallInitializedListener listener) {
+        String BASE_URL = "https://" + AppConstants.APP_URL + ":3000";
+        ApiClient.changeApiBaseUrl(BASE_URL);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         new RtcTokenDataSource(apiService).getRtcToken(result -> {
             args.setToken(result.getToken());

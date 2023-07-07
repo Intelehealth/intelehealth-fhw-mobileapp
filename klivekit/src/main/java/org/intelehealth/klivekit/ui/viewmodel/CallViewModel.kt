@@ -261,11 +261,11 @@ open class CallViewModel(
     }
 
     private fun onParticipantReconnected(it: RoomEvent.Reconnected) {
-//        TODO("Not yet implemented")
+        Timber.e { "onParticipantReconnected =>" + it.room.name }
     }
 
     private fun onParticipantReconnecting(it: RoomEvent.Reconnecting) {
-
+        Timber.e { "onParticipantReconnecting =>" + it.room.name }
     }
 
     private fun onConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {

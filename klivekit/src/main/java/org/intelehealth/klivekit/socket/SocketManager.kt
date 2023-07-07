@@ -42,6 +42,7 @@ open class SocketManager(private val url: String?) {
         socket?.on(EVENT_LOG, emitter(EVENT_LOG))
         socket?.on(EVENT_MESSAGE, emitter(EVENT_MESSAGE))
         socket?.on(EVENT_CALL, emitter(EVENT_CALL))
+        socket?.on(EVENT_ALL_USER, emitter(EVENT_ALL_USER))
         socket?.on(EVENT_CREATE_OR_JOIN_HW, emitter(EVENT_CREATE_OR_JOIN_HW))
         socket?.connect() ?: Timber.e { "Socket is null" }
     }
@@ -70,6 +71,7 @@ open class SocketManager(private val url: String?) {
         socket?.off(EVENT_MESSAGE)
         socket?.off(EVENT_CALL)
         socket?.off(EVENT_CREATE_OR_JOIN_HW)
+        socket?.off(EVENT_ALL_USER)
         socket?.disconnect()
     }
 
@@ -98,5 +100,6 @@ open class SocketManager(private val url: String?) {
         const val EVENT_CALL = "call"
         const val EVENT_CREATE_OR_JOIN_HW = "create_or_join_hw"
         const val EVENT_CREATE_OR_JOIN = "create or join"
+        const val EVENT_ALL_USER = "allUsers"
     }
 }

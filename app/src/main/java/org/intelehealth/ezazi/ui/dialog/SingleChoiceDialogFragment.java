@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.ui.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
             changeSubmitButtonState(adapter.getSelected() != -1);
 
             if (args.getPositiveBtnLabel() == null && adapter.getSelected() != -1) {
+                Log.e("Dialog", "onClick: ");
                 listener.onItemSelected(adapter.getSelected(), adapter.getItem(adapter.getSelected()));
                 dismiss();
             }

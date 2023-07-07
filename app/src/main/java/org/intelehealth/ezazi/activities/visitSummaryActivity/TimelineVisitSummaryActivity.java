@@ -32,6 +32,7 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.BuildConfig;
@@ -50,6 +51,7 @@ import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogStage2AdditionalDataEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
@@ -69,6 +71,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.RemoteActionType;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
 import org.json.JSONException;
@@ -220,6 +223,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e(TAG, "onClick: ");
                 showDoctorSelectionDialog();
 //                try {
 //
@@ -343,23 +347,33 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      * @param doctorName String
      */
     private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
-        // Call gettoken api
-
-
+        Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
+        Log.v(TAG, "doctors  - " + doctorName);
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+        RtcArgs args = new RtcArgs();
+        try {
+            String patientOpenMrsId = new PatientsDAO().getOpenmrsId(patientUuid);
+            args.setPatientOpenMrsId(patientOpenMrsId);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
 //        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
 //        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
 //        Intent in = new Intent(TimelineVisitSummaryActivity.this, EzaziVideoCallActivity.class);
 
+
         String nurseId = encounterDTO.getProvideruuid();
         String roomId = patientUuid;
 
-        RtcArgs args = new RtcArgs();
         args.setVisitId(visitUuid);
+        args.setPatientId(patientUuid);
+        args.setPatientPersonUuid(patientUuid);
+        args.setPatientName(patientName);
         args.setDoctorName(doctorName);
         args.setDoctorUuid(doctors.get(doctorName));
         args.setIncomingCall(false);
         args.setNurseId(nurseId);
+        args.setNurseName(sessionManager.getChwname());
         args.setRoomId(roomId);
         new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(TimelineVisitSummaryActivity.this, args1));
 

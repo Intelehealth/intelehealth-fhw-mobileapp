@@ -98,6 +98,7 @@ import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
+import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.dialog.adapter.PatientMultiChoiceAdapter;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
@@ -715,6 +716,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     pendingIntent
             );
         }
+
+        TokenRefreshUtils.refreshToken(this);
     }
 
     private void showPatientChoiceDialog(ArrayList<MultiChoiceItem> items) {
@@ -1600,6 +1603,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     protected void onResume() {
         super.onResume();
+        saveToken();
         //registerReceiver(reMyreceive, filter);
 //        checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());

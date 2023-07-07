@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
@@ -41,9 +43,10 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
 
     public static void startVideoCallActivity(Context context, RtcArgs args) {
 
+        Log.e(TAG, "startVideoCallActivity: " + new Gson().toJson(args));
         args.setUrl(BuildConfig.LIVE_KIT_URL);
         args.setActionType(RemoteActionType.VIDEO_CALL.name());
-        args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseId());
+        args.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + args.getNurseId() + "&name=" + args.getNurseName());
 
         Intent intent = new Intent(context, EzaziVideoCallActivity.class);
         intent.putExtra(RtcUtilsKt.RTC_ARGS, args);
@@ -115,6 +118,9 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     @Override
     public void attachRemoteVideo(@NonNull VideoTrack videoTrack) {
         binding.videoCallView.incomingSurfaceView.setVisibility(View.VISIBLE);
+        if (!args.isIncomingCall()) {
+            onCallAccept();
+        }
         videoTrack.addRenderer(binding.videoCallView.incomingSurfaceView);
     }
 
@@ -137,6 +143,14 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         binding.incomingCallView.getRoot().setVisibility(View.VISIBLE);
         binding.incomingCallView.rippleBackgroundContent.startRippleAnimation();
         playRingtone();
+    }
+
+    @Override
+    public void onGoingCall() {
+        super.onGoingCall();
+        binding.incomingCallView.getRoot().setVisibility(View.VISIBLE);
+        binding.incomingCallView.rippleBackgroundContent.startRippleAnimation();
+        binding.incomingCallView.fabAcceptCall.setVisibility(View.GONE);
     }
 
     @Override

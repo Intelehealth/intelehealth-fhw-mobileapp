@@ -95,10 +95,15 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
             }
 
             SocketManager.EVENT_VIDEO_OFF -> updateVideoStatus(it, SocketManager.EVENT_VIDEO_OFF)
+            SocketManager.EVENT_ALL_USER -> checkActiveUser(it, SocketManager.EVENT_ALL_USER)
             SocketManager.EVENT_VIDEO_ON -> updateVideoStatus(it, SocketManager.EVENT_VIDEO_ON)
             Socket.EVENT_CONNECT -> connected(it)
             Socket.EVENT_DISCONNECT -> executeInUIThread { mutableSocketDisconnected.postValue(true) }
         }
+    }
+
+    private fun checkActiveUser(it: Array<Any>?, eventAllUser: String) {
+
     }
 
     fun connect() {
@@ -108,23 +113,20 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
     private fun connected(status: Array<Any>) {
         Timber.e { "Socket connected => ${Gson().toJson(status)}" }
         mutableSocketConnected.postValue(true)
-        if (args.isIncomingCall.not())
-            connectWithDoctor()
     }
 
-    private fun connectWithDoctor() {
+    public fun connectWithDoctor() {
         executeInUIThread {
-            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, Gson().toJson(args))
-//            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, JSONObject().apply {
-//                put("patientId", args.patientId)
-//                put("connectToDrId", args.doctorUuid)
-//                put("visitId", args.visitId)
-//                put("nurseName", args.nurseName)
-//                put("patientName", args.patientName)
-//                put("patientPersonUuid", args.patientPersonUuid)
-//                put("patientOpenMrsId", args.patientOpenMrsId)
-//                put("token", args.token)
-//            })
+            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, JSONObject().apply {
+                put("patientId", args.patientId)
+                put("connectToDrId", args.doctorUuid)
+                put("visitId", args.visitId)
+                put("nurseName", args.nurseName)
+                put("patientName", args.patientName)
+                put("patientPersonUuid", args.patientPersonUuid)
+                put("patientOpenMrsId", args.patientOpenMrsId)
+                put("token", args.appToken)
+            })
         }
     }
 

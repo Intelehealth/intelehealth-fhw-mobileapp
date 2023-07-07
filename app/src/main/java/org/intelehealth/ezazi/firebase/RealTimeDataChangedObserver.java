@@ -74,9 +74,10 @@ public class RealTimeDataChangedObserver {
         Log.d(TAG, "convertToRtcArg: ");
         Gson gson = new Gson();
         RtcArgs rtcArgs = gson.fromJson(gson.toJson(value), RtcArgs.class);
+        rtcArgs.setNurseName(sessionManager.getChwname());
         if (rtcArgs == null) return null;
         rtcArgs.setUrl(BuildConfig.LIVE_KIT_URL);
-        rtcArgs.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseId());
+        rtcArgs.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseName());
         rtcArgs.setActionType("VIDEO_CALL");
         return rtcArgs;
     }

@@ -240,6 +240,8 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     open fun onGoingCall() {
         Timber.d { "Calling to ${args.doctorName}" }
+        videoCallViewModel.startCallTimeUpTimer()
+        socketViewModel.connectWithDoctor()
         startConnecting()
     }
 

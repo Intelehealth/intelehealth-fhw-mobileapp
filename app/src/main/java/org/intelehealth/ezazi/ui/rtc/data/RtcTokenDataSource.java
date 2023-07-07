@@ -1,5 +1,9 @@
 package org.intelehealth.ezazi.ui.rtc.data;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.intelehealth.ezazi.core.ApiResponse;
 import org.intelehealth.ezazi.core.data.BaseDataSource;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
@@ -24,10 +28,11 @@ public class RtcTokenDataSource extends BaseDataSource implements APIExecuteList
     }
 
     public void getRtcToken(OnAPISuccessListener<UserToken> listener, RtcArgs args) {
+        Log.e("RtcTokenDataSource", "getRtcToken: " + new Gson().toJson(args));
         this.successListener = listener;
         executeDirectCall(this, apiInterface.getVideoAppToken(
                 args.getDoctorUuid(),
-                args.getPatientPersonUuid(),
+                args.getRoomId(),
                 args.getNurseId()
         ));
     }
