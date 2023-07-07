@@ -1628,5 +1628,6 @@
     <string name="prescription_pending">بانتظار وصفة/أمر صرف</string>
     <string name="prescription_in_progress">وصفة/أمر صرف قيد التنفيذ</string>
     <string name="prescription_received">تم استلام الوصفة/أمر الصرف</string>
+    <string name="deleted_by">حذف بواسطة</string>
 
 </resources>

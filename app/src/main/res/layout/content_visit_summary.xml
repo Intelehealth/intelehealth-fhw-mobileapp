@@ -1190,7 +1190,11 @@
                     <!--Diagnosis-->
                     <TableRow
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/tableRow_content_aid_order_type1"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/textView_content_aid_order_type1"
@@ -1208,7 +1212,11 @@
 
                     <TableRow
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/tableRow_content_aid_order_type2"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/textView_content_aid_order_type2"
@@ -1226,7 +1234,11 @@
 
                     <TableRow
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/tableRow_content_aid_order_type3"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/textView_content_aid_order_type3"
@@ -1244,7 +1256,11 @@
 
                     <TableRow
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/tableRow_content_aid_order_type4"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/textView_content_aid_order_type4"
@@ -1262,7 +1278,11 @@
 
                     <TableRow
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/tableRow_content_aid_order_type5"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/textView_content_aid_order_type5"
