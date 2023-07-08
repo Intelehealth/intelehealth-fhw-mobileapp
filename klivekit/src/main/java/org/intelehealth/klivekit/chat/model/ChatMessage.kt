@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.chat.model
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 15:32.
@@ -9,6 +10,7 @@ import androidx.room.Entity
  **/
 @Entity(tableName = "tbl_chat_message")
 data class ChatMessage(
+    @PrimaryKey
     val messageId: String = "",
     val senderId: String = "",
     val receiverId: String = "",

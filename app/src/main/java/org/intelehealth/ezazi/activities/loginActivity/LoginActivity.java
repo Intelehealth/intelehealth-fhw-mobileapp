@@ -332,7 +332,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void UserLoginTask(String mEmail, String mPassword) {
         cpd.show();
-        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
+//        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
+        String urlString = urlModifiers.loginUrl(getString(R.string.setupUrl));
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
         sessionManager.setEncoded(encoded);
