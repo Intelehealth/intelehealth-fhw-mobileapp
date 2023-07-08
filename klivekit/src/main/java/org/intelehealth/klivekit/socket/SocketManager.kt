@@ -18,26 +18,27 @@ open class SocketManager() {
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
 
     fun connect(url: String?) {
-        url ?: throw RuntimeException("Socket url required to initiate room")
-        socket = IO.socket(url)
-        socket?.on(EVENT_CONNECT, emitter(EVENT_CONNECT))
-        socket?.on(EVENT_DISCONNECT, emitter(EVENT_DISCONNECT))
-        socket?.on(EVENT_IS_READ, emitter(EVENT_IS_READ))
-        socket?.on(EVENT_UPDATE_MESSAGE, emitter(EVENT_UPDATE_MESSAGE))
-        socket?.on(EVENT_IP_ADDRESS, emitter(EVENT_IP_ADDRESS))
-        socket?.on(EVENT_BYE, emitter(EVENT_BYE))
-        socket?.on(EVENT_NO_ANSWER, emitter(EVENT_NO_ANSWER))
-        socket?.on(EVENT_CREATED, emitter(EVENT_CREATED))
-        socket?.on(EVENT_FULL, emitter(EVENT_FULL))
-        socket?.on(EVENT_JOIN, emitter(EVENT_JOIN))
-        socket?.on(EVENT_JOINED, emitter(EVENT_JOINED))
-        socket?.on(EVENT_READY, emitter(EVENT_READY))
-        socket?.on(EVENT_LOG, emitter(EVENT_LOG))
-        socket?.on(EVENT_MESSAGE, emitter(EVENT_MESSAGE))
-        socket?.on(EVENT_CALL, emitter(EVENT_CALL))
-        socket?.on(EVENT_ALL_USER, emitter(EVENT_ALL_USER))
-        socket?.on(EVENT_CREATE_OR_JOIN_HW, emitter(EVENT_CREATE_OR_JOIN_HW))
-        socket?.connect() ?: Timber.e { "Socket is null" }
+        url?.let {
+            socket = IO.socket(url)
+            socket?.on(EVENT_CONNECT, emitter(EVENT_CONNECT))
+            socket?.on(EVENT_DISCONNECT, emitter(EVENT_DISCONNECT))
+            socket?.on(EVENT_IS_READ, emitter(EVENT_IS_READ))
+            socket?.on(EVENT_UPDATE_MESSAGE, emitter(EVENT_UPDATE_MESSAGE))
+            socket?.on(EVENT_IP_ADDRESS, emitter(EVENT_IP_ADDRESS))
+            socket?.on(EVENT_BYE, emitter(EVENT_BYE))
+            socket?.on(EVENT_NO_ANSWER, emitter(EVENT_NO_ANSWER))
+            socket?.on(EVENT_CREATED, emitter(EVENT_CREATED))
+            socket?.on(EVENT_FULL, emitter(EVENT_FULL))
+            socket?.on(EVENT_JOIN, emitter(EVENT_JOIN))
+            socket?.on(EVENT_JOINED, emitter(EVENT_JOINED))
+            socket?.on(EVENT_READY, emitter(EVENT_READY))
+            socket?.on(EVENT_LOG, emitter(EVENT_LOG))
+            socket?.on(EVENT_MESSAGE, emitter(EVENT_MESSAGE))
+            socket?.on(EVENT_CALL, emitter(EVENT_CALL))
+            socket?.on(EVENT_ALL_USER, emitter(EVENT_ALL_USER))
+            socket?.on(EVENT_CREATE_OR_JOIN_HW, emitter(EVENT_CREATE_OR_JOIN_HW))
+            socket?.connect() ?: Timber.e { "Socket is null" }
+        } ?: Timber.e { "Socket url must not be empty" }
     }
 
     private fun emitter(event: String) = Emitter.Listener {
@@ -46,7 +47,7 @@ open class SocketManager() {
 
     fun emit(event: String, args: Any? = null) {
         Timber.e { "Socket $event args $args" }
-        socket?.emit(event, args) ?: Timber.e { "Socket $event not sent " }
+        socket?.emit(event, args) ?: Timber.e { "$event fail due to socket not connected " }
     }
 
     fun disconnect() {
@@ -90,5 +91,17 @@ open class SocketManager() {
         const val EVENT_CREATE_OR_JOIN_HW = "create_or_join_hw"
         const val EVENT_CREATE_OR_JOIN = "create or join"
         const val EVENT_ALL_USER = "allUsers"
+
+        // Chat event
+        const val EVENT_MESSAGE_RECEIVED = "message_received" // message read by receiver
+        const val EVENT_MESSAGE_SENT = "message_sent" // sent message
+        const val EVENT_MESSAGE_SENT_ACK = "message_sent_ack" // sent message ack
+        const val EVENT_MESSAGE_DELIVER = "message_deliver" // message delivered to receiver
+        const val EVENT_MESSAGE_READ = "message_read" // sender received
+        const val EVENT_MESSAGE_READ_ACK = "message_read_ack" // message mark as read ack
+        const val EVENT_CHAT_READ_ACK = "chat_read_ack" // all message mark as read
+        const val EVENT_CHAT_READ_ACK_SUCCESS = "chat_read_ack_success" // all message mark as read
+        const val EVENT_CHAT_READ =
+            "chat_read"//sender received status, all message read by receiver
     }
 }

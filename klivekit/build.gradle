@@ -82,6 +82,14 @@ dependencies {
     api 'com.google.code.gson:gson:2.9.0'
     api "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
+    def room_version = "2.4.3"
+    api "androidx.room:room-ktx:$room_version"
+    api "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
+
     testApi 'junit:junit:4.13.2'
     androidTestApi 'androidx.test.ext:junit:1.1.5'
     androidTestApi 'androidx.test.espresso:espresso-core:3.5.1'

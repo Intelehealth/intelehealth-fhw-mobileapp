@@ -22,7 +22,7 @@ enum class MsgType {
     SENT, RECEIVED
 }
 
-enum class ReadReceipt {
+enum class MessageStatus {
     SENDING, SENT, DELIVERED, SEEN
 }
 

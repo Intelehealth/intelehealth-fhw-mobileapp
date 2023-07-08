@@ -1,10 +1,13 @@
 package org.intelehealth.klivekit.chat.model
 
+import androidx.room.Entity
+
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 15:32.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
+@Entity(tableName = "tbl_chat_message")
 data class ChatMessage(
     val messageId: String = "",
     val senderId: String = "",
