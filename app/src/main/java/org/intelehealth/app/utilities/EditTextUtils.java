@@ -84,6 +84,7 @@ public class EditTextUtils {
                     InputFilter[] fArray = new InputFilter[1];
                     fArray[0] = new InputFilter.LengthFilter(s.length());
                     view.setFilters(fArray);
+                    count = -1;  // resetting count for the next new edittext field to work.
                 }
                 count++;
             }
