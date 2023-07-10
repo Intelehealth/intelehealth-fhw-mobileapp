@@ -72,6 +72,7 @@ public class ForgotPasswordFragment extends Fragment {
 
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText);
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
+        mCountryCodePicker.showNameCode(false);
         setMobileNumberLimit();
         addValidationListener();
         observeData();
@@ -124,7 +125,11 @@ public class ForgotPasswordFragment extends Fragment {
 
         //failure - success - false
         viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
-            Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+            if (failureResultData.toLowerCase().contains("no")) {
+                binding.contentForgotPassword.etUsernameLayout.setFocusable(true);
+                binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.no_user_exist));
+            }
         });
 
         //api failure
@@ -138,7 +143,7 @@ public class ForgotPasswordFragment extends Fragment {
         if (TextUtils.isEmpty(mCountryCodePicker.getSelectedCountryCode())) {
             //binding.contentForgotPassword.etUsernameLayout.setError("Please select country");
         } else if (TextUtils.isEmpty(mPhoneNumberEditText.getText().toString())) {
-            binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.enter_registered_mobile_number));
+            binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.enter_mobile_number));
         } else if (!isPhoneNumberValid(mPhoneNumberEditText.getText().toString())) {
             binding.contentForgotPassword.etUsernameLayout.setFocusable(true);
             binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.mobile_no_length));

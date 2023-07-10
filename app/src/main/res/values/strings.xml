@@ -51,7 +51,7 @@
     <string name="error_invalid_email">This username is invalid</string>
     <string name="error_require_email">Username is required</string>
     <string name="error_require_password">Password is required</string>
-    <string name="error_invalid_password">Password length should be 8 chars or more.</string>
+    <string name="error_invalid_password">8+ characters required for password</string>
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
@@ -978,7 +978,7 @@
     <string name="enter_last_name">Please enter last name</string>
     <string name="select_dob">Please select date of birth</string>
     <string name="select_age">Age must be greater than 9 years</string>
-    <string name="mobile_no_length">Mobile number length is must be 10</string>
+    <string name="mobile_no_length">Number length is must be 10</string>
     <string name="select_admission_date">Please select admission date</string>
     <string name="select_admission_time">Please select admission time</string>
     <string name="select_sac_ruptured_date">Select amniotic sac ruptured date</string>
@@ -1044,7 +1044,7 @@
     <string name="txt_additional_info">txt_additional_info</string>
     <string name="medical_advice">medical_advice</string>
 
-    <string name="text_medical_advice" >text_medical_advice</string>
-    <string name="text_new_visit" >text_new_visit</string>
-    <string name="text_new_advice" >text_new_advice</string>
+    <string name="text_medical_advice">text_medical_advice</string>
+    <string name="text_new_visit">text_new_visit</string>
+    <string name="text_new_advice">text_new_advice</string>
 </resources>
