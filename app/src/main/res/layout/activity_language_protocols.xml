@@ -178,15 +178,14 @@
                         android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_alignParentEnd="true"
+                        android:dropDownVerticalOffset="50dp"
                         android:entries="@array/language_names"
                         android:paddingStart="@dimen/fu_margin_start"
-                        android:popupBackground="@drawable/spinner_popup"
-                        android:spinnerMode="dropdown"
-                        android:dropDownVerticalOffset="50dp"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingEnd="@dimen/margin_16dp"
                         android:paddingBottom="@dimen/margin_10"
-                         />
+                        android:popupBackground="@drawable/spinner_popup"
+                        android:spinnerMode="dropdown" />
                 </RelativeLayout>
 
                 <RelativeLayout

@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.identificationActivity;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -36,13 +37,21 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.StateData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ImagesPushDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -115,36 +124,25 @@ public class Fragment_SecondScreen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
         sessionManager = new SessionManager(getActivity());
-
         mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(getActivity(), "state_district_tehsil.json").toString(), StateDistMaster.class);
-
         personal_icon = getActivity().findViewById(R.id.addpatient_icon);
         address_icon = getActivity().findViewById(R.id.addresslocation_icon);
         other_icon = getActivity().findViewById(R.id.other_icon);
         frag2_btn_back = getActivity().findViewById(R.id.frag2_btn_back);
         frag2_btn_next = getActivity().findViewById(R.id.frag2_btn_next);
-
         mPostalCodeEditText = view.findViewById(R.id.postalcode_edittext);
-
         mCountryNameSpinner = view.findViewById(R.id.country_spinner);
-
         mStateNameSpinner = view.findViewById(R.id.state_spinner);
         mStateEditText = view.findViewById(R.id.state_edittext);
         mStateEditText.setVisibility(View.GONE);
-
         mDistrictNameSpinner = view.findViewById(R.id.district_spinner);
         mDistrictET = view.findViewById(R.id.district_edittext);
-
-        //mCityNameSpinner = view.findViewById(R.id.city_spinner);
         mCityVillageET = view.findViewById(R.id.city_village_edittext);
         mCityVillageET.setFilters(new InputFilter[]{new InputFilter.AllCaps()}); //all capital input
-
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
         mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
         mAddress2EditText = view.findViewById(R.id.address2_edittext);
         mAddress2EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
-
-
         mPostalCodeErrorTextView = view.findViewById(R.id.postalcode_error);
         mCountryNameErrorTextView = view.findViewById(R.id.country_error);
         mStateNameErrorTextView = view.findViewById(R.id.state_error);
@@ -155,11 +153,9 @@ public class Fragment_SecondScreen extends Fragment {
         mPostalCodeEditText.addTextChangedListener(new MyTextWatcher(mPostalCodeEditText));
         mAddress1EditText.addTextChangedListener(new MyTextWatcher(mAddress1EditText));
         mAddress2EditText.addTextChangedListener(new MyTextWatcher(mAddress2EditText));
-
         mStateEditText.addTextChangedListener(new MyTextWatcher(mStateEditText));
         mDistrictET.addTextChangedListener(new MyTextWatcher(mDistrictET));
         mCityVillageET.addTextChangedListener(new MyTextWatcher(mCityVillageET));
-
         firstScreen = new Fragment_FirstScreen();
         fragment_thirdScreen = new Fragment_ThirdScreen();
         if (getArguments() != null) {
@@ -167,16 +163,9 @@ public class Fragment_SecondScreen extends Fragment {
             fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
             fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
-            //   patientID_edit = getArguments().getString("patientUuid");
-
-           /* if (patientID_edit != null) {
-                patientDTO.setUuid(patientID_edit);
-            } else {
-                // do nothing...
-            }
-*/
             if (patient_detail) {
-                //   patientDTO.setUuid(patientID_edit);
+                frag2_btn_back.setVisibility(View.GONE);
+                frag2_btn_next.setText(getString(R.string.save));
             } else {
                 // do nothing...
             }
@@ -685,15 +674,6 @@ public class Fragment_SecondScreen extends Fragment {
         Gson gson = new Gson();
         boolean cancel = false;
         View focusView = null;
-
-        // validation - start
-        /*if (mPostalCodeEditText.getText().toString().equals("")) {
-            mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
-            mPostalCodeErrorTextView.setText(getString(R.string.error_field_required));
-            mPostalCodeEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mPostalCodeEditText.requestFocus();
-            return;
-        } else*/
         if (!mPostalCodeEditText.getText().toString().equals("")) {
             if (mCountryNameSpinner.getSelectedItem().toString().equalsIgnoreCase(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत") && mPostalCodeEditText.getText().toString().trim().length() != 6) {
                 mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
@@ -709,7 +689,6 @@ public class Fragment_SecondScreen extends Fragment {
             mPostalCodeErrorTextView.setVisibility(View.GONE);
             mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
-
 
         if (mCountryNameSpinner.getSelectedItemPosition() == 0) {
             mCountryNameErrorTextView.setVisibility(View.VISIBLE);
@@ -772,42 +751,6 @@ public class Fragment_SecondScreen extends Fragment {
             mCityVillageET.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-
-
-        /*if (mCityVillageET.getVisibility() == View.VISIBLE && mCityVillageET.getText().toString().equals("")) {
-            mCityNameErrorTextView.setVisibility(View.VISIBLE);
-            mCityNameErrorTextView.setText(getString(R.string.error_field_required));
-            mCityVillageET.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mCityVillageET.requestFocus();
-            return;
-        } else {
-            mCityNameErrorTextView.setVisibility(View.GONE);
-            mCityVillageET.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }*/
-
-        /*if (mAddress1EditText.getText().toString().equals("")) {
-            mAddress1ErrorTextView.setVisibility(View.VISIBLE);
-            mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
-            mAddress1EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mAddress1EditText.requestFocus();
-            return;
-        } else {
-            mAddress1ErrorTextView.setVisibility(View.GONE);
-            mAddress1EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }*/
-
-        /*if (mAddress2EditText.getText().toString().equals("")) {
-            mAddress2ErrorTextView.setVisibility(View.VISIBLE);
-            mAddress2ErrorTextView.setText(getString(R.string.error_field_required));
-            mAddress2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            mAddress2EditText.requestFocus();
-            return;
-        } else {
-            mAddress2ErrorTextView.setVisibility(View.GONE);
-            mAddress2EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        }*/
-        // validation - end
-
         /**
          *  entering value in dataset start
          */
@@ -816,7 +759,6 @@ public class Fragment_SecondScreen extends Fragment {
         } else {
             mStateName = mStateEditText.getText().toString().trim();
             mDistName = mDistrictET.getText().toString().trim();
-
             mCityVillageName = mCityVillageET.getText().toString().trim();
 
             patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
@@ -828,27 +770,64 @@ public class Fragment_SecondScreen extends Fragment {
             if (!sessionManager.getAppLanguage().equals("en")) {
                 patientDTO.setCountry(StringUtils.getValue(mCountryNameEn));
                 patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? mStateNameEn : mStateName));
-
                 patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? mDistNameEn : mDistName) + ":" + mCityVillageName));
 
             }
             patientDTO.setAddress1(mAddress1EditText.getText().toString());
             patientDTO.setAddress2(mAddress2EditText.getText().toString());
-
-            Log.v("fragmemt_2", "values: " + new Gson().toJson(patientDTO));
         }
 
-        // Bundle data
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("patientDTO", (Serializable) patientDTO);
-        bundle.putBoolean("fromSecondScreen", true);
-        //   bundle.putString("patientUuid", patientID_edit);
-        bundle.putBoolean("patient_detail", patient_detail);
-        fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
 
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_firstscreen, fragment_thirdScreen)
-                .commit();
+        try {
+            Logger.logD(TAG, "insertpatinet");
+            boolean isPatientInserted = false;
+            boolean isPatientImageInserted = false;
+            PatientsDAO patientsDAO = new PatientsDAO();
+            PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+            List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+            ImagesDAO imagesDAO = new ImagesDAO();
+
+            if (patient_detail) {
+                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientDTO, patientDTO.getUuid(), patientAttributesDTOList);
+                isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientDTO.getPatientPhoto(), patientDTO.getUuid());
+            } else {
+                // Bundle data
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("patientDTO", (Serializable) patientDTO);
+                bundle.putBoolean("fromSecondScreen", true);
+                //   bundle.putString("patientUuid", patientID_edit);
+                bundle.putBoolean("patient_detail", patient_detail);
+                fragment_thirdScreen.setArguments(bundle); // passing data to Fragment
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_firstscreen, fragment_thirdScreen)
+                        .commit();
+            }
+
+            if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
+                SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean push = syncDAO.pushDataApi();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+            }
+
+            if (isPatientInserted && isPatientImageInserted) {
+                Logger.logD(TAG, "inserted");
+                Intent intent = new Intent(getActivity().getApplication(), PatientDetailActivity2.class);
+                intent.putExtra("patientUuid", patientDTO.getUuid());
+                intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
+                intent.putExtra("tag", "newPatient");
+                intent.putExtra("hasPrescription", "false");
+                Bundle args = new Bundle();
+                args.putSerializable("patientDTO", (Serializable) patientDTO);
+                intent.putExtra("BUNDLE", args);
+                getActivity().startActivity(intent);
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 }
