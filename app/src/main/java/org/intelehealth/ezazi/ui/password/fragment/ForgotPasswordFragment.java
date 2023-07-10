@@ -75,7 +75,6 @@ public class ForgotPasswordFragment extends Fragment {
         setMobileNumberLimit();
         addValidationListener();
         observeData();
-
     }
 
 
@@ -101,19 +100,19 @@ public class ForgotPasswordFragment extends Fragment {
 
     private void observeData() {
         //success
-        viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
-            Log.d(TAG, "observeData: "+requestOTPResult.getUserUuid());
+        viewModel.requestOTPResponseData.observe(getViewLifecycleOwner(), requestOTPResult -> {
+            Log.d(TAG, "observeData: ");
             if (requestOTPResult != null && requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
 
                 NavDirections directions = ForgotPasswordFragmentDirections.forgotToOtpVerificationFragment(requestOTPModel);
                 Navigation.findNavController(requireView()).navigate(directions);
+                viewModel.clearPreviousResult();
             }
-
         });
 
         //observe loading - progress dialog
-        viewModel.loading.observe(requireActivity(), aBoolean -> {
+        viewModel.loading.observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {
                 customProgressDialog.show();
             } else {
@@ -124,12 +123,12 @@ public class ForgotPasswordFragment extends Fragment {
         });
 
         //failure - success - false
-        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
 
         //api failure
-        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
+        viewModel.errorDataResult.observe(getViewLifecycleOwner(), errorResult -> {
         });
     }
 

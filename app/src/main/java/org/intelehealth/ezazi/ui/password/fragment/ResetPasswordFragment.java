@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.databinding.FragmentResetPasswordBinding;
 import org.intelehealth.ezazi.ui.InputChangeValidationListener;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
 import org.intelehealth.ezazi.ui.password.viewmodel.PasswordViewModel;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -39,6 +41,7 @@ public class ResetPasswordFragment extends Fragment {
     String userUuid = "";
     SessionManager sessionManager;
     PasswordViewModel viewModel;
+
     public ResetPasswordFragment() {
         super(R.layout.fragment_reset_password);
     }
@@ -63,6 +66,24 @@ public class ResetPasswordFragment extends Fragment {
         });
 
         addValidationListener();
+        setupScreenBack();
+    }
+
+    private void setupScreenBack() {
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(requireContext())
+                        .content(getString(R.string.are_you_want_go_back))
+                        .positiveButtonLabel(R.string.yes)
+                        .build();
+
+                dialog.setListener(() -> requireActivity().finish());
+
+                dialog.show(getChildFragmentManager(), dialog.getClass().getCanonicalName());
+            }
+        });
+
     }
 
     private void resetPassword() {
@@ -72,9 +93,10 @@ public class ResetPasswordFragment extends Fragment {
     }
 
     private void observeData() {
-        viewModel.changePasswordResponse.observe(requireActivity(), changePasswordResultData -> {
+        viewModel.changePasswordResponse.observe(getViewLifecycleOwner(), changePasswordResultData -> {
             Toast.makeText(mContext, getResources().getString(R.string.password_reset_success), Toast.LENGTH_SHORT).show();
-            navigateToNextActivity();
+            requireActivity().finish();
+//            navigateToNextActivity();
         });
         //observe loading
         viewModel.loading.observe(getViewLifecycleOwner(), aBoolean -> {
@@ -87,11 +109,11 @@ public class ResetPasswordFragment extends Fragment {
             }
         });
 
-        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
         //api failure
-        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
+        viewModel.errorDataResult.observe(getViewLifecycleOwner(), errorResult -> {
         });
     }
 

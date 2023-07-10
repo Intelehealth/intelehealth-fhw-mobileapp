@@ -47,7 +47,11 @@ public class BaseDataSource {
     }
 
     public <T> void executeCall(APIExecuteListener<T> executeListener, Call<ApiResponse<T>> call) {
-        enqueueCall(executeListener, call, result -> executeListener.onSuccess(result.getData()));
+        enqueueCall(executeListener, call, result -> {
+            if (result.isSuccess())
+                executeListener.onSuccess(result.getData());
+            else executeListener.onFail(result.getMessage());
+        });
 //        executeListener.onLoading(true);
 //        call.enqueue(new Callback<ApiResponse<T>>() {
 //            @Override

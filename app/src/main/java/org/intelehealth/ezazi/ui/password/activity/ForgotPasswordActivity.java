@@ -24,19 +24,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private ActivityForgotPasswordBinding binding;
 
     @Override
-    public void onBackPressed() {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .content(getString(R.string.are_you_want_go_back))
-                .positiveButtonLabel(R.string.yes)
-                .build();
-
-        dialog.setListener(this::finish);
-
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater(), null, false);

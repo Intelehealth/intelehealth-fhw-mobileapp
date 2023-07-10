@@ -116,7 +116,7 @@ public class OTPVerificationFragment extends Fragment {
 
     private void observeData(PasswordViewModel viewModel) {
         //success
-        viewModel.verifyOtpData.observe(requireActivity(), verifyOtpResultData -> {
+        viewModel.verifyOtpData.observe(getViewLifecycleOwner(), verifyOtpResultData -> {
             if (verifyOtpResultData != null && verifyOtpResultData.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_verified), Toast.LENGTH_SHORT).show();
                 // NavDirections navDir = OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment();
@@ -126,7 +126,7 @@ public class OTPVerificationFragment extends Fragment {
         });
 
         //failure - success - false
-        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
             pinEntryEditText.setText("");
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
@@ -160,7 +160,6 @@ public class OTPVerificationFragment extends Fragment {
                 public void onFinish() {
                     tvResendOtp.setEnabled(true);
                     tvResendOtp.setText(mContext.getResources().getString(R.string.lbl_resend));
-
                 }
 
             }.start();
@@ -175,20 +174,19 @@ public class OTPVerificationFragment extends Fragment {
             RequestOTPModel requestOTPModel = new RequestOTPModel(ForgotPasswordFragment.OTPForString, observedOtpDataModel.getPhoneNumber(), observedOtpDataModel.getCountryCode());
             viewModel.requestOtp(requestOTPModel);
         }
-        viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
+        viewModel.requestOTPResponseData.observe(getViewLifecycleOwner(), requestOTPResult -> {
             if (requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
             }
-
         });
 
         //failure - success - false
-        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
 
         //api failure
-        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
+        viewModel.errorDataResult.observe(getViewLifecycleOwner(), errorResult -> {
         });
     }
 
