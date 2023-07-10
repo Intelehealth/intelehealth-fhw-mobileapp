@@ -141,14 +141,17 @@ public class RealTimeDataChangedObserver {
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
             // Failed to read value
+            Log.e(TAG, "onCancelled: DatabaseError " + error.getDetails());
             Timber.tag(TAG).w(error.toException(), "Failed to read value.");
         }
     };
 
     private void observeDataChange(@NonNull DataSnapshot snapshot) {
+        Log.e(TAG, "observeDataChange");
         // This method is called once with the initial value and again
         // whenever data at this location is updated.
         HashMap<?, ?> value = (HashMap<?, ?>) snapshot.getValue();
+        Log.e(TAG, "observeDataChange: value " + value);
         if (value == null) return;
         Log.e(TAG, "observeDataChange: value " + value.toString());
 

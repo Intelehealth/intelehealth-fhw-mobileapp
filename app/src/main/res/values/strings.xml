@@ -1044,7 +1044,7 @@
     <string name="txt_additional_info">txt_additional_info</string>
     <string name="medical_advice">medical_advice</string>
 
-    <string name="text_medical_advice" >text_medical_advice</string>
-    <string name="text_new_visit" >text_new_visit</string>
-    <string name="text_new_advice" >text_new_advice</string>
+    <string name="text_medical_advice">text_medical_advice</string>
+    <string name="text_new_visit">text_new_visit</string>
+    <string name="text_new_advice">text_new_advice</string>
 </resources>

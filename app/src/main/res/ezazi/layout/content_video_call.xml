@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
@@ -31,8 +31,35 @@
             <io.livekit.android.renderer.SurfaceViewRenderer
                 android:id="@+id/incoming_surface_view"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <FrameLayout
+                android:id="@+id/frameRemoteVideoOverlay"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/colorIncomingCallBg">
+
+                <TextView
+                    android:id="@+id/remoteUserTextIcon"
+                    android:layout_width="@dimen/rtc_partner_profile_size"
+                    android:layout_height="@dimen/rtc_partner_profile_size"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rounded_icon_white_bg"
+                    android:gravity="center"
+                    android:textColor="?colorPrimary"
+                    android:textSize="@dimen/std_36sp"
+                    android:textStyle="bold" />
+
+                <!--                <com.google.android.material.imageview.ShapeableImageView-->
+                <!--                    android:id="@+id/ivPartnerProfile"-->
+                <!--                    android:layout_width="@dimen/rtc_partner_profile_size"-->
+                <!--                    android:layout_height="@dimen/rtc_partner_profile_size"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:background="@color/white"-->
+                <!--                    android:visibility="visible"-->
+                <!--                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />-->
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvRemoteUsername"
@@ -51,14 +78,6 @@
                 android:background="@drawable/rounded_icon_white_bg"
                 app:srcCompat="@drawable/selector_active_speaker" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/ivPartnerProfile"
-                android:layout_width="@dimen/rtc_partner_profile_size"
-                android:layout_height="@dimen/rtc_partner_profile_size"
-                android:layout_gravity="center"
-                android:background="@color/white"
-                android:visibility="gone"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -82,8 +101,26 @@
                     android:id="@+id/self_surface_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:translationZ="2dp" />
+                    android:layout_centerInParent="true" />
+
+                <FrameLayout
+                    android:id="@+id/frameLocalVideoOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/colorIncomingCallBg">
+
+                    <TextView
+                        android:id="@+id/localUserTextIcon"
+                        android:layout_width="@dimen/std_48dp"
+                        android:layout_height="@dimen/std_48dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/rounded_icon_white_bg"
+                        android:gravity="center"
+                        android:textColor="?colorPrimary"
+                        android:textSize="@dimen/std_24sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -106,16 +143,6 @@
                     android:translationZ="2dp"
                     app:srcCompat="@drawable/selector_active_speaker" />
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/ivSelfProfile"
-                    android:layout_width="@dimen/rtc_self_profile_size"
-                    android:layout_height="@dimen/rtc_self_profile_size"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:background="@color/white"
-                    android:translationZ="2dp"
-                    android:visibility="gone"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

@@ -58,8 +58,8 @@ open class LiveVideoCallActivity : CoreVideoCallActivity() {
         binding.videoCallView.callActionView.btnMicOnOff.setOnClickListener { videoCallViewModel.toggleMicrophone() }
         binding.videoCallView.callActionView.btnVideoOnOff.setOnClickListener { videoCallViewModel.toggleCamera() }
         binding.videoCallView.callActionView.btnFlipCamera.setOnClickListener { videoCallViewModel.flipCamera() }
-        binding.incomingCallView.inCallRejectImv.setOnClickListener { declineCall() }
-        binding.incomingCallView.inCallRejectImv.setOnClickListener { acceptCall() }
+        binding.incomingCallView.fabDeclineCall.setOnClickListener { declineCall() }
+        binding.incomingCallView.fabAcceptCall.setOnClickListener { acceptCall() }
     }
 
     override fun onIncomingCall() {
@@ -135,7 +135,7 @@ open class LiveVideoCallActivity : CoreVideoCallActivity() {
     override fun onRemoteParticipantCameraChange(isHide: Boolean) {
         super.onRemoteParticipantCameraChange(isHide)
         binding.videoCallView.incomingSurfaceView.isVisible = isHide
-        binding.videoCallView.ivSelfProfile.isVisible = isHide.not()
+        binding.videoCallView.frameLocalVideoOverlay.isVisible = isHide.not()
     }
 
     override fun onRemoteParticipantMicChange(isMuted: Boolean) {

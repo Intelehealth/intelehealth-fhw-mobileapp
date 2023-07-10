@@ -106,10 +106,17 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             mDbHelper.onCreate(localdb);
         }
         registerActivityLifecycleCallbacks(this);
-        dataChangedObserver = new RealTimeDataChangedObserver(this);
-        dataChangedObserver.startObserver();
+
 
         initSocketConnection();
+        startRealTimeObserver();
+    }
+
+    public void startRealTimeObserver() {
+        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
+            dataChangedObserver = new RealTimeDataChangedObserver(this);
+            dataChangedObserver.startObserver();
+        }
     }
 
     /**

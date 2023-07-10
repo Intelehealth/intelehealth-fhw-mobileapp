@@ -107,6 +107,8 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvRemoteUsername.setText(doctorName);
+            binding.videoCallView.remoteUserTextIcon.setText(String.valueOf(args.getDoctorName().toUpperCase().toCharArray()[0]));
+            binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
         }
     }
 
@@ -119,9 +121,8 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
 
     @Override
     public void attachRemoteVideo(@NonNull VideoTrack videoTrack) {
-        Timber.tag(TAG).e("attachRemoteVideo: " + videoTrack.getName());
+        Timber.tag(TAG).e("attachRemoteVideo: %s", videoTrack.getEnabled());
         videoTrack.addRenderer(binding.videoCallView.incomingSurfaceView);
-        binding.videoCallView.selfSurfaceView.invalidate();
     }
 
     @Override
@@ -163,7 +164,6 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         binding.incomingCallView.getRoot().setVisibility(View.VISIBLE);
         binding.incomingCallView.rippleBackgroundContent.startRippleAnimation();
         binding.incomingCallView.fabAcceptCall.setVisibility(View.GONE);
-        playRingtone();
     }
 
     @Override
@@ -195,7 +195,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
         super.onCameraStatusChanged(enabled);
         binding.videoCallView.callActionView.btnVideoOnOff.setActivated(!enabled);
         binding.videoCallView.selfSurfaceView.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        binding.videoCallView.ivSelfProfile.setVisibility(!enabled ? View.VISIBLE : View.GONE);
+        binding.videoCallView.frameLocalVideoOverlay.setVisibility(!enabled ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     public void onRemoteParticipantCameraChange(boolean isHide) {
         super.onRemoteParticipantCameraChange(isHide);
         binding.videoCallView.incomingSurfaceView.setVisibility(isHide ? View.GONE : View.VISIBLE);
-        binding.videoCallView.ivPartnerProfile.setVisibility(isHide ? View.VISIBLE : View.GONE);
+        binding.videoCallView.frameRemoteVideoOverlay.setVisibility(isHide ? View.VISIBLE : View.GONE);
     }
 
     @Override

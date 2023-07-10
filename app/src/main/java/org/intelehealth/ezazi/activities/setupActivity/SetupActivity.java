@@ -1474,6 +1474,7 @@ public class SetupActivity extends AppCompatActivity {
                                             saveToken();
 
                                             IntelehealthApplication.getInstance().initSocketConnection();
+                                            IntelehealthApplication.getInstance().startRealTimeObserver();
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
 //                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 

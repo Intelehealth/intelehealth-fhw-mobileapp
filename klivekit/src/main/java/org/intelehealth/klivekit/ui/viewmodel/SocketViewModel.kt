@@ -149,7 +149,7 @@ class SocketViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        disconnect()
+//        disconnect()
     }
 
 }
