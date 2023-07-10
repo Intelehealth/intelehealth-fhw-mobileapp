@@ -726,13 +726,147 @@
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/relative_hospital_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relative_speciality_block"
+                android:layout_marginTop="@dimen/margin_16">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/special_hospital_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:elevation="16dp"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/special_hospital_header_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fu_card_margin_sides"
+                            android:layout_marginTop="@dimen/fu_card_margin_sides"
+                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                            <TextView
+                                style="@style/text_title_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/margin_8"
+                                android:text="@string/hospital_type" />
+
+                            <ImageButton
+                                android:id="@+id/btn_up_special_hospital_header"
+                                android:layout_width="@dimen/fu_icon_width"
+                                android:layout_height="@dimen/fu_icon_height"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:src="@drawable/ui2_ic_chevron_down" />
+                        </RelativeLayout>
+
+                        <!--Expanded Vitals-->
+                        <RelativeLayout
+                            android:id="@+id/vd_hospital_header_expandview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/special_hospital_header_relative"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <View
+                                android:id="@+id/hospital_divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/fu_card_margin_updown"
+                                android:background="@color/notifi_divider_color" />
+
+                            <!--Personal Sub-Child-->
+
+                            <TextView
+                                android:id="@+id/hospital_special_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/hospital_divider"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/margin_16dp"
+                                android:text="@string/secondary" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Visibility - end -->
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/hospital_type_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:elevation="16dp"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/fu_card_margin_sides">
+
+                        <TextView
+                            android:id="@+id/hospital_type_title"
+                            style="@style/vs_title_head_14sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hospital_type"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/hospital_type_spinner"
+                            style="@style/AppTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_below="@+id/hospital_type_title"
+                            android:layout_marginTop="@dimen/fu_margin_start"
+                            android:layout_marginBottom="@dimen/margin_16dp"
+                            android:entries="@array/speciality_values"
+                            android:gravity="center_vertical"
+                            android:hint="@string/select_speciality"
+                            android:paddingStart="@dimen/fu_margin_start"
+                            android:paddingTop="@dimen/margin_10"
+                            android:paddingBottom="@dimen/margin_10" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+
             <!--            Priority Visit-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/priority_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/bottom_btn_relative"
-                android:layout_below="@+id/relative_speciality_block"
+                android:layout_below="@+id/relative_hospital_block"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"

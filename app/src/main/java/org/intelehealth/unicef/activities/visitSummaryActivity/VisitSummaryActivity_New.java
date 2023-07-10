@@ -173,8 +173,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, openall_btn, btn_up_addnotes_vd_header;
-    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative;
-    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
+    private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative, pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative, specialHospitalHeaderRelative;
+    private RelativeLayout vs_header_expandview, vs_vitals_header_expandview, add_additional_doc, vd_special_header_expandview, vd_hospital_header_expandview, vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview, vs_add_notes, parentLayout;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private EditText additional_notes_edittext;
     SessionManager sessionManager, sessionManager1;
@@ -269,12 +269,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     String gender_tv;
     String mFileName = "config.json";
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "";
+    String speciality_selected = "", hospitalTypeSelected = "";
     private TextView physcialExaminationDownloadText, vd_special_value;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     String encounterUuid;
-    Spinner speciality_spinner;
+    Spinner speciality_spinner, hospitalTypeSpinner;
     SwitchMaterial flag;
     private Handler mBackgroundHandler;
     private List<DocumentObject> rowListItem;
@@ -282,7 +282,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     ImageButton cc_details_edit, ass_symp_edit;
     ImageButton editAddDocs;
-    ImageButton btn_up_special_vd_header;
+    ImageButton btn_up_special_vd_header, btnUpSpecialHospitalHeader;
 
     TextView editComplaint, editVitals, editPhysical;
     TextView editMedHist, editFamHist;
@@ -296,7 +296,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private WebView mWebView;
     public static String prescription1;
     public static String prescription2;
-    private CardView doc_speciality_card, special_vd_card, addnotes_vd_card;
+    private CardView doc_speciality_card, special_vd_card, addnotes_vd_card, hospitalTypeCard, specialHospitalCard;
     private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
     private ImageButton backArrow, priority_hint, refresh, filter;
     private NetworkUtils networkUtils;
@@ -531,6 +531,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
+
+                hospitalTypeCard.setVisibility(View.GONE);
+                specialHospitalCard.setVisibility(View.VISIBLE);
                 // vs_add_notes.setVisibility(View.GONE);
                 //addnotes_vd_card.setVisibility(View.VISIBLE);
 
@@ -567,6 +570,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
+
+                hospitalTypeCard.setVisibility(View.VISIBLE);
+                specialHospitalCard.setVisibility(View.GONE);
                 // vs_add_notes.setVisibility(View.VISIBLE);
                 addnotes_vd_card.setVisibility(View.GONE);
             }
@@ -588,6 +594,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (hasPrescription.equalsIgnoreCase("true")) {
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
+
+            hospitalTypeCard.setVisibility(View.GONE);
+            specialHospitalCard.setVisibility(View.VISIBLE);
 
             btn_bottom_printshare.setVisibility(View.VISIBLE);
             btn_bottom_vs.setVisibility(View.GONE);
@@ -613,6 +622,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_phyexam_header_expandview.setVisibility(View.VISIBLE);
                 vs_medhist_header_expandview.setVisibility(View.VISIBLE);
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
+                vd_hospital_header_expandview.setVisibility(View.VISIBLE);
                 vd_addnotes_header_expandview.setVisibility(View.VISIBLE);
                 mOpenCount = 6;
             } else {
@@ -623,6 +633,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 vs_phyexam_header_expandview.setVisibility(View.GONE);
                 vs_medhist_header_expandview.setVisibility(View.GONE);
                 vd_special_header_expandview.setVisibility(View.GONE);
+                vd_hospital_header_expandview.setVisibility(View.GONE);
                 vd_addnotes_header_expandview.setVisibility(View.GONE);
                 mOpenCount = 0;
             }
@@ -741,6 +752,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             } else {
                 mOpenCount++;
                 vd_special_header_expandview.setVisibility(View.VISIBLE);
+                setTvCloseAll();
+            }
+        });
+
+        specialHospitalHeaderRelative.setOnClickListener(v -> {
+            if (vd_hospital_header_expandview.getVisibility() == View.VISIBLE) {
+                vd_hospital_header_expandview.setVisibility(View.GONE);
+                mOpenCount--;
+                if (mOpenCount == 0) {
+                    setTvOpenAll();
+                }
+            } else {
+                mOpenCount++;
+                vd_hospital_header_expandview.setVisibility(View.VISIBLE);
                 setTvCloseAll();
             }
         });
@@ -1081,6 +1106,31 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             }
         });
+
+        List<String> hospitalTypeArrayList = new ArrayList<>();
+        hospitalTypeArrayList.add(getString(R.string.select_hospital_type));
+        hospitalTypeArrayList.add(getString(R.string.secondary_hospital_type));
+        hospitalTypeArrayList.add(getString(R.string.tertial_hospital_type));
+
+        ArrayAdapter<String> hospitalTypeArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, hospitalTypeArrayList);
+        hospitalTypeSpinner.setAdapter(hospitalTypeArrayAdapter);
+
+        hospitalTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    hospitalTypeSelected = parent.getItemAtPosition(position).toString();
+                } else {
+                    hospitalTypeSelected = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // todo: speciality code comes in upload btn as well so add that too....later...
         // speciality data - end
 
@@ -1939,6 +1989,26 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     }
 
+    private void showSelectHospitalTypeErrorDialog() {
+        TextView t = (TextView) hospitalTypeSpinner.getSelectedView();
+        t.setError(getString(R.string.please_select_hospital_type_msg));
+        t.setTextColor(Color.RED);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this).setMessage(getResources().getString(R.string.please_select_hospital_type_msg)).setCancelable(false).setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    }
+
     // Permission - start
     private void checkPerm(int item) {
         if (item == 0) {
@@ -2030,6 +2100,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btn_up_medhist_header = findViewById(R.id.btn_up_medhist_header);
         pathistory_header_relative = findViewById(R.id.pathistory_header_relative);
         btn_up_special_vd_header = findViewById(R.id.btn_up_special_vd_header);
+        specialHospitalHeaderRelative = findViewById(R.id.special_hospital_header_relative);
         special_vd_header_relative = findViewById(R.id.special_vd_header_relative);
         btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
         addnotes_vd_header_relative = findViewById(R.id.addnotes_vd_header_relative);
@@ -2040,6 +2111,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         vs_phyexam_header_expandview = findViewById(R.id.vs_phyexam_header_expandview);
         vs_medhist_header_expandview = findViewById(R.id.vs_medhist_header_expandview);
         vd_special_header_expandview = findViewById(R.id.vd_special_header_expandview);
+        vd_hospital_header_expandview = findViewById(R.id.vd_hospital_header_expandview);
         vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
         vs_add_notes = findViewById(R.id.vs_add_notes);
         vd_addnotes_value = findViewById(R.id.vd_addnotes_value);
@@ -2054,6 +2126,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         vd_special_value = findViewById(R.id.vd_special_value);
         doc_speciality_card = findViewById(R.id.doc_speciality_card);
+        hospitalTypeCard = findViewById(R.id.hospital_type_card);
+        specialHospitalCard = findViewById(R.id.special_hospital_card);
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
         priority_hint = findViewById(R.id.priority_hint);
@@ -2112,6 +2186,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // speciality ids
         speciality_spinner = findViewById(R.id.speciality_spinner);
         // speciality ids - end
+
+        hospitalTypeSpinner = findViewById(R.id.hospital_type_spinner);
 
         // priority id
         flag = findViewById(R.id.flaggedcheckbox);
@@ -2393,6 +2469,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             showSelectSpeciliatyErrorDialog();
             return;
         }
+
+        if (hospitalTypeSelected == null || hospitalTypeSelected.isEmpty()) {
+            showSelectHospitalTypeErrorDialog();
+            return;
+        }
+
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);

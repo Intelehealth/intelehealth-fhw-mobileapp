@@ -2121,5 +2121,10 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="no_data_added">No data added</string>
     <string name="close_all">Close all</string>
     <string name="open_all">Open all</string>
+    <string name="hospital_type">Hospital Type</string>
+    <string name="select_hospital_type">Select Hospital Type</string>
+    <string name="secondary_hospital_type">Secondary</string>
+    <string name="tertial_hospital_type">Tertiary</string>
+    <string name="please_select_hospital_type_msg">Please select the hospital type</string>
 
 </resources>
