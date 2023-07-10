@@ -759,12 +759,19 @@
                             android:layout_marginEnd="@dimen/fu_card_margin_sides"
                             android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
+                            <ImageView
+                                android:id="@+id/vs_icon"
+                                android:layout_width="@dimen/edittext_height_44dp"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:src="@drawable/speciality_red_icon" />
+
                             <TextView
                                 style="@style/text_title_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_8"
+                                android:layout_toRightOf="@id/vs_icon"
                                 android:text="@string/hospital_type" />
 
                             <ImageButton
