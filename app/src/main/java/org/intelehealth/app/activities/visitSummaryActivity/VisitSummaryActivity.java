@@ -554,8 +554,53 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     }
 
     private void onEndVisit() {
-        //meera
-        if (downloaded) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            if (downloaded) {
+                alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
+                alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        endVisit();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.show();
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
+            } else {
+                alertDialogBuilder.setMessage(R.string.error_no_data);
+                alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.show();
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+            }
+        } else {
+            alertDialogBuilder.setMessage(R.string.prescription_notprovided_msg);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.show();
+            //alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        }
+
+
+       /* if (downloaded) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
@@ -592,7 +637,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             AlertDialog alertDialog = alertDialogBuilder.show();
             //alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-        }
+        }*/
     }
 
 
@@ -3592,6 +3637,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             if (visitIDCursor != null) visitIDCursor.close();
         }
+
+
         VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
     }
 

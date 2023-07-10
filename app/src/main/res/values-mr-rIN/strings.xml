@@ -1489,4 +1489,6 @@
     <string name="date">"दी.: "</string>
     <string name="unpaid">न.दिले</string>
     <string name="view_bill">बिल पहा</string>
+
+    <string name="prescription_notprovided_msg">डॉक्टरांनी प्रिस्क्रिप्शन दिलेले नाही. कृपया भेट संपण्यासाठी प्रिस्क्रिप्शनची प्रतीक्षा करा.</string>
 </resources>
