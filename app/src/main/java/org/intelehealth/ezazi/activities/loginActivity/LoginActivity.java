@@ -39,6 +39,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
+import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.ui.InputChangeValidationListener;
@@ -376,7 +377,7 @@ public class LoginActivity extends AppCompatActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-
+                                            IntelehealthApplication.getInstance().initSocketConnection();
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");

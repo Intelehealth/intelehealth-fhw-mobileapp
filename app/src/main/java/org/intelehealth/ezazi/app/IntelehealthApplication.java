@@ -19,10 +19,12 @@ import androidx.multidex.MultiDexApplication;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ezazi.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.klivekit.socket.SocketManager;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -53,6 +55,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
+
+    private SocketManager socketManager = SocketManager.getInstance();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -104,6 +108,22 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         registerActivityLifecycleCallbacks(this);
         dataChangedObserver = new RealTimeDataChangedObserver(this);
         dataChangedObserver.startObserver();
+
+        initSocketConnection();
+    }
+
+    /**
+     * Socket should be open and close app level,
+     * so when app create open it and close on app terminate
+     */
+    public void initSocketConnection() {
+        Log.d(TAG, "initSocketConnection: ");
+        if (sessionManager.getCreatorID() != null && !sessionManager.getCreatorID().isEmpty()) {
+            String socketUrl = BuildConfig.SOCKET_URL + "?userId="
+                    + sessionManager.getCreatorID()
+                    + "&name=" + sessionManager.getChwname();
+            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+        }
     }
 
     private void configureCrashReporting() {
@@ -179,5 +199,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public void onTerminate() {
         super.onTerminate();
         if (dataChangedObserver != null) dataChangedObserver.stopObserver();
+        if (socketManager.isConnected()) socketManager.disconnect();
     }
 }

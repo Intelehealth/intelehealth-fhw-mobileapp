@@ -20,8 +20,10 @@ import org.json.JSONObject
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class SocketViewModel(private val args: RtcArgs) : ViewModel() {
-    private val socketManager = SocketManager()
+class SocketViewModel(
+    private val args: RtcArgs,
+    private val socketManager: SocketManager = SocketManager.instance
+) : ViewModel() {
 
     private val mutableEventBye = MutableLiveData(false)
     val eventBye = mutableEventBye.hide()
@@ -97,7 +99,9 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
 
     fun connect() {
         socketManager.emitterListener = this::emitter
-        socketManager.connect(args.socketUrl)
+        if (socketManager.isConnected().not()) {
+            socketManager.connect(args.socketUrl)
+        }
     }
 
     private fun connected(status: Array<Any>) {
@@ -105,7 +109,7 @@ class SocketViewModel(private val args: RtcArgs) : ViewModel() {
         mutableSocketConnected.postValue(true)
     }
 
-    public fun connectWithDoctor() {
+    fun connectWithDoctor() {
         executeInUIThread {
             emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, JSONObject().apply {
                 put("patientId", args.patientId)

@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
+import static org.intelehealth.klivekit.socket.SocketManager.EVENT_ALL_USER;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -72,8 +74,6 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
-import org.intelehealth.klivekit.utils.RemoteActionType;
-import org.intelehealth.klivekit.utils.RtcUtilsKt;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,6 +87,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
+
+import io.socket.emitter.Emitter;
+import kotlin.jvm.functions.Function1;
 
 public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     RecyclerView recyclerView;
@@ -349,6 +353,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
         Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
         Log.v(TAG, "doctors  - " + doctorName);
+//        SocketManager.getInstance().setEmitterListener(emitter);
         EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
         RtcArgs args = new RtcArgs();
         try {
@@ -392,6 +397,11 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //            startActivity(in);
 //        }
     }
+
+//    private Function1<? super String, ? extends Emitter.Listener> emitter = (event) ->
+//            (Emitter.Listener) args -> {
+//
+//            };
 
     private void showEmergencyDialog() {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)

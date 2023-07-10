@@ -121,6 +121,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     public void attachRemoteVideo(@NonNull VideoTrack videoTrack) {
         Timber.tag(TAG).e("attachRemoteVideo: " + videoTrack.getName());
         videoTrack.addRenderer(binding.videoCallView.incomingSurfaceView);
+        binding.videoCallView.selfSurfaceView.invalidate();
     }
 
     @Override

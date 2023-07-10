@@ -55,6 +55,7 @@ public class RealTimeDataChangedObserver {
         sessionManager = new SessionManager(context);
         FirebaseDatabase database = FirebaseDatabase.getInstance(BuildConfig.REAL_TIME_FB_URL);
         String databaseUrl = AppConstants.getFirebaseRTDBRootRef() + sessionManager.getProviderID() + "/VIDEO_CALL";
+        Log.d(TAG, "startObserver: databaseUrl " + databaseUrl);
         databaseReference = database.getReference(databaseUrl);
         databaseReference.addValueEventListener(valueEventListener);
     }

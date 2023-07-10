@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.socket
 
 import com.github.ajalt.timberkt.Timber
+import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.client.Socket.EVENT_CONNECT
@@ -13,7 +14,7 @@ import java.lang.RuntimeException
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-open class SocketManager() {
+open class SocketManager {
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
 
@@ -42,7 +43,9 @@ open class SocketManager() {
     }
 
     private fun emitter(event: String) = Emitter.Listener {
+        Timber.e { "$event => ${Gson().toJson(it)}" }
         emitterListener?.invoke(event)?.call(it)
+//        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }
 
     fun emit(event: String, args: Any? = null) {
@@ -74,6 +77,8 @@ open class SocketManager() {
     fun isConnected(): Boolean = socket?.connected() ?: false
 
     companion object {
+        @JvmStatic
+        var instance = SocketManager()
         const val EVENT_IS_READ = "isread"
         const val EVENT_UPDATE_MESSAGE = "updateMessage"
         const val EVENT_IP_ADDRESS = "ipaddr"

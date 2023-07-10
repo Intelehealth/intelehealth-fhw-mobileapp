@@ -1473,6 +1473,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setSetupComplete(true);
                                             saveToken();
 
+                                            IntelehealthApplication.getInstance().initSocketConnection();
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
 //                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 

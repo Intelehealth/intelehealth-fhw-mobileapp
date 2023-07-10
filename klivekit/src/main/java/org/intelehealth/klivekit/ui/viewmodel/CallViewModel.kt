@@ -199,6 +199,10 @@ open class CallViewModel(
     }
 
     private fun onParticipantConnected(it: RoomEvent.ParticipantConnected) {
+        remoteParticipant = it.participant
+        remoteParticipant?.let { remote ->
+            getVideoTrack(remote)?.let { track -> updateParticipantVideoTrack(track) }
+        }
         mutableParticipantConnected.postValue(true)
     }
 
@@ -303,8 +307,8 @@ open class CallViewModel(
     }
 
     private fun onParticipantDisconnected(participantDisconnected: RoomEvent.ParticipantDisconnected) {
-        Timber.e { "onParticipantDisconnected => ${participantDisconnected.participant.identity}" }
-
+        Timber.e { "onParticipantDisconnected => ${participantDisconnected.participant.sid}" }
+        Timber.e { "onParticipantDisconnected => ${remoteParticipant?.sid ?: "null"}" }
         remoteParticipant?.let {
             mutableRemoteParticipantDisconnected.postValue(participantDisconnected.participant.sid == it.sid)
         }
