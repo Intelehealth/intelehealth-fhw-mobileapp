@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class ForgotPasswordFragment extends Fragment {
     private CustomProgressDialog customProgressDialog;
     private Context mContext;
     private RequestOTPModel requestOTPModel;
+    PasswordViewModel viewModel;
 
     public ForgotPasswordFragment() {
         super(R.layout.fragment_forgot_password);
@@ -54,6 +56,10 @@ public class ForgotPasswordFragment extends Fragment {
         binding = FragmentForgotPasswordBinding.bind(view);
         customProgressDialog = new CustomProgressDialog(requireActivity());
         mContext = requireActivity();
+
+        viewModel = new ViewModelProvider(
+                this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)
+        ).get(PasswordViewModel.class);
 
         binding.btnContinue.setOnClickListener(view1 -> {
             if (areValidFields()) {
@@ -68,6 +74,8 @@ public class ForgotPasswordFragment extends Fragment {
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
         setMobileNumberLimit();
         addValidationListener();
+        observeData();
+
     }
 
 
@@ -89,12 +97,12 @@ public class ForgotPasswordFragment extends Fragment {
         requestOTPModel = new RequestOTPModel(OTPForString, mPhoneNumberEditText.getText().toString(), mSelectedCountryCode);
         viewModel.requestOtp(requestOTPModel);
 
-        observeData(viewModel);
     }
 
-    private void observeData(PasswordViewModel viewModel) {
+    private void observeData() {
         //success
         viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
+            Log.d(TAG, "observeData: "+requestOTPResult.getUserUuid());
             if (requestOTPResult != null && requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
 

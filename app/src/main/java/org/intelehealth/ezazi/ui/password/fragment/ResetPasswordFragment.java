@@ -3,11 +3,8 @@ package org.intelehealth.ezazi.ui.password.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,12 +15,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.databinding.FragmentResetPasswordBinding;
 import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
 import org.intelehealth.ezazi.ui.password.viewmodel.PasswordViewModel;
+import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
 /**
@@ -38,7 +37,8 @@ public class ResetPasswordFragment extends Fragment {
     private CustomProgressDialog customProgressDialog;
     private Context mContext;
     String userUuid = "";
-
+    SessionManager sessionManager;
+    PasswordViewModel viewModel;
     public ResetPasswordFragment() {
         super(R.layout.fragment_reset_password);
     }
@@ -52,9 +52,11 @@ public class ResetPasswordFragment extends Fragment {
         mContext = requireActivity();
         mNewPassword = binding.contentResetPassword.etNewPassword;
         mConfirmPassword = binding.contentResetPassword.etConfirmPassword;
-
+        sessionManager = new SessionManager(mContext);
         userUuid = ResetPasswordFragmentArgs.fromBundle(getArguments()).getUserUuid();
-        Log.d(TAG, "onViewCreated: userUuid : " + userUuid);
+
+        viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)).get(PasswordViewModel.class);
+        observeData();
 
         binding.btnSave.setOnClickListener(view1 -> {
             if (areValidFields()) resetPassword();
@@ -65,28 +67,14 @@ public class ResetPasswordFragment extends Fragment {
 
     private void resetPassword() {
         if (!userUuid.isEmpty()) {
-            PasswordViewModel viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)).get(PasswordViewModel.class);
             viewModel.resetPassword(userUuid, new ChangePasswordRequestModel(mNewPassword.getText().toString()));
-            observeData(viewModel);
         }
     }
 
-    private void observeData(PasswordViewModel viewModel) {
+    private void observeData() {
         viewModel.changePasswordResponse.observe(requireActivity(), changePasswordResultData -> {
             Toast.makeText(mContext, getResources().getString(R.string.password_reset_success), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(requireActivity(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    //navigate to login screen
-//                    Intent intent = new Intent(requireActivity(), SetupActivity.class);
-//                    startActivity(intent);
-//                }
-//            }, 1000);
-
+            navigateToNextActivity();
         });
         //observe loading
         viewModel.loading.observe(getViewLifecycleOwner(), aBoolean -> {
@@ -145,4 +133,19 @@ public class ResetPasswordFragment extends Fragment {
         new InputChangeValidationListener(binding.contentResetPassword.etConfirmPasswordLayout, this::isConfirmPasswordValid)
                 .validate(getString(R.string.error_invalid_password));
     }
+
+    private void navigateToNextActivity() {
+        if (sessionManager.isLogout()) {
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            requireActivity().finish();
+        } else {
+            Intent intent = new Intent(mContext, SetupActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            requireActivity().finish();
+        }
+    }
+
 }

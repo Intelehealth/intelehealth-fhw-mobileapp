@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.core;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -31,10 +33,13 @@ public class BaseViewModel extends ViewModel {
         @Override
         public void onFail(String message) {
             failResult.postValue(message);
+            Log.d(TAG, "onFail: message : "+message);
         }
 
         @Override
         public void onError(Throwable throwable) {
+            Log.d(TAG, "onFail: throwable : "+throwable.getLocalizedMessage());
+
             errorResult.postValue(throwable);
         }
     }
