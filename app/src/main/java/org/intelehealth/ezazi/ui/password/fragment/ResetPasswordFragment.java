@@ -156,18 +156,5 @@ public class ResetPasswordFragment extends Fragment {
                 .validate(getString(R.string.error_invalid_password));
     }
 
-    private void navigateToNextActivity() {
-        if (sessionManager.isLogout()) {
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            requireActivity().finish();
-        } else {
-            Intent intent = new Intent(mContext, SetupActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            requireActivity().finish();
-        }
-    }
 
 }

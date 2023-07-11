@@ -65,6 +65,8 @@ public class OTPVerificationFragment extends Fragment {
 
 
         handleClickListeners();
+        observeData(viewModel);
+
 
     }
 
@@ -110,7 +112,6 @@ public class OTPVerificationFragment extends Fragment {
             viewModel.verifyOtp(requestModel);
         }
 
-        observeData(viewModel);
 
     }
 
