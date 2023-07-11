@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
+import static org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity.VISIT_ATTR_TYPE_UUID;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -910,7 +911,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     try {
                         if (!isVisitSpecialityExists) {
                             isUpdateVisitDone = speciality_attributes
-                                    .insertVisitAttributes(visitUuid, speciality_selected);
+                                    .insertVisitAttributes(visitUuid, speciality_selected, VISIT_ATTR_TYPE_UUID);
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {

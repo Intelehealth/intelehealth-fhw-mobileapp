@@ -139,6 +139,9 @@ public class PatientDetailActivity extends BaseActionBarActivity {
     String stage1Hr1_1_EncounterUuid, stage1Hr1_2_EncounterUuid;
     TextView tvBedNumber;
 
+    public static final String VISIT_ATTR_TYPE_UUID = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
+    public static final String VISIT_HOLDER = "a0378be4-d9c6-4cb2-bbf5-777e27a32efc";
+
     @Override
     protected void onBackNavigate() {
         Intent i = new Intent(PatientDetailActivity.this, HomeActivity.class);
@@ -367,7 +370,9 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     speciality_attributes
-                            .insertVisitAttributes(uuid, "General Physician");
+                            .insertVisitAttributes(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
+                    speciality_attributes
+                            .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
 
 
                 } catch (DAOException e) {
