@@ -36,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
@@ -181,6 +182,7 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        });
         mEmailSignInButton = findViewById(R.id.btnLogin);
+        changeButtonStatus(false);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,10 +205,43 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void addValidationListener() {
-        new InputChangeValidationListener(mEmailInputView, this::isEmailValid)
-                .validate(getString(R.string.error_invalid_email));
-        new InputChangeValidationListener(mPasswordInputView, this::isPasswordValid)
-                .validate(getString(R.string.error_invalid_password));
+//        new InputChangeValidationListener(mEmailInputView, this::isEmailValid)
+//                .validate(getString(R.string.error_invalid_email));
+//        new InputChangeValidationListener(mPasswordInputView, this::isPasswordValid)
+//                .validate(getString(R.string.error_invalid_password));
+
+        new InputChangeValidationListener(mEmailInputView, new InputChangeValidationListener.InputValidator() {
+            @Override
+            public boolean validate(String text) {
+                return isEmailValid(text);
+            }
+
+            @Override
+            public void onValidatted(boolean isValid) {
+                changeButtonStatus(isValid);
+            }
+        }).validate(getString(R.string.error_invalid_email));
+
+        new InputChangeValidationListener(mPasswordInputView, new InputChangeValidationListener.InputValidator() {
+            @Override
+            public boolean validate(String text) {
+                return isPasswordValid(text);
+            }
+
+            @Override
+            public void onValidatted(boolean isValid) {
+                changeButtonStatus(isValid);
+            }
+        }).validate(getString(R.string.error_invalid_password));
+    }
+
+    private void changeButtonStatus(boolean isValid) {
+        mEmailSignInButton.setEnabled(isValid && checkInputNotEmpty());
+    }
+
+    private boolean checkInputNotEmpty() {
+        return Objects.requireNonNull(mUsernameView.getText()).length() > 0
+                && Objects.requireNonNull(mPasswordView.getText()).length() > 0;
     }
 
     private boolean isEmailValid(String email) {

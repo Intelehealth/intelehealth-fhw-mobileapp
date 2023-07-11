@@ -80,6 +80,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -186,6 +187,7 @@ public class SetupActivity extends AppCompatActivity {
 //        mUrlField = findViewById(R.id.editText_URL);
 
         mLoginButton = findViewById(R.id.btnSetup);
+        changeButtonStatus(false);
         findViewById(R.id.includeForgotPassword).setOnClickListener(v -> {
             Intent intent = new Intent(SetupActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
@@ -251,7 +253,10 @@ public class SetupActivity extends AppCompatActivity {
 
             LocationArrayAdapter adapter = new LocationArrayAdapter
                     (SetupActivity.this, new ArrayList<String>());
-            mDropdownLocation.setOnItemClickListener((parent, view, position, id) -> mLocationInputView.setError(null));
+            mDropdownLocation.setOnItemClickListener((parent, view, position, id) -> {
+                mLocationInputView.setError(null);
+                changeButtonStatus(true);
+            });
             mDropdownLocation.setAdapter(adapter);
 
             if (!setupUrl.trim().isEmpty() && setupUrl.length() >= 12) {
@@ -621,10 +626,39 @@ public class SetupActivity extends AppCompatActivity {
 
 
     private void addValidationListener() {
-        new InputChangeValidationListener(mEmailInputView, this::isEmailValid)
-                .validate(getString(R.string.error_invalid_email));
-        new InputChangeValidationListener(mPasswordInputView, this::isPasswordValid)
-                .validate(getString(R.string.error_invalid_password));
+        new InputChangeValidationListener(mEmailInputView, new InputChangeValidationListener.InputValidator() {
+            @Override
+            public boolean validate(String text) {
+                return isEmailValid(text);
+            }
+
+            @Override
+            public void onValidatted(boolean isValid) {
+                changeButtonStatus(isValid);
+            }
+        }).validate(getString(R.string.error_invalid_email));
+
+        new InputChangeValidationListener(mPasswordInputView, new InputChangeValidationListener.InputValidator() {
+            @Override
+            public boolean validate(String text) {
+                return isPasswordValid(text);
+            }
+
+            @Override
+            public void onValidatted(boolean isValid) {
+                changeButtonStatus(isValid);
+            }
+        }).validate(getString(R.string.error_invalid_password));
+    }
+
+    private void changeButtonStatus(boolean isValid) {
+        mLoginButton.setEnabled(isValid && checkInputNotEmpty());
+    }
+
+    private boolean checkInputNotEmpty() {
+        return mDropdownLocation.getText().length() > 0
+                && Objects.requireNonNull(mEmailView.getText()).length() > 0
+                && Objects.requireNonNull(mPasswordView.getText()).length() > 0;
     }
 
     /**
