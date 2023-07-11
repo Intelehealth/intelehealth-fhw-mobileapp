@@ -111,6 +111,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     ConceptAttributeListDAO conceptAttributeListDAO = new ConceptAttributeListDAO();
     public static final int HEIGHT_DECIMAL_PLACE_MAX_COUNT = 1;
     public static final int WEIGHT_DECIMAL_PLACE_MAX_COUNT = 2;
+    public static final int BEFORE_DECIMAL_PLACE_MAX_COUNT = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -288,7 +289,16 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 } else {
 
                 }
-                decimalPlacesCount(mHeight, s, HEIGHT_DECIMAL_PLACE_MAX_COUNT);
+
+                String str = mHeight.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = EditTextUtils.decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, HEIGHT_DECIMAL_PLACE_MAX_COUNT);
+
+                if (!str2.equals(str)) {
+                    mHeight.setText(str2);
+                    mHeight.setSelection(str2.length());
+                }
+
                 calculateBMI();
                 //
             }
@@ -379,7 +389,16 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
                 } else {
 
                 }
-                decimalPlacesCount(mWeight, s, WEIGHT_DECIMAL_PLACE_MAX_COUNT);
+
+                String str = mWeight.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = EditTextUtils.decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, WEIGHT_DECIMAL_PLACE_MAX_COUNT);
+
+                if (!str2.equals(str)) {
+                    mWeight.setText(str2);
+                    mWeight.setSelection(str2.length());
+                }
+
                 calculateBMI();
             }
         });

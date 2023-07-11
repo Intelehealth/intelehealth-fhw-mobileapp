@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class EditTextUtils {
 
     private static String SPECIAL_CHARACTERS = "[0-9.,:;?/{}()% ]";
-    static int count = -1;
+
     /**
      * @param length
      * @param editText
@@ -59,36 +59,36 @@ public class EditTextUtils {
 
     /**
      *
-     * @param view EditText.
-     * @param s Each letter that is entered.
-     * @param decimalPlaces The number of decimal places allowed after decimal point.
+     * @param str
+     * @param MAX_BEFORE_POINT
+     * @param MAX_DECIMAL
+     * @return
      */
-    public static void decimalPlacesCount(EditText view, Editable s, int decimalPlaces) {
-        if (s.length() > 0) {
-            String str = view.getText().toString();
-            view.setOnKeyListener((v, keyCode, event) -> {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    count--;
-                    InputFilter[] fArray = new InputFilter[1];
-                    fArray[0] = new InputFilter.LengthFilter(100);
-                    view.setFilters(fArray);
-                }
-                return false;
-            });
-            char t = str.charAt(s.length() - 1);
+    public static String decimalPlacesCount(String str, int MAX_BEFORE_POINT, int MAX_DECIMAL){
+        if(str.charAt(0) == '.') str = "0"+str;
+        int max = str.length();
 
-            if (t == '.') count = 0;
+        String rFinal = "";
+        boolean after = false;
+        int i = 0, up = 0, decimal = 0; char t;
 
-            if (count >= 0) {
-                if (count == decimalPlaces) {
-                    InputFilter[] fArray = new InputFilter[1];
-                    fArray[0] = new InputFilter.LengthFilter(s.length());
-                    view.setFilters(fArray);
-                    count = -1;  // resetting count for the next new edittext field to work.
-                }
-                count++;
+        while(i < max){
+            t = str.charAt(i);
+            if(t != '.' && after == false){
+                up++;
+                if(up > MAX_BEFORE_POINT) return rFinal;
+            }else if(t == '.'){
+                after = true;
+            }else{
+                decimal++;
+                if(decimal > MAX_DECIMAL)
+                    return rFinal;
             }
+            rFinal = rFinal + t;
+            i++;
         }
+
+        return rFinal;
     }
 
 
