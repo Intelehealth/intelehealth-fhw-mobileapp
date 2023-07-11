@@ -57,6 +57,7 @@
     <string name="seconds">seconds</string>
     <string name="enter_new_password_title">Enter your new password</string>
     <string name="no_user_exist">No user exist with number</string>
+    <string name="fill_required_fields">Please fill required fields</string>
 
 
 </resources>

@@ -14,6 +14,10 @@ import com.google.android.material.textfield.TextInputLayout;
 public class InputChangeValidationListener implements TextWatcher {
     public interface InputValidator {
         boolean validate(String text);
+
+        default void onValidatted(boolean isValid) {
+
+        }
     }
 
     private final TextInputLayout textInputLayout;
@@ -36,7 +40,12 @@ public class InputChangeValidationListener implements TextWatcher {
         if (!validator.validate(s.toString())) {
             textInputLayout.setError(message);
             editText.requestFocus();
-        } else textInputLayout.setError(null);
+            validator.onValidatted(false);
+        } else {
+            textInputLayout.setError(null);
+            validator.onValidatted(true);
+
+        }
     }
 
     @Override

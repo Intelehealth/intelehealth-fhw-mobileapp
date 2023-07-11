@@ -57,9 +57,7 @@ public class ForgotPasswordFragment extends Fragment {
         customProgressDialog = new CustomProgressDialog(requireActivity());
         mContext = requireActivity();
 
-        viewModel = new ViewModelProvider(
-                this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)
-        ).get(PasswordViewModel.class);
+        viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)).get(PasswordViewModel.class);
 
         binding.btnContinue.setOnClickListener(view1 -> {
             if (areValidFields()) {
@@ -90,9 +88,7 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     private void requestOTP() {
-        PasswordViewModel viewModel = new ViewModelProvider(
-                this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)
-        ).get(PasswordViewModel.class);
+        PasswordViewModel viewModel = new ViewModelProvider(this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)).get(PasswordViewModel.class);
 
         requestOTPModel = new RequestOTPModel(OTPForString, mPhoneNumberEditText.getText().toString(), mSelectedCountryCode);
         viewModel.requestOtp(requestOTPModel);
@@ -154,8 +150,17 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     private void addValidationListener() {
-        new InputChangeValidationListener(binding.contentForgotPassword.etUsernameLayout, this::isPhoneNumberValid)
-                .validate(getString(R.string.mobile_no_length));
+        new InputChangeValidationListener(binding.contentForgotPassword.etUsernameLayout, new InputChangeValidationListener.InputValidator() {
+            @Override
+            public boolean validate(String text) {
+                return isPhoneNumberValid(text);
+            }
+
+            @Override
+            public void onValidatted(boolean isValid) {
+                binding.btnContinue.setEnabled(isValid);
+            }
+        }).validate(getString(R.string.mobile_no_length));
     }
 
     private boolean isPhoneNumberValid(String phoneNo) {

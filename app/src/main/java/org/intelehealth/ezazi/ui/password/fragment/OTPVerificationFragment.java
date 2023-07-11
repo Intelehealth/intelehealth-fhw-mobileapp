@@ -85,13 +85,17 @@ public class OTPVerificationFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 6) {
+                    binding.btnContinue.setEnabled(true);
                     binding.contentOtpVerification.tvErrorPin.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s.length() > 0) {
+                    binding.btnContinue.setEnabled(true);
+                }
             }
         });
         tvResendOtp.setOnClickListener(v -> resendOtpApiCall());

@@ -299,9 +299,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private void selectDob() {
-        CalendarDialog dialog = new CalendarDialog.Builder(mContext)
-                .title("")
-                .positiveButtonLabel(R.string.ok).build();
+        CalendarDialog dialog = new CalendarDialog.Builder(mContext).title("").positiveButtonLabel(R.string.ok).build();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -10);
         dialog.setMaxDate(calendar.getTimeInMillis());
@@ -946,11 +944,6 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         List<ErrorManagerModel> errorDetailsList = new ArrayList<>();
         if (TextUtils.isEmpty(mFirstName.getText().toString())) {
-           /* mFirstName.requestFocus();
-            tvErrorFirstName.setVisibility(View.VISIBLE);
-            tvErrorFirstName.setText(getString(R.string.enter_first_name));
-            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-*/
             errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_first_name), cardFirstName));
 
         } else {
@@ -1023,9 +1016,11 @@ public class PatientPersonalInfoFragment extends Fragment {
             tvErrAlternateMobileNo.setVisibility(View.GONE);
             cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
-        if (errorDetailsList.size() > 0) {
-            Toast.makeText(mContext, "Please fill required fields", Toast.LENGTH_SHORT).show();
 
+        if (mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().isEmpty() && mDOB.getText().toString().isEmpty() && mAge.getText().toString().isEmpty()) {
+            Toast.makeText(mContext, getResources().getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+        }
+        if (errorDetailsList.size() > 0) {
             for (int i = 0; i < errorDetailsList.size(); i++) {
                 ErrorManagerModel errorModel = errorDetailsList.get(i);
                 if (i == 0) {
