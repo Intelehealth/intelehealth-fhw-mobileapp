@@ -85,6 +85,7 @@ import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
+import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.ActivePatientModel;
 import org.intelehealth.ezazi.models.CheckAppUpdateRes;
@@ -93,6 +94,7 @@ import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
+import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
@@ -868,7 +870,19 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid) {
-        try {
+        VisitAttributeListDAO visitsAttrsDAO = new VisitAttributeListDAO();
+        for (int j = 0; j < visitUUIDList.size(); j++) {
+            try {
+                visitsAttrsDAO.updateVisitTypeAttributeUuid(visitUUIDList.get(j), selectedNurseUuid);
+
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        mPendingForLogout = true;
+        sync();
+        Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
+      /*  try {
             VisitsDAO visitsDAO = new VisitsDAO();
             for (int j = 0; j < visitUUIDList.size(); j++) {
                 visitsDAO.updateVisitCreator(visitUUIDList.get(j), selectedNurseUuid);
@@ -878,7 +892,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+
     }
 
     private void loadVisits() {
