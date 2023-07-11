@@ -1,5 +1,7 @@
-1 - Observer should initiate only one time, not each click
-2 - Set same flow for login screen
+WebRtc
+1 - Call initiate from doctor to health second time getting close with message hw end the call.
+2 - Second time call connection issue for HW -> doctor
+
 
 https://ezazi.intelehealth.org:3000/api/getToken?
 name=doctorUuid

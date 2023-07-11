@@ -551,7 +551,7 @@ open class CallViewModel(
     override fun onCleared() {
         super.onCleared()
         room.disconnect()
-        room.release()
+//        room.release()
 
         // Clean up foreground service
 //        val foregroundServiceIntent = Intent(application, ForegroundService::class.java)

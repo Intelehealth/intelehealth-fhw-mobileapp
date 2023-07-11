@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.livekit.android.renderer.SurfaceViewRenderer
+import io.livekit.android.renderer.TextureViewRenderer
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.VideoTrack
@@ -86,7 +87,7 @@ class VideoCallActivity : CoreVideoCallActivity() {
         videoTrack.addRenderer(binding.incomingSurfaceView)
     }
 
-    override fun getLocalVideoRender(): SurfaceViewRenderer = binding.selfSurfaceView
+    override fun getLocalVideoRender(): TextureViewRenderer = binding.selfSurfaceView
     override fun getRemoteVideoRender(): SurfaceViewRenderer = binding.incomingSurfaceView
 
     override fun onCameraStatusChanged(enabled: Boolean) {

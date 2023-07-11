@@ -14,6 +14,7 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.events.DisconnectReason
 import io.livekit.android.renderer.SurfaceViewRenderer
+import io.livekit.android.renderer.TextureViewRenderer
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.VideoTrack
@@ -305,7 +306,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     abstract fun attachRemoteVideo(videoTrack: VideoTrack)
 
-    abstract fun getLocalVideoRender(): SurfaceViewRenderer
+    abstract fun getLocalVideoRender(): TextureViewRenderer
 
     abstract fun getRemoteVideoRender(): SurfaceViewRenderer
 

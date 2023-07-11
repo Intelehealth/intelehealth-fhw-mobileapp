@@ -51,14 +51,6 @@
                     android:textSize="@dimen/std_36sp"
                     android:textStyle="bold" />
 
-                <!--                <com.google.android.material.imageview.ShapeableImageView-->
-                <!--                    android:id="@+id/ivPartnerProfile"-->
-                <!--                    android:layout_width="@dimen/rtc_partner_profile_size"-->
-                <!--                    android:layout_height="@dimen/rtc_partner_profile_size"-->
-                <!--                    android:layout_gravity="center"-->
-                <!--                    android:background="@color/white"-->
-                <!--                    android:visibility="visible"-->
-                <!--                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />-->
             </FrameLayout>
 
             <TextView
@@ -85,30 +77,37 @@
             android:layout_width="@dimen/rtc_self_view_width"
             android:layout_height="@dimen/rtc_self_view_height"
             android:layout_margin="@dimen/screen_container_padding"
+            app:cardBackgroundColor="@color/colorIncomingCallBg"
             app:cardCornerRadius="@dimen/container_corner_radius"
             app:cardElevation="@dimen/std_8dp"
             app:cardPreventCornerOverlap="false"
             app:layout_constraintBottom_toBottomOf="@id/incoming_surface_view_frame"
             app:layout_constraintEnd_toEndOf="@id/incoming_surface_view_frame">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="255"
                 android:background="@color/colorIncomingCallBg">
 
-                <io.livekit.android.renderer.SurfaceViewRenderer
+                <io.livekit.android.renderer.TextureViewRenderer
                     android:id="@+id/self_surface_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <FrameLayout
                     android:id="@+id/frameLocalVideoOverlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:visibility="gone"
-                    app:cardBackgroundColor="@color/colorIncomingCallBg">
+                    app:cardBackgroundColor="@color/colorIncomingCallBg"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/localUserTextIcon"
@@ -130,7 +129,9 @@
                     android:text="@string/you"
                     android:textColor="#fff"
                     android:translationZ="2dp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivLocalSpeakerStatus"
@@ -141,9 +142,11 @@
                     android:layout_margin="@dimen/screen_container_padding"
                     android:background="@drawable/rounded_icon_white_bg"
                     android:translationZ="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/selector_active_speaker" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <include

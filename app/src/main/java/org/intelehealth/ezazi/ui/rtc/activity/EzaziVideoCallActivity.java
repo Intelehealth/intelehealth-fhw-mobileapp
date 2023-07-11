@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.ui.rtc.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import org.intelehealth.klivekit.utils.RemoteActionType;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
 
 import io.livekit.android.renderer.SurfaceViewRenderer;
+import io.livekit.android.renderer.TextureViewRenderer;
 import io.livekit.android.room.participant.ConnectionQuality;
 import io.livekit.android.room.track.CameraPosition;
 import io.livekit.android.room.track.VideoTrack;
@@ -68,6 +70,9 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         binding = ActivityVideoCallEzaziBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+//        binding.videoCallView.selfSurfaceView.setZOrderMediaOverlay(true);
+//        binding.videoCallView.selfSurfaceView.setZOrderOnTop(true);
+//        binding.videoCallView.selfSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         super.onCreate(savedInstanceState);
 
         if (isArgsInitiate()) {
@@ -139,7 +144,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
 
     @NonNull
     @Override
-    public SurfaceViewRenderer getLocalVideoRender() {
+    public TextureViewRenderer getLocalVideoRender() {
         return binding.videoCallView.selfSurfaceView;
     }
 
