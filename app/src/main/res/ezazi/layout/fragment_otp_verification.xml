@@ -29,6 +29,7 @@
             android:layout_height="@dimen/input_height"
             android:layout_marginTop="@dimen/form_top_margin"
             android:text="@string/lbl_continue"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

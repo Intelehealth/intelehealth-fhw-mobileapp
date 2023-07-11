@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,6 +42,8 @@ public class ResetPasswordFragment extends Fragment {
     String userUuid = "";
     SessionManager sessionManager;
     PasswordViewModel viewModel;
+    boolean isNewPasswordValid;
+    boolean isConfirmPasswordValid;
 
     public ResetPasswordFragment() {
         super(R.layout.fragment_reset_password);
@@ -66,6 +69,8 @@ public class ResetPasswordFragment extends Fragment {
         });
 
         addValidationListener();
+
+
         setupScreenBack();
     }
 
@@ -73,10 +78,7 @@ public class ResetPasswordFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(requireContext())
-                        .content(getString(R.string.are_you_want_go_back))
-                        .positiveButtonLabel(R.string.yes)
-                        .build();
+                ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(requireContext()).content(getString(R.string.are_you_want_go_back)).positiveButtonLabel(R.string.yes).build();
 
                 dialog.setListener(() -> requireActivity().finish());
 
@@ -145,16 +147,41 @@ public class ResetPasswordFragment extends Fragment {
         return password.length() > 7;
     }
 
-    private boolean isConfirmPasswordValid(String password) {
-        return password.length() > 7;
-    }
-
     private void addValidationListener() {
-        new InputChangeValidationListener(binding.contentResetPassword.etNewPasswordLayout, this::isPasswordValid)
-                .validate(getString(R.string.error_invalid_password));
-        new InputChangeValidationListener(binding.contentResetPassword.etConfirmPasswordLayout, this::isConfirmPasswordValid)
-                .validate(getString(R.string.error_invalid_password));
-    }
 
+        new InputChangeValidationListener(binding.contentResetPassword.etNewPasswordLayout, new InputChangeValidationListener.InputValidator() {
+            @Override
+            public boolean validate(String text) {
+                return isPasswordValid(text);
+            }
+
+            @Override
+            public void onValidatted(boolean isValid) {
+                // binding.btnSave.setEnabled(isValid);
+                isNewPasswordValid = isValid;
+                if (isNewPasswordValid && isConfirmPasswordValid) {
+                    binding.btnSave.setEnabled(true);
+                }
+            }
+        }).validate(getString(R.string.error_invalid_password));
+
+        new InputChangeValidationListener(binding.contentResetPassword.etConfirmPasswordLayout, new InputChangeValidationListener.InputValidator() {
+            @Override
+            public boolean validate(String text) {
+                return isPasswordValid(text);
+            }
+
+            @Override
+            public void onValidatted(boolean isValid) {
+                //binding.btnSave.setEnabled(isValid);
+                isConfirmPasswordValid = isValid;
+                if (isNewPasswordValid && isConfirmPasswordValid) {
+                    binding.btnSave.setEnabled(true);
+                }
+            }
+        }).validate(getString(R.string.error_invalid_password));
+
+
+    }
 
 }

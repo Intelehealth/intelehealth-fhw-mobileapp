@@ -85,13 +85,17 @@ public class OTPVerificationFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 6) {
+                    binding.btnContinue.setEnabled(true);
                     binding.contentOtpVerification.tvErrorPin.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s.length() > 0) {
+                    binding.btnContinue.setEnabled(true);
+                }
             }
         });
         tvResendOtp.setOnClickListener(v -> resendOtpApiCall());
@@ -119,10 +123,21 @@ public class OTPVerificationFragment extends Fragment {
         //success
         viewModel.verifyOtpData.observe(getViewLifecycleOwner(), verifyOtpResultData -> {
             if (verifyOtpResultData != null && verifyOtpResultData.getUserUuid() != null) {
+                binding.contentOtpVerification.tvErrorPin.setVisibility(View.GONE);
                 Toast.makeText(mContext, getResources().getString(R.string.otp_verified), Toast.LENGTH_SHORT).show();
                 // NavDirections navDir = OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment();
                 if (Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.fragmentOtpVerification)
                     Navigation.findNavController(requireView()).navigate(OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment(verifyOtpResultData.getUserUuid()));
+            }
+        });
+        //observe loading - progress dialog
+        viewModel.loading.observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean) {
+                customProgressDialog.show();
+            } else {
+                if (customProgressDialog.isShowing()) {
+                    customProgressDialog.dismiss();
+                }
             }
         });
 
@@ -130,6 +145,11 @@ public class OTPVerificationFragment extends Fragment {
         viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
             pinEntryEditText.setText("");
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+
+        });
+
+        //api failure
+        viewModel.errorDataResult.observe(getViewLifecycleOwner(), errorResult -> {
         });
     }
 
@@ -168,6 +188,7 @@ public class OTPVerificationFragment extends Fragment {
     }
 
     private void resendOtpApiCall() {
+        binding.contentOtpVerification.tvErrorPin.setVisibility(View.GONE);
 
         RequestOTPModel observedOtpDataModel = requiredArgs.getRequestOtpModel();
 
@@ -183,6 +204,9 @@ public class OTPVerificationFragment extends Fragment {
 
         //failure - success - false
         viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
+            pinEntryEditText.setText("");
+          /*  binding.contentOtpVerification.tvErrorPin.setVisibility(View.VISIBLE);
+            binding.contentOtpVerification.tvErrorPin.setText(failureResultData);*/
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
 

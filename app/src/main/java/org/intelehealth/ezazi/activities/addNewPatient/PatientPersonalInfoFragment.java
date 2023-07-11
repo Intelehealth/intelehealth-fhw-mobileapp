@@ -299,9 +299,7 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private void selectDob() {
-        CalendarDialog dialog = new CalendarDialog.Builder(mContext)
-                .title("")
-                .positiveButtonLabel(R.string.ok).build();
+        CalendarDialog dialog = new CalendarDialog.Builder(mContext).title("").positiveButtonLabel(R.string.ok).build();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -10);
         dialog.setMaxDate(calendar.getTimeInMillis());
@@ -946,12 +944,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         List<ErrorManagerModel> errorDetailsList = new ArrayList<>();
         if (TextUtils.isEmpty(mFirstName.getText().toString())) {
-           /* mFirstName.requestFocus();
-            tvErrorFirstName.setVisibility(View.VISIBLE);
-            tvErrorFirstName.setText(getString(R.string.enter_first_name));
-            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-*/
-            errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_last_name), cardFirstName));
+            errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_first_name), cardFirstName));
 
         } else {
             tvErrorFirstName.setVisibility(View.GONE);
@@ -1023,10 +1016,16 @@ public class PatientPersonalInfoFragment extends Fragment {
             tvErrAlternateMobileNo.setVisibility(View.GONE);
             cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
+
+        if (mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().isEmpty() && mDOB.getText().toString().isEmpty() && mAge.getText().toString().isEmpty()) {
+            Toast.makeText(mContext, getResources().getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+        }
         if (errorDetailsList.size() > 0) {
             for (int i = 0; i < errorDetailsList.size(); i++) {
                 ErrorManagerModel errorModel = errorDetailsList.get(i);
-                errorModel.inputFieldName.requestFocus();
+                if (i == 0) {
+                    errorModel.inputFieldName.requestFocus();
+                }
                 errorModel.tvError.setVisibility(View.VISIBLE);
                 errorModel.tvError.setText(errorModel.getErrorMessage());
                 errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
