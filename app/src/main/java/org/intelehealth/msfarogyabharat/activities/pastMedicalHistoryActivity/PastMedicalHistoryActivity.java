@@ -86,7 +86,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String imageName;
     File filePath;
 
-    SQLiteDatabase localdb, db;
+    SQLiteDatabase localdb/*, db*/;
     String mgender;
 
     boolean hasLicense = false;
@@ -565,7 +565,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String result = "";
+      //  db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {
@@ -577,7 +578,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             result = ""; // if medical history does not exist
-        }    db.close();    return result;
+        }
+       // db.close();
+        return result;
     }
 }
 

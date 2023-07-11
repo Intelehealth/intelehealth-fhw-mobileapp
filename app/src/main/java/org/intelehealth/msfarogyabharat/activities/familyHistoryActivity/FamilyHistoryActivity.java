@@ -88,7 +88,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     boolean flag = false;
     boolean hasLicense = false;
     SharedPreferences.Editor e;
-    SQLiteDatabase localdb, db;
+    SQLiteDatabase localdb/*, db*/;
     SessionManager sessionManager;
     String encounterVitals;
     String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
@@ -283,7 +283,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private String getFamilyHistoryVisitData() {
         String result = "";
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+      //  db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String[] columns = {"value", " conceptuuid"};
 
@@ -298,7 +298,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             result = ""; // if family history does not exist
         }
 
-        db.close();
+      //  db.close();
         return result;
     }
 
