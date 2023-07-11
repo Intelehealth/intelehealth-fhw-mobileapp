@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.ui.password.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -7,7 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.ezazi.R;
+import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.databinding.ActivityForgotPasswordBinding;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 
 import java.util.Objects;
 

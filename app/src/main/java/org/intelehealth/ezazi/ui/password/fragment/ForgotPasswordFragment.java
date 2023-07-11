@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class ForgotPasswordFragment extends Fragment {
     private CustomProgressDialog customProgressDialog;
     private Context mContext;
     private RequestOTPModel requestOTPModel;
+    PasswordViewModel viewModel;
 
     public ForgotPasswordFragment() {
         super(R.layout.fragment_forgot_password);
@@ -55,6 +57,10 @@ public class ForgotPasswordFragment extends Fragment {
         customProgressDialog = new CustomProgressDialog(requireActivity());
         mContext = requireActivity();
 
+        viewModel = new ViewModelProvider(
+                this, ViewModelProvider.Factory.from(PasswordViewModel.initializer)
+        ).get(PasswordViewModel.class);
+
         binding.btnContinue.setOnClickListener(view1 -> {
             if (areValidFields()) {
                 requestOTP();
@@ -66,8 +72,10 @@ public class ForgotPasswordFragment extends Fragment {
 
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText);
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
+        mCountryCodePicker.showNameCode(false);
         setMobileNumberLimit();
         addValidationListener();
+        observeData();
     }
 
 
@@ -89,23 +97,23 @@ public class ForgotPasswordFragment extends Fragment {
         requestOTPModel = new RequestOTPModel(OTPForString, mPhoneNumberEditText.getText().toString(), mSelectedCountryCode);
         viewModel.requestOtp(requestOTPModel);
 
-        observeData(viewModel);
     }
 
-    private void observeData(PasswordViewModel viewModel) {
+    private void observeData() {
         //success
-        viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
+        viewModel.requestOTPResponseData.observe(getViewLifecycleOwner(), requestOTPResult -> {
+            Log.d(TAG, "observeData: ");
             if (requestOTPResult != null && requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
 
                 NavDirections directions = ForgotPasswordFragmentDirections.forgotToOtpVerificationFragment(requestOTPModel);
                 Navigation.findNavController(requireView()).navigate(directions);
+                viewModel.clearPreviousResult();
             }
-
         });
 
         //observe loading - progress dialog
-        viewModel.loading.observe(requireActivity(), aBoolean -> {
+        viewModel.loading.observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {
                 customProgressDialog.show();
             } else {
@@ -116,12 +124,16 @@ public class ForgotPasswordFragment extends Fragment {
         });
 
         //failure - success - false
-        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
-            Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+        viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
+            //Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
+            if (failureResultData.toLowerCase().contains("no")) {
+                binding.contentForgotPassword.etUsernameLayout.setFocusable(true);
+                binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.no_user_exist));
+            }
         });
 
         //api failure
-        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
+        viewModel.errorDataResult.observe(getViewLifecycleOwner(), errorResult -> {
         });
     }
 
@@ -131,7 +143,7 @@ public class ForgotPasswordFragment extends Fragment {
         if (TextUtils.isEmpty(mCountryCodePicker.getSelectedCountryCode())) {
             //binding.contentForgotPassword.etUsernameLayout.setError("Please select country");
         } else if (TextUtils.isEmpty(mPhoneNumberEditText.getText().toString())) {
-            binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.enter_registered_mobile_number));
+            binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.enter_mobile_number));
         } else if (!isPhoneNumberValid(mPhoneNumberEditText.getText().toString())) {
             binding.contentForgotPassword.etUsernameLayout.setFocusable(true);
             binding.contentForgotPassword.etUsernameLayout.setError(getString(R.string.mobile_no_length));

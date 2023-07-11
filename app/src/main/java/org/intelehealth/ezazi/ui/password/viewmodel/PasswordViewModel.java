@@ -78,4 +78,9 @@ public class PasswordViewModel extends BaseViewModel {
         }, userUuid, changePasswordRequestModel);
     }
 
+    public void clearPreviousResult() {
+        requestOTPResponse.postValue(null);
+        verifyOtpResultData.postValue(null);
+        changePasswordResultData.postValue(null);
+    }
 }

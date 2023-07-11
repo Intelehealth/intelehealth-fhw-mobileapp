@@ -65,6 +65,8 @@ public class OTPVerificationFragment extends Fragment {
 
 
         handleClickListeners();
+        observeData(viewModel);
+
 
     }
 
@@ -110,13 +112,12 @@ public class OTPVerificationFragment extends Fragment {
             viewModel.verifyOtp(requestModel);
         }
 
-        observeData(viewModel);
 
     }
 
     private void observeData(PasswordViewModel viewModel) {
         //success
-        viewModel.verifyOtpData.observe(requireActivity(), verifyOtpResultData -> {
+        viewModel.verifyOtpData.observe(getViewLifecycleOwner(), verifyOtpResultData -> {
             if (verifyOtpResultData != null && verifyOtpResultData.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_verified), Toast.LENGTH_SHORT).show();
                 // NavDirections navDir = OTPVerificationFragmentDirections.otpVerificationToResetPasswordFragment();
@@ -126,7 +127,7 @@ public class OTPVerificationFragment extends Fragment {
         });
 
         //failure - success - false
-        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
             pinEntryEditText.setText("");
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
@@ -146,23 +147,24 @@ public class OTPVerificationFragment extends Fragment {
     }
 
     private void resendOtpTimer() {
-        pinEntryEditText.setText("");
-        tvResendOtp.setEnabled(false);
-        String resendTime = getResources().getString(R.string.resend_otp_in);
-        new CountDownTimer(30000, 1000) {
+        if (mContext != null) {
+            pinEntryEditText.setText("");
+            tvResendOtp.setEnabled(false);
+            String resendTime = getResources().getString(R.string.resend_otp_in);
+            new CountDownTimer(30000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
-                String time = resendTime + " " + millisUntilFinished / 1000 + " " + getResources().getString(R.string.seconds);
-                tvResendOtp.setText(time);
-            }
+                public void onTick(long millisUntilFinished) {
+                    String time = resendTime + " " + millisUntilFinished / 1000 + " " + mContext.getResources().getString(R.string.seconds);
+                    tvResendOtp.setText(time);
+                }
 
-            public void onFinish() {
-                tvResendOtp.setEnabled(true);
-                tvResendOtp.setText(getResources().getString(R.string.lbl_resend));
+                public void onFinish() {
+                    tvResendOtp.setEnabled(true);
+                    tvResendOtp.setText(mContext.getResources().getString(R.string.lbl_resend));
+                }
 
-            }
-
-        }.start();
+            }.start();
+        }
     }
 
     private void resendOtpApiCall() {
@@ -173,20 +175,19 @@ public class OTPVerificationFragment extends Fragment {
             RequestOTPModel requestOTPModel = new RequestOTPModel(ForgotPasswordFragment.OTPForString, observedOtpDataModel.getPhoneNumber(), observedOtpDataModel.getCountryCode());
             viewModel.requestOtp(requestOTPModel);
         }
-        viewModel.requestOTPResponseData.observe(requireActivity(), requestOTPResult -> {
+        viewModel.requestOTPResponseData.observe(getViewLifecycleOwner(), requestOTPResult -> {
             if (requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
             }
-
         });
 
         //failure - success - false
-        viewModel.failDataResult.observe(requireActivity(), failureResultData -> {
+        viewModel.failDataResult.observe(getViewLifecycleOwner(), failureResultData -> {
             Toast.makeText(mContext, failureResultData, Toast.LENGTH_SHORT).show();
         });
 
         //api failure
-        viewModel.errorDataResult.observe(requireActivity(), errorResult -> {
+        viewModel.errorDataResult.observe(getViewLifecycleOwner(), errorResult -> {
         });
     }
 

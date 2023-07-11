@@ -192,7 +192,7 @@
     <dimen name="forgot_password_instruction_size">@dimen/std_14sp</dimen>
     <dimen name="timepicker_header_width">180dp</dimen>
     <dimen name="pin_input_size">@dimen/std_20sp</dimen>
-    <dimen name="pin_bottom_padding">@dimen/std_12dp</dimen>
+    <dimen name="pin_bottom_padding">@dimen/std_18dp</dimen>
     <dimen name="line_spacing">@dimen/std_2dp</dimen>
     <dimen name="input_label_size_values">@dimen/std_14sp</dimen>
     <dimen name="padding_card_summary">16dp</dimen>
@@ -268,7 +268,7 @@
     <dimen name="code_picker_margin_top">8dp</dimen>
     <dimen name="code_picker_text_size">12sp</dimen>
     <dimen name="code_picker_padding_top">0dp</dimen>
-    <dimen name="code_picker_padding_bottom">7dp</dimen>
+    <dimen name="code_picker_padding_bottom">2dp</dimen>
     <dimen name="code_picker_padding_start_end">5dp</dimen>
 
 </resources>

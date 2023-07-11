@@ -260,12 +260,12 @@ public class PatientPersonalInfoFragment extends Fragment {
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
 
-        mFirstName.addTextChangedListener(new MyTextWatcher(mFirstName));
+      /*  mFirstName.addTextChangedListener(new MyTextWatcher(mFirstName));
         mLastName.addTextChangedListener(new MyTextWatcher(mLastName));
         mDOB.addTextChangedListener(new MyTextWatcher(mDOB));
         mAge.addTextChangedListener(new MyTextWatcher(mAge));
         mMobileNumber.addTextChangedListener(new MyTextWatcher(mMobileNumber));
-        mAlternateNumber.addTextChangedListener(new MyTextWatcher(mAlternateNumber));
+        mAlternateNumber.addTextChangedListener(new MyTextWatcher(mAlternateNumber));*/
 
         setDetailsAsPerConfigFile();
         updatePatientDetailsFromSecondScreen();
@@ -305,7 +305,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -10);
         dialog.setMaxDate(calendar.getTimeInMillis());
-        Log.d(TAG, "selectDob: "+calendar.getTime());
+        Log.d(TAG, "selectDob: " + calendar.getTime());
 
         dialog.setListener((day, month, year, value) -> {
             Log.e(TAG, "Date = >" + value);
@@ -897,86 +897,9 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private void onPatientCreateClicked() {
-        if (TextUtils.isEmpty(mFirstName.getText().toString())) {
-            mFirstName.requestFocus();
-
-            tvErrorFirstName.setVisibility(View.VISIBLE);
-            tvErrorFirstName.setText(getString(R.string.enter_first_name));
-            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
+        if (!areValidFields()) {
             return;
-        } else {
-            tvErrorFirstName.setVisibility(View.GONE);
-            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
-        if (TextUtils.isEmpty(mLastName.getText().toString())) {
-            mLastName.requestFocus();
-
-            tvErrorLastName.setVisibility(View.VISIBLE);
-            tvErrorLastName.setText(getString(R.string.enter_last_name));
-            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrorLastName.setVisibility(View.GONE);
-            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
-        }
-
-        if (TextUtils.isEmpty(mDOB.getText().toString())) {
-            mDOB.requestFocus();
-
-            tvErrorDob.setVisibility(View.VISIBLE);
-            tvErrorDob.setText(getString(R.string.select_dob));
-            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrorDob.setVisibility(View.GONE);
-            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-        if (TextUtils.isEmpty(mAge.getText().toString())) {
-            mAge.requestFocus();
-
-            tvErrorAge.setVisibility(View.VISIBLE);
-            tvErrorAge.setText(getString(R.string.select_age));
-            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrorAge.setVisibility(View.GONE);
-            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-        String mobileNumber = mMobileNumber.getText().toString();
-        if (!mobileNumber.isEmpty() && mobileNumber.length() != 10) {
-            mMobileNumber.requestFocus();
-
-            tvErrorMobileNo.setVisibility(View.VISIBLE);
-            tvErrorMobileNo.setText(getString(R.string.mobile_no_length));
-            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrorMobileNo.setVisibility(View.GONE);
-            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-
-        String alternateMobileNumber = mAlternateNumber.getText().toString();
-
-        if (!alternateMobileNumber.isEmpty() && alternateMobileNumber.length() != 10) {
-            mAlternateNumber.requestFocus();
-
-            tvErrAlternateMobileNo.setVisibility(View.VISIBLE);
-            tvErrAlternateMobileNo.setText(getString(R.string.mobile_no_length));
-            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrAlternateMobileNo.setVisibility(View.GONE);
-            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-
-
         patientUuid = UUID.randomUUID().toString();
 
         if (patient_detail) {
@@ -987,7 +910,6 @@ public class PatientPersonalInfoFragment extends Fragment {
 
 
         if (patientDTO != null) {
-            Log.d(TAG, "onPatientCreateClicked: not null");
 
             if (mCurrentPhotoPath != null) patientDTO.setPatientPhoto(mCurrentPhotoPath);
             else patientDTO.setPatientPhoto(patientDTO.getPatientPhoto());
@@ -1016,6 +938,103 @@ public class PatientPersonalInfoFragment extends Fragment {
             // end
         } else {
             Log.d(TAG, "onPatientCreateClicked: patientdao is null");
+        }
+
+    }
+
+    private boolean areValidFields() {
+
+        List<ErrorManagerModel> errorDetailsList = new ArrayList<>();
+        if (TextUtils.isEmpty(mFirstName.getText().toString())) {
+           /* mFirstName.requestFocus();
+            tvErrorFirstName.setVisibility(View.VISIBLE);
+            tvErrorFirstName.setText(getString(R.string.enter_first_name));
+            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+*/
+            errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_last_name), cardFirstName));
+
+        } else {
+            tvErrorFirstName.setVisibility(View.GONE);
+            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        if (TextUtils.isEmpty(mLastName.getText().toString())) {
+       /*     mLastName.requestFocus();
+            tvErrorLastName.setVisibility(View.VISIBLE);
+            tvErrorLastName.setText(getString(R.string.enter_last_name));
+            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            errorDetailsList.add(new ErrorManagerModel(mLastName, tvErrorLastName, getString(R.string.enter_last_name), cardLastName));
+
+        } else {
+            tvErrorLastName.setVisibility(View.GONE);
+            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+        }
+
+        if (TextUtils.isEmpty(mDOB.getText().toString())) {
+            /*mDOB.requestFocus();
+
+            tvErrorDob.setVisibility(View.VISIBLE);
+            tvErrorDob.setText(getString(R.string.select_dob));
+            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            errorDetailsList.add(new ErrorManagerModel(mDOB, tvErrorDob, getString(R.string.select_dob), cardDob));
+
+        } else {
+            tvErrorDob.setVisibility(View.GONE);
+            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        if (TextUtils.isEmpty(mAge.getText().toString())) {
+         /*   mAge.requestFocus();
+
+            tvErrorAge.setVisibility(View.VISIBLE);
+            tvErrorAge.setText(getString(R.string.select_age));
+            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            errorDetailsList.add(new ErrorManagerModel(mAge, tvErrorAge, getString(R.string.select_age), cardAge));
+
+        } else {
+            tvErrorAge.setVisibility(View.GONE);
+            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        String mobileNumber = mMobileNumber.getText().toString();
+        if (!mobileNumber.isEmpty() && mobileNumber.length() != 10) {
+          /*  mMobileNumber.requestFocus();
+
+            tvErrorMobileNo.setVisibility(View.VISIBLE);
+            tvErrorMobileNo.setText(getString(R.string.mobile_no_length));
+            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            errorDetailsList.add(new ErrorManagerModel(mMobileNumber, tvErrorMobileNo, getString(R.string.mobile_no_length), cardMobileNumber));
+
+        } else {
+            tvErrorMobileNo.setVisibility(View.GONE);
+            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+
+        String alternateMobileNumber = mAlternateNumber.getText().toString();
+
+        if (!alternateMobileNumber.isEmpty() && alternateMobileNumber.length() != 10) {
+         /*   mAlternateNumber.requestFocus();
+
+            tvErrAlternateMobileNo.setVisibility(View.VISIBLE);
+            tvErrAlternateMobileNo.setText(getString(R.string.mobile_no_length));
+            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+*/
+            errorDetailsList.add(new ErrorManagerModel(mAlternateNumber, tvErrAlternateMobileNo, getString(R.string.mobile_no_length), cardAlternateMobileNumber));
+
+        } else {
+            tvErrAlternateMobileNo.setVisibility(View.GONE);
+            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        if (errorDetailsList.size() > 0) {
+            for (int i = 0; i < errorDetailsList.size(); i++) {
+                ErrorManagerModel errorModel = errorDetailsList.get(i);
+                errorModel.inputFieldName.requestFocus();
+                errorModel.tvError.setVisibility(View.VISIBLE);
+                errorModel.tvError.setText(errorModel.getErrorMessage());
+                errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+            }
+            return false;
+        } else {
+            return true;
         }
 
     }
