@@ -453,9 +453,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onClick(View v) {
                 try {
-                    String myCreatorUUID = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
-                    Logger.logV(TAG, "myCreatorUUID - " + myCreatorUUID);
-                    final List<VisitDTO> visitDTOList = new VisitsDAO().getAllActiveVisitsForMe(myCreatorUUID);
+                    String providerId = new SessionManager(IntelehealthApplication.getAppContext()).getProviderID();
+                    Logger.logV(TAG, "myCreatorUUID - " + providerId);
+                    final List<VisitDTO> visitDTOList = new VisitsDAO().getAllActiveVisitByProviderId(providerId);
                     String[] patients = new String[visitDTOList.size()];
 
                     ArrayList<MultiChoiceItem> items = new ArrayList<>();
