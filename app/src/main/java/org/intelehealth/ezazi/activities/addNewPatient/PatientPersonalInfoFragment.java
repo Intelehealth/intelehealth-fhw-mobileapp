@@ -951,7 +951,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             tvErrorFirstName.setText(getString(R.string.enter_first_name));
             cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 */
-            errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_last_name), cardFirstName));
+            errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_first_name), cardFirstName));
 
         } else {
             tvErrorFirstName.setVisibility(View.GONE);
@@ -1024,9 +1024,13 @@ public class PatientPersonalInfoFragment extends Fragment {
             cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         if (errorDetailsList.size() > 0) {
+            Toast.makeText(mContext, "Please fill required fields", Toast.LENGTH_SHORT).show();
+
             for (int i = 0; i < errorDetailsList.size(); i++) {
                 ErrorManagerModel errorModel = errorDetailsList.get(i);
-                errorModel.inputFieldName.requestFocus();
+                if (i == 0) {
+                    errorModel.inputFieldName.requestFocus();
+                }
                 errorModel.tvError.setVisibility(View.VISIBLE);
                 errorModel.tvError.setText(errorModel.getErrorMessage());
                 errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
