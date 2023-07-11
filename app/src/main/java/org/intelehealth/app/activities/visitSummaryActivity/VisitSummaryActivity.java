@@ -2270,9 +2270,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         Log.d("advice",adviceReturned);
         String advice_doctor__ = adviceReturned;
-        if(advice_doctor__.startsWith("<a"))
-            advice_doctor__ = advice_doctor__.substring(advice_doctor__.lastIndexOf(">,")+2, advice_doctor__.length());
-        advice_web = stringToWebAdvice(advice_doctor__);
+        advice_web = stringToWeb(advice_doctor__);
 
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
@@ -3939,8 +3937,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
 
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
-
-                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                adviceReturned = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+//                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
                 newAdviceReturned = newAdviceReturned.replaceAll("\n", "<br><br>");
 
                 medicalAdviceTextView.setText(Html.fromHtml(newAdviceReturned.replace("Doctor_", "Doctor")));
@@ -4079,7 +4077,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private String formatComment(String comment) {
         String formattedComment = "";
         String[] stringarray = comment.split("\\|");
-        formattedComment = getResources().getString(R.string.deleted_by) + " " + stringarray[2] + " (" + stringarray[3] + ") " + formatTimeForComment(stringarray[1]);
+        if(stringarray.length == 3)
+            formattedComment = getResources().getString(R.string.deleted_by) + " " + stringarray[2] + ", " + formatTimeForComment(stringarray[1]);
+        else if(stringarray.length == 4)
+            formattedComment = getResources().getString(R.string.deleted_by) + " " + stringarray[2] + " (" + stringarray[3] + ") " + ", " + formatTimeForComment(stringarray[1]);
         return formattedComment;
     }
 
