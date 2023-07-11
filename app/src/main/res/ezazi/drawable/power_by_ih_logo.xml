@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="@dimen/power_by_logo_width"
+                android:height="@dimen/std_40dp" />
+        </shape>
+    </item>
+    <item
+        android:width="@dimen/power_by_logo_width"
+        android:height="@dimen/power_by_logo_height"
+        android:drawable="@drawable/intelehealth_logo_white" />
+</layer-list>

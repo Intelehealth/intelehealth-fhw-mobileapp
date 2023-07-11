@@ -270,5 +270,7 @@
     <dimen name="code_picker_padding_top">0dp</dimen>
     <dimen name="code_picker_padding_bottom">2dp</dimen>
     <dimen name="code_picker_padding_start_end">5dp</dimen>
-
+    <dimen name="power_by_logo_width">100dp</dimen>
+    <dimen name="power_by_logo_height">32dp</dimen>
+    <dimen name="power_by_logo_top_margin">-8dp</dimen>
 </resources>

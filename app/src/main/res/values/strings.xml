@@ -1047,4 +1047,5 @@
     <string name="text_medical_advice">text_medical_advice</string>
     <string name="text_new_visit">text_new_visit</string>
     <string name="text_new_advice">text_new_advice</string>
+    <string name="power_from">from</string>
 </resources>
