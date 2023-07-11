@@ -140,7 +140,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
     TextView tvBedNumber;
 
     public static final String VISIT_ATTR_TYPE_UUID = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
-    private static final String VISIT_HOLDER = "a0378be4-d9c6-4cb2-bbf5-777e27a32efc";
+    public static final String VISIT_HOLDER = "a0378be4-d9c6-4cb2-bbf5-777e27a32efc";
 
     @Override
     protected void onBackNavigate() {

@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.database.dao;
 
+import static org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity.VISIT_HOLDER;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -152,13 +154,13 @@ public class VisitAttributeListDAO {
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
-        String whereclause = "visit_uuid=?";
+        String whereclause = "visit_uuid=? AND visit_attribute_type_uuid=?";
         db.beginTransaction();
         try {
             values.put("value", providerUuid);
             values.put("voided", "0");
             values.put("sync", "0");
-            createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitUUid});
+            createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitUUid, VISIT_HOLDER});
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
