@@ -138,7 +138,6 @@ public class PatientsDAO {
         ContentValues values = new ContentValues();
         String whereclause = "Uuid=?";
         db.beginTransaction();
-        List<PatientAttributesDTO> patientAttributesList = new ArrayList<PatientAttributesDTO>();
         try {
 
             Logger.logD("create", "create has to happen");

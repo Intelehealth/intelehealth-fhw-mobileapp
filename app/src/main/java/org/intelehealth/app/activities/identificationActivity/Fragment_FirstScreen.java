@@ -43,19 +43,29 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ImagesPushDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.EditTextUtils;
 import org.intelehealth.app.utilities.IReturnValues;
+import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ihutils.ui.CameraActivity;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
@@ -178,19 +188,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             //   patientID_edit = getArguments().getString("patientUuid");
             patient_detail = getArguments().getBoolean("patient_detail");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
-
-/*
-            if (patientdto.getPatientPhoto() != null) {
-                Glide.with(getActivity())
-                        .load(new File(patientdto.getPatientPhoto()))
-                        .thumbnail(0.25f)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(patient_imgview);
-            }
-*/
         }
+
+        if(patient_detail)
+            frag1_nxt_btn_main.setText(getString(R.string.save));
 
         // Setting up the screen when user came from Second screen.
         if (fromSecondScreen) {
@@ -867,38 +868,57 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         else
             patientdto.setPhonenumber("");
         patientdto.setDateofbirth(dobToDb);
-        /*String[] dob_array = mDOBEditText.getText().toString().split(" ");
-        Log.d("dob_array", "0: " + dob_array[0]);
-        Log.d("dob_array", "0: " + dob_array[1]);
-        Log.d("dob_array", "0: " + dob_array[2]);
 
-        //get month index and return English value for month.
-        if (dob_indexValue == 15) {
-            String dob = StringUtils.hi_or_bn_en_noEdit
-                    (mDOBEditText.getText().toString(), sessionManager.getAppLanguage());
-            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                    (StringUtils.getValue(dob)));
-        } else {
-            String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
-            dob_array[1] = dob_array[1].replace(dob_array[1], dob);
-            String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
-            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                    (StringUtils.getValue(dob_value)));
-        }*/
 
-        // Bundle data
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("patientDTO", (Serializable) patientdto);
-        bundle.putBoolean("fromFirstScreen", true);
-        bundle.putBoolean("patient_detail", patient_detail);
-        //   bundle.putString("patientUuid", patientID_edit);
-        fragment_secondScreen.setArguments(bundle); // passing data to Fragment
+        try {
+            Logger.logD(TAG, "insertpatinet");
+            boolean isPatientInserted = false;
+            boolean isPatientImageInserted = false;
+            PatientsDAO patientsDAO = new PatientsDAO();
+            PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+            List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+            ImagesDAO imagesDAO = new ImagesDAO();
 
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_firstscreen, fragment_secondScreen)
-                .commit();
-        // end
+            if (patient_detail) {
+                isPatientInserted = patientsDAO.updatePatientToDB_PatientDTO(patientdto, patientdto.getUuid(), patientAttributesDTOList);
+                isPatientImageInserted = imagesDAO.updatePatientProfileImages(patientdto.getPatientPhoto(), patientdto.getUuid());
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("patientDTO", (Serializable) patientdto);
+                bundle.putBoolean("fromFirstScreen", true);
+                bundle.putBoolean("patient_detail", patient_detail);
+                fragment_secondScreen.setArguments(bundle); // passing data to Fragment
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_firstscreen, fragment_secondScreen)
+                        .commit();
+            }
+
+            if (NetworkConnection.isOnline(getActivity().getApplication())) { // todo: uncomment later jsut for testing added.
+                SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean push = syncDAO.pushDataApi();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+            }
+
+            if (isPatientInserted && isPatientImageInserted) {
+                Logger.logD(TAG, "inserted");
+                Intent intent = new Intent(getActivity().getApplication(), PatientDetailActivity2.class);
+                intent.putExtra("patientUuid", patientdto.getUuid());
+                intent.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+                intent.putExtra("tag", "newPatient");
+                intent.putExtra("hasPrescription", "false");
+                Bundle args = new Bundle();
+                args.putSerializable("patientDTO", (Serializable) patientdto);
+                intent.putExtra("BUNDLE", args);
+                getActivity().startActivity(intent);
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     @Override
@@ -922,6 +942,4 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             }
         }
     }
-
-
 }

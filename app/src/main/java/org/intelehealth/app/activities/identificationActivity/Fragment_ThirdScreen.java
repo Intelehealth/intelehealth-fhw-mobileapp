@@ -182,38 +182,12 @@ public class Fragment_ThirdScreen extends Fragment {
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             patient_detail = getArguments().getBoolean("patient_detail");
-            //   patientID_edit = getArguments().getString("patientUuid");
-
-          /*  if (patientID_edit != null) {
-                patient1.setUuid(patientID_edit);
-                setscreen(patientID_edit);
-            } else {
-                patient1.setUuid(patientDTO.getUuid());
-                setscreen(patientDTO.getUuid());
-            }*/
-
-          /*  if (patientID_edit != null) {
-                patientDTO.setUuid(patientID_edit);
-            } else {
-                // do nothing...
-            }
-*/
-
             if (patient_detail) {
-                //    patientDTO.setUuid(patientID_edit);
+                frag3_btn_back.setVisibility(View.GONE);
+                frag3_btn_next.setText(getString(R.string.save));
             } else {
                 // do nothing...
             }
-
-         /*   if (patientID_edit != null) {
-                patientDTO.setUuid(patientID_edit);
-            } else if (patientDTO.getUuid() != null){
-                //  patientdto.setUuid(uuid);
-                patientID_edit = patientDTO.getUuid();
-            }
-            else {
-              //  do nothing
-            }*/
         }
 
         mCasteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
