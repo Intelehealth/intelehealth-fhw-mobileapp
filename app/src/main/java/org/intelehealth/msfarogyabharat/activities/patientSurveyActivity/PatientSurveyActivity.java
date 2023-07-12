@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.LocaleList;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -87,6 +88,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     ArrayAdapter<String> patientNoteAdapter;
     String noteText = "";
     private RatingBar ratingBar;
+    private long mLastClickTime = 0;
 
     private final ExecutorService submitExecutorService = Executors.newSingleThreadExecutor();
     private final ExecutorService skipExecutorService = Executors.newSingleThreadExecutor();
@@ -182,9 +184,19 @@ public class PatientSurveyActivity extends AppCompatActivity {
 //                else
             noteText = notesSpinner.getSelectedItem().toString();
             rating = String.valueOf(ratingBar.getRating());
-            if (rating != null && !TextUtils.isEmpty(rating) && !rating.equalsIgnoreCase("0.0") && !noteText.equalsIgnoreCase("") && !notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason)) && !noteText.equalsIgnoreCase(getString(R.string.spinner_select_reason))) {
+            if (rating != null && !TextUtils.isEmpty(rating) &&
+                    !rating.equalsIgnoreCase("0.0") &&
+                    !noteText.equalsIgnoreCase("") &&
+                    !notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason))
+                    && !noteText.equalsIgnoreCase(getString(R.string.spinner_select_reason))) {
                 Log.d(TAG, "Rating is " + rating);
                 submitExecutorService.execute(() -> {
+                    // avoiding multi-click by checking if click is within 1000ms than avoid it.
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+
                     uploadSurvey();
                     endVisit();
                 });
@@ -276,18 +288,21 @@ public class PatientSurveyActivity extends AppCompatActivity {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         List<ObsDTO> obsDTOList = new ArrayList<>();
+
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(rating);
-        obsDTO.setConceptuuid(UuidDictionary.RATING);
+        obsDTO.setConceptuuid(UuidDictionary.RATING);   // ratings
         obsDTOList.add(obsDTO);
+
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(noteText);
-        obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
+        obsDTO.setConceptuuid(UuidDictionary.COMMENTS); // comments
         obsDTOList.add(obsDTO);
+
         try {
             obsDAO.insertObsToDb(obsDTOList);
         } catch (DAOException e) {
