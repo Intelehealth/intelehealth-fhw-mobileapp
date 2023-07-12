@@ -179,6 +179,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
     private EditText additional_notes_edittext;
     SessionManager sessionManager, sessionManager1;
+    private List<String> specialityListRussian = new ArrayList<String>();
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
     private float float_ageYear_Month;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
@@ -1074,8 +1075,30 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         if (items != null) {
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).equalsIgnoreCase("Infectionist")) {
+                    specialityListRussian.add("Инфекционист");
+                } else if (items.get(i).equalsIgnoreCase("Neurologist")) {
+                    specialityListRussian.add("Невролог");
+                } else if (items.get(i).equalsIgnoreCase("Family Doctor")) {
+                    specialityListRussian.add("Семейный врач");
+                } else if (items.get(i).equalsIgnoreCase("Pediatrician")) {
+                    specialityListRussian.add("Педиатр");
+                } else if (items.get(i).equalsIgnoreCase("Neonatologist")) {
+                    specialityListRussian.add("Неонатолог");
+                } else if (items.get(i).equalsIgnoreCase("Psychiatrist")) {
+                    specialityListRussian.add("Психиатр");
+                } else if (items.get(i).equalsIgnoreCase("Endocrinologist")) {
+                    specialityListRussian.add("Эндокринолог");
+                } else if (items.get(i).equalsIgnoreCase("Gastroenterologist")) {
+                    specialityListRussian.add("Гастроэнтеролог");
+                }
+            }
+
             items.add(0, getString(R.string.select_specialization_text));
-            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+            specialityListRussian.add(0, getString(R.string.select_specialization_text));
+
+            stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sessionManager.getAppLanguage().equals("ru") ? specialityListRussian : items);
             speciality_spinner.setAdapter(stringArrayAdapter);
         } else {
             stringArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.speciality_values));
@@ -1097,7 +1120,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    speciality_selected = adapterView.getItemAtPosition(i).toString();
+                    speciality_selected = items.get(i);
                     Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
                 } else {
                     speciality_selected = "";
@@ -1130,7 +1153,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
-                    hospitalTypeSelected = parent.getItemAtPosition(position).toString();
+                    hospitalTypeSelected = StringUtils.translateHospitalTypeToEnglish(parent.getItemAtPosition(position).toString(), appLanguage);
                 } else {
                     hospitalTypeSelected = "";
                 }

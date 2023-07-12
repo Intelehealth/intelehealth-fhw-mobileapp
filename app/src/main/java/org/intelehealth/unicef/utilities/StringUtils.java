@@ -3780,4 +3780,17 @@ public final class StringUtils {
         df.setRoundingMode(RoundingMode.HALF_UP);
         return String.valueOf(df.format(value));
     }
+
+    public static String translateHospitalTypeToEnglish(String hospitalType, String appLanguage) {
+        if (appLanguage.equalsIgnoreCase("ru")) {
+            if (hospitalType.equalsIgnoreCase("Вторичный")) {
+                return "Secondary";
+            }
+
+            if (hospitalType.equalsIgnoreCase("третичный")) {
+                return "Tertiary";
+            }
+        }
+        return hospitalType;
+    }
 }
