@@ -922,5 +922,6 @@
     <string name="send_visit">Отправить визит?</string>
     <string name="are_you_sure_you_want_to_send_visit">Вы уверены, что хотите отправить визит к врачу?</string>
     <string name="select_hospital_type">Выберите тип больницы</string>
+    <string name="please_select_hospital_type_msg">Пожалуйста выберите тип больницы</string>
 
 </resources>
