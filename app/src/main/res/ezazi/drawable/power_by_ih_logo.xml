@@ -10,5 +10,5 @@
     <item
         android:width="@dimen/power_by_logo_width"
         android:height="@dimen/power_by_logo_height"
-        android:drawable="@drawable/intelehealth_logo_white" />
+        android:drawable="@drawable/intelehealth_logo" />
 </layer-list>
