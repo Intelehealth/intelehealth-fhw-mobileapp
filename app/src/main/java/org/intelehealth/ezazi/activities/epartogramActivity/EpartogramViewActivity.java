@@ -116,38 +116,6 @@ public class EpartogramViewActivity extends BaseActionBarActivity {
             super.onReceivedSslError(view, handler, error);
         }
     };
-    private final WebViewClient webClient = new WebViewClient() {
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            mySwipeRefreshLayout.setRefreshing(false);
-            if (customProgressDialog.isShowing()) {
-                customProgressDialog.dismiss();
-            }
-        }
-
-        @Override
-        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-            Log.e(TAG, "onReceivedError: ");
-            handleError();
-        }
-
-        @Override
-        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            Log.e(TAG, "onReceivedError: ");
-            handleError();
-        }
-
-        @Override
-        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            Log.e(TAG, "onReceivedError: ");
-            handleError();
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return true;
-        }
-    };
 
     private void handleError() {
         if (customProgressDialog.isShowing()) {
