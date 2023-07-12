@@ -38,6 +38,7 @@ open class SocketManager {
             socket?.on(EVENT_CALL, emitter(EVENT_CALL))
             socket?.on(EVENT_ALL_USER, emitter(EVENT_ALL_USER))
             socket?.on(EVENT_CREATE_OR_JOIN_HW, emitter(EVENT_CREATE_OR_JOIN_HW))
+            socket?.on(EVENT_CALL_REJECT_BY_DR, emitter(EVENT_CALL_REJECT_BY_DR))
             socket?.connect() ?: Timber.e { "Socket is null" }
         } ?: Timber.e { "Socket url must not be empty" }
     }
@@ -69,6 +70,7 @@ open class SocketManager {
         socket?.off(EVENT_CALL)
         socket?.off(EVENT_CREATE_OR_JOIN_HW)
         socket?.off(EVENT_ALL_USER)
+        socket?.off(EVENT_CALL_REJECT_BY_DR)
         socket?.disconnect()
     }
 
@@ -96,6 +98,7 @@ open class SocketManager {
         const val EVENT_CREATE_OR_JOIN_HW = "create_or_join_hw"
         const val EVENT_CREATE_OR_JOIN = "create or join"
         const val EVENT_ALL_USER = "allUsers"
+        const val EVENT_CALL_REJECT_BY_DR = "dr_call_reject"
 
         // Chat event
         const val EVENT_MESSAGE_RECEIVED = "message_received" // message read by receiver

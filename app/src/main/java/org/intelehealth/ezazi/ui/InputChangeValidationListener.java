@@ -39,6 +39,7 @@ public class InputChangeValidationListener implements TextWatcher {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (!validator.validate(s.toString())) {
             textInputLayout.setError(message);
+            textInputLayout.setEndIconVisible(true);
             editText.requestFocus();
             validator.onValidatted(false);
         } else {

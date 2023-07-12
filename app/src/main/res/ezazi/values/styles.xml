@@ -53,8 +53,10 @@
         <!--        <item name="passwordToggleTint">@color/colorForgotPassword</item>-->
         <item name="passwordToggleEnabled">true</item>
         <item name="password_visible">true</item>
+        <item name="errorIconDrawable">@drawable/ic_password_toggle</item>
         <!--        <item name="passwordToggleTintMode">src_atop</item>-->
         <item name="endIconDrawable">@drawable/ic_password_toggle</item>
+        <item name="errorIconTint">@color/red</item>
     </style>
 
     <style name="Theme.EZazi.Text.Content" parent="Widget.MaterialComponents.TextView">
