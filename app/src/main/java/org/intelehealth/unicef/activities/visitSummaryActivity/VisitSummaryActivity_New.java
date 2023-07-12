@@ -4,6 +4,7 @@ import static org.intelehealth.unicef.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.unicef.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.unicef.utilities.UuidDictionary.HOSPITAL_TYPE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.unicef.utilities.UuidDictionary.SPECIALITY;
 
@@ -270,7 +271,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     String mFileName = "config.json";
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
     String speciality_selected = "", hospitalTypeSelected = "";
-    private TextView physcialExaminationDownloadText, vd_special_value;
+    private TextView physcialExaminationDownloadText, vd_special_value, hospitalSpecialValue;
     NetworkChangeReceiver receiver;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
     String encounterUuid;
@@ -1057,7 +1058,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
+        if (isVisitSpecialityExists) {
+            speciality_spinner.setEnabled(false);
+            hospitalTypeSpinner.setEnabled(false);
+        }
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -1106,6 +1110,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             }
         });
+
+        String hospital_type_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, HOSPITAL_TYPE);
+
+        if (hospital_type_value != null) {
+            hospitalSpecialValue.setText(" " + Node.bullet + "  " + hospital_type_value);
+            hospitalTypeSelected = hospital_type_value;
+        }
 
         List<String> hospitalTypeArrayList = new ArrayList<>();
         hospitalTypeArrayList.add(getString(R.string.select_hospital_type));
@@ -2125,6 +2136,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         tempView = findViewById(R.id.textView_temp_value);
 
         vd_special_value = findViewById(R.id.vd_special_value);
+        hospitalSpecialValue = findViewById(R.id.hospital_special_value);
         doc_speciality_card = findViewById(R.id.doc_speciality_card);
         hospitalTypeCard = findViewById(R.id.hospital_type_card);
         specialHospitalCard = findViewById(R.id.special_hospital_card);
@@ -2513,9 +2525,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
+
             try {
                 if (!isVisitSpecialityExists) {
                     isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
@@ -2524,6 +2538,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             } catch (DAOException e) {
                 e.printStackTrace();
                 Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+            }
+
+            try {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, hospitalTypeSelected, HOSPITAL_TYPE);
+            } catch (DAOException e) {
+                e.printStackTrace();
+                Log.v("hospitalType", "hospitalType: " + e.getMessage());
             }
 
             // Additional Notes - Start
@@ -2540,7 +2561,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
             // Additional Notes - End
 
-            if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
+            if (isVisitSpecialityExists) {
+                speciality_spinner.setEnabled(false);
+                hospitalTypeSpinner.setEnabled(false);
+            }
 
             if (flag.isChecked()) {
                 try {
@@ -2607,7 +2631,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             showVisitID();
                             Log.d("visitUUID", "showVisitID: " + visitUUID);
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                            if (isVisitSpecialityExists) speciality_spinner.setEnabled(false);
+                            if (isVisitSpecialityExists) {
+                                speciality_spinner.setEnabled(false);
+                                hospitalTypeSpinner.setEnabled(false);
+                            }
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
 
