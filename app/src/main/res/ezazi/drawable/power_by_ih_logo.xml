@@ -4,7 +4,7 @@
         <shape android:shape="rectangle">
             <size
                 android:width="@dimen/power_by_logo_width"
-                android:height="@dimen/std_40dp" />
+                android:height="@dimen/power_by_logo_height" />
         </shape>
     </item>
     <item
