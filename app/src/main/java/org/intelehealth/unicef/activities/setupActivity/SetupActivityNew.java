@@ -564,6 +564,7 @@ public class SetupActivityNew extends AppCompatActivity {
     }
 
     private void getLocationFromServer() {
+        autotvLocations.setEnabled(false);
         isLocationFetched = false;
         String BASE_URL = "https://" + finalBaseUrl + "/openmrs/ws/rest/v1/";
         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
@@ -600,7 +601,7 @@ public class SetupActivityNew extends AppCompatActivity {
                                             autotvLocations.setSelection(autotvLocations.getText().length());
                                             mLocationErrorTextView.setVisibility(View.GONE);
                                             autotvLocations.setBackgroundResource(R.drawable.bg_input_fieldnew);
-
+                                            autotvLocations.setEnabled(true);
                                         }
                                     });
                                 } else {
