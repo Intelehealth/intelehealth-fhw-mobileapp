@@ -22,8 +22,10 @@ import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
+import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
@@ -34,14 +36,18 @@ import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
+import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PartogramDataCaptureActivity extends BaseActionBarActivity {
@@ -194,30 +200,72 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         btnVideoCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
-                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
-                Intent in = new Intent(PartogramDataCaptureActivity.this, EzaziVideoCallActivity.class);
-                String roomId = mPatientUuid;
-                String doctorName = "";
-                String nurseId = encounterDTO.getProvideruuid();
-                in.putExtra("roomId", roomId);
-                in.putExtra("isInComingRequest", false);
-                in.putExtra("doctorname", doctorName);
-                in.putExtra("nurseId", nurseId);
-                in.putExtra("startNewCall", true);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                if (callState == TelephonyManager.CALL_STATE_IDLE) {
-                    startActivity(in);
-                }
+                showDoctorSelectionDialog();
+//                EncounterDAO encounterDAO = new EncounterDAO();
+//                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
+////                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+////                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
+//                Intent in = new Intent(PartogramDataCaptureActivity.this, EzaziVideoCallActivity.class);
+//                String roomId = mPatientUuid;
+//                String doctorName = "";
+//                String nurseId = encounterDTO.getProvideruuid();
+//                in.putExtra("roomId", roomId);
+//                in.putExtra("isInComingRequest", false);
+//                in.putExtra("doctorname", doctorName);
+//                in.putExtra("nurseId", nurseId);
+//                in.putExtra("startNewCall", true);
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                }
+//                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+//                    startActivity(in);
+//                }
             }
         });
 
+    }
+
+    private void showDoctorSelectionDialog() {
+        HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(mPatientUuid);
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
+                .title(R.string.select_doctor)
+                .content(new ArrayList<>(doctors.keySet()))
+                .build();
+
+        dialog.setListener((position, value) -> startVideoCallActivity(doctors, value));
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
+
+    private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
+        SessionManager sessionManager = new SessionManager(this);
+        Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
+        Log.v(TAG, "doctors  - " + doctorName);
+        EncounterDTO encounterDTO = new EncounterDAO().getEncounterByVisitUUIDLimit1(mVisitUUID);
+        RtcArgs args = new RtcArgs();
+        try {
+            String patientOpenMrsId = new PatientsDAO().getOpenmrsId(mPatientUuid);
+            args.setPatientOpenMrsId(patientOpenMrsId);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String nurseId = encounterDTO.getProvideruuid();
+        String roomId = mPatientUuid;
+
+        args.setVisitId(mVisitUUID);
+        args.setPatientId(mPatientUuid);
+        args.setPatientPersonUuid(mPatientUuid);
+        args.setPatientName(mPatientName);
+        args.setDoctorName(doctorName);
+        args.setDoctorUuid(doctors.get(doctorName));
+        args.setIncomingCall(false);
+        args.setNurseId(nurseId);
+        args.setNurseName(sessionManager.getChwname());
+        args.setRoomId(roomId);
+        new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(PartogramDataCaptureActivity.this, args1));
     }
 
     @Override
@@ -302,7 +350,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                 if (isSynced) {
                     Toast.makeText(this, "Data uploaded successfully!", Toast.LENGTH_SHORT).show();
-                   // AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
+                    // AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, PartogramDataCaptureActivity.this);
                     finish();
                 } else {
                     Toast.makeText(this, "Unable to upload the data!", Toast.LENGTH_SHORT).show();

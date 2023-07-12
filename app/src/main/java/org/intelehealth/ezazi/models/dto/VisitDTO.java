@@ -120,7 +120,11 @@ public class VisitDTO {
     }
 
     public enum CompletedStatus {
-        LIVE_BIRTH("Live Birth"), STILL_BIRTH("Still Birth"), RTOH("RTOH"), DAMA("DAMA");
+        LIVE_BIRTH("Live Birth"),
+        STILL_BIRTH("Still Birth"),
+        RTOH("RTOH"),
+        DAMA("DAMA"),
+        OUT_OF_TIME("Out of Time");
         public String value;
 
         CompletedStatus(String value) {

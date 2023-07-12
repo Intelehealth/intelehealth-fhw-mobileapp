@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
@@ -33,6 +34,7 @@ import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
 import java.text.ParseException;
@@ -113,11 +115,15 @@ public class CardGenerationEngine {
                         }
                     } else if (latestEncounterName.toLowerCase().contains("stage2")) {
                         if (minutes >= 15) {
-                            // get next encounter name
-                            String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
-                            if (nextEncounterTypeName != null) {
-                                Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-                                createNewEncounter(visitUid, nextEncounterTypeName);
+//                            if (checkVisitEncounterReachToLimit(latestEncounterName)) {
+//                                closeReachToLimitVisit(visitUid);
+//                            } else {
+                                // get next encounter name
+                                String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
+                                if (nextEncounterTypeName != null) {
+                                    Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+                                    createNewEncounter(visitUid, nextEncounterTypeName);
+//                                }
                             }
                         } else if (minutes == 14) {
                             SyncUtils syncUtils = new SyncUtils();
@@ -183,6 +189,34 @@ public class CardGenerationEngine {
             } catch (DAOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static boolean checkVisitEncounterReachToLimit(String encounterTypeName) {
+        if (!encounterTypeName.toLowerCase().contains("stage") && !encounterTypeName.toLowerCase().contains("hour"))
+            return false;
+        String[] parts = encounterTypeName.toLowerCase().replaceAll("stage", "").replaceAll("hour", "").split("_");
+        if (parts.length != 3) return false;
+        int stageNumber = Integer.parseInt(parts[0]);
+        int hourNumber = Integer.parseInt(parts[1]);
+        int cardNumber = Integer.parseInt(parts[2]);
+
+        return stageNumber == 2 && hourNumber == 3 && cardNumber == 4;
+    }
+
+    private static void closeReachToLimitVisit(String visitId) {
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        ObsDAO obsDAO = new ObsDAO();
+        boolean isInserted = false;
+        try {
+            String encounterUuid = new EncounterDAO().insert_VisitCompleteEncounterToDb(visitId, sessionManager.getProviderID());
+            VisitsDAO visitsDAO = new VisitsDAO();
+            visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
+            obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(),
+                    VisitDTO.CompletedStatus.OUT_OF_TIME.value,
+                    UuidDictionary.REFER_TYPE);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
         }
     }
 

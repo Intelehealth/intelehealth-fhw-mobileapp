@@ -648,6 +648,8 @@ public class ObsDAO {
                     valueData = VisitDTO.CompletedStatus.RTOH.value;
                 } else if (valueData.equals(context.getString(R.string.self_discharge_medical_advice))) {
                     valueData = VisitDTO.CompletedStatus.DAMA.value;
+                } else if (valueData.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
+                    valueData = VisitDTO.CompletedStatus.OUT_OF_TIME.value;
                 }
             }
         } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
