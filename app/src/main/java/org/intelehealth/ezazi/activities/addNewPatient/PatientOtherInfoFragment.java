@@ -1316,14 +1316,14 @@ public class PatientOtherInfoFragment extends Fragment {
                 ErrorManagerModel errorModel = errorDetailsList.get(i);
                 if (i == 0) {
                     errorModel.view.requestFocus();
-                    Handler handler = new Handler();
+                    /*Handler handler = new Handler();
                     scrollviewOtherInfo.post(new Runnable() {
                         @Override
                         public void run() {
                             scrollviewOtherInfo.scrollTo(0,  errorModel.getView().getId());
                             //scrollviewOtherInfo.scrollTo(0,  R.id.et_hospital_other);
                         }
-                    });
+                    });*/
                 }
 
                 errorModel.tvError.setVisibility(View.VISIBLE);

@@ -198,6 +198,7 @@ public class OTPVerificationFragment extends Fragment {
         }
         viewModel.requestOTPResponseData.observe(getViewLifecycleOwner(), requestOTPResult -> {
             if (requestOTPResult.getUserUuid() != null) {
+                resendOtpTimer();
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
             }
         });
