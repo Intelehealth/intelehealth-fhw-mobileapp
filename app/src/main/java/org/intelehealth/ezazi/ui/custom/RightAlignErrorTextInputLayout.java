@@ -66,7 +66,7 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
         View errorIcon = findViewById(R.id.text_input_error_icon);
         if (errorView != null) errorView.setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
         if (errorIcon != null && getEditText() != null) {
-            errorIcon.setActivated(getEditText().getTransformationMethod() == HideReturnsTransformationMethod.getInstance());
+            errorIcon.setActivated(!(getEditText().getTransformationMethod() instanceof PasswordTransformationMethod));
         }
         activeErrorClickIfInputIsPassword();
     }

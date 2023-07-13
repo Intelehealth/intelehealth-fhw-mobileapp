@@ -52,6 +52,8 @@
     <string name="error_require_email">Username is required</string>
     <string name="error_require_password">Password is required</string>
     <string name="error_invalid_password">8+ characters required for password</string>
+    <string name="error_invalid_pwd">Invalid Password</string>
+    <string name="reset_password_hint">Password must contain at least a special char and a digit and </string>
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
