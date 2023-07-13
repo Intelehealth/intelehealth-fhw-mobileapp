@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
 import org.intelehealth.unicef.appointment.model.BookAppointmentRequest;
@@ -46,6 +47,7 @@ import org.intelehealth.unicef.utilities.DialogUtils;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UuidGenerator;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -94,7 +96,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     String app_start_date, app_start_time, app_start_day;
     String rescheduleReason;
     NetworkUtils networkUtils;
-    ImageView ivIsInternet;
+    ImageView ivIsInternet, ivBackArrow;
 
     private SessionManager sessionManager;
     String patientAge, patientGender, patientPic;
@@ -282,7 +284,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         monthToCompare = String.valueOf(currentMonth);
         yearToCompare = String.valueOf(currentYear);
         SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
-        String month_name = month_date.format(calendarInstance.getTime());
+        String month_name = getMonthNameInRussianIfRequired(month_date.format(calendarInstance.getTime()));
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
         monthToCompare = String.valueOf(currentMonth);
@@ -306,6 +308,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             getPreviousMonthDates();
         });
 
+        ivBackArrow = findViewById(R.id.iv_back_arrow_common);
+        ivBackArrow.setOnClickListener(v -> finish());
     }
 
 
@@ -643,6 +647,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            selectedDateTime = StringUtils.en__ru_dob(selectedDateTime);
+        }
+
         String infoText = getResources().getString(R.string.sure_to_book_appointment) + " <b>" + selectedDateTime + "?</b>";
         tvInfo.setText(Html.fromHtml(infoText));
 
@@ -661,7 +670,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             alertDialog.dismiss();
         });
 
+
         alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void bookAppointment() {
@@ -820,6 +831,15 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
 
+    }
+
+    private String getMonthNameInRussianIfRequired(String monthName) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            String fullMonthName = StringUtils.getFullMonthName(monthName);
+            return StringUtils.en__ru_dob(fullMonthName);
+        } else {
+            return monthName;
+        }
     }
 
 }

@@ -927,7 +927,17 @@
     <string name="select_hospital_type">Выберите тип больницы</string>
     <string name="please_select_hospital_type_msg">Пожалуйста выберите тип больницы</string>
 
-    <string name="schedule_appointment">Schedule appointment</string>
+    <string name="schedule_appointment">Расписание приема</string>
+    <string name="today">Сегодня</string>
+    <string name="pick_time_slot">Выберите временной интервал</string>
+    <string name="morning">Утро</string>
+    <string name="afternoon">После обеда</string>
+    <string name="evening">Вечер</string>
+
+    <string name="confirm_appointment">Подтвердить прием?</string>
+    <string name="sure_to_book_appointment">Вы уверены, что пациент хочет записаться на прием на </string>
+    <string name="at">на</string>
+    <string name="booking_appointment">Забронировать прием!</string>
 
 
 </resources>
