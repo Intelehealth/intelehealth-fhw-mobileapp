@@ -938,6 +938,21 @@
     <string name="sure_to_book_appointment">Вы уверены, что пациент хочет записаться на прием на </string>
     <string name="at">на</string>
     <string name="booking_appointment">Забронировать прием!</string>
+    <string name="my_appointments">Мои назначения</string>
+    <string name="todays">Сегодня</string>
+    <string name="all_appointments">Все</string>
+    <string name="search_patient">Поиск пациента</string>
+    <string name="upcoming">Предстоящий</string>
+    <string name="cancelled">Отменено</string>
+    <string name="completed">Завершено</string>
+    <string name="upcoming_appointments">Предстоящие встречи</string>
+    <string name="cancelled_appointments">Отмененные приемы</string>
+    <string name="completed_appointments">Завершенные приемы</string>
+    <string name="appointment_details">Информация о назначении</string>
+    <string name="no_data_found">Данные не найдены</string>
 
+    <string name="from">С сайта</string>
+    <string name="to">До</string>
+    <string name="select_date">Выберите дату</string>
 
 </resources>
