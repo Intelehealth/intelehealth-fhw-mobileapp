@@ -4,14 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_8"
-    android:layout_marginTop="@dimen/margin_16"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/height_adjust_view"
+        android:layout_width="match_parent"
+        android:layout_height="24dip" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_24">
+        android:layout_marginTop="@dimen/margin_8">
+
 
         <TextView
             android:id="@+id/tv_complain_label"

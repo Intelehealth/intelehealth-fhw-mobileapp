@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
+
 public class VisitUtils {
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
@@ -193,5 +195,45 @@ public class VisitUtils {
             return "Do you have the following symptom(s)?";
         }
     }
+
+    public static String convertFtoC(String TAG, String temperature) {
+        Log.i(TAG, "convertFtoC IN: " + temperature);
+        if (temperature != null && temperature.length() > 0) {
+            String result = "";
+            double fTemp = Double.parseDouble(temperature);
+            double cTemp = ((fTemp - 32) * 5 / 9);
+
+//            DecimalFormat dtime = new DecimalFormat("#.##");
+            DecimalFormat dtime = new DecimalFormat("#.#");
+            cTemp = Double.parseDouble(dtime.format(cTemp));
+            result = String.format("%.1f", cTemp);
+            //result = String.valueOf(cTemp);
+            Log.i(TAG, "convertFtoC OUT: " + result);
+
+            return result;
+        }
+        return "";
+
+    }
+
+    public static String convertCtoF(String TAG, String temperature) {
+        Log.i(TAG, "convertCtoF IN: " + temperature);
+
+        if (temperature == null) return "";
+        String result = "";
+        double a = Double.parseDouble(String.valueOf(temperature));
+        Double b = (a * 9 / 5) + 32;
+
+        //DecimalFormat dtime = new DecimalFormat("#.##");
+        DecimalFormat dtime = new DecimalFormat("#.#");
+        b = Double.parseDouble(dtime.format(b));
+        result = String.format("%.1f", b);
+        //result = String.valueOf(b);
+        Log.i(TAG, "convertCtoF OUT: " + result);
+        return result;
+
+    }
+
+
 
 }

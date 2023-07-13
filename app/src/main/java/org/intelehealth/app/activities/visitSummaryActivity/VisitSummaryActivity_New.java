@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
+import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
@@ -99,6 +102,8 @@ import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
+import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
+import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -146,11 +151,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -938,7 +947,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
-                    tempView.setText(convertCtoF(temperature.getValue()));
+                    tempView.setText(convertCtoF(TAG, temperature.getValue()));
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
             }
@@ -958,187 +967,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         respiratory.setText(resp.getValue());
         // vitals values set - end
 
-        // complaints data
-        if (complaint.getValue() != null) {
-            String value = complaint.getValue();
-            boolean isInOldFormat = true;
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        isInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        isInOldFormat = true;
-                    }
-                    complaintLocalString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.v(TAG, "isInOldFormat: " + isInOldFormat);
-            Log.v(TAG, "complaint: " + value);
-            String valueArray[] = null;
-            boolean isAssociateSymptomFound = false;
-            if (isInOldFormat) {
-                valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
-                isAssociateSymptomFound = valueArray.length >= 2;
-            } else {
-                String c1 = "►" + getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage());
-                Log.v(TAG, "complaint c1: " + c1);
-                valueArray = value.split(c1);
-                isAssociateSymptomFound = valueArray.length >= 2;
-                if (isAssociateSymptomFound)
-                    valueArray[1] = valueArray[1].split("::")[1];
-            }
-
-            Log.v(TAG, "complaint: " + valueArray[0]);
-            Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
-            String[] headerchips = valueArray[0].split("►");
-            List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
-            List<String> cc_list = new ArrayList<>();
-
-            for (int i = 0; i < cc_tempvalues.size(); i++) {
-                if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
-                    cc_list.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
-            }
-
-            cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
-            cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
-            cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
-            cc_recyclerview.setAdapter(cc_adapter);
-
-            String patientReports = getResources().getString(R.string.no_data_added);
-            String patientDenies = getResources().getString(R.string.no_data_added);
-
-            if (valueArray[0] != null)
-                complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-            if (isAssociateSymptomFound) {
-                if (isInOldFormat) {
-
-
-                    if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                        String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
-                                .split("• Patient denies -<br/>");
-
-                        // index 0 - Reports
-                        String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
-                                .split("• Patient reports -<br/>");
-                        patientReports = reports[1];
-                        patientDenies = assoValueBlock[1];
-                        complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-                    } else if (valueArray[0].contains("• Patient reports")) {
-                        // todo: handle later -> comment added on 14 nov 2022
-                    }
-
-                } else {
-                    String associatedSymptomsString = valueArray[1];//.split("::")[1];
-                    String[] sections = associatedSymptomsString.split(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()));
-                    if(sections.length>=2) {
-                        patientReports = sections[0];
-                        patientDenies = sections[1];
-                    }
-                }
-            }
-
-            // todo: testing:
-            /*String data = "►Abdominal Pain: <br><span style=\"color:#7F7B92\">• Site</span> &emsp;&emsp; Upper (R) - Right Hypochondrium.<br>" +
-                    "• Pain does not radiate.<br>• 4 Hours.<br><span style=\"color:#7F7B92\">• Onset</span> &emsp;&emsp; Gradual.<br><span style=\"color:#7F7B92\">• Timing</span> &emsp;&emsp; Morning.<br>" +
-                    "<span style=\"color:#7F7B92\">• Character of the pain*</span> &emsp;&emsp; Constant.<br><span style=\"color:#7F7B92\">• Severity</span> &emsp;&emsp; Mild, 1-3.<br>" +
-                    "<span style=\"color:#7F7B92\">• Exacerbating Factors</span> &emsp;&emsp; Hunger.<br><span style=\"color:#7F7B92\">• Relieving Factors</span> &emsp;&emsp; Food.<br><span style=\"color:#7F7B92\">• Prior treatment sought</span> &emsp;&emsp; None.";
-            complaintView.setText(Html.fromHtml(data));*/
-            // todo: testin end
-
-            // associated symp.
-            patientReports_txtview.setText(Html.fromHtml(patientReports));
-            patientDenies_txtview.setText(Html.fromHtml(patientDenies));
-        }
-        // complaints data - end
-
-        // phys exam data
-        if (phyExam.getValue() != null) {
-            String value = phyExam.getValue();
-            boolean isInOldFormat = true;
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        isInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        isInOldFormat = true;
-                    }
-                    physicalExamLocaleString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.v(TAG, "phyExam : " + value);
-            if (isInOldFormat) {
-                String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
-                        .split("<b>General exams: </b><br/>");
-                physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
-            } else {
-                physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
-            }
-        }
-        //image download for physcialExamination documents
-        Paint p = new Paint();
-        physcialExaminationDownloadText.setPaintFlags(p.getColor());
-        physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        physcialExaminationImagesDownload();
-        // phys exam data - end
-
-        // medical history data
-
-        // past medical hist
-        if (patHistory.getValue() != null) {
-            String value = patHistory.getValue();
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        // isInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        //isInOldFormat = true;
-                    }
-                    patientHistoryLocaleString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.v(TAG, "patHistory : " + value);
-            patHistView.setText(Html.fromHtml(value));
-        }
-        // past medical hist - end
-
-        // family history
-        if (famHistory.getValue() != null) {
-            String value = famHistory.getValue();
-            if (value.startsWith("{") && value.endsWith("}")) {
-                try {
-                    JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        //isInOldFormat = false;
-                    } else {
-                        value = jsonObject.getString("en");
-                        //isInOldFormat = true;
-                    }
-                    familyHistoryLocaleString = value;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.v(TAG, "famHistory : " + value);
-            famHistView.setText(Html.fromHtml(value));
-        }
-        // family history - end
-        // medical history data - end
+        setQAData();
 
         // additional doc data
         ImagesDAO imagesDAO = new ImagesDAO();
@@ -3332,7 +3161,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 
     /*temperature convert*/
-    private String convertCtoF(String temperature) {
+    /*private String convertCtoF(String temperature) {
         String resultVal;
         NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
         double a = Double.parseDouble(temperature);
@@ -3341,7 +3170,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         double roundOff = Math.round(b * 100.0) / 100.0;
         resultVal = nf.format(roundOff);
         return resultVal;
-    }
+    }*/
 
     /*PhysExam images downlaod*/
     private void physcialExaminationImagesDownload() {
@@ -3888,7 +3717,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(TAG, temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
@@ -4361,7 +4190,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_f) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(TAG, temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
@@ -5046,5 +4875,725 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         } else {
             return "General Exams";
         }
+    }
+
+    private LinearLayout mAssociateSymptomsLinearLayout, mComplainSummaryLinearLayout,
+            mPhysicalExamSummamryLinearLayout, mPastMedicalHistorySummaryLinearLayout, mFamilyHistorySummaryLinearLayout;
+    private TextView mAssociateSymptomsLabelTextView;
+
+    private void setQAData() {
+        mFamilyHistorySummaryLinearLayout = findViewById(R.id.ll_family_history_summary);
+        mPastMedicalHistorySummaryLinearLayout = findViewById(R.id.ll_patient_history_summary);
+
+        mPhysicalExamSummamryLinearLayout = findViewById(R.id.ll_physical_exam_summary);
+
+        mComplainSummaryLinearLayout = findViewById(R.id.ll_complain_summary);
+        mAssociateSymptomsLinearLayout = findViewById(R.id.ll_associated_sympt);
+        //mAssociateSymptomsLabelTextView = findViewById(R.id.tv_ass_complain_label);
+
+
+        // complaints data
+        if (complaint.getValue() != null) {
+            String value = complaint.getValue();
+            boolean isInOldFormat = true;
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        isInOldFormat = true;
+                    }
+                    complaintLocalString = value;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.v(TAG, "isInOldFormat: " + isInOldFormat);
+            Log.v(TAG, "complaint: " + value);
+            String valueArray[] = null;
+            boolean isAssociateSymptomFound = false;
+            if (isInOldFormat) {
+                complaintView.setVisibility(View.VISIBLE);
+                findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
+                findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
+
+                valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
+                isAssociateSymptomFound = valueArray.length >= 2;
+                Log.v(TAG, "complaint: " + valueArray[0]);
+                Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
+                String[] headerchips = valueArray[0].split("►");
+                List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
+                List<String> cc_list = new ArrayList<>();
+
+                for (int i = 0; i < cc_tempvalues.size(); i++) {
+                    if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
+                        cc_list.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
+                }
+
+                cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
+                cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
+                cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
+                cc_recyclerview.setAdapter(cc_adapter);
+
+                String patientReports = getResources().getString(R.string.no_data_added);
+                String patientDenies = getResources().getString(R.string.no_data_added);
+
+                if (valueArray[0] != null)
+                    complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+                if (isAssociateSymptomFound) {
+
+
+                    if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+                        String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+                                .split("• Patient denies -<br/>");
+
+                        // index 0 - Reports
+                        String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>")
+                                .split("• Patient reports -<br/>");
+                        patientReports = reports[1];
+                        patientDenies = assoValueBlock[1];
+                        complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+                    } else if (valueArray[0].contains("• Patient reports")) {
+                        // todo: handle later -> comment added on 14 nov 2022
+                    }
+
+                }
+
+                // todo: testing:
+            /*String data = "►Abdominal Pain: <br><span style=\"color:#7F7B92\">• Site</span> &emsp;&emsp; Upper (R) - Right Hypochondrium.<br>" +
+                    "• Pain does not radiate.<br>• 4 Hours.<br><span style=\"color:#7F7B92\">• Onset</span> &emsp;&emsp; Gradual.<br><span style=\"color:#7F7B92\">• Timing</span> &emsp;&emsp; Morning.<br>" +
+                    "<span style=\"color:#7F7B92\">• Character of the pain*</span> &emsp;&emsp; Constant.<br><span style=\"color:#7F7B92\">• Severity</span> &emsp;&emsp; Mild, 1-3.<br>" +
+                    "<span style=\"color:#7F7B92\">• Exacerbating Factors</span> &emsp;&emsp; Hunger.<br><span style=\"color:#7F7B92\">• Relieving Factors</span> &emsp;&emsp; Food.<br><span style=\"color:#7F7B92\">• Prior treatment sought</span> &emsp;&emsp; None.";
+            complaintView.setText(Html.fromHtml(data));*/
+                // todo: testin end
+
+                // associated symp.
+                patientReports_txtview.setText(Html.fromHtml(patientReports));
+                patientDenies_txtview.setText(Html.fromHtml(patientDenies));
+            } else {
+                /*String c1 = "►" + getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage());
+                Log.v(TAG, "complaint c1: " + c1);
+                valueArray = value.split(c1);
+                isAssociateSymptomFound = valueArray.length >= 2;
+                if (isAssociateSymptomFound)
+                    valueArray[1] = valueArray[1].split("::")[1];*/
+                setDataForChiefComplainSummary(complaintLocalString);
+            }
+
+
+        }
+        // complaints data - end
+
+        // phys exam data
+        if (phyExam.getValue() != null) {
+            String value = phyExam.getValue();
+            boolean isInOldFormat = true;
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        isInOldFormat = true;
+                    }
+                    physicalExamLocaleString = value;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.v(TAG, "phyExam : " + value);
+            if (isInOldFormat) {
+                physFindingsView.setVisibility(View.VISIBLE);
+                String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
+                        .split("<b>General exams: </b><br/>");
+                physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
+            } else {
+                //physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
+                setDataForPhysicalExamSummary(physicalExamLocaleString);
+            }
+        }
+        //image download for physcialExamination documents
+        Paint p = new Paint();
+        physcialExaminationDownloadText.setPaintFlags(p.getColor());
+        physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        physcialExaminationImagesDownload();
+        // phys exam data - end
+
+        // medical history data
+
+        // past medical hist
+        if (patHistory.getValue() != null) {
+            String value = patHistory.getValue();
+            boolean isInOldFormat = true;
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        isInOldFormat = true;
+                    }
+                    patientHistoryLocaleString = value;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.v(TAG, "patHistory : " + value);
+            if (isInOldFormat){
+                patHistView.setVisibility(View.VISIBLE);
+                patHistView.setText(Html.fromHtml(value));
+            }
+            else
+                setDataForPatientMedicalHistorySummary(patientHistoryLocaleString);
+        }
+        // past medical hist - end
+
+        // family history
+        if (famHistory.getValue() != null) {
+            String value = famHistory.getValue();
+            boolean isInOldFormat = true;
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        isInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        isInOldFormat = true;
+                    }
+                    familyHistoryLocaleString = value;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.v(TAG, "famHistory : " + value);
+            if (isInOldFormat){
+                famHistView.setVisibility(View.VISIBLE);
+                famHistView.setText(Html.fromHtml(value));
+            }
+            else
+                setDataForFamilyHistorySummary(familyHistoryLocaleString);
+        }
+        // family history - end
+        // medical history data - end
+    }
+
+    private void setDataForChiefComplainSummary(String answerInLocale) {
+        String lCode = sessionManager.getAppLanguage();
+        //String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
+        answerInLocale = answerInLocale.replaceAll("<.*?>", "");
+        System.out.println(answerInLocale);
+        Log.v(TAG, answerInLocale);
+        //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+
+        String[] spt = answerInLocale.split("►");
+        List<String> list = new ArrayList<>();
+        String associatedSymptomsString = "";
+        for (String s : spt) {
+            if (s.isEmpty()) continue;
+            //String s1 =  new String(s.getBytes(), "UTF-8");
+            System.out.println("Chunk - " + s);
+            //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+            //if (s.trim().contains("Patient denies -•")) {
+            if (s.trim().contains(getTranslatedPatientDenies(lCode))) {
+                associatedSymptomsString = s;
+                System.out.println("associatedSymptomsString - " + associatedSymptomsString);
+            } else {
+                list.add(s);
+            }
+
+        }
+        mComplainSummaryLinearLayout.removeAllViews();
+        List<String> cc_list = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            String complainName = "";
+            List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+            String[] spt1 = list.get(i).split("●");
+            for (String value : spt1) {
+                if (value.contains("::")) {
+                    complainName = value.replace("::", "");
+                    System.out.println(complainName);
+                    cc_list.add(complainName);
+                } else {
+                    String[] qa = value.split("•");
+                    if (qa.length == 2) {
+                        String k = value.split("•")[0].trim();
+                        String v = value.split("•")[1].trim();
+                        VisitSummaryData summaryData = new VisitSummaryData();
+                        summaryData.setQuestion(k);
+                        summaryData.setDisplayValue(v);
+                        visitSummaryDataList.add(summaryData);
+                    } else {
+
+
+                        //String k = value.split("•")[0].trim();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        String key = "";
+                        String lastString = "";
+                        for (int j = 0; j < qa.length; j++) {
+                            String v1 = qa[j];
+                            if (lastString.equals(v1)) continue;
+                            //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                            stringBuilder.append(v1);
+                            lastString = v1;
+                            if (j % 2 != 0) {
+                                String v = qa[j].trim();
+                                VisitSummaryData summaryData = new VisitSummaryData();
+                                summaryData.setQuestion(key);
+                                summaryData.setDisplayValue(v);
+                                visitSummaryDataList.add(summaryData);
+
+                            } else {
+                                key = qa[j].trim();
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            if (!complainName.isEmpty() && !visitSummaryDataList.isEmpty()) {
+                View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
+                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                complainLabelTextView.setText(complainName);
+                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+
+                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+                    @Override
+                    public void onSelect(VisitSummaryData data) {
+
+                    }
+                });
+                recyclerView.setAdapter(summaryViewAdapter);
+                mComplainSummaryLinearLayout.addView(view);
+            }
+        }
+
+        // set all chief complain list
+        cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
+        cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
+        cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
+        cc_recyclerview.setAdapter(cc_adapter);
+
+        // ASSOCIATED SYMPTOMS
+        String[] tempAS = associatedSymptomsString.split("::");
+        if (tempAS.length >= 2) {
+            String title = tempAS[0];
+            //mAssociateSymptomsLabelTextView.setText(title);  // not required
+
+            associatedSymptomsString = tempAS[1];
+        }
+        String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
+
+
+        Log.v(TAG, associatedSymptomsString);
+        String[] spt1 = associatedSymptomsString.trim().split("•");
+        Log.e("node", associatedSymptomsString);
+        Log.e("node", String.valueOf(spt1.length));
+        mAssociateSymptomsLinearLayout.removeAllViews();
+
+        for (int i = 0; i < sections.length; i++) {
+            String patientReportsDenies = sections[i]; // Patient reports & // Patient denies
+            View view = View.inflate(this, R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
+            TextView keyTextView = view.findViewById(R.id.tv_question_label);
+            keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
+            TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+            valueTextView.setText(patientReportsDenies);
+           /* if (patientReportsDenies.isEmpty()) {
+                view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
+            } else {
+                view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
+            }*/
+            mAssociateSymptomsLinearLayout.addView(view);
+        }
+
+
+            /*for (int i = 0; i < mAnsweredRootNodeList.size(); i++) {
+                List<VisitSummaryData> itemList = new ArrayList<VisitSummaryData>();
+                for (int j = 0; j < mAnsweredRootNodeList.get(i).getOptionsList().size(); j++) {
+                    VisitSummaryData summaryData = new VisitSummaryData();
+                    summaryData.setDisplayValue(mAnsweredRootNodeList.get(i).getOptionsList().get(j).getText());
+                    itemList.add(summaryData);
+                }
+            }*/
+    }
+
+    private void setDataForPhysicalExamSummary(String summaryString) {
+        mPhysicalExamSummamryLinearLayout.removeAllViews();
+        String str = summaryString;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        str = str.replaceAll("<.*?>", "");
+        System.out.println("prepareSummary - " + str);
+        String[] spt = str.split("►");
+        List<String> list = new ArrayList<>();
+        LinkedHashMap<String, List<String>> mapData = new LinkedHashMap<String, List<String>>();
+
+        for (String s : spt) {
+            System.out.println(s);
+            if (s.isEmpty()) continue;
+            String[] spt1 = s.split("•");
+            String complainName = "";
+            for (String s1 : spt1) {
+                if (s1.trim().endsWith(":")) {
+                    complainName = s1;
+                    list = new ArrayList<>();
+                    mapData.put(s1, list);
+                } else {
+                    mapData.get(complainName).add(s1);
+                }
+            }
+
+        }
+        System.out.println(mapData);
+        for (Map.Entry<String, List<String>> entry : mapData.entrySet()) {
+            String _complain = entry.getKey();
+            List<String> _list = entry.getValue();
+
+            if (!_complain.isEmpty() && !_list.isEmpty()) {
+                View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
+                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                complainLabelTextView.setText(_complain);
+                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+                List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                String k1 = "";
+                String lastString = "";
+
+                for (int i = 0; i < _list.size(); i++) {
+                    Log.v("PH0", _list.get(i));
+                    String val = _list.get(i);
+                    String v1 = val;
+                    if (lastString.equals(v1)) continue;
+                    //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                    //stringBuilder.append(v1);
+                    lastString = v1;
+                    if (i % 2 != 0) {
+                        String v = val.trim();
+                        if (v.contains(":") && v.split(":").length > 1) {
+                            v = v.split(":")[1];
+                        }
+                        VisitSummaryData summaryData = new VisitSummaryData();
+                        summaryData.setQuestion(k1);
+                        summaryData.setDisplayValue(v);
+                        visitSummaryDataList.add(summaryData);
+
+                    } else {
+                        k1 = val.trim();
+                        if (k1.contains("-●")) {
+                            String[] temp = k1.split("-●");
+                            VisitSummaryData summaryData = new VisitSummaryData();
+                            summaryData.setQuestion(temp[0]);
+                            summaryData.setDisplayValue("");
+                            visitSummaryDataList.add(summaryData);
+                            k1 = temp[1];
+                        }
+                    }
+                }
+
+
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+
+                    @Override
+                    public void onSelect(VisitSummaryData data) {
+
+                    }
+                });
+                recyclerView.setAdapter(summaryViewAdapter);
+               /* SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
+                    @Override
+                    public void onSelect(String data) {
+
+                    }
+                });
+                recyclerView.setAdapter(summaryViewAdapter);*/
+                mPhysicalExamSummamryLinearLayout.addView(view);
+            }
+        }
+
+    }
+
+    private void setDataForPatientMedicalHistorySummary(String summaryStringPastHistory) {
+        mPastMedicalHistorySummaryLinearLayout.removeAllViews();
+        String str = summaryStringPastHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        //String str1 = mSummaryStringFamilyHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        str = str.replaceAll("<.*?>", "");
+        //str1 = str1.replaceAll("<.*?>", "");
+        System.out.println("mSummaryStringPastHistory - " + str);
+        //System.out.println("mSummaryStringFamilyHistory - " + str1);
+        String[] spt = str.split("●");
+        //String[] spt1 = str1.split("●");
+        List<String> list = new ArrayList<>();
+        TreeMap<String, List<String>> mapData = new TreeMap<>(Collections.reverseOrder());
+        mapData.put("Patient history", new ArrayList<>());
+        //mapData.put("Family history", new ArrayList<>());
+        for (String s : spt) {
+            System.out.println(s);
+            if (!s.trim().isEmpty())
+                mapData.get("Patient history").add(s.trim());
+
+
+        }
+        /*for (String s : spt1) {
+            System.out.println(s);
+            if (!s.trim().isEmpty())
+                mapData.get("Family history").add(s.trim());
+
+
+        }*/
+
+        System.out.println(mapData);
+        for (String key : mapData.keySet()) {
+
+            String _complain = key.equalsIgnoreCase("Patient history") ? getString(R.string.title_activity_get_patient_history) : getString(R.string.title_activity_family_history);
+            List<String> _list = mapData.get(key);
+
+            if (!_complain.isEmpty() && !_list.isEmpty()) {
+                View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
+                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                View vv = view.findViewById(R.id.height_adjust_view);
+                complainLabelTextView.setText(_complain);
+                complainLabelTextView.setVisibility(View.GONE);
+                vv.setVisibility(View.GONE);
+                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+                List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                for (int i = 0; i < _list.size(); i++) {
+                    Log.v("K", "_list.get(i) - " + _list.get(i));
+                    String[] qa = _list.get(i).split("•");
+                    if (qa.length == 2) {
+                        String k = qa[0].trim();
+                        String v = qa[1].trim();
+                        Log.v("K", "k - " + k);
+                        Log.v("V", "V - " + v);
+                        if (v.contains(":") && v.split(":").length > 1) {
+                            v = v.split(":")[1];
+                        }
+                        VisitSummaryData summaryData = new VisitSummaryData();
+                        summaryData.setQuestion(k.isEmpty() ? v : k);
+                        summaryData.setDisplayValue(k.isEmpty() ? "" : v);
+                        visitSummaryDataList.add(summaryData);
+                    } else {
+                        boolean isOddSequence = qa.length % 2 != 0;
+                        Log.v("isOddSequence", qa.length + " = " + isOddSequence);
+                        //String k = value.split("•")[0].trim();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        String k1 = "";
+                        String lastString = "";
+                        if (key.equalsIgnoreCase("Patient history")) {
+
+                            for (int j = 0; j < qa.length; j++) {
+                                boolean isLastItem = j == qa.length - 1;
+                                String v1 = qa[j];
+                                Log.v("V", v1);
+                                if (lastString.equals(v1)) continue;
+                                //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                                stringBuilder.append(v1);
+                                lastString = v1;
+                                if (j % 2 != 0) {
+                                    String v = qa[j].trim();
+                                    if (v.contains(":") && v.split(":").length > 1) {
+                                        v = v.split(":")[1];
+                                    }
+
+
+                                    VisitSummaryData summaryData = new VisitSummaryData();
+                                    summaryData.setQuestion(k1);
+
+                                    summaryData.setDisplayValue(v);
+                                    visitSummaryDataList.add(summaryData);
+
+
+                                } else {
+                                    if (isLastItem && isOddSequence) {
+                                        visitSummaryDataList.get(visitSummaryDataList.size() - 1).setDisplayValue(visitSummaryDataList.get(visitSummaryDataList.size() - 1).getDisplayValue() + bullet_arrow + qa[j].trim());
+                                    } else {
+                                        k1 = qa[j].trim();
+                                    }
+                                }
+                            }
+                        } else {
+                            for (int j = 0; j < qa.length; j++) {
+                                Log.v("QA", "qa - " + qa[j]);
+                                if (j == 0) {
+                                    k1 = qa[j];
+                                } else {
+                                    if (!stringBuilder.toString().isEmpty())
+                                        stringBuilder.append(bullet_arrow);
+                                    stringBuilder.append(qa[j]);
+                                }
+
+                            }
+                            VisitSummaryData summaryData = new VisitSummaryData();
+                            summaryData.setQuestion(k1);
+                            summaryData.setDisplayValue(stringBuilder.toString());
+                            visitSummaryDataList.add(summaryData);
+                        }
+
+                    }
+
+
+                }
+
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+
+                    @Override
+                    public void onSelect(VisitSummaryData data) {
+
+                    }
+                });
+                recyclerView.setAdapter(summaryViewAdapter);
+                mPastMedicalHistorySummaryLinearLayout.addView(view);
+            }
+        }
+
+    }
+
+    private void setDataForFamilyHistorySummary(String summaryStringFamilyHistory) {
+        mFamilyHistorySummaryLinearLayout.removeAllViews();
+        //String str = mSummaryStringPastHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        String str1 = summaryStringFamilyHistory;//"►<b>Abdominal Pain</b>: <br/>• Site - Upper (C) - Epigastric.<br/>• Pain radiates to - Middle (R) - Right Lumbar.<br/>• Onset - Gradual.<br/>• Timing - Morning.<br/>• Character of the pain - Constant.<br/>• Severity - Mild, 1-3.<br/>• Exacerbating Factors - Hunger.<br/>• Relieving Factors - Food.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Anorexia <br/>• Patient denies -<br/> Diarrhea,  Constipation,  Fever<br/>";
+        //str = str.replaceAll("<.*?>", "");
+        str1 = str1.replaceAll("<.*?>", "");
+        //System.out.println("mSummaryStringPastHistory - " + str);
+        System.out.println("mSummaryStringFamilyHistory - " + str1);
+        //String[] spt = str.split("●");
+        String[] spt1 = str1.split("●");
+        List<String> list = new ArrayList<>();
+        TreeMap<String, List<String>> mapData = new TreeMap<>(Collections.reverseOrder());
+        //mapData.put("Patient history", new ArrayList<>());
+        mapData.put("Family history", new ArrayList<>());
+        /*for (String s : spt) {
+            System.out.println(s);
+            if (!s.trim().isEmpty())
+                mapData.get("Patient history").add(s.trim());
+
+
+        }*/
+        for (String s : spt1) {
+            System.out.println(s);
+            if (!s.trim().isEmpty())
+                mapData.get("Family history").add(s.trim());
+
+
+        }
+
+        System.out.println(mapData);
+        for (String key : mapData.keySet()) {
+
+            String _complain = key.equalsIgnoreCase("Patient history") ? getString(R.string.title_activity_get_patient_history) : getString(R.string.title_activity_family_history);
+            List<String> _list = mapData.get(key);
+
+            if (!_complain.isEmpty() && !_list.isEmpty()) {
+                View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
+                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                View vv = view.findViewById(R.id.height_adjust_view);
+                complainLabelTextView.setText(_complain);
+                complainLabelTextView.setVisibility(View.GONE);
+                vv.setVisibility(View.GONE);
+                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+                List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                for (int i = 0; i < _list.size(); i++) {
+                    Log.v("K", "_list.get(i) - " + _list.get(i));
+                    String[] qa = _list.get(i).split("•");
+                    if (qa.length == 2) {
+                        String k = qa[0].trim();
+                        String v = qa[1].trim();
+                        Log.v("K", "k - " + k);
+                        Log.v("V", "V - " + v);
+                        if (v.contains(":") && v.split(":").length > 1) {
+                            v = v.split(":")[1];
+                        }
+                        VisitSummaryData summaryData = new VisitSummaryData();
+                        summaryData.setQuestion(k.isEmpty() ? v : k);
+                        summaryData.setDisplayValue(k.isEmpty() ? "" : v);
+                        visitSummaryDataList.add(summaryData);
+                    } else {
+                        boolean isOddSequence = qa.length % 2 != 0;
+                        Log.v("isOddSequence", qa.length + " = " + isOddSequence);
+                        //String k = value.split("•")[0].trim();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        String k1 = "";
+                        String lastString = "";
+                        if (key.equalsIgnoreCase("Patient history")) {
+
+                            for (int j = 0; j < qa.length; j++) {
+                                boolean isLastItem = j == qa.length - 1;
+                                String v1 = qa[j];
+                                Log.v("V", v1);
+                                if (lastString.equals(v1)) continue;
+                                //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
+                                stringBuilder.append(v1);
+                                lastString = v1;
+                                if (j % 2 != 0) {
+                                    String v = qa[j].trim();
+                                    if (v.contains(":") && v.split(":").length > 1) {
+                                        v = v.split(":")[1];
+                                    }
+
+
+                                    VisitSummaryData summaryData = new VisitSummaryData();
+                                    summaryData.setQuestion(k1);
+
+                                    summaryData.setDisplayValue(v);
+                                    visitSummaryDataList.add(summaryData);
+
+
+                                } else {
+                                    if (isLastItem && isOddSequence) {
+                                        visitSummaryDataList.get(visitSummaryDataList.size() - 1).setDisplayValue(visitSummaryDataList.get(visitSummaryDataList.size() - 1).getDisplayValue() + bullet_arrow + qa[j].trim());
+                                    } else {
+                                        k1 = qa[j].trim();
+                                    }
+                                }
+                            }
+                        } else {
+                            for (int j = 0; j < qa.length; j++) {
+                                Log.v("QA", "qa - " + qa[j]);
+                                if (j == 0) {
+                                    k1 = qa[j];
+                                } else {
+                                    if (!stringBuilder.toString().isEmpty())
+                                        stringBuilder.append(bullet_arrow);
+                                    stringBuilder.append(qa[j]);
+                                }
+
+                            }
+                            VisitSummaryData summaryData = new VisitSummaryData();
+                            summaryData.setQuestion(k1);
+                            summaryData.setDisplayValue(stringBuilder.toString());
+                            visitSummaryDataList.add(summaryData);
+                        }
+
+                    }
+
+
+                }
+
+                SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
+
+                    @Override
+                    public void onSelect(VisitSummaryData data) {
+
+                    }
+                });
+                recyclerView.setAdapter(summaryViewAdapter);
+                mFamilyHistorySummaryLinearLayout.addView(view);
+            }
+        }
+
     }
 }
