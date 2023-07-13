@@ -17,6 +17,7 @@ import java.lang.RuntimeException
 open class SocketManager {
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
+    var activeUsers = HashMap<String, String>()
 
     fun connect(url: String?) {
         url?.let {
@@ -45,6 +46,9 @@ open class SocketManager {
 
     private fun emitter(event: String) = Emitter.Listener {
         Timber.e { "$event => ${Gson().toJson(it)}" }
+        if (event == EVENT_ALL_USER) {
+
+        }
         emitterListener?.invoke(event)?.call(it)
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }

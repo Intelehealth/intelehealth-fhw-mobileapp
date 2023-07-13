@@ -176,7 +176,7 @@ open class LiveVideoCallActivity : CoreVideoCallActivity() {
         MaterialAlertDialogBuilder(this).apply {
             setMessage(R.string.call_end_aler_txt)
             setPositiveButton(R.string.yes) { _, _ ->
-                sayBye("app")
+                sayBye("Call ended by you")
             }
             setNegativeButton(R.string.no, null)
         }.create().show()

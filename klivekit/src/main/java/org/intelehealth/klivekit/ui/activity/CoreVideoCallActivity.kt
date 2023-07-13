@@ -97,7 +97,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         videoCallViewModel.callEnd.observe(this) { if (it) onCallEnd() }
-        videoCallViewModel.sayGoodBye.observe(this) { if (it) sayBye() }
+        videoCallViewModel.sayGoodBye.observe(this) { if (it) sayBye("Call ended by you") }
 //        videoCallViewModel.microphonePluggedStatus.observe(this) {
 //            audioManager.isSpeakerphoneOn = it.not()
 //            onMicrophoneStatusChanged(it)
@@ -112,8 +112,9 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteConnectionQuality.observe(this) { onConnectivityChanged(it) }
         videoCallViewModel.screenshareEnabled.observe(this) {}
         videoCallViewModel.localCameraMirrorStatus.observe(this) {}
-        videoCallViewModel.remoteParticipantDisconnected.observe(this) { if (it) sayBye() }
+        videoCallViewModel.remoteParticipantDisconnected.observe(this) { if (it) sayBye("${args.doctorName} left the call") }
         videoCallViewModel.cameraPosition.observe(this) { onCameraPositionChanged(it) }
+        socketViewModel.eventCallRejectByDoctor.observe(this) { if (it) sayBye("Call rejected by ${args.doctorName}") }
         videoCallViewModel.remoteCallDisconnectedReason.observe(this) {
             it?.let { checkCallDisconnectReason(it) }
         }
@@ -168,7 +169,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     private fun observerSocketEvent() {
         socketViewModel.connect()
-        socketViewModel.eventNoAnswer.observe(this) { if (it) sayBye() }
+        socketViewModel.eventNoAnswer.observe(this) { if (it) sayBye("No answer from ${args.doctorName}") }
 //        socketViewModel.eventBye.observe(this) { if (it) sayBye() }
         lifecycleScope.launch {
             delay(1000)
@@ -287,14 +288,13 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     open fun endCall() {
-        sayBye("app")
+        sayBye("Call ended by you")
     }
 
     open fun sayBye(arg: String? = null) {
-//        socketViewModel.emit(SocketManager.EVENT_BYE, arg)
         arg?.let {
             showToast("Call ended by You")
-        } ?: showToast("${args.doctorName} left the call")
+        }
         finish()
     }
 

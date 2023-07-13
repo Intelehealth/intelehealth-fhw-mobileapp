@@ -271,7 +271,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sayBye("app");
+                        sayBye("Call ended by you");
                     }
                 }).setNegativeButton(R.string.no, null).create().show();
     }

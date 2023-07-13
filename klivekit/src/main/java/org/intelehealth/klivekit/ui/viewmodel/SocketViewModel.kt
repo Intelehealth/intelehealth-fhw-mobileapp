@@ -61,14 +61,14 @@ class SocketViewModel(
     private val mutableEventUpdateMessage = MutableLiveData<Any?>()
     val eventUpdateMessage = mutableEventUpdateMessage.hide()
 
-    private val mutableEventVideoOnOff = MutableLiveData(true)
-    val eventVideoOnOff = mutableEventVideoOnOff.hide()
-
     private val mutableSocketConnected = MutableLiveData(false)
     val eventSocketConnected = mutableSocketConnected.hide()
 
     private val mutableSocketDisconnected = MutableLiveData(false)
     val eventSocketDisconnected = mutableSocketDisconnected.hide()
+
+    private val mutableCallRejectByDoctor = MutableLiveData(false)
+    val eventCallRejectByDoctor = mutableCallRejectByDoctor.hide()
 
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
@@ -83,6 +83,10 @@ class SocketViewModel(
             SocketManager.EVENT_MESSAGE -> executeInUIThread { mutableEventMessage.postValue(it) }
             SocketManager.EVENT_NO_ANSWER -> sayByeToWeb()
             SocketManager.EVENT_READY -> executeInUIThread { mutableEventReady.postValue(true) }
+            SocketManager.EVENT_CALL_REJECT_BY_DR -> executeInUIThread {
+                mutableCallRejectByDoctor.postValue(true)
+            }
+
             SocketManager.EVENT_UPDATE_MESSAGE -> executeInUIThread {
                 mutableEventUpdateMessage.postValue(it)
             }
