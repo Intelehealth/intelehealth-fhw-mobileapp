@@ -470,7 +470,7 @@
                     android:layout_below="@+id/chiefcomplaint_header_relative">
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/divider1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -483,12 +483,12 @@
                         android:id="@+id/cc_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider"
+                        android:layout_below="@+id/divider1"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/details_personal_txtview1"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -571,7 +571,7 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/details_personal_txtview2"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -606,6 +606,14 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/ll_complain_summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_personal_txtview2"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <!--                cc - data - start-->
@@ -619,7 +627,8 @@
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
                         android:text="Test: here comes the data in html format."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:textSize="@dimen/find_patient_hint_size"
+                        android:visibility="gone" />
                     <!--Chief Complaint details - end-->
 
 
@@ -671,6 +680,17 @@
 
                     </RelativeLayout>
 
+                    <LinearLayout
+                        android:id="@+id/ll_associated_sympt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/associ_sym_relative"
+                        android:layout_marginHorizontal="@dimen/margin_24"
+                        android:layout_marginVertical="@dimen/margin_16"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
                     <!--Patient - reports-->
                     <RelativeLayout
                         android:id="@+id/reports_relative"
@@ -679,10 +699,11 @@
                         android:layout_below="@+id/associ_sym_relative"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/margin_8"
-                        android:layout_marginEnd="@dimen/fu_margin_start">
+                        android:layout_marginEnd="@dimen/fu_margin_start"
+                        android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/pat_reports_txtview"
+                            android:id="@+id/pat_reports_txtview1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/patient_reports"
@@ -694,7 +715,7 @@
                             android:id="@+id/patientReports_txtview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/pat_reports_txtview"
+                            android:layout_below="@+id/pat_reports_txtview1"
                             android:layout_marginStart="@dimen/margin_10"
                             android:layout_marginTop="4dp"
                             android:text="Test: Nausea, Anorexia, Constipation, Abdominal distinction / bloating, passing GAS, Restlessness, Injury, Breathlessness, Wheezing, Shortness of breath, Pain/Tightness of chest, Hemoptysis, Hoarseness, Naval congestion/Stuffy nose, Runny nose, Recurrent Diarrhea."
@@ -704,16 +725,18 @@
 
                     <!--Patient - Denies-->
                     <RelativeLayout
+                        android:id="@+id/denies_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/reports_relative"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/margin_8"
                         android:layout_marginEnd="@dimen/fu_margin_start"
-                        android:layout_marginBottom="@dimen/margin_16dp">
+                        android:layout_marginBottom="@dimen/margin_16dp"
+                        android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/pat_reports_txtview"
+                            android:id="@+id/pat_denies_txtview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/patient_denies"
@@ -725,7 +748,7 @@
                             android:id="@+id/patientDenies_txtview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/pat_reports_txtview"
+                            android:layout_below="@+id/pat_denies_txtview"
                             android:layout_marginStart="@dimen/margin_10"
                             android:layout_marginTop="4dp"
                             android:text="Test: Vomiting, Diarrhea, Fever, Belching/Burping, Blood in stool, change in frequency of urination, Color change in urine, Hiccups, Vaginal discharge(describe), Burning felling in a throat at night/early in the morning, Post nasal drip, Recent severe stress."
@@ -851,6 +874,14 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/ll_physical_exam_summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_16"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <TextView
@@ -863,7 +894,8 @@
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
                         android:text="here comes the phys exam data in html format."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:textSize="@dimen/find_patient_hint_size"
+                        android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recy_physexam"
@@ -958,7 +990,7 @@
                     android:layout_below="@+id/pathistory_header_relative">
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/divider34"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -971,12 +1003,12 @@
                         android:id="@+id/pathist_details_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider"
+                        android:layout_below="@+id/divider34"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/details_personal_txtview21"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -1010,6 +1042,15 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/ll_patient_history_summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_personal_txtview21"
+
+                            android:orientation="vertical">
+
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <TextView
@@ -1022,7 +1063,8 @@
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
                         android:text="Test: here comes the patient history data in html format."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:textSize="@dimen/find_patient_hint_size"
+                        android:visibility="gone" />
 
 
                     <!--Fam History-->
@@ -1037,7 +1079,7 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
+                            android:id="@+id/details_personal_txtview55"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -1071,6 +1113,15 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/ll_family_history_summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_personal_txtview55"
+                            android:layout_marginBottom="@dimen/margin_16"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <TextView
@@ -1095,7 +1146,8 @@
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_margin_start"
                         android:text="Test: here comes data with bullets...."
-                        android:textSize="@dimen/find_patient_hint_size" />
+                        android:textSize="@dimen/find_patient_hint_size"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 

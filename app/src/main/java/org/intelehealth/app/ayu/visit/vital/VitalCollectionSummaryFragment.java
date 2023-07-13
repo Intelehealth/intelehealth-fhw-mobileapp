@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.vital;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import android.animation.ObjectAnimator;
@@ -32,11 +33,13 @@ import java.text.DecimalFormat;
  * create an instance of this fragment.
  */
 public class VitalCollectionSummaryFragment extends Fragment {
+    private static final String TAG = VitalCollectionSummaryFragment.class.getSimpleName();
 
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
     private VitalsObject mVitalsObject;
     private boolean mIsEditMode = false;
+
     public VitalCollectionSummaryFragment() {
         // Required empty public constructor
     }
@@ -62,35 +65,6 @@ public class VitalCollectionSummaryFragment extends Fragment {
         sessionManager = new SessionManager(context);
     }
 
-    private String convertFtoC(String temperature) {
-
-        if (temperature != null && temperature.length() > 0) {
-            String result = "";
-            double fTemp = Double.parseDouble(temperature);
-            double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i("TAG", "uploadTemperatureInC: " + cTemp);
-            DecimalFormat dtime = new DecimalFormat("#.##");
-            cTemp = Double.parseDouble(dtime.format(cTemp));
-            result = String.valueOf(cTemp);
-            return result;
-        }
-        return "";
-
-    }
-
-    private String convertCtoF(String temperature) {
-
-        String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = (a * 9 / 5) + 32;
-
-        DecimalFormat dtime = new DecimalFormat("#.##");
-        b = Double.parseDouble(dtime.format(b));
-
-        result = String.valueOf(b);
-        return result;
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,7 +98,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
 
         if (mVitalsObject.getTemperature() != null && !mVitalsObject.getTemperature().isEmpty()) {
             if (new ConfigUtils(getActivity()).fahrenheit()) {
-                ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(mVitalsObject.getTemperature()));
+                ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(TAG, mVitalsObject.getTemperature()));
             } else {
                 ((TextView) view.findViewById(R.id.tv_temperature)).setText(mVitalsObject.getTemperature());
             }
@@ -146,10 +120,10 @@ public class VitalCollectionSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mIsEditMode){
+                if (mIsEditMode) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
-                }else {
+                } else {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
                 }
             }

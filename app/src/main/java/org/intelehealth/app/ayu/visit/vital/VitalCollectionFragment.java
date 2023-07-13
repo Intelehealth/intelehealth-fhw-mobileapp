@@ -1,5 +1,8 @@
 package org.intelehealth.app.ayu.visit.vital;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertFtoC;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -106,8 +109,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         sessionManager = new SessionManager(context);
         configUtils = new ConfigUtils(context);
 
-        mHeightMasterList = getNumbersInRange(60, 250);
-        mWeightMasterList = getNumbersInRange(1, 150);
+        mHeightMasterList = getNumbersInRange(Integer.parseInt(AppConstants.MINIMUM_HEIGHT), Integer.parseInt(AppConstants.MAXIMUM_HEIGHT));
+        mWeightMasterList = getNumbersInRange(Integer.parseInt(AppConstants.MINIMUM_WEIGHT), Integer.parseInt(AppConstants.MAXIMUM_WEIGHT));
     }
 
     /*public List<Integer> getNumbersUsingIntStreamRange(int start, int end) {
@@ -117,7 +120,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }*/
     public List<Integer> getNumbersInRange(int start, int end) {
         List<Integer> result = new ArrayList<>();
-        for (int i = start; i < end; i++) {
+        for (int i = start; i <= end; i++) {
             result.add(i);
         }
         return result;
@@ -153,7 +156,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mPulseEditText = view.findViewById(R.id.etv_pulse);
         mRespEditText = view.findViewById(R.id.etv_respiratory_rate);
         mTemperatureEditText = view.findViewById(R.id.etv_temperature);
-        mTemperatureEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 2)});
+        mTemperatureEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
         // errors
         mHeightErrorTextView = view.findViewById(R.id.tv_height_error);
         mWeightErrorTextView = view.findViewById(R.id.tv_weight_error);
@@ -221,12 +224,114 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.etv_bp_sys) {
+            if (this.editText.getId() == R.id.etv_pulse) {
+                if (val.isEmpty()) {
+                    mPulseErrorTextView.setVisibility(View.VISIBLE);
+                    mPulseErrorTextView.setText(getString(R.string.error_field_required));
+                    mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
+
+                        mPulseErrorTextView.setText(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                        mPulseErrorTextView.setVisibility(View.VISIBLE);
+                        mPulseEditText.requestFocus();
+                        mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                    } else {
+                        mPulseErrorTextView.setVisibility(View.GONE);
+                        mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
+                    }
+
+                }
+            } else if (this.editText.getId() == R.id.etv_temperature) {
+                if (val.isEmpty()) {
+                    mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                    mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
+                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    if (configUtils.celsius()) {
+                        if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
+                                (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
+                            //et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                            mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                            mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                            mTemperatureEditText.requestFocus();
+                            mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                        } else {
+                            mTemperatureErrorTextView.setVisibility(View.GONE);
+                            mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
+                        }
+                    } else if (configUtils.fahrenheit()) {
+                        if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
+                                (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
+                            mTemperatureErrorTextView.setText(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                            mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                            mTemperatureEditText.requestFocus();
+                            mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                        } else {
+                            mTemperatureErrorTextView.setVisibility(View.GONE);
+                            mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
+                        }
+                    }
+
+                }
+            } else if (this.editText.getId() == R.id.etv_spo2) {
+                if (val.isEmpty()) {
+                    mSpo2ErrorTextView.setVisibility(View.VISIBLE);
+                    mSpo2ErrorTextView.setText(getString(R.string.error_field_required));
+                    mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
+                        mSpo2ErrorTextView.setText(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        mSpo2ErrorTextView.setVisibility(View.VISIBLE);
+                        mSpo2EditText.requestFocus();
+                        mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                    } else {
+                        mSpo2ErrorTextView.setVisibility(View.GONE);
+                        mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
+                    }
+
+                }
+            } else if (this.editText.getId() == R.id.etv_respiratory_rate) {
+                if (val.isEmpty()) {
+                    mRespErrorTextView.setVisibility(View.VISIBLE);
+                    mRespErrorTextView.setText(getString(R.string.error_field_required));
+                    mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                } else {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
+                        mRespErrorTextView.setText(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                        mRespErrorTextView.setVisibility(View.VISIBLE);
+                        mRespEditText.requestFocus();
+                        mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+
+                    } else {
+                        mRespErrorTextView.setVisibility(View.GONE);
+                        mRespEditText.setBackgroundResource(R.drawable.edittext_border);
+                    }
+
+                }
+            } else if (this.editText.getId() == R.id.etv_bp_sys) {
                 if (val.isEmpty()) {
                     mBpSysErrorTextView.setVisibility(View.VISIBLE);
                     mBpSysErrorTextView.setText(getString(R.string.error_field_required));
                     mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 } else {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
+                        //et.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+
+                        mBpSysErrorTextView.setText(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+                        mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                        mBpSysEditText.requestFocus();
+                        mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        return;
+                    }
                     String bpDia = mBpDiaEditText.getText().toString().trim();
                     if (bpDia.isEmpty()) {
                         mBpSysErrorTextView.setVisibility(View.GONE);
@@ -241,6 +346,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         } else {
                             mBpSysErrorTextView.setVisibility(View.GONE);
                             mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                            mBpDiaErrorTextView.setVisibility(View.GONE);
+                            mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                         }
                     }
                 }
@@ -250,6 +358,15 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
                     mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                 } else {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS))) {
+                        //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                        mBpDiaErrorTextView.setText(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                        mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                        mBpDiaEditText.requestFocus();
+                        mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                        return;
+                    }
                     String bpSys = mBpSysEditText.getText().toString().trim();
                     if (bpSys.isEmpty()) {
                         mBpDiaErrorTextView.setVisibility(View.GONE);
@@ -264,6 +381,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         } else {
                             mBpDiaErrorTextView.setVisibility(View.GONE);
                             mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
+                            mBpSysErrorTextView.setVisibility(View.GONE);
+                            mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+
                         }
                     }
                 }
@@ -392,7 +513,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
             if (results.getTemperature() != null && !results.getTemperature().isEmpty()) {
                 if (new ConfigUtils(getActivity()).fahrenheit()) {
-                    mTemperatureEditText.setText(convertCtoF(results.getTemperature()));
+                    mTemperatureEditText.setText(convertCtoF(TAG, results.getTemperature()));
                 } else {
                     mTemperatureEditText.setText(results.getTemperature());
                 }
@@ -456,7 +577,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
-        if (height!=null && weight!=null && height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
+        if (height != null && weight != null && height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
                 weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
 
             mBMITextView.setText("");
@@ -530,7 +651,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
                 //mTemperatureEditText.setText(value);
                 if (new ConfigUtils(getActivity()).fahrenheit()) {
-                    mTemperatureEditText.setText(convertCtoF(value));
+                    mTemperatureEditText.setText(convertCtoF(TAG, value));
                 } else {
                     mTemperatureEditText.setText(value);
                 }
@@ -849,7 +970,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
             if (mTemperatureEditText.getText() != null && !mTemperatureEditText.getText().toString().isEmpty()) {
                 if (configUtils.fahrenheit()) {
-                    results.setTemperature(convertFtoC(mTemperatureEditText.getText().toString()));
+                    results.setTemperature(convertFtoC(TAG, mTemperatureEditText.getText().toString()));
                 } else {
                     results.setTemperature((mTemperatureEditText.getText().toString()));
                 }
@@ -1095,16 +1216,20 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         return true;
     }
 
-    private String convertFtoC(String temperature) {
-
+    /*private String convertFtoC(String temperature) {
+        Log.i(TAG, "convertFtoC IN: " + temperature);
         if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadTemperatureInC: " + cTemp);
-            DecimalFormat dtime = new DecimalFormat("#.##");
+
+//            DecimalFormat dtime = new DecimalFormat("#.##");
+            DecimalFormat dtime = new DecimalFormat("#.#");
             cTemp = Double.parseDouble(dtime.format(cTemp));
-            result = String.valueOf(cTemp);
+            result = String.format("%.1f", cTemp);
+            //result = String.valueOf(cTemp);
+            Log.i(TAG, "convertFtoC OUT: " + result);
+
             return result;
         }
         return "";
@@ -1112,18 +1237,22 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     }
 
     private String convertCtoF(String temperature) {
+        Log.i(TAG, "convertCtoF IN: " + temperature);
+
         if (temperature == null) return "";
         String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
         Double b = (a * 9 / 5) + 32;
 
-        DecimalFormat dtime = new DecimalFormat("#.##");
+        //DecimalFormat dtime = new DecimalFormat("#.##");
+        DecimalFormat dtime = new DecimalFormat("#.#");
         b = Double.parseDouble(dtime.format(b));
-
-        result = String.valueOf(b);
+        result = String.format("%.1f", b);
+        //result = String.valueOf(b);
+        Log.i(TAG, "convertCtoF OUT: " + result);
         return result;
 
-    }
+    }*/
 
 
 }
