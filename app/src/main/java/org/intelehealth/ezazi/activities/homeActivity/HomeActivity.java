@@ -320,6 +320,10 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_ezazi);
         sessionManager = new SessionManager(this);
+        Log.e(TAG, "onNext: setChwname" + sessionManager.getChwname());
+        Log.e(TAG, "onNext: setCreatorID" + sessionManager.getCreatorID());
+        Log.e(TAG, "onNext: setSessionID" + sessionManager.getSessionID());
+        Log.e(TAG, "onNext: setProviderID" + sessionManager.getProviderID());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -1164,6 +1168,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     private void setActiveCasesCount() {
         String activeCases = getString(R.string.active_cases, mActivePatientAdapter.activeCasesCount());
         ((TextView) findViewById(R.id.tvActiveVisitLabel)).setText(activeCases);
+        mEndShiftTextView.setEnabled(mActivePatientAdapter.getItemCount() > 0);
     }
 
     public String fiveMinutesAgo(String timeStamp) throws ParseException {

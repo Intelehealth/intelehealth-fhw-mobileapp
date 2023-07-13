@@ -127,7 +127,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getCreatorID() != null && !sessionManager.getCreatorID().isEmpty()) {
             String socketUrl = BuildConfig.SOCKET_URL + "?userId="
-                    + sessionManager.getCreatorID()
+                    + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);
         }

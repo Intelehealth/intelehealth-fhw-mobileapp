@@ -333,7 +333,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      * to video call with selected doctor from list
      */
     private void showDoctorSelectionDialog() {
-        HashMap<String, String> doctors = getDoctorsDetails();
+        HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(patientUuid);
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_doctor)
                 .content(new ArrayList<>(doctors.keySet()))
