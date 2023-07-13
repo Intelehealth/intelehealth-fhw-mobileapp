@@ -874,6 +874,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid) {
+        Log.e(TAG, "assignNurseToPatient: " + selectedNurseUuid);
         VisitAttributeListDAO visitsAttrsDAO = new VisitAttributeListDAO();
         for (int j = 0; j < visitUUIDList.size(); j++) {
             try {

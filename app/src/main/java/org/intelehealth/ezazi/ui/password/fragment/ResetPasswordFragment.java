@@ -28,6 +28,7 @@ import org.intelehealth.ezazi.ui.password.viewmodel.PasswordViewModel;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -161,28 +162,31 @@ public class ResetPasswordFragment extends Fragment {
             @Override
             public void onValidatted(boolean isValid) {
                 // binding.btnSave.setEnabled(isValid);
+                binding.txtPasswordHint.setVisibility(!isValid ? View.VISIBLE : View.GONE);
                 isNewPasswordValid = isValid;
-                if (isNewPasswordValid && isConfirmPasswordValid) {
-                    binding.btnSave.setEnabled(true);
-                }
+                binding.btnSave.setEnabled(isNewPasswordValid && isConfirmPasswordValid);
             }
         }).validate(getString(R.string.error_invalid_pwd));
 
         new InputChangeValidationListener(binding.contentResetPassword.etConfirmPasswordLayout, new InputChangeValidationListener.InputValidator() {
             @Override
             public boolean validate(String text) {
-                return isValidPassword(text);
+                return isValidConfirmPassword();
             }
 
             @Override
             public void onValidatted(boolean isValid) {
                 //binding.btnSave.setEnabled(isValid);
                 isConfirmPasswordValid = isValid;
-                if (isNewPasswordValid && isConfirmPasswordValid) {
-                    binding.btnSave.setEnabled(true);
-                }
+                binding.btnSave.setEnabled(isNewPasswordValid && isConfirmPasswordValid);
             }
-        }).validate(getString(R.string.error_invalid_pwd));
+        }).validate(getString(R.string.password_not_matching));
+    }
+
+    private boolean isValidConfirmPassword() {
+        String newPwd = Objects.requireNonNull(binding.contentResetPassword.etNewPassword.getText()).toString();
+        String confPwd = Objects.requireNonNull(binding.contentResetPassword.etConfirmPassword.getText()).toString();
+        return newPwd.equals(confPwd);
     }
 
     public boolean isValidPassword(final String password) {

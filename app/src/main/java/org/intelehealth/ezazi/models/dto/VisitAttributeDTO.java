@@ -15,7 +15,7 @@ public class VisitAttributeDTO {
         this.uuid = uuid;
     }
 
-    public String getVisit_uuid() {
+    public String getVisitUuid() {
         return visit_uuid;
     }
 
@@ -31,7 +31,7 @@ public class VisitAttributeDTO {
         this.value = value;
     }
 
-    public String getVisit_attribute_type_uuid() {
+    public String getVisitAttributeTypeUuid() {
         return visit_attribute_type_uuid;
     }
 

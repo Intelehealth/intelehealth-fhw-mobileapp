@@ -8,13 +8,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.models.Patient;
-import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -37,7 +34,10 @@ public class VisitAttributeListDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
+            Log.d("SPECI", "SIZEVISTATTR: Total attr => " + visitAttributeDTOS.size());
             for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
+//                if (checkVisitAttributesExist(visitDTO, db)) updateVisitAttributes(visitDTO, db);
+//                else
                 createVisitAttributeList(visitDTO, db);
             }
             db.setTransactionSuccessful();
@@ -46,10 +46,40 @@ public class VisitAttributeListDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-
         }
 
         return isInserted;
+    }
+
+    private boolean checkVisitAttributesExist(VisitAttributeDTO attribute, SQLiteDatabase db) {
+        String[] args = {attribute.getVisitUuid(), attribute.getVisitAttributeTypeUuid()};
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit_attribute WHERE visit_uuid = ? AND visit_attribute_type_uuid = ?", args);
+        return cursor.getCount() > 0;
+    }
+
+    private boolean updateVisitAttributes(VisitAttributeDTO attribute, SQLiteDatabase db) {
+        boolean isCreated = true;
+        ContentValues values = new ContentValues();
+        String where = "visit_uuid=? AND visit_attribute_type_uuid=?";
+        String whereArgs[] = {attribute.getVisitUuid(), attribute.getVisitAttributeTypeUuid()};
+        try {
+            Log.d("SPECI", "SIZEVISTATTR: Visit Id => " + attribute.getVisitUuid());
+            Log.d("SPECI", "SIZEVISTATTR: VisitAttributeTypeUuid => " + attribute.getVisitAttributeTypeUuid());
+//            values.put("speciality_value", visitDTO.getValue());
+            values.put("voided", attribute.getVoided());
+            values.put("sync", "1");
+
+            createdRecordsCount = db.update("tbl_visit_attribute", values, where, whereArgs);
+
+            if (createdRecordsCount != -1) {
+                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+            } else {
+                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+            }
+        } catch (SQLException e) {
+            isCreated = false;
+        }
+        return isCreated;
     }
 
     private boolean createVisitAttributeList(VisitAttributeDTO visitDTO, SQLiteDatabase db) throws DAOException {
@@ -57,26 +87,26 @@ public class VisitAttributeListDAO {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         String where = "visit_uuid=?";
-        String whereArgs[] = {visitDTO.getVisit_uuid()};
+        String whereArgs[] = {visitDTO.getVisitUuid()};
         try {
 
 //            values.put("speciality_value", visitDTO.getValue());
             values.put("uuid", visitDTO.getUuid());
-            values.put("visit_uuid", visitDTO.getVisit_uuid());
+            values.put("visit_uuid", visitDTO.getVisitUuid());
             values.put("value", visitDTO.getValue());
-            values.put("visit_attribute_type_uuid", visitDTO.getVisit_attribute_type_uuid());
+            values.put("visit_attribute_type_uuid", visitDTO.getVisitAttributeTypeUuid());
             values.put("voided", visitDTO.getVoided());
             values.put("sync", "1");
 
-            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d") || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_HOLDER)) {
-                createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+//            if (visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d") || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_HOLDER)) {
+            createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                if (createdRecordsCount != -1) {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                } else {
-                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                }
+            if (createdRecordsCount != -1) {
+                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+            } else {
+                Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
             }
+//            }
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
