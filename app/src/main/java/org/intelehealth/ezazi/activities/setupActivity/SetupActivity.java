@@ -1479,6 +1479,10 @@ public class SetupActivity extends AppCompatActivity {
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                Log.e(TAG, "onNext: setChwname" + sessionManager.getChwname());
+                Log.e(TAG, "onNext: setCreatorID" + sessionManager.getCreatorID());
+                Log.e(TAG, "onNext: setSessionID" + sessionManager.getSessionID());
+                Log.e(TAG, "onNext: setProviderID" + sessionManager.getProviderID());
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
                 if (authencated) {

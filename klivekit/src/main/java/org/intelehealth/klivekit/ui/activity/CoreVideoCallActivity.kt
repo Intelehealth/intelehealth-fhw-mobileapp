@@ -288,12 +288,13 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     open fun endCall() {
-        sayBye("Call ended by you")
+        sayBye("Call ended by you", "app")
     }
 
-    open fun sayBye(arg: String? = null) {
+    open fun sayBye(message: String, arg: String? = null) {
+        showToast(message)
         arg?.let {
-            showToast("Call ended by You")
+            socketViewModel.emit("bye", args)
         }
         finish()
     }
