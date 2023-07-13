@@ -14,4 +14,9 @@ class ActiveUser(
     val callStatus: String? = null,
     val room: String? = null,
     var sid: String? = null
-)
+){
+    fun isOnline() = status == "online"
+
+    fun isCalling() = callStatus == "calling"
+
+}
