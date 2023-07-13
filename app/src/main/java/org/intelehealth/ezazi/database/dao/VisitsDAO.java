@@ -7,8 +7,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.builder.QueryBuilder;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VisitsDAO {
+    private static final String TAG = "VisitsDAO";
 
 
     private long createdRecordsCount = 0;
@@ -246,6 +249,7 @@ public class VisitsDAO {
 
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
                 list = fetchVisitAttr_Speciality(visitDTO.getUuid());
+
                 visitDTO.setAttributes(list);
 //                visitDTOList.add(visitDTO);
 
@@ -279,22 +283,18 @@ public class VisitsDAO {
 
     private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
-        VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
-
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
 //        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=? AND visit_uuid=?",
 //                new String[] {"0", visit_uuid});
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
-                new String[]{/*"0", */visit_uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? group by value", new String[]{/*"0", */visit_uuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
-
+                VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
                 speciality.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                speciality.setAttributeType(cursor.getString
-                        (cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                speciality.setAttributeType(cursor.getString(cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
                 speciality.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
                 list.add(speciality);
             }
@@ -413,8 +413,7 @@ public class VisitsDAO {
         String visitUUID = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? ",
-                new String[]{patientUUID});
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ? ", new String[]{patientUUID});
 
         if (cursor.getCount() > 0) { // ie. visit is created for this patient
             while (cursor.moveToNext()) {
@@ -462,8 +461,7 @@ public class VisitsDAO {
         try {
             values.put("isdownloaded", isupdated);
             updatedcount = db.update("tbl_visit", values, whereclause, whereargs);
-            if (updatedcount != 0)
-                isUpdated = true;
+            if (updatedcount != 0) isUpdated = true;
             Logger.logD("visit", "updated isdownloaded" + updatedcount);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
@@ -531,13 +529,7 @@ public class VisitsDAO {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
 //        db.beginTransaction();
-        String query = new QueryBuilder().select("uuid, patientuuid, locationuuid, startdate, enddate, creator, visit_type_uuid")
-                .from(" tbl_visit ")
-                .where("uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
-                        "AND voided = '0' AND creator = '" + creatorID + "'")
-                .groupBy("uuid")
-                .orderBy("startdate")
-                .orderIn("DESC").build();
+        String query = new QueryBuilder().select("uuid, patientuuid, locationuuid, startdate, enddate, creator, visit_type_uuid").from(" tbl_visit ").where("uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " + "AND voided = '0' AND creator = '" + creatorID + "'").groupBy("uuid").orderBy("startdate").orderIn("DESC").build();
 //        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
         Cursor idCursor = db.rawQuery(query, null);
         VisitDTO visitDTO = new VisitDTO();
@@ -565,14 +557,7 @@ public class VisitsDAO {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
 //        db.beginTransaction();
-        String query = new QueryBuilder().select("V.uuid, V.patientuuid, V.locationuuid, V.startdate, V.enddate, V.creator, V.visit_type_uuid")
-                .from("tbl_visit V")
-                .join(" LEFT OUTER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid ")
-                .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
-                        "AND V.voided = '0' AND VA.value = '" + providerId + "'")
-                .groupBy("V.uuid")
-                .orderBy("V.startdate")
-                .orderIn("DESC").build();
+        String query = new QueryBuilder().select("V.uuid, V.patientuuid, V.locationuuid, V.startdate, V.enddate, V.creator, V.visit_type_uuid").from("tbl_visit V").join(" LEFT OUTER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid ").where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " + "AND V.voided = '0' AND VA.value = '" + providerId + "'").groupBy("V.uuid").orderBy("V.startdate").orderIn("DESC").build();
 //        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
         Cursor idCursor = db.rawQuery(query, null);
         VisitDTO visitDTO = new VisitDTO();
@@ -598,8 +583,7 @@ public class VisitsDAO {
 
     public String getPatientVisitUuid(String patientUuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ?",
-                new String[]{patientUuid});
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ?", new String[]{patientUuid});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 return idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));

@@ -19,6 +19,7 @@ import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
+import org.intelehealth.ezazi.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Address;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientsFrameJson {
+    private static final String TAG = "PatientsFrameJson";
     private PatientsDAO patientsDAO = new PatientsDAO();
     private SessionManager session;
     private VisitsDAO visitsDAO = new VisitsDAO();
@@ -63,7 +65,6 @@ public class PatientsFrameJson {
                 List<Visit> visitList = new ArrayList<>();
                 List<Encounter> encounterList = new ArrayList<>();
 
-                Log.e("PushRequestApiCall", "frameJson: " + new Gson().toJson(encounterDTOList));
 
                 if (patientDTOList != null) {
                     for (int i = 0; i < patientDTOList.size(); i++) {
@@ -132,6 +133,12 @@ public class PatientsFrameJson {
                         visit.setStopDatetime(visitDTO.getEnddate());
                         visit.setAttributes(visitDTO.getAttributes());
                         visitList.add(visit);
+                        for(int i=0;i<visitDTO.getAttributes().size();i++){
+                            VisitAttribute_Speciality visitAttribute_speciality = visitDTO.getAttributes().get(i);
+                            Log.d(TAG, "call: args  : "+visitAttribute_speciality.getAttributeType());
+                            Log.d(TAG, "call: args  : "+visitAttribute_speciality.getValue());
+
+                        }
                     }
 
                 }
@@ -284,6 +291,8 @@ public class PatientsFrameJson {
 
             }
         }
+
+        Log.e(TAG, "frameJson:visitDTOList.size:  "+visitDTOList.size());
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
             if (visitDTO.getAttributes().size() > 0) {
@@ -295,6 +304,8 @@ public class PatientsFrameJson {
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
                 visitList.add(visit);
+                Log.e("print attrs", "call: " + new Gson().toJson(visitDTO.getAttributes()));
+
             }
 
         }
