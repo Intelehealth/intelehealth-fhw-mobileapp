@@ -1678,8 +1678,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="upcoming_appointments">Upcoming appointments</string>
     <string name="cancelled_appointments">Cancelled appointments</string>
     <string name="completed_appointments">Completed appointments</string>
-    <string name="appointment_details">Appointment details
-</string>
+    <string name="appointment_details">Appointment details</string>
     <string name="remind_doctor">Remind doctor</string>
     <string name="end_visit">End visit</string>
     <string name="view_patient_history">View patient history</string>
@@ -2117,7 +2116,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="testing">Testing</string>
     <string name="server">Server</string>
     <string name="citizen_id">Citizen ID</string>
-    
+
     <string name="no_data_added">No data added</string>
     <string name="close_all">Close all</string>
     <string name="open_all">Open all</string>

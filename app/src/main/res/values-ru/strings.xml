@@ -6,7 +6,7 @@
     <string name="hint_required" translatable="false">Обязательно</string>
     <string name="hint_optional" translatable="false">Необязательно</string>
     <string name="tag_optional" translatable="false">необязательно</string>
-    <string name="generic_ok">OK</string>
+    <string name="generic_ok">Ok</string>
     <string name="generic_cancel">Отменить</string>
     <string name="generic_yes">Да</string>
     <string name="generic_no">Нет</string>
@@ -911,6 +911,9 @@
     <string name="doctor_speciality">Специальность врача</string>
     <string name="priority_visits">Приоритетные визиты</string>
 
+    <string name="visit_successfully_sent">Визит успешно отправлен!</string>
+    <string name="patient_visit_sent">Визит пациента успешно отправлен врачу.</string>
+
     <string name="close_all">Закрыть всё</string>
     <string name="open_all">Открыть все</string>
     <string name="send_visit_button">Отправьте визит</string>
@@ -923,5 +926,8 @@
     <string name="are_you_sure_you_want_to_send_visit">Вы уверены, что хотите отправить визит к врачу?</string>
     <string name="select_hospital_type">Выберите тип больницы</string>
     <string name="please_select_hospital_type_msg">Пожалуйста выберите тип больницы</string>
+
+    <string name="schedule_appointment">Schedule appointment</string>
+
 
 </resources>

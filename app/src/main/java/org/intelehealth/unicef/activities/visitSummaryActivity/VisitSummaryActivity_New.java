@@ -2644,7 +2644,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         boolean isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
                             // ie. visit is uploded successfully.
-                            visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon), getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                            visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon), getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.generic_ok));
 
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
