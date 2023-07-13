@@ -151,9 +151,9 @@ public class PatientAddressInfoFragment extends Fragment {
         etDistrict = view.findViewById(R.id.et_district);
         etCityVillage = view.findViewById(R.id.et_city_village);
 
-       // etCityVillage.setFilters(new InputFilter[]{filter});
-      //  autotvState.setFilters(new InputFilter[]{filter});
-       // autotvDistrict.setFilters(new InputFilter[]{filter});
+        // etCityVillage.setFilters(new InputFilter[]{filter});
+        //  autotvState.setFilters(new InputFilter[]{filter});
+        // autotvDistrict.setFilters(new InputFilter[]{filter});
 
 
         autotvState.addTextChangedListener(new MyTextWatcher(autotvState));
@@ -165,7 +165,6 @@ public class PatientAddressInfoFragment extends Fragment {
         firstScreen = new PatientPersonalInfoFragment();
         fragment_thirdScreen = new PatientOtherInfoFragment();
         if (getArguments() != null) {
-            Log.d(TAG, "initUI: get args is not null");
             patientDTO = (PatientDTO) getArguments().getSerializable("patientDTO");
             fromThirdScreen = getArguments().getBoolean("fromThirdScreen");
             fromFirstScreen = getArguments().getBoolean("fromFirstScreen");
@@ -265,10 +264,6 @@ public class PatientAddressInfoFragment extends Fragment {
 
                 }
             }
-            Log.d(TAG, "onActivityCreated: applang : " + sessionManager.getAppLanguage());
-            Log.d(TAG, "onActivityCreated: mCountryName : " + mCountryName);
-            Log.d(TAG, "onActivityCreated: mStateName : " + mStateName);
-
 
             if (mCountryName.equalsIgnoreCase(sessionManager.getAppLanguage().equals("en") ? "India" : "भारत")) {
                 mIsIndiaSelected = true;
@@ -317,12 +312,11 @@ public class PatientAddressInfoFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
                     String distName = parent.getItemAtPosition(position).toString();
-                    if (!distName.equalsIgnoreCase(mDistName)) etCityVillage.setText("");
+                   // if (!distName.equalsIgnoreCase(mDistName)) etCityVillage.setText("");
                     mDistName = parent.getItemAtPosition(position).toString();
                     mDistNameEn = mLastSelectedDistList.get(position - 1).getName();
                     tvDistrictError.setVisibility(View.GONE);
                     //autotvDistrict.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-                    tvErrorCityVillage.setVisibility(View.GONE);
                     //etCityVillage.setBackgroundResource(R.drawable.bg_input_fieldnew);
 
                     //   if (!fromThirdScreen || fromFirstScreen) {
@@ -490,55 +484,9 @@ public class PatientAddressInfoFragment extends Fragment {
             tvErrorCountry.setVisibility(View.GONE);
             cardCountry.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }*/
-        String stateText = autotvState.getText().toString();
 
-        boolean isStateInList = searchForState(stateText);
-        if (TextUtils.isEmpty(stateText) || !isStateInList) {
-
-            tvErrorState.setVisibility(View.VISIBLE);
-            tvErrorState.setText(getString(R.string.select_state));
-            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+        if (!areValidFields()) {
             return;
-
-        } else {
-            tvErrorState.setVisibility(View.GONE);
-            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
-        }
-        String isDistrictString = searchForDistrict(autotvDistrict.getText().toString());
-        if (TextUtils.isEmpty(autotvDistrict.getText().toString()) || isDistrictString.equalsIgnoreCase("notInList")) {
-
-            tvDistrictError.setVisibility(View.VISIBLE);
-            tvDistrictError.setText(getString(R.string.select_district));
-            cardDistrict.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-            return;
-        } else {
-            tvDistrictError.setVisibility(View.GONE);
-            cardDistrict.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-        if (TextUtils.isEmpty(etCityVillage.getText().toString())) {
-
-            tvErrorCityVillage.setVisibility(View.VISIBLE);
-            tvErrorCityVillage.setText(getString(R.string.select_city_village));
-            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-            return;
-        } else {
-            tvErrorCityVillage.setVisibility(View.GONE);
-            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-        String postalCode = etPostalCode.getText().toString();
-        if (!postalCode.isEmpty() && postalCode.length() != 6) {
-
-            tvErrorPostalCode.setVisibility(View.VISIBLE);
-            tvErrorPostalCode.setText(getString(R.string.enter_postal_limit));
-            cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-            return;
-
-        } else {
-            tvErrorPostalCode.setVisibility(View.GONE);
-            cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -561,9 +509,6 @@ public class PatientAddressInfoFragment extends Fragment {
             mCityVillageName = etCityVillage.getText().toString().trim();
             patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? autotvState.getText().toString() : mStateName));
             patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? autotvDistrict.getText().toString() : mDistName) + ":" + mCityVillageName));
-
-            Log.d(TAG, "onPatientCreateClicked: state : " + StringUtils.getValue(mIsIndiaSelected ? autotvState.getText().toString() : mStateName));
-            Log.d(TAG, "onPatientCreateClicked: district : " + StringUtils.getValue((mIsIndiaSelected ? autotvDistrict.getText().toString() : mDistName) + ":" + mCityVillageName));
 
             if (!sessionManager.getAppLanguage().equals("en")) {
                 patientDTO.setCountry(StringUtils.getValue(mCountryNameEn));
@@ -654,6 +599,79 @@ public class PatientAddressInfoFragment extends Fragment {
         }
     }
 
+    private boolean areValidFields() {
+        List<ErrorManagerModel> errorDetailsList = new ArrayList<>();
+
+        String stateText = autotvState.getText().toString();
+        boolean isStateInList = searchForState(stateText);
+        if (TextUtils.isEmpty(stateText) || !isStateInList) {
+
+            /*tvErrorState.setVisibility(View.VISIBLE);
+            tvErrorState.setText(getString(R.string.select_state));
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            errorDetailsList.add(new ErrorManagerModel(autotvState, tvErrorState, getString(R.string.select_state), cardState));
+        } else {
+            tvErrorState.setVisibility(View.GONE);
+            cardState.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+        }
+        String isDistrictString = searchForDistrict(autotvDistrict.getText().toString());
+        if (TextUtils.isEmpty(autotvDistrict.getText().toString()) || isDistrictString.equalsIgnoreCase("notInList")) {
+
+            /*tvDistrictError.setVisibility(View.VISIBLE);
+            tvDistrictError.setText(getString(R.string.select_district));*/
+            cardDistrict.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+            errorDetailsList.add(new ErrorManagerModel(autotvDistrict, tvDistrictError, getString(R.string.select_district), cardDistrict));
+
+        } else {
+            tvDistrictError.setVisibility(View.GONE);
+            cardDistrict.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        if (TextUtils.isEmpty(etCityVillage.getText().toString())) {
+
+         /*   tvErrorCityVillage.setVisibility(View.VISIBLE);
+            tvErrorCityVillage.setText(getString(R.string.select_city_village));
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            errorDetailsList.add(new ErrorManagerModel(etCityVillage, tvErrorCityVillage, getString(R.string.select_city_village), cardCityVillage));
+
+        } else {
+            tvErrorCityVillage.setVisibility(View.GONE);
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+        String postalCode = etPostalCode.getText().toString();
+        if (!postalCode.isEmpty() && postalCode.length() != 6) {
+
+        /*    tvErrorPostalCode.setVisibility(View.VISIBLE);
+            tvErrorPostalCode.setText(getString(R.string.enter_postal_limit));
+            cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            //errorDetailsList.add(new ErrorManagerModel(etPostalCode, tvErrorPostalCode, getString(R.string.enter_postal_limit), cardPostalCode));
+            errorDetailsList.add(new ErrorManagerModel(etPostalCode, tvErrorPostalCode, getString(R.string.enter_postal_limit), cardPostalCode));
+
+        } else {
+            tvErrorPostalCode.setVisibility(View.GONE);
+            cardPostalCode.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
+
+        if (autotvState.getText().toString().isEmpty() && autotvDistrict.getText().toString().isEmpty() && etCityVillage.getText().toString().isEmpty()) {
+            Toast.makeText(mContext, getResources().getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+        }
+        if (errorDetailsList.size() > 0) {
+            for (int i = 0; i < errorDetailsList.size(); i++) {
+                ErrorManagerModel errorModel = errorDetailsList.get(i);
+                if (i == 0) {
+                    errorModel.view.requestFocus();
+                }
+                errorModel.tvError.setVisibility(View.VISIBLE);
+                errorModel.tvError.setText(errorModel.getErrorMessage());
+                errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     class MyTextWatcher implements TextWatcher {
         EditText editText;
@@ -689,7 +707,6 @@ public class PatientAddressInfoFragment extends Fragment {
 
             if (val.length() > 0) {
                 if (this.editText.getId() == R.id.autotv_state) {
-                    Log.d(TAG, "afterTextChanged: in state watchr");
                     boolean isStateInList = searchForState(val);
                     if (val.isEmpty() || !isStateInList) {
 

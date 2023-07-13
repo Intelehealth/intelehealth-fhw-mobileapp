@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -9,18 +10,31 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.ezazi.R;
+import org.w3c.dom.Text;
 
 /**
  * Created by Kaveri Zaware on 10-07-2023
  * email - kaveri@intelehealth.org
  **/
 public class ErrorManagerModel {
-    public TextInputEditText getTextInputEditText() {
-        return inputFieldName;
+    public View view;
+    TextView tvError;
+    String errorMessage;
+    MaterialCardView cardView;
+
+    public View getView() {
+        return view;
     }
 
-    public void setTextInputEditText(TextInputEditText textInputEditText) {
-        this.inputFieldName = textInputEditText;
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public ErrorManagerModel(View view, TextView tvError, String errorMessage, MaterialCardView cardView) {
+        this.view = view;
+        this.tvError = tvError;
+        this.errorMessage = errorMessage;
+        this.cardView = cardView;
     }
 
     public TextView getTvError() {
@@ -46,19 +60,5 @@ public class ErrorManagerModel {
     public void setCardView(MaterialCardView cardView) {
         this.cardView = cardView;
     }
-
-    TextInputEditText inputFieldName;
-    TextView tvError;
-    String errorMessage;
-
-    public ErrorManagerModel(TextInputEditText inputFieldName, TextView tvError, String errorMessage, MaterialCardView cardView) {
-        this.inputFieldName = inputFieldName;
-        this.tvError = tvError;
-        this.errorMessage = errorMessage;
-        this.cardView = cardView;
-    }
-
-    MaterialCardView cardView;
-
 
 }
