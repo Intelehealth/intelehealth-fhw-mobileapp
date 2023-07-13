@@ -28,6 +28,9 @@ import org.intelehealth.ezazi.ui.password.viewmodel.PasswordViewModel;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Kaveri Zaware on 05-07-2023
  * email - kaveri@intelehealth.org
@@ -152,7 +155,7 @@ public class ResetPasswordFragment extends Fragment {
         new InputChangeValidationListener(binding.contentResetPassword.etNewPasswordLayout, new InputChangeValidationListener.InputValidator() {
             @Override
             public boolean validate(String text) {
-                return isPasswordValid(text);
+                return isValidPassword(text);
             }
 
             @Override
@@ -168,7 +171,7 @@ public class ResetPasswordFragment extends Fragment {
         new InputChangeValidationListener(binding.contentResetPassword.etConfirmPasswordLayout, new InputChangeValidationListener.InputValidator() {
             @Override
             public boolean validate(String text) {
-                return isPasswordValid(text);
+                return isValidPassword(text);
             }
 
             @Override
@@ -180,8 +183,18 @@ public class ResetPasswordFragment extends Fragment {
                 }
             }
         }).validate(getString(R.string.error_invalid_password));
-
-
     }
 
+    public boolean isValidPassword(final String password) {
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
+    }
 }

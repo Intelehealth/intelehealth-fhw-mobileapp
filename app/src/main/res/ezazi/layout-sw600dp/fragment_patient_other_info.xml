@@ -8,8 +8,11 @@
     tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
     <ScrollView
+        android:id="@+id/scroll_other_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_marginBottom="100dp"
         android:background="@drawable/container_bg_rounded"
         android:padding="@dimen/screen_container_padding"

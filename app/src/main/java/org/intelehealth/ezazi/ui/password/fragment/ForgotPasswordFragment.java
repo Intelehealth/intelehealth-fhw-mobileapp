@@ -98,7 +98,6 @@ public class ForgotPasswordFragment extends Fragment {
     private void observeData() {
         //success
         viewModel.requestOTPResponseData.observe(getViewLifecycleOwner(), requestOTPResult -> {
-            Log.d(TAG, "observeData: ");
             if (requestOTPResult != null && requestOTPResult.getUserUuid() != null) {
                 Toast.makeText(mContext, getResources().getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
 

@@ -983,7 +983,7 @@
     <string name="select_admission_time">Please select admission time</string>
     <string name="select_sac_ruptured_date">Select amniotic sac ruptured date</string>
     <string name="select_sac_ruptured_time">Select amniotic sac ruptured time</string>
-    <string name="enter_bed_no">Enter bed number</string>
+    <string name="enter_bed_no">Please enter bed number</string>
     <string name="select_country">Please select country</string>
     <string name="select_state">Please select state</string>
     <string name="select_city_village">Please enter city/village</string>

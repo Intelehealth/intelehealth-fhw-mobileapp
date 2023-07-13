@@ -260,16 +260,16 @@ public class PatientPersonalInfoFragment extends Fragment {
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
 
-      /*  mFirstName.addTextChangedListener(new MyTextWatcher(mFirstName));
+        mFirstName.addTextChangedListener(new MyTextWatcher(mFirstName));
         mLastName.addTextChangedListener(new MyTextWatcher(mLastName));
         mDOB.addTextChangedListener(new MyTextWatcher(mDOB));
         mAge.addTextChangedListener(new MyTextWatcher(mAge));
         mMobileNumber.addTextChangedListener(new MyTextWatcher(mMobileNumber));
-        mAlternateNumber.addTextChangedListener(new MyTextWatcher(mAlternateNumber));*/
+        mAlternateNumber.addTextChangedListener(new MyTextWatcher(mAlternateNumber));
 
         setDetailsAsPerConfigFile();
-        updatePatientDetailsFromSecondScreen();
         updatePatientDetailsFromSummary();
+        updatePatientDetailsFromSecondScreen();
         handleClickListeners();
     }
 
@@ -1024,7 +1024,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             for (int i = 0; i < errorDetailsList.size(); i++) {
                 ErrorManagerModel errorModel = errorDetailsList.get(i);
                 if (i == 0) {
-                    errorModel.inputFieldName.requestFocus();
+                    errorModel.view.requestFocus();
                 }
                 errorModel.tvError.setVisibility(View.VISIBLE);
                 errorModel.tvError.setText(errorModel.getErrorMessage());

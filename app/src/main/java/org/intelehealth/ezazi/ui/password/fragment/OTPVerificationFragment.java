@@ -171,7 +171,7 @@ public class OTPVerificationFragment extends Fragment {
             pinEntryEditText.setText("");
             tvResendOtp.setEnabled(false);
             String resendTime = getResources().getString(R.string.resend_otp_in);
-            new CountDownTimer(30000, 1000) {
+            new CountDownTimer(60000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     String time = resendTime + " " + millisUntilFinished / 1000 + " " + mContext.getResources().getString(R.string.seconds);
