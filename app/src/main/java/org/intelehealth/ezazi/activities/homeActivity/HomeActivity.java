@@ -817,7 +817,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             for (int i = 0; i < mProviderNurseList.size(); i++) {
                 if (!mProviderNurseList.get(i).getUserUuid().equals(myCreatorUUID)) {
                     nurseNames[count] = mProviderNurseList.get(i).getGivenName() + " " + mProviderNurseList.get(i).getFamilyName();
-                    nurseUUID[count] = mProviderNurseList.get(i).getUserUuid();
+                    nurseUUID[count] = mProviderNurseList.get(i).getUuid();
                     count++;
                 }
 
