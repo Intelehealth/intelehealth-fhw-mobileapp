@@ -63,7 +63,11 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
     public void setError(@Nullable CharSequence errorText) {
         super.setError(errorText);
         TextView errorView = findViewById(R.id.textinput_error);
+        View errorIcon = findViewById(R.id.text_input_error_icon);
         if (errorView != null) errorView.setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
+        if (errorIcon != null && getEditText() != null) {
+            errorIcon.setActivated(getEditText().getTransformationMethod() == HideReturnsTransformationMethod.getInstance());
+        }
         activeErrorClickIfInputIsPassword();
     }
 
