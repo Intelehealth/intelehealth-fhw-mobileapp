@@ -8,6 +8,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +31,7 @@ public class VisitAttributeListDAO {
 
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
+        Log.d(TAG, "insertProvidersAttributeList: " + new Gson().toJson(visitAttributeDTOS));
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -36,9 +39,9 @@ public class VisitAttributeListDAO {
         try {
             Log.d("SPECI", "SIZEVISTATTR: Total attr => " + visitAttributeDTOS.size());
             for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
-//                if (checkVisitAttributesExist(visitDTO, db)) updateVisitAttributes(visitDTO, db);
-//                else
-                createVisitAttributeList(visitDTO, db);
+                if (checkVisitAttributesExist(visitDTO, db)) updateVisitAttributes(visitDTO, db);
+                else
+                    createVisitAttributeList(visitDTO, db);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -68,6 +71,7 @@ public class VisitAttributeListDAO {
 //            values.put("speciality_value", visitDTO.getValue());
             values.put("voided", attribute.getVoided());
             values.put("sync", "1");
+            values.put("value", attribute.getValue());
 
             createdRecordsCount = db.update("tbl_visit_attribute", values, where, whereArgs);
 
@@ -98,9 +102,9 @@ public class VisitAttributeListDAO {
             values.put("voided", visitDTO.getVoided());
             values.put("sync", "1");
 
-//            if (visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d") || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_HOLDER)) {
-            createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-
+            if (visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d") || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_HOLDER)) {
+                createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            }
             if (createdRecordsCount != -1) {
                 Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
             } else {
