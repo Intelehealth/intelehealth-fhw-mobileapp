@@ -874,11 +874,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid) {
+        Log.e(TAG, "assignNurseToPatient: " + selectedNurseUuid);
         VisitAttributeListDAO visitsAttrsDAO = new VisitAttributeListDAO();
         for (int j = 0; j < visitUUIDList.size(); j++) {
             try {
                 visitsAttrsDAO.updateVisitTypeAttributeUuid(visitUUIDList.get(j), selectedNurseUuid);
-
+                new VisitsDAO().updateVisitSync(visitUUIDList.get(j), "0");
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }

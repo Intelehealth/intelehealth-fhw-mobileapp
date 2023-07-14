@@ -65,7 +65,7 @@ public class PatientsFrameJson {
         List<Visit> visitList = new ArrayList<>();
         List<Encounter> encounterList = new ArrayList<>();
 
-        Log.e("PushRequestApiCall", "frameJson: " + new Gson().toJson(encounterList));
+        Log.e("PushRequestApiCall", "frameJson: " + new Gson().toJson(visitDTOList));
 
         if (patientDTOList != null) {
             for (int i = 0; i < patientDTOList.size(); i++) {

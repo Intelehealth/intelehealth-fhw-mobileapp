@@ -1,7 +1,16 @@
 WebRtc
 1 - Call initiate from doctor to health second time getting close with message hw end the call.
 2 - Second time call connection issue for HW -> doctor
-
+1	61aa72ba-40dd-41e8-b860-7431447c2e7d
+12K0U-6
+Shift1 Test
+Selected patients : 1
+Visit Uuid =>c89010d6-ecd2-4134-93ac-ae5783b63185
+assignNurseToPatient: bab36595-4d50-4879-ac59-c84e6a9b6722
+22:54:39.301  E  onNext: setChwname = nurseuat
+22:54:39.301  E  onNext: setCreatorID = 13e5798f-7d80-4ff9-83d3-a30fac4ff240
+22:54:39.301  E  onNext: setSessionID = 21B391891C4DED5060FEC4655D9FA798
+22:54:39.301  E  onNext: setProviderID = 9d3a18d5-44c6-44c0-bd26-784f7d55c3bc
 
 https://ezazi.intelehealth.org:3000/api/getToken?
 name=doctorUuid

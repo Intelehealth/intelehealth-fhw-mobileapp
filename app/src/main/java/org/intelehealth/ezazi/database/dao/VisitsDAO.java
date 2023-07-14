@@ -7,10 +7,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.builder.QueryBuilder;
@@ -120,8 +118,8 @@ public class VisitsDAO {
             for (VisitAttributeDTO visit : visitAttributeDTOS) {
                 values.put("uuid", visit.getUuid());
                 values.put("value", visit.getValue());
-                values.put("visit_attribute_type_uuid", visit.getVisit_attribute_type_uuid());
-                values.put("visituuid", visit.getVisit_uuid());
+                values.put("visit_attribute_type_uuid", visit.getVisitAttributeTypeUuid());
+                values.put("visituuid", visit.getVisitUuid());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", "true");
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
