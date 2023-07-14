@@ -162,7 +162,6 @@ public class ResetPasswordFragment extends Fragment {
             @Override
             public void onValidatted(boolean isValid) {
                 // binding.btnSave.setEnabled(isValid);
-                binding.txtPasswordHint.setVisibility(!isValid ? View.VISIBLE : View.GONE);
                 isNewPasswordValid = isValid;
                 binding.btnSave.setEnabled(isNewPasswordValid && isConfirmPasswordValid);
             }

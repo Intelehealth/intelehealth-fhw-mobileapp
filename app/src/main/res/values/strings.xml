@@ -53,7 +53,7 @@
     <string name="error_require_password">Password is required</string>
     <string name="error_invalid_password">8+ characters required for password</string>
     <string name="error_invalid_pwd">Invalid Password</string>
-    <string name="reset_password_hint">Password must be at least 8 character,\ncombination of a special character, digit, lower and an upper case letter\n and no whitespace.</string>
+    <string name="reset_password_hint">Password must be of atleast 8 characters &amp; a mix of upper &amp; lower case letters, numbers &amp; symbols.</string>
     <string name="error_incorrect_password">please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
