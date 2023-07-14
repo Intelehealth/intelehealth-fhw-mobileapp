@@ -40,8 +40,7 @@ public class VisitAttributeListDAO {
             Log.d("SPECI", "SIZEVISTATTR: Total attr => " + visitAttributeDTOS.size());
             for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
                 if (checkVisitAttributesExist(visitDTO, db)) updateVisitAttributes(visitDTO, db);
-                else
-                    createVisitAttributeList(visitDTO, db);
+                else createVisitAttributeList(visitDTO, db);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
