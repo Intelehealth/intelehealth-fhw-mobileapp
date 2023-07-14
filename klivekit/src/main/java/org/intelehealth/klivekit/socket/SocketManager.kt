@@ -7,6 +7,9 @@ import io.socket.client.Socket
 import io.socket.client.Socket.EVENT_CONNECT
 import io.socket.client.Socket.EVENT_DISCONNECT
 import io.socket.emitter.Emitter
+import org.intelehealth.klivekit.model.ActiveUser
+import org.json.JSONArray
+import org.json.JSONObject
 import java.lang.RuntimeException
 
 /**
@@ -17,7 +20,7 @@ import java.lang.RuntimeException
 open class SocketManager {
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
-    var activeUsers = HashMap<String, String>()
+    var activeUsers = HashMap<String, ActiveUser>()
 
     fun connect(url: String?) {
         url?.let {
@@ -46,11 +49,29 @@ open class SocketManager {
 
     private fun emitter(event: String) = Emitter.Listener {
         Timber.e { "$event => ${Gson().toJson(it)}" }
-        if (event == EVENT_ALL_USER) {
-
-        }
+//        if (event == EVENT_ALL_USER) {
+//            val json: String? = Gson().toJson(it);
+//            json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
+//        }
         emitterListener?.invoke(event)?.call(it)
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
+    }
+
+    private fun parseAndSaveToLocal(jsonArray: JSONArray) {
+        if (jsonArray.length() > 0) {
+            val array: JSONArray = jsonArray.getJSONObject(0).getJSONArray("values")
+            if (array.length() > 0) {
+                for (i in 0..array.length()) {
+                    val json = array.getJSONObject(i).getJSONObject("nameValuePairs");
+                    val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
+                    activeUser?.let {
+                        activeUser.uuid?.let { it1 ->
+                            activeUsers.put(it1, activeUser)
+                        };
+                    }
+                }
+            }
+        }
     }
 
     fun emit(event: String, args: Any? = null) {
