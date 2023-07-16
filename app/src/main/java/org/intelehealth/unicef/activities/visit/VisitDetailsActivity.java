@@ -64,6 +64,7 @@ import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
@@ -107,10 +108,12 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     private NetworkUtils networkUtils;
 
     private RecyclerView mPastVisitsRecyclerView;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(this);
         setContentView(R.layout.activity_visit_details);
 
         // changing status bar color
@@ -368,7 +371,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         visitID_txt = findViewById(R.id.visitID);
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
-        visitID_txt.setText(getResources() .getString(R.string.visitID) + " XXXX" + hideVisitUUID);
+        visitID_txt.setText(getResources().getString(R.string.visitID) + " XXXX" + hideVisitUUID);
 
         // Start Date and Time - start
         visit_startDate_txt = findViewById(R.id.visit_startDate);
@@ -387,7 +390,12 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
             visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
             Log.v("Followup", "foramted date: " + visit_startDate);
-            visit_startDate_txt.setText(visit_startDate);
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                visit_startDate_txt.setText(StringUtils.en__ru_dob(visit_startDate));
+            } else {
+                visit_startDate_txt.setText(visit_startDate);
+            }
         }
 
         // Start Date and Time - end
@@ -395,7 +403,12 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         // speciality - start
         visit_speciality_txt = findViewById(R.id.visit_speciality);
         visit_speciality = fetchSpecialityValue(visitID);
-        visit_speciality_txt.setText(visit_speciality);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            visit_speciality_txt.setText(StringUtils.convertDoctorSpecialty(visit_speciality));
+        } else {
+            visit_speciality_txt.setText(visit_speciality);
+        }
 
        /* if (visit_speciality != null)
             visit_speciality_txt.setText(visit_speciality);

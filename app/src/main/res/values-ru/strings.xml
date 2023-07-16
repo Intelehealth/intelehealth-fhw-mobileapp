@@ -955,4 +955,23 @@
     <string name="to">До</string>
     <string name="select_date">Выберите дату</string>
 
+    <string name="my_visits">Мои визиты</string>
+    <string name="received">Получено</string>
+    <string name="pending">Pending</string>
+    <string name="awaiting_their_prescription">ожидают своих рецептов. Пожалуйста, отправьте</string>
+    <string name="recent_visit">Недавние визиты</string>
+    <string name="doctor_yet_to_send_prescription">Врач еще не отправил рецепты для</string>
+    <string name="patients">пациента</string>
+    <string name="you_can_remind_doctor">Вы можете напомнить об этом врачу.</string>
+
+    <string name="label">Последующие визиты</string>
+    <string name="you_can_add">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="this_week">На этой неделе</string>
+    <string name="this_month">Этот месяц</string>
+    <string name="follow_up_on">Выполните следующие действия</string>
+
+    <string name="dr_speciality">Специальность врача</string>
+    <string name="visitDetails_text">Краткое описание визита</string>
+
 </resources>

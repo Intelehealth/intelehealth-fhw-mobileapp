@@ -3793,4 +3793,26 @@ public final class StringUtils {
         }
         return hospitalType;
     }
+
+    public static String convertDoctorSpecialty(String doctorSpecialty) {
+        if (doctorSpecialty.equalsIgnoreCase("Infectionist")) {
+            return "Инфекционист";
+        } else if (doctorSpecialty.equalsIgnoreCase("Neurologist")) {
+            return "Невролог";
+        } else if (doctorSpecialty.equalsIgnoreCase("Family Doctor")) {
+            return "Семейный врач";
+        } else if (doctorSpecialty.equalsIgnoreCase("Pediatrician")) {
+            return "Педиатр";
+        } else if (doctorSpecialty.equalsIgnoreCase("Neonatologist")) {
+            return "Неонатолог";
+        } else if (doctorSpecialty.equalsIgnoreCase("Psychiatrist")) {
+            return "Психиатр";
+        } else if (doctorSpecialty.equalsIgnoreCase("Endocrinologist")) {
+            return "Эндокринолог";
+        } else if (doctorSpecialty.equalsIgnoreCase("Gastroenterologist")) {
+            return "Гастроэнтеролог";
+        } else {
+            return doctorSpecialty;
+        }
+    }
 }
