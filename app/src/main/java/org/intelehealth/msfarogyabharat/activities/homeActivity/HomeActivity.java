@@ -348,12 +348,14 @@ public class HomeActivity extends AppCompatActivity {
             mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setMax(100);
-            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mSyncProgressDialog.setIndeterminate(false);
+            mSyncProgressDialog.setProgress(i);
+
+//            mSyncProgressDialog.setMax(100);
+//            mSyncProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//            mSyncProgressDialog.setIndeterminate(false);
             mSyncProgressDialog.show();
 
-            SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
+          //  SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             Logger.logD(MSF_PULL_ISSUE, "isfirstTimelaunch");
             /*sync_relativelayout.setVisibility(View.VISIBLE);
             blur_relative.setAlpha(0.3f);*/

@@ -119,12 +119,12 @@ public class SyncDAO {
 
                     //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
                     Logger.logD(TAG, "Pull sync ended");
-                  //  sessionManager.setPullExcutedTime(sessionManager.isPulled()); // todo : msf issue
+                    sessionManager.setPullExcutedTime(sessionManager.isPulled()); // todo : msf issue
                     sessionManager.setFirstTimeSyncExecute(false);
                 } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                     Logger.logE(TAG, "Exception", e);
-                  //  throw new DAOException(e.getMessage(), e);
+                    //  throw new DAOException(e.getMessage(), e);
                 }
             }
         });
@@ -138,15 +138,15 @@ public class SyncDAO {
     public boolean pullData_Background(final Context context, int pageNo) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
-    //    db = mDbHelper.getWriteDb();
+        //    db = mDbHelper.getWriteDb();
         if (db == null)
             db = mDbHelper.getWriteDb();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" +
-                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        //  + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
 
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started ");
@@ -173,38 +173,37 @@ public class SyncDAO {
 
                     if (sync) {
                         // Step 2. once inserted successsfully, call the presc notification code from below.
-                        triggerNotificationForPrescription(response);
+                        //  triggerNotificationForPrescription(response);
 
                         // Step 3. on insert done and notifi call from this packet of page0 and limit 100 again call the pull().
-                        int nextPageNo = response.body().getData().getPageNo();
-                        int totalCount = response.body().getData().getTotalCount();
-                        Logger.logD(MSF_PULL_ISSUE, "background pageno: " + nextPageNo + " totalCount: " + totalCount);
-                        if (nextPageNo != -1) {
-                            pullData_Background(context, nextPageNo);
-                            return;
-                        }
-                        else {
-                            // do nothing - move ahead.
-                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+//                        int nextPageNo = response.body().getData().getPageNo();
+//                        int totalCount = response.body().getData().getTotalCount();
+//                        Logger.logD(MSF_PULL_ISSUE, "background pageno: " + nextPageNo + " totalCount: " + totalCount);
+//                        if (nextPageNo != -1) {
+//                            pullData_Background(context, nextPageNo);
+//                            return;
+//                        }
+                        //   else {
+                        // do nothing - move ahead.
+                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime()); // ...
 
-                            Logger.logD("End Pull request", "Ended");
+                      /*      Logger.logD("End Pull request", "Ended");
                             sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
                             sessionManager.setPullExcutedTime(sessionManager.isPulled());
 
                             //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
                             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
-                        }
+                        }*/
                         // msf sync issue - end
 
 
-                    }
-                    else {
+                    } else {
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }
 
-                    /*if (sessionManager.getTriggerNoti().equals("yes")) {
+                    if (sessionManager.getTriggerNoti().equals("yes")) {
                         if (response.body().getData() != null) {
                             ArrayList<String> listPatientUUID = new ArrayList<String>();
                             List<VisitDTO> listVisitDTO = new ArrayList<>();
@@ -230,8 +229,17 @@ public class SyncDAO {
                         }
                     } else {
                         sessionManager.setTriggerNoti("yes");
-                    }*/
+                    }
                 }
+
+                Logger.logD("End Pull request", "Ended");
+                sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+
+                //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
+                /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                IntelehealthApplication.getAppContext().startService(intent);*/
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
 
 
             }
@@ -252,15 +260,15 @@ public class SyncDAO {
         final Handler handler = new Handler(context.getMainLooper());
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
-      //  db = mDbHelper.getWriteDb();
+        //  db = mDbHelper.getWriteDb();
         if (db == null)
             db = mDbHelper.getWriteDb();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" +
-                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        //  + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         Logger.logD(MSF_PULL_ISSUE, url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
@@ -288,7 +296,7 @@ public class SyncDAO {
                     }
                     if (sync) {
                         // Step 2. once inserted successsfully, call the presc notification code from below.
-                        triggerNotificationForPrescription(response);
+                       /* triggerNotificationForPrescription(response);
 
                         // Step 3. on insert done and notifi call from this packet of page0 and limit 100 again call the pull().
                         int nextPageNo = response.body().getData().getPageNo();
@@ -301,60 +309,97 @@ public class SyncDAO {
                             setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);
                             return;
-                        }
-                        else {
-                            percentage = 100;
-                            Logger.logD(MSF_PULL_ISSUE, "percentage page -1: " + percentage);
-                            setProgress(percentage);
-                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+                        }*/
+//                        else {
+//                            percentage = 100;
+//                            Logger.logD(MSF_PULL_ISSUE, "percentage page -1: " + percentage);
+//                            setProgress(percentage);
+                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime()); ////////
 
-                            // Adding handlers here so that we can show these toasts on the main thread - Added by Arpan Sircar
-                            if (fromActivity.equalsIgnoreCase("home")) {
-                                handler.post(() -> Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show());
-                            } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                                handler.post(() -> Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show());
-                            } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                            }
-
-                            //
-                            Logger.logD("End Pull request", "Ended");
-                            sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
-                            sessionManager.setPullExcutedTime(sessionManager.isPulled());
-
-                            //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
-                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
-
-                        }
-                        // msf sync issue - end
-
-                    } else {
+                        // Adding handlers here so that we can show these toasts on the main thread - Added by Arpan Sircar
                         if (fromActivity.equalsIgnoreCase("home")) {
-                            handler.post(() -> Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show());
+                            handler.post(() -> Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show());
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            handler.post(() -> Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show());
+                            handler.post(() -> Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show());
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                            handler.post(() -> Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show());
                         }
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
-                    }
 
+                        //
+//                            Logger.logD("End Pull request", "Ended");
+//                            sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+//                            sessionManager.setPullExcutedTime(sessionManager.isPulled());
+//
+//                            //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
+//                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+//                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+
+                    }
+                    // msf sync issue - end
+
+                } else {
+                    if (fromActivity.equalsIgnoreCase("home")) {
+                        handler.post(() -> Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show());
+                    } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
+                        handler.post(() -> Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show());
+                    } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+                        handler.post(() -> Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show());
+                    }
+                    IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                            .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                }
+
+                if (sessionManager.getTriggerNoti().equals("yes")) {
+                    if (response.body().getData() != null) {
+                        ArrayList<String> listPatientUUID = new ArrayList<String>();
+                        List<VisitDTO> listVisitDTO = new ArrayList<>();
+                        ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+                        for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                            if (response.body().getData().getEncounterDTO().get(i)
+                                    .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                                encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
+                            }
+                        }
+                        listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                        for (int i = 0; i < encounterVisitUUID.size(); i++) {
+                            for (int j = 0; j < listVisitDTO.size(); j++) {
+                                if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
+                                    listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                                }
+                            }
+                        }
+
+                        if (listPatientUUID.size() > 0) {
+                            triggerVisitNotification(listPatientUUID);
+                        }
+                    }
+                } else {
+                    sessionManager.setTriggerNoti("yes");
                 }
 
 
+                Logger.logD("End Pull request", "Ended");
+                sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+
+                //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
+               /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                IntelehealthApplication.getAppContext().startService(intent);*/
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
             }
+
 
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                         .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+
             }
         });
-        sessionManager.setPullSyncFinished(true);
-        return true;
+          sessionManager.setPullSyncFinished(true);
+         return true;
     }
+
 
     private void triggerNotificationForPrescription(Response<ResponseDTO> response) {
         if (sessionManager.getTriggerNoti().equals("yes")) {
