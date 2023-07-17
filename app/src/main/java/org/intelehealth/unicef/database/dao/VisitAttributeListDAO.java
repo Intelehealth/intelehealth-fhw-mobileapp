@@ -1,6 +1,7 @@
 package org.intelehealth.unicef.database.dao;
 
 import static org.intelehealth.unicef.utilities.UuidDictionary.ADDITIONAL_NOTES;
+import static org.intelehealth.unicef.utilities.UuidDictionary.HOSPITAL_TYPE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.unicef.utilities.UuidDictionary.SPECIALITY;
 
@@ -27,8 +28,7 @@ import org.intelehealth.unicef.utilities.exception.DAOException;
 public class VisitAttributeListDAO {
     private long createdRecordsCount = 0;
 
-    public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
-            throws DAOException {
+    public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -65,8 +65,8 @@ public class VisitAttributeListDAO {
             values.put("voided", visitDTO.getVoided());
             values.put("sync", "1");
 
-            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ) {
+            if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(HOSPITAL_TYPE) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if (createdRecordsCount != -1) {
@@ -93,9 +93,7 @@ public class VisitAttributeListDAO {
             SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             db.beginTransaction();
 
-            Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and " +
-                            "visit_attribute_type_uuid = ? and voided = 0",
-                    new String[]{VISITUUID, visit_attribute_type_uuid});
+            Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and " + "visit_attribute_type_uuid = ? and voided = 0", new String[]{VISITUUID, visit_attribute_type_uuid});
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
@@ -125,8 +123,7 @@ public class VisitAttributeListDAO {
      * @return
      * @throws DAOException
      */
-    public boolean insertVisitAttributes(String visitUuid, String value, String attributeTypeUUID) throws
-            DAOException {
+    public boolean insertVisitAttributes(String visitUuid, String value, String attributeTypeUUID) throws DAOException {
         boolean isInserted = false;
 
         Log.d("SPINNER", "SPINNER_Selected_visituuid_logs: " + visitUuid);
@@ -143,11 +140,9 @@ public class VisitAttributeListDAO {
             values.put("voided", "0");
             values.put("sync", "0");
 
-            long count = db.insertWithOnConflict("tbl_visit_attribute", null,
-                    values, SQLiteDatabase.CONFLICT_REPLACE);
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-            if (count != -1)
-                isInserted = true;
+            if (count != -1) isInserted = true;
 
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -172,8 +167,7 @@ public class VisitAttributeListDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT distinct(value) FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid = ? and voided = 0",
-                new String[]{visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
+        Cursor cursor = db.rawQuery("SELECT distinct(value) FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid = ? and voided = 0", new String[]{visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
 
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {

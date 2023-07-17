@@ -3781,6 +3781,17 @@ public final class StringUtils {
         return String.valueOf(df.format(value));
     }
 
+    public static String translateHospitalTypeToRussian(String hospitalType) {
+        if (hospitalType.equalsIgnoreCase("Secondary")) {
+            return "Вторичный";
+        }
+
+        if (hospitalType.equalsIgnoreCase("Tertiary")) {
+            return "третичный";
+        }
+        return hospitalType;
+    }
+
     public static String translateHospitalTypeToEnglish(String hospitalType, String appLanguage) {
         if (appLanguage.equalsIgnoreCase("ru")) {
             if (hospitalType.equalsIgnoreCase("Вторичный")) {

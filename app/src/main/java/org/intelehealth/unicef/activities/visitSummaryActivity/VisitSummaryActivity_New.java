@@ -1109,7 +1109,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 //            int spinner_position = stringArrayAdapter.getPosition(special_value);
 //            speciality_spinner.setSelection(spinner_position);
 
-            vd_special_value.setText(" " + Node.bullet + "  " + special_value);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                vd_special_value.setText(" " + Node.bullet + "  " + StringUtils.convertDoctorSpecialty(special_value));
+            } else {
+                vd_special_value.setText(" " + Node.bullet + "  " + special_value);
+            }
             speciality_selected = special_value;
         } else {
 
@@ -1137,7 +1141,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String hospital_type_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, HOSPITAL_TYPE);
 
         if (hospital_type_value != null) {
-            hospitalSpecialValue.setText(" " + Node.bullet + "  " + hospital_type_value);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                hospitalSpecialValue.setText(" " + Node.bullet + "  " + StringUtils.translateHospitalTypeToRussian(hospital_type_value));
+            } else {
+                hospitalSpecialValue.setText(" " + Node.bullet + "  " + hospital_type_value);
+            }
             hospitalTypeSelected = hospital_type_value;
         }
 
