@@ -57,7 +57,7 @@ public class CardGenerationEngine {
             // all active visit list
             VisitsDAO visitsDAO = new VisitsDAO();
             EncounterDAO encounterDAO = new EncounterDAO();
-            List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitsForMe(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
+            List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitByProviderId(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
             Log.v(TAG, "visitDTOList count - " + visitDTOList.size());
 
 
@@ -115,15 +115,15 @@ public class CardGenerationEngine {
                         }
                     } else if (latestEncounterName.toLowerCase().contains("stage2")) {
                         if (minutes >= 15) {
-//                            if (checkVisitEncounterReachToLimit(latestEncounterName)) {
-//                                closeReachToLimitVisit(visitUid);
-//                            } else {
+                            if (checkVisitEncounterReachToLimit(latestEncounterName)) {
+                                closeReachToLimitVisit(visitUid);
+                            } else {
                                 // get next encounter name
                                 String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
                                 if (nextEncounterTypeName != null) {
                                     Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
                                     createNewEncounter(visitUid, nextEncounterTypeName);
-//                                }
+                                }
                             }
                         } else if (minutes == 14) {
                             SyncUtils syncUtils = new SyncUtils();

@@ -606,6 +606,14 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 stageNo = 0;
                 // do not hing
             }
+
+            if (!new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID())) {
+                fabc.setEnabled(false);
+                fabv.setEnabled(false);
+                fabSOS.setEnabled(false);
+                endStageButton.setEnabled(false);
+            }
+
         } else {
             String outcome = new ObsDAO().getCompletedVisitType(isVCEPresent);
             endStageButton.setVisibility(View.INVISIBLE);
