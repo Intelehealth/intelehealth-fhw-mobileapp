@@ -973,5 +973,14 @@
 
     <string name="dr_speciality">Специальность врача</string>
     <string name="visitDetails_text">Краткое описание визита</string>
+    <string name="no_information">Нет информации</string>
+    <string name="consulted_doctor_details">Проконсультировался с врачом Подробности</string>
+    <string name="name">Имя</string>
+    <string name="qualification">Квалификация</string>
+    <string name="speciality">Специальность</string>
+    <string name="advice">Консультация</string>
+    <string name="referred_specialist">Направлен к специалисту</string>
+    <string name="no_follow_up_suggested">\u2022 Не предложено никаких последующих действий</string>
+    <string name="end_visit">Завершить визит</string>
 
 </resources>

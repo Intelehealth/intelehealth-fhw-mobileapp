@@ -281,8 +281,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/chw_worker"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/chw_worker"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -312,8 +312,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/visitID"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/visitID"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -454,8 +454,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/name"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/name"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -477,7 +477,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="@dimen/margin_4"
                                 android:layout_weight="2"
-                                android:visibility="visible">
+                                android:visibility="gone">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -519,8 +519,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/qualification"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/qualification"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -550,8 +550,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/speciality"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/speciality"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -652,7 +652,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="\u2022 No information"
+                            android:text="@string/no_information"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 
@@ -879,7 +879,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="\u2022 No information"
+                            android:text="@string/no_information"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 
@@ -926,7 +926,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
                             android:layout_toEndOf="@+id/vs_icon"
-                            android:text="Test" />
+                            android:text="@string/test" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/btnup_test_header"
@@ -965,7 +965,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="\u2022 No information"
+                            android:text="@string/no_information"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 
