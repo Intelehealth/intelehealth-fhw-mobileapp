@@ -31,6 +31,7 @@ import org.intelehealth.unicef.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.models.PrescriptionModel;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.VisitCountInterface;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -58,6 +59,7 @@ public class VisitReceivedFragment extends Fragment {
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
+    private SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -65,6 +67,7 @@ public class VisitReceivedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_visit_received, container, false);
         initUI(view);
         mlistener = (VisitCountInterface) getActivity();
+        sessionManager = new SessionManager(getActivity());
         return view;
     }
 
@@ -129,7 +132,7 @@ public class VisitReceivedFragment extends Fragment {
 
     private void defaultData() {
         recentVisits();
-       // olderVisits();
+        // olderVisits();
         int totalCounts = totalCounts_recent + totalCounts_older;
 
 //        thisMonths_Visits();
@@ -142,7 +145,7 @@ public class VisitReceivedFragment extends Fragment {
 
         // Total no. of End visits.
         int total = getTotalCounts_EndVisit();
-        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription) ;
+        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription);
         received_endvisit_no.setText(Html.fromHtml(htmlvalue));
 
         // Filter - start
@@ -235,7 +238,7 @@ public class VisitReceivedFragment extends Fragment {
                     recent_nodata.setVisibility(View.VISIBLE);
                 else
                     recent_nodata.setVisibility(View.GONE);
-                recent_adapter = new VisitAdapter(getActivity(), recent);
+                recent_adapter = new VisitAdapter(getActivity(), recent, sessionManager.getAppLanguage());
                 recycler_recent.setNestedScrollingEnabled(false);
                 recycler_recent.setAdapter(recent_adapter);
             }
@@ -316,7 +319,7 @@ public class VisitReceivedFragment extends Fragment {
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
-        recent_adapter = new VisitAdapter(getActivity(), prio_todays);
+        recent_adapter = new VisitAdapter(getActivity(), prio_todays, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
@@ -333,7 +336,7 @@ public class VisitReceivedFragment extends Fragment {
         else
             older_nodata.setVisibility(View.GONE);
         //older_adapter = new VisitAdapter(getActivity(), prio_weeks);
-       // recycler_older.setNestedScrollingEnabled(false);
+        // recycler_older.setNestedScrollingEnabled(false);
         //recycler_older.setAdapter(older_adapter);
         // weeks - end
 
@@ -349,7 +352,7 @@ public class VisitReceivedFragment extends Fragment {
         else
             month_nodata.setVisibility(View.GONE);
         //months_adapter = new VisitAdapter(getActivity(), prio_months);
-       // recycler_month.setNestedScrollingEnabled(false);
+        // recycler_month.setNestedScrollingEnabled(false);
         //recycler_month.setAdapter(months_adapter);
         // months - end
     }
@@ -450,7 +453,7 @@ public class VisitReceivedFragment extends Fragment {
         else
             recent_nodata.setVisibility(View.GONE);
 
-        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 

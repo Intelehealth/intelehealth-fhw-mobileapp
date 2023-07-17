@@ -428,15 +428,18 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         followup_accept_text = findViewById(R.id.followup_accept_text);
 
         if (followupDate != null) {
-            followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM,yyyy");
+            followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM, yyyy");
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
             followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
             followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
 
-            followup_accept_text.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + " " +
-                    followUpDate_format + ".");
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                followup_accept_text.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + " " + StringUtils.en__ru_dob(followUpDate_format) + ".");
+            } else {
+                followup_accept_text.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + " " + followUpDate_format + ".");
+            }
             Log.v("vd", "vd: " + followup_info);
         } else {
             followup_relative_block.setVisibility(View.GONE);

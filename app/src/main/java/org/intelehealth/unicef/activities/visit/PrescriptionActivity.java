@@ -87,6 +87,7 @@ import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.exception.DAOException;
@@ -563,7 +564,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(PrescriptionActivity.this,getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -871,7 +872,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp =  getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
@@ -1047,7 +1048,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + details.getUuid() + "_sign.png";
+            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
@@ -1475,9 +1476,13 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 }
                 Log.i("TAG", "followUpDate: " + followUpDate);
                 String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    followUpDate_format = StringUtils.en__ru_dob(followUpDate_format);
+                }
+
                 followup_date_txt.setText(followUpDate_format);
-                followup_subtext.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) +
-                        followUpDate_format + ".");
+                followup_subtext.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + followUpDate_format + ".");
                 //checkForDoctor();
                 break;
             }
@@ -2302,7 +2307,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + details.getUuid() + "_sign.png";
+            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?

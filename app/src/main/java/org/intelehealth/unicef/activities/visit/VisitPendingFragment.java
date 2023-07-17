@@ -31,6 +31,7 @@ import org.intelehealth.unicef.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.models.PrescriptionModel;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.VisitCountInterface;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -59,6 +60,7 @@ public class VisitPendingFragment extends Fragment {
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
+    private SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -66,6 +68,7 @@ public class VisitPendingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_visit_pending, container, false);
         initUI(view);
         mlistener = (VisitCountInterface) getActivity();
+        sessionManager = new SessionManager(getActivity());
         return view;
     }
 
@@ -146,7 +149,7 @@ public class VisitPendingFragment extends Fragment {
 
         // Total of End visits.
         int total = getTotalCounts_EndVisit();
-        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>," + getResources().getString(R.string.you_can_remind_doctor);
+        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " " + "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>," + getResources().getString(R.string.you_can_remind_doctor);
         pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
 
         // Filter - start
@@ -212,7 +215,7 @@ public class VisitPendingFragment extends Fragment {
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
-        recent_adapter = new VisitAdapter(getActivity(), prio_todays);
+        recent_adapter = new VisitAdapter(getActivity(), prio_todays, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
@@ -228,7 +231,7 @@ public class VisitPendingFragment extends Fragment {
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
-       // older_adapter = new VisitAdapter(getActivity(), prio_weeks);
+        // older_adapter = new VisitAdapter(getActivity(), prio_weeks);
         //recycler_older.setNestedScrollingEnabled(false);
         //recycler_older.setAdapter(older_adapter);
         // weeks - end
@@ -271,7 +274,7 @@ public class VisitPendingFragment extends Fragment {
                         "  " +
                         " ORDER BY v.startdate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE});*/
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         //" e.encounter_type_uuid != ?  and " +
@@ -338,7 +341,7 @@ public class VisitPendingFragment extends Fragment {
         else
             recent_nodata.setVisibility(View.GONE);
 
-        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
@@ -835,7 +838,7 @@ public class VisitPendingFragment extends Fragment {
                     recent_nodata.setVisibility(View.VISIBLE);
                 else
                     recent_nodata.setVisibility(View.GONE);
-                recent_adapter = new VisitAdapter(getActivity(), recent);
+                recent_adapter = new VisitAdapter(getActivity(), recent, sessionManager.getAppLanguage());
                 recycler_recent.setNestedScrollingEnabled(false);
                 recycler_recent.setAdapter(recent_adapter);
             }
