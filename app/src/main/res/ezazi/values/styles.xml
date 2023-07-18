@@ -300,9 +300,9 @@
     </style>
 
     <style name="Theme.EZazi.Button.Emergency" parent="Theme.EZazi.Button.Icon">
-        <item name="backgroundTint">@color/colorEmergencyBg</item>
-        <item name="strokeColor">?attr/colorAccent</item>
-        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="backgroundTint">@color/color_sos_selector</item>
+        <item name="strokeColor">@color/color_sos_text</item>
+        <item name="android:textColor">@color/color_sos_text</item>
         <item name="android:textSize">@dimen/sos_text_size</item>
         <item name="android:paddingStart">@dimen/timeline_bottom_menu_horizontal_padding</item>
         <item name="android:paddingEnd">@dimen/timeline_bottom_menu_horizontal_padding</item>

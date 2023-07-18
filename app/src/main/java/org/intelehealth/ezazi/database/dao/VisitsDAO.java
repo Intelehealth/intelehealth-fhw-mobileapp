@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -604,8 +605,9 @@ public class VisitsDAO {
         String query = new QueryBuilder().select("V.uuid")
                 .from("tbl_visit V")
                 .join("INNER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid")
-                .where("V.uuid = " + visitId + " AND VA.value = " + providerId).build();
+                .where("V.uuid = '" + visitId + "' AND VA.value = '" + providerId + "'").build();
 
+        Log.e(TAG, "checkLoggedInUserAccessVisit: query=>" + query);
         Cursor idCursor = db.rawQuery(query, null);
         if (idCursor.getCount() > 0) {
             return true;

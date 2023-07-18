@@ -1,6 +1,5 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
-import static org.intelehealth.klivekit.socket.SocketManager.EVENT_ALL_USER;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -34,10 +33,8 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
@@ -53,16 +50,15 @@ import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogStage2AdditionalDataEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
-import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
-import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -73,7 +69,6 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
-import org.intelehealth.klivekit.socket.SocketManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,10 +82,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Function;
-
-import io.socket.emitter.Emitter;
-import kotlin.jvm.functions.Function1;
 
 public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     RecyclerView recyclerView;
