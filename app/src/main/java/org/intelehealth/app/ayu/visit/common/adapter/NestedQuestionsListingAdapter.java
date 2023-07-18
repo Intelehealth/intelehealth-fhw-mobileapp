@@ -192,6 +192,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             genericViewHolder.superNestedRecyclerView.setVisibility(View.GONE);
             genericViewHolder.submitButton.setVisibility(View.GONE);
             genericViewHolder.skipButton.setVisibility(View.GONE);
+
+            genericViewHolder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, genericViewHolder.node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+            genericViewHolder.submitButton.setBackgroundResource(genericViewHolder.node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+
             // show know more link if its available
             if (genericViewHolder.node.getPop_up() != null && !genericViewHolder.node.getPop_up().isEmpty()) {
                 genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
@@ -801,6 +805,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
         newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -822,8 +828,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
 
-                mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    }
+                });
             }
         });
 
@@ -879,18 +890,26 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
         final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
         Button submitButton = view.findViewById(R.id.btn_submit);
-
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         Button skipButton = view.findViewById(R.id.btn_skip);
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
-                notifyItemChanged(index);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
             }
         });
 
@@ -974,6 +993,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
+
                 node.setSelected(true);
                 //holder.node.setSelected(true);
 
@@ -984,7 +1004,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setDataCaptured(true);
 
                 //notifyDataSetChanged();
-                mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    }
+                });
+
             }
         });
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
@@ -1048,6 +1074,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
 
@@ -1062,14 +1090,21 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
 
-                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
-                notifyItemChanged(index);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
                 WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
@@ -1081,6 +1116,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 if (editText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
+
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
@@ -1119,7 +1155,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+
+                        }
+                    });
                     WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
             }
@@ -1141,7 +1183,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
-
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
@@ -1156,13 +1199,20 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 node.setSelected(false);
                 node.setDataCaptured(false);
 
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
-                notifyItemChanged(index);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
                 WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
@@ -1173,6 +1223,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 if (editText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
+
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.isDataCaptured()) {
                             if (node.getLanguage().contains(" : ")) {
@@ -1219,7 +1270,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+
+                        }
+                    });
                     WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
 
@@ -1247,6 +1304,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
@@ -1297,11 +1356,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 node.setSelected(false);
                 parentNode.setSelected(false);
                 parentNode.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
-                notifyItemChanged(index);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
             }
         });
 
@@ -1333,7 +1399,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     parentNode.setDataCaptured(true);
 
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                        }
+                    });
+
                 }
             }
         });
@@ -1381,9 +1453,15 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mItemList.get(index).isSelected())
-                        mOnItemSelection.onSelect(node, mRootIndex, false, null);
-                    else
+                    if (mItemList.get(index).isSelected()) {
+                        AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                            @Override
+                            public void onFinish() {
+                                mOnItemSelection.onSelect(node, mRootIndex, false, null);
+                            }
+                        });
+
+                    } else
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -1391,10 +1469,17 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             skipButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     mItemList.get(index).setSelected(false);
                     mItemList.get(index).setDataCaptured(false);
-                    mOnItemSelection.onSelect(node, mRootIndex, true, null);
-                    notifyItemChanged(index);
+                    AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, true, null);
+                            notifyItemChanged(index);
+                        }
+                    });
+
 
                 }
             });

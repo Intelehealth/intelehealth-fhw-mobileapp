@@ -229,7 +229,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
         }
-
+        genericViewHolder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, genericViewHolder.node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        genericViewHolder.submitButton.setBackgroundResource(genericViewHolder.node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         if (genericViewHolder.node.findPopup() != null && !genericViewHolder.node.findPopup().isEmpty()) {
             genericViewHolder.knowMoreTextView.setVisibility(View.VISIBLE);
 
@@ -685,10 +686,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         View view = View.inflate(mContext, R.layout.associate_symptoms_questionar_main_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnItemSelection.onAllAnswered(true);
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onAllAnswered(true);
+
+                    }
+                });
 
             }
         });
@@ -1161,6 +1171,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.otherContainerLinearLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
@@ -1183,8 +1195,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, index, false, null);
 
-                mOnItemSelection.onSelect(node, index, false, null);
+                    }
+                });
             }
         });
 
@@ -1247,15 +1264,22 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
         final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
         Button submitButton = view.findViewById(R.id.btn_submit);
-
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                node.setSelected(false);
-                mOnItemSelection.onSelect(node, index, true, null);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        node.setSelected(false);
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
+
             }
         });
 
@@ -1339,6 +1363,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
+
                 node.setSelected(true);
                 holder.node.setSelected(true);
 
@@ -1346,7 +1371,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.node.setDataCaptured(true);
 
                 //notifyDataSetChanged();
-                mOnItemSelection.onSelect(node, index, false, null);
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, index, false, null);
+
+                    }
+                });
             }
         });
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
@@ -1412,6 +1443,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
 
@@ -1432,7 +1465,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
-                mOnItemSelection.onSelect(node, index, true, null);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
+
                 WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
@@ -1486,7 +1525,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index, false, null);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, index, false, null);
+                        }
+                    });
+
                     WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
             }
@@ -1508,7 +1553,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
-
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             editText.setText(node.getLanguage());
@@ -1521,7 +1567,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View view) {
                 node.setSelected(false);
                 node.setDataCaptured(false);
-                mOnItemSelection.onSelect(node, index, true, null);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
                 WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
             }
         });
@@ -1532,6 +1583,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (editText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
                 } else {
+
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
@@ -1564,7 +1616,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //}
                     }
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index, false, null);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, index, false, null);
+                        }
+                    });
                     WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
                 }
             }
@@ -1590,6 +1647,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
@@ -1620,8 +1679,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                node.setSelected(false);
-                mOnItemSelection.onSelect(node, index, true, null);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        node.setSelected(false);
+                        mOnItemSelection.onSelect(node, index, true, null);
+                    }
+                });
+
             }
         });
 
@@ -1651,7 +1716,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     holder.node.setDataCaptured(true);
 
                     //notifyDataSetChanged();
-                    mOnItemSelection.onSelect(node, index, false, null);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, index, false, null);
+
+                        }
+                    });
+
                 }
             }
         });
@@ -1717,9 +1789,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mItemList.get(index).isSelected())
-                        mOnItemSelection.onSelect(node, index, false, null);
-                    else
+                    if (mItemList.get(index).isSelected()) {
+                        AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                            @Override
+                            public void onFinish() {
+                                mOnItemSelection.onSelect(node, index, false, null);
+                            }
+                        });
+                    } else
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -1743,8 +1820,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).getOptionsList().get(i).setSelected(false);
                             mItemList.get(index).getOptionsList().get(i).setDataCaptured(false);
                         }
-                    notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, index, true, null);
+                    AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            notifyItemChanged(index);
+                            mOnItemSelection.onSelect(node, index, true, null);
+                        }
+                    });
+
 
                 }
             });
