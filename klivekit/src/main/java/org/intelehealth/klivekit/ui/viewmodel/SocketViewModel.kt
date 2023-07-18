@@ -70,6 +70,9 @@ class SocketViewModel(
     private val mutableCallRejectByDoctor = MutableLiveData(false)
     val eventCallRejectByDoctor = mutableCallRejectByDoctor.hide()
 
+    private val mutableCallCancelByDoctor = MutableLiveData(false)
+    val eventCallCancelByDoctor = mutableCallCancelByDoctor.hide()
+
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
             SocketManager.EVENT_BYE -> sayByeToWeb()
@@ -85,6 +88,10 @@ class SocketViewModel(
             SocketManager.EVENT_READY -> executeInUIThread { mutableEventReady.postValue(true) }
             SocketManager.EVENT_CALL_REJECT_BY_DR -> executeInUIThread {
                 mutableCallRejectByDoctor.postValue(true)
+            }
+
+            SocketManager.EVENT_CALL_CANCEL_BY_DR -> executeInUIThread {
+                mutableCallCancelByDoctor.postValue(true)
             }
 
             SocketManager.EVENT_UPDATE_MESSAGE -> executeInUIThread {
@@ -115,17 +122,19 @@ class SocketViewModel(
 
     fun connectWithDoctor() {
         executeInUIThread {
-            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, JSONObject().apply {
-                put("patientId", args.patientId)
-                put("connectToDrId", args.doctorUuid)
-                put("visitId", args.visitId)
-                put("nurseName", args.nurseName)
-                put("patientName", args.patientName)
-                put("patientPersonUuid", args.patientPersonUuid)
-                put("patientOpenMrsId", args.patientOpenMrsId)
-                put("token", args.token)
-            })
+            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, buildOutGoingCallParams())
         }
+    }
+
+    fun buildOutGoingCallParams() = JSONObject().apply {
+        put("patientId", args.patientId)
+        put("connectToDrId", args.doctorUuid)
+        put("visitId", args.visitId)
+        put("nurseName", args.nurseName)
+        put("patientName", args.patientName)
+        put("patientPersonUuid", args.patientPersonUuid)
+        put("patientOpenMrsId", args.patientOpenMrsId)
+        put("token", args.token)
     }
 
     private fun sayByeToWeb() {

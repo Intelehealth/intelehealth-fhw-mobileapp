@@ -115,6 +115,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteParticipantDisconnected.observe(this) { if (it) sayBye("${args.doctorName} left the call") }
         videoCallViewModel.cameraPosition.observe(this) { onCameraPositionChanged(it) }
         socketViewModel.eventCallRejectByDoctor.observe(this) { if (it) sayBye("Call rejected by ${args.doctorName}") }
+        socketViewModel.eventCallCancelByDoctor.observe(this) { if (it) sayBye("Call canceled by ${args.doctorName}") }
         videoCallViewModel.remoteCallDisconnectedReason.observe(this) {
             it?.let { checkCallDisconnectReason(it) }
         }
@@ -282,7 +283,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     open fun declineCall() {
         stopRingtone()
-        socketViewModel.emit(SocketManager.EVENT_HW_CALL_REJECT, args.doctorId)
+        if (args.isIncomingCall.not()) {
+            socketViewModel.emit(
+                SocketManager.EVENT_CALL_CANCEL_BY_HW,
+                socketViewModel.buildOutGoingCallParams()
+            )
+        } else {
+            socketViewModel.emit(SocketManager.EVENT_HW_CALL_REJECT, args.doctorId)
+        }
         onCallDecline()
         finish()
     }
