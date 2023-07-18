@@ -3,7 +3,6 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity.checkAndRemoveEndDash;
 import static org.intelehealth.app.utilities.StringUtils.en_ar_dob;
 import static org.intelehealth.app.utilities.StringUtils.getLocaleGender;
-import static org.intelehealth.app.utilities.StringUtils.switch_ar_to_en_village;
 import static org.intelehealth.app.utilities.StringUtils.switch_en_to_ar_village_edit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
@@ -43,9 +42,7 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 import android.telephony.SmsManager;
 import android.text.Html;
-import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
@@ -56,7 +53,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -127,7 +123,6 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -4170,7 +4165,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             doctorSign = objClsDoctorDetails.getTextOfSign();
             String doctSp = !LocaleHelper.isArabic(this) ? objClsDoctorDetails.getSpecialization() : "طبيب عام"; //General Physician
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? checkAndConvertPrescriptionHeadings(getString(R.string.dr_registration_no)) + objClsDoctorDetails.getRegistrationNumber() : "";
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" + "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" + "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " + (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", " + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? doctSp : "") + "</span><br>" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">"
+                    + "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">"
+                    + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "")
+                    + "</span><br>" + "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">"
+                    + doctorDetails(objClsDoctorDetails, doctSp)
+                    + "</span><br>" +
                     // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? checkAndConvertPrescriptionHeadings(getString(R.string.dr_registration_no)) + objClsDoctorDetails.getRegistrationNumber() : "") + "</div>";
             if (LocaleHelper.isArabic(this)) {
@@ -4179,6 +4179,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
         }
+    }
+
+    private String doctorDetails(ClsDoctorDetails objClsDoctorDetails, String doctSp) {
+        return (!TextUtils.isEmpty(objClsDoctorDetails.getQualification())
+                ? objClsDoctorDetails.getQualification() + ", " + getDoctorSpecialization(doctSp)
+                : getDoctorSpecialization(doctSp));
+    }
+
+    private String getDoctorSpecialization(String specialization) {
+        return (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? specialization : "");
     }
 
 
