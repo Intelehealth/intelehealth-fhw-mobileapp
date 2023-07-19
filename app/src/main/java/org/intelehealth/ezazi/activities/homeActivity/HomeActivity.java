@@ -1167,7 +1167,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void setActiveCasesCount() {
-        String activeCases = getString(R.string.active_cases, mActivePatientAdapter.activeCasesCount());
+        String activeCases = getString(R.string.active_cases, mActivePatientAdapter.getItemCount());
         ((TextView) findViewById(R.id.tvActiveVisitLabel)).setText(activeCases);
         mEndShiftTextView.setEnabled(mActivePatientAdapter.getItemCount() > 0);
     }

@@ -26,7 +26,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".ui.activity.ChatActivity"
+            android:name=".chat.ui.activity.ChatActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:exported="true"

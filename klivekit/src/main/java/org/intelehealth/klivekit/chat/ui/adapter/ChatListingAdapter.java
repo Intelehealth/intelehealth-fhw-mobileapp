@@ -1,4 +1,4 @@
-package org.intelehealth.klivekit.ui.adapter;
+package org.intelehealth.klivekit.chat.ui.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -38,7 +38,6 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mContext = context;
         mItemList = itemList;
         mAttachmentClickListener = clickListener;
-
     }
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();

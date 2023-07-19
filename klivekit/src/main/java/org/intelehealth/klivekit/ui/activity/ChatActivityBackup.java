@@ -54,7 +54,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.intelehealth.klivekit.R;
-import org.intelehealth.klivekit.ui.adapter.ChatListingAdapter;
+import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
 import org.intelehealth.klivekit.utils.AwsS3Utils;
 import org.intelehealth.klivekit.utils.BitmapUtils;
 import org.intelehealth.klivekit.utils.Constants;

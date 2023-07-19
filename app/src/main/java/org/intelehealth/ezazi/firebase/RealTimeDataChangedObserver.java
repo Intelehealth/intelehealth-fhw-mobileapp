@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.database.DataSnapshot;
@@ -135,7 +137,9 @@ public class RealTimeDataChangedObserver {
     private final ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            observeDataChange(snapshot);
+            if (isAppInForeground()) {
+                observeDataChange(snapshot);
+            }
         }
 
         @Override
@@ -145,6 +149,12 @@ public class RealTimeDataChangedObserver {
             Timber.tag(TAG).w(error.toException(), "Failed to read value.");
         }
     };
+
+    private boolean isAppInForeground() {
+        return ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(
+                Lifecycle.State.RESUMED
+        );
+    }
 
     private void observeDataChange(@NonNull DataSnapshot snapshot) {
         Log.e(TAG, "observeDataChange");

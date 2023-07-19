@@ -3,7 +3,7 @@ package org.intelehealth.ezazi.ui.rtc.activity;
 import android.content.Intent;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.klivekit.ui.activity.ChatActivity;
+import org.intelehealth.klivekit.chat.ui.activity.ChatActivity;
 
 /**
  * Created by Vaghela Mithun R. on 24-05-2023 - 18:34.
