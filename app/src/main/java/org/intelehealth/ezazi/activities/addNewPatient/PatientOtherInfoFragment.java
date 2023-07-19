@@ -530,7 +530,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     mMembraneRupturedTimeTextView.setEnabled(true);
                     cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                     cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-                    if (errorDetailsList.size() > 0) {
+                    if (errorDetailsList!= null && errorDetailsList.size() > 0) {
                         for (int i = 0; i < errorDetailsList.size(); i++) {
                             ErrorManagerModel errorManagerModel = errorDetailsList.get(i);
                             if (errorManagerModel.getView().equals(mMembraneRupturedDateTextView)) {

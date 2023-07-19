@@ -32,6 +32,8 @@ import java.util.UUID;
 
 public class EncounterDAO {
 
+    private static final String TAG = "EncounterDAO";
+
     private String tag = EncounterDAO.class.getSimpleName();
     private long createdRecordsCount = 0;
 
@@ -98,6 +100,8 @@ public class EncounterDAO {
 
     public boolean createEncountersToDB(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
+        Log.d(TAG, "createEncountersToDB:length: " + encounter.getEncounterTypeUuid().length());
+        Log.d(TAG, "createEncountersToDB: getEncounterTypeUuid : " + encounter.getEncounterTypeUuid());
         if (encounter.getEncounterTypeUuid() != null && encounter.getEncounterTypeUuid().length() > 0) {
             SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
             db.beginTransaction();
