@@ -1,31 +1,18 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
-
-
-import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
-import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
-
-import java.io.Serializable;
 
 public class AddNewPatientActivity extends BaseActionBarActivity {
     private static final String TAG = "AddNewPatientActivity";
@@ -47,6 +34,13 @@ public class AddNewPatientActivity extends BaseActionBarActivity {
     }
 
     private void initUI() {
+        View viewToolbar = findViewById(R.id.toolbar_common);
+        Toolbar toolbar = viewToolbar.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v ->
+                getOnBackPressedDispatcher().onBackPressed()
+        );
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_add_patient, new PatientPersonalInfoFragment())
@@ -142,8 +136,7 @@ public class AddNewPatientActivity extends BaseActionBarActivity {
                 .build();
 
         dialog.setListener(() -> {
-            Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(i_back);
+            finish();
         });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
