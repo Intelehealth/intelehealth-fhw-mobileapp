@@ -57,7 +57,7 @@ public class CardGenerationEngine {
             // all active visit list
             VisitsDAO visitsDAO = new VisitsDAO();
             EncounterDAO encounterDAO = new EncounterDAO();
-            List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitsForMe(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
+            List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitByProviderId(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
             //List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitsForMe(new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID());
             Log.v(TAG, "visitDTOList count - " + visitDTOList.size());
 
