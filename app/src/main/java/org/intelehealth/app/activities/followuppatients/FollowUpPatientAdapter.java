@@ -85,7 +85,8 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             public void onClick(View v) {
                 String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", patinet.getUuid());
+//                intent.putExtra("patientUuid", patinet.getUuid());    // this was taking vistiID as for old query visitID and patID both were getting stored as patID.
+                intent.putExtra("patientUuid", patinet.getPatientuuid());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "");
                 intent.putExtra("hasPrescription", "true");
