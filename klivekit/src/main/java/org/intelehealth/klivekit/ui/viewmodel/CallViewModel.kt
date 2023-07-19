@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ajalt.timberkt.Timber
+import com.twilio.audioswitch.AudioDevice
 import io.livekit.android.ConnectOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
@@ -41,6 +42,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.intelehealth.klivekit.httpclient.OkHttpClientProvider
+import org.intelehealth.klivekit.utils.AudioType
+import org.intelehealth.klivekit.utils.AudioType.*
 import org.intelehealth.klivekit.utils.extensions.flatMapLatestOrNull
 import org.intelehealth.klivekit.utils.extensions.hide
 import org.webrtc.EglBase
@@ -76,7 +79,7 @@ open class CallViewModel(
         adaptiveStream = true
     )
 
-    private val audioHandler = AudioSwitchHandler(application)
+    val audioHandler = AudioSwitchHandler(application)
     val room = LiveKit.create(
         appContext = application.applicationContext,
         options = options,
@@ -475,13 +478,7 @@ open class CallViewModel(
             )
 
             Timber.e { "Before Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
-            audioHandler.apply {
-                selectDevice(availableAudioDevices.find {
-                    it.name == "Speakerphone"
-                })
-            }
-
-            audioHandler.start()
+            updateAudioSetting(SPEAKER_PHONE)
             Timber.e { "After Selected audio => ${audioHandler.selectedAudioDevice?.name}" }
 //            val audioTrack = localParticipant.createAudioTrack(
 //                "audio",
@@ -624,6 +621,14 @@ open class CallViewModel(
     fun disconnect() {
         room.disconnect()
     }
+
+    fun updateAudioSetting(audioType: AudioType) {
+        audioHandler.selectDevice(getAudioDevice(audioType))
+        audioHandler.start()
+    }
+
+    private fun getAudioDevice(audioType: AudioType) =
+        audioHandler.availableAudioDevices.find { it.name == audioType.value }
 
     companion object {
         const val REMOTE_PARTICIPANT = "remote_participant"

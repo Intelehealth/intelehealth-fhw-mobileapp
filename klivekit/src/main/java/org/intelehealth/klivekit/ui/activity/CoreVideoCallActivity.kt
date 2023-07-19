@@ -1,10 +1,15 @@
 package org.intelehealth.klivekit.ui.activity
 
 import android.Manifest
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
@@ -27,9 +32,11 @@ import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.ui.viewmodel.SocketViewModel
 import org.intelehealth.klivekit.ui.viewmodel.VideoCallViewModel
+import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import org.intelehealth.klivekit.utils.extensions.showToast
 import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
+
 
 /**
  * Created by Vaghela Mithun R. on 07-06-2023 - 18:59.
@@ -66,7 +73,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     // initiate the incoming call ringtone
     private val ringtone: Ringtone by lazy {
-        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL)
         RingtoneManager.getRingtone(applicationContext, notification)
     }
 
@@ -206,6 +213,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun playRingtone() = ringtone.play()
 
     open fun stopRingtone() {
+        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
         if (ringtone.isPlaying) ringtone.stop()
     }
 
@@ -248,6 +256,15 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     open fun onGoingCall() {
         Timber.d { "Calling to ${args.doctorName}" }
+        videoCallViewModel.updateAudioSetting(AudioType.SPEAKER_PHONE)
+//        audioManager.isSpeakerphoneOn = true
+//        audioManager.setStreamVolume(
+//            AudioManager.STREAM_MUSIC,
+//            audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+//            0
+//        )
+        playRingtone()
+        Timber.e { "playRingtone ${ringtone.isPlaying}" }
         videoCallViewModel.startCallTimeUpTimer()
         socketViewModel.connectWithDoctor()
         startConnecting()
@@ -304,6 +321,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         arg?.let {
             socketViewModel.emit("bye", args)
         }
+        stopRingtone()
         finish()
     }
 
