@@ -246,7 +246,9 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <include layout="@layout/notifi_filter_layout" />
+        <include
+            layout="@layout/notifi_filter_layout"
+            android:visibility="gone" />
 
     </FrameLayout>
 

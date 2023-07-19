@@ -76,6 +76,10 @@ public class DailyAchievementsFragment extends Fragment {
         todaysDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy");
         todaysDateInYYYYMMDD = DateAndTimeUtils.getTodaysDateInRequiredFormat("yyyy-MM-dd");
 
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            todaysDate = StringUtils.en__ru_dob(todaysDate);
+        }
+
         TextView tvTodaysDate = view.findViewById(R.id.tv_todays_date);
         tvTodaysDate.setText(todaysDate);
 

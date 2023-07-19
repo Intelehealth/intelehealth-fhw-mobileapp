@@ -74,8 +74,20 @@ public class DateRangeAchievementsFragment extends Fragment {
         tvAveragePatientSatisfactionScore = view.findViewById(R.id.tv_average_patient_satisfaction_score);
         tvTotalTimeSpentInRange = view.findViewById(R.id.tv_time_spent_in_range);
 
-        tvStartDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
-        tvEndDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy"));
+        startDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy");
+        endDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy");
+
+        String displayStartDate = "", displayEndDate = "";
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            displayStartDate = StringUtils.getFullMonthName(startDate);
+            displayStartDate = StringUtils.en__ru_dob(displayStartDate);
+            displayEndDate = StringUtils.getFullMonthName(endDate);
+            displayEndDate = StringUtils.en__ru_dob(displayEndDate);
+        }
+
+        tvStartDate.setText(displayStartDate);
+        tvEndDate.setText(displayEndDate);
 
         selectStartDate.setOnClickListener(v -> selectDate(tvStartDate));
         selectEndDate.setOnClickListener(v -> selectDate(tvEndDate));
@@ -93,7 +105,13 @@ public class DateRangeAchievementsFragment extends Fragment {
             newDate.set(Calendar.DAY_OF_MONTH, day);
 
             Date selectedDate = newDate.getTime();
-            textView.setText(DateAndTimeUtils.convertDateObjectToString(selectedDate, "dd MMM, yyyy"));
+            String selectedDateString = DateAndTimeUtils.convertDateObjectToString(selectedDate, "dd MMM, yyyy");
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                selectedDateString = StringUtils.getFullMonthName(selectedDateString);
+                selectedDateString = StringUtils.en__ru_dob(selectedDateString);
+            }
+
+            textView.setText(selectedDateString);
             fetchAndSetUIData();
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
@@ -105,6 +123,13 @@ public class DateRangeAchievementsFragment extends Fragment {
     private void fetchAndSetUIData() {
         startDate = tvStartDate.getText().toString();
         endDate = tvEndDate.getText().toString();
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            startDate = StringUtils.hi_or_bn_en_noEdit(startDate, "ru");
+            startDate = StringUtils.getShortMonthName(startDate);
+            endDate = StringUtils.hi_or_bn_en_noEdit(endDate, "ru");
+            endDate = StringUtils.getShortMonthName(endDate);
+        }
 
         executorService.execute(() -> {
             setPatientsCreatedInRange();

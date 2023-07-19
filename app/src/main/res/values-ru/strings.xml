@@ -1020,4 +1020,20 @@
     <string name="sure_change_language">Вы уверены, что хотите изменить язык на</string>
     <string name="change_language">Изменить язык?</string>
 
+    <string name="level">Уровень</string>
+    <string name="overall">В целом</string>
+    <string name="daily">Ежедневно</string>
+    <string name="date_range">Диапазон дат</string>
+    <string name="patients_added">Добавленные вами пациенты</string>
+    <string name="visits_completed_by_you">Посещения, завершенные вами</string>
+    <string name="your_patient_score">Ваш показатель удовлетворенности пациентов</string>
+    <string name="your_time_spent_today">Ваше время, затраченное на сегодня</string>
+    <string name="daily_avg_time_spent">Среднесуточное время, проведенное вами</string>
+    <string name="total_time_spent">Общее затраченное время</string>
+
+    <string name="notifi_title">Уведомление</string>
+    <string name="five_presc_received">%1$d Полученные рецепты</string>
+    <string name="notifi_subheader_title">Отправка рецептов пациентам</string>
+    <string name="no_prescription">Без рецепта</string>
+
 </resources>
