@@ -118,11 +118,11 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                     e.printStackTrace();
                 }
                 //TODO: need more improvement in main query, this condition can be done by join query
-                if(isForReceivedPrescription) {
+                if (isForReceivedPrescription) {
                     if (!isCompletedExitedSurvey && isPrescriptionReceived) {
                         count += 1;
                     }
-                }else{
+                } else {
                     if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
                         count += 1;
                     }
@@ -255,7 +255,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         int pendingCountTotalVisits = getCurrentMonthsVisits(false);
         int countReceivedPrescription = getCurrentMonthsVisits(true);
         int total = pendingCountTotalVisits + countReceivedPrescription;
-        prescriptionCountTextView.setText(countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " "  + total);
+        prescriptionCountTextView.setText(countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " " + total);
         int countPendingCloseVisits = getThisMonthsNotEndedVisits();
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits));
@@ -367,7 +367,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
             } else {
                 totalUpcomingApps = 0;
             }
-            mUpcomingAppointmentCountTextView.setText(totalUpcomingApps + " upcoming");
+            mUpcomingAppointmentCountTextView.setText(totalUpcomingApps + " " + getString(R.string.upcoming));
 
         } catch (
                 Exception e) {

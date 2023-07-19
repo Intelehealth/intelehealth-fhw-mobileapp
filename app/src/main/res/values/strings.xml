@@ -2126,4 +2126,9 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="tertial_hospital_type">Tertiary</string>
     <string name="please_select_hospital_type_msg">Please select the hospital type</string>
 
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_achievements">Achievements</string>
+    <string name="bottom_nav_help">Help</string>
+    <string name="bottom_nav_add_patient">Add Patient</string>
+
 </resources>

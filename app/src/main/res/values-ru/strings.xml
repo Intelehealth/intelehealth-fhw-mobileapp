@@ -990,4 +990,34 @@
     <string name="prescribed_medication_remarks">Примечания</string>
     <string name="visit_date">Дата посещения</string>
 
+    <string name="add_patient">Добавить пациентов</string>
+    <string name="prescriptions">Рецепты</string>
+    <string name="out_of"> Из </string>
+    <string name="close_visits">Завершить визиты</string>
+    <string name="unclosed_visits">Незакрытые посещения</string>
+    <string name="appointments">Назначения</string>
+    <string name="follow_up_visits">Последующие визиты</string>
+
+    <string name="bottom_nav_home">Главная страница</string>
+    <string name="bottom_nav_help">Помогите</string>
+    <string name="bottom_nav_achievements">Достижения</string>
+    <string name="bottom_nav_add_patient">Добавьте пациента</string>
+    <string name="reset_app_new">Сброс приложениe</string>
+    <string name="reset_app_new_title">Сбросить приложение?</string>
+    <string name="last_sync_toolbar">Последняя синхронизация:</string>
+    <string name="last_sync">Последняя синхронизация</string>
+    <string name="my_achievements">Мои достижения</string>
+    <string name="educational_videos">Образовательные видео</string>
+    <string name="change_lang">Изменить язык и протокол</string>
+
+    <string name="about_us">О нас</string>
+    <string name="log_out">Выйти из системы</string>
+    <string name="language">Язык</string>
+    <string name="app_language">Язык приложения</string>
+    <string name="reset_to_english">Сбросьте настройки на английский язык</string>
+    <string name="protocols">Протоколы</string>
+    <string name="update_app_protocols">Обновление протоколов приложения</string>
+    <string name="sure_change_language">Вы уверены, что хотите изменить язык на</string>
+    <string name="change_language">Изменить язык?</string>
+
 </resources>

@@ -103,6 +103,7 @@ import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 import org.intelehealth.unicef.utilities.OfflineLogin;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.TooltipWindow;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.exception.DAOException;
@@ -1070,7 +1071,13 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             }
 
             String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-            String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
+            String lastSyncTime = sessionManager.getLastSyncDateTime();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                lastSyncTime = StringUtils.getFullMonthName(lastSyncTime);
+                lastSyncTime = StringUtils.en__ru_dob(lastSyncTime);
+            }
+
+            String lastSync = getResources().getString(R.string.last_sync) + ": " + lastSyncTime;
             tvAppLastSync.setText(lastSync);
 
             //ui2.0 update user details in  nav header
