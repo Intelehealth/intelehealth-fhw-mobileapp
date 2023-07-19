@@ -50,19 +50,21 @@ open class SocketManager {
 
     private fun emitter(event: String) = Emitter.Listener {
         Timber.e { "$event => ${Gson().toJson(it)}" }
-//        if (event == EVENT_ALL_USER) {
-//            val json: String? = Gson().toJson(it);
-//            json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
-//        }
+        if (event == EVENT_ALL_USER) {
+            val json: String? = Gson().toJson(it);
+            json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
+        }
+
         emitterListener?.invoke(event)?.call(it)
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }
 
     private fun parseAndSaveToLocal(jsonArray: JSONArray) {
+        activeUsers.clear()
         if (jsonArray.length() > 0) {
             val array: JSONArray = jsonArray.getJSONObject(0).getJSONArray("values")
             if (array.length() > 0) {
-                for (i in 0..array.length()) {
+                for (i in 0 until array.length()) {
                     val json = array.getJSONObject(i).getJSONObject("nameValuePairs");
                     val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
                     activeUser?.let {
@@ -104,6 +106,9 @@ open class SocketManager {
     fun reconnect() = socket?.connect()
 
     fun isConnected(): Boolean = socket?.connected() ?: false
+
+    fun checkUserIsOnline(id: String) =
+        activeUsers.containsKey(id) && activeUsers.get(id)!!.isOnline()
 
     companion object {
         @JvmStatic

@@ -105,7 +105,7 @@ class SocketViewModel(
     }
 
     private fun checkActiveUser(it: Array<Any>?, eventAllUser: String) {
-        Timber.d { "Active users => ${Gson().toJson(it)}" }
+        Timber.d { "Active users => ${Gson().toJson(socketManager.activeUsers)}" }
     }
 
     fun connect() {

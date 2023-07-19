@@ -43,6 +43,7 @@ import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.socket.SocketManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -240,32 +241,36 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     }
 
     private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
-        SessionManager sessionManager = new SessionManager(this);
-        Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
-        Log.v(TAG, "doctors  - " + doctorName);
-        EncounterDTO encounterDTO = new EncounterDAO().getEncounterByVisitUUIDLimit1(mVisitUUID);
-        RtcArgs args = new RtcArgs();
-        try {
-            String patientOpenMrsId = new PatientsDAO().getOpenmrsId(mPatientUuid);
-            args.setPatientOpenMrsId(patientOpenMrsId);
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
+        if (SocketManager.getInstance().checkUserIsOnline(doctors.get(doctorName))) {
+            SessionManager sessionManager = new SessionManager(this);
+            Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
+            Log.v(TAG, "doctors  - " + doctorName);
+            EncounterDTO encounterDTO = new EncounterDAO().getEncounterByVisitUUIDLimit1(mVisitUUID);
+            RtcArgs args = new RtcArgs();
+            try {
+                String patientOpenMrsId = new PatientsDAO().getOpenmrsId(mPatientUuid);
+                args.setPatientOpenMrsId(patientOpenMrsId);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
+
+            String nurseId = encounterDTO.getProvideruuid();
+            String roomId = mPatientUuid;
+
+            args.setVisitId(mVisitUUID);
+            args.setPatientId(mPatientUuid);
+            args.setPatientPersonUuid(mPatientUuid);
+            args.setPatientName(mPatientName);
+            args.setDoctorName(doctorName);
+            args.setDoctorUuid(doctors.get(doctorName));
+            args.setIncomingCall(false);
+            args.setNurseId(nurseId);
+            args.setNurseName(sessionManager.getChwname());
+            args.setRoomId(roomId);
+            new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(PartogramDataCaptureActivity.this, args1));
+        } else {
+            Toast.makeText(this, doctorName + " is offline", Toast.LENGTH_LONG).show();
         }
-
-        String nurseId = encounterDTO.getProvideruuid();
-        String roomId = mPatientUuid;
-
-        args.setVisitId(mVisitUUID);
-        args.setPatientId(mPatientUuid);
-        args.setPatientPersonUuid(mPatientUuid);
-        args.setPatientName(mPatientName);
-        args.setDoctorName(doctorName);
-        args.setDoctorUuid(doctors.get(doctorName));
-        args.setIncomingCall(false);
-        args.setNurseId(nurseId);
-        args.setNurseName(sessionManager.getChwname());
-        args.setRoomId(roomId);
-        new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(PartogramDataCaptureActivity.this, args1));
     }
 
     @Override

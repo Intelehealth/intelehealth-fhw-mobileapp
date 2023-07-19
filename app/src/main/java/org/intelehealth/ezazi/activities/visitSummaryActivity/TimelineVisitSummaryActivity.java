@@ -69,6 +69,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.socket.SocketManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -342,36 +343,37 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      * @param doctorName String
      */
     private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
-        Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
-        Log.v(TAG, "doctors  - " + doctorName);
+        if (SocketManager.getInstance().checkUserIsOnline(doctors.get(doctorName))) {
+            Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
+            Log.v(TAG, "doctors  - " + doctorName);
 //        SocketManager.getInstance().setEmitterListener(emitter);
-        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-        RtcArgs args = new RtcArgs();
-        try {
-            String patientOpenMrsId = new PatientsDAO().getOpenmrsId(patientUuid);
-            args.setPatientOpenMrsId(patientOpenMrsId);
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+            EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+            RtcArgs args = new RtcArgs();
+            try {
+                String patientOpenMrsId = new PatientsDAO().getOpenmrsId(patientUuid);
+                args.setPatientOpenMrsId(patientOpenMrsId);
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
 //        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
 //        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
 //        Intent in = new Intent(TimelineVisitSummaryActivity.this, EzaziVideoCallActivity.class);
 
 
-        String nurseId = encounterDTO.getProvideruuid();
-        String roomId = patientUuid;
+            String nurseId = encounterDTO.getProvideruuid();
+            String roomId = patientUuid;
 
-        args.setVisitId(visitUuid);
-        args.setPatientId(patientUuid);
-        args.setPatientPersonUuid(patientUuid);
-        args.setPatientName(patientName);
-        args.setDoctorName(doctorName);
-        args.setDoctorUuid(doctors.get(doctorName));
-        args.setIncomingCall(false);
-        args.setNurseId(nurseId);
-        args.setNurseName(sessionManager.getChwname());
-        args.setRoomId(roomId);
-        new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(TimelineVisitSummaryActivity.this, args1));
+            args.setVisitId(visitUuid);
+            args.setPatientId(patientUuid);
+            args.setPatientPersonUuid(patientUuid);
+            args.setPatientName(patientName);
+            args.setDoctorName(doctorName);
+            args.setDoctorUuid(doctors.get(doctorName));
+            args.setIncomingCall(false);
+            args.setNurseId(nurseId);
+            args.setNurseName(sessionManager.getChwname());
+            args.setRoomId(roomId);
+            new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(TimelineVisitSummaryActivity.this, args1));
 
 //        in.putExtra("roomId", roomId);
 //        in.putExtra("isInComingRequest", false);
@@ -387,6 +389,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //        if (callState == TelephonyManager.CALL_STATE_IDLE) {
 //            startActivity(in);
 //        }
+        } else {
+            Toast.makeText(this, doctorName + " is offline", Toast.LENGTH_LONG).show();
+        }
     }
 
 //    private Function1<? super String, ? extends Emitter.Listener> emitter = (event) ->
@@ -404,6 +409,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         dialog.setListener(this::collectEmergencyData);
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+
     }
 
     private void collectEmergencyData() {
