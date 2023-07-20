@@ -1331,7 +1331,7 @@ public class Node implements Serializable {
                 context.getString(R.string.Years)}; //supports Hindi Translations as well...
 
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
@@ -1930,7 +1930,7 @@ public class Node implements Serializable {
                 context.getString(R.string.Years)}; //supports Hindi Translations as well...
 
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
