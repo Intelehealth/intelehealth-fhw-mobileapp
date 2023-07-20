@@ -4110,10 +4110,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     private String formatComment(String comment) {
         String formattedComment = "";
         String[] stringarray = comment.split("\\|");
+        Log.e(TAG, "formatComment: " + stringarray[2]);
+        String doctorName = stringarray[2];
+
+        if (stringarray[2].contains(" ")) {
+            String[] names = stringarray[2].split(" ");
+            String fname = String.valueOf(names[0].toCharArray()[0]).toUpperCase(Locale.getDefault());
+            doctorName = fname + " " + names[1];
+        }
+
         if (stringarray.length == 3)
-            formattedComment = getResources().getString(R.string.deleted_by) + " " + stringarray[2] + ", " + formatTimeForComment(stringarray[1]);
+            formattedComment = getResources().getString(R.string.deleted_by) + " " + doctorName + ", " + formatTimeForComment(stringarray[1]);
         else if (stringarray.length == 4)
-            formattedComment = getResources().getString(R.string.deleted_by) + " " + stringarray[2] + " (" + stringarray[3] + ") " + ", " + formatTimeForComment(stringarray[1]);
+            formattedComment = getResources().getString(R.string.deleted_by) + " " + doctorName + " (" + stringarray[3] + ") " + ", " + formatTimeForComment(stringarray[1]);
         return formattedComment;
     }
 

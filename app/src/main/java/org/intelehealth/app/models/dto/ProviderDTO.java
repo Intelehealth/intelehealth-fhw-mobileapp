@@ -26,6 +26,9 @@ public class ProviderDTO {
     @Expose
     private Integer voided;
 
+    @SerializedName("userid")
+    private Integer userId;
+
     public String getUuid() {
         return uuid;
     }
@@ -80,5 +83,13 @@ public class ProviderDTO {
 
     public void setUseruuid(String useruuid) {
         this.useruuid = useruuid;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

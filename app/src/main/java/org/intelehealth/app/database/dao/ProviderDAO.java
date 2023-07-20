@@ -51,6 +51,7 @@ public class ProviderDAO {
             values.put("family_name", provider.getFamilyName());
             values.put("role", provider.getRole());
             values.put("useruuid", provider.getUseruuid());
+            values.put("userid", provider.getUserId());
             values.put("voided", provider.getVoided());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", "TRUE");
