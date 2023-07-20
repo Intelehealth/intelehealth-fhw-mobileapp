@@ -7,8 +7,6 @@ import android.widget.CompoundButton;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.ezazi.R;
-
 import java.util.ArrayList;
 
 /**

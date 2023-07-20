@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.activities.homeActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.databinding.SingleChoiceDialogItemBinding;
+import org.intelehealth.ezazi.ui.search.SearchableAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +20,7 @@ import java.util.List;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHolder> {
+public class SingleChoiceAdapter extends SearchableAdapter<String, SingleChoiceViewHolder> {
     private LayoutInflater inflater;
     private List<String> choices;
 
@@ -26,6 +29,7 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHo
     private View.OnClickListener clickListener;
 
     public SingleChoiceAdapter(Context context, List<String> choices, View.OnClickListener clickListener) {
+        super(choices);
         inflater = LayoutInflater.from(context);
         this.choices = choices;
         this.clickListener = clickListener;
@@ -66,6 +70,18 @@ public class SingleChoiceAdapter extends RecyclerView.Adapter<SingleChoiceViewHo
 
         if (selected != -1)
             notifyItemChanged(selected);
+    }
+
+    @Override
+    protected String searchableValue(int position) {
+        return searchableList.get(position);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    protected void onResultSearch(ArrayList<String> results) {
+        choices = results;
+        notifyDataSetChanged();
     }
 }
 

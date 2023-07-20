@@ -58,6 +58,6 @@
     <string name="enter_new_password_title">Enter your new password</string>
     <string name="no_user_exist">Mobile number not exist</string>
     <string name="fill_required_fields">Please fill required fields</string>
-
+    <string name="hint_search_common">Type to search here…</string>
 
 </resources>

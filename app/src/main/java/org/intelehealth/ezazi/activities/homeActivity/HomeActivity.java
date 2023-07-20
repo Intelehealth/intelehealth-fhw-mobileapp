@@ -324,8 +324,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         Log.e(TAG, "onNext: setCreatorID" + sessionManager.getCreatorID());
         Log.e(TAG, "onNext: setSessionID" + sessionManager.getSessionID());
         Log.e(TAG, "onNext: setProviderID" + sessionManager.getProviderID());
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(null);
 //        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
 //        toolbar.setTitleTextColor(Color.WHITE);
         DeviceInfoUtils.saveDeviceInfo(this);
@@ -1286,9 +1287,8 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.syncOption:
-//                refreshDatabases();
-//                return true;
+            case android.R.id.home:
+                return false;
             case R.id.settingsOption:
                 //settings();
                 Intent intent = new Intent(this, ChooseLanguageActivity.class);
@@ -1516,7 +1516,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 }
 
             default:
-                return super.onOptionsItemSelected(item);
+                return false;
         }
     }
 

@@ -1,10 +1,13 @@
 package org.intelehealth.ezazi.ui.dialog.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.intelehealth.ezazi.ui.search.SearchableAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,10 +17,11 @@ import java.util.Collection;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter<VH> implements View.OnClickListener {
+@SuppressLint("NotifyDataSetChanged")
+public abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
+        extends SearchableAdapter<T, VH> implements View.OnClickListener {
     private final ArrayList<T> selectedItems = new ArrayList<>();
-    private final ArrayList<T> items;
+    private ArrayList<T> items;
     protected Context context;
     protected LayoutInflater inflater;
 
@@ -27,6 +31,7 @@ abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHo
     }
 
     public BaseSelectedRecyclerViewAdapter(Context context, ArrayList<T> objectsList) {
+        super(objectsList);
         inflater = LayoutInflater.from(context);
         items = objectsList;
         setHasStableIds(true);
@@ -78,9 +83,15 @@ abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHo
         notifyItemChanged(getItems().indexOf(item));
     }
 
+
     public void selectAllItem() {
         selectedItems.clear();
         selectedItems.addAll(getItems());
+        notifyDataSetChanged();
+    }
+
+    public void updateItems(ArrayList<T> items) {
+        this.items = items;
         notifyDataSetChanged();
     }
 
@@ -95,5 +106,10 @@ abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHo
     public void clearSelection() {
         selectedItems.clear();
         notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResultSearch(ArrayList<T> results) {
+        updateItems(results);
     }
 }

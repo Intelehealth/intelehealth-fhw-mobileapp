@@ -28,6 +28,15 @@ public class PatientMultiChoiceAdapter extends SelectAllHeaderAdapter {
     }
 
     @Override
+    protected String searchableValue(int position) {
+        if (getItems().size() > 0 && getItemViewType(position) == ITEM && searchableList.get(position) instanceof FamilyMemberRes) {
+            FamilyMemberRes patient = (FamilyMemberRes) searchableList.get(position);
+            return patient.getName();
+        }
+        return "";
+    }
+
+    @Override
     public long getItemId(int position) {
         return getItem(position).hashCode();
     }

@@ -31,6 +31,11 @@ public class RiskFactorMultiChoiceAdapter extends MultiChoiceAdapter<String, Rec
     }
 
     @Override
+    protected String searchableValue(int position) {
+        return getItem(position);
+    }
+
+    @Override
     public long getItemId(int position) {
         return getItem(position).hashCode();
     }
