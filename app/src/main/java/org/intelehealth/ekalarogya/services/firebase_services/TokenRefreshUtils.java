@@ -21,7 +21,6 @@ public class TokenRefreshUtils {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
-                            Logger.logE(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
                         if (task.getResult() == null) {

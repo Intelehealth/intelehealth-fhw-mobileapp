@@ -1,9 +1,11 @@
 package org.intelehealth.ekalarogya.activities.splash_activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,7 +69,8 @@ public class SplashActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-        TokenRefreshUtils.refreshToken(this);
+        if (isNetworkConnected()) // AEAT-552: // com.google.firebase.iid.GmsRpc.handleResponse -> java.io.IOException - SERVICE_NOT_AVAILABLE // this issue was happening coz internet was not connected and firebase token was trying to create leading to an exception and triggering an entry in crashlytics.
+            TokenRefreshUtils.refreshToken(this);
 
         initFirebaseRemoteConfig();
     }
@@ -224,5 +227,11 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

@@ -73,7 +73,6 @@ public class FileUtils {
             return s;
 
         } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
 
