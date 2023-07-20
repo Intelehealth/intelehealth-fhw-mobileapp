@@ -55,6 +55,8 @@ public class FileUtils {
 
         try {
             File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + File.separator + FILENAME);
+            myDir.mkdirs(); //  AEAT-552: error: No such file/directory: this will create the dir if its not present.
+
             FileInputStream fileIn = new FileInputStream(myDir);
             InputStreamReader InputRead = new InputStreamReader(fileIn);
             final int READ_BLOCK_SIZE = 100;
