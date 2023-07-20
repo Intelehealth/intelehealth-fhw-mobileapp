@@ -3790,7 +3790,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.e(TAG, "TEST DB: " + dbValue);
             Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
         } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+//            FirebaseCrashlytics.getInstance().recordException(e); // app is not crashing bt since crashlytics is registering this event from exception code block its showing up in firebase.
             Toast.makeText(context, getResources().getString(R.string.something_went_wrong),
                     Toast.LENGTH_SHORT).show();
         }
