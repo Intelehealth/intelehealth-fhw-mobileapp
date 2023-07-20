@@ -1,0 +1,7 @@
+* Get doctor name with query who added and deleted
+===================================================
+select O.value, O.conceptuuid, O.comment, (substr(P.given_name, 1, 1) || ' ' || P.family_name) as doctor,
+case when O.comment IS NULL then 1 else 0 end as isAdded,
+case when O.comment IS NOT NULL then 1 else 0 end as isDeleted
+from tbl_obs O
+LEFT OUTER JOIN tbl_provider P ON P.userid = O.creator
