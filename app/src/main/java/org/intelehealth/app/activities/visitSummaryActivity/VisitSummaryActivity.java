@@ -2401,6 +2401,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_diagnosis)) + "</p></b></u>" + "%s<br>", diagnosis_web));
             }
 
+            Log.e(TAG, "doWebViewPrint_Button: rx_web=>" + rx_web);
             if (!rx_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_med_plan_ordered_items)) + "</p></b></u>" + "%s<br>", rx_web));
             }
@@ -2432,8 +2433,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
             htmlDocument = htmlDocument.concat(String.format("<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" + "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" + doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", doctor_web));
 
+            Log.e(TAG, "doWebViewPrint_Button: html=>" + htmlDocument);
             if (LocaleHelper.isArabic(this))
-                htmlDocument = "<html dir=\"rtl\" lang=\"\"><body>" + htmlDocument + "</body></html>";
+                htmlDocument = "<html dir=\"rtl\" lang=\"ar\"><body>" + htmlDocument + "</body></html>";
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_age)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_gender)) + ": %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_address_contact)) + ": %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_patient_id)) + ": %s | " + checkAndConvertPrescriptionHeadings(getString(R.string.prescription_date_of_visit)) + ": %s </p><br>" +
@@ -3903,6 +3905,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 break;
             }
             case UuidDictionary.JSV_MEDICATIONS: {
+                Log.e(TAG, "parseData: JSV_MEDICATIONS=>" + value);
                 if (!newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
                         newRxReturned = newRxReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
@@ -3922,7 +3925,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 } else if (rxReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
                     rxReturned = value;
                 }
-
+                Log.e(TAG, "parseData: rxReturn=>" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
@@ -4115,8 +4118,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (stringarray[2].contains(" ")) {
             String[] names = stringarray[2].split(" ");
-            String fname = String.valueOf(names[0].toCharArray()[0]).toUpperCase(Locale.getDefault());
-            doctorName = fname + " " + names[1];
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < names.length - 1; i++) {
+                builder.append(String.valueOf(names[i].toCharArray()[0]).toUpperCase(Locale.getDefault()));
+                builder.append(" ");
+            }
+
+            doctorName = builder.append(names[names.length - 1]).toString();
         }
 
         if (stringarray.length == 3)
