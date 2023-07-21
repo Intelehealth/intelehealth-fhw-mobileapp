@@ -46,6 +46,7 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
         }
     }
 
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.tvChoice) {

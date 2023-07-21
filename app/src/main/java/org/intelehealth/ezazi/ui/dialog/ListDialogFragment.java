@@ -18,6 +18,8 @@ abstract class ListDialogFragment<T> extends BaseDialogFragment<T> implements Se
 
     private DialogListViewBinding listViewBinding;
 
+    protected boolean hasSearch;
+
     @Override
     View getContentView() {
         listViewBinding = DialogListViewBinding.inflate(getLayoutInflater(), null, false);
@@ -25,6 +27,7 @@ abstract class ListDialogFragment<T> extends BaseDialogFragment<T> implements Se
         if (getAdapter() != null)
             listViewBinding.recyclerView.setAdapter(getAdapter());
         listViewBinding.searchView.setOnQueryTextListener(ListDialogFragment.this);
+        listViewBinding.setHasSearch(hasSearch);
         return listViewBinding.getRoot();
     }
 
@@ -34,6 +37,10 @@ abstract class ListDialogFragment<T> extends BaseDialogFragment<T> implements Se
 
     public void setRecyclerAdapter(RecyclerView.Adapter<?> adapter) {
         listViewBinding.recyclerView.setAdapter(adapter);
+    }
+
+    public void isSearchable(boolean enable) {
+        hasSearch = enable;
     }
 
     @Override

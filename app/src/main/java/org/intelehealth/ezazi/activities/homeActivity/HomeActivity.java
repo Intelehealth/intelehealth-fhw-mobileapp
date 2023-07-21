@@ -867,6 +867,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 .content(Arrays.asList(nurseNames))
                 .build();
 
+        dialog.isSearchable(true);
         dialog.setListener((position, value) -> {
             assignNurseToPatient(visitUUIDList, nurseUUID[position]);
         });

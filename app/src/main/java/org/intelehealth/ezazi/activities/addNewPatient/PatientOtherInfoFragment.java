@@ -530,7 +530,7 @@ public class PatientOtherInfoFragment extends Fragment {
                     mMembraneRupturedTimeTextView.setEnabled(true);
                     cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                     cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-                    if (errorDetailsList!= null && errorDetailsList.size() > 0) {
+                    if (errorDetailsList != null && errorDetailsList.size() > 0) {
                         for (int i = 0; i < errorDetailsList.size(); i++) {
                             ErrorManagerModel errorManagerModel = errorDetailsList.get(i);
                             if (errorManagerModel.getView().equals(mMembraneRupturedDateTextView)) {
@@ -586,7 +586,7 @@ public class PatientOtherInfoFragment extends Fragment {
             public void onClick(View v) {
 
                 MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
-
+                dialog1.isSearchable(true);
                 final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
                 List<String> items = Arrays.asList(itemsArray);
 
@@ -614,7 +614,7 @@ public class PatientOtherInfoFragment extends Fragment {
             public void onClick(View v) {
 
                 MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
-
+                dialog1.isSearchable(true);
                 final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
                 List<String> items = Arrays.asList(itemsArray);
 
@@ -634,7 +634,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 });
 
                 assert getFragmentManager() != null;
-                dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
+                dialog1.show(getChildFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
             }
         });
         etLayoutPrimaryDoctor.setEndIconOnClickListener(v -> selectPrimaryDoctor());
@@ -1455,7 +1455,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext).title(R.string.select_primary_doctor).positiveButtonLabel(R.string.save_button).content(Arrays.asList(mDoctorNames)).build();
-
+//        dialog.isSearchable(true);
         dialog.setListener((position, value) -> {
             Log.d(TAG, "selectPrimaryDoctor: position : " + position);
             Log.d(TAG, "selectPrimaryDoctor: value : " + value);
@@ -1489,7 +1489,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext).title(R.string.select_secondary_doctor).positiveButtonLabel(R.string.save_button).content(Arrays.asList(mDoctorNames)).build();
-
+//        dialog.isSearchable(true);
         dialog.setListener((position, value) -> {
             Log.d(TAG, "selectSecondaryDoctor: position : " + position);
             Log.d(TAG, "selectSecondaryDoctor: value : " + value);

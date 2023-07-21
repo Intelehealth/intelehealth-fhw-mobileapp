@@ -1,3 +1,9 @@
+Search
+- In home add bed no
+- Add patient -> Risk factor not searching properly
+- Primary doctor and secondary doctor wrong value
+- Remove search from observation
+
 WebRtc
 1 - Call initiate from doctor to health second time getting close with message hw end the call.
 2 - Second time call connection issue for HW -> doctor

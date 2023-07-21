@@ -376,13 +376,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
         void nextIntent(boolean isEditMode) {
             Log.v("nextIntent", "nextIntent isEditMode - " + isEditMode);
+            String encounterType = encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName();
+            Log.v("nextIntent", "encounterType - " + encounterType);
             int type = 10;
             int stage = 1;
-            String[] name = encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().split("_");
-            if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage1")) {
+            String[] name = encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName().split("_");
+            if (encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage1")) {
                 //type = getAdapterPosition() % 2 != 0 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
                 type = Integer.parseInt(name[2]) == 2 ? HALF_HOUR : HOURLY; // card clicked is 30min OR 1 Hr
-            } else if (encounterDTOList.get(getAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage2")) {
+            } else if (encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName().toLowerCase().contains("stage2")) {
                 stage = 2;
                 //type = FIFTEEN_MIN; // card clicked is 15mins.
                 //Stage2_Hour1_1
@@ -400,7 +402,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             i1.putExtra("patientUuid", patientUuid);
             i1.putExtra("name", patientName);
             i1.putExtra("visitUuid", visitUuid);
-            i1.putExtra("encounterUuid", encounterDTOList.get(getAdapterPosition()).getUuid());
+            i1.putExtra("encounterUuid", encounterDTOList.get(getAbsoluteAdapterPosition()).getUuid());
             i1.putExtra("type", type);
             i1.putExtra("stage", stage);
             i1.putExtra("isEditMode", isEditMode);
