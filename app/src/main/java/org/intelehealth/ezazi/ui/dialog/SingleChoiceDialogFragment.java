@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.SingleChoiceAdapter;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,10 +20,10 @@ import java.util.List;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>> {
+public class SingleChoiceDialogFragment extends ListDialogFragment<List<SingChoiceItem>> {
 
     public interface OnChoiceListener {
-        void onItemSelected(int position, String value);
+        void onItemSelected(SingChoiceItem item);
     }
 
     private OnChoiceListener listener;
@@ -39,8 +41,8 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
 
     @Override
     public void onSubmit() {
-        if (adapter.getSelected() != -1) {
-            listener.onItemSelected(adapter.getSelected(), args.getContent().get(adapter.getSelected()));
+        if (adapter.getSelectedItems().size() > 0) {
+            listener.onItemSelected(new ArrayList<>(adapter.getSelectedItems()).get(0));
         } else {
             Toast.makeText(getContext(), "Please select item", Toast.LENGTH_LONG).show();
         }
@@ -50,21 +52,27 @@ public class SingleChoiceDialogFragment extends ListDialogFragment<List<String>>
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.tvChoice) {
-            int previousSelection = adapter.getSelected();
-            int selected = (int) view.getTag();
-            if (previousSelection == selected) selected = -1;
-            adapter.setSelected(selected);
-            changeSubmitButtonState(adapter.getSelected() != -1);
+            SingChoiceItem selected = (SingChoiceItem) view.getTag();
+            int position = (int) view.getTag(R.id.tvChoice);
 
-            if (args.getPositiveBtnLabel() == null && adapter.getSelected() != -1) {
+            if (adapter.isItemSelected(position)) {
+                adapter.removeSelection(selected);
+            } else {
+                adapter.clearSelection();
+                adapter.selectItem(selected);
+            }
+
+            changeSubmitButtonState(adapter.getSelectedItems().size() > 0);
+
+            if (args.getPositiveBtnLabel() == null && adapter.getSelectedItems().size() > 0) {
                 Log.e("Dialog", "onClick: ");
-                listener.onItemSelected(adapter.getSelected(), adapter.getItem(adapter.getSelected()));
+                listener.onItemSelected(new ArrayList<>(adapter.getSelectedItems()).get(0));
                 dismiss();
             }
         } else super.onClick(view);
     }
 
-    public static class Builder extends BaseBuilder<List<String>, SingleChoiceDialogFragment> {
+    public static class Builder extends BaseBuilder<List<SingChoiceItem>, SingleChoiceDialogFragment> {
 
         private OnChoiceListener listener;
 

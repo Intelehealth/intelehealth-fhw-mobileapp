@@ -28,6 +28,7 @@ import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -251,16 +252,25 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onClick(View v) {
                 final String[] items = mItemList.get(position).getParamInfoList().get(positionChild).getOptions();
+
+                ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+                for (int i = 0; i < items.length; i++) {
+                    SingChoiceItem item = new SingChoiceItem();
+                    item.setItemIndex(i);
+                    item.setItem(items[i]);
+                    choiceItems.add(item);
+                }
+
                 String title = "Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName();
                 SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
                         .title(title)
-                        .content(Arrays.asList(items))
+                        .content(choiceItems)
                         .build();
 
-                dialog.setListener((pos, value) -> {
+                dialog.setListener(item -> {
                     ParamInfo paramInfo = mItemList.get(position).getParamInfoList().get(positionChild);
-                    dropdownTextView.setText(paramInfo.getOptions()[pos]);
-                    paramInfo.setCapturedValue(paramInfo.getValues()[pos]);
+                    dropdownTextView.setText(paramInfo.getOptions()[item.getItemIndex()]);
+                    paramInfo.setCapturedValue(paramInfo.getValues()[item.getItemIndex()]);
                 });
 
                 dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());

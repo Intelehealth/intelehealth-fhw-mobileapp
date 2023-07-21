@@ -58,6 +58,7 @@ import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
@@ -326,12 +327,20 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      */
     private void showDoctorSelectionDialog() {
         HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(patientUuid);
+        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+        for (String key : doctors.keySet()) {
+            SingChoiceItem item = new SingChoiceItem();
+            item.setItemId(doctors.get(key));
+            item.setItem(key);
+            choiceItems.add(item);
+        }
+
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_doctor)
-                .content(new ArrayList<>(doctors.keySet()))
+                .content(choiceItems)
                 .build();
 
-        dialog.setListener((position, value) -> startVideoCallActivity(doctors, value));
+        dialog.setListener(item -> startVideoCallActivity(doctors, item.getItem()));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
@@ -641,14 +650,23 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         Log.e(TAG, "showEndShiftDialog");
         final String stage1Options[] = {getString(R.string.move_to_stage2),
                 getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
+        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+        int count = 0;
+        for (String str : stage1Options) {
+            SingChoiceItem item = new SingChoiceItem();
+            item.setItem(str);
+            item.setItemIndex(count);
+            choiceItems.add(item);
+            count++;
+        }
 
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_an_option)
                 .positiveButtonLabel(R.string.yes)
-                .content(Arrays.asList(stage1Options))
+                .content(choiceItems)
                 .build();
 
-        dialog.setListener(this::manageStageSelection);
+        dialog.setListener(item -> manageStageSelection(item.getItemIndex(), item.getItem()));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
@@ -927,13 +945,23 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //        positionStage = -1;
         final String[] items = {getString(R.string.live_birth), getString(R.string.still_birth),
                 getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
+        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+        int count = 0;
+        for (String str : items) {
+            SingChoiceItem item = new SingChoiceItem();
+            item.setItem(str);
+            item.setItemIndex(count);
+            choiceItems.add(item);
+            count++;
+        }
+
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_birth_outcome)
                 .positiveButtonLabel(R.string.yes)
-                .content(Arrays.asList(items))
+                .content(choiceItems)
                 .build();
 
-        dialog.setListener(this::manageBirthOutcomeSelection);
+        dialog.setListener(item -> manageBirthOutcomeSelection(item.getItemIndex(), item.getItem()));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 

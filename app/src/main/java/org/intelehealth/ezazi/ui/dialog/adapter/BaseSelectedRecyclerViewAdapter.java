@@ -11,6 +11,7 @@ import org.intelehealth.ezazi.ui.search.SearchableAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Vaghela Mithun R. on 16-05-2023 - 10:34.
@@ -21,7 +22,7 @@ import java.util.Collection;
 public abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
         extends SearchableAdapter<T, VH> implements View.OnClickListener {
     private final ArrayList<T> selectedItems = new ArrayList<>();
-    private ArrayList<T> items;
+    private List<T> items;
     protected Context context;
     protected LayoutInflater inflater;
 
@@ -30,7 +31,7 @@ public abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView
         return items.size();
     }
 
-    public BaseSelectedRecyclerViewAdapter(Context context, ArrayList<T> objectsList) {
+    public BaseSelectedRecyclerViewAdapter(Context context, List<T> objectsList) {
         super(objectsList);
         inflater = LayoutInflater.from(context);
         items = objectsList;
@@ -41,7 +42,7 @@ public abstract class BaseSelectedRecyclerViewAdapter<T, VH extends RecyclerView
         return items.get(position);
     }
 
-    public ArrayList<T> getItems() {
+    public List<T> getItems() {
         return items;
     }
 

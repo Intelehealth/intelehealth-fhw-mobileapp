@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.SingleChoiceDialogItemBinding;
+import org.intelehealth.ezazi.ui.dialog.adapter.BaseSelectedRecyclerViewAdapter;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.search.SearchableAdapter;
 
 import java.util.ArrayList;
@@ -20,18 +23,12 @@ import java.util.List;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class SingleChoiceAdapter extends SearchableAdapter<String, SingleChoiceViewHolder> {
-    private LayoutInflater inflater;
-    private List<String> choices;
-
-    private int selected = -1;
-
+public class SingleChoiceAdapter extends BaseSelectedRecyclerViewAdapter<SingChoiceItem, SingleChoiceViewHolder> {
     private View.OnClickListener clickListener;
 
-    public SingleChoiceAdapter(Context context, List<String> choices, View.OnClickListener clickListener) {
-        super(choices);
+    public SingleChoiceAdapter(Context context, List<SingChoiceItem> choices, View.OnClickListener clickListener) {
+        super(context, choices);
         inflater = LayoutInflater.from(context);
-        this.choices = choices;
         this.clickListener = clickListener;
     }
 
@@ -45,43 +42,25 @@ public class SingleChoiceAdapter extends SearchableAdapter<String, SingleChoiceV
     @Override
     public void onBindViewHolder(@NonNull SingleChoiceViewHolder holder, int position) {
         holder.bind(getItem(position));
-        holder.setSelected(position == selected);
-        holder.setClickListener(clickListener);
-    }
-
-    @Override
-    public int getItemCount() {
-        return choices.size();
-    }
-
-    public String getItem(int position) {
-        return choices.get(position);
-    }
-
-    public int getSelected() {
-        return selected;
-    }
-
-    public void setSelected(int selected) {
-        if (this.selected > -1)
-            notifyItemChanged(this.selected);
-
-        this.selected = selected;
-
-        if (selected != -1)
-            notifyItemChanged(selected);
+        holder.setSelected(isItemSelected(position));
+        holder.setClickListener(this);
     }
 
     @Override
     protected String searchableValue(int position) {
-        return searchableList.get(position);
+        return searchableList.get(position).getItem();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    protected void onResultSearch(ArrayList<String> results) {
-        choices = results;
+    protected void onResultSearch(ArrayList<SingChoiceItem> results) {
+        updateItems(results);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        clickListener.onClick(v);
     }
 }
 
@@ -93,8 +72,9 @@ class SingleChoiceViewHolder extends RecyclerView.ViewHolder {
         this.binding = binding;
     }
 
-    public void bind(String choice) {
+    public void bind(SingChoiceItem choice) {
         binding.setValue(choice);
+        binding.tvChoice.setTag(choice);
     }
 
     public void setSelected(boolean isSelected) {
@@ -102,7 +82,7 @@ class SingleChoiceViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setClickListener(View.OnClickListener listener) {
-        binding.tvChoice.setTag(getAdapterPosition());
+        binding.tvChoice.setTag(R.id.tvChoice, getAbsoluteAdapterPosition());
         binding.tvChoice.setOnClickListener(listener);
     }
 }

@@ -103,6 +103,7 @@ import org.intelehealth.ezazi.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.dialog.adapter.PatientMultiChoiceAdapter;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
@@ -811,20 +812,21 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             ProviderDAO providerDAO = new ProviderDAO();
             String myCreatorUUID = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
             List<ProviderDTO> mProviderNurseList = providerDAO.getNurseList();
-            String[] nurseNames = new String[mProviderNurseList.size() - 1];
-            String[] nurseUUID = new String[mProviderNurseList.size() - 1];
+//            String[] nurseNames = new String[mProviderNurseList.size() - 1];
+//            String[] nurseUUID = new String[mProviderNurseList.size() - 1];
 
-            int count = 0;
+            ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
             for (int i = 0; i < mProviderNurseList.size(); i++) {
                 if (!mProviderNurseList.get(i).getUserUuid().equals(myCreatorUUID)) {
-                    nurseNames[count] = mProviderNurseList.get(i).getGivenName() + " " + mProviderNurseList.get(i).getFamilyName();
-                    nurseUUID[count] = mProviderNurseList.get(i).getUuid();
-                    count++;
+                    SingChoiceItem item = new SingChoiceItem();
+                    item.setItem(mProviderNurseList.get(i).getGivenName() + " " + mProviderNurseList.get(i).getFamilyName());
+                    item.setItemId(mProviderNurseList.get(i).getUuid());
+                    item.setItemIndex(i);
+                    choiceItems.add(item);
                 }
-
             }
 
-            showNurseSelectionDialog(visitUUIDList, nurseNames, nurseUUID);
+            showNurseSelectionDialog(visitUUIDList, choiceItems);
 //            AlertDialog.Builder builder =
 //                    new AlertDialog.Builder(HomeActivity.this);
 //
@@ -860,17 +862,15 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    private void showNurseSelectionDialog(List<String> visitUUIDList, String[] nurseNames, String[] nurseUUID) {
+    private void showNurseSelectionDialog(List<String> visitUUIDList, ArrayList<SingChoiceItem> choiceItems) {
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_nurse)
                 .positiveButtonLabel(R.string.save_button)
-                .content(Arrays.asList(nurseNames))
+                .content(choiceItems)
                 .build();
 
         dialog.isSearchable(true);
-        dialog.setListener((position, value) -> {
-            assignNurseToPatient(visitUUIDList, nurseUUID[position]);
-        });
+        dialog.setListener(item -> assignNurseToPatient(visitUUIDList, item.getItemId()));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }

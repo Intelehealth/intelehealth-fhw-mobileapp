@@ -37,6 +37,7 @@ import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
@@ -230,12 +231,20 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
     private void showDoctorSelectionDialog() {
         HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(mPatientUuid);
+        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+        for (String key : doctors.keySet()) {
+            SingChoiceItem item = new SingChoiceItem();
+            item.setItemId(doctors.get(key));
+            item.setItem(key);
+            choiceItems.add(item);
+        }
+
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_doctor)
-                .content(new ArrayList<>(doctors.keySet()))
+                .content(choiceItems)
                 .build();
 
-        dialog.setListener((position, value) -> startVideoCallActivity(doctors, value));
+        dialog.setListener(item -> startVideoCallActivity(doctors, item.getItem()));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }

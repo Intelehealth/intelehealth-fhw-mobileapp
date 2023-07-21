@@ -7,10 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,7 +37,6 @@ import com.google.gson.Gson;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.customCalendar.CustomCalendarViewUI2;
 import org.intelehealth.ezazi.database.dao.ImagesDAO;
 import org.intelehealth.ezazi.database.dao.ImagesPushDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
@@ -56,7 +52,7 @@ import org.intelehealth.ezazi.ui.dialog.MultiChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
 import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
-import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
+import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -71,7 +67,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -105,11 +100,11 @@ public class PatientOtherInfoFragment extends Fragment {
 
     private String mAlternateNumberString = "", mWifeDaughterOfString = "";
     private String mOthersString = "";
-    private String[] mDoctorNames;
+    //    private String[] mDoctorNames;
     String privacy_value;
     private boolean mIsEditMode = false;
     private List<ProviderDTO> mProviderDoctorList = new ArrayList<ProviderDTO>();
-    private List<String> mDoctorUUIDs = new ArrayList<>();
+    //    private List<String> mDoctorUUIDs = new ArrayList<>();
     String patientID_edit;
     Patient patient1 = new Patient();
     private boolean hasLicense = false;
@@ -1443,27 +1438,31 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         }
         Log.d(TAG, "onClick:providerDoctorList : " + providerDoctorList.size());
-        mDoctorNames = new String[providerDoctorList.size()];
-        mDoctorUUIDs.clear();
         int selectedId = 0;
-
+        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
         for (int i = 0; i < providerDoctorList.size(); i++) {
-            mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
-            mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
+            SingChoiceItem item = new SingChoiceItem();
+            item.setItem(providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName());
+            item.setItemId(providerDoctorList.get(i).getUserUuid());
+            item.setItemIndex(i);
+            choiceItems.add(item);
             if (mPrimaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
                 selectedId = i;
         }
 
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext).title(R.string.select_primary_doctor).positiveButtonLabel(R.string.save_button).content(Arrays.asList(mDoctorNames)).build();
-//        dialog.isSearchable(true);
-        dialog.setListener((position, value) -> {
-            Log.d(TAG, "selectPrimaryDoctor: position : " + position);
-            Log.d(TAG, "selectPrimaryDoctor: value : " + value);
-            mPrimaryDoctorUUIDString = mDoctorUUIDs.get(position);
-            mPrimaryDoctorTextView.setText(mDoctorNames[position]);
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment
+                .Builder(mContext)
+                .title(R.string.select_primary_doctor)
+                .positiveButtonLabel(R.string.save_button)
+                .content(choiceItems).build();
+        dialog.isSearchable(true);
+        dialog.setListener(item -> {
+            Log.d(TAG, "selectPrimaryDoctor: value : " + item.getItem());
+            mPrimaryDoctorUUIDString = item.getItemId();
+            mPrimaryDoctorTextView.setText(item.getItem());
         });
 
-        dialog.show(requireFragmentManager(), dialog.getClass().getCanonicalName());
+        dialog.show(getChildFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void selectSecondaryDoctor() {
@@ -1478,26 +1477,32 @@ public class PatientOtherInfoFragment extends Fragment {
                 providerDoctorList.add(mProviderDoctorList.get(i));
             }
         }
-        mDoctorNames = new String[providerDoctorList.size()];
-        mDoctorUUIDs.clear();
+        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
         int selectedId = 0;
         for (int i = 0; i < providerDoctorList.size(); i++) {
-            mDoctorNames[i] = providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName();
-            mDoctorUUIDs.add(providerDoctorList.get(i).getUserUuid());
+            SingChoiceItem item = new SingChoiceItem();
+            item.setItem(providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName());
+            item.setItemId(providerDoctorList.get(i).getUserUuid());
+            item.setItemIndex(i);
+            choiceItems.add(item);
             if (mSecondaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
                 selectedId = i;
         }
 
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext).title(R.string.select_secondary_doctor).positiveButtonLabel(R.string.save_button).content(Arrays.asList(mDoctorNames)).build();
-//        dialog.isSearchable(true);
-        dialog.setListener((position, value) -> {
-            Log.d(TAG, "selectSecondaryDoctor: position : " + position);
-            Log.d(TAG, "selectSecondaryDoctor: value : " + value);
-            mSecondaryDoctorUUIDString = mDoctorUUIDs.get(position);
-            mSecondaryDoctorTextView.setText(mDoctorNames[position]);
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment
+                .Builder(mContext)
+                .title(R.string.select_secondary_doctor)
+                .positiveButtonLabel(R.string.save_button)
+                .content(choiceItems).build();
+        dialog.isSearchable(true);
+        dialog.setListener(item -> {
+            Log.d(TAG, "selectSecondaryDoctor: position : " + item.getItemIndex());
+            Log.d(TAG, "selectSecondaryDoctor: value : " + item.getItem());
+            mSecondaryDoctorUUIDString = item.getItemId();
+            mSecondaryDoctorTextView.setText(item.getItem());
         });
 
-        dialog.show(requireFragmentManager(), dialog.getClass().getCanonicalName());
+        dialog.show(getChildFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void selectTimeForAllParameters(String forWhichParameter) {
