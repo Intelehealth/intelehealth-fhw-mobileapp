@@ -4037,15 +4037,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
-                String visitnote = "";
+                String visitnote = "", visitComplete = "";
                 EncounterDAO encounterDAO = new EncounterDAO();
                 String encounterIDSelection = "visituuid = ? ";
                 String[] encounterIDArgs = {visitUuid};
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
                     do {
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                        // visit note
+                        if (UuidDictionary.ENCOUNTER_VISIT_NOTE
+                                .equalsIgnoreCase(encounterCursor.getString
+                                        (encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                             visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+
+                        // visit complete
+                        if (UuidDictionary.ENCOUNTER_VISIT_COMPLETE
+                                .equalsIgnoreCase(encounterCursor.getString
+                                        (encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            visitComplete = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
                     } while (encounterCursor.moveToNext());
 
@@ -4053,6 +4063,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (encounterCursor != null) {
                     encounterCursor.close();
                 }
+
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = "";
                     diagnosisTextView.setText("");
@@ -4080,37 +4091,42 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     followUpDateTextView.setText("");
                     followUpDateCard.setVisibility(View.GONE);
                 }
-                String[] columns = {"value", " conceptuuid"};
-                String visitSelection = "encounteruuid = ? and voided!='1'";
-                String[] visitArgs = {visitnote};
-                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-                if (visitCursor.moveToFirst()) {
-                    do {
-                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                        hasPrescription = "true"; //if any kind of prescription data is present...
-                        parseData(dbConceptID, dbValue);
-                    } while (visitCursor.moveToNext());
-                }
-                visitCursor.close();
 
-                //checks if prescription is downloaded and if so then sets the icon color.
-                if (hasPrescription.equalsIgnoreCase("true")) {
-                    ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
-                }
+                Logger.logV("visitNote", "visitNote: " + visitnote + ", " + visitComplete);
+                if (!visitnote.isEmpty() && !visitComplete.isEmpty()) { // AEAT-554: checking if vistinote and visitcomplete is present than only fetch the presc and show the details to HW.
 
-                if (uploaded) {
-                    try {
-                        downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
+                    String[] columns = {"value", "conceptuuid"};
+                    String visitSelection = "encounteruuid = ? and voided!='1'";
+                    String[] visitArgs = {visitnote};
+                    Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                    if (visitCursor.moveToFirst()) {
+                        do {
+                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                            hasPrescription = "true"; //if any kind of prescription data is present...
+                            parseData(dbConceptID, dbValue);
+                        } while (visitCursor.moveToNext());
                     }
-                }
-                downloadDoctorDetails();
-            }
+                    visitCursor.close();
 
-            additionalDocumentImagesDownload();
-            physcialExaminationImagesDownload();
+                    //checks if prescription is downloaded and if so then sets the icon color.
+                    if (hasPrescription.equalsIgnoreCase("true")) {
+                        ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+                    }
+
+                    if (uploaded) {
+                        try {
+                            downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
+                    }
+
+                    downloadDoctorDetails();
+                additionalDocumentImagesDownload();
+                physcialExaminationImagesDownload();
+                }
+            }
 
         } catch (DAOException e) {
             e.printStackTrace();
@@ -4118,38 +4134,56 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void downloadPrescriptionDefault() {
-        String visitnote = "";
+        String visitnote = "", visitComplete = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ?";
         String[] encounterIDArgs = {visitUuid};
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                // visit note
+                if (UuidDictionary.ENCOUNTER_VISIT_NOTE
+                        .equalsIgnoreCase(encounterCursor.getString
+                                (encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
+
+                    // visit complete
+                    if (UuidDictionary.ENCOUNTER_VISIT_COMPLETE
+                            .equalsIgnoreCase(encounterCursor.getString
+                                    (encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                        visitComplete = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    }
             } while (encounterCursor.moveToNext());
 
         }
-        encounterCursor.close();
-        String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' ";
-        String[] visitArgs = {visitnote};
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-        if (visitCursor.moveToFirst()) {
-            do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                hasPrescription = "true"; //if any kind of prescription data is present...
-                parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
-        }
-        visitCursor.close();
-        downloaded = true;
 
-        //checks if prescription is downloaded and if so then sets the icon color.
-        if (hasPrescription.equalsIgnoreCase("true")) {
-            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+        if (encounterCursor != null) {
+            encounterCursor.close();
+        }
+
+        Logger.logV("visitNote", "visitNote: " + visitnote + ", " + visitComplete);
+        if (!visitnote.isEmpty() && !visitComplete.isEmpty()) { // AEAT-554: checking if vistinote and visitcomplete is present than only fetch the presc and show the details to HW.
+
+            String[] columns = {"value", " conceptuuid"};
+            String visitSelection = "encounteruuid = ? and voided!='1' ";
+            String[] visitArgs = {visitnote};
+            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+            if (visitCursor.moveToFirst()) {
+                do {
+                    String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                    String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                    hasPrescription = "true"; //if any kind of prescription data is present...
+                    parseData(dbConceptID, dbValue);
+                } while (visitCursor.moveToNext());
+            }
+            visitCursor.close();
+            downloaded = true;
+
+            //checks if prescription is downloaded and if so then sets the icon color.
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+            }
         }
     }
 
