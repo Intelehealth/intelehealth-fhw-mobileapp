@@ -426,7 +426,12 @@ public class HwProfileActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("Error", e.getMessage());
-                        Glide.with(HwProfileActivity.this)
+                        // AEAT-552: You cannot start a load for a destroyed activity
+                        // This crash will happen in cases if the activity is destroyed and since below we are using Glide.with(activity) it will crash
+                        // instead either use applciationContenxt or check before loading if the context is still alive.
+
+                     //   Glide.with(HwProfileActivity.this)
+                        Glide.with(getApplicationContext())
                                 .load("")
                                 .error(R.drawable.ic_person_black_24dp)
                                 .thumbnail(0.3f)
