@@ -17,6 +17,8 @@ public class FamilyMemberRes implements MultiChoiceItem {
     // Added by Mithun Vaghela
     private String visitUuid;
 
+    private String bedNo;
+
     public String getOpenMRSID() {
         return openMRSID;
     }
@@ -44,5 +46,13 @@ public class FamilyMemberRes implements MultiChoiceItem {
     @Override
     public boolean isHeader() {
         return false;
+    }
+
+    public void setBedNo(String bedNo) {
+        this.bedNo = bedNo;
+    }
+
+    public String getBedNo() {
+        return bedNo;
     }
 }

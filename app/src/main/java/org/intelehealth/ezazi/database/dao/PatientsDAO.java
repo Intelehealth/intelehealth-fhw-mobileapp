@@ -13,6 +13,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.ezazi.builder.QueryBuilder;
 import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.services.MyIntentService;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
@@ -355,7 +356,11 @@ public class PatientsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+//            new QueryBuilder().select("openmrs_id,first_name,middle_name,last_name")
+//                    .from("tbl_patient")
+//                    .join("LEFT INNER JOINT ")
+            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name " +
+                    "FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
