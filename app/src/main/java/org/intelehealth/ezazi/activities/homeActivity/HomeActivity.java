@@ -736,7 +736,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 .title(R.string.select_patient)
                 .positiveButtonLabel(R.string.next)
                 .build();
-
+        dialog.isSearchable(true);
         dialog.setAdapter(new PatientMultiChoiceAdapter(this, items));
         dialog.setListener(selectedItems -> {
             if (selectedItems.size() > 0) showNextShiftNursesDialog(selectedItems);

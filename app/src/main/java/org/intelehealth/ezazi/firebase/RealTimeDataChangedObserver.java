@@ -108,6 +108,16 @@ public class RealTimeDataChangedObserver {
         return false;
     }
 
+    private boolean isCurrentNurseCall(SessionManager sessionManager, RtcArgs args) {
+        Log.d(TAG, "isCurrentNurseCall: " + new Gson().toJson(args));
+        if (args.getNurseId().equalsIgnoreCase(sessionManager.getProviderID())) {
+            Timber.tag(TAG).d("Incoming call request is current nurse's call");
+            return true;
+        }
+
+        return false;
+    }
+
     private boolean verifyTimestamp(String timestamp) {
         Date date = new Date();
         if (timestamp != null) {
@@ -182,6 +192,7 @@ public class RealTimeDataChangedObserver {
         RtcArgs rtcArgs = convertToRtcArg(value);
         if (rtcArgs == null) return;
         if (isDuplicate(sessionManager, rtcArgs)) return;
+        if (!isCurrentNurseCall(sessionManager, rtcArgs)) return;
 
         boolean isOldNotification = false;
 

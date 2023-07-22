@@ -52,7 +52,7 @@ public class RiskFactorMultiChoiceAdapter extends MultiChoiceAdapter<String, Rec
         RiskFactorMultiChoiceViewHolder patientHolder = (RiskFactorMultiChoiceViewHolder) holder;
         patientHolder.bind(getItem(position));
         patientHolder.setCheckedItem(isItemSelected(position));
-        patientHolder.enableAll(enableAll);
+//        patientHolder.enableAll(enableAll);
         patientHolder.setClickListener(this);
     }
 
@@ -63,11 +63,14 @@ public class RiskFactorMultiChoiceAdapter extends MultiChoiceAdapter<String, Rec
             CheckBox checkBox = (CheckBox) view.getTag();
             int checkedPosition = (int) view.getTag(view.getId());
             if (checkBox.getText().toString().equalsIgnoreCase(OPTION_NONE) && checkedPosition == 0) {
-                enableAll = !checkBox.isChecked();
+//                enableAll = !checkBox.isChecked();
                 clearSelection();
-                selectItem(checkedPosition);
-                notifyDataSetChanged();
-            }
+//                selectItem(checkedPosition);
+//                notifyDataSetChanged();
+            } else removeSelection(getItem(0));
+
+            selectItem(checkedPosition);
+            notifyDataSetChanged();
             super.onClick(view);
         }
     }

@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.database.dao;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -246,6 +247,7 @@ public class PatientsDAO {
         return isInserted;
     }
 
+    @SuppressLint("Range")
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -356,16 +358,21 @@ public class PatientsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-//            new QueryBuilder().select("openmrs_id,first_name,middle_name,last_name")
-//                    .from("tbl_patient")
-//                    .join("LEFT INNER JOINT ")
-            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name " +
-                    "FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            String query = new QueryBuilder().select("P.openmrs_id,P.first_name,P.middle_name,P.last_name, PA.value as bedNo")
+                    .from("tbl_patient P")
+                    .join("LEFT OUTER JOIN tbl_patient_attribute PA ON PA.patientuuid = P.uuid " +
+                            "AND PA.person_attribute_type_uuid = (SELECT uuid FROM tbl_patient_attribute_master " +
+                            "WHERE name = '" + PatientAttributesDTO.Columns.BED_NUMBER.value + "')")
+                    .where("P.uuid = '" + patientuuid + "'")
+                    .build();
+//            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name " +
+//                    "FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            Cursor cursor = db.rawQuery(query, null);
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-
+                    familyMemberRes.setBedNo(cursor.getString(cursor.getColumnIndexOrThrow("bedNo")));
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
             }

@@ -31,7 +31,7 @@ public class PatientMultiChoiceAdapter extends SelectAllHeaderAdapter {
     protected String searchableValue(int position) {
         if (searchableList.get(position) instanceof FamilyMemberRes) {
             FamilyMemberRes patient = (FamilyMemberRes) searchableList.get(position);
-            return patient.getName() + " " + patient.getOpenMRSID();
+            return patient.getName() + " " + patient.getOpenMRSID() + " " + patient.getBedNo();
         }
         return "";
     }

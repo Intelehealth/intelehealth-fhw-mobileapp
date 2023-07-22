@@ -1,8 +1,13 @@
 Search
-- In home add bed no
-- Add patient -> Risk factor not searching properly
-- Primary doctor and secondary doctor wrong value
-- Remove search from observation
+- In home add bed no - done
+- Duplication entry found when search nurse from end shift
+- Nurse selection dialog cancel and okay button on keyboard on
+- In timeline edit button should be hide if different provider found
+- Add patient -> Risk factor not searching properly - done
+- Primary doctor and secondary doctor wrong value - done
+- Remove search from observation - done
+
+createEncountersToDB: getEncounterTypeUuid : 558cc1b8-c352-4b27-9ec2-131fc19c26f0
 
 WebRtc
 1 - Call initiate from doctor to health second time getting close with message hw end the call.
