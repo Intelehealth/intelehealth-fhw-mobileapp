@@ -1,8 +1,8 @@
 Search
 - In home add bed no - done
-- Duplication entry found when search nurse from end shift
-- Nurse selection dialog cancel and okay button on keyboard on
-- In timeline edit button should be hide if different provider found
+- Duplication entry found when search nurse from end shift - done
+- Nurse selection dialog cancel and okay button on keyboard on - pending
+- In timeline edit button should be hide if different provider found - done
 - Add patient -> Risk factor not searching properly - done
 - Primary doctor and secondary doctor wrong value - done
 - Remove search from observation - done
@@ -22,6 +22,11 @@ assignNurseToPatient: bab36595-4d50-4879-ac59-c84e6a9b6722
 22:54:39.301  E  onNext: setCreatorID = 13e5798f-7d80-4ff9-83d3-a30fac4ff240
 22:54:39.301  E  onNext: setSessionID = 21B391891C4DED5060FEC4655D9FA798
 22:54:39.301  E  onNext: setProviderID = 9d3a18d5-44c6-44c0-bd26-784f7d55c3bc
+
+onNext: setChwname webrtcn
+17:34:49.791  E  onNext: setCreatorID 3a40979c-a02e-409a-a552-21e6334d0d68
+17:34:49.792  E  onNext: setSessionID 22C54533509BB9F6C496286F2B7E564C
+17:34:49.792  E  onNext: setProviderID 0c812a8b-a65e-4891-9a5c-ebb9d401344b
 
 https://ezazi.intelehealth.org:3000/api/getToken?
 name=doctorUuid

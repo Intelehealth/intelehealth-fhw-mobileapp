@@ -110,6 +110,8 @@ public class RealTimeDataChangedObserver {
 
     private boolean isCurrentNurseCall(SessionManager sessionManager, RtcArgs args) {
         Log.d(TAG, "isCurrentNurseCall: " + new Gson().toJson(args));
+        if (args.getNurseId() == null) return false;
+
         if (args.getNurseId().equalsIgnoreCase(sessionManager.getProviderID())) {
             Timber.tag(TAG).d("Incoming call request is current nurse's call");
             return true;

@@ -32,6 +32,11 @@ public class SingleChoiceAdapter extends BaseSelectedRecyclerViewAdapter<SingCho
         this.clickListener = clickListener;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return getItem(position).getItemIndex();
+    }
+
     @NonNull
     @Override
     public SingleChoiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

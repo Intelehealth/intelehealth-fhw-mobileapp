@@ -20,6 +20,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity;
@@ -56,6 +57,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     private EncounterDTO.Status status = EncounterDTO.Status.PENDING;
     private EncounterDTO.Status submitted = EncounterDTO.Status.PENDING;
 
+    private boolean nurseHasEditAccess = true;
+
     public TimelineAdapter(Context context, Intent intent, ArrayList<EncounterDTO> encounterDTOList,
                            SessionManager sessionManager, String isVCEPresent) {
         this.context = context;
@@ -67,7 +70,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             patientName = intent.getStringExtra("name");
-
+            nurseHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
+            Log.e("TimelineAdapter", "TimelineAdapter: nurseHasEditAccess=>" + nurseHasEditAccess);
 //            String time = intent.getStringExtra("encounter_time");
 //            SimpleDateFormat timeLineTime = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
 //            String timeLineTimeValue = timeLineTime.format(todayDate);
@@ -205,6 +209,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
                     encounterTimeAmPmFormat = timeFormat.format(timeDateType);
                     Log.v("timeline", "AM Format: " + encounterTimeAmPmFormat);
+                    updateEditIconVisibility(holder.ivEdit);
                 } catch (ParseException e) {
                     e.printStackTrace();
                     Log.e("timeline", "AM Format: " + e.getMessage());
@@ -329,10 +334,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 }
 
                 holder.timeTextview.setText(encounterTimeAmPmFormat);
+
+
             }
         }
+        updateEditIconVisibility(holder.ivEdit);
     }
-
 
     @Override
     public int getItemCount() {
@@ -407,6 +414,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             i1.putExtra("stage", stage);
             i1.putExtra("isEditMode", isEditMode);
             context.startActivity(i1);
+        }
+    }
+
+    private void updateEditIconVisibility(MaterialButton editButton) {
+        if (!nurseHasEditAccess) {
+            editButton.setVisibility(View.GONE);
         }
     }
 

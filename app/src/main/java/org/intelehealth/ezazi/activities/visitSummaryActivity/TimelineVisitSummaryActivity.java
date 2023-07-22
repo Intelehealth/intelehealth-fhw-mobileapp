@@ -188,34 +188,31 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //                alertDialog.show();
             }
         });
-        fabc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fabc.setOnClickListener(view -> {
 
 
-                // EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
-                chatIntent.putExtra("patientName", patientName);
-                chatIntent.putExtra("visitUuid", visitUuid);
-                chatIntent.putExtra("patientUuid", patientUuid);
-                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-                chatIntent.putExtra("isForVideo", false);
-                if (rtcConnectionDTO != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+            // EncounterDAO encounterDAO = new EncounterDAO();
+            EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+            RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+            RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+            Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
+            chatIntent.putExtra("patientName", patientName);
+            chatIntent.putExtra("visitUuid", visitUuid);
+            chatIntent.putExtra("patientUuid", patientUuid);
+            chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+            chatIntent.putExtra("isForVideo", false);
+            if (rtcConnectionDTO != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                startActivity(chatIntent);
+
+            } else {
+                chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
             }
+            startActivity(chatIntent);
         });
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,37 +286,37 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         return 0;
     }
 
-    /**
-     * Find the primary and secondary doctor's details of name and uuid
-     * from patient attributes list as a map, key present as a doctor name
-     * and value is doctor uuid
-     *
-     * @return doctors HashMap<String, String>
-     */
-    private HashMap<String, String> getDoctorsDetails() {
-        PatientsDAO patientsDAO = new PatientsDAO();
-        HashMap<String, String> doctors = new HashMap<>();
-        try {
-            List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
-            for (int i = 0; i < patientAttributes.size(); i++) {
-                String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
-                if (name.equalsIgnoreCase("PrimaryDoctor")) {
-                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
-                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
-                    doctors.put(doctorName, doctorUuid);
-                }
-                if (name.equalsIgnoreCase("SecondaryDoctor")) {
-                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
-                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
-                    doctors.put(doctorName, doctorUuid);
-                }
-            }
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return doctors;
-    }
+//    /**
+//     * Find the primary and secondary doctor's details of name and uuid
+//     * from patient attributes list as a map, key present as a doctor name
+//     * and value is doctor uuid
+//     *
+//     * @return doctors HashMap<String, String>
+//     */
+//    private HashMap<String, String> getDoctorsDetails() {
+//        PatientsDAO patientsDAO = new PatientsDAO();
+//        HashMap<String, String> doctors = new HashMap<>();
+//        try {
+//            List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
+//            for (int i = 0; i < patientAttributes.size(); i++) {
+//                String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
+//                if (name.equalsIgnoreCase("PrimaryDoctor")) {
+//                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
+//                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
+//                    doctors.put(doctorName, doctorUuid);
+//                }
+//                if (name.equalsIgnoreCase("SecondaryDoctor")) {
+//                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
+//                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
+//                    doctors.put(doctorName, doctorUuid);
+//                }
+//            }
+//        } catch (DAOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return doctors;
+//    }
 
     /**
      * Show the single choice doctor selection dialog and move forward
@@ -1548,8 +1545,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, HomeActivity.class);
+//        startActivity(intent);
+        super.onBackPressed();
     }
 
     @Override
