@@ -41,4 +41,9 @@ class ChatViewModel(private val socketManager: SocketManager) : ViewModel() {
     fun unregisterBroadcast(context: Context) {
         context.unregisterReceiver(fileUploadBroadcastReceiver)
     }
+
+    fun connect(url: String) {
+        if (socketManager.isConnected().not()) socketManager.connect(url)
+    }
+
 }
