@@ -16,7 +16,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
 import org.intelehealth.ezazi.BuildConfig;
@@ -108,11 +107,17 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         registerActivityLifecycleCallbacks(this);
 
 
-        initSocketConnection();
-        startRealTimeObserver();
+//        initSocketConnection();
+//        startRealTimeObserver();
+        startRealTimeObserverAndSocket();
     }
 
-    public void startRealTimeObserver() {
+    public void startRealTimeObserverAndSocket() {
+        startRealTimeObserver();
+        initSocketConnection();
+    }
+
+    private void startRealTimeObserver() {
         if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
             dataChangedObserver = new RealTimeDataChangedObserver(this);
             dataChangedObserver.startObserver();
@@ -123,7 +128,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
      * Socket should be open and close app level,
      * so when app create open it and close on app terminate
      */
-    public void initSocketConnection() {
+    private void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getCreatorID() != null && !sessionManager.getCreatorID().isEmpty()) {
             String socketUrl = BuildConfig.SOCKET_URL + "?userId="
@@ -205,6 +210,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     @Override
     public void onTerminate() {
         super.onTerminate();
+        stopRealTimeObserverAndSocket();
+    }
+
+    public void stopRealTimeObserverAndSocket() {
         if (dataChangedObserver != null) dataChangedObserver.stopObserver();
         if (socketManager.isConnected()) socketManager.disconnect();
     }

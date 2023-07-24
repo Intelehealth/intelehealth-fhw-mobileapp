@@ -124,6 +124,7 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
@@ -1606,19 +1607,20 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         }
 */
-        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-
         SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+        IntelehealthApplication.getInstance().stopRealTimeObserverAndSocket();
         if (CallListenerBackgroundService.isInstanceCreated()) {
             Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
             context.stopService(serviceIntent);
         }
+
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
 

@@ -416,8 +416,7 @@ public class LoginActivity extends AppCompatActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-                                            IntelehealthApplication.getInstance().initSocketConnection();
-                                            IntelehealthApplication.getInstance().startRealTimeObserver();
+                                            IntelehealthApplication.getInstance().startRealTimeObserverAndSocket();
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
