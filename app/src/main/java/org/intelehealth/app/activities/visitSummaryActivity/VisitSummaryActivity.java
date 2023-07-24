@@ -2414,9 +2414,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_instructions)) + "</p></b></u>" + "%s<br>", advice_web));
             }
 
-            if (!comments_web.isEmpty()) {
+            //changes done for ticket SYR-358
+            /*if (!comments_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"additional_comments_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_additional_comments)) + "</p></b></u>" + "%s<br>", comments_web));
-            }
+            }*/
 
             if (!aidOrder_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
@@ -2468,9 +2469,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.prescription_general_advice)) + "</p></b></u>" + "%s<br>", advice_web));
             }
 
-            if (!comments_web.isEmpty()) {
+            //changes done for ticket SYR-358
+            /*if (!comments_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"additional_comments_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_additional_comments)) + "</p></b></u>" + "%s<br>", comments_web));
-            }
+            }*/
 
             if (!aidOrder_web.isEmpty()) {
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
@@ -5459,9 +5461,10 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             htmlDocument = htmlDocument.concat(String.format("<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getString(R.string.prescription_general_advice) + " <br>" + "%s" + "</b><br>", advice_web));
         }
 
-        if (!comments_web.isEmpty()) {
-            htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"additional_comments_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_additional_comments)) + "</p></b></u>" + "%s<br>", comments_web));
-        }
+        //changes done for ticket SYR-358
+            /*if (!comments_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"additional_comments_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_additional_comments)) + "</p></b></u>" + "%s<br>", comments_web));
+            }*/
 
         if (!aidOrder_web.isEmpty()) {
             htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"aid_order_heading\" style=\"font-size:15pt;margin-top:0px; margin-bottom:0px; padding: 0px;\">" + checkAndConvertPrescriptionHeadings(getResources().getString(R.string.visit_summary_aid_order)) + "</p></b></u>" + "%s<br>", aidOrder_web));
@@ -5652,6 +5655,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             if (string.equalsIgnoreCase("Not provided")) newString = "غير مزود";
             if (string.equalsIgnoreCase("Email:")) newString = "البريد الإلكتروني:";
             if (string.equalsIgnoreCase("Registration No:")) newString = "رقم التسجيل:";
+            if (string.equalsIgnoreCase("Aid Order")) newString = "امر صرف مساعدة";
+            if (string.equalsIgnoreCase("Discharge Order")) newString = "تخريج الحالة";
         }
         return newString;
     }
