@@ -58,9 +58,12 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
+import com.google.gson.Gson;
 
 import org.intelehealth.klivekit.R;
 import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
+import org.intelehealth.klivekit.model.ChatMessage;
+import org.intelehealth.klivekit.model.ChatResponse;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.ui.activity.VideoCallActivity;
@@ -99,7 +102,7 @@ import kotlin.jvm.functions.Function1;
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = ChatActivity.class.getName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
-    private List<JSONObject> mChatList = new ArrayList<JSONObject>();
+    //    private List<JSONObject> mChatList = new ArrayList<JSONObject>();
     protected RecyclerView mRecyclerView;
     protected LinearLayoutManager mLayoutManager;
     private ChatListingAdapter mChatListingAdapter;
@@ -160,11 +163,15 @@ public class ChatActivity extends AppCompatActivity {
 
     private void onUpdateMessageEvent(Object... args) {
         try {
+            Log.e(TAG, "onUpdateMessageEvent: " + new Gson().toJson(args));
             for (Object arg : args) {
                 Log.d(TAG, "updateMessage: " + String.valueOf(arg));
             }
 
-            JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
+            JSONObject jsonObject = new JSONArray(String.valueOf(args))
+                    .getJSONArray(0)
+                    .getJSONObject(0)
+                    .getJSONObject("nameValuePairs");
             runOnUiThread(() -> {
                 if (mToUUId.isEmpty()) {
                     try {
@@ -263,6 +270,7 @@ public class ChatActivity extends AppCompatActivity {
         mRequestQueue = Volley.newRequestQueue(this);
 
         initiateView();
+        initListAdapter();
         setupActionBar();
 //        mEmptyTextView = findViewById(R.id.empty_tv);
 //        mMessageEditText = findViewById(R.id.text_etv);
@@ -345,7 +353,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.v(TAG, "getAllMessages -response - " + response.toString());
                 mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
-                showChat(response, isAlreadySetReadStatus);
+                ChatResponse chatResponse = new Gson().fromJson(response.toString(), ChatResponse.class);
+                showChat(chatResponse, isAlreadySetReadStatus);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -360,80 +369,66 @@ public class ChatActivity extends AppCompatActivity {
     private int mPDFCount = 0;
     private int mImageCount = 0;
 
-    private void showChat(JSONObject response, boolean isAlreadySetReadStatus) {
-        try {
-            mChatList.clear();
-            mPDFCount = 0;
-            mImageCount = 0;
-            if (response.getBoolean("success")) {
-                JSONArray jsonArray = response.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject chatJsonObject = jsonArray.getJSONObject(i);
-                    //Log.v(TAG, "showChat - " + chatJsonObject);
-                    if (chatJsonObject.getString("fromUser").equals(mFromUUId)) {
-                        chatJsonObject.put("LayoutType", Constants.RIGHT_ITEM_HW); // HW
-                        if (chatJsonObject.getString("type").equalsIgnoreCase("attachment")) {
-                            if (chatJsonObject.getString("message").endsWith(".pdf")) {
-                                mPDFCount += 1;
-                            } else {
-                                mImageCount += 1;
-                            }
-                        }
-                    } else {
-                        chatJsonObject.put("LayoutType", Constants.LEFT_ITEM_DOCT); // DOCTOR
-                    }
-                    mChatList.add(chatJsonObject);
-                }
-                if (mChatList.isEmpty()) {
-                    mEmptyLinearLayout.setVisibility(View.VISIBLE);
-                } else {
-                    mEmptyLinearLayout.setVisibility(View.GONE);
-                }
-
-                sortList();
-
-                mChatListingAdapter = new ChatListingAdapter(this, mChatList, new ChatListingAdapter.AttachmentClickListener() {
-                    @Override
-                    public void onClick(String url) {
-                        showImageOrPdf(url);
-                    }
-                });
-                mRecyclerView.setAdapter(mChatListingAdapter);
-
-                if (!isAlreadySetReadStatus)
-                    for (int i = 0; i < mChatList.size(); i++) {
-                        //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
-                        if (mChatList.get(i).getInt("LayoutType") == Constants.LEFT_ITEM_DOCT && mChatList.get(i).getInt("isRead") == 0) {
-                            setReadStatus(mChatList.get(i).getString("id"));
-                            break;
-                        }
-                    }
-
-            } /*else {
-                Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
-                finish();
-            }*/
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private void showChat(ChatResponse response, boolean isAlreadySetReadStatus) {
+        mPDFCount = 0;
+        mImageCount = 0;
+        if (response.isSuccess()) {
+            ArrayList<ChatMessage> messages = response.getData();
+            if (messages.isEmpty()) {
+                mEmptyLinearLayout.setVisibility(View.VISIBLE);
+            } else {
+                mEmptyLinearLayout.setVisibility(View.GONE);
+                updateListAdapter(response, isAlreadySetReadStatus);
+            }
         }
     }
 
-    private void sortList() {
-        Collections.sort(mChatList, new Comparator<JSONObject>() {
-            public int compare(JSONObject o1, JSONObject o2) {
-                try {
-                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
-                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
-                    return b.compareTo(a);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+    private void initListAdapter() {
+        mChatListingAdapter = new ChatListingAdapter(this, new ArrayList<>(), url -> showImageOrPdf(url));
+        mRecyclerView.setAdapter(mChatListingAdapter);
+    }
+
+    private void updateListAdapter(ChatResponse response, boolean isAlreadySetReadStatus) {
+        for (int i = 0; i < response.getData().size(); i++) {
+            ChatMessage message = response.getData().get(i);
+            if (message.getFromUser().equals(mFromUUId)) {
+                message.setLayoutType(Constants.RIGHT_ITEM_HW);
+                if (message.isAttachment()) {
+                    if (message.getMessage().endsWith(".pdf")) {
+                        mPDFCount += 1;
+                    } else {
+                        mImageCount += 1;
+                    }
                 }
-                return 0;
+            } else {
+                message.setLayoutType(Constants.LEFT_ITEM_DOCT);
+            }
+        }
+
+        sortList(response.getData());
+        mChatListingAdapter.refresh(response.getData());
+
+        if (!isAlreadySetReadStatus)
+            for (int i = 0; i < response.getData().size(); i++) {
+                //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
+                if (response.getData().get(i).getLayoutType() == Constants.LEFT_ITEM_DOCT
+                        && !response.getData().get(i).getIsRead()) {
+                    setReadStatus(response.getData().get(i).getId());
+                    break;
+                }
+            }
+    }
+
+    private void sortList(List<ChatMessage> messages) {
+        Collections.sort(messages, (Comparator<ChatMessage>) (o1, o2) -> {
+            try {
+                Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getCreatedAt());
+                Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getCreatedAt());
+                return b.compareTo(a);
+            } catch (ParseException e) {
+                return -1;
             }
         });
-
     }
 
     private void postMessages(String fromUUId, String toUUId, String patientUUId, String message, String type) {
@@ -474,24 +469,15 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    public void setReadStatus(String messageID) {
-        String url = Constants.SET_READ_STATUS_OF_MESSAGE_URL + messageID;
+    public void setReadStatus(int messageId) {
+        String url = Constants.SET_READ_STATUS_OF_MESSAGE_URL + messageId;
         Log.v(TAG, "setReadStatus - url - " + url);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.v(TAG, "setReadStatus - response - " + response.toString());
-                getAllMessages(true);
-                SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, response -> {
+            Log.v(TAG, "setReadStatus - response - " + response.toString());
+            getAllMessages(true);
+            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage());
-
-            }
-        });
+        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()));
         mRequestQueue.add(jsonObjectRequest);
     }
 
@@ -642,38 +628,21 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void addNewMessage(JSONObject jsonObject) {
-        try {
-            if (jsonObject.getString("fromUser").equals(mFromUUId)) {
-                jsonObject.put("LayoutType", Constants.RIGHT_ITEM_HW);
-            } else {
-                jsonObject.put("LayoutType", Constants.LEFT_ITEM_DOCT);
-            }
-            if (!jsonObject.has("createdAt")) {
-                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-                rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                jsonObject.put("createdAt", rawSimpleDateFormat.format(new Date()));
-            }
-            mChatList.add(jsonObject);
-
-            mEmptyLinearLayout.setVisibility(View.GONE);
-            sortList();
-
-            if (mChatListingAdapter == null) {
-                mChatListingAdapter = new ChatListingAdapter(this, mChatList, new ChatListingAdapter.AttachmentClickListener() {
-                    @Override
-                    public void onClick(String url) {
-                        showImageOrPdf(url);
-                    }
-                });
-                mRecyclerView.setAdapter(mChatListingAdapter);
-            } else {
-                mChatListingAdapter.refresh(mChatList);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private void addNewMessage(ChatMessage message) {
+        if (message.getFromUser().equals(mFromUUId)) {
+            message.setLayoutType(Constants.RIGHT_ITEM_HW);
+        } else {
+            message.setLayoutType(Constants.LEFT_ITEM_DOCT);
         }
+        if (message.getCreatedAt() == null) {
+            SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+            rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            message.setCreatedAt(rawSimpleDateFormat.format(new Date()));
+        }
+
+        mChatListingAdapter.addMessage(message);
+        mEmptyLinearLayout.setVisibility(View.GONE);
+        sortList(mChatListingAdapter.getList());
 
     }
 
@@ -752,19 +721,14 @@ public class ChatActivity extends AppCompatActivity {
                             Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        try {
-                            JSONObject inputJsonObject = new JSONObject();
-                            inputJsonObject.put("fromUser", mFromUUId);
-                            inputJsonObject.put("toUser", mToUUId);
-                            inputJsonObject.put("patientId", mPatientUUid);
-                            inputJsonObject.put("message", ".jpg");
-                            inputJsonObject.put("type", "attachment");
-                            inputJsonObject.put("isLoading", true);
-
-                            addNewMessage(inputJsonObject);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        ChatMessage message = new ChatMessage();
+                        message.setFromUser(mFromUUId);
+                        message.setToUser(mToUUId);
+                        message.setPatientId(mPatientUUid);
+                        message.setMessage(".jpg");
+                        message.setType("attachment");
+                        message.setLoading(true);
+                        addNewMessage(message);
                         AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
                     }
                 }
@@ -877,19 +841,14 @@ public class ChatActivity extends AppCompatActivity {
                                 Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            try {
-                                JSONObject inputJsonObject = new JSONObject();
-                                inputJsonObject.put("fromUser", mFromUUId);
-                                inputJsonObject.put("toUser", mToUUId);
-                                inputJsonObject.put("patientId", mPatientUUid);
-                                inputJsonObject.put("message", ".jpg");
-                                inputJsonObject.put("type", "attachment");
-                                inputJsonObject.put("isLoading", true);
-
-                                addNewMessage(inputJsonObject);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            ChatMessage message = new ChatMessage();
+                            message.setFromUser(mFromUUId);
+                            message.setToUser(mToUUId);
+                            message.setPatientId(mPatientUUid);
+                            message.setMessage(".jpg");
+                            message.setType("attachment");
+                            message.setLoading(true);
+                            addNewMessage(message);
                             AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
 
                         } else {
@@ -931,19 +890,15 @@ public class ChatActivity extends AppCompatActivity {
                                     return;
                                 }
                                 Log.v(TAG, "currentPDFPath" + currentPDFPath);
-                                try {
-                                    JSONObject inputJsonObject = new JSONObject();
-                                    inputJsonObject.put("fromUser", mFromUUId);
-                                    inputJsonObject.put("toUser", mToUUId);
-                                    inputJsonObject.put("patientId", mPatientUUid);
-                                    inputJsonObject.put("message", ".pdf");
-                                    inputJsonObject.put("type", "attachment");
-                                    inputJsonObject.put("isLoading", true);
+                                ChatMessage message = new ChatMessage();
+                                message.setFromUser(mFromUUId);
+                                message.setToUser(mToUUId);
+                                message.setPatientId(mPatientUUid);
+                                message.setMessage(".pdf");
+                                message.setType("attachment");
+                                message.setLoading(true);
+                                addNewMessage(message);
 
-                                    addNewMessage(inputJsonObject);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
                                 AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPDFPath);
                             }
                         } catch (IOException e) {
