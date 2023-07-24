@@ -295,7 +295,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         });
 
         tvDob.setOnClickListener(v -> {
-            CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(MyProfileActivity.this, MyProfileActivity.this);
+            CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(MyProfileActivity.this, MyProfileActivity.this, sessionManager.getAppLanguage());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 customCalendarViewUI2.showDatePicker(MyProfileActivity.this, "");
             }

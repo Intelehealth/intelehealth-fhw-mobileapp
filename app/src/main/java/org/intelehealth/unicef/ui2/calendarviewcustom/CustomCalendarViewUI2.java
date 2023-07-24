@@ -31,6 +31,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
+import org.intelehealth.unicef.utilities.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +41,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CustomCalendarViewUI2 extends DialogFragment {
     public static final String TAG = "CustomCalendarViewUI2";
@@ -60,14 +62,17 @@ public class CustomCalendarViewUI2 extends DialogFragment {
     int MY_REQUEST_CODE = 5555;
     String whichDate = "";
     List<CalendarviewYearModel> yearsList;
+    String appLanguage;
 
-    public CustomCalendarViewUI2(Context context) {
+    public CustomCalendarViewUI2(Context context, String appLanguage) {
         this.context = context;
+        this.appLanguage = appLanguage;
     }
 
-    public CustomCalendarViewUI2(Context context, SendSelectedDateInterface listener) {
+    public CustomCalendarViewUI2(Context context, SendSelectedDateInterface listener, String appLanguage) {
         this.context = context;
         this.listener = listener;
+        this.appLanguage = appLanguage;
     }
 
 
@@ -88,10 +93,10 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         calendarInstanceDefault.add(Calendar.MONTH, -1);
         Date monthNameNEw = calendarInstanceDefault.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 
             String[] dateSplit = formateDate.split("/");
             yearToCompare = dateSplit[2];
@@ -446,8 +451,23 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         List<CalendarViewMonthModel> monthsList = new ArrayList<>();
         String[] monthsArray = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         int[] monthsNoArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+
+        String[] monthArrayRu = null;
+        if (appLanguage.equalsIgnoreCase("ru")) {
+            monthArrayRu = new String[monthsArray.length];
+            for (int i = 0; i < monthsArray.length; i++) {
+                monthArrayRu[i] = StringUtils.en__ru_dob(monthsArray[i]);
+            }
+        }
+
         for (int i = 0; i < monthsArray.length; i++) {
-            CalendarViewMonthModel model1 = new CalendarViewMonthModel(monthsArray[i], monthsNoArray[i], false);
+            CalendarViewMonthModel model1;
+            if (appLanguage.equalsIgnoreCase("ru")) {
+                model1 = new CalendarViewMonthModel(monthArrayRu[i], monthsNoArray[i], false);
+            } else {
+                model1 = new CalendarViewMonthModel(monthsArray[i], monthsNoArray[i], false);
+
+            }
             monthsList.add(model1);
         }
 
@@ -632,10 +652,10 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         calendarInstanceDefault.add(Calendar.MONTH, 1);
         Date monthNameNEw = calendarInstanceDefault.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 
             String[] monthYear = DateAndTimeUtils.getMonthAndYearFromGivenDate(formateDate);
             String selectedNextMonth;
@@ -706,9 +726,9 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         currentMonth = calendarInstanceDefault.get(Calendar.MONTH) + 1;
         currentYear = calendarInstanceDefault.get(Calendar.YEAR);
         monthTotalDays = calendarInstanceDefault.getActualMaximum(Calendar.DAY_OF_MONTH);
-        Log.v(TAG, "currentMonth - "+currentMonth);
-        Log.v(TAG, "currentYear - "+currentYear);
-        Log.v(TAG, "monthTotalDays - "+monthTotalDays);
+        Log.v(TAG, "currentMonth - " + currentMonth);
+        Log.v(TAG, "currentYear - " + currentYear);
+        Log.v(TAG, "monthTotalDays - " + monthTotalDays);
 
 
         spinnerSelectedYearModel = new CalendarviewYearModel(currentYear, true);
@@ -742,9 +762,7 @@ public class CustomCalendarViewUI2 extends DialogFragment {
 
             //for get the selected date - if calendar view called from fragment
             if (getTargetFragment() != null) {
-                Intent intent = new Intent()
-                        .putExtra("selectedDate", selectedDate)
-                        .putExtra("whichDate", whichDate);
+                Intent intent = new Intent().putExtra("selectedDate", selectedDate).putExtra("whichDate", whichDate);
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
 
             }

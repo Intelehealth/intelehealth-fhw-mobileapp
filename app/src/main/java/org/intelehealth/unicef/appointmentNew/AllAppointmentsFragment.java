@@ -46,6 +46,7 @@ import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.models.dto.VisitDTO;
 import org.intelehealth.unicef.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -101,19 +102,20 @@ public class AllAppointmentsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyAppointmentActivity)getActivity()).initUpdateFragmentOnEvent(1, new UpdateFragmentOnEvent() {
+        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(1, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
-                Log.v(TAG,"onStart");
+                Log.v(TAG, "onStart");
             }
 
             @Override
             public void onFinished(int eventFlag) {
-                Log.v(TAG,"onFinished");
+                Log.v(TAG, "onFinished");
                 getAppointments();
             }
         });
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -793,7 +795,7 @@ public class AllAppointmentsFragment extends Fragment {
             public void onClick(View v) {
                 Bundle args = new Bundle();
                 args.putString("whichDate", "fromdate");
-                CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+                CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity(), new SessionManager(getActivity()).getAppLanguage());
                 dialog.setArguments(args);
                 dialog.setTargetFragment(AllAppointmentsFragment.this, MY_REQUEST_CODE);
                 if (getFragmentManager() != null) {
@@ -806,7 +808,7 @@ public class AllAppointmentsFragment extends Fragment {
             public void onClick(View v) {
                 Bundle args = new Bundle();
                 args.putString("whichDate", "todate");
-                CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
+                CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity(), new SessionManager(getActivity()).getAppLanguage());
                 dialog.setArguments(args);
                 dialog.setTargetFragment(AllAppointmentsFragment.this, MY_REQUEST_CODE);
                 if (getFragmentManager() != null) {

@@ -284,7 +284,13 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 e.printStackTrace();
             }
         }
+
         String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            dateToshow1 = StringUtils.getFullMonthName(dateToshow1);
+            dateToshow1 = StringUtils.en__ru_dob(dateToshow1);
+        }
+
         if (!selectedDate.isEmpty()) {
             dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
 //            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
@@ -442,7 +448,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             @Override
             public void onClick(View v) {
 //                mDOBPicker.show();
-                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this);
+                CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(getActivity(), Fragment_FirstScreen.this, sessionManager.getAppLanguage());
                 customCalendarViewUI2.showDatePicker(getActivity(), null);
             }
         });

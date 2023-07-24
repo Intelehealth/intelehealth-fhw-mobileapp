@@ -838,8 +838,8 @@
     <string name="know_more_txt">Know more</string>
     <string name="drag_anywhere_from_0_to_10">Drag anywhere from 0 to 10</string>
     <string name="follow_up_visits_not_found">Follow up visits not found!</string>
-    <string name="enter_occupation_txt">Enter Occupation</string>
-    <string name="education">Education</string>
+    <string name="enter_occupation_txt">Введите род занятий</string>
+    <string name="education">образование</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
     <string name="end_visits">End Visits</string>
     <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
@@ -1035,5 +1035,55 @@
     <string name="five_presc_received">%1$d Полученные рецепты</string>
     <string name="notifi_subheader_title">Отправка рецептов пациентам</string>
     <string name="no_prescription">Без рецепта</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="decline">Отклонить</string>
+    <string name="accept_new">Принять</string>
 
+    <string name="add_new_patient">Добавить нового пациента</string>
+    <string name="personal_identification">Личный</string>
+    <string name="address_identification">Адрес</string>
+    <string name="other_identification">Другое</string>
+    <string name="add_a_picture">Добавьте фотографию</string>
+    <string name="first_name_mandatory">Имя*</string>
+    <string name="middle_name_registration">Отчество</string>
+    <string name="last_name_mandatory">Фамилия*</string>
+    <string name="gender_mandatory">Пол*</string>
+    <string name="date_of_birth_mandatory">Дата рождения*</string>
+    <string name="age_mandatory">Возраст*</string>
+
+    <string name="enter_first_name">Введите имя</string>
+    <string name="enter_middle_name">Введите отчество</string>
+    <string name="enter_last_name">Введите фамилию</string>
+    <string name="male">Мужчина</string>
+    <string name="female">Женщина</string>
+    <string name="enter_date_of_birth">Введите дату рождения</string>
+    <string name="enter_age">Введите возраст</string>
+    <string name="phone_number">Номер телефона*</string>
+    <string name="this_field_is_mandatory">Это поле является обязательным</string>
+
+    <string name="enter_postal_code">Введите почтовый индекс</string>
+    <string name="enter_state">Введите область</string>
+    <string name="enter_village_town_city">Введите деревню/город/село</string>
+    <string name="enter_patient_address">Введите адрес пациента</string>
+    <string name="corresponding_address_1">Соответствующий адрес 1</string>
+    <string name="corresponding_address_2">Соответствующий адрес 2</string>
+    <string name="citizen_id">Идентификатор гражданина</string>
+    <string name="enter_national_ID">Введите Идентификатор гражданина</string>
+    <string name="social_category">Социальный статус</string>
+    <string name="economic_category">Экономический статус</string>
+    <string name="okay">Ok</string>
+
+    <string name="close_patient_registration">Закрыть регистрацию пациента?</string>
+    <string name="sure_you_want_close_registration">Вы уверены, что хотите закрыть регистрацию пациента?</string>
+    <string name="mo">Пн.</string>
+    <string name="tu">Вт.</string>
+    <string name="we">Ср.</string>
+    <string name="th">Чт.</string>
+    <string name="fr">Пт.</string>
+    <string name="sa">Сб.</string>
+    <string name="su">Вс.</string>
+    <string name="upcoming_0">Предстоящий (0)</string>
+    <string name="completed_0">Завершено (0)</string>
+    <string name="cancelled_0">Отменено (0)</string>
+    
 </resources>

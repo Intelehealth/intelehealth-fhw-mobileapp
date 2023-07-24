@@ -2,6 +2,7 @@ package org.intelehealth.unicef.appointmentNew;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -97,6 +98,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     String rescheduleReason;
     NetworkUtils networkUtils;
     ImageView ivIsInternet, ivBackArrow;
+    private ObjectAnimator syncAnimator;
 
     private SessionManager sessionManager;
     String patientAge, patientGender, patientPic;
@@ -120,6 +122,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         View toolbar = findViewById(R.id.toolbar_schedule_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+
+        ivIsInternet.setOnClickListener(v -> {
+            SyncUtils.syncNow(ScheduleAppointmentActivity_New.this, ivIsInternet, syncAnimator);
+        });
 
         tvTitle.setText(getResources().getString(R.string.schedule_appointment));
 
@@ -284,7 +290,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         monthToCompare = String.valueOf(currentMonth);
         yearToCompare = String.valueOf(currentYear);
         SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
-        String month_name = getMonthNameInRussianIfRequired(month_date.format(calendarInstance.getTime()));
+        String month_name = getMonthNameInRussianIfRequired(month_date.format(calendarInstance.getTime()), false);
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
         monthToCompare = String.valueOf(currentMonth);
@@ -503,8 +509,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         int daysLeft = lastDay - currentDay;
 
         CalendarModel calendarModel;
-        SimpleDateFormat inFormat = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat outFormat = new SimpleDateFormat("EEEE");
+        SimpleDateFormat inFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        SimpleDateFormat outFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
 
         List<CalendarModel> listOfDates = new ArrayList<>();
         for (int i = currentDay; i <= lastDay; i++) {
@@ -515,6 +521,11 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 if (date != null) {
                     String dayForDate = outFormat.format(date);
                     String dayForDateFinal = dayForDate.substring(0, 3);
+
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                        dayForDate = StringUtils.convertShortHandDays(dayForDate);
+                        dayForDateFinal = StringUtils.convertShortHandDays(dayForDateFinal);
+                    }
 
                     if (i == currentDay) {
                         calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, true, selectedMonth, selectedYear, false, selectedMonthForDays);
@@ -558,10 +569,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         }
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 
             String[] dateSplit = formateDate.split("/");
             yearToCompare = dateSplit[2];
@@ -571,6 +582,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             if (monthYear.length > 0) {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
+                selectedPrevMonth = getMonthNameInRussianIfRequired(selectedPrevMonth, true);
+
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
                     enableDisablePreviousButton(false);
@@ -598,10 +611,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         calendarInstance.add(Calendar.MONTH, 1);
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 
             String[] monthYear = DateAndTimeUtils.getMonthAndYearFromGivenDate(formateDate);
             String selectedNextMonth;
@@ -611,6 +624,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 selectedNextMonth = monthYear[0];
                 selectedMonthYear = monthYear[1];
                 String[] dateSplit = formateDate.split("/");
+                selectedNextMonth = getMonthNameInRussianIfRequired(selectedNextMonth, true);
 
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
@@ -833,9 +847,12 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     }
 
-    private String getMonthNameInRussianIfRequired(String monthName) {
+    private String getMonthNameInRussianIfRequired(String monthName, boolean isFullMonthSet) {
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            String fullMonthName = StringUtils.getFullMonthName(monthName);
+            String fullMonthName = monthName;
+            if (!isFullMonthSet) {
+                fullMonthName = StringUtils.getFullMonthName(fullMonthName);
+            }
             return StringUtils.en__ru_dob(fullMonthName);
         } else {
             return monthName;

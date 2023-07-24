@@ -727,25 +727,25 @@ public class DateAndTimeUtils {
                     monthString = "Feb";
                     break;
                 case "03":
-                    monthString = "March";
+                    monthString = "Mar";
                     break;
                 case "04":
-                    monthString = "April";
+                    monthString = "Apr";
                     break;
                 case "05":
                     monthString = "May";
                     break;
                 case "06":
-                    monthString = "June";
+                    monthString = "Jun";
                     break;
                 case "07":
-                    monthString = "July";
+                    monthString = "Jul";
                     break;
                 case "08":
                     monthString = "Aug";
                     break;
                 case "09":
-                    monthString = "Sept";
+                    monthString = "Sep";
                     break;
                 case "10":
                     monthString = "Oct";

@@ -26,6 +26,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,7 +60,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
 
         tv_selected_date_demo = findViewById(R.id.tv_selected_date_demo);
 
-        CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(CalendarViewDemoActivity.this, this);
+        CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(CalendarViewDemoActivity.this, this, new SessionManager(this).getAppLanguage());
       customCalendarViewUI2.showDatePicker(CalendarViewDemoActivity.this, "");
      //  Log.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
       //  showDatePicker(this);
