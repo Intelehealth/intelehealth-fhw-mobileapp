@@ -223,7 +223,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(getContentResourceId());
         mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         SocketManager.getInstance().setEmitterListener(emitter);
         if (getIntent().hasExtra("patientUuid")) {
@@ -248,7 +248,7 @@ public class ChatActivity extends AppCompatActivity {
         Log.v("mPatientName", String.valueOf(mPatientName));
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // getSupportActionBar().setTitle(mPatientName);
-        ((TextView) findViewById(R.id.title_incoming_tv)).setText(mPatientName);
+//        ((TextView) findViewById(R.id.title_incoming_tv)).setText(mPatientName);
         //getSupportActionBar().setSubtitle(mVisitUUID);
         mRequestQueue = Volley.newRequestQueue(this);
 
