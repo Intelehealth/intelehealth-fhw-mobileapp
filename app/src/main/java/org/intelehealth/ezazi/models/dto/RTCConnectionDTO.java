@@ -11,12 +11,9 @@ public class RTCConnectionDTO {
     @SerializedName("visit_uuid")
     @Expose
     private String visitUUID;
-    @SerializedName("visit_uuid")
+    @SerializedName("connection_info")
     @Expose
     private String connectionInfo;
-
-    @SerializedName("connection_info")
-
 
     public String getUuid() {
         return uuid;

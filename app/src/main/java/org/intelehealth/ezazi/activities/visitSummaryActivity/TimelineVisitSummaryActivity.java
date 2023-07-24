@@ -193,36 +193,13 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             }
         });
         fabc.setOnClickListener(view -> {
-
-
-            // EncounterDAO encounterDAO = new EncounterDAO();
-            EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-            RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-            RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-            Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
-            chatIntent.putExtra("patientName", patientName);
-            chatIntent.putExtra("visitUuid", visitUuid);
-            chatIntent.putExtra("patientUuid", patientUuid);
-            chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-            chatIntent.putExtra("isForVideo", false);
-            if (rtcConnectionDTO != null) {
-                try {
-                    JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                    chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            } else {
-                chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-            }
-            startActivity(chatIntent);
+            showDoctorSelectionDialog(true);
         });
         fabv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e(TAG, "onClick: ");
-                showDoctorSelectionDialog();
+                showDoctorSelectionDialog(false);
 //                try {
 //
 //
@@ -326,7 +303,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      * Show the single choice doctor selection dialog and move forward
      * to video call with selected doctor from list
      */
-    private void showDoctorSelectionDialog() {
+    private void showDoctorSelectionDialog(boolean isChat) {
         HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(patientUuid);
         ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
         for (String key : doctors.keySet()) {
@@ -341,9 +318,40 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 .content(choiceItems)
                 .build();
 
-        dialog.setListener(item -> startVideoCallActivity(doctors, item.getItem()));
+        dialog.setListener(item -> {
+            if (isChat) {
+                startChatActivity(doctors.get(item.getItem()));
+            } else {
+                startVideoCallActivity(doctors, item.getItem());
+            }
+        });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
+
+    private void startChatActivity(String doctorUuid) {
+//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
+//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+        Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
+        chatIntent.putExtra("patientName", patientName);
+        chatIntent.putExtra("visitUuid", visitUuid);
+        chatIntent.putExtra("patientUuid", patientUuid);
+        chatIntent.putExtra("fromUuid", sessionManager.getProviderID()); // provider uuid
+        chatIntent.putExtra("isForVideo", false);
+        chatIntent.putExtra("toUuid", doctorUuid);
+//        if (rtcConnectionDTO != null) {
+//            try {
+//                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+//                chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+
+//        } else {
+//            chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//        }
+        startActivity(chatIntent);
     }
 
     /**

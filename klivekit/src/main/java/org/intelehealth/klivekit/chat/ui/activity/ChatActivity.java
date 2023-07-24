@@ -100,8 +100,8 @@ public class ChatActivity extends AppCompatActivity {
     private static final String TAG = ChatActivity.class.getName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     private List<JSONObject> mChatList = new ArrayList<JSONObject>();
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
+    protected RecyclerView mRecyclerView;
+    protected LinearLayoutManager mLayoutManager;
     private ChatListingAdapter mChatListingAdapter;
 
     //    private Socket mSocket;
@@ -112,13 +112,23 @@ public class ChatActivity extends AppCompatActivity {
     private String mPatientUUid = "";
     private String mVisitUUID = "";
     private String mPatientName = "";
-    private LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
-    private EditText mMessageEditText;
-    private TextView mEmptyTextView;
+    protected LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
+    protected EditText mMessageEditText;
+    protected TextView mEmptyTextView;
 
     protected void setupActionBar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(mPatientName);
+    }
+
+    protected void initiateView() {
+        mEmptyTextView = findViewById(R.id.empty_tv);
+        mMessageEditText = findViewById(R.id.text_etv);
+        mLoadingLinearLayout = findViewById(R.id.loading_layout);
+        mEmptyLinearLayout = findViewById(R.id.empty_view);
+        mRecyclerView = findViewById(R.id.chats_rcv);
+        mLayoutManager = new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     protected Intent getVideoIntent() {
@@ -252,13 +262,15 @@ public class ChatActivity extends AppCompatActivity {
         //getSupportActionBar().setSubtitle(mVisitUUID);
         mRequestQueue = Volley.newRequestQueue(this);
 
-        mEmptyTextView = findViewById(R.id.empty_tv);
-        mMessageEditText = findViewById(R.id.text_etv);
-        mLoadingLinearLayout = findViewById(R.id.loading_layout);
-        mEmptyLinearLayout = findViewById(R.id.empty_view);
-        mRecyclerView = findViewById(R.id.chats_rcv);
-        mLayoutManager = new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, true);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        initiateView();
+        setupActionBar();
+//        mEmptyTextView = findViewById(R.id.empty_tv);
+//        mMessageEditText = findViewById(R.id.text_etv);
+//        mLoadingLinearLayout = findViewById(R.id.loading_layout);
+//        mEmptyLinearLayout = findViewById(R.id.empty_view);
+//        mRecyclerView = findViewById(R.id.chats_rcv);
+//        mLayoutManager = new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, true);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
 
 
         // Instantiate the cache
@@ -307,8 +319,6 @@ public class ChatActivity extends AppCompatActivity {
         IntentFilter filterSend = new IntentFilter();
         filterSend.addAction(AwsS3Utils.ACTION_FILE_UPLOAD_DONE);
         registerReceiver(mBroadcastReceiver, filterSend);
-
-
     }
 
     private BroadcastReceiver mBroadcastReceiver;
