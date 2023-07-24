@@ -919,9 +919,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             selectedNode.unselectAllNestedNode();
                             notifyItemChanged(index);
                             if (selectedNode.isRequired()) return;
-                        } else {
+                        } /*else {
                             return;
-                        }
+                        }*/
 
                     }
 

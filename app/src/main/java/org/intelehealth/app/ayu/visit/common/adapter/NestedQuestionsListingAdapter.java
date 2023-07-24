@@ -682,9 +682,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             selectedNode.setDataCaptured(false);
                             selectedNode.unselectAllNestedNode();
                             notifyItemChanged(index);
-                        } else {
+                        }/* else {
                             return;
-                        }
+                        }*/
                     }
                     VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex == options.size() - 1;

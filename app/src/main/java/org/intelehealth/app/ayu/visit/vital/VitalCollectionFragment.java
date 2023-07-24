@@ -226,9 +226,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             String val = editable.toString().trim();
             if (this.editText.getId() == R.id.etv_pulse) {
                 if (val.isEmpty()) {
-                    mPulseErrorTextView.setVisibility(View.VISIBLE);
+                    /*mPulseErrorTextView.setVisibility(View.VISIBLE);
                     mPulseErrorTextView.setText(getString(R.string.error_field_required));
-                    mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    mPulseEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                    mPulseErrorTextView.setVisibility(View.GONE);
+                    mPulseEditText.setBackgroundResource(R.drawable.edittext_border);
                 } else {
                     if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
                             (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
@@ -244,11 +246,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_temperature) {
+            }
+            else if (this.editText.getId() == R.id.etv_temperature) {
                 if (val.isEmpty()) {
-                    mTemperatureErrorTextView.setVisibility(View.VISIBLE);
+                    /*mTemperatureErrorTextView.setVisibility(View.VISIBLE);
                     mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
-                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    mTemperatureEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                    mTemperatureErrorTextView.setVisibility(View.GONE);
+                    mTemperatureEditText.setBackgroundResource(R.drawable.edittext_border);
                 } else {
                     if (configUtils.celsius()) {
                         if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
@@ -278,11 +283,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_spo2) {
+            }
+            else if (this.editText.getId() == R.id.etv_spo2) {
                 if (val.isEmpty()) {
-                    mSpo2ErrorTextView.setVisibility(View.VISIBLE);
+                    /*mSpo2ErrorTextView.setVisibility(View.VISIBLE);
                     mSpo2ErrorTextView.setText(getString(R.string.error_field_required));
-                    mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    mSpo2EditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                    mSpo2ErrorTextView.setVisibility(View.GONE);
+                    mSpo2EditText.setBackgroundResource(R.drawable.edittext_border);
                 } else {
                     if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
                             (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
@@ -297,11 +305,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_respiratory_rate) {
+            }
+            else if (this.editText.getId() == R.id.etv_respiratory_rate) {
                 if (val.isEmpty()) {
-                    mRespErrorTextView.setVisibility(View.VISIBLE);
+                    /*mRespErrorTextView.setVisibility(View.VISIBLE);
                     mRespErrorTextView.setText(getString(R.string.error_field_required));
-                    mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    mRespEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);*/
+                    mRespErrorTextView.setVisibility(View.GONE);
+                    mRespEditText.setBackgroundResource(R.drawable.edittext_border);
                 } else {
                     if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_RESPIRATORY)) ||
                             (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_RESPIRATORY))) {
@@ -316,11 +327,18 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_bp_sys) {
+            }
+            else if (this.editText.getId() == R.id.etv_bp_sys) {
+                String bpDia = mBpDiaEditText.getText().toString().trim();
                 if (val.isEmpty()) {
-                    mBpSysErrorTextView.setVisibility(View.VISIBLE);
-                    mBpSysErrorTextView.setText(getString(R.string.error_field_required));
-                    mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    if (bpDia.isEmpty()) {
+                        mBpSysErrorTextView.setVisibility(View.GONE);
+                        mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    } else {
+                        mBpSysErrorTextView.setVisibility(View.VISIBLE);
+                        mBpSysErrorTextView.setText(getString(R.string.error_field_required));
+                        mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    }
                 } else {
                     if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS)) ||
                             (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS))) {
@@ -332,7 +350,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                         return;
                     }
-                    String bpDia = mBpDiaEditText.getText().toString().trim();
+
                     if (bpDia.isEmpty()) {
                         mBpSysErrorTextView.setVisibility(View.GONE);
                         mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -352,11 +370,19 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         }
                     }
                 }
-            } else if (this.editText.getId() == R.id.etv_bp_dia) {
+            }
+            else if (this.editText.getId() == R.id.etv_bp_dia) {
+                String bpSys = mBpSysEditText.getText().toString().trim();
+
                 if (val.isEmpty()) {
-                    mBpDiaErrorTextView.setVisibility(View.VISIBLE);
-                    mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
-                    mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    if (bpSys.isEmpty()) {
+                        mBpDiaErrorTextView.setVisibility(View.GONE);
+                        mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    }else {
+                        mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+                        mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
+                        mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                    }
                 } else {
                     if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS)) ||
                             (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS))) {
@@ -367,7 +393,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                         return;
                     }
-                    String bpSys = mBpSysEditText.getText().toString().trim();
                     if (bpSys.isEmpty()) {
                         mBpDiaErrorTextView.setVisibility(View.GONE);
                         mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
@@ -938,6 +963,21 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
         }
         if (cancel) {
+            return false;
+        }
+
+        if (mBpSysEditText.getText().toString().trim().isEmpty() && !mBpDiaEditText.getText().toString().trim().isEmpty()) {
+            mBpSysErrorTextView.setVisibility(View.VISIBLE);
+            mBpSysErrorTextView.setText(getString(R.string.error_field_required));
+            mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mBpSysEditText.requestFocus();
+            return false;
+        }
+        if (!mBpSysEditText.getText().toString().trim().isEmpty() && mBpDiaEditText.getText().toString().trim().isEmpty()) {
+            mBpDiaErrorTextView.setVisibility(View.VISIBLE);
+            mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
+            mBpDiaEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            mBpDiaEditText.requestFocus();
             return false;
         }
 

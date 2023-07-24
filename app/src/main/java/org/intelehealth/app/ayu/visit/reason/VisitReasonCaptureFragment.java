@@ -224,10 +224,12 @@ public class VisitReasonCaptureFragment extends Fragment {
         mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {
             @Override
             public void onSelect(ReasonData data) {
-                //if (!mSelectedComplains.contains(name)) {
+                if (!mSelectedComplains.contains(data)) {
                 mSelectedComplains.add(data);
                 showSelectedComplains();
-                //}
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.already_selected_lbl), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         recyclerView.setAdapter(mReasonListingAdapter);
