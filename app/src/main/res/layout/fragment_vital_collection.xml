@@ -421,6 +421,7 @@
                 android:background="@drawable/edittext_border"
                 android:hint="@string/spo2_eg"
                 android:inputType="number"
+                android:maxLength="3"
                 android:padding="@dimen/padding_10"
                 android:textColorHint="@color/edittext_hint_color"
                 android:textSize="14sp" />
