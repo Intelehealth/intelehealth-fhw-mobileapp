@@ -117,7 +117,7 @@ public class IntelehealthApplication extends MultiDexApplication implements
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG );
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
     }
 
