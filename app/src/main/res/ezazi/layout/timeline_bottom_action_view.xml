@@ -73,4 +73,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddOutOfTimeReason"
+        style="@style/Theme.EZazi.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingStart="@dimen/screen_padding"
+        android:paddingEnd="@dimen/screen_padding"
+        android:text="@string/add_out_of_time_reason"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
 </androidx.constraintlayout.widget.ConstraintLayout>

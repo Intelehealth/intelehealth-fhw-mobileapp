@@ -6,6 +6,7 @@ import android.util.Log;
 
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
+import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 
@@ -80,12 +81,15 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "ELSE P.first_name || ' ' || P.middle_name || ' ' || P.last_name " +
                 "END fullName, " +
                 "(SELECT CASE " +
-                "WHEN O.value LIKE '%discharge%'  THEN 'DAMA' " +
-                "WHEN O.value LIKE '%Refer%'  THEN 'RTOH' ELSE O.value " +
+                "WHEN O.value LIKE '%discharge%'  THEN '" + VisitDTO.CompletedStatus.DAMA.value + "' " +
+                "WHEN O.value LIKE '%Refer%'  THEN '" + VisitDTO.CompletedStatus.RTOH.value + "' " +
+                "WHEN O.conceptuuid = '" + UuidDictionary.OUT_OF_TIME + "' THEN '" + VisitDTO.CompletedStatus.OUT_OF_TIME.value + "' " +
+                "ELSE O.value " +
                 "END outcome " +
                 "FROM tbl_encounter E, tbl_obs O " +
                 "WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid " +
-                "AND O.conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', '" + UuidDictionary.REFER_TYPE + "') LIMIT 1)as birthStatus, " +
+                "AND O.conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', '"
+                + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME + "') LIMIT 1)as birthStatus, " +
                 "(SELECT CASE " +
                 "WHEN U.name LIKE '%Stage1%'  THEN 'Stage1' " +
                 "WHEN U.name LIKE '%Stage2%'  THEN 'Stage2' ELSE U.name " +

@@ -634,8 +634,9 @@ public class ObsDAO {
     public String getCompletedVisitType(String encounterUuid) {
         String valueData = "";
         db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        String query = "SELECT value FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?)";
-        final Cursor idCursor = db.rawQuery(query, new String[]{encounterUuid, UuidDictionary.BIRTH_OUTCOME, UuidDictionary.REFER_TYPE});
+        String query = "SELECT value, conceptuuid FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?, ?)";
+        final Cursor idCursor = db.rawQuery(query, new String[]{encounterUuid,
+                UuidDictionary.BIRTH_OUTCOME, UuidDictionary.REFER_TYPE, UuidDictionary.OUT_OF_TIME});
         //do some insertions or whatever you need
 //        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid = ?",
 //                new String[]{encounterUuid, BIRTH_OUTCOME});
@@ -644,13 +645,15 @@ public class ObsDAO {
             while (idCursor.moveToNext()) {
                 Context context = IntelehealthApplication.getAppContext();
                 valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+//                String conceptId = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
                 if (valueData.equals(context.getString(R.string.refer_to_other_hospital))) {
                     valueData = VisitDTO.CompletedStatus.RTOH.value;
                 } else if (valueData.equals(context.getString(R.string.self_discharge_medical_advice))) {
                     valueData = VisitDTO.CompletedStatus.DAMA.value;
-                } else if (valueData.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
-                    valueData = VisitDTO.CompletedStatus.OUT_OF_TIME.value;
                 }
+//                else if (valueData.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
+//                    valueData = VisitDTO.CompletedStatus.OUT_OF_TIME.value;
+//                }
             }
         } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
             valueData = "";
@@ -667,5 +670,30 @@ public class ObsDAO {
         idCursor.close();
 
         return valueData;
+    }
+
+    public boolean checkIsOutOfTimeEncounter(String encounterUuid) {
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? " +
+                        "AND voided='0' AND conceptuuid = ?",
+                new String[]{encounterUuid, UuidDictionary.OUT_OF_TIME});
+
+        if (idCursor.getCount() > 0) {
+            return true;
+        }
+        idCursor.close();
+
+        return false;
+    }
+
+    public int updateOutOfTimeEncounterReason(String value, String encounterUuid) {
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        values.put("value", value);
+        values.put("sync", "0");
+        String whereClause = " encounteruuid = ? AND conceptuuid = ? ";
+        String[] whereArgs = {encounterUuid, UuidDictionary.OUT_OF_TIME};
+        return db.update("tbl_obs", values, whereClause, whereArgs);
     }
 }

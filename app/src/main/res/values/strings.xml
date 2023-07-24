@@ -848,6 +848,8 @@
     <string name="setupUrl">ezazi.intelehealth.org</string>
     <string name="endStageButton">End First Stage</string>
     <string name="end2StageButton">End Second Stage</string>
+    <string name="add_out_of_time_reason">Add Reason</string>
+    <string name="update_out_of_time_reason">Update Reason</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
     <string name="click_to_enter"><u>Click to Enter</u></string>
     <string name="missed_interval"><u>Missed</u></string>
@@ -883,10 +885,12 @@
     <string name="baby_status">Baby Status</string>
     <string name="mother_status">Mother Status</string>
     <string name="additional_information">Additional Information</string>
+    <string name="time_out_reason_title">Visit Time Out Information</string>
     <string name="end_shift">End Shift</string>
     <string name="no_more_visits_to_assign">No more visits/patients to assign other nurse.</string>
     <string name="patient_assigned_successfully">Patient assigned successfully!</string>
     <string name="additional_info_submitted_successfully">Additional Information is submitted successfully</string>
+    <string name="time_out_info_submitted_successfully">Time out reason information is submitted successfully</string>
     <string name="enter_birth_weight">Enter Birth Weight</string>
     <string name="enter_apgar_at_1_min">Enter Apgar at 1 min</string>
     <string name="enter_apgar_at_5_min">Enter Apgar at 5 min</string>
@@ -969,6 +973,8 @@
     <string name="are_you_sure_want_to_refer_other">Are you sure you want to \"Refer to other hospital\"?</string>
     <string name="are_you_sure_want_to_self_discharge">Are you sure patient wants to \"Self discharge against Medical Advice\"?</string>
     <string name="hospital_name">Hospital Name</string>
+    <string name="time_out_reason">Time Out Reason</string>
+    <string name="enter_out_of_time_reason">Enter Time Out Reason</string>
     <string name="doctor_name">Doctor Name</string>
     <string name="note">Note</string>
     <string name="enter_hospital_name">Enter Hospital Name</string>
@@ -1050,4 +1056,5 @@
     <string name="text_new_visit">text_new_visit</string>
     <string name="text_new_advice">text_new_advice</string>
     <string name="power_from">from</string>
+    <string name="lbl_outcome">Outcome:%1$s</string>
 </resources>

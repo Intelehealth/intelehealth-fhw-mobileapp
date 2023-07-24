@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.R;
@@ -46,11 +48,13 @@ import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
+import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogStage2AdditionalDataEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
+import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
@@ -622,7 +626,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             endStageButton.setVisibility(View.INVISIBLE);
             if (!outcome.equalsIgnoreCase("")) {
                 outcomeTV.setVisibility(View.VISIBLE);
-                outcomeTV.setText("Outcome: " + outcome);
+                outcomeTV.setText(getString(R.string.lbl_outcome, outcome));
+                checkForOutOfTime(outcome);
             }
             fabc.setVisibility(View.GONE);
             fabv.setVisibility(View.GONE);
@@ -641,6 +646,52 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             }
         });
         mCountDownTimer.start();
+    }
+
+    private void checkForOutOfTime(String outcome) {
+        boolean isOutOfTime = new ObsDAO().checkIsOutOfTimeEncounter(isVCEPresent);
+        if (isOutOfTime) {
+            MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
+            button.setTag(1);
+            button.setVisibility(View.VISIBLE);
+            if (!outcome.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
+                button.setTag(2);
+                button.setText(getString(R.string.update_out_of_time_reason));
+            }
+            button.setOnClickListener(outOfTimeClickListener);
+        }
+    }
+
+    private View.OnClickListener outOfTimeClickListener = v -> {
+        int isUpdateRequest = (int) v.getTag();
+        showOutOfTimeReasonInputDialog(isUpdateRequest);
+    };
+
+    private void showOutOfTimeReasonInputDialog(int isUpdateRequest) {
+        DialogOutOfTimeEzaziBinding binding = DialogOutOfTimeEzaziBinding.inflate(getLayoutInflater(), null, true);
+        showCustomViewDialog(R.string.time_out_reason_title,
+                isUpdateRequest == 2 ? R.string.update_out_of_time_reason : R.string.add_out_of_time_reason,
+                R.string.cancel, binding.getRoot(), () -> {
+                    String reason = binding.etOutOfTimeReason.getText().toString();
+                    if (reason.length() > 0) {
+                        int updated = new ObsDAO().updateOutOfTimeEncounterReason(reason, isVCEPresent);
+                        if (updated > 0) {
+                            Toast.makeText(context, context.getString(R.string.time_out_info_submitted_successfully), Toast.LENGTH_SHORT).show();
+                            outcomeTV.setText(getString(R.string.lbl_outcome, reason));
+                            updateButtonText(R.string.update_out_of_time_reason, 2);
+                        } else {
+                            Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(context, "Time out reason should not be empty", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateButtonText(int label, int tag) {
+        MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
+        button.setTag(tag);
+        button.setText(getString(label));
     }
 
     private void showEndShiftDialog() {
@@ -777,7 +828,11 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void showCustomViewDialog(@StringRes int title, View view, CustomViewDialogFragment.OnConfirmationActionListener listener) {
+    private void showCustomViewDialog(@StringRes int title,
+                                      @StringRes int positiveLbl,
+                                      @StringRes int negLbl,
+                                      View view,
+                                      CustomViewDialogFragment.OnConfirmationActionListener listener) {
         CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this)
                 .title(title)
                 .positiveButtonLabel(R.string.yes)
@@ -794,7 +849,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         DialogReferHospitalEzaziBinding binding = DialogReferHospitalEzaziBinding.inflate(getLayoutInflater(), null, false);
 
-        showCustomViewDialog(R.string.refer_section, binding.getRoot(), () -> {
+        showCustomViewDialog(R.string.refer_section, R.string.yes, R.string.no, binding.getRoot(), () -> {
             boolean isInserted = false;
             String hospitalName = binding.referHospitalName.getText().toString(),
                     doctorName = binding.referDoctorName.getText().toString(),
@@ -1220,7 +1275,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //        String referOptions[] = {getString(R.string.birth_weight), getString(R.string.apgar_1min),
 //                getString(R.string.apgar_5min), getString(R.string.sex), getString(R.string.baby_status), getString(R.string.mother_status)};
         DialogStage2AdditionalDataEzaziBinding binding = DialogStage2AdditionalDataEzaziBinding.inflate(getLayoutInflater(), null, true);
-        showCustomViewDialog(R.string.additional_information, binding.getRoot(), () -> {
+        showCustomViewDialog(R.string.additional_information, R.string.yes, R.string.no, binding.getRoot(), () -> {
             String birthW = binding.birthWeight.getText().toString(),
                     apgar1min = binding.apgar1min.getText().toString(),
                     apgar5min = binding.apgar5min.getText().toString(),

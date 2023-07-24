@@ -482,6 +482,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     sessionManager.setReturningUser(true);
                                     sessionManager.setLogout(false);
+                                    IntelehealthApplication.getInstance().initSocketConnection();
                                 }
 
                                 @Override
