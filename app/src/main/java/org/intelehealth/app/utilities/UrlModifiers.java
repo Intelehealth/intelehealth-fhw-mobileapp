@@ -68,14 +68,14 @@ public class UrlModifiers {
     public String setwhatsappPresciptionUrl() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String BASE_URL = "https://" + sessionManager.getServerUrl() +
-                "/preApi/index.jsp?v=";
+                "//preApi/index.jsp?v=";
         return BASE_URL;
     }
 
     public String setwhatsappPresciptionUrlArabic() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String BASE_URL = "https://" + sessionManager.getServerUrl() +
-                "/preApi/index-ar.jsp?v=";
+                "//preApi/index-ar.jsp?v=";
         return BASE_URL;
     }
 

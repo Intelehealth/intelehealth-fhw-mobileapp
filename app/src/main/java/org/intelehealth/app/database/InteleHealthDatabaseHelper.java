@@ -3,6 +3,7 @@ package org.intelehealth.app.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import androidx.annotation.Nullable;
 
 import org.intelehealth.app.utilities.SessionManager;
@@ -83,9 +84,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "password TEXT UNIQUE," +
             "creator_uuid_cred TEXT," +
             "chwname TEXT," +
-            "provider_uuid_cred TEXT"+
+            "provider_uuid_cred TEXT" +
             ")";
-
 
 
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
@@ -179,6 +179,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "identifier TEXT," +
             "given_name TEXT," +
             "family_name TEXT," +
+            "role TEXT," +
+            "useruuid TEXT," +
+            "userid integer(10)," +
             "voided TEXT DEFAULT '0'," +
             "modified_date TEXT," +
             "sync TEXT DEFAULT 'false' " +
@@ -301,7 +304,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             return getWritableDatabase();
     }
 
-    public static final String CREATE_LOCATION_NEW= "CREATE TABLE IF NOT EXISTS tbl_location_new(" +
+    public static final String CREATE_LOCATION_NEW = "CREATE TABLE IF NOT EXISTS tbl_location_new(" +
             "location_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "name TEXT," +
             "country TEXT," +
