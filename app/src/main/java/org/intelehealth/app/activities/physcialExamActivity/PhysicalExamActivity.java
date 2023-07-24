@@ -12,6 +12,7 @@ import android.os.Environment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -375,6 +376,132 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
+        if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && !physicalExamMap.getOption(physExamPos).getOption(groupPosition).anySubSelected()) {
+            Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
+            //Log.d("Clicked", question.language());
+            question.toggleSelected();
+            if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
+                physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected(true);
+            } else {
+                physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
+            }
+
+            // nas-248 - start
+            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
+            Node rootNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition);
+            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                        physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                    }
+                }
+            }
+            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
+            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (!childNode.getId().equals(question.getId())) {
+                        physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                    }
+                }
+            }
+            // nas-248 - start
+
+            adapter.notifyDataSetChanged();
+
+            if (question.getInputType() != null && question.isSelected()) {
+
+                if (question.getInputType().equals("camera")) {
+                    if (!filePath.exists()) {
+                        boolean res = filePath.mkdirs();
+                        Log.i("RES>", "" + filePath + " -> " + res);
+                    }
+                    imageName = UUID.randomUUID().toString();
+                    Node.handleQuestion(question, this, adapter, filePath.toString(), imageName);
+                } else {
+                    Node.handleQuestion(question, this, adapter, null, null);
+                }
+            }
+
+            if (!question.isTerminal() && question.isSelected()) {
+                Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
+            }
+        } else if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && physicalExamMap.getOption(groupPosition).anySubSelected()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
+            alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        } else {
+            Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
+            question.toggleSelected();
+            if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
+                physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected(true);
+            } else {
+                physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
+            }
+
+            if (!physicalExamMap.findDisplay().equalsIgnoreCase("Associated Symptoms")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("ಸಂಬಂಧಿತ ರೋಗಲಕ್ಷಣಗಳು")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("संबद्ध लक्षणे")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট উপসর্গ")
+                    && !physicalExamMap.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")) {
+                //code added to handle multiple and single option selection.
+                Node rootNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition);
+                if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+                Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() &&
+                        question.isExcludedFromMultiChoice() && question.isSelected())) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (!childNode.getId().equals(question.getId())) {
+                            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+            }
+            if (!question.getInputType().isEmpty() && question.isSelected()) {
+                if (question.getInputType().equals("camera")) {
+                    if (!filePath.exists()) {
+                        filePath.mkdirs();
+                    }
+                    imageName = UUID.randomUUID().toString();
+                    Node.handleQuestion(question, PhysicalExamActivity.this, adapter, filePath.toString(), imageName);
+                } else {
+                    Node.handleQuestion(question, PhysicalExamActivity.this, adapter, null, null);
+                }
+                //If there is an input type, then the question has a special method of data entry.
+            }
+
+            if (!question.isTerminal() && question.isSelected()) {
+                Node.subLevelQuestion(question, PhysicalExamActivity.this, adapter, filePath.toString(), imageName);
+                //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
+            }
+        }
+        //adapter.updateNode(currentNode);
+        adapter.notifyDataSetChanged();
+    }
+
+    /*@Override
+    public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
         Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
         //Log.d("Clicked", question.language());
         question.toggleSelected();
@@ -405,7 +532,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (!question.isTerminal() && question.isSelected()) {
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
-    }
+    }*/
 
 
     /**

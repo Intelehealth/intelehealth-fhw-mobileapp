@@ -328,7 +328,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 public void onClick(View v) {
                     if (groupNode.getText() != null) {
                         //null checking to avoid weird crashes.
-                        if (groupNode.getText().equalsIgnoreCase("Associated symptoms") || groupNode.getText().equalsIgnoreCase("जुड़े लक्षण")) {
+                        if (groupNode.getText().equalsIgnoreCase("Associated symptoms") ||
+                                groupNode.getText().equalsIgnoreCase("जुड़े लक्षण")) {
                             MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
                             confirmDialog.setTitle(R.string.have_symptom);
                             confirmDialog.setCancelable(false);
