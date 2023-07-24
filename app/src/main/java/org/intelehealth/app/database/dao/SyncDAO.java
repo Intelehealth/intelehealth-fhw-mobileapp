@@ -132,7 +132,7 @@ public class SyncDAO {
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                         context.sendBroadcast(broadcast);
                         Log.d(TAG, "onResponse: sync : " + sync);
-                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
 
 //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
@@ -230,7 +230,7 @@ public class SyncDAO {
                         broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                         context.sendBroadcast(broadcast);
-                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
 //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 //                            CalculateAgoTime(context);

@@ -120,7 +120,7 @@ public class PhysicalExaminationFragment extends Fragment {
             complainBasicInfo.setPhysicalExam(true);
             mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
-            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, new OnItemSelection() {
+            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     // avoid the scroll for old data change

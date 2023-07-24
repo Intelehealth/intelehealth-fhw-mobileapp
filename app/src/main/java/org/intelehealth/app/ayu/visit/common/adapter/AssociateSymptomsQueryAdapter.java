@@ -45,6 +45,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     private Context mContext;
     private List<Node> mItemList = new ArrayList<Node>();
     private RecyclerView mRootRecyclerView, mRecyclerView;
+    private boolean mIsEditMode;
 
     public interface AssociateSymptomsOnItemSelection {
         public void onSelect(Node data);
@@ -52,12 +53,13 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
     private AssociateSymptomsOnItemSelection mOnItemSelection;
 
-    public AssociateSymptomsQueryAdapter( Context context,RecyclerView rootRecyclerView,RecyclerView recyclerView, List<Node> itemList, AssociateSymptomsOnItemSelection onItemSelection) {
+    public AssociateSymptomsQueryAdapter(Context context, RecyclerView rootRecyclerView, RecyclerView recyclerView, List<Node> itemList, boolean editMode, AssociateSymptomsOnItemSelection onItemSelection) {
         mContext = context;
         mItemList = itemList;
         mOnItemSelection = onItemSelection;
         mRootRecyclerView = rootRecyclerView;
         mRecyclerView = recyclerView;
+        mIsEditMode = editMode;
         //mAnimator = new RecyclerViewAnimator(recyclerView);
     }
 
@@ -145,9 +147,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         else
                             complainBasicInfo.setOptionSize(mItemList.get(position).getOptionsList().size());
                         rootComplainBasicInfoHashMap.put(0, complainBasicInfo);
-                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, new OnItemSelection() {
+                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, false, null, 0, rootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                             @Override
-                            public void onSelect(Node node, int index, boolean isSkipped,Node parentNode) {
+                            public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
 
                                 Log.v(TAG, "currentComplainNodeOptionsIndex - " + genericViewHolder.currentComplainNodeOptionsIndex);
                                 Log.v(TAG, "mItemList.get(position).getOptionsList().size() - " + mItemList.get(position).getOptionsList().size());
@@ -158,7 +160,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                 if (genericViewHolder.currentComplainNodeOptionsIndex - index >= 1) {
                                     return;
                                 }
-                                if(isSkipped){
+                                if (isSkipped) {
                                     genericViewHolder.questionsListingAdapter.geItems().get(index).setSelected(false);
                                     genericViewHolder.questionsListingAdapter.geItems().get(index).setDataCaptured(false);
                                     genericViewHolder.questionsListingAdapter.notifyItemChanged(index);
@@ -464,18 +466,18 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
 
                     if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", d));
-                        } else if (node.getLanguage().equalsIgnoreCase("%")) {
-                            node.addLanguage(d);
-                        } else {
-                            node.addLanguage(node.getLanguage() + " - " + d);
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                        }
-                        node.setSelected(true);
-                        holder.node.setSelected(true);
+                        node.setLanguage(node.getLanguage().replace("_", d));
+                    } else if (node.getLanguage().equalsIgnoreCase("%")) {
+                        node.addLanguage(d);
+                    } else {
+                        node.addLanguage(node.getLanguage() + " - " + d);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    holder.node.setSelected(true);
 
-                        node.setDataCaptured(true);
-                        holder.node.setDataCaptured(true);
+                    node.setDataCaptured(true);
+                    holder.node.setDataCaptured(true);
 
                     //notifyDataSetChanged();
                     //mOnItemSelection.onSelect(node, index);

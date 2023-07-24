@@ -144,7 +144,7 @@ public class OverallAchievementsFragment extends Fragment {
     }
 
     private void setOverallTimeSpent() {
-        long startTime = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long startTime = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ", sessionManager.getAppLanguage());
         long endDate = System.currentTimeMillis();
 
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;

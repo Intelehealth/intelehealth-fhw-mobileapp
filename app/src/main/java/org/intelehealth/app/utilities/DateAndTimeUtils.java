@@ -336,6 +336,12 @@ public class DateAndTimeUtils {
         return date.format(todayDate);
     }
 
+    public String getcurrentDateTime(String localeCode) {
+        DateFormat date = new SimpleDateFormat("hh:mm a, dd MMMM yyyy", new Locale(localeCode));
+        Date todayDate = new Date();
+        return date.format(todayDate);
+    }
+
     public static String SimpleDatetoLongFollowupDate(String dateString) {
         String formattedDate = null;
         try {
@@ -865,9 +871,13 @@ public class DateAndTimeUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return simpleDateFormat.format(new Date());
     }
+    public static String getTodaysDateInRequiredFormat(String format, String localeCode) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
+        return simpleDateFormat.format(new Date());
+    }
 
-    private static Date convertStringToDateObject(String date, String format) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+    private static Date convertStringToDateObject(String date, String format, String localeCode) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
         Date parsedDate = null;
 
         try {
@@ -879,9 +889,9 @@ public class DateAndTimeUtils {
         return parsedDate;
     }
 
-    public static Calendar convertStringToCalendarObject(String date, String format) {
+    public static Calendar convertStringToCalendarObject(String date, String format, String localeCode) {
         Calendar calendar = Calendar.getInstance();
-        Date parsedDate = convertStringToDateObject(date, format);
+        Date parsedDate = convertStringToDateObject(date, format, localeCode);
 
         if (parsedDate != null) {
             calendar.setTime(parsedDate);
@@ -901,9 +911,9 @@ public class DateAndTimeUtils {
         return cal.getTimeInMillis();
     }
 
-    public static long getEndDateInMilliseconds(String date, String format) {
+    public static long getEndDateInMilliseconds(String date, String format, String localeCode) {
         Calendar calendar = Calendar.getInstance();
-        Date parsedDate = convertStringToDateObject(date, format);
+        Date parsedDate = convertStringToDateObject(date, format, localeCode);
 
         if (parsedDate != null) {
             calendar.setTime(parsedDate);
@@ -917,8 +927,8 @@ public class DateAndTimeUtils {
         return calendar.getTimeInMillis();
     }
 
-    public static long convertStringDateToMilliseconds(String date, String format) {
-        Calendar calendarObject = convertStringToCalendarObject(date, format);
+    public static long convertStringDateToMilliseconds(String date, String format, String localeCode) {
+        Calendar calendarObject = convertStringToCalendarObject(date, format, localeCode);
         return calendarObject.getTimeInMillis();
     }
 
@@ -927,10 +937,11 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(date);
     }
 
-    public static boolean isGivenDateBetweenTwoDates(String date, String startDate, String endDate, String format) {
-        Date createdDateObject = convertStringToDateObject(date, format);
-        Date startDateObject = convertStringToDateObject(startDate, format);
-        Date endDateObject = convertStringToDateObject(endDate, format);
+    public static boolean isGivenDateBetweenTwoDates(String date, String startDate, String endDate, String format, String localeCode) {
+        Date createdDateObject = convertStringToDateObject(date, format, localeCode);
+        Date startDateObject = convertStringToDateObject(startDate, format, localeCode);
+        Date endDateObject = convertStringToDateObject(endDate, format, localeCode);
+        if(createdDateObject==null || startDateObject == null || endDateObject == null) return false;
         return createdDateObject.getTime() >= startDateObject.getTime() && createdDateObject.getTime() <= endDateObject.getTime();
     }
 

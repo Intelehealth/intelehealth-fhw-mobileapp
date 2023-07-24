@@ -5204,12 +5204,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         mAssociateSymptomsLinearLayout.removeAllViews();
 
         for (int i = 0; i < sections.length; i++) {
-            String patientReportsDenies = sections[i]; // Patient reports & // Patient denies
+            String patientReports = sections[i]; // Patient reports & // Patient denies
+            patientReports = patientReports.substring(1);
+            patientReports = patientReports.replace("•", ", ");
             View view = View.inflate(this, R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
             TextView keyTextView = view.findViewById(R.id.tv_question_label);
             keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
             TextView valueTextView = view.findViewById(R.id.tv_answer_value);
-            valueTextView.setText(patientReportsDenies);
+            valueTextView.setText(patientReports);
            /* if (patientReportsDenies.isEmpty()) {
                 view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
             } else {

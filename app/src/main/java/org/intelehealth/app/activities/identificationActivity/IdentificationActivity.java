@@ -1827,9 +1827,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
-            } else {
+            } /*else {
                 Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
-            }
+            }*/
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

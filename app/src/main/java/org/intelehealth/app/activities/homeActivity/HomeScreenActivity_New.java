@@ -1475,7 +1475,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void insertTimeSpentByUserIntoDb() {
-        long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long firstLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ", sessionManager.getAppLanguage());
         long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
         long startTimeInMilliseconds = Math.max(todaysDateInMilliseconds, firstLoginTimeInMilliseconds);
         long endTimeInMilliseconds = System.currentTimeMillis();

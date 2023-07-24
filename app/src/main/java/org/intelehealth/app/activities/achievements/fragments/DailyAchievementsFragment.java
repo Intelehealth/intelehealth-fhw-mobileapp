@@ -109,7 +109,7 @@ public class DailyAchievementsFragment extends Fragment {
         todaysDateInYYYYMMDD = DateAndTimeUtils.getTodaysDateInRequiredFormat("yyyy-MM-dd");
 
         TextView tvTodaysDate = view.findViewById(R.id.tv_todays_date);
-        tvTodaysDate.setText(todaysDate);
+        tvTodaysDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy", sessionManager.getAppLanguage()));
 
         tvPatientsCreatedToday = view.findViewById(R.id.tv_patients_created_today);
         tvVisitsEndedToday = view.findViewById(R.id.tv_visits_ended_today);
@@ -173,7 +173,7 @@ public class DailyAchievementsFragment extends Fragment {
     }
 
     private void setDailyTimeSpent() {
-        long firstProviderLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long firstProviderLoginTimeInMilliseconds = DateAndTimeUtils.convertStringDateToMilliseconds(sessionManager.getFirstProviderLoginTime(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ", sessionManager.getAppLanguage());
         long todaysDateInMilliseconds = DateAndTimeUtils.getTodaysDateInMilliseconds();
 
         long endDate = System.currentTimeMillis();
