@@ -206,63 +206,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             public void onClick(View view) {
                 Log.e(TAG, "onClick: ");
                 showDoctorSelectionDialog(false);
-//                try {
-//
-//
-//                    // show the patient primary & secondary doctor
-//                    PatientsDAO patientsDAO = new PatientsDAO();
-//                    List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
-//                    String[] doctNames = new String[2];
-//                    String[] doctUUIDs = new String[2];
-//                    for (int i = 0; i < patientAttributes.size(); i++) {
-//                        String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
-//                        if (name.equalsIgnoreCase("PrimaryDoctor")) {
-//                            doctUUIDs[0] = patientAttributes.get(i).getValue().split("@#@")[0];
-//                            doctNames[0] = patientAttributes.get(i).getValue().split("@#@")[1];
-//                        }
-//                        if (name.equalsIgnoreCase("SecondaryDoctor")) {
-//                            doctUUIDs[1] = patientAttributes.get(i).getValue().split("@#@")[0];
-//                            doctNames[1] = patientAttributes.get(i).getValue().split("@#@")[1];
-//                        }
-//                    }
-//
-//                    AlertDialog.Builder builder =
-//                            new AlertDialog.Builder(TimelineVisitSummaryActivity.this);
-//
-//                    builder.setTitle("Select Doctor")
-//                            .setItems(doctNames, new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    //  EncounterDAO encounterDAO = new EncounterDAO();
-//                                    EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-//                                    RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-//                                    RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-//                                    Intent in = new Intent(TimelineVisitSummaryActivity.this, VideoCallActivity.class);
-//                                    String roomId = patientUuid;
-//                                    String doctorName = doctNames[which];
-//                                    String nurseId = encounterDTO.getProvideruuid();
-//                                    in.putExtra("roomId", roomId);
-//                                    in.putExtra("isInComingRequest", false);
-//                                    in.putExtra("doctorname", doctorName);
-//                                    in.putExtra("nurseId", nurseId);
-//                                    in.putExtra("startNewCall", true);
-//                                    in.putExtra("doctorUUID", doctUUIDs[which]);
-//
-//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                                        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                    }
-//                                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-//                                    if (callState == TelephonyManager.CALL_STATE_IDLE) {
-//                                        startActivity(in);
-//                                    }
-//                                }
-//                            });
-//                    builder.create().show();
-//
-//
-//                } catch (DAOException e) {
-//                    e.printStackTrace();
-//                }
             }
         });
 
@@ -272,38 +215,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     protected int getScreenTitle() {
         return 0;
     }
-
-//    /**
-//     * Find the primary and secondary doctor's details of name and uuid
-//     * from patient attributes list as a map, key present as a doctor name
-//     * and value is doctor uuid
-//     *
-//     * @return doctors HashMap<String, String>
-//     */
-//    private HashMap<String, String> getDoctorsDetails() {
-//        PatientsDAO patientsDAO = new PatientsDAO();
-//        HashMap<String, String> doctors = new HashMap<>();
-//        try {
-//            List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
-//            for (int i = 0; i < patientAttributes.size(); i++) {
-//                String name = patientsDAO.getAttributesName(patientAttributes.get(i).getAttributeType());
-//                if (name.equalsIgnoreCase("PrimaryDoctor")) {
-//                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
-//                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
-//                    doctors.put(doctorName, doctorUuid);
-//                }
-//                if (name.equalsIgnoreCase("SecondaryDoctor")) {
-//                    String doctorUuid = patientAttributes.get(i).getValue().split("@#@")[0];
-//                    String doctorName = patientAttributes.get(i).getValue().split("@#@")[1];
-//                    doctors.put(doctorName, doctorUuid);
-//                }
-//            }
-//        } catch (DAOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return doctors;
-//    }
 
     /**
      * Show the single choice doctor selection dialog and move forward
@@ -336,9 +247,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
     private void startChatActivity(String doctorUuid) {
-//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
-//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
         Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
         chatIntent.putExtra("patientName", patientName);
         chatIntent.putExtra("visitUuid", visitUuid);
@@ -346,17 +254,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         chatIntent.putExtra("fromUuid", sessionManager.getProviderID()); // provider uuid
         chatIntent.putExtra("isForVideo", false);
         chatIntent.putExtra("toUuid", doctorUuid);
-//        if (rtcConnectionDTO != null) {
-//            try {
-//                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-//                chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
-//        } else {
-//            chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-//        }
         startActivity(chatIntent);
     }
 
@@ -503,19 +400,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         log.put("action", "showEpartogram");
         TelephonyManager manager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         Logger.logV("PHONE_TYPE_NONE", String.valueOf(Objects.requireNonNull(manager).getPhoneType()));
-        /*if (getResources().getBoolean(R.bool.isTablet)) {
-            Intent intent = new Intent(context, Epartogram.class);
-            intent.putExtra("patientuuid", patientUuid);
-            intent.putExtra("visituuid", visitUuid);
-            startActivity(intent);
-            log.put("message", "Detected... You're using a Tablet");
 
-        } else {
-            log.put("message", "Detected... You're using a Mobile Phone");
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showOkDialog(TimelineVisitSummaryActivity.this, "",
-                    context.getString(R.string.this_option_available_tablet_device) , context.getString(R.string.ok));
-        }*/
         Intent intent = new Intent(context, EpartogramViewActivity.class);
         intent.putExtra("patientuuid", patientUuid);
         intent.putExtra("visituuid", visitUuid);
@@ -1634,13 +1519,13 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     @Override
     public void onBackPressed() {
-//        Intent intent = new Intent(this, HomeActivity.class);
-//        startActivity(intent);
-        Log.e(TAG, "onBackPressed: Timeline");
-        Intent screenRefreshIntent = new Intent();
-        screenRefreshIntent.setAction(AppConstants.getScreenRefreshEventReceiver());
-        sendBroadcast(screenRefreshIntent);
-        super.onBackPressed();
+        if (whichScreenUserCameFromTag.equals("new")) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra(AppConstants.REFRESH_SCREEN_EVENT, true);
+            startActivity(intent);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

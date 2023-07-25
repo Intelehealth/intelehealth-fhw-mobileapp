@@ -225,7 +225,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.v(TAG, "onNewIntent");
-        catchFCMMessageData();
+        if (intent != null && intent.hasExtra(AppConstants.REFRESH_SCREEN_EVENT)) {
+            boolean isRefreshEvent = intent.getBooleanExtra(AppConstants.REFRESH_SCREEN_EVENT, false);
+            if (isRefreshEvent) recreate();
+        } else {
+            catchFCMMessageData();
+        }
     }
 
     private void catchFCMMessageData() {
