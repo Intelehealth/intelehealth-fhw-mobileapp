@@ -19,6 +19,9 @@ import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -794,6 +797,32 @@ public class ChatActivity extends AppCompatActivity {
             //cameraStart();
             selectImage();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.chat_menu, menu);
+        menu.findItem(R.id.video_call_menu).getActionView().setOnClickListener(view -> {
+            onOptionsItemSelected(menu.findItem(R.id.video_call_menu));
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.video_call_menu) {
+//            Intent videoIntent = getVideoIntent().putExtra("roomId", mPatientUUid)
+//                    .putExtra("nurseId", mFromUUId);
+//            startActivity(videoIntent);
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

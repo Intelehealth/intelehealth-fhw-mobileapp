@@ -18,7 +18,10 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -111,6 +115,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //    int positionStage = -1;
     public static final String TAG = "TimelineVisitSummary";
     boolean isAdded = false;
+
+    private boolean hwHasEditAccess = true;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -586,7 +592,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             providerID = intent.getStringExtra("providerID");
             whichScreenUserCameFromTag = intent.getStringExtra("tag");
             Stage1_Hour1_1 = intent.getStringExtra("Stage1_Hour1_1");
-
+            hwHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
             Log.v("timeline", "patientname_1 " + patientName + " " + patientUuid + " " + visitUuid);
 
             if (whichScreenUserCameFromTag != null &&
@@ -622,7 +628,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 // do not hing
             }
 
-            if (!new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID())) {
+            if (!hwHasEditAccess) {
                 fabc.setEnabled(false);
                 fabv.setEnabled(false);
                 fabSOS.setEnabled(false);
@@ -634,7 +640,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             endStageButton.setVisibility(View.INVISIBLE);
             if (!outcome.equalsIgnoreCase("")) {
                 outcomeTV.setVisibility(View.VISIBLE);
-                outcomeTV.setText(getString(R.string.lbl_outcome, outcome));
+                setOutcomeText(outcome);
+                outcomeTV.setGravity(Gravity.CENTER);
                 checkForOutOfTime(outcome);
             }
             fabc.setVisibility(View.GONE);
@@ -665,8 +672,26 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             if (!outcome.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
                 button.setTag(2);
                 button.setText(getString(R.string.update_out_of_time_reason));
+                updateOutOfTimeOutcomeText(outcome);
             }
             button.setOnClickListener(outOfTimeClickListener);
+            button.setVisibility(hwHasEditAccess ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void updateOutOfTimeOutcomeText(String reason) {
+        outcomeTV.setGravity(Gravity.START);
+        String label = VisitDTO.CompletedStatus.OUT_OF_TIME.value;
+        String mainReason = getString(R.string.outcome_reason, reason);
+        setOutcomeText(label + mainReason);
+//        outcomeTV.setText(HtmlCompat.fromHtml(getString(R.string.lbl_outcome, outcome), 0));
+    }
+
+    private void setOutcomeText(String outcome) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            outcomeTV.setText(Html.fromHtml(getString(R.string.lbl_outcome, outcome), 0));
+        } else {
+            outcomeTV.setText(Html.fromHtml(getString(R.string.lbl_outcome, outcome)));
         }
     }
 
@@ -685,7 +710,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                         int updated = new ObsDAO().updateOutOfTimeEncounterReason(reason, isVCEPresent);
                         if (updated > 0) {
                             Toast.makeText(context, context.getString(R.string.time_out_info_submitted_successfully), Toast.LENGTH_SHORT).show();
-                            outcomeTV.setText(getString(R.string.lbl_outcome, reason));
+//                            outcomeTV.setText(getString(R.string.lbl_outcome, reason));
+                            updateOutOfTimeOutcomeText(reason);
                             updateButtonText(R.string.update_out_of_time_reason, 2);
                         } else {
                             Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();

@@ -1056,5 +1056,6 @@
     <string name="text_new_visit">text_new_visit</string>
     <string name="text_new_advice">text_new_advice</string>
     <string name="power_from">from</string>
-    <string name="lbl_outcome">Outcome:%1$s</string>
+    <string name="lbl_outcome"><![CDATA[ <b>Outcome</b>:%1$s ]]></string>
+    <string name="outcome_reason"><![CDATA[ <br/><b>Reason</b>:%1$s ]]></string>
 </resources>
