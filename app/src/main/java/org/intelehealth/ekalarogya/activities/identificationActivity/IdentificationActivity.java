@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -46,7 +45,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
@@ -407,6 +405,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 setscreen(patientID_edit);
             }
         }
+
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -3585,7 +3584,9 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            String casteVal = StringUtils.getProvided(mCaste);
+            casteVal = StringUtils.second_filter(casteVal);
+            patientAttributesDTO.setValue(casteVal);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3613,26 +3614,30 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
-            patientAttributesDTO.setValue(getRadioButtonStrings(
+            String ayushVal = getRadioButtonStrings(
                     ((RadioButton) binding.ayushmanRadioGroup.findViewById
                             (binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
-            ));
+            );
+            ayushVal = StringUtils.second_filter(ayushVal);
+            patientAttributesDTO.setValue(ayushVal);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
-            patientAttributesDTO.setValue(getRadioButtonStrings(
+            String mgnregaVal = getRadioButtonStrings(
                     ((RadioButton) binding.mgnregaRadioGroup.findViewById
                             (binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
-            ));
+            );
+            mgnregaVal = StringUtils.second_filter(mgnregaVal);
+            patientAttributesDTO.setValue(mgnregaVal);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3824,13 +3829,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
-                patientAttributesDTO.setValue(getRadioButtonStrings(
+                String rationVal = getRadioButtonStrings(
                         ((RadioButton) binding.rationCardRadioGroup.findViewById(
                                 binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                rationVal = StringUtils.second_filter(rationVal);
+                patientAttributesDTO.setValue(rationVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // economic card
@@ -3847,11 +3854,13 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
-                patientAttributesDTO.setValue(StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
+                String religionVal_edit = StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                religionVal_edit = StringUtils.second_filter(religionVal_edit); // second filtering. AEAT-298
+                patientAttributesDTO.setValue(religionVal_edit);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Total no of members in household  ...
@@ -4132,7 +4141,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("House Structure"));
                 //  patientAttributesDTO.setValue(structure_of_house_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(structure_of_house_spinner));
+                String hhVal = StringUtils.getSpinnerHi_En(structure_of_house_spinner);
+                hhVal = StringUtils.second_filter(hhVal);
+                patientAttributesDTO.setValue(hhVal);
                 Log.d("HOH", "Structure: " + structure_of_house_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -5122,7 +5133,9 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            String casteVal_edit = StringUtils.getProvided(mCaste);
+            casteVal_edit = StringUtils.second_filter(casteVal_edit);
+            patientAttributesDTO.setValue(casteVal_edit);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -5150,26 +5163,30 @@ public class IdentificationActivity extends AppCompatActivity implements
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ayushmanCardStatus"));
-            patientAttributesDTO.setValue(getRadioButtonStrings(
+            String ayushVal = getRadioButtonStrings(
                     ((RadioButton) binding.ayushmanRadioGroup.findViewById
                             (binding.ayushmanRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
-            ));
+            );
+            ayushVal = StringUtils.second_filter(ayushVal);
+            patientAttributesDTO.setValue(ayushVal);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("mgnregaCardStatus"));
-            patientAttributesDTO.setValue(getRadioButtonStrings(
+            String mgnregaVal = getRadioButtonStrings(
                     ((RadioButton) binding.mgnregaRadioGroup.findViewById
                             (binding.mgnregaRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                     context,
                     updatedContext,
                     sessionManager.getAppLanguage()
-            ));
+            );
+            mgnregaVal = StringUtils.second_filter(mgnregaVal);
+            patientAttributesDTO.setValue(mgnregaVal);
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -5361,13 +5378,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("rationCardStatus"));
-                patientAttributesDTO.setValue(getRadioButtonStrings(
+                String rationVal = getRadioButtonStrings(
                         ((RadioButton) binding.rationCardRadioGroup.findViewById(
                                 binding.rationCardRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                rationVal = StringUtils.second_filter(rationVal);
+                patientAttributesDTO.setValue(rationVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // economic status
@@ -5384,11 +5403,13 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("religion"));
-                patientAttributesDTO.setValue(StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
+                String religionVal = StringUtils.getReligionStrings(binding.religionDropDown.getSelectedItem().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                religionVal = StringUtils.second_filter(religionVal); // second filtering. AEAT-298
+                patientAttributesDTO.setValue(religionVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Total no of members in household  ...
@@ -5682,7 +5703,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("House Structure"));
                 //  patientAttributesDTO.setValue(structure_of_house_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(structure_of_house_spinner));
+                String hhVal = StringUtils.getSpinnerHi_En(structure_of_house_spinner);
+                hhVal = StringUtils.second_filter(hhVal);
+                patientAttributesDTO.setValue(hhVal);
                 Log.d("HOH", "Structure: " + structure_of_house_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 

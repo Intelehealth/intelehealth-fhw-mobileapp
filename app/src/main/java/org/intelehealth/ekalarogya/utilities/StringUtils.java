@@ -21,23 +21,19 @@ import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
@@ -2990,7 +2986,7 @@ public final class StringUtils {
             case "এসসি":
                 val = "SC";
                 break;
-            case "স টি ":
+            case "স টি":
                 val = "ST";
                 break;
             case "অন্যান্য":
@@ -4145,7 +4141,7 @@ public final class StringUtils {
                 val = "এসসি";
                 break;
             case "ST":
-                val = "স টি ";
+                val = "স টি";
                 break;
             case "others":
                 val = "অন্যান্য";
@@ -6362,6 +6358,70 @@ public final class StringUtils {
             }
         }
         return (value != null) ? value : "";
+    }
+
+    public static String second_filter(String value) {
+        switch (value) {
+            case "हिंदू":
+            case "হিন্দু":
+            case "હિંદુ":
+            case "ಹಿಂದೂ":
+                value = "Hindu";
+                break;
+            case "খ্ৰীষ্টান":
+                value = "Christian";
+                break;
+            case "ಮುಸ್ಲಿಂ":
+                value = "Muslim";
+                break;
+            case "স টি":
+                value = "ST";
+                break;
+            case "ಕಚ್ಚಾ ಮನೆ":
+                value = "Kutcha House";
+                break;
+            case "ಪಕ್ಕಾ ಮನೆ":
+                value = "Pakka House";
+                break;
+            case "नहीं":
+            case "নহয়":
+                value = "No";
+                break;
+            case "हाँ":
+                value = "Yes";
+                break;
+            case "पता नहीं":
+            case "নিশ্চিত নহয়":
+                value = "Not Sure";
+                break;
+            case "हाँ, कार्ड नहीं देखा":
+                value = "Yes, Card Not Seen";
+                break;
+            case "हाँ, कार्ड देखा":
+            case "হয়, কাৰ্ড দেখা":
+                value = "Yes, Card Seen";
+                break;
+            case "হ্যাঁ":
+                value = "Yes";
+                break;
+            case "হয়":
+                value = "Yes";
+                break;
+            case "હા":
+                value = "Yes";
+                break;
+            case "ಹೌದು":
+                value = "Yes";
+                break;
+            case "হ্যাঁ, কার্ড দেখা গেছে":
+                value = "Yes, Card Seen";
+                break;
+
+
+            default:
+                return value;
+        }
+        return value;
     }
 
 }
