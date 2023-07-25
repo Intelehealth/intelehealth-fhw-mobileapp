@@ -1007,5 +1007,7 @@
     <dimen name="tv_cal_view_date_day_margin_top">5dp</dimen>
     <dimen name="tv_cal_view_date_day_text_size">12sp</dimen>
     <dimen name="icons_appoint_height">40dp</dimen>
+    <dimen name="margin_3">3dp</dimen>
+    <dimen name="text_12sp">12sp</dimen>
 
 </resources>

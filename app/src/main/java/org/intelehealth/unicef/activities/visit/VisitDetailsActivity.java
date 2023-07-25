@@ -264,7 +264,10 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
                 String modifiedDate = obsservermodifieddate;
                 modifiedDate = timeAgoFormat(modifiedDate);
-                presc_time.setText("Received " + modifiedDate);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru") && modifiedDate.contains("ago")) {
+                    modifiedDate = modifiedDate.replace("ago", "назад");
+                }
+                presc_time.setText(getString(R.string.received) + " " + modifiedDate);
                 icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_icon));
             }
 
@@ -856,11 +859,13 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     }
 
     public void syncNow(View view) {
-        if (NetworkConnection.isOnline(this)) {
-            refresh.clearAnimation();
-            syncAnimator.start();
-            new SyncUtils().syncBackground();
-            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
-        }
+//        if (NetworkConnection.isOnline(this)) {
+//            refresh.clearAnimation();
+//            syncAnimator.start();
+//            new SyncUtils().syncBackground();
+//            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+//        }
+
+        SyncUtils.syncNow(this, refresh, syncAnimator);
     }
 }

@@ -309,7 +309,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fu_progress_indicator"
                 android:layout_marginTop="@dimen/rt_card_margin_updown"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/tv_reschedule_on"

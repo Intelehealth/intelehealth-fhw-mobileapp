@@ -92,6 +92,32 @@
                 android:textSize="@dimen/presc_rec_text_size"
                 app:drawableStartCompat="@drawable/ui2_ic_calendar" />
 
+            <RelativeLayout
+                android:id="@+id/prescription_background"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_below="@+id/search_date_relative"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/fu_vs_margin_start"
+                android:background="@drawable/pres_received_drawable_rounded_corners"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/pres_status_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/lato_regular"
+                    android:padding="@dimen/margin_3"
+                    android:paddingVertical="@dimen/padding_5"
+                    android:text="@string/tag_prescription_received"
+                    android:textAlignment="center"
+                    android:textColor="@color/ui2_black_text_color"
+                    android:textSize="@dimen/text_12sp"
+                    app:drawableStartCompat="@drawable/ic_pres_icon" />
+
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_prescription_states_all"
                 android:layout_width="wrap_content"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -46,7 +47,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
     private static final String TAG = "MyAllAppointmentsAdapte";
     Context context;
     List<AppointmentInfo> appointmentsList;
-    String whichAppointments ="";
+    String whichAppointments = "";
 
     public AllAppointmentsAdapter(Context context, List<AppointmentInfo> appointmentsList, String whichAppointments) {
         this.context = context;
@@ -87,10 +88,11 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             holder.ivProfileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
         }
 
-        holder.doctNameTextView.setText(context.getString(R.string.doctor_annotation)+" " + appointmentInfoModel.getDrName());
+        holder.doctNameTextView.setText(context.getString(R.string.doctor_annotation) + " " + appointmentInfoModel.getDrName());
         if (whichAppointments.equalsIgnoreCase("upcoming")) {
             //hide show ui elements bcz of common ui
-            holder.tvPrescRecStatus.setVisibility(View.GONE);
+//            holder.tvPrescRecStatus.setVisibility(View.GONE);
+            holder.rlPrescriptionBackground.setVisibility(View.GONE);
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
             String currentDateTime = dateFormat.format(new Date());
             String slottime = appointmentInfoModel.getSlotDate() + " " + appointmentInfoModel.getSlotTime();
@@ -113,13 +115,13 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                             //holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
                             //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
 
-                            timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," +  context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                            timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
                             holder.tvDate.setText(timeText);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                             }
                         } else {
-                            timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at)+" " + appointmentInfoModel.getSlotTime();
+                            timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at) + " " + appointmentInfoModel.getSlotTime();
                             //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
@@ -148,7 +150,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             }
 
         }
-        Log.d(TAG, "onBindViewHolder: whichAppointments : "+whichAppointments);
+        Log.d(TAG, "onBindViewHolder: whichAppointments : " + whichAppointments);
         try {
             if (whichAppointments.equalsIgnoreCase("completed")) {
                 Log.d(TAG, "onBindViewHolder: in completed");
@@ -158,18 +160,22 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
                 //holder.ivTime.setVisibility(View.VISIBLE);
                 holder.tvDate.setVisibility(View.VISIBLE);
-                holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
+//                holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
+                holder.rlPrescriptionBackground.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
-                Log.d(TAG, "onBindViewHolder: presc time : "+appointmentInfoModel.getPresc_received_time());
+                Log.d(TAG, "onBindViewHolder: presc time : " + appointmentInfoModel.getPresc_received_time());
 
                 if (appointmentInfoModel.isPrescription_exists()) {
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
+//                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
+                    holder.tvPresStatus.setText(context.getResources().getText(R.string.tag_prescription_received));
+                    holder.rlPrescriptionBackground.setBackground(context.getDrawable(R.drawable.pres_received_drawable_rounded_corners));
                 } else {
                     //holder.ivTime.setVisibility(View.GONE);
-                    holder.tvDate.setVisibility(View.GONE);
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
-
+//                    holder.tvDate.setVisibility(View.GONE);
+//                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
+                    holder.tvPresStatus.setText(context.getResources().getText(R.string.tag_prescription_pending));
+                    holder.rlPrescriptionBackground.setBackground(context.getDrawable(R.drawable.pres_pending_drawable_rounded_corners));
                 }
             }
 
@@ -189,7 +195,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             holder.tvDate.setVisibility(View.VISIBLE);
             holder.tvPrescRecStatus.setVisibility(View.GONE);
 
-           String timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
+            String timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
             holder.tvDate.setText(timeText);
             //  holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
             // imageView.setColorFilter(ContextCompat.getColor(context, R.color.COLOR_YOUR_COLOR), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -237,8 +243,9 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent;
-        TextView tvPatientName, tvDate, tvPrescRecStatus,doctNameTextView;
+        TextView tvPatientName, tvDate, tvPrescRecStatus, doctNameTextView, tvPresStatus;
         ImageView ivProfileImage, IvPriorityTag/*, ivTime*/;
+        RelativeLayout rlPrescriptionBackground;
 
 
         public MyViewHolder(View itemView) {
@@ -251,7 +258,8 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             //ivTime = itemView.findViewById(R.id.iv_time_all);
             tvPrescRecStatus = itemView.findViewById(R.id.tv_prescription_states_all);
             doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
-
+            tvPrescRecStatus = itemView.findViewById(R.id.pres_status_text);
+            rlPrescriptionBackground = itemView.findViewById(R.id.prescription_background);
         }
     }
 

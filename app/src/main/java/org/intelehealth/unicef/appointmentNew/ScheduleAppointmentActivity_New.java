@@ -150,8 +150,15 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             app_start_day = getIntent().getStringExtra("app_start_day");
             rescheduleReason = getIntent().getStringExtra("rescheduleReason");
 
-            String prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " " + getResources().getString(R.string.at) + " " + app_start_time;
+            String prevDetails = "";
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                prevDetails = StringUtils.getTranslatedDays(app_start_day, sessionManager.getAppLanguage()) + ", " + StringUtils.en__ru_dob(DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date)) + " " + getResources().getString(R.string.at) + " " + app_start_time;
+            } else {
+                prevDetails = app_start_day + ", " + DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date) + " " + getResources().getString(R.string.at) + " " + app_start_time;
+            }
+
             tvPrevSelectedAppDetails.setText(prevDetails);
+
         } else if (actionTag != null && !actionTag.isEmpty() && actionTag.equals("new_schedule")) {
 
             visitUuid = getIntent().getStringExtra("visitUuid");

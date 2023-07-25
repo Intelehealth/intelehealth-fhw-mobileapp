@@ -1,6 +1,7 @@
 package org.intelehealth.unicef.database.dao;
 
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE_UNICEF;
 import static org.intelehealth.unicef.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 
 import android.content.ContentValues;
@@ -361,7 +362,8 @@ public class ObsDAO {
 
         String encounterIDSelection = "visituuid = ? ";
         String[] encounterIDArgs = {visitUuid};
-        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
+//        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
+        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE_UNICEF;
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs,
                 null, null, null);
 

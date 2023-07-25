@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IHUtils</string>
-    //Camera Permissions
     <string name="util_permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
     <string name="util_permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
     <string name="util_permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
@@ -11,12 +11,11 @@
     <string name="util_picture_taken">Picture taken</string>
     <string name="util_switch_flash">Switch flash</string>
     <string name="util_switch_camera">Switch camera</string>
-    <string name="util_flash_auto">Flash auto</string>
-    <string name="util_flash_off">Flash off</string>
-    <string name="util_flash_on">Flash on</string>
+    <string name="util_flash_auto">Автоматическая вспышка</string>
+    <string name="util_flash_off">Вспышка выключена</string>
+    <string name="util_flash_on">Вспышка включена</string>
     <string name="util_title_activity_camera">Camera</string>
-    <string name="util_cancel" translatable="false">Cancel</string>
-    <string name="util_take_image" translatable="false">Take image</string>
-    <string name="util_photo_uppercase" translatable="false">PHOTO</string>
-
+    <string name="util_take_image">Сделайте снимок</string>
+    <string name="util_cancel">Отменить</string>
+    <string name="util_photo_uppercase">Фото</string>
 </resources>

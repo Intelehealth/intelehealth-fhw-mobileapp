@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -94,13 +95,20 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
             //  5. Prescription received/pending tag display.
             if (model.getVisit_startdate() != null) {
-                holder.presc_tag_imgview.setVisibility(View.VISIBLE);
-                if (model.isPrescription_exists())
-                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
-                else
-                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
+//                holder.presc_tag_imgview.setVisibility(View.VISIBLE);
+                holder.rlPresBackground.setVisibility(View.VISIBLE);
+                if (model.isPrescription_exists()) {
+//                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
+                    holder.rlPresBackground.setBackground(context.getDrawable(R.drawable.pres_received_drawable_rounded_corners));
+                    holder.presStatusText.setText(R.string.tag_prescription_received);
+                } else {
+//                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
+                    holder.rlPresBackground.setBackground(context.getDrawable(R.drawable.pres_pending_drawable_rounded_corners));
+                    holder.presStatusText.setText(R.string.tag_prescription_pending);
+                }
             } else {
-                holder.presc_tag_imgview.setVisibility(View.GONE);
+//                holder.presc_tag_imgview.setVisibility(View.GONE);
+                holder.rlPresBackground.setVisibility(View.GONE);
             }
 
             //  6. Patient Profile Pic
@@ -144,9 +152,10 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
-        TextView search_gender, search_name, search_date_relative;
+        TextView search_gender, search_name, search_date_relative, presStatusText;
         ImageView priority_tag_imgview, fu_item_calendar, presc_tag_imgview, profile_imgview;
         PatientDTO patientDTO;
+        RelativeLayout rlPresBackground;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
@@ -158,6 +167,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
             presc_tag_imgview = itemView.findViewById(R.id.presc_tag_imgview);
             profile_imgview = itemView.findViewById(R.id.profile_imgview);
+            presStatusText = itemView.findViewById(R.id.pres_status_text);
+            rlPresBackground = itemView.findViewById(R.id.prescription_background);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -782,11 +782,11 @@
     <string name="location_setup">Место установки - </string>
     <string name="title_follow_up">Последующие визиты</string>
 
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
+    <string name="please_select_your_reschedule_reason">Пожалуйста, выберите причину переноса</string>
+    <string name="please_select_your_cancel_reason">Пожалуйста, выберите причину отмены</string>
+    <string name="doctor_is_not_available">Врач недоступен</string>
+    <string name="patient_is_not_available">Пациент недоступен</string>
+    <string name="others">Другое</string>
     <string name="please_enter_the_reason_details">Please enter the reason details</string>
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Please enter the reason!</string>
@@ -849,7 +849,7 @@
     <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
     <string name="update_app_protocol">Update app protocol!</string>
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
-    <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
+    <string name="previously_scheduled_appointment_details">Информация о ранее запланированной встрече</string>
     <string name="loading_slots">Loading slots...</string>
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
@@ -1085,5 +1085,21 @@
     <string name="upcoming_0">Предстоящий (0)</string>
     <string name="completed_0">Завершено (0)</string>
     <string name="cancelled_0">Отменено (0)</string>
-    
+
+    <string name="no_prescription_available">Нет рецепта!</string>
+    <string name="no_prescription_title">Доктор не выписал рецепт для этого визита.</string>
+    <string name="tag_prescription_received">Рецепт получен</string>
+    <string name="tag_prescription_pending">Ожидается рецепт</string>
+    <string name="hours_at">часы, в</string>
+    <string name="in">В</string>
+    <string name="starts">Начинается</string>
+    <string name="reschedule">Перенести запись</string>
+    <string name="sure_to_reschedule_appointment">Вы уверены, что хотите перенести встречу на другое время </string>
+    <string name="cancel_appointment_new">Отменить прием?</string>
+    <string name="reschedule_appointment_new">Перенести встречу?</string>
+    <string name="sure_to_cancel_appointment">Вы уверены, что хотите отменить прием для </string>
+    <string name="save">Сохранить</string>
+    <string name="please_select_time_slot">Пожалуйста, выберите временной интервал</string>
+    <string name="pending_since">Ожидающие рассмотрения</string>
+
 </resources>

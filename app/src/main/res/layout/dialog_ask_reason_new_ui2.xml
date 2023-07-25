@@ -122,7 +122,7 @@
             android:textSize="14sp" />
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialog_subtitle"
@@ -130,13 +130,15 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <Button
                 android:id="@+id/btn_cancel_ask"
-                android:layout_width="74dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:layout_weight="1"
                 android:background="@drawable/white_bg_button"
                 android:gravity="center"
                 android:paddingLeft="10dp"
@@ -149,9 +151,9 @@
 
             <Button
                 android:id="@+id/btn_save_ask"
-                android:layout_width="74dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/btn_cancel_ask"
+                android:layout_weight="1"
                 android:background="@drawable/darkblue_bg_button"
                 android:gravity="center"
                 android:paddingLeft="10dp"
@@ -160,7 +162,7 @@
                 android:paddingBottom="16dp"
                 android:text="@string/save"
                 android:textSize="14sp" />
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
 

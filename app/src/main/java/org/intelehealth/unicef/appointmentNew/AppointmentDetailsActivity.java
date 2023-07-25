@@ -67,6 +67,7 @@ import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -275,11 +276,17 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
         }
 
-        tvDrSpeciality.setText(visit_speciality);
+        tvDrSpeciality.setText(StringUtils.convertDoctorSpecialty(visit_speciality));
 
         //appointment started state - make "state AppointmentStarted" visible
         String timeText = getAppointmentStartsInTime(app_start_date, app_start_time);
-        tvVisitStartDate.setText(DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date));
+        String dateText = DateAndTimeUtils.getDateInDDMMMMYYYYFormat(app_start_date);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            dateText = StringUtils.en__ru_dob(dateText);
+        }
+
+        tvVisitStartDate.setText(dateText);
         tvVisitStartTime.setText(app_start_time);
         if (isVisitStartsIn) { //that means appointment scheduled
             stateAppointmentStarted.setVisibility(View.VISIBLE);
@@ -345,7 +352,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             tvPrescStatus.setTextColor(getResources().getColor(R.color.colorPrimary1));
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_prescription_green));
             fabHelp.setVisibility(View.GONE);
-            tvPrescStatus.setText(getResources().getString(R.string.received) + " " + prescription_received_time);
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                tvPrescStatus.setText(getResources().getString(R.string.received) + " " + StringUtils.en__ru_dob(prescription_received_time));
+            } else {
+                tvPrescStatus.setText(getResources().getString(R.string.received) + " " + prescription_received_time);
+            }
 
             //redirection to PrescriptionActivity activity
             ivDrawerPrescription.setOnClickListener(v -> {
@@ -390,7 +402,13 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 // here show remind block as its pending from more than 1 day.
                 layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
             }
-            tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", "").replace("hours", "часы"));
+            } else {
+                tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
+            }
+
             tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
         }
         // presc block - end
@@ -456,7 +474,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             stateAppointmentPrescription.setVisibility(View.GONE);
 
             mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnCancelAppointment.setVisibility(View.VISIBLE);
             btnRescheduleAppointment.setVisibility(View.VISIBLE);
             mScheduleAppointmentTextView.setVisibility(View.GONE);
@@ -607,11 +625,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
                         timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
                     } else {
-                        timeText =  getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
+                        timeText = getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
 
                     }
                 } else {
-                    timeText =  getResources().getString(R.string.in) + " " + minutes + " " +  getResources().getString(R.string.minutes_txt);
+                    timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
                 }
             } else {
                 isVisitStartsIn = false;

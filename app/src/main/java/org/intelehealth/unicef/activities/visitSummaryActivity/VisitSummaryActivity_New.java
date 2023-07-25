@@ -1827,22 +1827,23 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // permission code - start
     private void checkPerm() {
-        if (checkAndRequestPermissions()) {
-            try {
-                if (hasPrescription.equalsIgnoreCase("true")) {
-                    doWebViewPrint_downloadBtn();
-                } else {
-                    DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
-                        @Override
-                        public void onDialogActionDone(int action) {
-                        }
-                    });
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+        // No need to ask for write permissions after Android 11
+//        if (checkAndRequestPermissions()) {
+        try {
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                doWebViewPrint_downloadBtn();
+            } else {
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(VisitSummaryActivity_New.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_prescription_available), getResources().getString(R.string.no_prescription_title), true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
+                    @Override
+                    public void onDialogActionDone(int action) {
+                    }
+                });
             }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+//        }
     }
 
     @Override
