@@ -1635,5 +1635,6 @@
     <string name="prescription_in_progress">Prescription In-Progress</string>
     <string name="prescription_received">Prescription Received</string>
     <string name="deleted_by">Deleted By</string>
+    <string name="added_by">Added By</string>
 
 </resources>

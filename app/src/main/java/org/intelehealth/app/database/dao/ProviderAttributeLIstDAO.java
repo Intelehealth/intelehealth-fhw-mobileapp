@@ -52,13 +52,15 @@ public class ProviderAttributeLIstDAO {
     private boolean createProvidersAttributeList(ProviderAttributeListDTO attributeListDTO, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
-
         try {
             values.put("uuid", attributeListDTO.getUuid());
             values.put("provideruuid", attributeListDTO.getProvideruuid());
             values.put("attributetypeuuid", attributeListDTO.getAttributetypeuuid());
             values.put("value", attributeListDTO.getValue());
             values.put("voided", attributeListDTO.getVoided());
+
+            if (attributeListDTO.getVoided() == 0)
+            createdRecordsCount = db.insertWithOnConflict("tbl_provider_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             if (attributeListDTO.getVoided() == 0 &&
                     attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062")) {
@@ -71,7 +73,6 @@ public class ProviderAttributeLIstDAO {
                 }
 
             }
-
 
         } catch (SQLException e) {
             isCreated = false;

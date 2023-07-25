@@ -2273,19 +2273,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
         String formattedAidOrder = "";
-        if (aidOrderType1TextView.getVisibility() == View.VISIBLE && aidOrderType1TextView.getText().toString() != null && !aidOrderType1TextView.getText().toString().trim().equalsIgnoreCase(""))
+        if (aidOrderType1TextView.getVisibility() == View.VISIBLE && aidOrderType1TextView.getText().toString() != null && !aidOrderType1TextView.getText().toString().trim().equalsIgnoreCase("") && !newMedicalEquipLoanAidOrderPresc.trim().equalsIgnoreCase(""))
             formattedAidOrder = formattedAidOrder + /*aidOrderType1TextView.getText().toString().trim()*/  newMedicalEquipLoanAidOrderPresc + "\n";
-        if (aidOrderType2TextView.getVisibility() == View.VISIBLE && aidOrderType2TextView.getText().toString() != null && !aidOrderType2TextView.getText().toString().trim().equalsIgnoreCase(""))
+        if (aidOrderType2TextView.getVisibility() == View.VISIBLE && aidOrderType2TextView.getText().toString() != null && !aidOrderType2TextView.getText().toString().trim().equalsIgnoreCase("") && !newFreeMedicalEquipAidOrderPresc.trim().equalsIgnoreCase(""))
             formattedAidOrder = formattedAidOrder + /*aidOrderType2TextView.getText().toString().trim()*/ newFreeMedicalEquipAidOrderPresc + "\n";
-        if (aidOrderType3TextView.getVisibility() == View.VISIBLE && aidOrderType3TextView.getText().toString() != null && !aidOrderType3TextView.getText().toString().trim().equalsIgnoreCase(""))
+        if (aidOrderType3TextView.getVisibility() == View.VISIBLE && aidOrderType3TextView.getText().toString() != null && !aidOrderType3TextView.getText().toString().trim().equalsIgnoreCase("") && !newCoverMedicalExpenseAidOrderPresc.trim().equalsIgnoreCase(""))
             formattedAidOrder = formattedAidOrder + /*aidOrderType3TextView.getText().toString().trim()*/  newCoverMedicalExpenseAidOrderPresc + "\n";
-        if (aidOrderType4TextView.getVisibility() == View.VISIBLE && aidOrderType4TextView.getText().toString() != null && !aidOrderType4TextView.getText().toString().trim().equalsIgnoreCase(""))
+        if (aidOrderType4TextView.getVisibility() == View.VISIBLE && aidOrderType4TextView.getText().toString() != null && !aidOrderType4TextView.getText().toString().trim().equalsIgnoreCase("") && !newCoverSurgicalExpenseAidOrderPresc.trim().equalsIgnoreCase(""))
             formattedAidOrder = formattedAidOrder + /*aidOrderType4TextView.getText().toString().trim()*/ newCoverSurgicalExpenseAidOrderPresc + "\n";
-        if (aidOrderType5TextView.getVisibility() == View.VISIBLE && aidOrderType5TextView.getText().toString() != null && !aidOrderType5TextView.getText().toString().trim().equalsIgnoreCase(""))
+        if (aidOrderType5TextView.getVisibility() == View.VISIBLE && aidOrderType5TextView.getText().toString() != null && !aidOrderType5TextView.getText().toString().trim().equalsIgnoreCase("") && !newCashAssistanceExpenseAidOrderPresc.trim().equalsIgnoreCase(""))
             formattedAidOrder = formattedAidOrder + /*aidOrderType5TextView.getText().toString().trim()*/ newCashAssistanceExpenseAidOrderPresc;
 
         formattedAidOrder = formattedAidOrder.replace("Others||", "Others - ");
-        String aidOrder_web = stringToWebAidOrder(mapDataIntoJson(formattedAidOrder.replace("\n", "<br>")));
+
+        String aidOrder_web = "";
+        if(!formattedAidOrder.isEmpty() && !formattedAidOrder.trim().equalsIgnoreCase(""))
+            aidOrder_web = stringToWebAidOrder(mapDataIntoJson(formattedAidOrder.replace("\n", "<br>")));
 
         String rx_web = stringToWeb(rxReturned).replace("<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">●</p>", "");
 
@@ -3473,7 +3476,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        String[] columns = {"value", " conceptuuid", "comment"};
+        String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
@@ -3518,14 +3521,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 if (visitCursor != null && visitCursor.moveToFirst()) {
                     do {
                         String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
-                        //if(comment==null || comment.trim().isEmpty()) {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        String creator = visitCursor.getString(visitCursor.getColumnIndex("creator"));
+                        String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                         } else {
-                            parseData(dbConceptID, dbValue, comment);
+                            parseData(dbConceptID, dbValue, comment, creator, created_date);
                         }
                         //}
                     } while (visitCursor.moveToNext());
@@ -3545,16 +3549,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             if (encountercursor != null && encountercursor.moveToFirst()) {
                 do {
                     String comment = encountercursor.getString(encountercursor.getColumnIndex("comment"));
-                    //if(comment==null || comment.trim().isEmpty()) {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
+                    String creator = encountercursor.getString(encountercursor.getColumnIndex("creator"));
+                    String created_date = encountercursor.getString(encountercursor.getColumnIndex("obsservermodifieddate"));
                     if (dbValue.startsWith("{")) {
                         AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment);
+                        parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                     } else {
-                        parseData(dbConceptID, dbValue, comment);
+                        parseData(dbConceptID, dbValue, comment, creator, created_date);
                     }
-                    //}
                 } while (encountercursor.moveToNext());
             }
             if (encountercursor != null) {
@@ -3574,7 +3578,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
-    private void parseData(String concept_id, String value, String comment) {
+    private void parseData(String concept_id, String value, String comment, String creator, String created_date) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -3584,67 +3588,52 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 phyExam.setValue(value);
                 break;
             }
-            case UuidDictionary.HEIGHT: //Height
-            {
+            case UuidDictionary.HEIGHT: {
                 height.setValue(value);
                 break;
             }
-            case UuidDictionary.WEIGHT: //Weight
-            {
+            case UuidDictionary.WEIGHT: {
                 weight.setValue(value);
                 break;
             }
-            case UuidDictionary.PULSE: //Pulse
-            {
+            case UuidDictionary.PULSE: {
                 pulse.setValue(value);
                 break;
             }
-            case UuidDictionary.SYSTOLIC_BP: //Systolic BP
-            {
+            case UuidDictionary.SYSTOLIC_BP: {
                 bpSys.setValue(value);
                 break;
             }
-            case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
-            {
+            case UuidDictionary.DIASTOLIC_BP: {
                 bpDias.setValue(value);
                 break;
             }
-            case UuidDictionary.TEMPERATURE: //Temperature
-            {
+            case UuidDictionary.TEMPERATURE: {
                 temperature.setValue(value);
                 break;
             }
-            //    Respiratory added by mahiti dev team
-            case UuidDictionary.RESPIRATORY: //Respiratory
-            {
+            case UuidDictionary.RESPIRATORY: {
                 resp.setValue(value);
                 break;
             }
-            case UuidDictionary.SPO2: //SpO2
-            {
+            case UuidDictionary.SPO2: {
                 spO2.setValue(value);
                 break;
             }
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
-//                StringBuilder builder = new StringBuilder();
-//                String diagnosis = "";
-//                if (comment != null && !comment.trim().isEmpty())
-//                    diagnosis = "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
-//                else if (comment == null || comment.trim().isEmpty())
-//                    diagnosis = "<br><br>" + value;
 
                 if (!newDiagnosisReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newDiagnosisReturned = newDiagnosisReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newDiagnosisReturned = newDiagnosisReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator,created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newDiagnosisReturned = newDiagnosisReturned + "<br><br>" + value;
+                        newDiagnosisReturned = newDiagnosisReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator,created_date) + ")</font>";
                 }
 
                 if (newDiagnosisReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newDiagnosisReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newDiagnosisReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newDiagnosisReturned = value;
+                        newDiagnosisReturned = value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!diagnosisReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3668,16 +3657,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newMedicalEquipLoanAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value;
+                        newMedicalEquipLoanAidOrder = newMedicalEquipLoanAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newMedicalEquipLoanAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newMedicalEquipLoanAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type1) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value;
+                        newMedicalEquipLoanAidOrder = getResources().getString(R.string.aid_order_type1) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!newMedicalEquipLoanAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3717,16 +3706,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newFreeMedicalEquipAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type2) + " " + value;
+                        newFreeMedicalEquipAidOrder = newFreeMedicalEquipAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newFreeMedicalEquipAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newFreeMedicalEquipAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type2) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFreeMedicalEquipAidOrder = getResources().getString(R.string.aid_order_type2) + " " + value;
+                        newFreeMedicalEquipAidOrder = getResources().getString(R.string.aid_order_type2) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!newFreeMedicalEquipAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3766,16 +3755,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newCoverMedicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type3) + " " + value;
+                        newCoverMedicalExpenseAidOrder = newCoverMedicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newCoverMedicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newCoverMedicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type3) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverMedicalExpenseAidOrder = getResources().getString(R.string.aid_order_type3) + " " + value;
+                        newCoverMedicalExpenseAidOrder = getResources().getString(R.string.aid_order_type3) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!newCoverMedicalExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3813,16 +3802,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newCoverSurgicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type4) + " " + value;
+                        newCoverSurgicalExpenseAidOrder = newCoverSurgicalExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newCoverSurgicalExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newCoverSurgicalExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type4) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCoverSurgicalExpenseAidOrder = getResources().getString(R.string.aid_order_type4) + " " + value;
+                        newCoverSurgicalExpenseAidOrder = getResources().getString(R.string.aid_order_type4) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!newCoverSurgicalExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3862,16 +3851,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newCashAssistanceExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + "<strike><font color=\\'#000000\\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type5) + " " + value;
+                        newCashAssistanceExpenseAidOrder = newCashAssistanceExpenseAidOrder + "<br><br>" + getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newCashAssistanceExpenseAidOrder.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newCashAssistanceExpenseAidOrder = "<strike><font color=\'#000000\'>" + getResources().getString(R.string.aid_order_type5) + " " + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newCashAssistanceExpenseAidOrder = getResources().getString(R.string.aid_order_type5) + " " + value;
+                        newCashAssistanceExpenseAidOrder = getResources().getString(R.string.aid_order_type5) + " " + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!newCashAssistanceExpenseAidOrderPresc.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3910,16 +3899,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 Log.e(TAG, "parseData: JSV_MEDICATIONS=>" + value);
                 if (!newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newRxReturned = newRxReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newRxReturned = newRxReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newRxReturned = newRxReturned + "<br><br>" + value;
+                        newRxReturned = newRxReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newRxReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newRxReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newRxReturned = value;
+                        newRxReturned = value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!rxReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3942,16 +3931,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newAdviceReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newAdviceReturned = newAdviceReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newAdviceReturned = newAdviceReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newAdviceReturned = newAdviceReturned + "<br><br>" + value;
+                        newAdviceReturned = newAdviceReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newAdviceReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newAdviceReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newAdviceReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newAdviceReturned = value;
+                        newAdviceReturned = value; //no added statement will be added here because everytime the first advice will be to start call with doctor.
                 }
 
                 if (!adviceReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -3989,16 +3978,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             case UuidDictionary.REQUESTED_TESTS: {
                 if (!newTestsReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newTestsReturned = newTestsReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newTestsReturned = newTestsReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newTestsReturned = newTestsReturned + "<br><br>" + value;
+                        newTestsReturned = newTestsReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newTestsReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newTestsReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newTestsReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newTestsReturned = value;
+                        newTestsReturned = value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!testsReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4020,16 +4009,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             case UuidDictionary.ADDITIONAL_COMMENTS: {
                 if (!newAdditionalReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newAdditionalReturned = newAdditionalReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newAdditionalReturned = newAdditionalReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newAdditionalReturned = newAdditionalReturned + "<br><br>" + value;
+                        newAdditionalReturned = newAdditionalReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newAdditionalReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newAdditionalReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newAdditionalReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newAdditionalReturned = value;
+                        newAdditionalReturned = value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!additionalReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4049,16 +4038,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newDischargeOrderReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newDischargeOrderReturned = newDischargeOrderReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newDischargeOrderReturned = newDischargeOrderReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newDischargeOrderReturned = newDischargeOrderReturned + "<br><br>" + value;
+                        newDischargeOrderReturned = newDischargeOrderReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newDischargeOrderReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newDischargeOrderReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newDischargeOrderReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newDischargeOrderReturned = value;
+                        newDischargeOrderReturned = value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!dischargeOrderReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4078,16 +4067,16 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 if (!newFollowUpDate.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFollowUpDate = newFollowUpDate + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newFollowUpDate = newFollowUpDate + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFollowUpDate = newFollowUpDate + "<br><br>" + value;
+                        newFollowUpDate = newFollowUpDate + "<br><br>" + value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (newFollowUpDate.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
-                        newFollowUpDate = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
+                        newFollowUpDate = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>" + "<br><font color=\'#ff0000\'>(" + formatComment(comment) + ")</font>";
                     else if (comment == null || comment.trim().isEmpty())
-                        newFollowUpDate = value;
+                        newFollowUpDate = value + "<br><font color=\'#2F1E91\'>(" + formatCreatorDetails(creator, created_date) + ")</font>";
                 }
 
                 if (!followUpDate.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4103,13 +4092,82 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 //checkForDoctor();
                 break;
             }
-
-
             default:
                 Log.i(TAG, "parseData: " + value);
                 break;
 
         }
+    }
+
+    private String formatCreatorDetails(String creator, String created_date) {
+        String obsAddedByString = "Added by:";
+        String creator_name = getCreatorName(creator);
+        String valueTimeStamp = getValueTimeStamp(created_date);
+        obsAddedByString = getResources().getString(R.string.added_by) + " " + creator_name  + valueTimeStamp;
+        return obsAddedByString;
+    }
+
+    private String getValueTimeStamp(String created_date) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = df.parse(created_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        df.setTimeZone(TimeZone.getDefault());
+        String formattedDate = df.format(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatTime = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.ENGLISH);
+        Date date1 = null;
+        try {
+            date1 = sdf.parse(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String valueTimeStamp = formatTime.format(date1);
+        return valueTimeStamp;
+    }
+
+    private String getCreatorName(String creator_id) {
+        String creator_name = "";
+        String creator_reg_num = "";
+        String[] columns = {"uuid", "userid", " given_name", "family_name"};
+        String providerSelection = "userid = ?";
+        String[] providerArgs = {creator_id};
+        Cursor providerCursor = db.query("tbl_provider", columns, providerSelection, providerArgs, null, null, null);
+        if (providerCursor.moveToFirst()) {
+            do {
+                String providerUuid = providerCursor.getString(providerCursor.getColumnIndex("uuid"));
+                String firstName = providerCursor.getString(providerCursor.getColumnIndex("given_name"));
+                String lastName = providerCursor.getString(providerCursor.getColumnIndex("family_name"));
+                if(firstName!=null && !firstName.isEmpty() && !firstName.trim().equalsIgnoreCase(""))
+                    creator_name = firstName.substring(0,1);
+                if(lastName!=null && !lastName.isEmpty() && !lastName.trim().equalsIgnoreCase(""))
+                    creator_name = creator_name + " " + lastName;
+                creator_reg_num = getCreatorRegNumber(providerUuid);
+            } while (providerCursor.moveToNext());
+        }
+        providerCursor.close();
+        return creator_name + " (" + creator_reg_num + "),";
+    }
+
+    private String getCreatorRegNumber(String providerUuid) {
+        String registrationNum = "N/A";
+        String[] columns = {"provideruuid", "value", " attributetypeuuid"};
+        String providerSelection = "provideruuid = ? AND attributetypeuuid = ?";
+        String[] providerArgs = {providerUuid, "992ccbdd-201a-44ef-8abb-c2eee079886d"};
+        Cursor providerCursor = db.query("tbl_provider_attribute", columns, providerSelection, providerArgs, null, null, null);
+        if (providerCursor.moveToFirst()) {
+            do {
+                String value = providerCursor.getString(providerCursor.getColumnIndex("value"));
+                if(value!=null && !value.isEmpty() && !value.trim().equalsIgnoreCase(""))
+                    registrationNum = value;
+            } while (providerCursor.moveToNext());
+        }
+        providerCursor.close();
+        return registrationNum;
     }
 
     private String formatComment(String comment) {
@@ -4657,12 +4715,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     requestedTestsTextView.setText("");
                     requestedTestsCard.setVisibility(View.GONE);
                 }
-//                if (!additionalReturned.isEmpty()) {
-//                    additionalReturned = "";
-//                    additionalCommentsTextView.setText("");
-//                    additionalCommentsCard.setVisibility(View.GONE);
-//
-//                }
+
                 if (!aidOrderReturned.isEmpty()) {
                     aidOrderReturned = "";
                     aidOrderType1TextView.setText("");
@@ -4677,7 +4730,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     followUpDateTextView.setText("");
                     followUpDateCard.setVisibility(View.GONE);
                 }
-                String[] columns = {"value", " conceptuuid", "comment"};
+                String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
                 String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
                 String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -4685,19 +4738,19 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     reset();
                     do {
                         String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
-                        //if(comment==null || comment.trim().isEmpty()) {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        String creator = visitCursor.getString(visitCursor.getColumnIndex("creator"));
+                        String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
                         hasPartialPrescription = "true"; //if any kind of prescription data is present...
                         presc_status.setText(getResources().getString(R.string.prescription_in_progress));
                         presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
                         if (dbValue.startsWith("{")) {
                             AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment);
+                            parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                         } else {
-                            parseData(dbConceptID, dbValue, comment);
+                            parseData(dbConceptID, dbValue, comment, creator, created_date);
                         }
-                        //}
                     } while (visitCursor.moveToNext());
                 }
                 visitCursor.close();
@@ -4742,26 +4795,27 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         }
         encounterCursor.close();
-        String[] columns = {"value", " conceptuuid", "comment"};
+        String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
         String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
                 String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
-                //if(comment==null || comment.trim().isEmpty()) {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                String creator = visitCursor.getString(visitCursor.getColumnIndex("creator"));
+                String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
                 hasPartialPrescription = "true"; //if any kind of prescription data is present...
                 presc_status.setText(getResources().getString(R.string.prescription_in_progress));
                 presc_status.setBackground(getResources().getDrawable(R.drawable.presc_status_orange));
                 if (dbValue.startsWith("{")) {
                     AnswerValue answerValue = new Gson().fromJson(dbValue, AnswerValue.class);
-                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment);
+                    parseData(dbConceptID, LocaleHelper.isArabic(this) ? answerValue.getArValue() : answerValue.getEnValue(), comment, creator, created_date);
                 } else {
-                    parseData(dbConceptID, dbValue, comment);
+                    parseData(dbConceptID, dbValue, comment, creator, created_date);
+
                 }
-                //}
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
@@ -4824,18 +4878,18 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             dischargeOrderReturned = "";
             aidOrderReturned = "";
             followUpDate = "";
-            String[] columns = {"value", " conceptuuid", "comment"};
+            String[] columns = {"value", " conceptuuid", "comment", "creator", "obsservermodifieddate"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
             if (visitCursor.moveToFirst()) {
                 do {
                     String comment = visitCursor.getString(visitCursor.getColumnIndex("comment"));
-                    //if(comment==null || comment.trim().isEmpty()) {
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                    parseData(dbConceptID, dbValue, comment);
-                    //}
+                    String creator = visitCursor.getString(visitCursor.getColumnIndex("creator"));
+                    String created_date = visitCursor.getString(visitCursor.getColumnIndex("obsservermodifieddate"));
+                    parseData(dbConceptID, dbValue, comment, creator, created_date);
                 } while (visitCursor.moveToNext());
             }
             visitCursor.close();

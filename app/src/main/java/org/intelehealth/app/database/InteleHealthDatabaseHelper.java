@@ -68,6 +68,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "voided TEXT" +
                     ")";
 
+    public static final String CREATE_PROVIDER_ATTRIBUTES =
+            "CREATE TABLE IF NOT EXISTS tbl_provider_attribute (" +
+                    "uuid TEXT PRIMARY KEY," +
+                    "provideruuid TEXT," +
+                    "attributetypeuuid TEXT," +
+                    "value TEXT," +
+                    "voided TEXT" +
+                    ")";
+
     //visit attributes tables
     public static final String CREATE_VISIT_ATTRIBUTES =
             "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
@@ -269,6 +278,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_UUID_DICTIONARY);
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
+        db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
         db.execSQL(CREATE_LOCATION_NEW);
         db.execSQL(CREATE_RTC_LOGS);
