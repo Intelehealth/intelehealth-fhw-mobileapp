@@ -832,10 +832,10 @@
     <string name="gunta">পোৰা</string>
     <string name="hectare">হেক্টৰ</string>
     <string name="average_annual_household_income">গড় বাৰ্ষিক পৰিয়ালৰ আয় (INR)</string>
-    <string name="zero_thirty_thousand">০ – ৩০,০০০ টকা</string>
-    <string name="thirty_fifty_thousand">৩০,০০০ – ৫০,০০০ টকা</string>
-    <string name="fifty_thousand_one_lakh">৫০,০০০ – ১,০০,০০০ টকা</string>
-    <string name="one_lakh_two_lakh_fifty_thousand">১,০০,০০০ – ২,৫০,০০০ টকা</string>
+    <string name="zero_thirty_thousand">০ – ৩০,০০০</string>
+    <string name="thirty_fifty_thousand">৩০,০০০ – ৫০,০০০</string>
+    <string name="fifty_thousand_one_lakh">৫০,০০০ – ১,০০,০০০</string>
+    <string name="one_lakh_two_lakh_fifty_thousand">১,০০,০০০ – ২,৫০,০০০</string>
     <string name="more_than_two_lakh_fifty_thousand">২,৫০,০০০ তকৈ অধিক</string>
     <string name="average_expenditure_on_health">স্বাস্থ্যৰ ওপৰত গড় ব্যয়</string>
     <string name="zero_three_thousand">০ – ৩,০০০ টকা</string>

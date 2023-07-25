@@ -4156,6 +4156,8 @@ public class IdentificationActivity extends AppCompatActivity implements
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage());
+
+                cultivableLand = StringUtils.second_filter(cultivableLand);
                 patientAttributesDTO.setValue(cultivableLand);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -4164,12 +4166,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
-                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
-                        ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                String incomeVal = StringUtils.getRadioButtonStrings(
+                        ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById
+                                (binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                incomeVal = StringUtils.second_filter(incomeVal);
+                patientAttributesDTO.setValue(incomeVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
               /*  // averageExpenditureOnHealth
@@ -5718,6 +5723,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage());
+                cultivableLand = StringUtils.second_filter(cultivableLand);
                 patientAttributesDTO.setValue(cultivableLand);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -5726,12 +5732,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("averageAnnualHouseholdIncome"));
-                patientAttributesDTO.setValue(StringUtils.getRadioButtonStrings(
-                        ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById(binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                String incomeVal = StringUtils.getRadioButtonStrings(
+                        ((RadioButton) binding.averageAnnualHouseholdIncomeRadioGroup.findViewById
+                                (binding.averageAnnualHouseholdIncomeRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                incomeVal = StringUtils.second_filter(incomeVal);
+                patientAttributesDTO.setValue(incomeVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
              /*   // averageExpenditureOnHealth

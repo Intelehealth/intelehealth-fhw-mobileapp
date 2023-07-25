@@ -6361,6 +6361,34 @@ public final class StringUtils {
     }
 
     public static String second_filter(String value) {
+
+        // when values are dynamic than we will check by using contains() of String...
+        if (value.contains("बीघा") || value.contains("বিঘা"))
+            return value.replace("बीघा", "Bigha")
+                    .replace("বিঘা", "Bigha");
+
+        if (value.contains("एकड") || value.contains("એકર") || value.contains("ಎಕರೆ"))
+            return value.replace("एकड", "Acre")
+                    .replace("એકર", "Acre")
+                    .replace("ಎಕರೆ", "Acre");
+
+        if (value.contains("भूमिहीन") || value.contains("ভূমিহীন") || value.contains("ಭೂರಹಿತರ"))
+            return value.replace("भूमिहीन", "Landless")
+                    .replace("ভূমিহীন", "Landless")
+                    .replace("ಭೂರಹಿತರ", "Landless");
+
+        if (value.contains("चुनते हैं"))
+            return value.replace("चुनते हैं", "Select");
+
+        if (value.contains("পোৰা") || value.contains("गुंटा"))
+            return value.replace("পোৰা", "Gunta")
+                    .replace("गुंटा", "Gunta");
+
+        if (value.contains("2,50,000 से अधिक") || value.contains("২,৫০,০০০ তকৈ অধিক"))
+            return value.replace("2,50,000 से अधिक", "More than 2,50,000")
+                    .replace("২,৫০,০০০ তকৈ অধিক", "More than 2,50,000");
+        
+
         switch (value) {
             case "हिंदू":
             case "হিন্দু":
@@ -6388,6 +6416,10 @@ public final class StringUtils {
                 value = "No";
                 break;
             case "हाँ":
+            case "હા":
+            case "হয়":
+            case "হ্যাঁ":
+            case "ಹೌದು":
                 value = "Yes";
                 break;
             case "पता नहीं":
@@ -6399,28 +6431,14 @@ public final class StringUtils {
                 break;
             case "हाँ, कार्ड देखा":
             case "হয়, কাৰ্ড দেখা":
-                value = "Yes, Card Seen";
-                break;
-            case "হ্যাঁ":
-                value = "Yes";
-                break;
-            case "হয়":
-                value = "Yes";
-                break;
-            case "હા":
-                value = "Yes";
-                break;
-            case "ಹೌದು":
-                value = "Yes";
-                break;
             case "হ্যাঁ, কার্ড দেখা গেছে":
                 value = "Yes, Card Seen";
                 break;
 
-
             default:
                 return value;
         }
+
         return value;
     }
 
