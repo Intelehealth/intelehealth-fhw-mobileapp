@@ -171,7 +171,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                 .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
                         "AND V.voided = '0' AND VA.value = '" + providerId + "'")
                 .groupBy("V.uuid")
-                .orderBy("V.modified_date")
+                .orderBy("V.startdate")
                 .orderIn("DESC")
                 .limit(limit)
                 .offset(offset)

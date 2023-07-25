@@ -416,6 +416,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 intent2.putExtra("Stage1_Hour1_1", "Stage1_Hour1_1");
                 intent2.putExtra("providerID", sessionManager.getProviderID());
                 startActivity(intent2);
+                finish();
             }
         });
 

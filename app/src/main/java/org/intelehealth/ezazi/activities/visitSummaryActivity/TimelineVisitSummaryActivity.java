@@ -1636,6 +1636,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     public void onBackPressed() {
 //        Intent intent = new Intent(this, HomeActivity.class);
 //        startActivity(intent);
+        Log.e(TAG, "onBackPressed: Timeline");
+        Intent screenRefreshIntent = new Intent();
+        screenRefreshIntent.setAction(AppConstants.getScreenRefreshEventReceiver());
+        sendBroadcast(screenRefreshIntent);
         super.onBackPressed();
     }
 

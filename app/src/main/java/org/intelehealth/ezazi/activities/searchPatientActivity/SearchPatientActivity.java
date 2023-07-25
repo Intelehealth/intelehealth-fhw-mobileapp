@@ -2,8 +2,11 @@ package org.intelehealth.ezazi.activities.searchPatientActivity;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -296,38 +299,6 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
             offset = 0;
             fullyLoaded = false;
             getAllPatientsFromDB(offset, results -> searchPatientAdapter.updateList(results));
-//            searchPatientAdapter = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
-//            recyclerView.setAdapter(searchPatientAdapter);
-//            getAllPatientsFromDB(offset, results -> bindAdapter(results));
-//            addScrollListener();
-
-//            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                @SuppressLint("NotifyDataSetChanged")
-//                @Override
-//                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                    super.onScrollStateChanged(recyclerView, newState);
-//                    if (searchPatientAdapter.patients != null && searchPatientAdapter.patients.size() < limit) {
-//                        return;
-//                    }
-//
-//                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == searchPatientAdapter.getItemCount() - 1) {
-//                        Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
-//                        offset += limit;
-//                        getAllPatientsFromDB(offset, results -> {
-//                            if (results.size() < limit) {
-//                                fullyLoaded = true;
-//                            }
-//                            searchPatientAdapter.patients.addAll(results);
-//                            searchPatientAdapter.notifyDataSetChanged();
-////                            new PatientStageBinder().bindStage(results, patients -> runOnUiThread(() -> {
-////                                searchPatientAdapter.patients.addAll(patients);
-////                                searchPatientAdapter.notifyDataSetChanged();
-////                            }));
-//                        });
-//
-//                    }
-//                }
-//            });
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("firstquery", "exception", e);
@@ -992,6 +963,28 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
             doQuery(s.trim());
         }
         return false;
+    }
+
+    private BroadcastReceiver screenRefreshReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e(TAG, "onReceive: " + intent.getAction());
+            searchView.setQuery("", true);
+            searchView.clearFocus();
+            firstQuery();
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(screenRefreshReceiver, new IntentFilter(AppConstants.getScreenRefreshEventReceiver()));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(screenRefreshReceiver);
     }
 }
 
