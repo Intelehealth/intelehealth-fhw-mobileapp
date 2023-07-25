@@ -316,7 +316,7 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_new_visit"
+        android:id="@+id/btnStartObservation"
         style="@style/Theme.EZazi.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/input_height"

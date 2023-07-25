@@ -40,7 +40,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -51,7 +50,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
-import org.intelehealth.ezazi.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ezazi.app.AppConstants;
@@ -103,7 +101,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager = null;
-    Patient patient_new = new Patient();
+    Patient patient = new Patient();
     TextView phoneView;
 
     EncounterDTO encounterDTO = new EncounterDTO();
@@ -142,12 +140,12 @@ public class PatientDetailActivity extends BaseActionBarActivity {
     public static final String VISIT_ATTR_TYPE_UUID = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String VISIT_HOLDER = "a0378be4-d9c6-4cb2-bbf5-777e27a32efc";
 
-    @Override
-    protected void onBackNavigate() {
-        Intent i = new Intent(PatientDetailActivity.this, HomeActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-    }
+//    @Override
+//    protected void onBackNavigate() {
+//        Intent i = new Intent(PatientDetailActivity.this, HomeActivity.class);
+//        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(i);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +164,6 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
 
-
 //        View toolbar = findViewById(R.id.toolbar_common);
 //        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
 //        tvTitle.setText(getResources().getString(R.string.patient_info));
@@ -176,7 +173,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         sessionManager = new SessionManager(this);
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
-        newVisit = findViewById(R.id.button_new_visit);
+        newVisit = findViewById(R.id.btnStartObservation);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -240,13 +237,13 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
         setDisplay(patientUuid);
 
-        if (newVisit.isEnabled()) {
-            newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            newVisit.setTextColor(getResources().getColor(R.color.white));
-        } else {
-            //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            //newVisit.setTextColor(getResources().getColor(R.color.white));
-        }
+//        if (newVisit.isEnabled()) {
+//            newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//            newVisit.setTextColor(getResources().getColor(R.color.white));
+//        } else {
+        //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        //newVisit.setTextColor(getResources().getColor(R.color.white));
+//        }
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -343,21 +340,21 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent(PatientDetailActivity.this, TimelineVisitSummaryActivity.class);
-                String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                String fullName = patient.getFirst_name() + " " + patient.getLast_name();
                 // For Timeline Notification...
                 String patientfullName = "";
-                if (patient_new.getMiddle_name() != null && !patient_new.getMiddle_name().equalsIgnoreCase("")
-                        && !patient_new.getMiddle_name().isEmpty()) {
-                    patientfullName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
+                if (patient.getMiddle_name() != null && !patient.getMiddle_name().equalsIgnoreCase("")
+                        && !patient.getMiddle_name().isEmpty()) {
+                    patientfullName = patient.getFirst_name() + " " + patient.getMiddle_name() + " " + patient.getLast_name();
                 } else {
-                    patientfullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                    patientfullName = patient.getFirst_name() + " " + patient.getLast_name();
                 }
                 // end...
 
                 // Visit is created when clicked on the New Visit button...
                 VisitDTO visitDTO = new VisitDTO();
                 visitDTO.setUuid(uuid);
-                visitDTO.setPatientuuid(patient_new.getUuid());
+                visitDTO.setPatientuuid(patient.getUuid());
                 visitDTO.setStartdate(thisDate);
                 visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
                 visitDTO.setLocationuuid(sessionManager.getLocationUuid());
@@ -423,6 +420,12 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         });
 
 //        LoadFamilyMembers();
+
+        Log.e(TAG, "onCreate: patient creator =>" + patient.getCreatorUuid());
+        if (!patient.getCreatorUuid().equals(sessionManager.getCreatorID())) {
+            editbtn.setVisibility(View.GONE);
+            newVisit.setEnabled(false);
+        }
 
     }
 
@@ -553,26 +556,27 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+                "patient_photo", "creatoruuid"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
-                patient_new.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                patient_new.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
-                patient_new.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
-                patient_new.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
-                patient_new.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
-                patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
-                patient_new.setDate_of_birth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
-                patient_new.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
-                patient_new.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
-                patient_new.setCity_village(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
-                patient_new.setState_province(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
-                patient_new.setPostal_code(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
-                patient_new.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
-                patient_new.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
-                patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
-                patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                patient.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                patient.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                patient.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patient.setDate_of_birth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                patient.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                patient.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patient.setCity_village(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patient.setState_province(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patient.setPostal_code(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patient.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                patient.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patient.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient.setCreatorUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creatoruuid")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -591,29 +595,29 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
-                    patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Telephone Number")) {
-                    patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Education Level")) {
-                    patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Economic Status")) {
-                    patient_new.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("occupation")) {
-                    patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
-                    patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
 
                 if (name.equalsIgnoreCase("Ezazi Registration Number")) {
-                    patient_new.seteZaziRegNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.seteZaziRegNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -653,7 +657,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         //unique Ezazi registration number
         TextView textView_UER_No = findViewById(R.id.textView_UER_No);
 
-        textView_UER_No.setText(patient_new.geteZaziRegNumber());
+        textView_UER_No.setText(patient.geteZaziRegNumber());
 
 //        Log.d("country_vijay", patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2));
 //        String RegNo= patient_new.getCountry().substring(0,2)+"/"+patient_new.getState_province().substring(0,2)+"/"+patient_new.getCity_village().substring(0,2)+"/"+patient_new.getHospitalMaternity().substring(0,2);
@@ -705,21 +709,21 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 //            showAlertDialogButtonClicked(e.toString());
         }
 
-        Log.v("patient_new", new Gson().toJson(patient_new));
+        Log.v("patient_new", new Gson().toJson(patient));
 //changing patient to patient_new object
 
         //new flow
         try {
-            String checkUUId = patient_new.getUuid();
+            String checkUUId = patient.getUuid();
             if (checkUUId != null && !checkUUId.isEmpty())
                 tvBedNumber.setText(getBedNumber(checkUUId));
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        if (patient_new.getMiddle_name() == null) {
-            patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        if (patient.getMiddle_name() == null) {
+            patientName = patient.getFirst_name() + " " + patient.getLast_name();
         } else {
-            patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
+            patientName = patient.getFirst_name() + " " + patient.getMiddle_name() + " " + patient.getLast_name();
         }
 
 //        setTitle(patientName);
@@ -729,7 +733,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
+        if (patient.getPatient_photo() == null || patient.getPatient_photo().equalsIgnoreCase("")) {
             if (NetworkConnection.isOnline(getApplication())) {
                 profilePicDownloaded();
             }
@@ -747,8 +751,8 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 .skipMemoryCache(true)
                 .into(photoView);*/
 
-        if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
-            String id = "Patient ID:" + patient_new.getOpenmrs_id();
+        if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
+            String id = "Patient ID:" + patient.getOpenmrs_id();
             idView.setText(id);
 //            sessionManager.setOfllineOpenMRSID(patient_new.getOpenmrs_id());
         } else {
@@ -763,22 +767,22 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 //            }
 //        }
 
-        setTitle(patient_new.getOpenmrs_id());
+        setTitle(patient.getOpenmrs_id());
         //String id = idView.toString();
         //Log.d("IDEA","IDEA"+id);
 
-        Log.d(TAG, "setDisplay: dob: " + patient_new.getDate_of_birth());
+        Log.d(TAG, "setDisplay: dob: " + patient.getDate_of_birth());
 
-        String dobPatient = patient_new.getDate_of_birth();
+        String dobPatient = patient.getDate_of_birth();
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dobPatient);
-        String age = DateAndTimeUtils.getAgeInYearMonthNew(patient_new.getDate_of_birth(), context);
+        String age = DateAndTimeUtils.getAgeInYearMonthNew(patient.getDate_of_birth(), context);
         ageView.setText(age.trim());
-        Log.d(TAG, "setDisplay: agedob : " + patient_new.getDate_of_birth());
+        Log.d(TAG, "setDisplay: agedob : " + patient.getDate_of_birth());
         Log.d(TAG, "setDisplay: age : " + age);
 
         if (dobPatient != null && !dobPatient.isEmpty()) {
 
-            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
+            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient.getDate_of_birth());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
                 dobView.setText(dob_text);
@@ -954,12 +958,12 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
 */
 
-        String addrFinalLine = String.format("%s, %s", patient_new.getState_province(),
-                patient_new.getCountry());
+        String addrFinalLine = String.format("%s, %s", patient.getState_province(),
+                patient.getCountry());
         addrFinalView.setText(addrFinalLine);
 
-        phoneView.setText(patient_new.getPhone_number());
-        if (patient_new.getPhone_number() == null || patient_new.getPhone_number().isEmpty()) {
+        phoneView.setText(patient.getPhone_number());
+        if (patient.getPhone_number() == null || patient.getPhone_number().isEmpty()) {
             calling.setVisibility(View.GONE);
             whatsapp_no.setVisibility(View.GONE);
             phoneView.setText(getString(R.string.not_provided));
@@ -1292,7 +1296,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
                     @Override
                     public void onComplete() {
-                        Logger.logD(TAG, "complete" + patient_new.getPatient_photo());
+                        Logger.logD(TAG, "complete" + patient.getPatient_photo());
                         PatientsDAO patientsDAO = new PatientsDAO();
                         boolean updated = false;
                         try {
@@ -1478,12 +1482,12 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         previousVisitsList.addView(convertView);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent(this, HomeActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent i = new Intent(this, HomeActivity.class);
+//        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(i);
+//    }
 
     public class Myreceiver extends BroadcastReceiver {
         @Override

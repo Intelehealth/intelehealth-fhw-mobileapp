@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import androidx.annotation.Nullable;
 
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -83,9 +84,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "password TEXT UNIQUE," +
             "creator_uuid_cred TEXT," +
             "chwname TEXT," +
-            "provider_uuid_cred TEXT"+
+            "provider_uuid_cred TEXT" +
             ")";
-
 
 
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
@@ -104,6 +104,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "country TEXT," +
             "gender TEXT," +
             "sdw TEXT," +
+            "creatoruuid TEXT, " +
             "occupation TEXT," +
             "patient_photo TEXT," +
             "economic_status TEXT," +

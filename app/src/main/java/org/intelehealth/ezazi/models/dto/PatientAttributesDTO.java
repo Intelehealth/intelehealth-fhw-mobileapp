@@ -6,9 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.utilities.StringUtils;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class PatientAttributesDTO {
+public class PatientAttributesDTO implements Serializable {
 
     @SerializedName("uuid")
     @Expose

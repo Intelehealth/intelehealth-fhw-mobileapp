@@ -430,13 +430,13 @@
             android:exported="true" />
 
         <receiver android:name="org.intelehealth.ezazi.utilities.NotificationReceiver" />
-        <receiver
-            android:name=".services.EndCallReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
+        <!--        <receiver-->
+        <!--            android:name=".services.EndCallReceiver"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.PHONE_STATE" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
     </application>
 
 </manifest>

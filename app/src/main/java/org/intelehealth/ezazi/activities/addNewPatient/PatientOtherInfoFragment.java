@@ -763,6 +763,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         patientDTO.setUuid(uuid);
+        patientDTO.setCreatorUuid(sessionManager.getCreatorID());
         Gson gson = new Gson();
 
         boolean cancel = false;
@@ -1006,8 +1007,9 @@ public class PatientOtherInfoFragment extends Fragment {
                     i.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
                     i.putExtra("tag", "newPatient");
                     i.putExtra("hasPrescription", "false");
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    getActivity().getApplication().startActivity(i);
+//                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    getActivity().startActivity(i);
+                    getActivity().finish();
                 }
             } else {
                 boolean isPatientInserted = patientsDAO.insertPatientToDB(patientDTO, uuid);
@@ -1046,8 +1048,9 @@ public class PatientOtherInfoFragment extends Fragment {
                     i.putExtra("privacy", privacy_value);
                     i.putExtra("hasPrescription", "false");
                     Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     mContext.startActivity(i);
+                    getActivity().finish();
                 } else {
                     Toast.makeText(mContext, "Error of adding the data", Toast.LENGTH_SHORT).show();
                 }
@@ -2053,8 +2056,9 @@ public class PatientOtherInfoFragment extends Fragment {
                 i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
                 i.putExtra("tag", "newPatient");
                 i.putExtra("hasPrescription", "false");
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getActivity().getApplication().startActivity(i);
+                getActivity().finish();
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
