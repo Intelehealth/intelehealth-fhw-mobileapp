@@ -339,6 +339,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             }
         }
         updateEditIconVisibility(holder.ivEdit);
+        if (!nurseHasEditAccess) holder.cardview.setOnClickListener(null);
     }
 
     @Override

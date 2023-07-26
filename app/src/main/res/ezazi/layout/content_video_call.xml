@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -55,11 +56,12 @@
 
             <TextView
                 android:id="@+id/tvRemoteUsername"
+                style="@style/Theme.EZazi.Text.SubHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:layout_margin="16dp"
-                android:textColor="#fff" />
+                android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivRemoteSpeakerStatus"
@@ -148,6 +150,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvCallDuration"
+            style="@style/Theme.EZazi.Text.SubHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/screen_container_padding"
+            app:layout_constraintBottom_toTopOf="@id/callActionView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="00:00" />
 
         <include
             android:id="@+id/callActionView"

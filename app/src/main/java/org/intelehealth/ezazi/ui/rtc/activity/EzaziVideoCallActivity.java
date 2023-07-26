@@ -23,12 +23,18 @@ import com.google.gson.Gson;
 import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
+import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.databinding.ActivityVideoCallEzaziBinding;
+import org.intelehealth.ezazi.models.FamilyMemberRes;
+import org.intelehealth.ezazi.models.dto.PatientDTO;
+import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.ui.activity.CoreVideoCallActivity;
 import org.intelehealth.klivekit.utils.CallType;
 import org.intelehealth.klivekit.utils.RemoteActionType;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
+
+import java.util.Objects;
 
 import io.livekit.android.renderer.SurfaceViewRenderer;
 import io.livekit.android.renderer.TextureViewRenderer;
@@ -108,12 +114,26 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
             }
             CallType callType = CallType.OUTGOING;
             if (args.isIncomingCall()) callType = CallType.INCOMING;
+            showPatientName();
             binding.incomingCallView.callingHintsTv.setText(callType.getValue());
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
             binding.videoCallView.tvRemoteUsername.setText(doctorName);
             binding.videoCallView.remoteUserTextIcon.setText(String.valueOf(args.getDoctorName().toUpperCase().toCharArray()[0]));
             binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
+        }
+    }
+
+    private void showPatientName() {
+        if (args.getPatientName() != null) {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(args.getPatientName());
+        } else {
+            try {
+                FamilyMemberRes patient = new PatientsDAO().getPatientNameInfo(args.getRoomId());
+                Objects.requireNonNull(getSupportActionBar()).setTitle(patient.getName());
+            } catch (DAOException e) {
+                Timber.tag(TAG).e(e);
+            }
         }
     }
 
@@ -193,6 +213,7 @@ public class EzaziVideoCallActivity extends CoreVideoCallActivity {
     @Override
     public void onCallCountDownStart(@NonNull String duration) {
         super.onCallCountDownStart(duration);
+        binding.videoCallView.tvCallDuration.setText(duration);
     }
 
     @Override
