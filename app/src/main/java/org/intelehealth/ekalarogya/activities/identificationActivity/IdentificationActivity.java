@@ -3911,13 +3911,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                String electriValue = StringUtils.getSurveyStrings(
                         ((RadioButton) binding.householdElectricityRadioGroup.
                                 findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                electriValue = StringUtils.second_filter(electriValue);
+                patientAttributesDTO.setValue(electriValue);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -3930,6 +3932,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
                     String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
                     String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    loadSheddingHours = StringUtils.second_filter(loadSheddingHours);
                     patientAttributesDTO.setValue(loadSheddingHours);
                     patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3940,6 +3943,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
                     String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
                     String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    loadSheddingDays = StringUtils.second_filter(loadSheddingDays);
                     patientAttributesDTO.setValue(loadSheddingDays);
                     patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3968,13 +3972,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                String runningWaterVal = StringUtils.getSurveyStrings(
                         ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById
                                 (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                runningWaterVal = StringUtils.second_filter(runningWaterVal);
+                patientAttributesDTO.setValue(runningWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 if (binding.waterSupplyYes.isChecked()) {
@@ -4025,13 +4031,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Drinking Water Source"));
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String drinkWaterVal = getSelectedCheckboxes(
                         binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                );
+                drinkWaterVal = StringUtils.second_filter(drinkWaterVal);
+                patientAttributesDTO.setValue(drinkWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //How do you make Drinking water Safe?
@@ -4208,13 +4216,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuel"));
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String cookingVal = getSelectedCheckboxes(
                         binding.householdCookingFuelCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                );
+                cookingVal = StringUtils.second_filter(cookingVal);
+                patientAttributesDTO.setValue(cookingVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // householdLighting
@@ -4222,13 +4232,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdLighting"));
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String lightVal = getSelectedCheckboxes(
                         binding.mainSourceOfLightingCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ).replace("\\", "")); // replace since Lantern/Kersone/Lamp gets converted as Lantern\/Kersonene\/Lamp since they are special chars.
+                ).replace("\\", "");
+                lightVal = StringUtils.second_filter(lightVal);
+                patientAttributesDTO.setValue(lightVal); // replace since Lantern/Kersone/Lamp gets converted as Lantern\/Kersonene\/Lamp since they are special chars.
                 patientAttributesDTOList.add(patientAttributesDTO);
 
              /*   // defecatedInOpen
@@ -5465,12 +5477,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("electricityStatus"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                        ((RadioButton) binding.householdElectricityRadioGroup.findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                String electriValue = StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.householdElectricityRadioGroup.
+                                findViewById(binding.householdElectricityRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                electriValue = StringUtils.second_filter(electriValue);
+                patientAttributesDTO.setValue(electriValue);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 if (binding.householdElectricityYes.isChecked()) {
@@ -5482,6 +5497,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingHoursPerDay"));
                     String[] loadSheddingHoursArray = binding.loadSheddingHoursEditText.getText().toString().split(" ");
                     String loadSheddingHours = loadSheddingHoursArray[0] + " " + getTimeStrings(loadSheddingHoursArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    loadSheddingHours = StringUtils.second_filter(loadSheddingHours);
                     patientAttributesDTO.setValue(loadSheddingHours);
                     patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -5492,6 +5508,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("loadSheddingDaysPerWeek"));
                     String[] loadSheddingDaysArray = binding.loadSheddingDaysEditText.getText().toString().split(" ");
                     String loadSheddingDays = loadSheddingDaysArray[0] + " " + getTimeStrings(loadSheddingDaysArray[1], context, updatedContext, sessionManager.getAppLanguage());
+                    loadSheddingDays = StringUtils.second_filter(loadSheddingDays);
                     patientAttributesDTO.setValue(loadSheddingDays);
                     patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -5520,12 +5537,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("runningWaterAvailability"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
-                        ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById(binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
+                String runningWaterVal = StringUtils.getSurveyStrings(
+                        ((RadioButton) binding.householdRunningWaterRadioGroup.findViewById
+                                (binding.householdRunningWaterRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                runningWaterVal = StringUtils.second_filter(runningWaterVal);
+                patientAttributesDTO.setValue(runningWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Main source of drinking water...
@@ -5534,13 +5554,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Drinking Water Source"));
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String drinkWaterVal = getSelectedCheckboxes(
                         binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                );
+                drinkWaterVal = StringUtils.second_filter(drinkWaterVal);
+                patientAttributesDTO.setValue(drinkWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 if (binding.waterSupplyYes.isChecked()) {
@@ -5592,13 +5614,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("Drinking Water Source"));
                 // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String drinkWaterVal_1 = getSelectedCheckboxes(
                         binding.mainSourceOfDrinkingWaterCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                );
+                drinkWaterVal_1 = StringUtils.second_filter(drinkWaterVal_1);
+                patientAttributesDTO.setValue(drinkWaterVal_1);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //How do you make Drinking water Safe?
@@ -5777,13 +5801,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("cookingFuel"));
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String cookingVal = getSelectedCheckboxes(
                         binding.householdCookingFuelCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                );
+                cookingVal = StringUtils.second_filter(cookingVal);
+                patientAttributesDTO.setValue(cookingVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // householdLighting
@@ -5791,13 +5817,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdLighting"));
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String lightVal = getSelectedCheckboxes(
                         binding.mainSourceOfLightingCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ).replace("\\", ""));   // replace since Lantern/Kersone/Lamp gets converted as Lantern\/Kersonene\/Lamp since they are special chars.
+                ).replace("\\", "");
+                lightVal = StringUtils.second_filter(lightVal);
+                patientAttributesDTO.setValue(lightVal); // replace since Lantern/Kersone/Lamp gets converted as Lantern\/Kersonene\/Lamp since they are special chars.
                 patientAttributesDTOList.add(patientAttributesDTO);
 
              /*   // defecatedInOpen

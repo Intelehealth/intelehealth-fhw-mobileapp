@@ -6387,7 +6387,71 @@ public final class StringUtils {
         if (value.contains("2,50,000 से अधिक") || value.contains("২,৫০,০০০ তকৈ অধিক"))
             return value.replace("2,50,000 से अधिक", "More than 2,50,000")
                     .replace("২,৫০,০০০ তকৈ অধিক", "More than 2,50,000");
-        
+
+        if (value.contains("एलपीजी\\/प्राकृतिक गैस") || value.contains("এল পি জি বা প্ৰাকৃতিক গেছ") ||
+                value.contains("એલપીજી\\/નેચરલ ગેસ") || value.contains("ಎಲ್ ಪಿ ಜಿ ಅಥವಾ ನೈಸರ್ಗಿಕ ಅನಿಲ"))
+            return value.replace("एलपीजी\\/प्राकृतिक गैस", "LPG or Natural Gas")
+                    .replace("এল পি জি বা প্ৰাকৃতিক গেছ", "LPG or Natural Gas")
+                    .replace("એલપીજી\\/નેચરલ ગેસ", "LPG or Natural Gas")
+                    .replace("ಎಲ್ ಪಿ ಜಿ ಅಥವಾ ನೈಸರ್ಗಿಕ ಅನಿಲ", "LPG or Natural Gas");
+
+
+        if (value.contains("मिट्टी का तेल") || value.contains("कोयला\\/लिग्नाइट") || value.contains("लकड़ी का कोयला")
+                || value.contains("पुआल\\/झाड़ियाँ\\/घास") || value.contains("कृषि फसल अपशिष्ट") || value.contains("गोबर के कंडे")) {
+            return value.replace("कोयला\\/लिग्नाइट", "Coal or Lignite")
+                    .replace("लकड़ी का कोयला", "Charcoal")
+                    .replace("पुआल\\/झाड़ियाँ\\/घास", "Straw or Shrubs or Grass")
+                    .replace("कृषि फसल अपशिष्ट", "Agricultural Crop Waste")
+                    .replace("गोबर के कंडे", "Dung Cakes");
+        }
+
+        if (value.contains("बायोगैस") || value.contains("ಜೈವಿಕ ಅನಿಲ"))
+            return value.replace("बायोगैस", "Biogas")
+                    .replace("ಜೈವಿಕ ಅನಿಲ", "Biogas");
+
+        if (value.contains("বিদ্যুৎ") || value.contains("વીજળી") || value.contains("बिजली") || value.contains("ವಿದ್ಯುತ್"))
+            return value.replace("বিদ্যুৎ", "Electricity").replace("વીજળી", "Electricity")
+                    .replace("बिजली", "Electricity").replace("ವಿದ್ಯುತ್", "Electricity");
+
+        if (value.contains("কাঠ") || value.contains("લાકડા")|| value.contains("लकड़ी"))
+                    return value.replace("কাঠ", "Wood")
+                            .replace("लकड़ी", "Wood")
+                            .replace("લાકડા", "Wood");
+
+        if (value.contains("কেৰাচিন") || value.contains("मिट्टी का तेल"))
+            return value.replace("কেৰাচিন", "Kerosene").replace("मिट्टी का तेल", "Kerosene");
+
+        if (value.contains("लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती") || value.contains("বন্তি/কেৰাচিন লেম্প/মমবাতি"))
+            return value.replace("लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती", "Lantern/Kerosene Lamp/Candle")
+                    .replace("বন্তি/কেৰাচিন লেম্প/মমবাতি", "Lantern/Kerosene Lamp/Candle");
+
+        if (value.contains("दिन") || value.contains("দিন"))
+            return value.replace("दिन", "Days")
+                    .replace("দিন", "Days");
+
+        if (value.contains("घंटे") || value.contains("ঘণ্টা"))
+                    return value.replace("घंटे", "Hours")
+                            .replace("ঘণ্টা", "Hours");
+
+        // drinking water source.
+        if (value.contains("सार्वजनिक नल\\/स्टैंडपाइप") || value.contains("घर पर हैंड पंप")
+                || value.contains("आवास में बोर किया गया") || value.contains("বাসস্থান মধ্য পাইপ")
+                || value.contains("यार्ड\\/प्लॉट में बोर किया गया") || value.contains("सार्वजनिक नल\\/स्टैंडपाइप")
+                || value.contains("ट्यूब वेल\\/बोरहोल") || value.contains("संरक्षित कुआं") || value.contains("सामान्य हैंड पंप")
+                || value.contains("সুৰক্ষিত ভাল") || value.contains("টিউব ৱেল বা ব’ৰহ’ল")) {
+            return value.replace("सार्वजनिक नल\\/स्टैंडपाइप", "Public Tap or Standpipe")
+                    .replace("घर पर हैंड पंप", "Hand Pump At Home")
+                    .replace("आवास में बोर किया गया", "Piped Into Dwelling")
+                    .replace("বাসস্থান মধ্য পাইপ", "Piped Into Dwelling")
+                    .replace("यार्ड\\/प्लॉट में बोर किया गया", "Piped Into Yard or Plot")
+                    .replace("सार्वजनिक नल\\/स्टैंडपाइप", "Public Tap or Standpipe")
+                    .replace("ट्यूब वेल\\/बोरहोल", "Tube Well or Borehole")
+                    .replace("संरक्षित कुआं", "Protected Well")
+                    .replace("सामान्य हैंड पंप", "Common Hand Pump")
+                    .replace("সুৰক্ষিত ভাল", "Protected Well")
+                    .replace("টিউব ৱেল বা ব’ৰহ’ল", "Tube Well or Borehole");
+        }
+
 
         switch (value) {
             case "हिंदू":
@@ -6413,6 +6477,7 @@ public final class StringUtils {
                 break;
             case "नहीं":
             case "নহয়":
+            case "ના":
                 value = "No";
                 break;
             case "हाँ":
