@@ -4049,13 +4049,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("Safe Drinking Water"));
                 // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String safeWaterVal = getSelectedCheckboxes(
                         binding.householdMakeSafeWaterCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                );
+                safeWaterVal = StringUtils.second_filter(safeWaterVal);
+                patientAttributesDTO.setValue(safeWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Time taken to get water - Updated - Start
@@ -4063,13 +4065,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Time Drinking Water Source"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                String timeWaterVal = StringUtils.getSurveyStrings(
                         ((RadioButton) binding.waterSource30minutesRadioGroup.
                                 findViewById(binding.waterSource30minutesRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                timeWaterVal = StringUtils.second_filter(timeWaterVal);
+                patientAttributesDTO.setValue(timeWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
                 // Time taken to get water - Updated - End
 
@@ -4137,7 +4141,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Toilet Facility"));
                     //  patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
-                    patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(toilet_facility_spinner));
+                    String toiletVal = StringUtils.getSpinnerHi_En(toilet_facility_spinner);
+                    toiletVal = StringUtils.second_filter(toiletVal);
+                    patientAttributesDTO.setValue(toiletVal);
                     Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
@@ -5631,13 +5637,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("Safe Drinking Water"));
                 // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
-                patientAttributesDTO.setValue(getSelectedCheckboxes(
+                String safeWaterVal = getSelectedCheckboxes(
                         binding.householdMakeSafeWaterCheckboxLinearLayout,
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage(),
                         "-"
-                ));
+                );
+                safeWaterVal = StringUtils.second_filter(safeWaterVal);
+                patientAttributesDTO.setValue(safeWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 // Time taken to get water - Updated - Start
@@ -5645,13 +5653,15 @@ public class IdentificationActivity extends AppCompatActivity implements
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Time Drinking Water Source"));
-                patientAttributesDTO.setValue(StringUtils.getSurveyStrings(
+                String timeWaterVal = StringUtils.getSurveyStrings(
                         ((RadioButton) binding.waterSource30minutesRadioGroup.
                                 findViewById(binding.waterSource30minutesRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                         context,
                         updatedContext,
                         sessionManager.getAppLanguage()
-                ));
+                );
+                timeWaterVal = StringUtils.second_filter(timeWaterVal);
+                patientAttributesDTO.setValue(timeWaterVal);
                 patientAttributesDTOList.add(patientAttributesDTO);
                 // Time taken to get water - Updated - End
 
@@ -5720,7 +5730,9 @@ public class IdentificationActivity extends AppCompatActivity implements
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Toilet Facility"));
                     //  patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
-                    patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(toilet_facility_spinner));
+                    String toiletVal = StringUtils.getSpinnerHi_En(toilet_facility_spinner);
+                    toiletVal = StringUtils.second_filter(toiletVal);
+                    patientAttributesDTO.setValue(toiletVal);
                     Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }

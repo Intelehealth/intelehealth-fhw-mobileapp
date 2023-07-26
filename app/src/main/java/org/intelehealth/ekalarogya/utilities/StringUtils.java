@@ -6364,33 +6364,33 @@ public final class StringUtils {
 
         // when values are dynamic than we will check by using contains() of String...
         if (value.contains("बीघा") || value.contains("বিঘা"))
-            return value.replace("बीघा", "Bigha")
+            value = value.replace("बीघा", "Bigha")
                     .replace("বিঘা", "Bigha");
 
         if (value.contains("एकड") || value.contains("એકર") || value.contains("ಎಕರೆ"))
-            return value.replace("एकड", "Acre")
+            value = value.replace("एकड", "Acre")
                     .replace("એકર", "Acre")
                     .replace("ಎಕರೆ", "Acre");
 
         if (value.contains("भूमिहीन") || value.contains("ভূমিহীন") || value.contains("ಭೂರಹಿತರ"))
-            return value.replace("भूमिहीन", "Landless")
+            value = value.replace("भूमिहीन", "Landless")
                     .replace("ভূমিহীন", "Landless")
                     .replace("ಭೂರಹಿತರ", "Landless");
 
         if (value.contains("चुनते हैं"))
-            return value.replace("चुनते हैं", "Select");
+            value = value.replace("चुनते हैं", "Select");
 
         if (value.contains("পোৰা") || value.contains("गुंटा"))
-            return value.replace("পোৰা", "Gunta")
+            value = value.replace("পোৰা", "Gunta")
                     .replace("गुंटा", "Gunta");
 
         if (value.contains("2,50,000 से अधिक") || value.contains("২,৫০,০০০ তকৈ অধিক"))
-            return value.replace("2,50,000 से अधिक", "More than 2,50,000")
+            value = value.replace("2,50,000 से अधिक", "More than 2,50,000")
                     .replace("২,৫০,০০০ তকৈ অধিক", "More than 2,50,000");
 
         if (value.contains("एलपीजी\\/प्राकृतिक गैस") || value.contains("এল পি জি বা প্ৰাকৃতিক গেছ") ||
                 value.contains("એલપીજી\\/નેચરલ ગેસ") || value.contains("ಎಲ್ ಪಿ ಜಿ ಅಥವಾ ನೈಸರ್ಗಿಕ ಅನಿಲ"))
-            return value.replace("एलपीजी\\/प्राकृतिक गैस", "LPG or Natural Gas")
+            value = value.replace("एलपीजी\\/प्राकृतिक गैस", "LPG or Natural Gas")
                     .replace("এল পি জি বা প্ৰাকৃতিক গেছ", "LPG or Natural Gas")
                     .replace("એલપીજી\\/નેચરલ ગેસ", "LPG or Natural Gas")
                     .replace("ಎಲ್ ಪಿ ಜಿ ಅಥವಾ ನೈಸರ್ಗಿಕ ಅನಿಲ", "LPG or Natural Gas");
@@ -6398,7 +6398,7 @@ public final class StringUtils {
 
         if (value.contains("मिट्टी का तेल") || value.contains("कोयला\\/लिग्नाइट") || value.contains("लकड़ी का कोयला")
                 || value.contains("पुआल\\/झाड़ियाँ\\/घास") || value.contains("कृषि फसल अपशिष्ट") || value.contains("गोबर के कंडे")) {
-            return value.replace("कोयला\\/लिग्नाइट", "Coal or Lignite")
+            value = value.replace("कोयला\\/लिग्नाइट", "Coal or Lignite")
                     .replace("लकड़ी का कोयला", "Charcoal")
                     .replace("पुआल\\/झाड़ियाँ\\/घास", "Straw or Shrubs or Grass")
                     .replace("कृषि फसल अपशिष्ट", "Agricultural Crop Waste")
@@ -6406,32 +6406,34 @@ public final class StringUtils {
         }
 
         if (value.contains("बायोगैस") || value.contains("ಜೈವಿಕ ಅನಿಲ"))
-            return value.replace("बायोगैस", "Biogas")
+            value = value.replace("बायोगैस", "Biogas")
                     .replace("ಜೈವಿಕ ಅನಿಲ", "Biogas");
 
         if (value.contains("বিদ্যুৎ") || value.contains("વીજળી") || value.contains("बिजली") || value.contains("ವಿದ್ಯುತ್"))
-            return value.replace("বিদ্যুৎ", "Electricity").replace("વીજળી", "Electricity")
+            value = value.replace("বিদ্যুৎ", "Electricity").replace("વીજળી", "Electricity")
                     .replace("बिजली", "Electricity").replace("ವಿದ್ಯುತ್", "Electricity");
 
-        if (value.contains("কাঠ") || value.contains("લાકડા")|| value.contains("लकड़ी"))
-                    return value.replace("কাঠ", "Wood")
-                            .replace("लकड़ी", "Wood")
-                            .replace("લાકડા", "Wood");
+        if (value.contains("কাঠ") || value.contains("લાકડા") || value.contains("लकड़ी"))
+            value = value.replace("কাঠ", "Wood")
+                    .replace("लकड़ी", "Wood")
+                    .replace("લાકડા", "Wood");
 
         if (value.contains("কেৰাচিন") || value.contains("मिट्टी का तेल"))
-            return value.replace("কেৰাচিন", "Kerosene").replace("मिट्टी का तेल", "Kerosene");
+            value = value.replace("কেৰাচিন", "Kerosene").replace("मिट्टी का तेल", "Kerosene");
 
         if (value.contains("लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती") || value.contains("বন্তি/কেৰাচিন লেম্প/মমবাতি"))
-            return value.replace("लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती", "Lantern/Kerosene Lamp/Candle")
+            value = value.replace("लालटेन/मिट्टी के तेल का लैम्प/मोमबत्ती", "Lantern/Kerosene Lamp/Candle")
                     .replace("বন্তি/কেৰাচিন লেম্প/মমবাতি", "Lantern/Kerosene Lamp/Candle");
 
         if (value.contains("दिन") || value.contains("দিন"))
-            return value.replace("दिन", "Days")
+            value = value.replace("दिन", "Days")
                     .replace("দিন", "Days");
 
-        if (value.contains("घंटे") || value.contains("ঘণ্টা"))
-                    return value.replace("घंटे", "Hours")
-                            .replace("ঘণ্টা", "Hours");
+        if (value.contains("घंटे") || value.contains("ঘণ্টা") || value.contains("ঘন্টার") || value.contains("মিনিট"))
+            value = value.replace("घंटे", "Hours")
+                    .replace("ঘন্টার", "Hours")
+                    .replace("ঘণ্টা", "Hours")
+                    .replace("মিনিট", "Minutes");
 
         // drinking water source.
         if (value.contains("सार्वजनिक नल\\/स्टैंडपाइप") || value.contains("घर पर हैंड पंप")
@@ -6439,7 +6441,7 @@ public final class StringUtils {
                 || value.contains("यार्ड\\/प्लॉट में बोर किया गया") || value.contains("सार्वजनिक नल\\/स्टैंडपाइप")
                 || value.contains("ट्यूब वेल\\/बोरहोल") || value.contains("संरक्षित कुआं") || value.contains("सामान्य हैंड पंप")
                 || value.contains("সুৰক্ষিত ভাল") || value.contains("টিউব ৱেল বা ব’ৰহ’ল")) {
-            return value.replace("सार्वजनिक नल\\/स्टैंडपाइप", "Public Tap or Standpipe")
+            value = value.replace("सार्वजनिक नल\\/स्टैंडपाइप", "Public Tap or Standpipe")
                     .replace("घर पर हैंड पंप", "Hand Pump At Home")
                     .replace("आवास में बोर किया गया", "Piped Into Dwelling")
                     .replace("বাসস্থান মধ্য পাইপ", "Piped Into Dwelling")
@@ -6452,58 +6454,112 @@ public final class StringUtils {
                     .replace("টিউব ৱেল বা ব’ৰহ’ল", "Tube Well or Borehole");
         }
 
+        if (value.contains("ब्लीच डालते हैं") || value.contains("उबालते है") ||
+                value.contains("উতলোৱা") || value.contains("ফুটান") || value.contains("ಕುದಿಸಿ"))
+            value = value.replace("ब्लीच डालते हैं", "Add bleach")
+                    .replace("उबालते है", "Boiling")
+                    .replace("উতলোৱা", "Boiling")
+                    .replace("ফুটান", "Boiling")
+                    .replace("ಕುದಿಸಿ", "Boiling");
 
-        switch (value) {
-            case "हिंदू":
-            case "হিন্দু":
-            case "હિંદુ":
-            case "ಹಿಂದೂ":
-                value = "Hindu";
-                break;
-            case "খ্ৰীষ্টান":
-                value = "Christian";
-                break;
-            case "ಮುಸ್ಲಿಂ":
-                value = "Muslim";
-                break;
-            case "স টি":
-                value = "ST";
-                break;
-            case "ಕಚ್ಚಾ ಮನೆ":
-                value = "Kutcha House";
-                break;
-            case "ಪಕ್ಕಾ ಮನೆ":
-                value = "Pakka House";
-                break;
-            case "नहीं":
-            case "নহয়":
-            case "ના":
-                value = "No";
-                break;
-            case "हाँ":
-            case "હા":
-            case "হয়":
-            case "হ্যাঁ":
-            case "ಹೌದು":
-                value = "Yes";
-                break;
-            case "पता नहीं":
-            case "নিশ্চিত নহয়":
-                value = "Not Sure";
-                break;
-            case "हाँ, कार्ड नहीं देखा":
-                value = "Yes, Card Not Seen";
-                break;
-            case "हाँ, कार्ड देखा":
-            case "হয়, কাৰ্ড দেখা":
-            case "হ্যাঁ, কার্ড দেখা গেছে":
-                value = "Yes, Card Seen";
-                break;
+        if (value.contains("कपड़े से छानते है") || value.contains("कुछ नहीं करते है") || value.contains("કાપડ દ્વારા તાણ"))
+            value = value.replace("कपड़े से छानते है", "Strain Through A Cloth")
+                    .replace("कुछ नहीं करते है", "Do Nothing")
+                    .replace("કાપડ દ્વારા તાણ", "Strain Through A Cloth");
 
-            default:
-                return value;
-        }
+        if (value.contains("পানী ফিল্টাৰ") || value.contains("फिटकरी का उपयोग करें") || value.contains("পানী ফিল্টাৰ"))
+            value = value.replace("পানী ফিল্টাৰ", "Water Filter")
+                    .replace("পানী ফিল্টাৰ", "Water Filter")
+                    .replace("फिटकरी का उपयोग करें", "Use Alum");
 
+        if (value.contains("হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ"))
+            value = value.replace("হাতেৰে নিৰ্মিত বিশুদ্ধকৰণ", "Hand Made Purifier");
+
+        if (value.contains("हिंदू") || value.contains("হিন্দু") || value.contains("હિંદુ") || value.contains("ಹಿಂದೂ")
+                || value.contains("খ্ৰীষ্টান") || value.contains("ಮುಸ್ಲಿಂ") || value.contains("স টি") || value.contains("ಕಚ್ಚಾ ಮನೆ")
+                || value.contains("ಪಕ್ಕಾ ಮನೆ"))
+            value = value.replace("हिंदू", "Hindu")
+                    .replace("হিন্দু", "Hindu").replace("હિંદુ", "Hindu")
+                    .replace("ಹಿಂದೂ", "Hindu").replace("খ্ৰীষ্টান", "Christian")
+                    .replace("ಮುಸ್ಲಿಂ", "Muslim").replace("স টি", "ST")
+                    .replace("ಕಚ್ಚಾ ಮನೆ", "Kutcha House")
+                    .replace("ಪಕ್ಕಾ ಮನೆ", "Pakka House");
+
+        if (value.contains("नहीं") || value.contains("নহয়") || value.contains("ના"))
+            value = value.replace("नहीं", "No")
+                    .replace("নহয়", "No").replace("ના", "No");
+
+        if (value.contains("हाँ") || value.contains("હા") || value.contains("হয়") || value.contains("হ্যাঁ") || value.contains("ಹೌದು"))
+            value = value.replace("हाँ", "Yes")
+                    .replace("હા", "Yes").replace("হয়", "Yes")
+                    .replace("হ্যাঁ", "Yes").replace("ಹೌದು", "Yes");
+
+        if (value.contains("पता नहीं") || value.contains("নিশ্চিত নহয়") || value.contains("हाँ, कार्ड नहीं देखा")
+                || value.contains("हाँ, कार्ड देखा") || value.contains("হয়, কাৰ্ড দেখা") || value.contains("হ্যাঁ, কার্ড দেখা গেছে"))
+            value = value.replace("पता नहीं", "Not Sure")
+                    .replace("নিশ্চিত নহয়", "Not Sure")
+                    .replace("हाँ, कार्ड नहीं देखा", "Yes, Card Not Seen")
+                    .replace("हाँ, कार्ड देखा", "Yes, Card Seen")
+                    .replace("হয়, কাৰ্ড দেখা", "Yes, Card Seen")
+                    .replace("হ্যাঁ, কার্ড দেখা গেছে", "Yes, Card Seen");
+
+        // soap hand washing occasion.
+        if (value.contains("साबुन का प्रयोग करते है") || value.contains("हाथ धोने के लिए अन्य साधनों का प्रयोग करते है") ||
+                value.contains("शौचालय का उपयोग करने के बाद धो लेते है")
+                || value.contains("खाना पकाने से पहले धो लेते है")
+                || value.contains("खाने से पहले और बाद में धो लेते है")
+                || value.contains("खाना पकाने से पहले")
+                || value.contains("खाना पकाने से पहले धो लेते है")
+                || value.contains("চাবোন ব্যৱহাৰ কৰক")
+                || value.contains("শৌচাগাৰ ব্যৱহাৰ কৰাৰ পিছত ধুব")
+                || value.contains("ৰন্ধা আগতে ধুব")
+                || value.contains("রান্নার আগে")
+                || value.contains("সাবান ব্যবহার করুন")
+                || value.contains("খাবার আগে")
+                || value.contains("ಶೌಚಾಲಯವನ್ನು ಬಳಸಿದ ನಂತರ ತೊಳೆಯಿರಿ")
+                || value.contains("સાબુનો ઉપયોગ")
+                || value.contains("ಸೋಪ್ ಬಳಸಿ")
+                || value.contains("ತಿನ್ನುವ ಮೊದಲು ಮತ್ತು ನಂತರ ತೊಳೆಯಿರಿ.")
+                || value.contains("ಅಡುಗೆ ಮಾಡುವ ಮೊದಲು ತೊಳೆಯಿರಿ")
+                || value.contains("જમ્યા પહેલાં અને જમ્યા પછી")
+                || value.contains("જમવાનું બનાવવા પહેલા")
+                || value.contains("શૌચાલયનો ઉપયોગ કર્યા પછી")
+                || value.contains("হাত ধুবলৈ অন্য উপায় ব্যৱহাৰ কৰক")
+                || value.contains("খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।")
+                || value.contains("খোৱাৰ আগতে আৰু পিছত ধুব লাগে।")
+                || value.contains("शौचालय का उपयोग करने के बाद धो लेते है"))
+
+            value = value.replace("साबुन का प्रयोग करते है", "Use Soap")
+                    .replace("हाथ धोने के लिए अन्य साधनों का प्रयोग करते है", "Use other means to wash hands")
+                    .replace("शौचालय का उपयोग करने के बाद धो लेते है", "Wash after using toilet")
+                    .replace("खाना पकाने से पहले धो लेते है", "Wash before cooking")
+                    .replace("खाने से पहले और बाद में धो लेते है", "Wash before and after eating")
+                    .replace("खाना पकाने से पहले", "Before Cooking")
+                    .replace("खाना पकाने से पहले धो लेते है", "Wash before cooking")
+                    .replace("চাবোন ব্যৱহাৰ কৰক", "Use Soap")
+                    .replace("শৌচাগাৰ ব্যৱহাৰ কৰাৰ পিছত ধুব", "Wash after using toilet")
+                    .replace("ৰন্ধা আগতে ধুব", "Wash before cooking")
+                    .replace("খোৱাৰ আগতে আৰু পিছত ধুব লাগে।", "Wash before and after eating")
+                    .replace("রান্নার আগে", "Before Cooking")
+                    .replace("খাবার আগে", "Before Eating")
+                    .replace("ತಿನ್ನುವ ಮೊದಲು ಮತ್ತು ನಂತರ ತೊಳೆಯಿರಿ.", "Wash before and after eating")
+                    .replace("ಅಡುಗೆ ಮಾಡುವ ಮೊದಲು ತೊಳೆಯಿರಿ", "Wash before cooking")
+                    .replace("ಶೌಚಾಲಯವನ್ನು ಬಳಸಿದ ನಂತರ ತೊಳೆಯಿರಿ", "Wash after using toilet")
+                    .replace("સાબુનો ઉપયોગ", "Use Soap")
+                    .replace("ಸೋಪ್ ಬಳಸಿ", "Use Soap")
+                    .replace("જમ્યા પહેલાં અને જમ્યા પછી", "Wash before and after eating")
+                    .replace("જમવાનું બનાવવા પહેલા", "Wash before cooking")
+                    .replace("શૌચાલયનો ઉપયોગ કર્યા પછી", "Wash after using toilet")
+                    .replace("হাত ধুবলৈ অন্য উপায় ব্যৱহাৰ কৰক", "Use other means to wash hands")
+                    .replace("সাবান ব্যবহার করুন", "Use Soap")
+                    .replace("খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।", "Wash before and after eating")
+                    .replace("शौचालय का उपयोग करने के बाद धो लेते है", "Wash after using toilet");
+
+        if (value.contains("অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ"))
+            value = value.replace("অন্য পৰিয়ালৰ সৈতে ভাগ কৰা শৌচাগাৰ", "Shared Toilet with other households");
+
+
+        Logger.logV("StringUtils", "second_filter: " + value);
         return value;
     }
 
