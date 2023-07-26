@@ -5613,8 +5613,8 @@ public class IdentificationActivity extends AppCompatActivity implements
 
                 }
 
-                //Main source of drinking water...
-                patientAttributesDTO = new PatientAttributesDTO();
+                //Main source of drinking water...  // duplicate code was getting created here....
+              /*  patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
@@ -5630,7 +5630,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 drinkWaterVal_1 = StringUtils.second_filter(drinkWaterVal_1);
                 patientAttributesDTO.setValue(drinkWaterVal_1);
                 patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
                 //How do you make Drinking water Safe?
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
