@@ -168,13 +168,13 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
                 if (appointmentInfoModel.isPrescription_exists()) {
 //                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
-                    holder.tvPresStatus.setText(context.getResources().getText(R.string.tag_prescription_received));
+                    holder.tvPrescRecStatus.setText(context.getResources().getText(R.string.tag_prescription_received));
                     holder.rlPrescriptionBackground.setBackground(context.getDrawable(R.drawable.pres_received_drawable_rounded_corners));
                 } else {
                     //holder.ivTime.setVisibility(View.GONE);
 //                    holder.tvDate.setVisibility(View.GONE);
 //                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
-                    holder.tvPresStatus.setText(context.getResources().getText(R.string.tag_prescription_pending));
+                    holder.tvPrescRecStatus.setText(context.getResources().getText(R.string.tag_prescription_pending));
                     holder.rlPrescriptionBackground.setBackground(context.getDrawable(R.drawable.pres_pending_drawable_rounded_corners));
                 }
             }

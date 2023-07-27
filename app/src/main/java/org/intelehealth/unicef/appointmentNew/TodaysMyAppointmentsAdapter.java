@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -161,14 +162,18 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
                 holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
+                holder.rlPrescriptionBackground.setVisibility(View.VISIBLE);
+
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
                 Log.d(TAG, "onBindViewHolder:time :  " + appointmentInfoModel.getPresc_received_time());
                 if (appointmentInfoModel.isPrescription_exists()) {
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
+                    holder.tvPrescRecStatus.setText(context.getResources().getText(R.string.tag_prescription_received));
+                    holder.rlPrescriptionBackground.setBackground(context.getDrawable(R.drawable.pres_received_drawable_rounded_corners));
                 } else {
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
-
+//                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
+                    holder.tvPrescRecStatus.setText(context.getResources().getText(R.string.tag_prescription_pending));
+                    holder.rlPrescriptionBackground.setBackground(context.getDrawable(R.drawable.pres_pending_drawable_rounded_corners));
                 }
             }
 
@@ -177,6 +182,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.ivTime.setVisibility(View.VISIBLE);
                 holder.tvDate.setVisibility(View.VISIBLE);
                 holder.tvPrescRecStatus.setVisibility(View.GONE);
+                holder.rlPrescriptionBackground.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
 
                 holder.tvDate.setText(appointmentInfoModel.getSlotTime());
@@ -235,7 +241,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
         CardView cardParent;
         TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView;
         ImageView ivProfileImage, ivTime, IvPriorityTag;
-
+        RelativeLayout rlPrescriptionBackground;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -246,10 +252,9 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             ivTime = itemView.findViewById(R.id.iv_time_todays);
             IvPriorityTag = itemView.findViewById(R.id.iv_priority_tag1_todays);
             tvPatientId = itemView.findViewById(R.id.tv_patient_id_todays);
-            tvPrescRecStatus = itemView.findViewById(R.id.tv_presc_rec_status);
+            tvPrescRecStatus = itemView.findViewById(R.id.pres_status_text);
             doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
-
-
+            rlPrescriptionBackground = itemView.findViewById(R.id.prescription_background);
         }
     }
 
