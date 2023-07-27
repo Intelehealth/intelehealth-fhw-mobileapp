@@ -634,5 +634,11 @@
         <!--        <item name="android:fadeScrollbars">false</item>-->
         <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
     </style>
-
+    <style name="Theme.EZazi.Text.Stages" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/add_patient_subheading_text_size</item>
+        <item name="android:textColor">@color/color_icon_btn_text</item>
+        <item name="android:gravity">center</item>
+        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/dm_sans_medium</item>
+    </style>
 </resources>

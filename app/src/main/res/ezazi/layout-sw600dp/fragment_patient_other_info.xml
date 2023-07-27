@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/screen_padding"
     android:padding="@dimen/screen_padding"
     tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_other_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/container_bg_rounded"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_bottom_scroll_other"
+        android:background="@drawable/container_bg_rounded"
         android:padding="@dimen/screen_container_padding"
         android:scrollbars="none">
 
@@ -115,7 +116,6 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,8 +148,6 @@
                     android:visibility="gone" />
 
             </LinearLayout>
-
-
             <TextView
                 android:id="@+id/textView5"
                 style="@style/LabelStyleAddPatient"

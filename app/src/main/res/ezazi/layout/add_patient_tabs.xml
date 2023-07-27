@@ -8,7 +8,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_personal_info"
-        style="@style/Theme.EZazi.Text.SubHeading"
+        style="@style/Theme.EZazi.Text.Stages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/screen_container_padding"
@@ -33,7 +33,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_address_info"
-        style="@style/Theme.EZazi.Text.SubHeading"
+        style="@style/Theme.EZazi.Text.Stages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableTop="@drawable/ic_address_info"
@@ -57,7 +57,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_other_info"
-        style="@style/Theme.EZazi.Text.SubHeading"
+        style="@style/Theme.EZazi.Text.Stages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/screen_container_padding"

@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/screen_padding">
+    android:paddingHorizontal="@dimen/screen_padding"
+    android:paddingBottom="@dimen/screen_padding">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_save_update_first"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/margin_bottom_scroll"
+        android:paddingBottom="@dimen/margin_bottom_scroll"
         android:fillViewport="true"
         android:orientation="vertical"
         android:scrollbars="none">

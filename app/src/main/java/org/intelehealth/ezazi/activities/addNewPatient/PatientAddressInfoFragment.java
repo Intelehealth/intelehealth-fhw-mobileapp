@@ -1,23 +1,20 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
-import static com.google.android.material.textfield.TextInputLayout.END_ICON_NONE;
-
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -151,11 +148,6 @@ public class PatientAddressInfoFragment extends Fragment {
         etDistrict = view.findViewById(R.id.et_district);
         etCityVillage = view.findViewById(R.id.et_city_village);
 
-        // etCityVillage.setFilters(new InputFilter[]{filter});
-        //  autotvState.setFilters(new InputFilter[]{filter});
-        // autotvDistrict.setFilters(new InputFilter[]{filter});
-
-
         autotvState.addTextChangedListener(new MyTextWatcher(autotvState));
         autotvDistrict.addTextChangedListener(new MyTextWatcher(autotvDistrict));
         etCityVillage.addTextChangedListener(new MyTextWatcher(etCityVillage));
@@ -188,6 +180,12 @@ public class PatientAddressInfoFragment extends Fragment {
                 // do nothing...
             }
         }
+
+        etCityVillage.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                hideKeyboard(requireActivity());
+            }
+        });
     }
 
 
@@ -312,7 +310,7 @@ public class PatientAddressInfoFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
                     String distName = parent.getItemAtPosition(position).toString();
-                   // if (!distName.equalsIgnoreCase(mDistName)) etCityVillage.setText("");
+                    // if (!distName.equalsIgnoreCase(mDistName)) etCityVillage.setText("");
                     mDistName = parent.getItemAtPosition(position).toString();
                     mDistNameEn = mLastSelectedDistList.get(position - 1).getName();
                     tvDistrictError.setVisibility(View.GONE);
@@ -450,8 +448,6 @@ public class PatientAddressInfoFragment extends Fragment {
         patientDTO.setStateprovince(StringUtils.getValue(mIsIndiaSelected ? autotvState.getText().toString() : mStateName));
 
         patientDTO.setCityvillage(StringUtils.getValue((mIsIndiaSelected ? autotvDistrict.getText().toString() : mDistName) + ":" + mCityVillageName));
-        Log.d(TAG, "onBackInsertIntopatientDTO: state : " + StringUtils.getValue(mIsIndiaSelected ? autotvState.getText().toString() : mStateName));
-        Log.d(TAG, "onBackInsertIntopatientDTO: city : " + StringUtils.getValue((mIsIndiaSelected ? autotvDistrict.getText().toString() : mDistName) + ":" + mCityVillageName));
 
         // patientDTO.setStateprovince(autotvState.getText().toString());
         //  patientDTO.setCityvillage(autotvCity.getText().toString());
@@ -807,20 +803,6 @@ public class PatientAddressInfoFragment extends Fragment {
         return result;
     }
 
-    private String blockCharacterSet = "~#^|$%&*!@(){}[]+_.,<>?/;:=1234567890-";
-
-    private InputFilter filter = new InputFilter() {
-
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-
-            if (source != null && blockCharacterSet.contains(("" + source))) {
-                return "";
-            }
-            return null;
-        }
-    };
-
     private void setStateAdapter(String countryName) {
         mLastSelectedStateList = mStateDistMaster.getStateDataList();
         String[] stateList = new String[mStateDistMaster.getStateDataList().size() + 1];
@@ -865,5 +847,14 @@ public class PatientAddressInfoFragment extends Fragment {
         autotvDistrict.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         autotvDistrict.setThreshold(1);
         autotvDistrict.setAdapter(districtAdapter);
+    }
+
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

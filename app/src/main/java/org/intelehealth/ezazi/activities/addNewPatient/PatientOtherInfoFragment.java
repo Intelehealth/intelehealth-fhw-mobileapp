@@ -761,9 +761,10 @@ public class PatientOtherInfoFragment extends Fragment {
     public void onPatientCreateClicked() {
         if (!etHospitalOther.getText().toString().isEmpty()) {
             mHospitalMaternityString = "other";
+
         }
         if (!areValidFields()) {
-            setScrollToFocusedItem();
+            //  scrollviewOtherInfo.smoothScrollTo(0, (int) requireView().findFocus().getY());
             return;
         }        //code for adding to the database
 
@@ -1098,7 +1099,6 @@ public class PatientOtherInfoFragment extends Fragment {
         errorDetailsList = new ArrayList<>();
 
         if (TextUtils.isEmpty(mAdmissionDateTextView.getText().toString())) {
-            focusedView = mAdmissionDateTextView;
            /* mAdmissionDateTextView.requestFocus();
             tvErrorAdmissionDate.setVisibility(View.VISIBLE);
             tvErrorAdmissionDate.setText(getString(R.string.select_admission_date));
@@ -1111,7 +1111,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         if (TextUtils.isEmpty(mAdmissionTimeTextView.getText().toString())) {
             tvErrorAdmissionDate.setVisibility(View.INVISIBLE);
-            focusedView = mAdmissionTimeTextView;
+
           /*  mAdmissionTimeTextView.requestFocus();
             tvErrorAdmissionTime.setVisibility(View.VISIBLE);
             tvErrorAdmissionTime.setText(getString(R.string.select_admission_time));
@@ -1126,7 +1126,6 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         if (TextUtils.isEmpty(mTotalBirthEditText.getText().toString())) {
-            focusedView = mTotalBirthEditText;
             tvErrorTotalMiscarriage.setVisibility(View.INVISIBLE);
             cardTotalMiscarraige.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
@@ -1138,7 +1137,6 @@ public class PatientOtherInfoFragment extends Fragment {
             errorDetailsList.add(new ErrorManagerModel(mTotalBirthEditText, tvErrorTotalBirth, getString(R.string.total_birth_count_val_txt), cardTotalBirth));
 
         } else if (Integer.parseInt(mTotalBirthEditText.getText().toString()) > 15) {
-            focusedView = mTotalBirthEditText;
             tvErrorTotalMiscarriage.setVisibility(View.INVISIBLE);
             cardTotalMiscarraige.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 /*
@@ -1154,7 +1152,6 @@ public class PatientOtherInfoFragment extends Fragment {
             cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         if (TextUtils.isEmpty(mTotalMiscarriageEditText.getText().toString())) {
-            focusedView = mTotalMiscarriageEditText;
             tvErrorTotalBirth.setVisibility(View.INVISIBLE);
             cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
@@ -1165,7 +1162,6 @@ public class PatientOtherInfoFragment extends Fragment {
             errorDetailsList.add(new ErrorManagerModel(mTotalMiscarriageEditText, tvErrorTotalMiscarriage, getString(R.string.total_miscarriage_count_val_txt), cardTotalMiscarraige));
 
         } else if (Integer.parseInt(mTotalMiscarriageEditText.getText().toString()) > 8) {
-            focusedView = mTotalMiscarriageEditText;
             tvErrorTotalBirth.setVisibility(View.INVISIBLE);
             cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
@@ -1184,7 +1180,7 @@ public class PatientOtherInfoFragment extends Fragment {
         if (mLaborOnsetString.isEmpty()) {
             tvSpontaneous.requestFocus();
             tvInduced.requestFocus();
-            focusedView = tvSpontaneous;
+
             tvErrorLabourOnset.setVisibility(View.VISIBLE);
             tvErrorLabourOnset.setText(getString(R.string.labor_onset_val_txt));
             tvSpontaneous.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
@@ -1196,7 +1192,6 @@ public class PatientOtherInfoFragment extends Fragment {
             getLabourOnsetValue(mLaborOnsetString);
         }
         if (TextUtils.isEmpty(mActiveLaborDiagnosedDateTextView.getText().toString())) {
-            focusedView = mActiveLaborDiagnosedDateTextView;
             /*    mActiveLaborDiagnosedDateTextView.requestFocus();
 
              tvErrorLabourDiagnosedDate.setVisibility(View.VISIBLE);
@@ -1210,7 +1205,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         if (TextUtils.isEmpty(mActiveLaborDiagnosedTimeTextView.getText().toString())) {
             tvErrorLabourDiagnosedDate.setVisibility(View.INVISIBLE);
-            focusedView = mActiveLaborDiagnosedTimeTextView;
+
          /*   mActiveLaborDiagnosedTimeTextView.requestFocus();
             tvErrorLabourDiagnosedTime.setVisibility(View.VISIBLE);
             tvErrorLabourDiagnosedTime.setText(getString(R.string.active_labor_diagnosed_time_val_txt));
@@ -1224,7 +1219,6 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         if (!isUnknownChecked) {
             if (TextUtils.isEmpty(mMembraneRupturedDateTextView.getText().toString())) {
-                focusedView = mMembraneRupturedDateTextView;
              /*   mMembraneRupturedDateTextView.requestFocus();
 
                 tvErrorSacRupturedDate.setVisibility(View.VISIBLE);
@@ -1241,7 +1235,7 @@ public class PatientOtherInfoFragment extends Fragment {
         if (!isUnknownChecked) {
             if (TextUtils.isEmpty(mMembraneRupturedTimeTextView.getText().toString())) {
                 tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
-                focusedView = mMembraneRupturedTimeTextView;
+
                 mMembraneRupturedTimeTextView.requestFocus();
                 tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
                 tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
@@ -1257,8 +1251,6 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         if (TextUtils.isEmpty(mRiskFactorsTextView.getText().toString())) {
-            mRiskFactorsTextView.requestFocus();
-            focusedView = mRiskFactorsTextView;
        /*     mRiskFactorsTextView.requestFocus();
 
             tvErrorRiskFactor.setVisibility(View.VISIBLE);
@@ -1274,7 +1266,7 @@ public class PatientOtherInfoFragment extends Fragment {
         if (mHospitalMaternityString.isEmpty()) {
             tvErrorHospital.setVisibility(View.VISIBLE);
             tvErrorHospitalOther.setVisibility(View.GONE);
-            focusedView = cardHospitalOther;
+
             tvErrorHospital.setText(getString(R.string.hospital_matermnity_val_txt));
             //optionHospital.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
             //optionMaternity.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
@@ -1288,14 +1280,13 @@ public class PatientOtherInfoFragment extends Fragment {
             cardHospitalOther.setVisibility(View.GONE);
             tvErrorHospitalOther.setVisibility(View.GONE);
 
-            focusedView = cardHospitalOther;
+
         } else {
             tvErrorHospital.setVisibility(View.GONE);
             //mHospitalMaternityString = etHospitalOther.getText().toString();
             cardHospitalOther.setVisibility(View.VISIBLE);
             etHospitalOther.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(etHospitalOther.getText().toString())) {
-                focusedView = etHospitalOther;
                 tvErrorHospital.setVisibility(View.GONE);
                 tvErrorHospitalOther.setVisibility(View.VISIBLE);
                 tvErrorHospitalOther.setText(getString(R.string.enter_hospital_other_error));
@@ -1314,7 +1305,6 @@ public class PatientOtherInfoFragment extends Fragment {
 
 
         if (TextUtils.isEmpty(mPrimaryDoctorTextView.getText().toString())) {
-            focusedView = mPrimaryDoctorTextView;
          /*   mPrimaryDoctorTextView.requestFocus();
 
             tvErrorPrimaryDoctor.setVisibility(View.VISIBLE);
@@ -1327,7 +1317,6 @@ public class PatientOtherInfoFragment extends Fragment {
             cardPrimaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         if (TextUtils.isEmpty(mSecondaryDoctorTextView.getText().toString())) {
-            focusedView = mSecondaryDoctorTextView;
          /*   mSecondaryDoctorTextView.requestFocus();
 
             tvErrorSecondaryDoctor.setVisibility(View.VISIBLE);
@@ -1340,8 +1329,6 @@ public class PatientOtherInfoFragment extends Fragment {
             cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         if (TextUtils.isEmpty(etBedNumber.getText().toString())) {
-            focusedView = etBedNumber;
-            etBedNumber.requestFocus();
           /*  etBedNumber.requestFocus();
 
             tvErrorBedNumber.setVisibility(View.VISIBLE);
@@ -1372,7 +1359,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 errorModel.tvError.setVisibility(View.VISIBLE);
                 errorModel.tvError.setText(errorModel.getErrorMessage());
                 errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-//                focusedView = errorModel.view;
+
 
             }
             return false;
@@ -1853,27 +1840,34 @@ public class PatientOtherInfoFragment extends Fragment {
                         cardAdmissionDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
                     } else {
-                        tvErrorAdmissionDate.setVisibility(View.GONE);
+                        tvErrorAdmissionDate.setVisibility(View.INVISIBLE);
                         cardAdmissionDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
+                        if (!mAdmissionTimeTextView.getText().toString().isEmpty() && !mAdmissionDateTextView.getText().toString().isEmpty()) {
+                            tvErrorAdmissionDate.setVisibility(View.GONE);
+                            tvErrorAdmissionTime.setVisibility(View.GONE);
+                        }
                     }
                 } else if (this.editText.getId() == R.id.et_admission_time) {
                     if (val.isEmpty()) {
-                        tvErrorAdmissionDate.setVisibility(View.INVISIBLE);
+                        // tvErrorAdmissionDate.setVisibility(View.INVISIBLE);
                         tvErrorAdmissionTime.setVisibility(View.VISIBLE);
                         tvErrorAdmissionTime.setText(getString(R.string.select_admission_time));
                         cardAdmissionTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
                     } else {
                         tvErrorAdmissionTime.setVisibility(View.GONE);
-                        tvErrorAdmissionDate.setVisibility(View.GONE);
+                        // tvErrorAdmissionDate.setVisibility(View.GONE);
+                        if (!mAdmissionTimeTextView.getText().toString().isEmpty() && !mAdmissionDateTextView.getText().toString().isEmpty()) {
+                            tvErrorAdmissionDate.setVisibility(View.GONE);
+                            tvErrorAdmissionTime.setVisibility(View.GONE);
+
+                        }
 
                         cardAdmissionTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     }
                 } else if (this.editText.getId() == R.id.et_total_birth) {
                     if (val.isEmpty()) {
-                        tvErrorTotalMiscarriage.setVisibility(View.INVISIBLE);
                         tvErrorTotalBirth.setVisibility(View.VISIBLE);
                         tvErrorTotalBirth.setText(getString(R.string.total_birth_count_val_txt));
                         cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
@@ -1888,11 +1882,14 @@ public class PatientOtherInfoFragment extends Fragment {
 
                     } else {
                         // tvErrorTotalMiscarriage.setVisibility(View.GONE);
-                        tvErrorTotalBirth.setVisibility(View.GONE);
+                        tvErrorTotalBirth.setVisibility(View.INVISIBLE);
                         cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                         //cardTotalMiscarraige.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
-
+                        if (!mTotalBirthEditText.getText().toString().isEmpty() && !mTotalMiscarriageEditText.getText().toString().isEmpty()) {
+                            tvErrorTotalBirth.setVisibility(View.GONE);
+                            tvErrorTotalMiscarriage.setVisibility(View.GONE);
+                        }
                     }
                 } else if (this.editText.getId() == R.id.et_total_miscarriage) {
                     if (val.isEmpty()) {
@@ -1910,10 +1907,15 @@ public class PatientOtherInfoFragment extends Fragment {
                         //cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     } else {
+
                         // tvErrorTotalBirth.setVisibility(View.GONE);
-                        tvErrorTotalMiscarriage.setVisibility(View.GONE);
+                        tvErrorTotalMiscarriage.setVisibility(View.INVISIBLE);
                         cardTotalMiscarraige.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                         // cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+                        if (!mTotalBirthEditText.getText().toString().isEmpty() && !mTotalMiscarriageEditText.getText().toString().isEmpty()) {
+                            tvErrorTotalBirth.setVisibility(View.GONE);
+                            tvErrorTotalMiscarriage.setVisibility(View.GONE);
+                        }
                     }
                 } else if ((this.editText.getId() == R.id.et_spontaneous) || (this.editText.getId() == R.id.et_induced)) {//labour onset
                     if (val.isEmpty()) {
@@ -1936,22 +1938,29 @@ public class PatientOtherInfoFragment extends Fragment {
                         tvErrorLabourDiagnosedDate.setText(getString(R.string.active_labor_diagnosed_date_val_txt));
                         cardDiagnosedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
                     } else {
-                        tvErrorLabourDiagnosedDate.setVisibility(View.GONE);
+                        tvErrorLabourDiagnosedDate.setVisibility(View.INVISIBLE);
                         cardDiagnosedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
+                        if (!mActiveLaborDiagnosedDateTextView.getText().toString().isEmpty() && !mActiveLaborDiagnosedTimeTextView.getText().toString().isEmpty()) {
+                            tvErrorLabourDiagnosedDate.setVisibility(View.GONE);
+                            tvErrorLabourDiagnosedTime.setVisibility(View.GONE);
+                        }
                     }
                 } else if (this.editText.getId() == R.id.et_labor_diagnosed_time) {
                     if (val.isEmpty()) {
-                        tvErrorLabourDiagnosedDate.setVisibility(View.INVISIBLE);
+                        //tvErrorLabourDiagnosedDate.setVisibility(View.INVISIBLE);
                         tvErrorLabourDiagnosedTime.setVisibility(View.VISIBLE);
                         tvErrorLabourDiagnosedTime.setText(getString(R.string.active_labor_diagnosed_time_val_txt));
                         cardDiagnosedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
                     } else {
-                        tvErrorLabourDiagnosedTime.setVisibility(View.GONE);
-                        tvErrorLabourDiagnosedDate.setVisibility(View.GONE);
+                        tvErrorLabourDiagnosedTime.setVisibility(View.INVISIBLE);
+                        //  tvErrorLabourDiagnosedDate.setVisibility(View.INVISIBLE);
 
                         cardDiagnosedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+                        if (!mActiveLaborDiagnosedDateTextView.getText().toString().isEmpty() && !mActiveLaborDiagnosedTimeTextView.getText().toString().isEmpty()) {
+                            tvErrorLabourDiagnosedDate.setVisibility(View.GONE);
+                            tvErrorLabourDiagnosedTime.setVisibility(View.GONE);
+                        }
                     }
                 } else if (this.editText.getId() == R.id.et_sac_ruptured_date) {
                     if (!isUnknownChecked) {
@@ -1960,22 +1969,30 @@ public class PatientOtherInfoFragment extends Fragment {
                             tvErrorSacRupturedDate.setText(getString(R.string.select_sac_ruptured_date));
                             cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
                         } else {
-                            tvErrorSacRupturedDate.setVisibility(View.GONE);
+                            tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
                             cardSacRupturedDate.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+                            if (!mMembraneRupturedDateTextView.getText().toString().isEmpty() && !mMembraneRupturedTimeTextView.getText().toString().isEmpty()) {
+                                tvErrorSacRupturedDate.setVisibility(View.GONE);
+                                tvErrorSacRupturedTime.setVisibility(View.GONE);
+                            }
                         }
                     }
                 } else if (this.editText.getId() == R.id.et_sac_ruptured_time) {
                     if (!isUnknownChecked) {
                         if (val.isEmpty()) {
-                            tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
+                            //tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
                             tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
                             tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
                             cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
                         } else {
-                            tvErrorSacRupturedDate.setVisibility(View.GONE);
-                            tvErrorSacRupturedTime.setVisibility(View.GONE);
+                            // tvErrorSacRupturedDate.setVisibility(View.GONE);
+                            tvErrorSacRupturedTime.setVisibility(View.INVISIBLE);
                             cardSacRupturedTime.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+                            if (!mMembraneRupturedDateTextView.getText().toString().isEmpty() && !mMembraneRupturedTimeTextView.getText().toString().isEmpty()) {
+                                tvErrorSacRupturedDate.setVisibility(View.GONE);
+                                tvErrorSacRupturedTime.setVisibility(View.GONE);
+                            }
 
                         }
                     }
@@ -1991,7 +2008,7 @@ public class PatientOtherInfoFragment extends Fragment {
                         dropdownRiskFactors.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     }
-                } else if (mHospitalMaternityString.equalsIgnoreCase("other")) {
+                }/* else if (mHospitalMaternityString.equalsIgnoreCase("other")) {
                     tvErrorHospital.setVisibility(View.GONE);
                     tvErrorHospitalOther.setVisibility(View.GONE);
                     val = etHospitalOther.getText().toString();
@@ -2003,11 +2020,11 @@ public class PatientOtherInfoFragment extends Fragment {
                         cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
                     } else {
                         tvErrorHospital.setVisibility(View.GONE);
-                        tvErrorHospitalOther.setVisibility(View.GONE);
+                        tvErrorHospitalOther.setVisibility(View.INVISIBLE);
                         cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     }
-                } /*else if (mHospitalMaternityString.isEmpty()) {
+                }*/ /*else if (mHospitalMaternityString.isEmpty()) {
                     tvErrorHospital.setVisibility(View.VISIBLE);
                     tvErrorHospital.setText(getString(R.string.hospital_matermnity_val_txt));
 
@@ -2042,6 +2059,22 @@ public class PatientOtherInfoFragment extends Fragment {
                     } else {
                         tvErrorBedNumber.setVisibility(View.GONE);
                         cardBedNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+
+                    }
+                } else if (mHospitalMaternityString.equalsIgnoreCase("other")) {
+                    tvErrorHospital.setVisibility(View.GONE);
+                    tvErrorHospitalOther.setVisibility(View.GONE);
+                    val = etHospitalOther.getText().toString();
+                    if (val.isEmpty()) {
+                        tvErrorHospital.setVisibility(View.GONE);
+                        tvErrorHospitalOther.setVisibility(View.VISIBLE);
+
+                        tvErrorHospitalOther.setText(getString(R.string.enter_hospital_other_error));
+                        cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                    } else {
+                        tvErrorHospital.setVisibility(View.GONE);
+                        tvErrorHospitalOther.setVisibility(View.INVISIBLE);
+                        cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     }
                 }

@@ -137,7 +137,7 @@
     <dimen name="time_margin_start">10dp</dimen>
     <dimen name="titles_margin_top">12dp</dimen>
     <dimen name="layout_stages_padding">10dp</dimen>
-    <dimen name="add_picture_text_size">16sp</dimen>
+    <dimen name="add_picture_text_size">14sp</dimen>
     <dimen name="layout_add_patient_padding_start">12dp</dimen>
     <dimen name="layout_add_patient_padding_top">10dp</dimen>
     <dimen name="layout_add_patient_padding_end">12dp</dimen>
@@ -260,7 +260,7 @@
     <dimen name="calendar_width">@dimen/wrap_content</dimen>
     <dimen name="chip_spinner_icon_size">@dimen/std_12dp</dimen>
     <dimen name="month_chip_padding">@dimen/screen_container_padding</dimen>
-    <dimen name="margin_bottom_scroll">50dp</dimen>
+    <dimen name="margin_bottom_scroll">15dp</dimen>
     <dimen name="dropdown_content_height">100dp</dimen>
     <dimen name="dropdown_max_height">180dp</dimen>
     <dimen name="max_input_height">@dimen/std_48dp</dimen>
@@ -274,4 +274,9 @@
     <dimen name="power_by_logo_width">100dp</dimen>
     <dimen name="power_by_logo_height">38dp</dimen>
     <dimen name="power_by_logo_top_margin">-8dp</dimen>
+    <dimen name="margin_bottom_scroll_other">70dp</dimen>
+    <dimen name="contact_summary_margin_end">8dp</dimen>
+    <dimen name="add_patient_subheading_text_size">@dimen/std_14sp</dimen>
+    <dimen name="whatsapp_icon_size_new">@dimen/std_18dp</dimen>
+
 </resources>

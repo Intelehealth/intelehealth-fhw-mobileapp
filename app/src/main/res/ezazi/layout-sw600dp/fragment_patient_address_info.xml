@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/addressActionView"
-        android:layout_marginBottom="@dimen/screen_container_padding">
+        android:paddingBottom="@dimen/margin_bottom_scroll"
+        >
 
         <LinearLayout
             android:id="@+id/layout_parent"

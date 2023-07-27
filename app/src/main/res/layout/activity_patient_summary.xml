@@ -265,6 +265,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/contact_summary_margin_end"
                         android:background="@drawable/selector_icon"
                         android:src="@drawable/ic_call_primary" />
 
@@ -274,7 +275,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/selector_icon"
-                        android:src="@drawable/ic_icons8_whatsapp" />
+                        android:src="@drawable/whatsapp_call" />
 
                 </LinearLayout>
 
