@@ -10,7 +10,7 @@
         style="@style/LabelStyleAddPatient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/titles_margin_top"
+        android:layout_marginTop="@dimen/screen_container_padding"
         android:gravity="start"
         android:text="@string/risk_factors"
         android:textColor="@color/colorBlack" />
@@ -61,7 +61,7 @@
         style="@style/LabelStyleAddPatient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/titles_margin_top"
+        android:layout_marginTop="@dimen/screen_container_padding"
         android:gravity="start"
         android:text="@string/hospital_maternity"
         android:textColor="@color/colorBlack" />
@@ -169,7 +169,7 @@
         style="@style/LabelStyleAddPatient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/titles_margin_top"
+        android:layout_marginTop="@dimen/screen_container_padding"
         android:gravity="start"
         android:text="@string/primary_doctor"
         android:textColor="@color/colorBlack" />
@@ -220,7 +220,7 @@
         style="@style/LabelStyleAddPatient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/titles_margin_top"
+        android:layout_marginTop="@dimen/screen_container_padding"
         android:gravity="start"
         android:text="@string/secondary_doctor"
         android:textColor="@color/colorBlack"

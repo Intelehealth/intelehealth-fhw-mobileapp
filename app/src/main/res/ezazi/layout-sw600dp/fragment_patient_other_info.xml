@@ -115,7 +115,6 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,8 +147,6 @@
                     android:visibility="gone" />
 
             </LinearLayout>
-
-
             <TextView
                 android:id="@+id/textView5"
                 style="@style/LabelStyleAddPatient"

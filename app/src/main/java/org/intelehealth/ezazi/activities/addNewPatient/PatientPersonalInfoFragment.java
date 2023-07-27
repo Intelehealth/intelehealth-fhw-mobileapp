@@ -82,6 +82,7 @@ import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
+import org.intelehealth.ezazi.models.dto.PatientAttributesModel;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.ui.dialog.CalendarDialog;
@@ -168,11 +169,12 @@ public class PatientPersonalInfoFragment extends Fragment {
     ImageView ivProfilePhoto;
     TextInputLayout etLayoutDob, etLayoutAge;
     int MY_REQUEST_CODE = 5555;
-    String dobToDb;
+    private String dobToDb;
     //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
-    TextView tvDobForDb, tvAgeDob;
-    MaterialCardView cardFirstName, cardLastName, cardDob, cardAge, cardMobileNumber, cardAlternateMobileNumber;
-    TextView tvErrorFirstName, tvErrorLastName, tvErrorDob, tvErrorAge, tvErrorMobileNo, tvErrAlternateMobileNo;
+    private TextView tvDobForDb, tvAgeDob;
+    private MaterialCardView cardFirstName, cardLastName, cardDob, cardAge, cardMobileNumber, cardAlternateMobileNumber;
+    private TextView tvErrorFirstName, tvErrorLastName, tvErrorDob, tvErrorAge, tvErrorMobileNo, tvErrAlternateMobileNo;
+    private PatientAttributesModel patientAttributesModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -352,6 +354,8 @@ public class PatientPersonalInfoFragment extends Fragment {
             fromSecondScreen = getArguments().getBoolean("fromSecondScreen");
             mAlternateNumberString = getArguments().getString("mAlternateNumberString");
             editDetails = getArguments().getBoolean("editDetails");
+            patientAttributesModel = (PatientAttributesModel) getArguments().getSerializable("patientAttributes");
+
             patientDTO.setAlternateNo(mAlternateNumberString);
 
             updateUI(patient1);
@@ -927,6 +931,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             bundle.putString("mAlternateNumberString", mAlternateNumber.getText().toString());
             bundle.putBoolean("editDetails", true);
             bundle.putBoolean("fromSummary", fromSummary);
+            bundle.putSerializable("patientAttributes", (Serializable) patientAttributesModel);
 
 
             fragment_secondScreen.setArguments(bundle); // passing data to Fragment
