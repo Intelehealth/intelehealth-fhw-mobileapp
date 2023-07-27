@@ -7,7 +7,7 @@
     android:padding="@dimen/screen_padding"
     tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_other_info"
         android:layout_width="match_parent"
         android:focusable="true"
@@ -572,7 +572,7 @@
             <include layout="@layout/view_other_tab_common_component" />
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <include
         layout="@layout/view_add_patient_bottom_action_button"

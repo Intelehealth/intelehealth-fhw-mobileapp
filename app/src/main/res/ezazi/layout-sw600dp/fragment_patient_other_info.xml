@@ -7,14 +7,14 @@
     android:padding="@dimen/screen_padding"
     tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_other_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_marginBottom="100dp"
         android:background="@drawable/container_bg_rounded"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:padding="@dimen/screen_container_padding"
         android:scrollbars="none">
 
@@ -195,8 +195,8 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:inputType="number"
-                            android:maxLines="1"
                             android:maxLength="2"
+                            android:maxLines="1"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -225,8 +225,8 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:inputType="number"
-                            android:maxLines="1"
                             android:maxLength="1"
+                            android:maxLines="1"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -882,7 +882,7 @@
             <!--                android:visibility="gone" />-->
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <include
         layout="@layout/view_add_patient_bottom_action_button"

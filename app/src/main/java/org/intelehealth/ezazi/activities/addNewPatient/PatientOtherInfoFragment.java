@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -132,7 +133,7 @@ public class PatientOtherInfoFragment extends Fragment {
     private boolean isUnknownChecked;
     private PatientAttributesModel patientAttributesModel;
     private List<ErrorManagerModel> errorDetailsList;
-    private ScrollView scrollviewOtherInfo;
+    private NestedScrollView scrollviewOtherInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -733,6 +734,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
         }
         if (!areValidFields()) {
+            scrollviewOtherInfo.smoothScrollTo(0, (int) requireView().findFocus().getY());
             return;
         }        //code for adding to the database
 
