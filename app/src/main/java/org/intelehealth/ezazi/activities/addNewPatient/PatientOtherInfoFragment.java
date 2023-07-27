@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -731,40 +732,23 @@ public class PatientOtherInfoFragment extends Fragment {
     }
 
     private void setScrollToFocusedItem() {
-        Log.e(TAG, "getPivotY: x " + etBedNumber.getPivotY());
-        Log.e(TAG, "getX: x " + etBedNumber.getX());
-        Log.e(TAG, "getY: x " + etBedNumber.getY());
-        Log.e(TAG, "getScrollX: x " + etBedNumber.getScrollX());
-        Log.e(TAG, "getTranslationX: x " + etBedNumber.getTranslationX());
-        focusedView.post(new Runnable() {
-            @Override
-            public void run() {
-                Log.e(TAG, "onPatientCreateClicked: x " + focusedView.getPivotX());
-                Log.e(TAG, "onPatientCreateClicked: y " + focusedView.getPivotY());
-                scrollviewOtherInfo.smoothScrollTo(0, (int) focusedView.getPivotY());
-            }
-        });
-        focusedView.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        // Layout has happened here.
-                        Log.e(TAG, "onPatientCreateClicked: scroll to" + focusedView.getPivotY());
-                        scrollviewOtherInfo.postDelayed(() -> Log.e(TAG, "onPatientCreateClicked: scroll to" + focusedView.getY()), 100);
-                        // Don't forget to remove your listener when you are done with it.
-                        focusedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
-                });
+        Point point = getLocationOnScreen(focusedView);
+        scrollviewOtherInfo.smoothScrollTo(0, point.y);
+    }
+
+    public static Point getLocationOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        return new Point(location[0], location[1]);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void onPatientCreateClicked() {
         if (!etHospitalOther.getText().toString().isEmpty()) {
             mHospitalMaternityString = "other";
-
         }
         if (!areValidFields()) {
-            //  scrollviewOtherInfo.smoothScrollTo(0, (int) requireView().findFocus().getY());
+            setScrollToFocusedItem();
             return;
         }        //code for adding to the database
 
@@ -1360,7 +1344,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 errorModel.tvError.setText(errorModel.getErrorMessage());
                 errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
-
+                focusedView = errorModel.view;
             }
             return false;
         } else {
@@ -2169,8 +2153,6 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         });
         dialog.show(requireFragmentManager(), "DatePicker");
-
-
     }
 
 }

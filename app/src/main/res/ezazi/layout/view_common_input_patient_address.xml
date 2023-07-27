@@ -127,11 +127,11 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_city_village"
                 android:layout_width="match_parent"
-                android:inputType="text|textCapSentences"
                 android:layout_height="wrap_content"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                android:inputType="textCapWords"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
@@ -170,8 +170,8 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
-                android:maxLines="1"
                 android:inputType="textCapSentences"
+                android:maxLines="1"
                 android:nextFocusForward="@id/et_address2"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
@@ -197,8 +197,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/address_line2"
                 android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
                 android:importantForAutofill="no"
+                android:inputType="textCapSentences"
                 android:maxLines="1"
                 android:nextFocusForward="@id/et_postal_code"
                 android:singleLine="true"
