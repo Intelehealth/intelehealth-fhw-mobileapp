@@ -732,7 +732,7 @@ public class PatientOtherInfoFragment extends Fragment {
     }
 
     private void setScrollToFocusedItem() {
-        Point point = getLocationOnScreen(focusedView);
+        Point point = getLocationOnScreen(requireView().findFocus());
         scrollviewOtherInfo.smoothScrollTo(0, point.y);
     }
 

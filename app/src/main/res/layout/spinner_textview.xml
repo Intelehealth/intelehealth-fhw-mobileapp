@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/list_container_padding"
     android:layout_marginBottom="@dimen/list_container_padding"
     android:background="@drawable/dropdown_item_selector"
-    android:padding="@dimen/list_container_padding"
+    android:padding="@dimen/std_8dp"
     android:singleLine="true"
     android:text="@string/title_setup"
     android:textSize="@dimen/input_inner_size" />

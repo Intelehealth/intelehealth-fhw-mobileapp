@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_save_update_first"
         android:layout_alignParentTop="true"
-        android:paddingBottom="@dimen/margin_bottom_scroll"
         android:fillViewport="true"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_bottom_scroll"
         android:scrollbars="none">
 
         <LinearLayout
@@ -98,10 +98,10 @@
                         style="@style/Theme.EZazi.Scrollbar.Thumb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                         android:dropDownHeight="@dimen/dropdown_max_height"
                         android:dropDownSelector="@color/white"
                         android:focusable="false"
-                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                         android:inputType="textPostalAddress"
                         android:maxLines="1"
                         android:textAlignment="viewStart"
