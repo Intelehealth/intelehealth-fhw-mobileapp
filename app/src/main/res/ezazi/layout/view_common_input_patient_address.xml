@@ -127,10 +127,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_city_village"
                 android:layout_width="match_parent"
+                android:inputType="text|textCapSentences"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
-                android:inputType="text"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:maxLines="1"
                 android:singleLine="true"

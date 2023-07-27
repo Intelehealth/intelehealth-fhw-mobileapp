@@ -86,6 +86,7 @@ import org.intelehealth.ezazi.models.dto.PatientAttributesModel;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.ui.dialog.CalendarDialog;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.EditTextUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -694,7 +695,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPerm();
+                takePicture();
             }
         });
 
@@ -1055,7 +1056,9 @@ public class PatientPersonalInfoFragment extends Fragment {
                 }
             }
             if (allGranted) {
-                checkPerm();
+                //  checkPerm();
+                takePicture();
+
             } else {
                 showPermissionDeniedAlert(permissions);
             }
@@ -1064,7 +1067,22 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private void showPermissionDeniedAlert(String[] permissions) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(getActivity());
+
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(requireActivity())
+                .content(getString(R.string.reject_permission_results))
+                .positiveButtonLabel(R.string.retry_again)
+                .negativeButtonLabel(R.string.ok_close_now)
+                .build();
+
+        dialog.setListener(() -> {
+            checkPerm();
+        });
+
+        dialog.show(getChildFragmentManager(), dialog.getClass().getCanonicalName());
+
+
+
+        /*MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(getActivity());
 
         // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         alertdialogBuilder.setMessage(R.string.reject_permission_results);
@@ -1092,7 +1110,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(getActivity(), alertDialog);*/
     }
 
     @Override

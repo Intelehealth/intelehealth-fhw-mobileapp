@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_save_update_first"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/margin_bottom_scroll"
+        android:paddingBottom="@dimen/margin_bottom_scroll"
         android:fillViewport="true"
         android:orientation="vertical"
         android:scrollbars="none">
@@ -101,6 +101,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:imeOptions="actionNext"
+                            android:inputType="textCapSentences"
                             android:importantForAutofill="no"
                             android:maxLines="1"
                             android:nextFocusForward="@id/et_middle_name"
@@ -142,6 +143,7 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:maxLines="1"
+                            android:inputType="textCapSentences"
                             android:nextFocusForward="@id/et_last_name"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
@@ -169,6 +171,7 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:maxLines="1"
+                            android:inputType="textCapSentences"
                             android:nextFocusForward="@id/et_dob"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />

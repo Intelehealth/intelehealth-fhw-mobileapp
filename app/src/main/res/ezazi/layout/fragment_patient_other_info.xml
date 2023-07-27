@@ -5,16 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/screen_padding"
+    android:paddingHorizontal="@dimen/screen_padding"
     tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_other_info"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_bottom_scroll_other"
+        android:background="@drawable/container_bg_rounded"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin_bottom_scroll"
-        android:background="@drawable/container_bg_rounded"
         android:padding="@dimen/screen_container_padding"
         android:scrollbars="none">
 
@@ -176,10 +177,10 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:hint="@string/total_birth"
-                            android:maxLength="2"
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:inputType="number"
+                            android:maxLength="2"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
@@ -224,8 +225,8 @@
                             android:imeOptions="actionNext"
                             android:importantForAutofill="no"
                             android:inputType="number"
-                            android:maxLines="1"
                             android:maxLength="1"
+                            android:maxLines="1"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -233,17 +234,18 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-                <TextView
-                    android:id="@+id/tv_parity_time_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_parity_time_error"
+                style="@style/Textview_Validation_Error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/this_field_is_mandatory"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textView6"
