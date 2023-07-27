@@ -734,7 +734,8 @@ public class PatientOtherInfoFragment extends Fragment {
 
         }
         if (!areValidFields()) {
-            scrollviewOtherInfo.smoothScrollTo(0, (int) requireView().findFocus().getY());
+//            Log.e(TAG, "onPatientCreateClicked: scroll to" + (int) requireActivity().getCurrentFocus().getY());
+//            scrollviewOtherInfo.smoothScrollTo(0, (int) requireActivity().getCurrentFocus().getY());
             return;
         }        //code for adding to the database
 
