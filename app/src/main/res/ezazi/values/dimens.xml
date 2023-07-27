@@ -137,7 +137,7 @@
     <dimen name="time_margin_start">10dp</dimen>
     <dimen name="titles_margin_top">12dp</dimen>
     <dimen name="layout_stages_padding">10dp</dimen>
-    <dimen name="add_picture_text_size">16sp</dimen>
+    <dimen name="add_picture_text_size">14sp</dimen>
     <dimen name="layout_add_patient_padding_start">12dp</dimen>
     <dimen name="layout_add_patient_padding_top">10dp</dimen>
     <dimen name="layout_add_patient_padding_end">12dp</dimen>
@@ -276,5 +276,6 @@
     <dimen name="power_by_logo_top_margin">-8dp</dimen>
     <dimen name="margin_bottom_scroll_other">70dp</dimen>
     <dimen name="contact_summary_margin_end">8dp</dimen>
+    <dimen name="add_patient_subheading_text_size">@dimen/std_14sp</dimen>
 
 </resources>

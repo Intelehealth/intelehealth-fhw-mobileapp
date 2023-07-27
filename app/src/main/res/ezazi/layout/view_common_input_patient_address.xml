@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
@@ -171,6 +171,7 @@
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
                 android:maxLines="1"
+                android:inputType="textCapSentences"
                 android:nextFocusForward="@id/et_address2"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />
@@ -196,6 +197,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/address_line2"
                 android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
                 android:importantForAutofill="no"
                 android:maxLines="1"
                 android:nextFocusForward="@id/et_postal_code"
