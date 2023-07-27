@@ -4172,7 +4172,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     private String formatComment(String comment) {
         String formattedComment = "";
-        String[] stringarray = comment.split("\\|");
+        String[] stringarray = comment.split("\\|"); //DELETED|2023-07-27T05:05:58.894Z|Cardiologist doctor doctor7|6789|General doctor: Doctor
         Log.e(TAG, "formatComment: " + stringarray[2]);
         String doctorName = stringarray[2];
 
@@ -4189,7 +4189,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         if (stringarray.length == 3)
             formattedComment = getResources().getString(R.string.deleted_by) + " " + doctorName + ", " + formatTimeForComment(stringarray[1]);
-        else if (stringarray.length == 4)
+        else if (stringarray.length >= 4)
             formattedComment = getResources().getString(R.string.deleted_by) + " " + doctorName + " (" + stringarray[3] + ") " + ", " + formatTimeForComment(stringarray[1]);
         return formattedComment;
     }
