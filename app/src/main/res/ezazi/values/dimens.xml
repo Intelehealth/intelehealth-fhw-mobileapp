@@ -277,5 +277,6 @@
     <dimen name="margin_bottom_scroll_other">70dp</dimen>
     <dimen name="contact_summary_margin_end">8dp</dimen>
     <dimen name="add_patient_subheading_text_size">@dimen/std_14sp</dimen>
+    <dimen name="whatsapp_icon_size_new">@dimen/std_18dp</dimen>
 
 </resources>
