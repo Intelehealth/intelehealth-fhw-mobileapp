@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/hamburger_margin_start">
 
-                        <androidx.appcompat.widget.AppCompatSpinner
+                        <!--<androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/sp_height"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"
@@ -94,7 +94,21 @@
                             android:layout_marginEnd="@dimen/margin_12"
                             android:contentDescription="@null"
                             android:src="@drawable/ui2_ic_dropdown"
-                            android:visibility="visible" />
+                            android:visibility="visible" />-->
+                        <EditText
+                            android:id="@+id/etv_height"
+                            style="@style/edittext_textcolor"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
+                            android:background="@drawable/edittext_border"
+                            android:hint="@string/enter_value"
+                            android:inputType="numberDecimal"
+                            android:maxLength="3"
+                            android:padding="@dimen/padding_10"
+                            android:textColorHint="@color/edittext_hint_color"
+                            android:textSize="14sp" />
+
                     </FrameLayout>
 
                     <TextView
@@ -133,22 +147,35 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/hamburger_margin_start">
 
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/sp_weight"
+                        <!-- <androidx.appcompat.widget.AppCompatSpinner
+                             android:id="@+id/sp_weight"
+                             android:layout_width="match_parent"
+                             android:layout_height="@dimen/edittext_height_44dp"
+                             android:background="@drawable/edittext_border"
+                             android:dropDownVerticalOffset="56dp"
+                             android:padding="@dimen/padding_10" />
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="end|center_vertical"
+                             android:layout_marginEnd="@dimen/margin_12"
+                             android:contentDescription="@null"
+                             android:src="@drawable/ui2_ic_dropdown"
+                             android:visibility="visible" />-->
+                        <EditText
+                            android:id="@+id/etv_weight"
+                            style="@style/edittext_textcolor"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"
+                            android:layout_marginTop="@dimen/hamburger_margin_start"
                             android:background="@drawable/edittext_border"
-                            android:dropDownVerticalOffset="56dp"
-                            android:padding="@dimen/padding_10" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            android:layout_marginEnd="@dimen/margin_12"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ui2_ic_dropdown"
-                            android:visibility="visible" />
+                            android:hint="@string/enter_value"
+                            android:inputType="numberDecimal"
+                            android:maxLength="3"
+                            android:padding="@dimen/padding_10"
+                            android:textColorHint="@color/edittext_hint_color"
+                            android:textSize="14sp" />
                     </FrameLayout>
 
                     <TextView

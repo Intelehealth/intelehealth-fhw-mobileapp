@@ -366,8 +366,8 @@
 
     <!-- Vitals Screen Error-->
 
-    <string name="weight_error">Weight should be less than %1$s kg</string>
-    <string name="height_error">Height should be between 0 and %1$s cm</string>
+    <string name="weight_error">Weight should be between %1$s and %2$s kg</string>
+    <string name="height_error">Height should be between %1$s and %2$s cm</string>
     <string name="spo2_error">SpO2 should be in between %1$s and %2$s</string>
     <string name="pulse_error">Pulse should be in between %1$s and %2$s</string>
     <string name="bpsys_error">Systolic pressure should be in between %1$s and %2$s</string>

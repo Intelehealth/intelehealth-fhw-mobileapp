@@ -909,6 +909,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400);
                     ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
+                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
                     if (isSkipped) {
                         if (options.size() == 1) {
                             Log.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
@@ -919,14 +920,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             selectedNode.unselectAllNestedNode();
                             notifyItemChanged(index);
                             if (selectedNode.isRequired()) return;
-                        } /*else {
-                            return;
-                        }*/
+                        } else {
+                            if (isLastNodeSubmit)
+                                holder.selectedNestedOptionIndex = holder.selectedNestedOptionIndex - 1;
+                        }
 
                     }
 
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect ");
-                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex == options.size() - 1;
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
                     if (!holder.isParallelMultiNestedNode || isLastNodeSubmit)
                         mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
                     else {
@@ -964,8 +965,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (isSuperNested) {
 
                 //questionTextView.setText(options.get(0).findDisplay());
+                holder.nestedQuestionsListingAdapter.clearItems();
                 if (mIsEditMode) {
                     for (int i = 0; i < options.size(); i++) {
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                    }
+                } else if (holder.selectedNestedOptionIndex > 0) {
+                   for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
                         holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                     }
                 } else {

@@ -144,6 +144,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
 
+    public void clearItems() {
+        mItemList.clear();
+    }
+
     public void addItem(Node node) {
         Log.v(TAG, "addItem()");
         for (int i = 0; i < mItemList.size(); i++) {
@@ -687,7 +691,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         }*/
                     }
                     VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
-                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex == options.size() - 1;
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
+
+                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
 
                     if (isLastNodeSubmit)
                         mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
@@ -719,9 +725,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 }
             });
             holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
-            if(mIsEditMode) {
+            if (mIsEditMode) {
                 holder.nestedQuestionsListingAdapter.addItemAll(options);
-            }else{
+            } else {
                 holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
             }
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
