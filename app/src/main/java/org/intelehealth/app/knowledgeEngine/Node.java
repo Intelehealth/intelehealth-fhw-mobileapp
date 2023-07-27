@@ -2860,6 +2860,15 @@ public class Node implements Serializable {
         return imagePathList;
     }
 
+    public boolean deleteImagePath(String imagePath) {
+        if (imagePath != null && imagePathList.contains(imagePath)) {
+            imagePathList.remove(imagePath);
+            return true;
+        }
+        else
+            return false;
+    }
+
     public void setImagePathList(List<String> imagePathList) {
         this.imagePathList = imagePathList;
     }

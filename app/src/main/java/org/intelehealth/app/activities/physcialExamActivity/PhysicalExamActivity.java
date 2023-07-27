@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import org.intelehealth.app.utilities.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -376,7 +377,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
-        if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && !physicalExamMap.getOption(physExamPos).getOption(groupPosition).anySubSelected()) {
+        if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) &&
+                !physicalExamMap.getOption(physExamPos).getOption(groupPosition).anySubSelected()) {
+
             Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
             //Log.d("Clicked", question.language());
             question.toggleSelected();
@@ -427,7 +430,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             if (!question.isTerminal() && question.isSelected()) {
                 Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
             }
-        } else if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) && physicalExamMap.getOption(groupPosition).anySubSelected()) {
+        } else if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single"))
+                && physicalExamMap.getOption(groupPosition).anySubSelected()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
@@ -473,11 +477,32 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (!childNode.getId().equals(question.getId())) {
-                            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                          //  physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+
+                            // here it will check if take picture was selected previously; if yes than the imagepath against it, it will
+                            // delete it and than set the button to unselected.
+                            Node currNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i);
+                            if (currNode.isSelected()) {
+                                String imageFilePath = physicalExamMap.getImagePath();
+                                question.setImagePath(imageFilePath);
+                                imageFilePath = question.getImagePath();
+                                Logger.logV(TAG, "filepath - deleted " + imageFilePath);
+                                if (filePath.exists() && imageFilePath != null && !imageFilePath.isEmpty()) {
+                                    try {
+                                        deleteExisitingAnyImageIfSkipSelected(imageFilePath);
+                                    } catch (DAOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                                physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                                //
+
+                            }
                         }
                     }
                 }
             }
+
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
                     if (!filePath.exists()) {
@@ -495,9 +520,25 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 Node.subLevelQuestion(question, PhysicalExamActivity.this, adapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
+
         }
         //adapter.updateNode(currentNode);
         adapter.notifyDataSetChanged();
+    }
+
+    private void deleteExisitingAnyImageIfSkipSelected(String path) throws DAOException {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        boolean isDeletedFromList = physicalExamMap.deleteImagePath(path);   // 1. delete the item from the arraylist itself.
+
+        if (isDeletedFromList) {
+            File file = new File(path);
+            boolean isDeletedFromStorage = file.delete();  // 2. on success of deleted from array -> delete from the mobile folder too.
+            if (isDeletedFromStorage) {
+                String[] obsUUIDArray = file.getName().split(".jpg");
+                imagesDAO.deleteImageFromDatabase(obsUUIDArray[0]);
+            }
+              //  imagesDAO.deleteConceptImages(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);  // 3. we also need to void this image from local db so that on sync we dont get this image.
+        }
     }
 
     /*@Override
@@ -809,6 +850,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         Dialog alertDialog = alertDialogBuilder.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
+
 }
 
 
