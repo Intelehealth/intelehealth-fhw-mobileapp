@@ -1,3 +1,25 @@
+After shifting the patient to another nurse
+
+- if I logout assigner nurse then on web app side displayed the toast HW is offline,
+  why this happen? possible case
+  - We are checking the user online/offline from existing array of socket, in this case may be
+    we are checking the old nurse provider id which has shifted the patient and logout, that's why
+    I think we got that nurse offline, where we need to check the assignee nurse provider id which is
+    latest updated in Visit Attributes table for shifted patient.
+
+- If after shifted the nurse didn't logout and continue, in this case if doctor call for the shifted patient
+  call coming on assigner(creator) device, it should not be happen, after patient shifted, call should be going to
+  assignee nurse.
+  - Here I found that we should apply same thing as above point for latest updated visit attributes table's
+  provider base
+
+
+
+onNext: setChwnamewebrtcn
+16:59:27.003  E  onNext: setCreatorID 3a40979c-a02e-409a-a552-21e6334d0d68
+16:59:27.003  E  onNext: setSessionID C17890151AA163CFAA7C518C70AE585C
+16:59:27.003  E  onNext: setProviderID 0c812a8b-a65e-4891-9a5c-ebb9d401344b
+
 Search
 - In home add bed no - done
 - Duplication entry found when search nurse from end shift - done

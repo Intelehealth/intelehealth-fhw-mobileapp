@@ -214,7 +214,7 @@ public class CardGenerationEngine {
             visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
             obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(),
                     VisitDTO.CompletedStatus.OUT_OF_TIME.value,
-                    UuidDictionary.REFER_TYPE);
+                    UuidDictionary.OUT_OF_TIME);
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }

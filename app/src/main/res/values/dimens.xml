@@ -157,6 +157,8 @@
     <dimen name="std_330dp">330dp</dimen>
     <dimen name="std_407dp">407dp</dimen>
     <dimen name="std_430dp">430dp</dimen>
+    <dimen name="std_380dp">380dp</dimen>
+    <dimen name="std_720dp">720dp</dimen>
     <dimen name="stage_stroke_size">0.5dp</dimen>
     <dimen name="std_13dp">13dp</dimen>
 </resources>

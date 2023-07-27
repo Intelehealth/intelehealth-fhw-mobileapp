@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Patient {
     private String uuid;
     private String openmrs_id;
@@ -50,6 +52,7 @@ public class Patient {
     String bedNumber; //new flow
     /*end*/
 
+    private String creatorUuid;
     public String getUuid() {
         return uuid;
     }
@@ -320,5 +323,13 @@ public class Patient {
 
     public void seteZaziRegNumber(String eZaziRegNumber) {
         this.eZaziRegNumber = eZaziRegNumber;
+    }
+
+    public void setCreatorUuid(String creatorUuid) {
+        this.creatorUuid = creatorUuid;
+    }
+
+    public String getCreatorUuid() {
+        return creatorUuid;
     }
 }

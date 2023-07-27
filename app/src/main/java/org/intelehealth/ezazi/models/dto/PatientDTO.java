@@ -60,6 +60,9 @@ public class PatientDTO implements Serializable {
 
     private String bedNo;
 
+    @SerializedName("creatoruuid")
+    private String creatorUuid;
+
     private String stage;
 
     private String patientPhoto;
@@ -273,5 +276,13 @@ public class PatientDTO implements Serializable {
 
     public String getFullName() {
         return firstname + " " + lastname;
+    }
+
+    public void setCreatorUuid(String creatorUuid) {
+        this.creatorUuid = creatorUuid;
+    }
+
+    public String getCreatorUuid() {
+        return creatorUuid;
     }
 }

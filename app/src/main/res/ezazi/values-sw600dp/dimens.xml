@@ -152,7 +152,8 @@
 
     <!-- add patient screen-->
     <dimen name="dialog_max_width">@dimen/std_660dp</dimen>
-    <dimen name="dialog_max_height">@dimen/std_814dp</dimen>
+    <!--    <dimen name="dialog_max_height">@dimen/std_814dp</dimen>-->
+    <dimen name="dialog_max_height">@dimen/std_720dp</dimen>
     <dimen name="search_icon_padding">@dimen/std_24dp</dimen>
     <dimen name="small_btn_min_width">@dimen/std_150dp</dimen>
     <dimen name="actionbar_screen_title_size">@dimen/std_24sp</dimen>

@@ -174,35 +174,36 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EncounterDAO encounterDAO = new EncounterDAO();
-                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
-                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
-                Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, EzaziChatActivity.class);
-                chatIntent.putExtra("patientName", mPatientName);
-                chatIntent.putExtra("visitUuid", mVisitUUID);
-                chatIntent.putExtra("patientUuid", mPatientUuid);
-                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-                chatIntent.putExtra("isForVideo", false);
-                if (rtcConnectionDTO != null) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-                }
-                startActivity(chatIntent);
+                showDoctorSelectionDialog(true);
+//                EncounterDAO encounterDAO = new EncounterDAO();
+//                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
+//                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
+//                Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, EzaziChatActivity.class);
+//                chatIntent.putExtra("patientName", mPatientName);
+//                chatIntent.putExtra("visitUuid", mVisitUUID);
+//                chatIntent.putExtra("patientUuid", mPatientUuid);
+//                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+//                chatIntent.putExtra("isForVideo", false);
+//                if (rtcConnectionDTO != null) {
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+//                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                } else {
+//                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//                }
+//                startActivity(chatIntent);
             }
         });
         Button btnVideoCall = findViewById(R.id.btnVideoOnOff);
         btnVideoCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDoctorSelectionDialog();
+                showDoctorSelectionDialog(false);
 //                EncounterDAO encounterDAO = new EncounterDAO();
 //                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
 ////                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
@@ -229,7 +230,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
     }
 
-    private void showDoctorSelectionDialog() {
+    private void showDoctorSelectionDialog(boolean isChat) {
         HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(mPatientUuid);
         ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
         for (String key : doctors.keySet()) {
@@ -244,9 +245,38 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 .content(choiceItems)
                 .build();
 
-        dialog.setListener(item -> startVideoCallActivity(doctors, item.getItem()));
+        dialog.setListener(item -> {
+            if (isChat) startChatActivity(doctors.get(item.getItem()));
+            else startVideoCallActivity(doctors, item.getItem());
+        });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
+
+    private void startChatActivity(String doctorUuid) {
+//        EncounterDAO encounterDAO = new EncounterDAO();
+//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
+//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
+        Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, EzaziChatActivity.class);
+        chatIntent.putExtra("patientName", mPatientName);
+        chatIntent.putExtra("visitUuid", mVisitUUID);
+        chatIntent.putExtra("patientUuid", mPatientUuid);
+        chatIntent.putExtra("fromUuid", new SessionManager(getApplicationContext()).getProviderID()); // provider uuid
+        chatIntent.putExtra("isForVideo", false);
+        chatIntent.putExtra("toUuid", doctorUuid);
+//        if (rtcConnectionDTO != null) {
+//            try {
+//                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+//                chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//        } else {
+//            chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//        }
+        startActivity(chatIntent);
     }
 
     private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {

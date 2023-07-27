@@ -113,10 +113,17 @@ public class AppConstants {
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
 
+    public static final String SCREEN_REFRESH_EVENT_RECEIVER = "REFRESH_SCREEN_EVENT";
+
+    public static final String REFRESH_SCREEN_EVENT = "REFRESH_SCREEN";
+
 
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
+    }
 
+    public static String getScreenRefreshEventReceiver() {
+        return IntelehealthApplication.getAppContext().getPackageName() + "." + SCREEN_REFRESH_EVENT_RECEIVER;
     }
 
     public static String getFirebaseRTDBRootRef() {

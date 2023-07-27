@@ -71,6 +71,7 @@ public class PatientsDAO {
             values.put("postal_code", patient.getPostalcode());
             values.put("state_province", patient.getStateprovince());
             values.put("city_village", patient.getCityvillage());
+            values.put("creatoruuid", patient.getCreatorUuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
@@ -110,6 +111,7 @@ public class PatientsDAO {
             values.put("postal_code", patientDTO.getPostalcode());
             values.put("city_village", patientDTO.getCityvillage());
             values.put("state_province", patientDTO.getStateprovince());
+            values.put("creatoruuid", patientDTO.getCreatorUuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
             values.put("dead", patientDTO.getDead());
@@ -156,6 +158,7 @@ public class PatientsDAO {
             values.put("gender", "F");
             values.put("postal_code", patientDTO.getPostalcode());
             values.put("city_village", patientDTO.getCityvillage());
+            values.put("creatoruuid", patientDTO.getCreatorUuid());
             values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("patient_photo", patientDTO.getPatientPhoto());
@@ -387,6 +390,7 @@ public class PatientsDAO {
         return familyMemberRes;
     }
 
+    @SuppressLint("Range")
     public String getAttributesName(String attributeuuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();

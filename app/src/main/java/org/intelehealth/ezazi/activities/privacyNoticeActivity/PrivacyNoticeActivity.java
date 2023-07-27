@@ -175,6 +175,7 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
             intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
             Log.d("Privacy", "selected radio: " + accept.getText().toString());
             startActivity(intent);
+            finish();
         } else if (checkBox_cho.isChecked() && v.getId() == R.id.button_reject) {
             Toast.makeText(PrivacyNoticeActivity.this,
                     getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();

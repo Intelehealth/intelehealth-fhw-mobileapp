@@ -226,7 +226,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.v(TAG, "onNewIntent");
-        catchFCMMessageData();
+        if (intent != null && intent.hasExtra(AppConstants.REFRESH_SCREEN_EVENT)) {
+            boolean isRefreshEvent = intent.getBooleanExtra(AppConstants.REFRESH_SCREEN_EVENT, false);
+            if (isRefreshEvent) recreate();
+        } else {
+            catchFCMMessageData();
+        }
     }
 
     private void catchFCMMessageData() {
@@ -1542,6 +1547,13 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         dialog.show(getSupportFragmentManager(), ConfirmationDialogFragment.class.getCanonicalName());
     }
 
+    private BroadcastReceiver screenRefreshReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            recreate();
+        }
+    };
+
     private void showLogoutAlert() {
 
         showConfirmationDialog(0, R.string.sure_to_logout, R.string.generic_yes, () -> {
@@ -1640,6 +1652,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             mActivePatientAdapter.notifyDataSetChanged();
 
         registerReceiver(mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
+        registerReceiver(screenRefreshReceiver, new IntentFilter(AppConstants.getScreenRefreshEventReceiver()));
     }
 
     @Override
@@ -2372,6 +2385,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mCardMessageReceiver);
+        unregisterReceiver(screenRefreshReceiver);
     }
 
 
