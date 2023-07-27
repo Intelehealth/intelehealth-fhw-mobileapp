@@ -299,7 +299,15 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private void selectDob() {
-        CalendarDialog dialog = new CalendarDialog.Builder(mContext).title("").positiveButtonLabel(R.string.ok).build();
+        boolean isTable = getResources().getBoolean(R.bool.isTabletSize);
+        int maxHeight = getResources().getDimensionPixelOffset(R.dimen.std_430dp);
+        CalendarDialog dialog = new CalendarDialog
+                .Builder(mContext)
+                .title("")
+                .positiveButtonLabel(R.string.ok)
+                .maxHeight(!isTable ? maxHeight : 0)
+                .build();
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, -10);
         dialog.setMaxDate(calendar.getTimeInMillis());

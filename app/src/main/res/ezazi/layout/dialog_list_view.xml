@@ -58,6 +58,7 @@
             style="@style/Theme.EZazi.Scrollbar.Thumb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/screen_container_padding"
             tools:listitem="@layout/single_choice_dialog_item" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -19,6 +19,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.text.Html;
+import android.text.InputType;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
@@ -554,6 +555,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
             button.setTag(1);
             button.setVisibility(View.VISIBLE);
+            button.setTag(R.id.btnAddOutOfTimeReason, outcome);
             if (!outcome.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
                 button.setTag(2);
                 button.setText(getString(R.string.update_out_of_time_reason));
@@ -582,22 +584,27 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private View.OnClickListener outOfTimeClickListener = v -> {
         int isUpdateRequest = (int) v.getTag();
-        showOutOfTimeReasonInputDialog(isUpdateRequest);
+        String reason = (String) v.getTag(R.id.btnAddOutOfTimeReason);
+        showOutOfTimeReasonInputDialog(isUpdateRequest, reason);
     };
 
-    private void showOutOfTimeReasonInputDialog(int isUpdateRequest) {
+    private void showOutOfTimeReasonInputDialog(int isUpdateRequest, String content) {
         DialogOutOfTimeEzaziBinding binding = DialogOutOfTimeEzaziBinding.inflate(getLayoutInflater(), null, true);
-        showCustomViewDialog(R.string.time_out_reason_title,
+        binding.etOutOfTimeReason.setText(content);
+        binding.etOutOfTimeReasonLayout.setMultilineInputEndIconGravity();
+        showCustomViewDialog(R.string.time_out_reason,
                 isUpdateRequest == 2 ? R.string.update_out_of_time_reason : R.string.add_out_of_time_reason,
                 R.string.cancel, binding.getRoot(), () -> {
                     String reason = binding.etOutOfTimeReason.getText().toString();
                     if (reason.length() > 0) {
-                        int updated = new ObsDAO().updateOutOfTimeEncounterReason(reason, isVCEPresent);
+                        int updated = new ObsDAO().updateOutOfTimeEncounterReason(reason, isVCEPresent, visitUuid);
                         if (updated > 0) {
                             Toast.makeText(context, context.getString(R.string.time_out_info_submitted_successfully), Toast.LENGTH_SHORT).show();
 //                            outcomeTV.setText(getString(R.string.lbl_outcome, reason));
                             updateOutOfTimeOutcomeText(reason);
-                            updateButtonText(R.string.update_out_of_time_reason, 2);
+                            updateButtonText(R.string.update_out_of_time_reason, 2, reason);
+                            SyncUtils syncUtils = new SyncUtils();
+                            syncUtils.syncBackground();
                         } else {
                             Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
@@ -607,9 +614,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 });
     }
 
-    private void updateButtonText(int label, int tag) {
+    private void updateButtonText(int label, int tag, String content) {
         MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
         button.setTag(tag);
+        button.setTag(R.id.btnAddOutOfTimeReason, content);
         button.setText(getString(label));
     }
 

@@ -1,3 +1,9 @@
+Longest text visit = BackEvent Test - 58238b29-20e6-4033-a512-de8cdd88096e,
+EndShift Test = 2797e639-3592-4284-a0f8-6bae717bf4c0
+Out of time with longest text not visible to another nurse
+
+83f4425e-b28f-4266-8177-543ef6148000
+
 After shifting the patient to another nurse
 
 - if I logout assigner nurse then on web app side displayed the toast HW is offline,

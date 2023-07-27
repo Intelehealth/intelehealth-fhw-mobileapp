@@ -527,6 +527,9 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         });
 
         if (sessionManager.isFirstTimeLaunched()) {
+            if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing())
+                mSyncProgressDialog.dismiss();
+
             mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
             mSyncProgressDialog.setTitle(R.string.syncInProgress);
             mSyncProgressDialog.setCancelable(false);

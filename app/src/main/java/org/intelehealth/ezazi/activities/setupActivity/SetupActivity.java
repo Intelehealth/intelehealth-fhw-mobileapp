@@ -537,6 +537,7 @@ public class SetupActivity extends AppCompatActivity {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
                 .title(title)
                 .positiveButtonLabel(R.string.generic_ok)
+                .hideNegativeButton(true)
                 .content(getString(content))
                 .build();
 

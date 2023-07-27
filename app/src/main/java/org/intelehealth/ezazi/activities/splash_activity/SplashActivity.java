@@ -35,6 +35,7 @@ import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.dataMigration.SmoothUpgrade;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 
@@ -83,22 +84,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (task.isSuccessful() && !isFinishing()) {
                     long force_update_version_code = instance.getLong("force_update_version_code");
                     if (force_update_version_code > BuildConfig.VERSION_CODE) {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
-                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
-                        alertDialogBuilder.setCancelable(false);
-                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-                                } catch (android.content.ActivityNotFoundException anfe) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-                                }
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                        alertDialogBuilder.show();
+                        showForceUpdateDialog();
                     } else {
                         checkPerm();
                     }
@@ -107,6 +93,26 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void showForceUpdateDialog() {
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .title(R.string.generic_warning)
+                .positiveButtonLabel(R.string.ok)
+                .hideNegativeButton(true)
+                .content(getString(R.string.warning_app_update))
+                .build();
+
+        dialog.setListener(() -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+            }
+            finish();
+        });
+
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void checkPerm() {
@@ -189,35 +195,44 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void showPermissionDeniedAlert(String[] permissions) {
-        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .title(R.string.required_permission)
+                .positiveButtonLabel(R.string.retry_again)
+                .negativeButtonLabel(R.string.ok_close_now)
+                .content(getString(R.string.reject_permission_results))
+                .build();
 
-        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        alertdialogBuilder.setMessage(R.string.reject_permission_results);
-        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                checkPerm();
-            }
-        });
-        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
-
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        dialog.setListener(() -> checkPerm());
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+//
+//        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+//        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+//        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                checkPerm();
+//            }
+//        });
+//        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                finish();
+//            }
+//        });
+//
+//        AlertDialog alertDialog = alertdialogBuilder.create();
+//        alertDialog.show();
+//
+//        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+//
+//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private boolean checkAndRequestPermissions() {

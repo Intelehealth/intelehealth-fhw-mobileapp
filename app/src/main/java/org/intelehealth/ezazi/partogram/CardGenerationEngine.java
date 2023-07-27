@@ -215,6 +215,8 @@ public class CardGenerationEngine {
             obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(),
                     VisitDTO.CompletedStatus.OUT_OF_TIME.value,
                     UuidDictionary.OUT_OF_TIME);
+            SyncUtils syncUtils = new SyncUtils();
+            syncUtils.syncBackground();
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }

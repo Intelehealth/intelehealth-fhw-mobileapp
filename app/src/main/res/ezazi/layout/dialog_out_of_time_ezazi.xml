@@ -5,45 +5,99 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@drawable/white_child_container_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_container_padding">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--        <com.google.android.material.textview.MaterialTextView-->
+        <!--            android:id="@+id/tvOutOfTimeReason"-->
+        <!--            style="@style/LabelStyle"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/time_out_reason"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+            android:id="@+id/etOutOfTimeReasonLayout"
+            style="@style/Theme.EZazi.Input.Login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_child_container_bg"
-            android:padding="@dimen/screen_container_padding"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:boxStrokeColor="@color/colorLoginInputStroke"
+            app:boxStrokeWidth="@dimen/input_stroke_size"
+            app:counterEnabled="true"
+            app:counterMaxLength="150"
+            app:endIconMode="clear_text">
 
-            <TextView
-                android:id="@+id/tvOutOfTimeReason"
-                style="@style/LabelStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/time_out_reason"
-                android:textSize="@dimen/caption"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etOutOfTimeReason"
-                style="@style/Theme.EZazi.EditText"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:backgroundTint="@color/white"
+                android:gravity="start"
                 android:hint="@string/enter_out_of_time_reason"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:nextFocusForward="@id/refer_doctorName"
-                app:drawableEndCompat="@drawable/ic_space"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:lineSpacingExtra="@dimen/std_4dp"
+                android:lines="5"
+                android:maxLength="150"
+                android:textColor="@color/colorInputText"
+                android:textSize="@dimen/input_inner_size" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvOutOfTimeReason"-->
+        <!--            style="@style/LabelStyle"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/time_out_reason"-->
+        <!--            android:textSize="@dimen/caption"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/etOutOfTimeReason"-->
+        <!--            style="@style/Theme.EZazi.EditText"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="@dimen/list_container_padding"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:hint="@string/enter_out_of_time_reason"-->
+        <!--            android:imeOptions="actionNext"-->
+        <!--            android:inputType="textMultiLine"-->
+        <!--            android:lines="5"-->
+        <!--            android:nextFocusForward="@id/refer_doctorName"-->
+        <!--            app:drawableEndCompat="@drawable/ic_space"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />-->
+
+        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@drawable/white_child_container_bg"-->
+
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvOutOfTimeReason"-->
+        <!--                style="@style/LabelStyle"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="@string/time_out_reason"-->
+        <!--                android:textSize="@dimen/caption"-->
+        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--            -->
+
+        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
     </LinearLayout>
 </layout>

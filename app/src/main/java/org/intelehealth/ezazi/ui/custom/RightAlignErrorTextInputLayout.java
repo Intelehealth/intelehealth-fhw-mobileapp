@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.ui.custom;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -69,6 +72,7 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
             errorIcon.setActivated(!(getEditText().getTransformationMethod() instanceof PasswordTransformationMethod));
         }
         activeErrorClickIfInputIsPassword();
+
     }
 
     private void activeErrorClickIfInputIsPassword() {
@@ -88,6 +92,19 @@ public class RightAlignErrorTextInputLayout extends TextInputLayout {
                 getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
             }
             getEditText().setSelection(getEditText().getText().length());
+        }
+    }
+
+    public void setMultilineInputEndIconGravity() {
+        CheckableImageButton imageButton = findViewById(R.id.text_input_end_icon);
+        if (imageButton != null && getEditText() != null) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageButton.getLayoutParams();
+            params.gravity = Gravity.BOTTOM;
+            imageButton.setLayoutParams(params);
+        } else if (imageButton == null) {
+            Log.e(TAG, "setMultilineInputEndIconGravity: no end icon found");
+        } else if (getEditText() == null) {
+            Log.e(TAG, "setMultilineInputEndIconGravity: no edit text attached");
         }
     }
 }

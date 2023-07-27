@@ -135,7 +135,6 @@ public class PatientsFrameJson {
                 visit.setAttributes(visitDTO.getAttributes());
                 visitList.add(visit);
             }
-
         }
 
         for (EncounterDTO encounterDTO : encounterDTOList) {

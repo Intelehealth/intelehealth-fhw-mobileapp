@@ -267,7 +267,7 @@ public class ObsDAO {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false'",
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false' OR sync = '0'",
                 new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
@@ -583,7 +583,7 @@ public class ObsDAO {
             values.put("value", value);
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
-            values.put("sync", "false");
+            values.put("sync", "0");
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             //   db.setTransactionSuccessful();
@@ -687,12 +687,19 @@ public class ObsDAO {
         return false;
     }
 
-    public int updateOutOfTimeEncounterReason(String value, String encounterUuid) {
+    public int updateOutOfTimeEncounterReason(String value, String encounterUuid, String visitUuid) {
+        try {
+//            new VisitsDAO().updateVisitSync(visitUuid, "0");
+            new EncounterDAO().updateEncounterSync("0", encounterUuid);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         values.put("value", value);
         values.put("sync", "0");
-        String whereClause = " encounteruuid = ? AND conceptuuid = ? ";
+        String whereClause = " encounteruuid = ? AND conceptuuid = ? AND voided = '0'";
         String[] whereArgs = {encounterUuid, UuidDictionary.OUT_OF_TIME};
         return db.update("tbl_obs", values, whereClause, whereArgs);
     }

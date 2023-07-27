@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -134,6 +135,8 @@ public class PatientOtherInfoFragment extends Fragment {
     private PatientAttributesModel patientAttributesModel;
     private List<ErrorManagerModel> errorDetailsList;
     private NestedScrollView scrollviewOtherInfo;
+
+    private View focusedView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -727,15 +730,40 @@ public class PatientOtherInfoFragment extends Fragment {
 
     }
 
+    private void setScrollToFocusedItem() {
+        Log.e(TAG, "getPivotY: x " + etBedNumber.getPivotY());
+        Log.e(TAG, "getX: x " + etBedNumber.getX());
+        Log.e(TAG, "getY: x " + etBedNumber.getY());
+        Log.e(TAG, "getScrollX: x " + etBedNumber.getScrollX());
+        Log.e(TAG, "getTranslationX: x " + etBedNumber.getTranslationX());
+        focusedView.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(TAG, "onPatientCreateClicked: x " + focusedView.getPivotX());
+                Log.e(TAG, "onPatientCreateClicked: y " + focusedView.getPivotY());
+                scrollviewOtherInfo.smoothScrollTo(0, (int) focusedView.getPivotY());
+            }
+        });
+        focusedView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        // Layout has happened here.
+                        Log.e(TAG, "onPatientCreateClicked: scroll to" + focusedView.getPivotY());
+                        scrollviewOtherInfo.postDelayed(() -> Log.e(TAG, "onPatientCreateClicked: scroll to" + focusedView.getY()), 100);
+                        // Don't forget to remove your listener when you are done with it.
+                        focusedView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     public void onPatientCreateClicked() {
         if (!etHospitalOther.getText().toString().isEmpty()) {
             mHospitalMaternityString = "other";
-
         }
         if (!areValidFields()) {
-//            Log.e(TAG, "onPatientCreateClicked: scroll to" + (int) requireActivity().getCurrentFocus().getY());
-//            scrollviewOtherInfo.smoothScrollTo(0, (int) requireActivity().getCurrentFocus().getY());
+            setScrollToFocusedItem();
             return;
         }        //code for adding to the database
 
@@ -1070,6 +1098,7 @@ public class PatientOtherInfoFragment extends Fragment {
         errorDetailsList = new ArrayList<>();
 
         if (TextUtils.isEmpty(mAdmissionDateTextView.getText().toString())) {
+            focusedView = mAdmissionDateTextView;
            /* mAdmissionDateTextView.requestFocus();
             tvErrorAdmissionDate.setVisibility(View.VISIBLE);
             tvErrorAdmissionDate.setText(getString(R.string.select_admission_date));
@@ -1082,7 +1111,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         if (TextUtils.isEmpty(mAdmissionTimeTextView.getText().toString())) {
             tvErrorAdmissionDate.setVisibility(View.INVISIBLE);
-
+            focusedView = mAdmissionTimeTextView;
           /*  mAdmissionTimeTextView.requestFocus();
             tvErrorAdmissionTime.setVisibility(View.VISIBLE);
             tvErrorAdmissionTime.setText(getString(R.string.select_admission_time));
@@ -1097,6 +1126,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         if (TextUtils.isEmpty(mTotalBirthEditText.getText().toString())) {
+            focusedView = mTotalBirthEditText;
             tvErrorTotalMiscarriage.setVisibility(View.INVISIBLE);
             cardTotalMiscarraige.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
@@ -1108,6 +1138,7 @@ public class PatientOtherInfoFragment extends Fragment {
             errorDetailsList.add(new ErrorManagerModel(mTotalBirthEditText, tvErrorTotalBirth, getString(R.string.total_birth_count_val_txt), cardTotalBirth));
 
         } else if (Integer.parseInt(mTotalBirthEditText.getText().toString()) > 15) {
+            focusedView = mTotalBirthEditText;
             tvErrorTotalMiscarriage.setVisibility(View.INVISIBLE);
             cardTotalMiscarraige.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 /*
@@ -1123,6 +1154,7 @@ public class PatientOtherInfoFragment extends Fragment {
             cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         if (TextUtils.isEmpty(mTotalMiscarriageEditText.getText().toString())) {
+            focusedView = mTotalMiscarriageEditText;
             tvErrorTotalBirth.setVisibility(View.INVISIBLE);
             cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
@@ -1133,6 +1165,7 @@ public class PatientOtherInfoFragment extends Fragment {
             errorDetailsList.add(new ErrorManagerModel(mTotalMiscarriageEditText, tvErrorTotalMiscarriage, getString(R.string.total_miscarriage_count_val_txt), cardTotalMiscarraige));
 
         } else if (Integer.parseInt(mTotalMiscarriageEditText.getText().toString()) > 8) {
+            focusedView = mTotalMiscarriageEditText;
             tvErrorTotalBirth.setVisibility(View.INVISIBLE);
             cardTotalBirth.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
@@ -1151,7 +1184,7 @@ public class PatientOtherInfoFragment extends Fragment {
         if (mLaborOnsetString.isEmpty()) {
             tvSpontaneous.requestFocus();
             tvInduced.requestFocus();
-
+            focusedView = tvSpontaneous;
             tvErrorLabourOnset.setVisibility(View.VISIBLE);
             tvErrorLabourOnset.setText(getString(R.string.labor_onset_val_txt));
             tvSpontaneous.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
@@ -1163,6 +1196,7 @@ public class PatientOtherInfoFragment extends Fragment {
             getLabourOnsetValue(mLaborOnsetString);
         }
         if (TextUtils.isEmpty(mActiveLaborDiagnosedDateTextView.getText().toString())) {
+            focusedView = mActiveLaborDiagnosedDateTextView;
             /*    mActiveLaborDiagnosedDateTextView.requestFocus();
 
              tvErrorLabourDiagnosedDate.setVisibility(View.VISIBLE);
@@ -1176,7 +1210,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         if (TextUtils.isEmpty(mActiveLaborDiagnosedTimeTextView.getText().toString())) {
             tvErrorLabourDiagnosedDate.setVisibility(View.INVISIBLE);
-
+            focusedView = mActiveLaborDiagnosedTimeTextView;
          /*   mActiveLaborDiagnosedTimeTextView.requestFocus();
             tvErrorLabourDiagnosedTime.setVisibility(View.VISIBLE);
             tvErrorLabourDiagnosedTime.setText(getString(R.string.active_labor_diagnosed_time_val_txt));
@@ -1190,6 +1224,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
         if (!isUnknownChecked) {
             if (TextUtils.isEmpty(mMembraneRupturedDateTextView.getText().toString())) {
+                focusedView = mMembraneRupturedDateTextView;
              /*   mMembraneRupturedDateTextView.requestFocus();
 
                 tvErrorSacRupturedDate.setVisibility(View.VISIBLE);
@@ -1206,7 +1241,7 @@ public class PatientOtherInfoFragment extends Fragment {
         if (!isUnknownChecked) {
             if (TextUtils.isEmpty(mMembraneRupturedTimeTextView.getText().toString())) {
                 tvErrorSacRupturedDate.setVisibility(View.INVISIBLE);
-
+                focusedView = mMembraneRupturedTimeTextView;
                 mMembraneRupturedTimeTextView.requestFocus();
                 tvErrorSacRupturedTime.setVisibility(View.VISIBLE);
                 tvErrorSacRupturedTime.setText(getString(R.string.select_sac_ruptured_time));
@@ -1222,6 +1257,8 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         if (TextUtils.isEmpty(mRiskFactorsTextView.getText().toString())) {
+            mRiskFactorsTextView.requestFocus();
+            focusedView = mRiskFactorsTextView;
        /*     mRiskFactorsTextView.requestFocus();
 
             tvErrorRiskFactor.setVisibility(View.VISIBLE);
@@ -1237,7 +1274,7 @@ public class PatientOtherInfoFragment extends Fragment {
         if (mHospitalMaternityString.isEmpty()) {
             tvErrorHospital.setVisibility(View.VISIBLE);
             tvErrorHospitalOther.setVisibility(View.GONE);
-
+            focusedView = cardHospitalOther;
             tvErrorHospital.setText(getString(R.string.hospital_matermnity_val_txt));
             //optionHospital.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
             //optionMaternity.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
@@ -1251,13 +1288,14 @@ public class PatientOtherInfoFragment extends Fragment {
             cardHospitalOther.setVisibility(View.GONE);
             tvErrorHospitalOther.setVisibility(View.GONE);
 
-
+            focusedView = cardHospitalOther;
         } else {
             tvErrorHospital.setVisibility(View.GONE);
             //mHospitalMaternityString = etHospitalOther.getText().toString();
             cardHospitalOther.setVisibility(View.VISIBLE);
             etHospitalOther.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(etHospitalOther.getText().toString())) {
+                focusedView = etHospitalOther;
                 tvErrorHospital.setVisibility(View.GONE);
                 tvErrorHospitalOther.setVisibility(View.VISIBLE);
                 tvErrorHospitalOther.setText(getString(R.string.enter_hospital_other_error));
@@ -1276,6 +1314,7 @@ public class PatientOtherInfoFragment extends Fragment {
 
 
         if (TextUtils.isEmpty(mPrimaryDoctorTextView.getText().toString())) {
+            focusedView = mPrimaryDoctorTextView;
          /*   mPrimaryDoctorTextView.requestFocus();
 
             tvErrorPrimaryDoctor.setVisibility(View.VISIBLE);
@@ -1288,6 +1327,7 @@ public class PatientOtherInfoFragment extends Fragment {
             cardPrimaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         if (TextUtils.isEmpty(mSecondaryDoctorTextView.getText().toString())) {
+            focusedView = mSecondaryDoctorTextView;
          /*   mSecondaryDoctorTextView.requestFocus();
 
             tvErrorSecondaryDoctor.setVisibility(View.VISIBLE);
@@ -1300,6 +1340,8 @@ public class PatientOtherInfoFragment extends Fragment {
             cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
         if (TextUtils.isEmpty(etBedNumber.getText().toString())) {
+            focusedView = etBedNumber;
+            etBedNumber.requestFocus();
           /*  etBedNumber.requestFocus();
 
             tvErrorBedNumber.setVisibility(View.VISIBLE);
@@ -1330,7 +1372,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 errorModel.tvError.setVisibility(View.VISIBLE);
                 errorModel.tvError.setText(errorModel.getErrorMessage());
                 errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
+//                focusedView = errorModel.view;
 
             }
             return false;
@@ -2069,7 +2111,13 @@ public class PatientOtherInfoFragment extends Fragment {
     }
 
     private void selectDateForAll(String whichDate) {
-        CalendarDialog dialog = new CalendarDialog.Builder(mContext).title("").positiveButtonLabel(R.string.ok).build();
+        boolean isTable = getResources().getBoolean(R.bool.isTabletSize);
+        int maxHeight = getResources().getDimensionPixelOffset(R.dimen.std_430dp);
+        CalendarDialog dialog = new CalendarDialog.Builder(mContext)
+                .title("")
+                .positiveButtonLabel(R.string.ok)
+                .maxHeight(!isTable ? maxHeight : 0)
+                .build();
 
         dialog.setListener((day, month, year, value) -> {
             Log.e(TAG, "Date = >" + value);

@@ -38,7 +38,7 @@ public class AddNewPatientActivity extends BaseActionBarActivity {
         Toolbar toolbar = viewToolbar.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v ->
-                getOnBackPressedDispatcher().onBackPressed()
+                onBackPressed()
         );
 
         getSupportFragmentManager()
@@ -136,7 +136,7 @@ public class AddNewPatientActivity extends BaseActionBarActivity {
                 .build();
 
         dialog.setListener(() -> {
-            finish();
+            getOnBackPressedDispatcher().onBackPressed();
         });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());

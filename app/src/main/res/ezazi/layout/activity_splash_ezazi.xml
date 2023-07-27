@@ -35,9 +35,10 @@
         android:layout_gravity="center"
         android:scaleType="centerCrop"
         android:src="@drawable/logo_ezazi"
-        app:layout_constraintBottom_toTopOf="@id/ivBottomLightVector"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvSplashContent"
@@ -59,7 +60,7 @@
         android:drawableBottom="@drawable/power_by_ih_logo"
         android:drawablePadding="@dimen/power_by_logo_top_margin"
         android:text="@string/power_from"
-        android:textColor="@color/darkGray"
+        android:textColor="?colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

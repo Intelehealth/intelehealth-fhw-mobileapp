@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +115,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
      */
     private LayoutParams getConstraintLayoutParams() {
         int height = getResources().getDimensionPixelOffset(R.dimen.dialog_max_height);
+        if (args.getMaxHeight() != 0) height = args.getMaxHeight();
         int padding = getResources().getDimensionPixelOffset(R.dimen.screen_container_padding) * 5;
         LayoutParams params = new LayoutParams(0, LayoutParams.WRAP_CONTENT);
         params.topToTop = ConstraintSet.PARENT_ID;
@@ -156,6 +158,8 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
         private T content;
 
         private View view;
+
+        private int maxHeight;
 
         public BaseBuilder(Context context) {
             this.context = context;
@@ -206,6 +210,11 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             return this;
         }
 
+        public BaseBuilder<T, D> maxHeight(int height) {
+            this.maxHeight = height;
+            return this;
+        }
+
         public abstract D build();
 
         protected Bundle bundle() {
@@ -215,6 +224,7 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
             args.setNegativeBtnLabel(negativeBtnLabel == null ? context.getResources().getString(R.string.cancel) : negativeBtnLabel);
             if (hideNegativeButton) args.setNegativeBtnLabel(null);
             args.setContent(content);
+            args.setMaxHeight(maxHeight);
             return getDialogArgument(args);
         }
 

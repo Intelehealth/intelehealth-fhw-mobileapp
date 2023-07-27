@@ -17,6 +17,8 @@ public class DialogArg<T> implements Serializable {
 
     private T content;
 
+    private int maxHeight;
+
 
     public String getTitle() {
         return title;
@@ -48,5 +50,13 @@ public class DialogArg<T> implements Serializable {
 
     public void setContent(T content) {
         this.content = content;
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
+    public void setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
     }
 }

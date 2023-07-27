@@ -489,7 +489,7 @@
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
-    <string name="ok">OK</string>
+    <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="unable_to_end">Unable to end</string>
     <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
@@ -672,6 +672,7 @@
     <string name="visit_closed">Visit Closed</string>
     <string name="ok_close_now">Ok, Close It</string>
     <string name="retry_again">Retry Again!</string>
+    <string name="required_permission">Permission Required</string>
     <string name="take_photo">Take Photo</string>
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
@@ -973,8 +974,8 @@
     <string name="are_you_sure_want_to_refer_other">Are you sure you want to \"Refer to other hospital\"?</string>
     <string name="are_you_sure_want_to_self_discharge">Are you sure patient wants to \"Self discharge against Medical Advice\"?</string>
     <string name="hospital_name">Hospital Name</string>
-    <string name="time_out_reason">Time Out Reason</string>
-    <string name="enter_out_of_time_reason">Enter Time Out Reason</string>
+    <string name="time_out_reason">Timeout Reason</string>
+    <string name="enter_out_of_time_reason">Enter Reason</string>
     <string name="doctor_name">Doctor Name</string>
     <string name="note">Note</string>
     <string name="enter_hospital_name">Enter Hospital Name</string>
