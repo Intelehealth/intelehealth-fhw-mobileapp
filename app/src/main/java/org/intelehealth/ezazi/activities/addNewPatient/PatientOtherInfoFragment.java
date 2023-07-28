@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -56,6 +57,7 @@ import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.ThemeTimePickerDialog;
 import org.intelehealth.ezazi.ui.dialog.adapter.RiskFactorMultiChoiceAdapter;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
+import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -178,6 +180,7 @@ public class PatientOtherInfoFragment extends Fragment {
         etHospitalOther = view.findViewById(R.id.et_hospital_other);
         scrollviewOtherInfo = view.findViewById(R.id.scroll_other_info);
 
+        etHospitalOther.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
 
         handleValidations();
 

@@ -753,7 +753,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 .into(photoView);*/
 
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
-            String id = "Patient ID : " + patient.getOpenmrs_id();
+            String id = "Patient ID: " + patient.getOpenmrs_id();
             idView.setText(id);
 //            sessionManager.setOfllineOpenMRSID(patient_new.getOpenmrs_id());
         } else {
@@ -1495,7 +1495,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         public void onReceive(Context context, Intent intent) {
             try {
 
-                String id = "Patient ID : " + patientsDAO.getOpenmrsId(patientUuid);
+                String id = "Patient ID: " + patientsDAO.getOpenmrsId(patientUuid);
                 idView.setText(id);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);

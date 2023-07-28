@@ -7,11 +7,11 @@
     android:padding="@dimen/screen_padding">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_address_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/addressActionView"
-        android:paddingBottom="@dimen/margin_bottom_scroll"
-        >
+        android:paddingBottom="@dimen/margin_bottom_scroll">
 
         <LinearLayout
             android:id="@+id/layout_parent"
@@ -55,8 +55,8 @@
                             android:hint="@string/country"
                             android:inputType="textPostalAddress"
                             android:maxLines="1"
-                            android:text="@string/str_check_India"
                             android:minHeight="@dimen/max_address_input_height"
+                            android:text="@string/str_check_India"
                             android:textSize="@dimen/input_inner_size" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -81,12 +81,12 @@
                             style="@style/Theme.EZazi.Scrollbar.Thumb"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                            android:dropDownHeight="@dimen/dropdown_max_height"
                             android:dropDownSelector="@color/white"
                             android:hint="@string/state"
-                            android:dropDownHeight="@dimen/dropdown_max_height"
                             android:inputType="none"
                             android:maxLines="1"
-                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                             android:minHeight="@dimen/max_address_input_height"
                             android:textAlignment="viewStart"
                             android:textSize="@dimen/input_inner_size" />
