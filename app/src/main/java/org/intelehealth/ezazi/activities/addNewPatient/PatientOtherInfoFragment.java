@@ -137,8 +137,6 @@ public class PatientOtherInfoFragment extends Fragment {
     private List<ErrorManagerModel> errorDetailsList;
     private NestedScrollView scrollviewOtherInfo;
 
-    private View focusedView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_patient_other_info, container, false);
@@ -1332,21 +1330,12 @@ public class PatientOtherInfoFragment extends Fragment {
                 ErrorManagerModel errorModel = errorDetailsList.get(i);
                 if (i == 0) {
                     errorModel.view.requestFocus();
-                    /*Handler handler = new Handler();
-                    scrollviewOtherInfo.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrollviewOtherInfo.scrollTo(0,  errorModel.getView().getId());
-                            //scrollviewOtherInfo.scrollTo(0,  R.id.et_hospital_other);
-                        }
-                    });*/
                 }
 
                 errorModel.tvError.setVisibility(View.VISIBLE);
                 errorModel.tvError.setText(errorModel.getErrorMessage());
                 errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
 
-                focusedView = errorModel.view;
             }
             return false;
         } else {

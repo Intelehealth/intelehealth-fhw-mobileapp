@@ -57,7 +57,7 @@
             style="@style/Theme.EZazi.Material.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/screen_padding">
+            android:layout_marginTop="@dimen/tab_margin_from_text">
 
             <LinearLayout
                 android:layout_width="match_parent"

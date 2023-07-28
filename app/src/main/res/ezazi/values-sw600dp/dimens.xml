@@ -52,6 +52,7 @@
     <dimen name="small_button_text_size">@dimen/std_20sp</dimen>
     <dimen name="small_btn_radius">@dimen/std_8dp</dimen>
     <dimen name="input_box_corner_radius">@dimen/std_20dp</dimen>
+    <dimen name="input_box_corner_radius_12dp">@dimen/std_12dp</dimen>
     <dimen name="small_button_padding">@dimen/std_12dp</dimen>
     <dimen name="bottom_vector_tran_y">@dimen/std_150dp</dimen>
     <dimen name="input_inner_text_size">@dimen/std_22sp</dimen>
@@ -236,7 +237,7 @@
     <dimen name="dropdown_max_height">280dp</dimen>
     <dimen name="dialog_input_min_height">54dp</dimen>
     <dimen name="code_picker_margin_top">8dp</dimen>
-    <dimen name="code_picker_text_size">20sp</dimen>
+    <dimen name="code_picker_text_size">24sp</dimen>
     <dimen name="code_picker_padding_top">0dp</dimen>
     <dimen name="code_picker_padding_bottom">7dp</dimen>
     <dimen name="code_picker_padding_start_end">5dp</dimen>
