@@ -941,7 +941,7 @@
     <string name="your_time_spent_today">Your time spent\ntoday</string>
     <string name="total_time_spent">Total time spent</string>
 
-    <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
+    <string name="privacy_policy_content_1">Your privacy is important to us. Intelehealth’s Enterprise
         Privacy Policy aligns with Generally Accepted
         Privacy Principles (GAPP). The GAPP are founded on key concepts from significant
         national and international privacy laws, regulations and good business practices.\n\n
@@ -1177,7 +1177,10 @@ A Privacy Request procedure shall be defined to process complaints and requests 
     an individual who is a subject of the information; and</li>
 
           \n\n<li>Documents the methods and results of the analysis that justify such determination;</li></ol>
-<font color='#EA315B' size='14'><b>\n\nFOR REVIEW AND UPDATE</b></font>
+
+</string>
+
+    <string name="privacy_policy_content_2"><font color='#EA315B' size='14'><b>\n\nFOR REVIEW AND UPDATE</b></font>
 \nProcesses shall be established for individuals to:
 
 \n\n<li>Request access to their personal data or information;</li>
@@ -1311,6 +1314,8 @@ The disclosure of personal information to third parties shall be only for identi
         referred to the Data Privacy Officer for resolution.\n\n
     </li>
 </string>
+
+
     <string name="terms_and_conditions_content">Intelehealth on behalf of itself and its affiliates/group companies including
         Intelehealth and Telehealth Innovations Foundation under the brand \"Intelehealth\" (\"Intelehealth\" or \"Us\"or \"We\"),
         is the author and publisher of the websites www.intelehealth.org, www.covidhelp.in and the mobile
@@ -1835,7 +1840,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="update_app_protocol">Update app protocol!</string>
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
     <string name="previously_scheduled_appointment_details">Previously scheduled appointment details</string>
-    <string name="loading_slots">Loading slots...</string>
+    <string name="loading_slots">Loading slots…</string>
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
     <string name="social_category">Social Category</string>
