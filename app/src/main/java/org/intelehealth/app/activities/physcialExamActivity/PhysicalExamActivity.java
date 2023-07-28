@@ -482,7 +482,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                             // here it will check if take picture was selected previously; if yes than the imagepath against it, it will
                             // delete it and than set the button to unselected.
                             Node currNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i);
-                            if (currNode.isSelected()) {
+                            if (currNode.isSelected() && currNode.getInputType().equals("camera") && !currNode.getInputType().isEmpty()) {
+                                // this will be lopping the answer options loop. If previous selected opt was Take picture and for it if imagepath is present ie, image captured than we will be deleting only that specific ans.
                                 String imageFilePath = physicalExamMap.getImagePath();
                                 question.setImagePath(imageFilePath);
                                 imageFilePath = question.getImagePath();
@@ -494,10 +495,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                                         throw new RuntimeException(e);
                                     }
                                 }
-                                physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
-                                //
-
                             }
+                            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();  // for each opt that doesnt match the opt that is selected (clicked) by user -> unselect them.
                         }
                     }
                 }
