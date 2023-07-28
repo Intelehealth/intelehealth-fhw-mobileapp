@@ -98,6 +98,8 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
+    private boolean isMultiChoice = false;
+    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
 
 
     //for Associated Complaints and medical history only
@@ -160,7 +162,10 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
-            //this.id = jsonNode.getString("id");
+            this.id = jsonNode.getString("id");
+            this.isMultiChoice = jsonNode.optBoolean("multi-choice");
+
+            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
 
             this.text = jsonNode.getString("text");
 
@@ -344,8 +349,10 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
-        //this.id = source.id;
+        this.id = source.id;
         this.text = source.text;
+        this.isMultiChoice = source.isMultiChoice;
+        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
         this.display_gujarati = source.display_gujarati;
@@ -417,6 +424,39 @@ public class Node implements Serializable {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 node.getOption(position).toggleSelected();
                 adapter.notifyDataSetChanged();
+
+                // exclude from multi-choice - start
+                Node currentNode = node.getOption(position);
+                if (node.optionsList != null && !node.optionsList.isEmpty() && !node.isMultiChoice) {
+                    for (int i = 0; i < node.optionsList.size(); i++) {
+                        Node innerNode = node.optionsList.get(i);
+                        innerNode.setUnselected();
+                    }
+                    currentNode.setSelected(true);
+                }
+
+                if (node.optionsList != null && !node.optionsList.isEmpty() && node.isMultiChoice) {
+                    if (currentNode.isExcludedFromMultiChoice) {
+
+                        if (currentNode.isSelected()) {
+                            for (int i = 0; i < node.optionsList.size(); i++) {
+                                Node innerNode = node.optionsList.get(i);
+                                innerNode.setUnselected();
+                            }
+                            currentNode.setSelected(true);
+                        } else
+                            currentNode.setUnselected();
+
+                    } else {
+                        for (int i = 0; i < node.optionsList.size(); i++) {
+                            Node innerNode = node.optionsList.get(i);
+                            if (innerNode.isExcludedFromMultiChoice)
+                                innerNode.setUnselected();
+                        }
+                    }
+                }
+                // exclude from multi-choice - start
+
                 if (node.getOption(position).getInputType() != null) {
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
                 }
@@ -2820,6 +2860,15 @@ public class Node implements Serializable {
         return imagePathList;
     }
 
+    public boolean deleteImagePath(String imagePath) {
+        if (imagePath != null && imagePathList.contains(imagePath)) {
+            imagePathList.remove(imagePath);
+            return true;
+        }
+        else
+            return false;
+    }
+
     public void setImagePathList(List<String> imagePathList) {
         this.imagePathList = imagePathList;
     }
@@ -2830,8 +2879,23 @@ public class Node implements Serializable {
         }
         if (imagePath != null && !imagePath.isEmpty()) {
             imagePathList.add(imagePath);
-
         }
+    }
+
+    public boolean isMultiChoice() {
+        return isMultiChoice;
+    }
+
+    public void setMultiChoice(boolean multiChoice) {
+        isMultiChoice = multiChoice;
+    }
+
+    public boolean isExcludedFromMultiChoice() {
+        return isExcludedFromMultiChoice;
+    }
+
+    public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
+        isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
