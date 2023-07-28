@@ -153,6 +153,7 @@
         android:lineSpacingExtra="0sp"
         android:text="@string/this_field_is_mandatory"
         android:visibility="gone" />
+
     <TextView
         android:id="@+id/tv_error_hospital_other"
         style="@style/Textview_Validation_Error"
@@ -164,6 +165,7 @@
         android:lineSpacingExtra="0sp"
         android:text="@string/enter_hospital_other_error"
         android:visibility="gone" />
+
     <TextView
         android:id="@+id/textView11"
         style="@style/LabelStyleAddPatient"
@@ -297,12 +299,12 @@
                 android:id="@+id/et_bed_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
                 android:hint="@string/bed_number"
                 android:imeOptions="actionNext"
-                android:inputType="text"
                 android:importantForAutofill="no"
+                android:inputType="text"
                 android:maxLength="3"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="@dimen/input_inner_size" />

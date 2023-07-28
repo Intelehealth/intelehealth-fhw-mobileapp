@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/screen_padding"
     android:padding="@dimen/screen_padding"
+    android:paddingHorizontal="@dimen/screen_padding"
     tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_other_info"
         android:layout_width="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/margin_bottom_scroll_other"
         android:background="@drawable/container_bg_rounded"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:padding="@dimen/screen_container_padding"
         android:scrollbars="none">
 
@@ -116,38 +116,53 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-            <LinearLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/tv_admission_date_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/error_tv_margin_end"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
+                    android:text="@string/this_field_is_mandatory"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline1"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_admission_time_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
+                    android:text="@string/this_field_is_mandatory"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@id/guideline1"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <TextView
                 android:id="@+id/textView5"
                 style="@style/LabelStyleAddPatient"
@@ -233,38 +248,50 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/tv_parity_date_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/error_tv_margin_end"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_parity_time_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView6"
@@ -423,38 +450,50 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/tv_labour_diagnosed_date_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/error_tv_margin_end"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline3"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_labour_diagnosed_time_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@id/guideline3"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout
                 android:id="@+id/textView8"
@@ -581,38 +620,50 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_marginTop="@dimen/validation_error_tv_margin_top">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/tv_sac_ruptured_date_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginEnd="@dimen/error_tv_margin_end"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline4"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_sac_ruptured_time_error"
                     style="@style/Textview_Validation_Error"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="end"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@id/guideline4"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include layout="@layout/view_other_tab_common_component" />
 

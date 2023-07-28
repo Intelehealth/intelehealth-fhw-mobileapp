@@ -187,4 +187,5 @@ dependencies {
 
     implementation 'com.hbb20:ccp:2.6.1'
 }
-apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'org.jetbrains.kotlin.android'// Google Play services Gradle plugin
