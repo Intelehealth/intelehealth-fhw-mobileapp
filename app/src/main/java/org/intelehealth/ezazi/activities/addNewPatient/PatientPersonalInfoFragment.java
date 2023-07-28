@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -34,6 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,6 +89,7 @@ import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
 import org.intelehealth.ezazi.ui.dialog.CalendarDialog;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
+import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.EditTextUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -176,6 +179,8 @@ public class PatientPersonalInfoFragment extends Fragment {
     private MaterialCardView cardFirstName, cardLastName, cardDob, cardAge, cardMobileNumber, cardAlternateMobileNumber;
     private TextView tvErrorFirstName, tvErrorLastName, tvErrorDob, tvErrorAge, tvErrorMobileNo, tvErrAlternateMobileNo;
     private PatientAttributesModel patientAttributesModel;
+    private NestedScrollView scrollviewPersonalInfo;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -252,16 +257,20 @@ public class PatientPersonalInfoFragment extends Fragment {
         btnSaveUpdate = view.findViewById(R.id.btn_save_update_first);
         i_privacy = getActivity().getIntent();
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
+        scrollviewPersonalInfo = view.findViewById(R.id.scroll_personal_info);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mDOB.setShowSoftInputOnFocus(false);
             mAge.setShowSoftInputOnFocus(false);
         }
 
-        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+     /*   mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
-
+*/
+        mFirstName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        mMiddleName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        mLastName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
 
         mFirstName.addTextChangedListener(new MyTextWatcher(mFirstName));
         mLastName.addTextChangedListener(new MyTextWatcher(mLastName));
@@ -909,6 +918,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     private void onPatientCreateClicked() {
         if (!areValidFields()) {
+            setScrollToFocusedItem();
             return;
         }
         patientUuid = UUID.randomUUID().toString();
@@ -1348,6 +1358,19 @@ public class PatientPersonalInfoFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void setScrollToFocusedItem() {
+        if (requireView().findFocus() != null) {
+            Point point = getLocationOnScreen(requireView().findFocus());
+            scrollviewPersonalInfo.smoothScrollTo(0, point.y);
+        }
+    }
+
+    public static Point getLocationOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        return new Point(location[0], location[1]);
     }
 
 /*

@@ -2,8 +2,10 @@ package org.intelehealth.ezazi.activities.addNewPatient;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -38,6 +41,7 @@ import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesModel;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
+import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
@@ -103,6 +107,7 @@ public class PatientAddressInfoFragment extends Fragment {
     ArrayAdapter<String> districtAdapter, stateAdapter;
     String district;
     PatientAttributesModel patientAttributesModel;
+    private NestedScrollView scrollviewAddressInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,13 +145,19 @@ public class PatientAddressInfoFragment extends Fragment {
 
         cardCountry = view.findViewById(R.id.card_country);
         cardState = view.findViewById(R.id.card_state);
-        cardCityVillage = view.findViewById(R.id.card_city_village);
+        cardCityVillage = view.findViewById(R.id.card_city_et);
         etLayoutCityVillage = view.findViewById(R.id.et_layout_city_village);
         cardPostalCode = view.findViewById(R.id.card_postal_code);
         cardPostalCode = view.findViewById(R.id.card_postal_code);
         cardDistrict = view.findViewById(R.id.card_district);
         etDistrict = view.findViewById(R.id.et_district);
         etCityVillage = view.findViewById(R.id.et_city_village);
+        scrollviewAddressInfo = view.findViewById(R.id.scroll_address_info);
+
+        etCityVillage.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        etAddress1.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        etAddress2.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+
 
         autotvState.addTextChangedListener(new MyTextWatcher(autotvState));
         autotvDistrict.addTextChangedListener(new MyTextWatcher(autotvDistrict));
@@ -482,6 +493,7 @@ public class PatientAddressInfoFragment extends Fragment {
         }*/
 
         if (!areValidFields()) {
+            setScrollToFocusedItem();
             return;
         }
         PatientsDAO patientsDAO = new PatientsDAO();
@@ -600,7 +612,7 @@ public class PatientAddressInfoFragment extends Fragment {
 
         String stateText = autotvState.getText().toString();
         boolean isStateInList = searchForState(stateText);
-        if (TextUtils.isEmpty(stateText) || !isStateInList) {
+        if (TextUtils.isEmpty(stateText)) {
 
             /*tvErrorState.setVisibility(View.VISIBLE);
             tvErrorState.setText(getString(R.string.select_state));
@@ -612,7 +624,7 @@ public class PatientAddressInfoFragment extends Fragment {
 
         }
         String isDistrictString = searchForDistrict(autotvDistrict.getText().toString());
-        if (TextUtils.isEmpty(autotvDistrict.getText().toString()) || isDistrictString.equalsIgnoreCase("notInList")) {
+        if (TextUtils.isEmpty(autotvDistrict.getText().toString())) {
 
             /*tvDistrictError.setVisibility(View.VISIBLE);
             tvDistrictError.setText(getString(R.string.select_district));*/
@@ -627,7 +639,8 @@ public class PatientAddressInfoFragment extends Fragment {
 
          /*   tvErrorCityVillage.setVisibility(View.VISIBLE);
             tvErrorCityVillage.setText(getString(R.string.select_city_village));
-            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+         */
+            cardCityVillage.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
             errorDetailsList.add(new ErrorManagerModel(etCityVillage, tvErrorCityVillage, getString(R.string.select_city_village), cardCityVillage));
 
         } else {
@@ -857,4 +870,18 @@ public class PatientAddressInfoFragment extends Fragment {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    private void setScrollToFocusedItem() {
+        if (requireView().findFocus() != null) {
+            Point point = getLocationOnScreen(requireView().findFocus());
+            scrollviewAddressInfo.smoothScrollTo(0, point.y);
+        }
+    }
+
+    public static Point getLocationOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        return new Point(location[0], location[1]);
+    }
+
 }
