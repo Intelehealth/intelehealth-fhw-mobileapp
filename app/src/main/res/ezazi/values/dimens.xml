@@ -36,6 +36,7 @@
     <dimen name="heading2">@dimen/std_14sp</dimen>
     <dimen name="body">@dimen/std_12sp</dimen>
     <dimen name="caption">@dimen/std_12sp</dimen>
+    <dimen name="input_hint_text_size">@dimen/std_10sp</dimen>
     <dimen name="between_text_margin">@dimen/std_4dp</dimen>
     <dimen name="fab_size">@dimen/std_48dp</dimen>
     <dimen name="button_corner_radius">@dimen/std_8dp</dimen>
@@ -278,5 +279,5 @@
     <dimen name="contact_summary_margin_end">8dp</dimen>
     <dimen name="add_patient_subheading_text_size">@dimen/std_16sp</dimen>
     <dimen name="whatsapp_icon_size_new">@dimen/std_18dp</dimen>
-
+    <dimen name="tab_margin_from_text">@dimen/std_16dp</dimen>
 </resources>

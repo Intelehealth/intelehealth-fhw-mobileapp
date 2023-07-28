@@ -3,7 +3,7 @@
     <dimen name="std_135dp">135dp</dimen>
     <dimen name="negative_vector_margin">-200dp</dimen>
     <dimen name="screen_title_size">@dimen/std_36sp</dimen>
-    <dimen name="screen_padding">@dimen/activity_horizontal_margin</dimen>
+    <dimen name="screen_padding">@dimen/std_50dp</dimen>
     <dimen name="login_screen_padding">@dimen/std_135dp</dimen>
     <dimen name="screen_container_padding">@dimen/std_20dp</dimen>
     <dimen name="list_container_padding">@dimen/std_8dp</dimen>
@@ -12,7 +12,7 @@
     <dimen name="max_address_input_height">70dp</dimen>
     <dimen name="input_top_margin">@dimen/std_21dp</dimen>
     <dimen name="input_label_size">@dimen/std_21sp</dimen>
-    <dimen name="input_inner_size">@dimen/std_24sp</dimen>
+    <dimen name="input_inner_size">@dimen/std_21sp</dimen>
     <dimen name="forgot_pwd_size">@dimen/std_21sp</dimen>
     <dimen name="form_top_margin">@dimen/std_69dp</dimen>
     <dimen name="screen_title_top_margin">@dimen/std_150dp</dimen>
@@ -36,6 +36,7 @@
     <dimen name="heading2">@dimen/std_20sp</dimen>
     <dimen name="body">@dimen/std_18sp</dimen>
     <dimen name="caption">@dimen/std_16sp</dimen>
+    <dimen name="input_hint_text_size">@dimen/std_14sp</dimen>
     <dimen name="between_text_margin">@dimen/std_8dp</dimen>
     <dimen name="fab_size">@dimen/std_92dp</dimen>
     <dimen name="button_corner_radius">@dimen/std_12dp</dimen>
@@ -132,7 +133,7 @@
     <dimen name="time_margin_start">10dp</dimen>
     <dimen name="titles_margin_top">16dp</dimen>
     <dimen name="layout_stages_padding">16dp</dimen>
-    <dimen name="add_picture_text_size">22sp</dimen>
+    <dimen name="add_picture_text_size">21sp</dimen>
     <dimen name="layout_add_patient_padding_start">14dp</dimen>
     <dimen name="layout_add_patient_padding_top">12dp</dimen>
     <dimen name="layout_add_patient_padding_end">14dp</dimen>
@@ -246,5 +247,5 @@
     <dimen name="contact_summary_margin_end">12dp</dimen>
     <dimen name="add_patient_subheading_text_size">@dimen/std_23sp</dimen>
     <dimen name="whatsapp_icon_size_new">@dimen/std_26dp</dimen>
-
+    <dimen name="tab_margin_from_text">@dimen/std_24dp</dimen>
 </resources>

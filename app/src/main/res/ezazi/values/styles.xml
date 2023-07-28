@@ -10,6 +10,7 @@
         <item name="errorEnabled">true</item>
         <item name="errorIconTint">@android:color/transparent</item>
         <item name="errorTextColor">@color/red</item>
+        <item name="hintTextAppearance">@style/Theme.EZazi.Hint.Text</item>
         <item name="boxStrokeErrorColor">@color/red</item>
         <item name="android:textColor">@color/colorInputText</item>
         <item name="iconEndPadding">@dimen/std_16dp</item>
@@ -384,7 +385,6 @@
         <item name="boxBackgroundMode">filled</item>
         <item name="android:padding">0dp</item>
         <item name="android:textAppearance">@style/Theme.EZazi.Regular.Text</item>
-        <item name="hintTextAppearance">@style/Theme.EZazi.Hint.Text</item>
     </style>
 
     <style name="Theme.EZazi.Text.Regular" parent="TextAppearance.AppCompat">
@@ -395,10 +395,12 @@
 
     <style name="Theme.EZazi.Hint.Text" parent="Theme.EZazi.Text.Regular">
         <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textSize">@dimen/input_hint_text_size</item>
     </style>
 
     <style name="Theme.EZazi.Regular.Text" parent="Theme.EZazi.Text.Regular">
         <item name="android:textColor">@color/font_black_0</item>
+        <item name="android:textSize">@dimen/input_inner_size</item>
     </style>
 
     <style name="Theme.EZazi.Material.CardView" parent="Widget.MaterialComponents.CardView">
@@ -410,8 +412,8 @@
         <item name="strokeColor">@color/colorInputBgBorder</item>
         <item name="android:paddingBottom">@dimen/list_container_padding</item>
         <item name="android:paddingTop">@dimen/list_container_padding</item>
-        <item name="android:paddingStart">@dimen/list_container_padding</item>
-        <item name="android:paddingEnd">@dimen/list_container_padding</item>
+<!--        <item name="android:paddingStart">@dimen/list_container_padding</item>-->
+<!--        <item name="android:paddingEnd">@dimen/list_container_padding</item>-->
 
     </style>
 
