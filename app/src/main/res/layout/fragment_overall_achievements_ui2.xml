@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -91,7 +92,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card2_common_achieve_margin_start"
@@ -100,13 +101,18 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/ll_patient_satisfaction"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card1_achieve_margin_end"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_patients_card_bg_green"
                 android:orientation="vertical"
-                android:padding="@dimen/card_common_achieve_padding">
+                android:padding="@dimen/card_common_achieve_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ll_daily_average_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:layout_width="@dimen/card_achieve_icon_width"
@@ -136,13 +142,18 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_daily_average_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_patients_card_bg_1"
                 android:orientation="vertical"
-                android:padding="@dimen/card_common_achieve_padding">
+                android:padding="@dimen/card_common_achieve_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ll_patient_satisfaction"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:layout_width="@dimen/card_achieve_icon_width"
@@ -168,7 +179,7 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 </ScrollView>

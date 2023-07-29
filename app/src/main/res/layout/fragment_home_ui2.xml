@@ -274,7 +274,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView4_appointment"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/card_appointment_margin_end"
                 android:background="@drawable/ui2_card_bg_gray_border"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
