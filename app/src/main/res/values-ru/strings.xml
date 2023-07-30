@@ -853,7 +853,7 @@
     <string name="loading_slots">Загрузка…</string>
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
-    <string name="all_patients_txt">All Patients</string>
+    <string name="all_patients_txt">Все пациенты</string>
     <string name="alert_label_txt">Alert!</string>
     <string name="describe_hint_txt">Describe...</string>
     <string name="duration_validation_txt">Please select the duration number</string>
@@ -1468,5 +1468,8 @@
         практиками обеспечения конфиденциальности, должны быть переданы для разрешения специалисту по обеспечению конфиденциальности данных.</li>
 
 </string>
+
+    <string name="clear">Ясно</string>
+
 
 </resources>

@@ -80,7 +80,6 @@ public class NotificationUtils {
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
         mNotifyManager.notify(notificationId, mBuilder.build());
-
     }
 
     public void clearAllNotifications(Context context) {

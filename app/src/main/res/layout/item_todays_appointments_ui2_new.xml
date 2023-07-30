@@ -131,7 +131,7 @@
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
                 android:background="@drawable/pres_received_drawable_rounded_corners"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/pres_status_text"
