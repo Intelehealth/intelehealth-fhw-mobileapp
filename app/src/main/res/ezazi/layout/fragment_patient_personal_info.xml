@@ -1,99 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="@dimen/screen_padding"
-    android:paddingBottom="@dimen/screen_padding"
-    tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
+<layout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_personal_info"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_save_update_first"
-        android:layout_alignParentTop="true"
-        android:fillViewport="true"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/margin_bottom_scroll"
-        android:scrollbars="none">
+        android:paddingHorizontal="@dimen/screen_padding"
+        android:paddingBottom="@dimen/screen_padding"
+        tools:context=".activities.addNewPatient.PatientPersonalInfoFragment">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_personal_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <FrameLayout
-                android:id="@+id/layout_profile"
-                android:layout_width="@dimen/profile_layout_size"
-                android:layout_height="@dimen/profile_layout_size"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/screen_container_padding">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="@dimen/card_profile_width"
-                    android:layout_height="@dimen/card_profile_height"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="@dimen/card_profile_corner_radius">
-
-                    <ImageView
-                        android:id="@+id/iv_profile_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:src="@drawable/dummy_profile_icon" />
-
-                </androidx.cardview.widget.CardView>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_update_photo"
-                    android:layout_width="@dimen/card_profile_icon_size"
-                    android:layout_height="@dimen/card_profile_icon_size"
-                    android:layout_gravity="bottom|end"
-                    android:scaleType="center"
-                    android:visibility="visible"
-                    app:backgroundTint="@color/colorGray"
-                    app:fabCustomSize="@dimen/card_profile_icon_size"
-                    app:maxImageSize="@dimen/card_profile_icon_max_size"
-                    app:srcCompat="@drawable/ic_camera_edit_photo"
-                    app:tint="@color/colorPrimary" />
-
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-16dp"
-                android:gravity="center"
-                android:text="@string/add_a_picture"
-                android:textColor="@color/darkGray"
-                android:textSize="@dimen/add_picture_text_size" />
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_save_update_first"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/screen_padding"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_profile"
-                android:layout_marginTop="@dimen/tab_margin_from_text"
-                android:background="@drawable/container_bg_rounded"
-                android:orientation="vertical"
-                android:padding="@dimen/screen_container_padding">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_first_name"
-                    style="@style/Theme.EZazi.Material.CardView"
+                <FrameLayout
+                    android:id="@+id/layout_profile"
+                    android:layout_width="@dimen/profile_layout_size"
+                    android:layout_height="@dimen/profile_layout_size"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/screen_container_padding">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/card_profile_width"
+                        android:layout_height="@dimen/card_profile_height"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="@dimen/card_profile_corner_radius">
+
+                        <ImageView
+                            android:id="@+id/iv_profile_photo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:contentDescription="@string/add_a_picture"
+                            android:src="@drawable/dummy_profile_icon" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fab_update_photo"
+                        android:layout_width="@dimen/card_profile_icon_size"
+                        android:layout_height="@dimen/card_profile_icon_size"
+                        android:layout_gravity="bottom|end"
+                        android:contentDescription="@string/saving_captured_image"
+                        android:scaleType="center"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/colorGray"
+                        app:fabCustomSize="@dimen/card_profile_icon_size"
+                        app:maxImageSize="@dimen/card_profile_icon_max_size"
+                        app:srcCompat="@drawable/ic_camera_edit_photo"
+                        app:tint="@color/colorPrimary" />
+
+                </FrameLayout>
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-16dp"
+                    android:gravity="center"
+                    android:text="@string/add_a_picture"
+                    android:textColor="@color/darkGray"
+                    android:textSize="@dimen/add_picture_text_size" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_profile"
+                    android:layout_marginTop="@dimen/tab_margin_from_text"
+                    android:background="@drawable/container_bg_rounded"
+                    android:orientation="vertical"
+                    android:padding="@dimen/screen_container_padding">
+
+                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/inputLayoutFname"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:gravity="center_vertical"
                         android:hint="@string/first_name">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -107,34 +103,16 @@
                             android:maxLines="1"
                             android:nextFocusForward="@id/et_middle_name"
                             android:singleLine="true"
+                            android:text="asfdsfsdf"
                             android:textSize="@dimen/input_inner_size" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                </com.google.android.material.card.MaterialCardView>
-
-                <TextView
-                    android:id="@+id/firstname_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_prescription"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_container_padding">
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/inputLayoutMname"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
+                        android:layout_marginVertical="@dimen/list_container_padding"
                         android:hint="@string/middle_name">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -148,21 +126,14 @@
                             android:nextFocusForward="@id/et_last_name"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_last_name"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_container_padding">
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/inputLayoutLname"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
+                        android:layout_marginVertical="@dimen/list_container_padding"
                         android:hint="@string/last_name">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -176,33 +147,14 @@
                             android:nextFocusForward="@id/et_dob"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <TextView
-                    android:id="@+id/lastname_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_dob"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_container_padding">
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/etLayout_dob"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
+                        android:layout_marginVertical="@dimen/list_container_padding"
                         android:hint="@string/date_of_birth"
                         app:endIconDrawable="@drawable/ic_calendar_new"
                         app:endIconMode="custom">
@@ -220,45 +172,14 @@
                             android:nextFocusForward="@id/et_age"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <TextView
-                    android:id="@+id/dob_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/please_enter_mobile_number"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_selected_date_dob"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_age_dob"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_age"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_container_padding">
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/etLayout_age"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
+                        android:layout_marginVertical="@dimen/list_container_padding"
                         android:hint="@string/age">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -274,32 +195,14 @@
                             android:nextFocusForward="@id/et_mobile_no"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <TextView
-                    android:id="@+id/age_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_mobile_no"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_container_padding">
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/inputLayoutMobile"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
+                        android:layout_marginVertical="@dimen/list_container_padding"
                         android:hint="@string/mobile_number">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -315,32 +218,14 @@
                             android:nextFocusForward="@id/et_alternate_mobile"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <TextView
-                    android:id="@+id/mobile_no_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:lineSpacingExtra="0sp"
-                    android:text="This field is mandatory"
-                    android:visibility="gone" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_alternate_mobile_no"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_container_padding">
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                        android:id="@+id/inputLayoutAlternateMobile"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
+                        android:layout_marginTop="@dimen/list_container_padding"
                         android:hint="@string/alternate_mobile_no">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -356,32 +241,21 @@
                             android:nextFocusForward="@id/btn_save_update_first"
                             android:singleLine="true"
                             android:textSize="@dimen/input_inner_size" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </com.google.android.material.card.MaterialCardView>
+                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <TextView
-                    android:id="@+id/alternate_no_error"
-                    style="@style/Textview_Validation_Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/this_field_is_mandatory"
-                    android:visibility="gone" />
 
+                </LinearLayout>
 
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_save_update_first"
-        style="@style/Theme.EZazi.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/next"
-        app:rippleColor="@color/white" />
-</RelativeLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_update_first"
+            style="@style/Theme.EZazi.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/next"
+            app:rippleColor="@color/white" />
+    </RelativeLayout>
+</layout>

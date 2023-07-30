@@ -372,8 +372,8 @@
 
 
     <style name="Theme.EZazi.Input.Add.Patient" parent="Theme.EZazi.Input">
-        <item name="boxStrokeColor">@color/white</item>
-        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeColor">@color/input_focus_color</item>
+        <item name="boxStrokeWidth">@dimen/input_stroke_size</item>
         <item name="errorEnabled">false</item>
         <item name="boxCornerRadiusBottomEnd">8dp</item>
         <item name="boxCornerRadiusBottomStart">8dp</item>
@@ -382,9 +382,10 @@
         <item name="hintTextColor">@color/darkGray</item>
         <item name="boxBackgroundColor">@color/white</item>
         <item name="hintEnabled">true</item>
-        <item name="boxBackgroundMode">filled</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:textAppearance">@style/Theme.EZazi.Regular.Text</item>
+<!--        <item name="boxBackgroundMode">outline</item>-->
+<!--        <item name="boxCollapsedPaddingTop">-100dp</item>-->
+        <!--        <item name="android:padding">0dp</item>-->
+        <!--        <item name="android:textAppearance">@style/Theme.EZazi.Regular.Text</item>-->
     </style>
 
     <style name="Theme.EZazi.Text.Regular" parent="TextAppearance.AppCompat">
@@ -396,6 +397,7 @@
     <style name="Theme.EZazi.Hint.Text" parent="Theme.EZazi.Text.Regular">
         <item name="android:textColor">@color/darkGray</item>
         <item name="android:textSize">@dimen/input_hint_text_size</item>
+        <item name="android:paddingTop">@dimen/std_16dp</item>
     </style>
 
     <style name="Theme.EZazi.Regular.Text" parent="Theme.EZazi.Text.Regular">
@@ -412,8 +414,8 @@
         <item name="strokeColor">@color/colorInputBgBorder</item>
         <item name="android:paddingBottom">@dimen/list_container_padding</item>
         <item name="android:paddingTop">@dimen/list_container_padding</item>
-<!--        <item name="android:paddingStart">@dimen/list_container_padding</item>-->
-<!--        <item name="android:paddingEnd">@dimen/list_container_padding</item>-->
+        <!--        <item name="android:paddingStart">@dimen/list_container_padding</item>-->
+        <!--        <item name="android:paddingEnd">@dimen/list_container_padding</item>-->
 
     </style>
 
@@ -529,7 +531,7 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
         <item name="strokeColor">@color/white</item>
-        <item name="endIconDrawable">@drawable/ic_dropdown</item>
+        <item name="endIconDrawable">@drawable/ic_dropdown_supported</item>
         <item name="boxBackgroundColor">@color/color_input_bg</item>
         <item name="boxStrokeColor">@color/white</item>
         <item name="boxStrokeWidth">0dp</item>
@@ -636,6 +638,7 @@
         <!--        <item name="android:fadeScrollbars">false</item>-->
         <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
     </style>
+
     <style name="Theme.EZazi.Text.Stages" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/add_patient_subheading_text_size</item>
         <item name="android:textColor">@color/color_icon_btn_text</item>

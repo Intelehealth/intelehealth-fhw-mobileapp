@@ -8,5 +8,5 @@
                 android:right="@dimen/list_container_padding" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_dropdown" />
+    <item android:drawable="@drawable/ic_dropdown_supported" />
 </layer-list>

@@ -82,11 +82,13 @@ import org.intelehealth.ezazi.database.dao.ImagesPushDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
+import org.intelehealth.ezazi.databinding.FragmentPatientPersonalInfoBinding;
 import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientAttributesModel;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
+import org.intelehealth.ezazi.ui.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.CalendarDialog;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
@@ -123,23 +125,24 @@ import java.util.UUID;
  *
  */
 public class PatientPersonalInfoFragment extends Fragment {
+    public PatientPersonalInfoFragment(){
+        super(R.layout.fragment_patient_personal_info);
+    }
+
     private static final String TAG = "PatientPersonalInfoFrag";
 
     public static PatientPersonalInfoFragment getInstance() {
         return new PatientPersonalInfoFragment();
     }
 
-    View view;
-    SessionManager sessionManager = null;
-    Context mContext;
+    private SessionManager sessionManager = null;
     private List<ProviderDTO> mProviderDoctorList = new ArrayList<ProviderDTO>();
-    TextInputEditText mFirstName, mMiddleName, mLastName, mDOB, mAge, mMobileNumber, mAlternateNumber;
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     private boolean mIsEditMode = false;
-    String patientID_edit;
+    private String patientID_edit;
     boolean fromSummary;
-    Patient patient1 = new Patient();
+    private Patient patient1 = new Patient();
     private boolean hasLicense = false;
     private String patientUuid = "";
     UuidGenerator uuidGenerator = new UuidGenerator();
@@ -150,45 +153,33 @@ public class PatientPersonalInfoFragment extends Fragment {
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
     private int mAgeDays = 0;
-    Calendar today = Calendar.getInstance();
-    Calendar dob = Calendar.getInstance();
-    int dob_indexValue = 15;
-    MaterialAlertDialogBuilder mAgePicker;
-    MaterialButton btnSaveUpdate;
-    //String uuid = "";
-    PatientDTO patientDTO = new PatientDTO();
+    private Calendar today = Calendar.getInstance();
+    private Calendar dob = Calendar.getInstance();
+    private int dob_indexValue = 15;
+    private MaterialAlertDialogBuilder mAgePicker;
+    private PatientDTO patientDTO = new PatientDTO();
     private String mCurrentPhotoPath;
-    ImagesDAO imagesDAO = new ImagesDAO();
-    Intent i_privacy;
-    String privacy_value;
+    private String privacy_value;
     private String mAlternateNumberString = "";
-    PatientsDAO patientsDAO = new PatientsDAO();
-    boolean fromSecondScreen = false;
+    private PatientsDAO patientsDAO = new PatientsDAO();
+    private boolean fromSecondScreen = false;
     private PatientAddressInfoFragment fragment_secondScreen;
-    boolean patient_detail = false;
-    boolean editDetails = false;
-    //    ImageView ivPersonal, ivAddress, ivOther;
+    private boolean patient_detail = false;
+    private boolean editDetails = false;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
-    FloatingActionButton fab;
-    ImageView ivProfilePhoto;
-    TextInputLayout etLayoutDob, etLayoutAge;
     int MY_REQUEST_CODE = 5555;
     private String dobToDb;
     //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
-    private TextView tvDobForDb, tvAgeDob;
-    private MaterialCardView cardFirstName, cardLastName, cardDob, cardAge, cardMobileNumber, cardAlternateMobileNumber;
-    private TextView tvErrorFirstName, tvErrorLastName, tvErrorDob, tvErrorAge, tvErrorMobileNo, tvErrAlternateMobileNo;
     private PatientAttributesModel patientAttributesModel;
-    private NestedScrollView scrollviewPersonalInfo;
 
+    private FragmentPatientPersonalInfoBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding = FragmentPatientPersonalInfoBinding.bind(view);
         updateLocale();
-        view = inflater.inflate(R.layout.fragment_patient_personal_info, container, false);
-        mContext = getActivity();
         initUI();
-        return view;
     }
 
     private void updateLocale() {
@@ -215,28 +206,6 @@ public class PatientPersonalInfoFragment extends Fragment {
 //        tvAddressInfo = getActivity().findViewById(R.id.tv_address_info);
 //        tvOtherInfo = getActivity().findViewById(R.id.tv_other_info);
 
-        etLayoutAge = view.findViewById(R.id.etLayout_age);
-        etLayoutDob = view.findViewById(R.id.etLayout_dob);
-
-        tvDobForDb = view.findViewById(R.id.tv_selected_date_dob);
-        tvAgeDob = view.findViewById(R.id.tv_age_dob);
-
-        //cards for input fields
-        cardFirstName = view.findViewById(R.id.card_first_name);
-        cardLastName = view.findViewById(R.id.card_last_name);
-        cardDob = view.findViewById(R.id.card_dob);
-        cardAge = view.findViewById(R.id.card_age);
-        cardMobileNumber = view.findViewById(R.id.card_mobile_no);
-        cardAlternateMobileNumber = view.findViewById(R.id.card_alternate_mobile_no);
-
-        //error textviews
-        tvErrorFirstName = view.findViewById(R.id.firstname_error);
-        tvErrorLastName = view.findViewById(R.id.lastname_error);
-        tvErrorDob = view.findViewById(R.id.dob_error);
-        tvErrorAge = view.findViewById(R.id.age_error);
-        tvErrorMobileNo = view.findViewById(R.id.mobile_no_error);
-        tvErrAlternateMobileNo = view.findViewById(R.id.alternate_no_error);
-
 
         /*new*/
         ProviderDAO providerDAO = new ProviderDAO();
@@ -245,39 +214,23 @@ public class PatientPersonalInfoFragment extends Fragment {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        fab = view.findViewById(R.id.fab_update_photo);
-        ivProfilePhoto = view.findViewById(R.id.iv_profile_photo);
-        mFirstName = view.findViewById(R.id.et_first_name);
-        mMiddleName = view.findViewById(R.id.et_middle_name);
-        mLastName = view.findViewById(R.id.et_last_name);
-        mDOB = view.findViewById(R.id.et_dob);
-        mAge = view.findViewById(R.id.et_age);
-        mMobileNumber = view.findViewById(R.id.et_mobile_no);
-        mAlternateNumber = view.findViewById(R.id.et_alternate_mobile);
-        btnSaveUpdate = view.findViewById(R.id.btn_save_update_first);
-        i_privacy = getActivity().getIntent();
-        privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
-        scrollviewPersonalInfo = view.findViewById(R.id.scroll_personal_info);
+
+        privacy_value = getActivity().getIntent().getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mDOB.setShowSoftInputOnFocus(false);
-            mAge.setShowSoftInputOnFocus(false);
+            binding.etDob.setShowSoftInputOnFocus(false);
+            binding.etDob.setShowSoftInputOnFocus(false);
         }
 
      /*   mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 */
-        mFirstName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
-        mMiddleName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
-        mLastName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        binding.etFirstName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        binding.etMiddleName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        binding.etLastName.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
 
-        mFirstName.addTextChangedListener(new MyTextWatcher(mFirstName));
-        mLastName.addTextChangedListener(new MyTextWatcher(mLastName));
-        mDOB.addTextChangedListener(new MyTextWatcher(mDOB));
-        mAge.addTextChangedListener(new MyTextWatcher(mAge));
-        mMobileNumber.addTextChangedListener(new MyTextWatcher(mMobileNumber));
-        mAlternateNumber.addTextChangedListener(new MyTextWatcher(mAlternateNumber));
+        setTextChangeWatcher();
 
         setDetailsAsPerConfigFile();
         updatePatientDetailsFromSummary();
@@ -285,28 +238,31 @@ public class PatientPersonalInfoFragment extends Fragment {
         handleClickListeners();
     }
 
+    private void setTextChangeWatcher() {
+        new InputChangeValidationListener(binding.inputLayoutFname, text -> !TextUtils.isEmpty(text))
+                .validate(getString(R.string.enter_first_name));
+
+        new InputChangeValidationListener(binding.inputLayoutLname, text -> !TextUtils.isEmpty(text))
+                .validate(getString(R.string.enter_last_name));
+
+        new InputChangeValidationListener(binding.etLayoutDob, text -> !TextUtils.isEmpty(text))
+                .validate(getString(R.string.select_dob));
+
+        new InputChangeValidationListener(binding.etLayoutAge, text -> !TextUtils.isEmpty(text))
+                .validate(getString(R.string.select_age));
+
+        new InputChangeValidationListener(binding.inputLayoutMobile, text -> !TextUtils.isEmpty(text) && text.length() != 10)
+                .validate(getString(R.string.mobile_no_length));
+
+        new InputChangeValidationListener(binding.inputLayoutAlternateMobile, text -> !TextUtils.isEmpty(text) && text.length() != 10)
+                .validate(getString(R.string.mobile_no_length));
+    }
+
     private void handleClickListeners() {
-        etLayoutDob.setEndIconOnClickListener(v -> {
-            /*Bundle args = new Bundle();
-            args.putString("whichDate", "dobPatient");
-            CustomCalendarViewUI2 dialog = new CustomCalendarViewUI2(getActivity());
-            dialog.setArguments(args);
-            dialog.setTargetFragment(PatientPersonalInfoFragment.this, MY_REQUEST_CODE);
-            if (getFragmentManager() != null) {
-                dialog.show(getFragmentManager(), "PatientPersonalInfoFragment");
-            }*/
+        binding.etLayoutDob.setEndIconOnClickListener(v -> selectDob());
+        binding.etDob.setOnClickListener(v -> selectDob());
+        binding.etLayoutAge.setEndIconOnClickListener(v -> {
 
-            selectDob();
-
-        });
-        mDOB.setOnClickListener(v -> {
-            selectDob();
-        });
-        etLayoutAge.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
         });
     }
 
@@ -314,7 +270,7 @@ public class PatientPersonalInfoFragment extends Fragment {
         boolean isTable = getResources().getBoolean(R.bool.isTabletSize);
         int maxHeight = getResources().getDimensionPixelOffset(R.dimen.std_430dp);
         CalendarDialog dialog = new CalendarDialog
-                .Builder(mContext)
+                .Builder(requireContext())
                 .title("")
                 .positiveButtonLabel(R.string.ok)
                 .maxHeight(!isTable ? maxHeight : 0)
@@ -341,19 +297,19 @@ public class PatientPersonalInfoFragment extends Fragment {
 
                 // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
                 String[] splitedDate = selectedDate.split("/");
-                mDOB.setText(dateToshow1 + " " + splitedDate[2]);
-                tvDobForDb.setText(dobToDb);
+                binding.etDob.setText(dateToshow1 + " " + splitedDate[2]);
                 patientDTO.setDateofbirth(dobToDb);
                 if (mAgeYears < 9) {
-                    mAge.setText("");
-                    mDOB.setText("");
-                    tvErrorAge.setVisibility(View.VISIBLE);
-
+                    binding.etAge.setText("");
+                    binding.etDob.setText("");
+                    binding.etLayoutAge.setErrorEnabled(true);
+                    binding.etLayoutAge.setError(getString(R.string.select_age));
                 } else {
-                    mAge.setText(mAgeYears + "");
+                    binding.etAge.setText(mAgeYears + "");
+                    binding.etLayoutAge.setErrorEnabled(false);
                 }
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-                setSelectedDob(mContext, dobToDb);
+                setSelectedDob(requireContext(), dobToDb);
             } else {
                 Log.d(TAG, "onClick: date empty");
             }
@@ -381,16 +337,15 @@ public class PatientPersonalInfoFragment extends Fragment {
 
             if (fromSecondScreen) {
                 Log.d(TAG, "initUI: fn : " + patientDTO.getFirstname());
-                mFirstName.setText(patientDTO.getFirstname());
-                mMiddleName.setText(patientDTO.getMiddlename());
-                mLastName.setText(patientDTO.getLastname());
-                mMobileNumber.setText(patientDTO.getPhonenumber());
+                binding.etFirstName.setText(patientDTO.getFirstname());
+                binding.etMiddleName.setText(patientDTO.getMiddlename());
+                binding.etLastName.setText(patientDTO.getLastname());
+                binding.etMobileNo.setText(patientDTO.getPhonenumber());
                 Log.d(TAG, "updatePatientDetailsFromSecondScreen: phone : " + patientDTO.getPhonenumber());
-                mAlternateNumber.setText(mAlternateNumberString);
+                binding.etAlternateMobile.setText(mAlternateNumberString);
 
                 Log.d(TAG, "initUI: dob from dto : " + patientDTO.getDateofbirth());
-                String dateOfBirth = getSelectedDob(mContext);
-                tvDobForDb.setText(dateOfBirth);
+                String dateOfBirth = getSelectedDob(requireContext());
                 if (dateOfBirth != null && !dateOfBirth.isEmpty()) {
                     ///String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patientDTO.getDateofbirth());
                     String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(dateOfBirth);
@@ -398,39 +353,39 @@ public class PatientPersonalInfoFragment extends Fragment {
                     Log.d(TAG, "initUI: dob : " + dob);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String dob_text = en__or_dob(dob); //to show text of English into Odiya...
-                        mLastName.setText(dob_text);
+                        binding.etLastName.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String dob_text = en__te_dob(dob); //to show text of English into Telugu...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String dob_text = en__mr_dob(dob); //to show text of English into marathi...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String dob_text = en__as_dob(dob); //to show text of English into assame...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String dob_text = en__kn_dob(dob); //to show text of English into kannada...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = en__ru_dob(dob); //to show text of English into kannada...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
-                        mDOB.setText(dob_text);
+                        binding.etDob.setText(dob_text);
                     } else {
-                        mDOB.setText(dob);
+                        binding.etDob.setText(dob);
                     }
 
                     // dob_edittext.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
@@ -439,7 +394,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
                     // String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
                     String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dateOfBirth).split(" ");
-                    mAgeYears = Integer.valueOf(ymdData[0]);
+                    int mAgeYears = Integer.valueOf(ymdData[0]);
                     //  mAgeMonths = Integer.valueOf(ymdData[1]);
                     // mAgeDays = Integer.valueOf(ymdData[2]);
           /*  String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
@@ -447,14 +402,12 @@ public class PatientPersonalInfoFragment extends Fragment {
                     mAgeDays + getResources().getString(R.string.days);*/
 
                     if (mAgeYears < 9) {
-                        mAge.setText("");
-                        mDOB.setText("");
-                        tvErrorAge.setVisibility(View.VISIBLE);
-
+                        binding.etAge.setText("");
+                        binding.etDob.setText("");
+                        binding.etLayoutAge.setErrorEnabled(true);
+                        binding.etLayoutAge.setError(getString(R.string.select_age));
                     } else {
-                        mAge.setText(mAgeYears + "");
-
-
+                        binding.etAge.setText(mAgeYears + "");
                     }
                 }
 
@@ -462,12 +415,15 @@ public class PatientPersonalInfoFragment extends Fragment {
                 // profile image edit
                 if (patientDTO.getPatientPhoto() != null && !patientDTO.getPatientPhoto().trim().isEmpty()) {
                     //  patient_imgview.setImageBitmap(BitmapFactory.decodeFile(patientDTO.getPatientPhoto()));
-                    Glide.with(getActivity()).load(new File(patientDTO.getPatientPhoto())).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
+                    Glide.with(getActivity()).load(new File(patientDTO.getPatientPhoto()))
+                            .thumbnail(0.25f)
+                            .centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true).into(binding.ivProfilePhoto);
                 }
             }
 
             if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
-                ivProfilePhoto.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
+                binding.ivProfilePhoto.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
 
            /*
 
@@ -516,36 +472,29 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     public void showAlertDialogButtonClicked(String errorMessage) {
 
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(mContext);
-        alertDialogBuilder.setTitle("Config Error");
-        alertDialogBuilder.setMessage(errorMessage);
-        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //mContext.finish();
-                Intent i = new Intent(mContext, SetupActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// This flag ensures all activities on top of the CloseAllViewsDemo are cleared.
-                startActivity(i);
-            }
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(requireContext())
+                .title("Config Error")
+                .content(errorMessage)
+                .positiveButtonLabel(R.string.ok)
+                .hideNegativeButton(true).build();
+
+        dialog.setListener(() -> {
+            Intent i = new Intent(requireContext(), SetupActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// This flag ensures all activities on top of the CloseAllViewsDemo are cleared.
+            startActivity(i);
         });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(mContext, alertDialog);
+
+        dialog.show(getChildFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     public void generateUuid() {
-
         patientUuid = uuidGenerator.UuidGenerator();
     }
 
     private void updateUI(Patient patient) {
-
-        //AlternateNo
         if (patient.getAlternateNo() != null) {
-            mAlternateNumberString = patient.getAlternateNo();
-            mAlternateNumber.setText(mAlternateNumberString);
+            binding.etAlternateMobile.setText(patient.getAlternateNo());
         }
-
     }
 
     private void setscreen(String patientUID) {
@@ -658,30 +607,32 @@ public class PatientPersonalInfoFragment extends Fragment {
         }
         idCursor1.close();
 
-        mFirstName.setText(patient1.getFirst_name());
-        mMiddleName.setText(patient1.getMiddle_name());
-        mLastName.setText(patient1.getLast_name());
-        mMobileNumber.setText(patient1.getPhone_number());
-        mAlternateNumber.setText(patient1.getAlternateNo());
+        binding.etFirstName.setText(patientDTO.getFirstname());
+        binding.etMiddleName.setText(patientDTO.getMiddlename());
+        binding.etLastName.setText(patientDTO.getLastname());
+        binding.etMobileNo.setText(patientDTO.getPhonenumber());
+        Log.d(TAG, "updatePatientDetailsFromSecondScreen: phone : " + patientDTO.getPhonenumber());
+        binding.etAlternateMobile.setText(mAlternateNumberString);
 
-        mCurrentPhotoPath = patient1.getPatient_photo();
+        binding.etFirstName.setText(patient1.getFirst_name());
+        binding.etMiddleName.setText(patient1.getMiddle_name());
+        binding.etLastName.setText(patient1.getLast_name());
+        binding.etMobileNo.setText(patient1.getPhone_number());
+        binding.etAlternateMobile.setText(patient1.getAlternateNo());
+
+        String mCurrentPhotoPath = patient1.getPatient_photo();
         Log.d(TAG, "setscreen: dob :" + patient1.getDate_of_birth());
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
-        mDOB.setText(dob);
-        tvDobForDb.setText(patient1.getDate_of_birth());
+        binding.etDob.setText(dob);
         //for age
         String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
-        mAgeYears = Integer.parseInt(ymdData[0]);
-        mAgeMonths = Integer.parseInt(ymdData[1]);
-        mAgeDays = Integer.parseInt(ymdData[2]);
-
-        // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
-        String[] splitedDate = dob.split("/");
-        mAge.setText(mAgeYears + "");
+        binding.etAge.setText(Integer.parseInt(ymdData[0]) + "");
 
         if (mCurrentPhotoPath != null && !mCurrentPhotoPath.isEmpty()) {
-            Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
+            Glide.with(getActivity()).load(new File(mCurrentPhotoPath))
+                    .thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(binding.ivProfilePhoto);
         }
 
         patientDTO.setCityvillage(patient1.getCity_village());
@@ -705,11 +656,11 @@ public class PatientPersonalInfoFragment extends Fragment {
 //        tvOtherInfo.setTextColor(getResources().getColor(R.color.darkGray));
 
         // next btn click
-        btnSaveUpdate.setOnClickListener(v -> {
+        binding.btnSaveUpdateFirst.setOnClickListener(v -> {
             onPatientCreateClicked();
         });
         // setting patient profile
-        fab.setOnClickListener(new View.OnClickListener() {
+        binding.fabUpdatePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 takePicture();
@@ -718,7 +669,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
 
         // Age - start
-        etLayoutAge.setOnClickListener(new View.OnClickListener() {
+        binding.etLayoutAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAgePicker = new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogStyle);
@@ -935,11 +886,11 @@ public class PatientPersonalInfoFragment extends Fragment {
             if (mCurrentPhotoPath != null) patientDTO.setPatientPhoto(mCurrentPhotoPath);
             else patientDTO.setPatientPhoto(patientDTO.getPatientPhoto());
 
-            patientDTO.setFirstname(mFirstName.getText().toString());
-            patientDTO.setMiddlename(mMiddleName.getText().toString());
-            patientDTO.setLastname(mLastName.getText().toString());
-            patientDTO.setPhonenumber(mMobileNumber.getText().toString());
-            patientDTO.setDateofbirth(tvDobForDb.getText().toString());
+            patientDTO.setFirstname(binding.etFirstName.getText().toString());
+            patientDTO.setMiddlename(binding.etMiddleName.getText().toString());
+            patientDTO.setLastname(binding.etLastName.getText().toString());
+            patientDTO.setPhonenumber(binding.etMobileNo.getText().toString());
+            patientDTO.setDateofbirth(binding.etDob.getText().toString());
 
             // Bundle data
             Bundle bundle = new Bundle();
@@ -947,7 +898,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             bundle.putBoolean("fromFirstScreen", true);
             bundle.putBoolean("patient_detail", patient_detail);
             bundle.putString("patientUuidUpdate", patientID_edit);
-            bundle.putString("mAlternateNumberString", mAlternateNumber.getText().toString());
+            bundle.putString("mAlternateNumberString", binding.etAlternateMobile.getText().toString());
             bundle.putBoolean("editDetails", true);
             bundle.putBoolean("fromSummary", fromSummary);
             bundle.putSerializable("patientAttributes", (Serializable) patientAttributesModel);
@@ -965,102 +916,164 @@ public class PatientPersonalInfoFragment extends Fragment {
     }
 
     private boolean areValidFields() {
-
-        List<ErrorManagerModel> errorDetailsList = new ArrayList<>();
-        if (TextUtils.isEmpty(mFirstName.getText().toString())) {
-            errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_first_name), cardFirstName));
-
+        boolean valid = true;
+        if (TextUtils.isEmpty(binding.etFirstName.getText())) {
+            binding.inputLayoutFname.setError(getString(R.string.enter_first_name));
+            binding.inputLayoutFname.setErrorEnabled(true);
+            valid = false;
         } else {
-            tvErrorFirstName.setVisibility(View.GONE);
-            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
-        if (TextUtils.isEmpty(mLastName.getText().toString())) {
-       /*     mLastName.requestFocus();
-            tvErrorLastName.setVisibility(View.VISIBLE);
-            tvErrorLastName.setText(getString(R.string.enter_last_name));
-            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
-            errorDetailsList.add(new ErrorManagerModel(mLastName, tvErrorLastName, getString(R.string.enter_last_name), cardLastName));
-
-        } else {
-            tvErrorLastName.setVisibility(View.GONE);
-            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
+            binding.inputLayoutFname.setErrorEnabled(false);
         }
 
-        if (TextUtils.isEmpty(mDOB.getText().toString())) {
-            /*mDOB.requestFocus();
-
-            tvErrorDob.setVisibility(View.VISIBLE);
-            tvErrorDob.setText(getString(R.string.select_dob));
-            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
-            errorDetailsList.add(new ErrorManagerModel(mDOB, tvErrorDob, getString(R.string.select_dob), cardDob));
-
+        if (TextUtils.isEmpty(binding.etLastName.getText())) {
+            binding.inputLayoutLname.setError(getString(R.string.enter_last_name));
+            binding.inputLayoutLname.setErrorEnabled(true);
+            valid = false;
         } else {
-            tvErrorDob.setVisibility(View.GONE);
-            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            binding.inputLayoutLname.setErrorEnabled(false);
         }
-        if (TextUtils.isEmpty(mAge.getText().toString())) {
-         /*   mAge.requestFocus();
 
-            tvErrorAge.setVisibility(View.VISIBLE);
-            tvErrorAge.setText(getString(R.string.select_age));
-            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
-            errorDetailsList.add(new ErrorManagerModel(mAge, tvErrorAge, getString(R.string.select_age), cardAge));
-
+        if (TextUtils.isEmpty(binding.etDob.getText().toString())) {
+            binding.etLayoutDob.setError(getString(R.string.select_dob));
+            binding.etLayoutDob.setErrorEnabled(true);
+            valid = false;
         } else {
-            tvErrorAge.setVisibility(View.GONE);
-            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            binding.etLayoutDob.setErrorEnabled(false);
         }
-        String mobileNumber = mMobileNumber.getText().toString();
+
+        if (TextUtils.isEmpty(binding.etAge.getText().toString())) {
+            binding.etLayoutAge.setError(getString(R.string.select_age));
+            binding.etLayoutAge.setErrorEnabled(true);
+            valid = false;
+        } else {
+            binding.etLayoutAge.setErrorEnabled(false);
+        }
+
+        String mobileNumber = binding.etMobileNo.getText().toString();
         if (!mobileNumber.isEmpty() && mobileNumber.length() != 10) {
-          /*  mMobileNumber.requestFocus();
-
-            tvErrorMobileNo.setVisibility(View.VISIBLE);
-            tvErrorMobileNo.setText(getString(R.string.mobile_no_length));
-            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
-            errorDetailsList.add(new ErrorManagerModel(mMobileNumber, tvErrorMobileNo, getString(R.string.mobile_no_length), cardMobileNumber));
-
+            binding.inputLayoutMobile.setError(getString(R.string.mobile_no_length));
+            binding.inputLayoutMobile.setErrorEnabled(true);
+            valid = false;
         } else {
-            tvErrorMobileNo.setVisibility(View.GONE);
-            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            binding.inputLayoutMobile.setErrorEnabled(false);
         }
 
-        String alternateMobileNumber = mAlternateNumber.getText().toString();
-
+        String alternateMobileNumber = binding.etAlternateMobile.getText().toString();
         if (!alternateMobileNumber.isEmpty() && alternateMobileNumber.length() != 10) {
-         /*   mAlternateNumber.requestFocus();
-
-            tvErrAlternateMobileNo.setVisibility(View.VISIBLE);
-            tvErrAlternateMobileNo.setText(getString(R.string.mobile_no_length));
-            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-*/
-            errorDetailsList.add(new ErrorManagerModel(mAlternateNumber, tvErrAlternateMobileNo, getString(R.string.mobile_no_length), cardAlternateMobileNumber));
-
+            binding.inputLayoutAlternateMobile.setError(getString(R.string.mobile_no_length));
+            binding.inputLayoutAlternateMobile.setErrorEnabled(true);
+            valid = false;
         } else {
-            tvErrAlternateMobileNo.setVisibility(View.GONE);
-            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+            binding.inputLayoutAlternateMobile.setErrorEnabled(false);
         }
 
-        if (mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().isEmpty() && mDOB.getText().toString().isEmpty() && mAge.getText().toString().isEmpty()) {
-            Toast.makeText(mContext, getResources().getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
-        }
-        if (errorDetailsList.size() > 0) {
-            for (int i = 0; i < errorDetailsList.size(); i++) {
-                ErrorManagerModel errorModel = errorDetailsList.get(i);
-                if (i == 0) {
-                    errorModel.view.requestFocus();
-                }
-                errorModel.tvError.setVisibility(View.VISIBLE);
-                errorModel.tvError.setText(errorModel.getErrorMessage());
-                errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-            }
-            return false;
-        } else {
-            return true;
+        if (binding.etFirstName.getText().toString().isEmpty()
+                && binding.etLastName.getText().toString().isEmpty()
+                && binding.etDob.getText().toString().isEmpty()
+                && binding.etAge.getText().toString().isEmpty()) {
+            valid = false;
+            Toast.makeText(requireContext(), getResources().getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
         }
 
+        return valid;
     }
+//    private boolean areValidFields() {
+//
+//        List<ErrorManagerModel> errorDetailsList = new ArrayList<>();
+//        if (TextUtils.isEmpty(binding.etFirstName.getText().toString())) {
+//            errorDetailsList.add(new ErrorManagerModel(binding.etFirstName, tvErrorFirstName, getString(R.string.enter_first_name), cardFirstName));
+//
+//        } else {
+//            tvErrorFirstName.setVisibility(View.GONE);
+//            cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//        }
+//        if (TextUtils.isEmpty(mLastName.getText().toString())) {
+//       /*     mLastName.requestFocus();
+//            tvErrorLastName.setVisibility(View.VISIBLE);
+//            tvErrorLastName.setText(getString(R.string.enter_last_name));
+//            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+//            errorDetailsList.add(new ErrorManagerModel(mLastName, tvErrorLastName, getString(R.string.enter_last_name), cardLastName));
+//
+//        } else {
+//            tvErrorLastName.setVisibility(View.GONE);
+//            cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//
+//        }
+//
+//        if (TextUtils.isEmpty(mDOB.getText().toString())) {
+//            /*mDOB.requestFocus();
+//
+//            tvErrorDob.setVisibility(View.VISIBLE);
+//            tvErrorDob.setText(getString(R.string.select_dob));
+//            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+//            errorDetailsList.add(new ErrorManagerModel(mDOB, tvErrorDob, getString(R.string.select_dob), cardDob));
+//
+//        } else {
+//            tvErrorDob.setVisibility(View.GONE);
+//            cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//        }
+//        if (TextUtils.isEmpty(binding.etAge.getText().toString())) {
+//         /*   mAge.requestFocus();
+//
+//            tvErrorAge.setVisibility(View.VISIBLE);
+//            tvErrorAge.setText(getString(R.string.select_age));
+//            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+//            errorDetailsList.add(new ErrorManagerModel(binding.etAge, tvErrorAge, getString(R.string.select_age), cardAge));
+//
+//        } else {
+//            tvErrorAge.setVisibility(View.GONE);
+//            cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//        }
+//        String mobileNumber = mMobileNumber.getText().toString();
+//        if (!mobileNumber.isEmpty() && mobileNumber.length() != 10) {
+//          /*  mMobileNumber.requestFocus();
+//
+//            tvErrorMobileNo.setVisibility(View.VISIBLE);
+//            tvErrorMobileNo.setText(getString(R.string.mobile_no_length));
+//            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+//            errorDetailsList.add(new ErrorManagerModel(mMobileNumber, tvErrorMobileNo, getString(R.string.mobile_no_length), cardMobileNumber));
+//
+//        } else {
+//            tvErrorMobileNo.setVisibility(View.GONE);
+//            cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//        }
+//
+//        String alternateMobileNumber = mAlternateNumber.getText().toString();
+//
+//        if (!alternateMobileNumber.isEmpty() && alternateMobileNumber.length() != 10) {
+//         /*   mAlternateNumber.requestFocus();
+//
+//            tvErrAlternateMobileNo.setVisibility(View.VISIBLE);
+//            tvErrAlternateMobileNo.setText(getString(R.string.mobile_no_length));
+//            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//*/
+//            errorDetailsList.add(new ErrorManagerModel(mAlternateNumber, tvErrAlternateMobileNo, getString(R.string.mobile_no_length), cardAlternateMobileNumber));
+//
+//        } else {
+//            tvErrAlternateMobileNo.setVisibility(View.GONE);
+//            cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//        }
+//
+//        if (binding.etFirstName.getText().toString().isEmpty() && mLastName.getText().toString().isEmpty() && mDOB.getText().toString().isEmpty() && mAge.getText().toString().isEmpty()) {
+//            Toast.makeText(mContext, getResources().getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show();
+//        }
+//        if (errorDetailsList.size() > 0) {
+//            for (int i = 0; i < errorDetailsList.size(); i++) {
+//                ErrorManagerModel errorModel = errorDetailsList.get(i);
+//                if (i == 0) {
+//                    errorModel.view.requestFocus();
+//                }
+//                errorModel.tvError.setVisibility(View.VISIBLE);
+//                errorModel.tvError.setText(errorModel.getErrorMessage());
+//                errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//
+//            }
+//            return false;
+//        } else {
+//            return true;
+//        }
+//
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -1142,65 +1155,70 @@ public class PatientPersonalInfoFragment extends Fragment {
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
 
-                Glide.with(getActivity()).load(new File(mCurrentPhotoPath)).thumbnail(0.25f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfilePhoto);
+                Glide.with(getActivity())
+                        .load(new File(mCurrentPhotoPath))
+                        .thumbnail(0.25f)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true).into(binding.ivProfilePhoto);
             }
         } else if (requestCode == MY_REQUEST_CODE) {
             // getSelectedDate(data);
         }
     }
 
-    private void getSelectedDate(Intent data) {
-        //selectedDate  -  30/5/2023
-        if (data != null) {
-
-            Bundle bundle = data.getExtras();
-            String selectedDate = bundle.getString("selectedDate");
-            String whichDate = bundle.getString("whichDate");
-
-            if (!whichDate.isEmpty() && whichDate.equals("dobPatient")) {
-                try {
-                    Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
-                    Date nowDate = new Date();
-                    if (sourceDate.after(nowDate)) {
-                        mAge.setText("");
-                        mDOB.setText("");
-                        // Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
-            if (!selectedDate.isEmpty()) {
-                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
-//            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
-                //for age
-                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
-                mAgeYears = Integer.parseInt(ymdData[0]);
-                mAgeMonths = Integer.parseInt(ymdData[1]);
-                mAgeDays = Integer.parseInt(ymdData[2]);
-
-                // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
-                String[] splitedDate = selectedDate.split("/");
-                mDOB.setText(dateToshow1 + " " + splitedDate[2]);
-                tvDobForDb.setText(dobToDb);
-                patientDTO.setDateofbirth(dobToDb);
-                if (mAgeYears < 9) {
-                    mAge.setText("");
-                    mDOB.setText("");
-                    tvErrorAge.setVisibility(View.VISIBLE);
-
-                } else {
-                    mAge.setText(mAgeYears + "");
-                }
-                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-                setSelectedDob(mContext, dobToDb);
-            } else {
-                Log.d(TAG, "onClick: date empty");
-            }
-        }
-    }
+//    private void getSelectedDate(Intent data) {
+//        //selectedDate  -  30/5/2023
+//        if (data != null) {
+//
+//            Bundle bundle = data.getExtras();
+//            String selectedDate = bundle.getString("selectedDate");
+//            String whichDate = bundle.getString("whichDate");
+//
+//            if (!whichDate.isEmpty() && whichDate.equals("dobPatient")) {
+//                try {
+//                    Date sourceDate = new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate);
+//                    Date nowDate = new Date();
+//                    if (sourceDate.after(nowDate)) {
+//                        mAge.setText("");
+//                        mDOB.setText("");
+//                        // Toast.makeText(getActivity(), getString(R.string.valid_dob_msg), Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+//            if (!selectedDate.isEmpty()) {
+//                dobToDb = DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate);
+////            String age = DateAndTimeUtils.getAge_FollowUp(DateAndTimeUtils.convertDateToYyyyMMddFormat(selectedDate), getActivity());
+//                //for age
+//                String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(dobToDb).split(" ");
+//                mAgeYears = Integer.parseInt(ymdData[0]);
+//                mAgeMonths = Integer.parseInt(ymdData[1]);
+//                mAgeDays = Integer.parseInt(ymdData[2]);
+//
+//                // String age = DateAndTimeUtils.formatAgeInYearsMonthsDate(getContext(), mAgeYears, mAgeMonths, mAgeDays);
+//                String[] splitedDate = selectedDate.split("/");
+//                mDOB.setText(dateToshow1 + " " + splitedDate[2]);
+//                tvDobForDb.setText(dobToDb);
+//                patientDTO.setDateofbirth(dobToDb);
+//                if (mAgeYears < 9) {
+//                    mAge.setText("");
+//                    mDOB.setText("");
+//                    tvErrorAge.setVisibility(View.VISIBLE);
+//
+//                } else {
+//                    mAge.setText(mAgeYears + "");
+//                }
+//                Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
+//                setSelectedDob(mContext, dobToDb);
+//            } else {
+//                Log.d(TAG, "onClick: date empty");
+//            }
+//        }
+//    }
 
     private void setDetailsAsPerConfigFile() {
         if (!sessionManager.getLicenseKey().isEmpty()) hasLicense = true;
@@ -1208,51 +1226,26 @@ public class PatientPersonalInfoFragment extends Fragment {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, mContext), String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, requireContext()),
+                        String.valueOf(FileUtils.encodeJSON(requireContext(), AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(mContext, AppConstants.CONFIG_FILE_NAME)));
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(requireContext(), AppConstants.CONFIG_FILE_NAME)));
             }
 
             //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("mFirstName")) {
-                mFirstName.setVisibility(View.VISIBLE);
-            } else {
-                mFirstName.setVisibility(View.GONE);
-            }
-
-            if (obj.getBoolean("mMiddleName")) {
-                mMiddleName.setVisibility(View.VISIBLE);
-            } else {
-                mMiddleName.setVisibility(View.GONE);
-            }
-
-            if (obj.getBoolean("mLastName")) {
-                mLastName.setVisibility(View.VISIBLE);
-            } else {
-                mLastName.setVisibility(View.GONE);
-            }
-
-            if (obj.getBoolean("mDOB")) {
-                mDOB.setVisibility(View.VISIBLE);
-            } else {
-                mDOB.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mPhoneNum")) {
-                mMobileNumber.setVisibility(View.VISIBLE);
-            } else {
-                mMobileNumber.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("mAge")) {
-                mAge.setVisibility(View.VISIBLE);
-            } else {
-                mAge.setVisibility(View.GONE);
-            }
+            binding.inputLayoutFname.setVisibility(obj.getBoolean("mFirstName") ? View.VISIBLE : View.GONE);
+            binding.inputLayoutMname.setVisibility(obj.getBoolean("mMiddleName") ? View.VISIBLE : View.GONE);
+            binding.inputLayoutLname.setVisibility(obj.getBoolean("mLastName") ? View.VISIBLE : View.GONE);
+            binding.etLayoutDob.setVisibility(obj.getBoolean("mDOB") ? View.VISIBLE : View.GONE);
+            binding.inputLayoutMobile.setVisibility(obj.getBoolean("mPhoneNum") ? View.VISIBLE : View.GONE);
+            binding.inputLayoutAlternateMobile.setVisibility(obj.getBoolean("mPhoneNum") ? View.VISIBLE : View.GONE);
+            binding.inputLayoutMobile.setVisibility(obj.getBoolean("mAge") ? View.VISIBLE : View.GONE);
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             //            Issue #627
             //            added the catch exception to check the config and throwing back to setup activity
-            Toast.makeText(mContext, "JsonException" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
             showAlertDialogButtonClicked(e.toString());
         }
 
@@ -1272,98 +1265,97 @@ public class PatientPersonalInfoFragment extends Fragment {
         editor.apply();
     }
 
-    class MyTextWatcher implements TextWatcher {
-        EditText editText;
-
-        MyTextWatcher(EditText editText) {
-            this.editText = editText;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.et_first_name) {
-                if (val.isEmpty()) {
-                    tvErrorFirstName.setVisibility(View.VISIBLE);
-                    tvErrorFirstName.setText(getString(R.string.enter_first_name));
-                    cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-                } else {
-                    tvErrorFirstName.setVisibility(View.GONE);
-                    cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
-                }
-            } else if (this.editText.getId() == R.id.et_last_name) {
-                if (val.isEmpty()) {
-                    tvErrorLastName.setVisibility(View.VISIBLE);
-                    tvErrorLastName.setText(getString(R.string.enter_last_name));
-                    cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-                } else {
-                    tvErrorLastName.setVisibility(View.GONE);
-                    cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
-                }
-            } else if (this.editText.getId() == R.id.et_dob) {
-                if (val.isEmpty()) {
-                    tvErrorDob.setVisibility(View.VISIBLE);
-                    tvErrorDob.setText(getString(R.string.select_dob));
-                    cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-                } else {
-                    tvErrorDob.setVisibility(View.GONE);
-                    cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
-                }
-            } else if (this.editText.getId() == R.id.et_age) {
-                if (val.isEmpty()) {
-                    tvErrorAge.setVisibility(View.VISIBLE);
-                    tvErrorAge.setText(getString(R.string.select_age));
-                    cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
-                } else {
-                    tvErrorAge.setVisibility(View.GONE);
-                    cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-                }
-            } else if (this.editText.getId() == R.id.et_mobile_no) {
-                if (!val.isEmpty()) {
-                    if (val.length() != 10) {
-                        tvErrorMobileNo.setVisibility(View.VISIBLE);
-                        tvErrorMobileNo.setText(getString(R.string.mobile_no_length));
-                        cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-                    } else {
-                        tvErrorMobileNo.setVisibility(View.GONE);
-                        cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-                    }
-                }
-            } else if (this.editText.getId() == R.id.et_alternate_mobile) {
-                if (!val.isEmpty()) {
-                    if (val.length() != 10) {
-                        tvErrAlternateMobileNo.setVisibility(View.VISIBLE);
-                        tvErrAlternateMobileNo.setText(getString(R.string.mobile_no_length));
-                        cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-                    } else {
-                        tvErrAlternateMobileNo.setVisibility(View.GONE);
-                        cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-                    }
-                }
-            }
-        }
-    }
+//    class MyTextWatcher implements TextWatcher {
+//        EditText editText;
+//
+//        MyTextWatcher(EditText editText) {
+//            this.editText = editText;
+//        }
+//
+//        @Override
+//        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//        }
+//
+//        @Override
+//        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//        }
+//
+//        @Override
+//        public void afterTextChanged(Editable editable) {
+//            String val = editable.toString().trim();
+//            if (this.editText.getId() == R.id.et_first_name) {
+//                if (val.isEmpty()) {
+//                    tvErrorFirstName.setVisibility(View.VISIBLE);
+//                    tvErrorFirstName.setText(getString(R.string.enter_first_name));
+//                    cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//
+//                } else {
+//                    tvErrorFirstName.setVisibility(View.GONE);
+//                    cardFirstName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//
+//                }
+//            } else if (this.editText.getId() == R.id.et_last_name) {
+//                if (val.isEmpty()) {
+//                    tvErrorLastName.setVisibility(View.VISIBLE);
+//                    tvErrorLastName.setText(getString(R.string.enter_last_name));
+//                    cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//
+//                } else {
+//                    tvErrorLastName.setVisibility(View.GONE);
+//                    cardLastName.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//
+//                }
+//            } else if (this.editText.getId() == R.id.et_dob) {
+//                if (val.isEmpty()) {
+//                    tvErrorDob.setVisibility(View.VISIBLE);
+//                    tvErrorDob.setText(getString(R.string.select_dob));
+//                    cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//
+//                } else {
+//                    tvErrorDob.setVisibility(View.GONE);
+//                    cardDob.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//
+//                }
+//            } else if (this.editText.getId() == R.id.et_age) {
+//                if (val.isEmpty()) {
+//                    tvErrorAge.setVisibility(View.VISIBLE);
+//                    tvErrorAge.setText(getString(R.string.select_age));
+//                    cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//                } else {
+//                    tvErrorAge.setVisibility(View.GONE);
+//                    cardAge.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//                }
+//            } else if (this.editText.getId() == R.id.et_mobile_no) {
+//                if (!val.isEmpty()) {
+//                    if (val.length() != 10) {
+//                        tvErrorMobileNo.setVisibility(View.VISIBLE);
+//                        tvErrorMobileNo.setText(getString(R.string.mobile_no_length));
+//                        cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//                    } else {
+//                        tvErrorMobileNo.setVisibility(View.GONE);
+//                        cardMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//                    }
+//                }
+//            } else if (this.editText.getId() == R.id.et_alternate_mobile) {
+//                if (!val.isEmpty()) {
+//                    if (val.length() != 10) {
+//                        tvErrAlternateMobileNo.setVisibility(View.VISIBLE);
+//                        tvErrAlternateMobileNo.setText(getString(R.string.mobile_no_length));
+//                        cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+//                    } else {
+//                        tvErrAlternateMobileNo.setVisibility(View.GONE);
+//                        cardAlternateMobileNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private void setScrollToFocusedItem() {
         if (requireView().findFocus() != null) {
             Point point = getLocationOnScreen(requireView().findFocus());
-            scrollviewPersonalInfo.smoothScrollTo(0, point.y);
+            binding.scrollPersonalInfo.smoothScrollTo(0, point.y);
         }
     }
 

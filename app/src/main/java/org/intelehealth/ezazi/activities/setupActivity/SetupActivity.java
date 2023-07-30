@@ -634,7 +634,7 @@ public class SetupActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onValidatted(boolean isValid) {
+            public void onValidated(boolean isValid) {
                 changeButtonStatus(isValid);
             }
         }).validate(getString(R.string.error_invalid_email));
@@ -646,7 +646,7 @@ public class SetupActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onValidatted(boolean isValid) {
+            public void onValidated(boolean isValid) {
                 changeButtonStatus(isValid);
             }
         }).validate(getString(R.string.error_invalid_password));

@@ -15,7 +15,7 @@ public class InputChangeValidationListener implements TextWatcher {
     public interface InputValidator {
         boolean validate(String text);
 
-        default void onValidatted(boolean isValid) {
+        default void onValidated(boolean isValid) {
 
         }
     }
@@ -39,13 +39,14 @@ public class InputChangeValidationListener implements TextWatcher {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (!validator.validate(s.toString())) {
             textInputLayout.setError(message);
+            textInputLayout.setErrorEnabled(true);
             textInputLayout.setEndIconVisible(true);
             editText.requestFocus();
-            validator.onValidatted(false);
+            validator.onValidated(false);
         } else {
             textInputLayout.setError(null);
-            validator.onValidatted(true);
-
+            textInputLayout.setErrorEnabled(false);
+            validator.onValidated(true);
         }
     }
 

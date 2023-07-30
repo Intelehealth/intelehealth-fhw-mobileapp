@@ -249,4 +249,5 @@
     <dimen name="add_patient_subheading_text_size">@dimen/std_23sp</dimen>
     <dimen name="whatsapp_icon_size_new">@dimen/std_26dp</dimen>
     <dimen name="tab_margin_from_text">@dimen/std_24dp</dimen>
+    <dimen name="input_end_icon_size">@dimen/std_20dp</dimen>
 </resources>

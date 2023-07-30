@@ -160,7 +160,7 @@ public class ResetPasswordFragment extends Fragment {
             }
 
             @Override
-            public void onValidatted(boolean isValid) {
+            public void onValidated(boolean isValid) {
                 // binding.btnSave.setEnabled(isValid);
                 isNewPasswordValid = isValid;
                 binding.btnSave.setEnabled(isNewPasswordValid && isConfirmPasswordValid);
@@ -174,7 +174,7 @@ public class ResetPasswordFragment extends Fragment {
             }
 
             @Override
-            public void onValidatted(boolean isValid) {
+            public void onValidated(boolean isValid) {
                 //binding.btnSave.setEnabled(isValid);
                 isConfirmPasswordValid = isValid;
                 binding.btnSave.setEnabled(isNewPasswordValid && isConfirmPasswordValid);

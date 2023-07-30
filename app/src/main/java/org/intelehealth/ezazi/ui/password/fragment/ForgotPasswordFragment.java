@@ -156,7 +156,7 @@ public class ForgotPasswordFragment extends Fragment {
             }
 
             @Override
-            public void onValidatted(boolean isValid) {
+            public void onValidated(boolean isValid) {
                 binding.btnContinue.setEnabled(isValid);
             }
         }).validate(getString(R.string.mobile_no_length));
