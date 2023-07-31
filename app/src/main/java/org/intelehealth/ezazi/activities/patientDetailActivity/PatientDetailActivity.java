@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -50,6 +51,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
+import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ezazi.app.AppConstants;
@@ -63,6 +66,7 @@ import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.DownloadFilesUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -168,6 +172,13 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 //        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
 //        tvTitle.setText(getResources().getString(R.string.patient_info));
 //        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+
+        View viewToolbar = findViewById(R.id.toolbar_common);
+        Toolbar toolbar = viewToolbar.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v ->
+                onBackPressed()
+        );
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
@@ -1803,4 +1814,13 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
         return bedNumber;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PatientDetailActivity.this, SearchPatientActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
 }

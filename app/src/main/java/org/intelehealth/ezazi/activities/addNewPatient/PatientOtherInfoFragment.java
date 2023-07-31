@@ -766,6 +766,7 @@ public class PatientOtherInfoFragment extends Fragment {
             tvErrorHospitalOther.setVisibility(View.GONE);
 
         }
+        Log.d(TAG, "onPatientCreateClicked:mHospitalMaternityString :  " + mHospitalMaternityString);
 
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -1260,6 +1261,7 @@ public class PatientOtherInfoFragment extends Fragment {
             // optionOther.setBackground(ContextCompat.getDrawable(mContext, R.drawable.error_bg_et));
             //  errorDetailsList.add(new ErrorManagerModel(mHospitalMaternityString, tvErrorHospital, getString(R.string.hospital_matermnity_val_txt), dropdownRiskFactors));
 
+            errorDetailsList.add(new ErrorManagerModel(etHospitalOther, tvErrorHospital, getString(R.string.hospital_matermnity_val_txt), null));
 
         } else if (mHospitalMaternityString.equalsIgnoreCase("hospital") || mHospitalMaternityString.equalsIgnoreCase("maternity")) {
             etHospitalOther.setVisibility(View.GONE);
@@ -1337,8 +1339,9 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 errorModel.tvError.setVisibility(View.VISIBLE);
                 errorModel.tvError.setText(errorModel.getErrorMessage());
-                errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
-
+                if (errorModel.cardView != null) {
+                    errorModel.cardView.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                }
             }
             return false;
         } else {
