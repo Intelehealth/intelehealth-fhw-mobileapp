@@ -2,7 +2,6 @@ package org.intelehealth.unicef.appointmentNew;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,29 +116,20 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
                             timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
                             holder.tvDate.setText(timeText);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
-                            }
+                            holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                         } else {
                             timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at) + " " + appointmentInfoModel.getSlotTime();
                             //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-
-
                             holder.tvDate.setText(timeText);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
-                            }
+                            holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                         }
                     } else {
                         timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
                         //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                         holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-
                         holder.tvDate.setText(timeText);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
-                        }
+                        holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                     }
                 }
 
@@ -159,11 +149,12 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 //show :  tvPrescRecStatus
 
                 //holder.ivTime.setVisibility(View.VISIBLE);
-                holder.tvDate.setVisibility(View.VISIBLE);
+                holder.tvDate.setVisibility(View.GONE);
 //                holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.rlPrescriptionBackground.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
+                String timeText = DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time());
+                holder.tvDate.setText(timeText);
                 Log.d(TAG, "onBindViewHolder: presc time : " + appointmentInfoModel.getPresc_received_time());
 
                 if (appointmentInfoModel.isPrescription_exists()) {
