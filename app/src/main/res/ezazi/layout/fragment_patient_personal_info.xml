@@ -59,315 +59,320 @@
         android:textColor="@color/darkGray"
         android:textSize="@dimen/add_picture_text_size" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_personal_info"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@id/btn_save_update_first"
         android:layout_below="@id/tvAddPictureLabel"
         android:layout_marginTop="@dimen/tab_margin_from_text"
-        android:layout_marginBottom="@dimen/screen_padding"
-        android:background="@drawable/container_bg_rounded"
-        android:orientation="vertical"
-        android:padding="@dimen/screen_container_padding"
-        android:scrollbars="none">
+        android:layout_marginBottom="@dimen/screen_padding">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_personal_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@drawable/container_bg_rounded"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_container_padding"
+            android:scrollbars="none">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_first_name"
-                style="@style/Theme.EZazi.Material.CardView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_first_name"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
-                    android:gravity="center_vertical"
-                    android:hint="@string/first_name">
+                    android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_first_name"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
                         android:gravity="center_vertical"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="textCapSentences"
-                        android:maxLines="1"
-                        android:nextFocusForward="@id/et_middle_name"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:hint="@string/first_name">
 
-            </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_first_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/et_middle_name"
+                            android:singleLine="true"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/firstname_error"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/this_field_is_mandatory"
-                android:visibility="gone" />
+                </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_prescription"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/screen_container_padding">
+                <TextView
+                    android:id="@+id/firstname_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:visibility="gone" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prescription"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
-                    android:hint="@string/middle_name">
+                    android:layout_marginTop="@dimen/screen_container_padding">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_middle_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="textCapSentences"
-                        android:maxLines="1"
-                        android:nextFocusForward="@id/et_last_name"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_last_name"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/screen_container_padding">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Theme.EZazi.Input.Add.Patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
-                    android:hint="@string/last_name">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_last_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="textCapSentences"
-                        android:maxLines="1"
-                        android:nextFocusForward="@id/et_dob"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:id="@+id/lastname_error"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:lineSpacingExtra="0sp"
-                android:text="This field is mandatory"
-                android:visibility="gone" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_dob"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/screen_container_padding">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etLayout_dob"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
-                    android:hint="@string/date_of_birth"
-                    app:endIconDrawable="@drawable/ic_calendar_new"
-                    app:endIconMode="custom">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_dob"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="none"
-                        android:maxLines="1"
-                        android:nextFocusForward="@id/et_age"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:hint="@string/middle_name">
 
-            <TextView
-                android:id="@+id/dob_error"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/please_enter_mobile_number"
-                android:visibility="gone" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_middle_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/et_last_name"
+                            android:singleLine="true"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/tv_selected_date_dob"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_age_dob"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_age"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/screen_container_padding">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etLayout_age"
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_last_name"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
-                    android:hint="@string/age">
+                    android:layout_marginTop="@dimen/screen_container_padding">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_age"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="none"
-                        android:maxLines="1"
-                        android:nextFocusForward="@id/et_mobile_no"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:hint="@string/last_name">
 
-            <TextView
-                android:id="@+id/age_error"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:lineSpacingExtra="0sp"
-                android:text="This field is mandatory"
-                android:visibility="gone" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_last_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/et_dob"
+                            android:singleLine="true"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_mobile_no"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/screen_container_padding">
+                <TextView
+                    android:id="@+id/lastname_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_dob"
+                    style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
-                    android:hint="@string/mobile_number">
+                    android:layout_marginTop="@dimen/screen_container_padding">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_mobile_no"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLayout_dob"
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:digits="0123456789"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="numberDecimal"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:nextFocusForward="@id/et_alternate_mobile"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:hint="@string/date_of_birth"
+                        app:endIconDrawable="@drawable/ic_calendar_new"
+                        app:endIconMode="custom">
 
-            <TextView
-                android:id="@+id/mobile_no_error"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:lineSpacingExtra="0sp"
-                android:text="This field is mandatory"
-                android:visibility="gone" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_dob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/et_age"
+                            android:singleLine="true"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_alternate_mobile_no"
-                style="@style/Theme.EZazi.Material.CardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/screen_container_padding">
+                <TextView
+                    android:id="@+id/dob_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/please_enter_mobile_number"
+                    android:visibility="gone" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Theme.EZazi.Input.Add.Patient"
+                <TextView
+                    android:id="@+id/tv_selected_date_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_container_padding"
-                    android:hint="@string/alternate_mobile_no">
+                    android:visibility="gone" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_alternate_mobile"
+                <TextView
+                    android:id="@+id/tv_age_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_age"
+                    style="@style/Theme.EZazi.Material.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/screen_container_padding">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLayout_age"
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:digits="0123456789"
-                        android:imeOptions="actionNext"
-                        android:importantForAutofill="no"
-                        android:inputType="numberDecimal"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:nextFocusForward="@id/btn_save_update_first"
-                        android:singleLine="true"
-                        android:textSize="@dimen/input_inner_size" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:hint="@string/age">
 
-            <TextView
-                android:id="@+id/alternate_no_error"
-                style="@style/Textview_Validation_Error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/validation_error_tv_margin_top"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/this_field_is_mandatory"
-                android:visibility="gone" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_age"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="none"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/et_mobile_no"
+                            android:singleLine="true"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/age_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_mobile_no"
+                    style="@style/Theme.EZazi.Material.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/screen_container_padding">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:hint="@string/mobile_number">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_mobile_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/et_alternate_mobile"
+                            android:singleLine="true"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/mobile_no_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="This field is mandatory"
+                    android:visibility="gone" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_alternate_mobile_no"
+                    style="@style/Theme.EZazi.Material.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/screen_container_padding">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:hint="@string/alternate_mobile_no">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_alternate_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="0123456789"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="numberDecimal"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/btn_save_update_first"
+                            android:singleLine="true"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/alternate_no_error"
+                    style="@style/Textview_Validation_Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/validation_error_tv_margin_top"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:visibility="gone" />
 
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <com.google.android.material.button.MaterialButton

@@ -26,7 +26,7 @@
             app:boxStrokeColor="@color/colorLoginInputStroke"
             app:boxStrokeWidth="@dimen/input_stroke_size"
             app:counterEnabled="true"
-            app:counterMaxLength="150"
+            app:counterMaxLength="300"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -40,7 +40,7 @@
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="@dimen/std_4dp"
                 android:lines="5"
-                android:maxLength="150"
+                android:maxLength="300"
                 android:textColor="@color/colorInputText"
                 android:textSize="@dimen/input_inner_size" />
 

@@ -17,7 +17,10 @@
         style="@style/Theme.EZazi.Scrollbar.Thumb"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/screen_container_padding"
+        android:layout_marginHorizontal="@dimen/screen_container_padding"
+        android:layout_marginTop="@dimen/screen_container_padding"
+        android:layout_marginBottom="@dimen/screen_padding"
+        android:background="@drawable/white_child_container_bg"
         android:fadeScrollbars="false"
         android:padding="@dimen/screen_container_padding"
         app:layout_constraintBottom_toTopOf="@id/buttons"
@@ -28,7 +31,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/white_child_container_bg"
             android:orientation="vertical"
             android:paddingBottom="@dimen/actionbar_vertical_padding">
 
@@ -58,7 +60,7 @@
         android:id="@+id/buttons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/content_horizontal_padding"
+        android:layout_marginHorizontal="@dimen/screen_container_padding"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="@dimen/screen_padding"
