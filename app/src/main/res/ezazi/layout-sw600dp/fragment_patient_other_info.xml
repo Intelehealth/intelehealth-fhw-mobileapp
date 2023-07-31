@@ -11,13 +11,17 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_other_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin_bottom_scroll_other"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/screen_padding"
         android:background="@drawable/container_bg_rounded"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:padding="@dimen/screen_container_padding"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/includeOtherActionView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -934,6 +938,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <include
+        android:id="@+id/includeOtherActionView"
         layout="@layout/view_add_patient_bottom_action_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
