@@ -581,10 +581,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
-        sessionManager1 = new SessionManager(this);
+        sessionManager1 = new SessionManager(VisitSummaryActivity.this);
         appLanguage = sessionManager1.getAppLanguage();
-//        setLocale(appLanguage);
-        final Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }        final Intent intent = this.getIntent(); // The intent was passed to the activity
+
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
@@ -1955,7 +1957,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Locale.setDefault(locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf);
+            VisitSummaryActivity.this.createConfigurationContext(conf);
         }
         DisplayMetrics dm = res.getDisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

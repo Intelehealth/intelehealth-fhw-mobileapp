@@ -67,10 +67,8 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                setLocale(sessionManager.getAppLanguage());
                 if (sessionManager.isFirstTimeLaunch()) {
                     Logger.logD(LOG_TAG, "Starting setup");
-//                    Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
                     Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
                     startActivity(intent);
                     sessionManager.setFirstTimeLaunch(false);
@@ -109,7 +107,9 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         mToolbar.setTitleTextColor(Color.WHITE);
         sessionManager = new SessionManager(ChooseLanguageActivity.this);
         appLanguage = sessionManager.getAppLanguage();
-//        setLocale(appLanguage);
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
         mRecyclerView = findViewById(R.id.language_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         SaveButton = findViewById(R.id.save_button);
