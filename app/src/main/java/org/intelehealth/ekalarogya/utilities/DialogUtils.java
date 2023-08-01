@@ -13,7 +13,7 @@ import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 
 public class DialogUtils {
 
-    public void showOkDialog(Context context, String title, String message, String ok) {
+    public static void showOkDialog(Context context, String title, String message, String ok) {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
 
         //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
@@ -33,7 +33,7 @@ public class DialogUtils {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    public void showerrorDialog(Context context, String title, String message, String ok) {
+    public static void showerrorDialog(Context context, String title, String message, String ok) {
         //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
         alertDialog.setTitle(title);

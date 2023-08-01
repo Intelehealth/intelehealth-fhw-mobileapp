@@ -250,8 +250,8 @@ public class SetupActivity extends AppCompatActivity {
                 //progressBar.setProgress(0);
             }
         });
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
+     //   DialogUtils dialogUtils = new DialogUtils();
+        DialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
         mUrlField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1492,8 +1492,8 @@ public class SetupActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
-                DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_str), getString(R.string.error_incorrect_password), "ok");
+             //   DialogUtils dialogUtils = new DialogUtils();
+                DialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_str), getString(R.string.error_incorrect_password), "ok");
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
                 mLoginButton.setText(getString(R.string.action_sign_in));

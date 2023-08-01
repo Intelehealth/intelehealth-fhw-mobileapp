@@ -126,6 +126,7 @@ import org.intelehealth.ekalarogya.models.dto.RTCConnectionDTO;
 import org.intelehealth.ekalarogya.services.DownloadService;
 import org.intelehealth.ekalarogya.syncModule.SyncUtils;
 import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
+import org.intelehealth.ekalarogya.utilities.DialogUtils;
 import org.intelehealth.ekalarogya.utilities.FileUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
@@ -877,22 +878,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-                } else {
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage(R.string.download_prescription_first_before_sharing);
-                    alertDialog.setPositiveButton(R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    AlertDialog dialog = alertDialog.show();
-                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-
                 }
+                else
+                    showOkDismissDialog(null, getString(R.string.download_prescription_first_before_sharing), getString(R.string.ok));
 
             }
         });
@@ -4560,6 +4548,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (requestCode == SCHEDULE_LISTING_INTENT) {
             getAppointmentDetails(visitUuid);
         }
+    }
+
+    private void showOkDismissDialog(String title, String message, String okBtn) {
+        DialogUtils.showOkDialog(VisitSummaryActivity.this, title, message, okBtn);
     }
 
 }
