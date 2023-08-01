@@ -238,7 +238,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         dialog.setListener(item -> {
             if (isChat) {
-                startChatActivity(doctors.get(item.getItem()));
+                startChatActivity(doctors.get(item.getItem()), item.getItem());
             } else {
                 startVideoCallActivity(doctors, item.getItem());
             }
@@ -247,15 +247,17 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void startChatActivity(String doctorUuid) {
-        Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
-        chatIntent.putExtra("patientName", patientName);
-        chatIntent.putExtra("visitUuid", visitUuid);
-        chatIntent.putExtra("patientUuid", patientUuid);
-        chatIntent.putExtra("fromUuid", sessionManager.getProviderID()); // provider uuid
-        chatIntent.putExtra("isForVideo", false);
-        chatIntent.putExtra("toUuid", doctorUuid);
-        startActivity(chatIntent);
+    private void startChatActivity(String doctorUuid, String doctorName) {
+        if (SocketManager.getInstance().checkUserIsOnline(doctorUuid)) {
+            Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
+            chatIntent.putExtra("patientName", patientName);
+            chatIntent.putExtra("visitUuid", visitUuid);
+            chatIntent.putExtra("patientUuid", patientUuid);
+            chatIntent.putExtra("fromUuid", sessionManager.getProviderID()); // provider uuid
+            chatIntent.putExtra("isForVideo", false);
+            chatIntent.putExtra("toUuid", doctorUuid);
+            startActivity(chatIntent);
+        } else Toast.makeText(this, doctorName + " is offline ", Toast.LENGTH_SHORT).show();
     }
 
     /**

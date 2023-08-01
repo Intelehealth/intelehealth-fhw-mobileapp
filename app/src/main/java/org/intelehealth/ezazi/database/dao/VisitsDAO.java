@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.builder.QueryBuilder;
@@ -122,7 +123,7 @@ public class VisitsDAO {
                 values.put("visit_attribute_type_uuid", visit.getVisitAttributeTypeUuid());
                 values.put("visituuid", visit.getVisitUuid());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", "true");
+                values.put("sync", visit.getSync());
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -248,8 +249,10 @@ public class VisitsDAO {
 
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
                 list = fetchVisitAttr_Speciality(visitDTO.getUuid());
-
+                Log.e(TAG, "unsyncedVisits: attributes=============");
+                Log.e(TAG, "=>" + new Gson().toJson(list));
                 visitDTO.setAttributes(list);
+                Log.e(TAG, "unsyncedVisits: ====================");
 //                visitDTOList.add(visitDTO);
 
                 //adding visit attribute list in the visit data.
@@ -524,7 +527,7 @@ public class VisitsDAO {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
 //        db.beginTransaction();
-      //  String query = new QueryBuilder().select("uuid, patientuuid, locationuuid, startdate, enddate, creator, visit_type_uuid").from(" tbl_visit ").where("uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " + "AND voided = '0' AND creator = '" + creatorID + "'").groupBy("uuid").orderBy("startdate").orderIn("DESC").build();
+        //  String query = new QueryBuilder().select("uuid, patientuuid, locationuuid, startdate, enddate, creator, visit_type_uuid").from(" tbl_visit ").where("uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " + "AND voided = '0' AND creator = '" + creatorID + "'").groupBy("uuid").orderBy("startdate").orderIn("DESC").build();
 //        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
 
         String query = "select * from (select * from  tbl_visit where uuid IN(select  visit_uuid from tbl_visit_attribute where visit_attribute_type_uuid = 'a0378be4-d9c6-4cb2-bbf5-777e27a32efc' and value ='" + creatorID + "' )  and  voided = '0') as T where  uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid='bd1fbfaa-f5fb-4ebd-b75c-564506fc309e') group by uuid order by startdate desc ";

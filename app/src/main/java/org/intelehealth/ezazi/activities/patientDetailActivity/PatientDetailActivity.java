@@ -64,6 +64,7 @@ import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.knowledgeEngine.Node;
 import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
+import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.ui.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -374,13 +375,19 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 VisitsDAO visitsDAO = new VisitsDAO();
 
                 try {
+                    ArrayList<VisitAttributeDTO> attributes = new ArrayList<>();
+                    VisitAttributeDTO general = VisitAttributeDTO.generateNew(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
+                    VisitAttributeDTO holder = VisitAttributeDTO.generateNew(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
+                    attributes.add(general);
+                    attributes.add(holder);
+                    visitDTO.setVisitAttributeDTOS(attributes);
                     visitsDAO.insertPatientToDB(visitDTO);
 
-                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
-                    speciality_attributes
-                            .insertVisitAttributes(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
-                    speciality_attributes
-                            .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
+//                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+//                    speciality_attributes
+//                            .insertVisitAttributes(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
+//                    speciality_attributes
+//                            .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
 
 
                 } catch (DAOException e) {

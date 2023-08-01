@@ -1,6 +1,7 @@
 
 package org.intelehealth.klivekit.model;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 public class ChatMessage {
@@ -12,13 +13,26 @@ public class ChatMessage {
     @SerializedName("id")
     private int mId;
     @SerializedName("isRead")
-    private Boolean mIsRead;
+    private int mIsRead;
     @SerializedName("message")
     private String mMessage;
     @SerializedName("patientId")
     private String mPatientId;
+
+    @SerializedName("patientName")
+    private String patientName;
+
+    private String hwName;
+
+    private String hwPic;
+
+    private String patientPic;
+
     @SerializedName("toUser")
     private String mToUser;
+
+    private String visitId;
+
     @SerializedName("updatedAt")
     private String mUpdatedAt;
 
@@ -53,11 +67,11 @@ public class ChatMessage {
         mId = id;
     }
 
-    public Boolean getIsRead() {
+    public int getIsRead() {
         return mIsRead;
     }
 
-    public void setIsRead(Boolean isRead) {
+    public void setIsRead(int isRead) {
         mIsRead = isRead;
     }
 
@@ -109,6 +123,34 @@ public class ChatMessage {
         this.type = type;
     }
 
+    public String getHwName() {
+        return hwName;
+    }
+
+    public String getHwPic() {
+        return hwPic;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public String getPatientPic() {
+        return patientPic;
+    }
+
+    public void setHwName(String hwName) {
+        this.hwName = hwName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public void setVisitId(String visitId) {
+        this.visitId = visitId;
+    }
+
     public boolean isAttachment() {
         if (type == null) return false;
         return type.equals("attachment");
@@ -120,5 +162,9 @@ public class ChatMessage {
 
     public void setLoading(boolean loading) {
         this.loading = loading;
+    }
+
+    public String toJson(){
+        return new Gson().toJson(this);
     }
 }

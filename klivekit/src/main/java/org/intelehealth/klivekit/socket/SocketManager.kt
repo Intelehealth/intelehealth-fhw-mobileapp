@@ -49,7 +49,7 @@ open class SocketManager {
     }
 
     private fun emitter(event: String) = Emitter.Listener {
-        Timber.e { "$event => ${Gson().toJson(it)}" }
+        Timber.e { "$TAG => $event => ${Gson().toJson(it)}" }
         if (event == EVENT_ALL_USER) {
             val json: String? = Gson().toJson(it);
             json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
@@ -111,6 +111,8 @@ open class SocketManager {
         activeUsers.containsKey(id) && activeUsers.get(id)!!.isOnline()
 
     companion object {
+        const val TAG = "SocketManager"
+
         @JvmStatic
         var instance = SocketManager()
         const val EVENT_IS_READ = "isread"

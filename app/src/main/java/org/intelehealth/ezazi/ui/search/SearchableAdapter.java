@@ -46,14 +46,10 @@ public abstract class SearchableAdapter<T, VH extends RecyclerView.ViewHolder>
                     results.count = searchableList.size();
                 } else {
                     ArrayList<T> filteredList = new ArrayList<T>();
-                    Log.e(TAG, "Query => $query");
-                    Log.e(TAG, "searchableList.size => " + searchableList.size());
                     for (int position = 0; position < searchableList.size(); position++) {
                         String value = searchableValue(position).toLowerCase(Locale.getDefault()).trim();
                         String lowerQuery = query.toString().toLowerCase(Locale.getDefault()).trim();
-                        Log.e(TAG, "value = > " + value);
                         if (value.contains(lowerQuery)) {
-                            Log.e(TAG, "Search result added::" + value);
                             filteredList.add(searchableList.get(position));
                         }
                     }

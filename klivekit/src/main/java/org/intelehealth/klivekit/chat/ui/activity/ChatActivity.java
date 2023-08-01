@@ -166,13 +166,13 @@ public class ChatActivity extends AppCompatActivity {
 
     private void onUpdateMessageEvent(Object... args) {
         try {
-            Log.e(TAG, "onUpdateMessageEvent: " + new Gson().toJson(args));
+            if (args.length == 0) return;
+            Log.e(TAG, "onUpdateMessageEvent: " + new Gson().toJson(args[0]));
             for (Object arg : args) {
                 Log.d(TAG, "updateMessage: " + String.valueOf(arg));
             }
 
-            JSONObject jsonObject = new JSONArray(String.valueOf(args))
-                    .getJSONArray(0)
+            JSONObject jsonObject = new JSONArray(new Gson().toJson(args[0]))
                     .getJSONObject(0)
                     .getJSONObject("nameValuePairs");
             runOnUiThread(() -> {
@@ -198,14 +198,6 @@ public class ChatActivity extends AppCompatActivity {
 
                 } else {
                     getAllMessages(false);
-                            /*if (jsonObject.has("dataValues")) {
-                                try {
-                                    addNewMessage(jsonObject.getJSONObject("dataValues"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else
-                                addNewMessage(jsonObject);*/
                 }
 
 
@@ -303,17 +295,14 @@ public class ChatActivity extends AppCompatActivity {
 
         getAllMessages(false);
         //postMessages(FROM_UUID, TO_UUID, PATIENT_UUID, "hell.. mobile test - " + System.currentTimeMillis());
-        mMessageEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId,
-                                          KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    sendMessageNow(null);
-                    return true;
-                }
-                return false;
+        mMessageEditText.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        mMessageEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                Toast.makeText(ChatActivity.this, "Send", Toast.LENGTH_SHORT).show();
+                sendMessageNow(null);
+                return true;
             }
+            return false;
         });
 
         if (getIntent().getBooleanExtra("isForVideo", false)) {
@@ -415,7 +404,7 @@ public class ChatActivity extends AppCompatActivity {
             for (int i = 0; i < response.getData().size(); i++) {
                 //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
                 if (response.getData().get(i).getLayoutType() == Constants.LEFT_ITEM_DOCT
-                        && !response.getData().get(i).getIsRead()) {
+                        && response.getData().get(i).getIsRead() == 0) {
                     setReadStatus(response.getData().get(i).getId());
                     break;
                 }
@@ -435,23 +424,35 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void postMessages(String fromUUId, String toUUId, String patientUUId, String message, String type) {
-        try {
 
-            JSONObject inputJsonObject = new JSONObject();
-            inputJsonObject.put("fromUser", fromUUId);
-            inputJsonObject.put("toUser", toUUId);
-            inputJsonObject.put("patientId", patientUUId);
-            inputJsonObject.put("message", message);
-            inputJsonObject.put("patientName", mPatientName);
-            inputJsonObject.put("hwName", "");
-            inputJsonObject.put("patientPic", "");
-            inputJsonObject.put("hwPic", "");
-            inputJsonObject.put("visitId", mVisitUUID);
-            inputJsonObject.put("isRead", false);
-            inputJsonObject.put("type", type);
-            mLoadingLinearLayout.setVisibility(View.VISIBLE);
-            Log.v(TAG, "postMessages - inputJsonObject - " + inputJsonObject.toString());
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constants.SEND_MESSAGE_URL, inputJsonObject, new Response.Listener<JSONObject>() {
+//            JSONObject inputJsonObject = new JSONObject();
+//            inputJsonObject.put("fromUser", fromUUId);
+//            inputJsonObject.put("toUser", toUUId);
+//            inputJsonObject.put("patientId", patientUUId);
+//            inputJsonObject.put("message", message);
+//            inputJsonObject.put("patientName", mPatientName);
+//            inputJsonObject.put("hwName", "");
+//            inputJsonObject.put("patientPic", "");
+//            inputJsonObject.put("hwPic", "");
+//            inputJsonObject.put("visitId", mVisitUUID);
+//            inputJsonObject.put("isRead", false);
+//            inputJsonObject.put("type", type);
+        mLoadingLinearLayout.setVisibility(View.VISIBLE);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setMessage(message);
+        chatMessage.setFromUser(fromUUId);
+        chatMessage.setIsRead(0);
+        chatMessage.setPatientId(patientUUId);
+        chatMessage.setToUser(toUUId);
+        chatMessage.setVisitId(mVisitUUID);
+        chatMessage.setPatientName(mPatientName);
+        chatMessage.setType(type);
+        Log.v(TAG, "postMessages - inputJsonObject - " + chatMessage.toJson());
+        try {
+            JsonObjectRequest objectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    Constants.SEND_MESSAGE_URL,
+                    new JSONObject(chatMessage.toJson()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     Log.v(TAG, "postMessages - response - " + response.toString());
@@ -466,10 +467,11 @@ public class ChatActivity extends AppCompatActivity {
                     mLoadingLinearLayout.setVisibility(View.GONE);
                 }
             });
-            mRequestQueue.add(jsonObjectRequest);
+            mRequestQueue.add(objectRequest);
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+
     }
 
     public void setReadStatus(int messageId) {

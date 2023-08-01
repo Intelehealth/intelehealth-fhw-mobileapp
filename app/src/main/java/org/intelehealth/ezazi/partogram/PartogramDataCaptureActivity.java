@@ -246,37 +246,24 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 .build();
 
         dialog.setListener(item -> {
-            if (isChat) startChatActivity(doctors.get(item.getItem()));
+            if (isChat) startChatActivity(doctors.get(item.getItem()), item.getItem());
             else startVideoCallActivity(doctors, item.getItem());
         });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void startChatActivity(String doctorUuid) {
-//        EncounterDAO encounterDAO = new EncounterDAO();
-//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(mVisitUUID);
-//        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-//        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(mVisitUUID);
-        Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, EzaziChatActivity.class);
-        chatIntent.putExtra("patientName", mPatientName);
-        chatIntent.putExtra("visitUuid", mVisitUUID);
-        chatIntent.putExtra("patientUuid", mPatientUuid);
-        chatIntent.putExtra("fromUuid", new SessionManager(getApplicationContext()).getProviderID()); // provider uuid
-        chatIntent.putExtra("isForVideo", false);
-        chatIntent.putExtra("toUuid", doctorUuid);
-//        if (rtcConnectionDTO != null) {
-//            try {
-//                JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-//                chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//        } else {
-//            chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-//        }
-        startActivity(chatIntent);
+    private void startChatActivity(String doctorUuid, String doctorName) {
+        if (SocketManager.getInstance().checkUserIsOnline(doctorUuid)) {
+            Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, EzaziChatActivity.class);
+            chatIntent.putExtra("patientName", mPatientName);
+            chatIntent.putExtra("visitUuid", mVisitUUID);
+            chatIntent.putExtra("patientUuid", mPatientUuid);
+            chatIntent.putExtra("fromUuid", new SessionManager(getApplicationContext()).getProviderID()); // provider uuid
+            chatIntent.putExtra("isForVideo", false);
+            chatIntent.putExtra("toUuid", doctorUuid);
+            startActivity(chatIntent);
+        } else Toast.makeText(this, doctorName + " is offline ", Toast.LENGTH_SHORT).show();
     }
 
     private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
