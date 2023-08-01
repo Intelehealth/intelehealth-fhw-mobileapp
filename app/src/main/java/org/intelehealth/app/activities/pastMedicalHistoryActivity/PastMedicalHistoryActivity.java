@@ -432,6 +432,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 message = message
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("since", "حيث")
+                        .replace("From", "حسب")
+                        .replace("To", "ل")
                         .replace("Since", "حيث")
                         .replace("Hours", "ساعات")
                         .replace("Days", "أيام")
@@ -498,6 +500,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     patientHistoryArabic = patientHistoryArabic
                             .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                             .replace("since", "حيث")
+                            .replace("From", "حسب")
+                            .replace("To", "ل")
                             .replace("Since", "حيث")
                             .replace("Hours", "ساعات")
                             .replace("Days", "أيام")
@@ -557,6 +561,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 patientHistoryArabic = patientHistoryArabic
                         .replace("Question not answered", "سؤال لم يتم الإجابة عليه")
                         .replace("since", "حيث")
+                        .replace("From", "حسب")
+                        .replace("To", "ل")
                         .replace("Since", "حيث")
                         .replace("Hours", "ساعات")
                         .replace("Days", "أيام")
