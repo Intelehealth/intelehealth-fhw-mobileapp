@@ -377,6 +377,40 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
     @Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
+        Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
+        //Log.d("Clicked", question.language());
+        question.toggleSelected();
+        if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
+            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected(true);
+        } else {
+            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
+        }
+        adapter.notifyDataSetChanged();
+
+
+        if (question.getInputType() != null && question.isSelected()) {
+
+            if (question.getInputType().equals("camera")) {
+                if (!filePath.exists()) {
+                    boolean res = filePath.mkdirs();
+                    Log.i("RES>", "" + filePath + " -> " + res);
+                }
+                imageName = UUID.randomUUID().toString();
+                Node.handleQuestion(question, this, adapter, filePath.toString(), imageName);
+            } else {
+                Node.handleQuestion(question, this, adapter, null, null);
+            }
+
+
+        }
+
+        if (!question.isTerminal() && question.isSelected()) {
+            Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
+        }
+    }
+
+   /* @Override
+    public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
         if ((physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getChoiceType().equals("single")) &&
                 !physicalExamMap.getOption(physExamPos).getOption(groupPosition).anySubSelected()) {
 
@@ -538,7 +572,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             }
               //  imagesDAO.deleteConceptImages(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);  // 3. we also need to void this image from local db so that on sync we dont get this image.
         }
-    }
+    }*/
 
     /*@Override
     public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {

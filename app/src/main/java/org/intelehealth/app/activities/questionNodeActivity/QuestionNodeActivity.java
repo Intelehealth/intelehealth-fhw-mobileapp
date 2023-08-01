@@ -285,7 +285,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
 
            //  Nas-248 - start
-            if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
+          /*  if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = currentNode.getOption(groupPosition);
                 if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
@@ -305,7 +305,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                         }
                     }
                 }
-            }
+            }*/
             //  adapter.notifyDataSetChanged();
             //  Nas-248 - end
 

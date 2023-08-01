@@ -98,8 +98,8 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
-    private boolean isMultiChoice = false;
-    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
+//    private boolean isMultiChoice = false;
+//    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
 
 
     //for Associated Complaints and medical history only
@@ -163,9 +163,9 @@ public class Node implements Serializable {
     public Node(JSONObject jsonNode) {
         try {
             this.id = jsonNode.getString("id");
-            this.isMultiChoice = jsonNode.optBoolean("multi-choice");
+         //   this.isMultiChoice = jsonNode.optBoolean("multi-choice");
 
-            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
+        //    this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
 
             this.text = jsonNode.getString("text");
 
@@ -351,8 +351,8 @@ public class Node implements Serializable {
     public Node(Node source) {
         this.id = source.id;
         this.text = source.text;
-        this.isMultiChoice = source.isMultiChoice;
-        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
+//        this.isMultiChoice = source.isMultiChoice;
+//        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
         this.display_gujarati = source.display_gujarati;
@@ -426,7 +426,7 @@ public class Node implements Serializable {
                 adapter.notifyDataSetChanged();
 
                 // exclude from multi-choice - start
-                Node currentNode = node.getOption(position);
+               /* Node currentNode = node.getOption(position);
                 if (node.optionsList != null && !node.optionsList.isEmpty() && !node.isMultiChoice) {
                     for (int i = 0; i < node.optionsList.size(); i++) {
                         Node innerNode = node.optionsList.get(i);
@@ -454,7 +454,7 @@ public class Node implements Serializable {
                                 innerNode.setUnselected();
                         }
                     }
-                }
+                }*/
                 // exclude from multi-choice - start
 
                 if (node.getOption(position).getInputType() != null) {
@@ -2882,21 +2882,21 @@ public class Node implements Serializable {
         }
     }
 
-    public boolean isMultiChoice() {
-        return isMultiChoice;
-    }
+//    public boolean isMultiChoice() {
+//        return isMultiChoice;
+//    }
 
-    public void setMultiChoice(boolean multiChoice) {
-        isMultiChoice = multiChoice;
-    }
+//    public void setMultiChoice(boolean multiChoice) {
+//        isMultiChoice = multiChoice;
+//    }
 
-    public boolean isExcludedFromMultiChoice() {
-        return isExcludedFromMultiChoice;
-    }
+//    public boolean isExcludedFromMultiChoice() {
+//        return isExcludedFromMultiChoice;
+//    }
 
-    public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
-        isExcludedFromMultiChoice = excludedFromMultiChoice;
-    }
+//    public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
+//        isExcludedFromMultiChoice = excludedFromMultiChoice;
+//    }
 
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
 
