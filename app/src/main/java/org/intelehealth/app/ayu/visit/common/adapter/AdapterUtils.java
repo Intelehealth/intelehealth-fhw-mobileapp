@@ -38,7 +38,7 @@ public class AdapterUtils {
                 button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, isSubmitType ? R.drawable.ic_baseline_check_18_white : 0, 0);
                 onFinishActionListener.onFinish();
             }
-        }, 1000);
+        }, 400);
 
     }
 }

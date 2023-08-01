@@ -37,6 +37,34 @@ public class AppConstants {
 
     //App vitals constants
 
+    public static String getMinWeightByAge(int ageInMonth) {
+        if (ageInMonth <= 1) {
+            return "0.8";
+        } else if (ageInMonth <= 12) {
+            return "1";
+        } else if (ageInMonth <= 12 * 12) {
+            return "4";
+        } else if (ageInMonth <= 18 * 12) {
+            return "15";
+        } else {
+            return "20";
+        }
+    }
+    public static String getMaxWeightByAge(int ageInMonth) {
+
+        if (ageInMonth <= 1) {
+            return "6";
+        } else if (ageInMonth <= 12) {
+            return "16";
+        } else if (ageInMonth <= 12 * 12) {
+            return "80";
+        } else if (ageInMonth <= 18 * 12) {
+            return "150";
+        } else {
+            return "500";
+        }
+    }
+
     public static final String MAXIMUM_HEIGHT = "252";
     public static final String MINIMUM_HEIGHT = "40";
 

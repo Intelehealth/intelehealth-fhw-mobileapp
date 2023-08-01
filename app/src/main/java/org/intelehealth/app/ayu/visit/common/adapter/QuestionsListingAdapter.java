@@ -211,7 +211,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
                         setData(position, genericViewHolder);
                     }
-                }, 1000);
+                }, 800);
             } else {
                 genericViewHolder.spinKitView.setVisibility(View.GONE);
                 genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);

@@ -862,8 +862,8 @@
     <string name="weight_kg">Weight (kg)</string>
     <string name="bmi_index_auto_calculated">BMI index(auto-calculated)</string>
     <string name="enter_the_patient_s_vitals">Enter the patient’s vitals</string>
-    <string name="bp_sys">BP Sys</string>
-    <string name="bp_dia">BP Dia</string>
+    <string name="bp_sys">BP Systolic</string>
+    <string name="bp_dia">BP Diastolic</string>
     <string name="pulse_bpm">Pulse (bpm)</string>
     <string name="spo2">SpO2 (%)</string>
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>

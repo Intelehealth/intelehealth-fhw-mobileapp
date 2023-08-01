@@ -58,6 +58,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private String visitUuid;
     private String encounterVitals;
     private float float_ageYear_Month;
+    private int mAgeInMonth;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     //private Spinner mHeightSpinner, mWeightSpinner;
     private EditText mHeightEditText, mWeightEditText;
@@ -100,6 +101,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         fragment.patientGender = intent.getStringExtra("gender");
         fragment.intentTag = intent.getStringExtra("tag");
         fragment.float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+        String[] temp = String.valueOf(fragment.float_ageYear_Month).split("\\.");
+        fragment.mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
         return fragment;
     }
 
@@ -110,8 +113,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         sessionManager = new SessionManager(context);
         configUtils = new ConfigUtils(context);
 
-        mHeightMasterList = getNumbersInRange(Integer.parseInt(AppConstants.MINIMUM_HEIGHT), Integer.parseInt(AppConstants.MAXIMUM_HEIGHT));
-        mWeightMasterList = getNumbersInRange(Integer.parseInt(AppConstants.MINIMUM_WEIGHT), Integer.parseInt(AppConstants.MAXIMUM_WEIGHT));
+        //mHeightMasterList = getNumbersInRange(Integer.parseInt(AppConstants.MINIMUM_HEIGHT), Integer.parseInt(AppConstants.MAXIMUM_HEIGHT));
+        //mWeightMasterList = getNumbersInRange(Integer.parseInt(AppConstants.MINIMUM_WEIGHT), Integer.parseInt(AppConstants.MAXIMUM_WEIGHT));
     }
 
     /*public List<Integer> getNumbersUsingIntStreamRange(int start, int end) {
@@ -138,7 +141,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection, container, false);
-
+        Log.v("float_ageYear_Month", float_ageYear_Month + "");
         //mHeightSpinner = view.findViewById(R.id.sp_height);
         //mWeightSpinner = view.findViewById(R.id.sp_weight);
 
@@ -459,10 +462,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
                     }
                 } else {
-                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT)) ||
-                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.MINIMUM_WEIGHT))) {
+                    if ((Double.parseDouble(val) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
+                            (Double.parseDouble(val) < Double.parseDouble(AppConstants.getMinWeightByAge(mAgeInMonth)))) {
                         //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                        mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.MINIMUM_WEIGHT, AppConstants.MAXIMUM_WEIGHT));
+                        mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
                         mWeightErrorTextView.setVisibility(View.VISIBLE);
                         mWeightEditText.requestFocus();
                         mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
@@ -615,18 +618,30 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
 
     private BMIStatus getBmiStatus(double bmi) {
+        //"< 18.5: Underweight
+        //18.5 to 24.9: Normal Weight
+        //25.0 to 29.9: Overweight
+        //30.0 to 34.9: Moderate Obesity (Class 1)
+        //35.0 to 39.9: Severe Obesity (Class 2)
+        //40.0 & Above: Very Severe (Morbid) Obesity (Class 3)"
         BMIStatus bmiStatus = new BMIStatus();
-        if (bmi < 18.0) {
+        if (bmi < 18.5) {
             bmiStatus.setStatus(getResources().getString(R.string.underweight));
             bmiStatus.setColor(R.color.ui2_bmi1);
-        } else if (bmi > 18.0 && bmi <= 22.9) {
+        } else if (bmi > 18.5 && bmi <= 24.9) {
             bmiStatus.setStatus(getResources().getString(R.string.normal));
             bmiStatus.setColor(R.color.ui2_bmi2);
-        } else if (bmi > 23.0 && bmi <= 24.9) {
+        } else if (bmi > 25.0 && bmi <= 29.9) {
             bmiStatus.setStatus(getResources().getString(R.string.overweight));
             bmiStatus.setColor(R.color.ui2_bmi3);
-        } else if (bmi >= 25.0) {
-            bmiStatus.setStatus(getResources().getString(R.string.obese));
+        } else if (bmi > 30.0 && bmi <= 34.9) {
+            bmiStatus.setStatus(getResources().getString(R.string.morbidly_obese));
+            bmiStatus.setColor(R.color.ui2_bmi4);
+        } else if (bmi > 35.0 && bmi <= 39.9) {
+            bmiStatus.setStatus(getResources().getString(R.string.severely_obese));
+            bmiStatus.setColor(R.color.ui2_bmi5);
+        } else if (bmi >= 40.0) {
+            bmiStatus.setStatus(getResources().getString(R.string.very_severely_obese));
             bmiStatus.setColor(R.color.ui2_bmi6);
         }
         return bmiStatus;
