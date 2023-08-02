@@ -818,10 +818,7 @@ public class ChatActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (itemId == R.id.video_call_menu) {
-//            Intent videoIntent = getVideoIntent().putExtra("roomId", mPatientUUid)
-//                    .putExtra("nurseId", mFromUUId);
-//            startActivity(videoIntent);
-
+            onVideoMenuClicked(buildRtcArg());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -958,5 +955,24 @@ public class ChatActivity extends AppCompatActivity {
 
     public void closePreview(View view) {
         findViewById(R.id.image_preview_ll).setVisibility(View.GONE);
+    }
+
+    public void onVideoMenuClicked(RtcArgs args) {
+//        Intent videoIntent = getVideoIntent().putExtra("roomId", mPatientUUid)
+//                .putExtra("nurseId", mFromUUId);
+//        startActivity(videoIntent);
+    }
+
+    private RtcArgs buildRtcArg() {
+        RtcArgs args = new RtcArgs();
+        args.setVisitId(mVisitUUID);
+        args.setPatientId(mPatientUUid);
+        args.setPatientName(mPatientName);
+        args.setPatientPersonUuid(mPatientUUid);
+        args.setDoctorUuid(mToUUId);
+        args.setIncomingCall(false);
+        args.setNurseId(mFromUUId);
+        args.setRoomId(mPatientUUid);
+        return args;
     }
 }

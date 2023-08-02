@@ -15,6 +15,7 @@ import org.intelehealth.ezazi.ui.rtc.data.RtcTokenDataSource;
 import org.intelehealth.ezazi.ui.rtc.model.UserToken;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.utils.RemoteActionType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class CallInitializer {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         new RtcTokenDataSource(apiService).getRtcToken(result -> {
             args.setToken(result.getToken());
+            args.setActionType(RemoteActionType.VIDEO_CALL.name());
             args.setAppToken(result.getAppToken());
             listener.onInitialized(args);
         }, args);
