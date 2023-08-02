@@ -1,7 +1,6 @@
 package org.intelehealth.ekalarogya.activities.visitSummaryActivity;
 
 
-
 import static org.intelehealth.ekalarogya.utilities.StringUtils.fetchObsValue_REG;
 
 import android.app.Dialog;
@@ -138,10 +137,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -149,147 +144,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import android.app.Dialog;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.print.PdfPrint;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintJob;
-import android.print.PrintManager;
-import android.telephony.SmsManager;
-import android.text.Html;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
-
-import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.ekalarogya.R;
-import org.intelehealth.ekalarogya.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
-import org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.ekalarogya.activities.familyHistoryActivity.FamilyHistoryActivity;
-import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
-import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.ekalarogya.activities.patientSurveyActivity.PatientSurveyActivity;
-import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.ekalarogya.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.ekalarogya.app.AppConstants;
-import org.intelehealth.ekalarogya.app.IntelehealthApplication;
-import org.intelehealth.ekalarogya.appointment.ScheduleListingActivity;
-import org.intelehealth.ekalarogya.appointment.api.ApiClientAppointment;
-import org.intelehealth.ekalarogya.appointment.dao.AppointmentDAO;
-import org.intelehealth.ekalarogya.appointment.model.AppointmentDetailsResponse;
-import org.intelehealth.ekalarogya.appointment.model.CancelRequest;
-import org.intelehealth.ekalarogya.appointment.model.CancelResponse;
-import org.intelehealth.ekalarogya.database.dao.EncounterDAO;
-import org.intelehealth.ekalarogya.database.dao.ImagesDAO;
-import org.intelehealth.ekalarogya.database.dao.ObsDAO;
-import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
-import org.intelehealth.ekalarogya.database.dao.ProviderAttributeLIstDAO;
-import org.intelehealth.ekalarogya.database.dao.RTCConnectionDAO;
-import org.intelehealth.ekalarogya.database.dao.SyncDAO;
-import org.intelehealth.ekalarogya.database.dao.VisitAttributeListDAO;
-import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
-import org.intelehealth.ekalarogya.knowledgeEngine.Node;
-import org.intelehealth.ekalarogya.models.ClsDoctorDetails;
-import org.intelehealth.ekalarogya.models.Patient;
-import org.intelehealth.ekalarogya.models.dto.EncounterDTO;
-import org.intelehealth.ekalarogya.models.dto.ObsDTO;
-import org.intelehealth.ekalarogya.models.dto.RTCConnectionDTO;
-import org.intelehealth.ekalarogya.services.DownloadService;
-import org.intelehealth.ekalarogya.syncModule.SyncUtils;
-import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
-import org.intelehealth.ekalarogya.utilities.FileUtils;
-import org.intelehealth.ekalarogya.utilities.Logger;
-import org.intelehealth.ekalarogya.utilities.NetworkConnection;
-import org.intelehealth.ekalarogya.utilities.SessionManager;
-import org.intelehealth.ekalarogya.utilities.UrlModifiers;
-import org.intelehealth.ekalarogya.utilities.UuidDictionary;
-import org.intelehealth.ekalarogya.utilities.exception.DAOException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -2001,23 +1855,42 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    Toast.makeText(context, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
+                    // todo: once these strings are finalized by PO will add them in strings.xml and add translatins too.
+                    
+                    doQuery();  // this updates isSyncedFlag here...
+                    if (isSynedFlag.equalsIgnoreCase("0")) {
+                        // ie. if visit is not uploaded itself than no need to move any further.
+                        showOkDismissDialog(null, "Please upload first before attempting to download the prescription.", getString(R.string.ok));
+                        return;
+                    }
+
+                    if (hasPrescription.equalsIgnoreCase("true")) {
+                        // ie. if already presc is downloaded than dont check for any new updates.
+                        showOkDismissDialog(null, "Prescription is already downloaded.", getString(R.string.ok));
+                        return;
+                    }
+
+                    Toast.makeText(context, "Fetching details. Please wait...", Toast.LENGTH_LONG).show();
+
+                    SyncUtils syncUtils = new SyncUtils();
+                    syncUtils.syncForeground("downloadPrescription");
+                    uploaded = true;
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            downloadPrescription();
+                            if (!hasPrescription.equalsIgnoreCase("true"))
+                                showOkDismissDialog(null, "Prescription is not yet provided by doctor.", getString(R.string.ok)); // todo: once this string is finalized add it to strings.xml file.
+//                        pd.dismiss();
+                        }
+                    }, 5000);
                 } else {
                     Toast.makeText(context, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                    return; // if no presc than no need to move forward and call sync operation.
                 }
 
-                SyncUtils syncUtils = new SyncUtils();
-                syncUtils.syncForeground("downloadPrescription");
-                uploaded = true;
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        downloadPrescription();
-//                        pd.dismiss();
-                    }
-                }, 5000);
             }
         });
 
