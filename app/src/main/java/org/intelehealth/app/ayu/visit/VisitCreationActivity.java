@@ -123,6 +123,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private String visitUuid;
     private String encounterVitals;
     private float float_ageYear_Month;
+    private int mAgeInMonth;
+    private String mAgeAndMonth;
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
 
     private FrameLayout mSummaryFrameLayout;
@@ -175,6 +177,16 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             intentTag = intent.getStringExtra("tag");
             mEditFor = intent.getIntExtra("edit_for", STEP_1_VITAL);
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+            String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
+            mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
+            if (Integer.parseInt(temp[0]) == 0) {
+                mAgeAndMonth = temp[1] + " Months";
+            } else if (Integer.parseInt(temp[0]) == 0) {
+                mAgeAndMonth = temp[0] + " Years";
+            } else {
+                mAgeAndMonth = temp[0] + " Years " + temp[1] + " Months";
+            }
+
             if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
             }
@@ -184,7 +196,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Log.v(TAG, "Intent Tag: " + intentTag);
             Log.v(TAG, "Intent float_ageYear_Month: " + float_ageYear_Month);
             ((TextView) findViewById(R.id.tv_title)).setText(patientName);
-            ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s Y", patientGender, String.valueOf((int) float_ageYear_Month)));
+            ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s", patientGender, mAgeAndMonth));
 
         }
 

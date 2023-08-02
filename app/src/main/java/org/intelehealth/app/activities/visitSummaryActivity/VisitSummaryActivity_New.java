@@ -4896,10 +4896,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
             boolean isInOldFormat = true;
+            //Show Visit summary data in Clinical Format for English language only
+            //Else for other language keep the data in Question Answer format
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
                         value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
                         isInOldFormat = false;
                     } else {
@@ -4991,10 +4993,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (phyExam.getValue() != null) {
             String value = phyExam.getValue();
             boolean isInOldFormat = true;
+            //Show Visit summary data in Clinical Format for English language only
+            //Else for other language keep the data in Question Answer format
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
                         value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
                         isInOldFormat = false;
                     } else {
@@ -5030,10 +5034,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (patHistory.getValue() != null) {
             String value = patHistory.getValue();
             boolean isInOldFormat = true;
+            //Show Visit summary data in Clinical Format for English language only
+            //Else for other language keep the data in Question Answer format
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
                         value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
                         isInOldFormat = false;
                     } else {
@@ -5059,10 +5065,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         if (famHistory.getValue() != null) {
             String value = famHistory.getValue();
             boolean isInOldFormat = true;
+            //Show Visit summary data in Clinical Format for English language only
+            //Else for other language keep the data in Question Answer format
             if (value.startsWith("{") && value.endsWith("}")) {
                 try {
                     JSONObject jsonObject = new JSONObject(value);
-                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
                         value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
                         isInOldFormat = false;
                     } else {

@@ -312,6 +312,25 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 editText.setText(node.getLanguage());
 
         }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                }
+            }
+        });
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

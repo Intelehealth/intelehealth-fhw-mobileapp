@@ -7,9 +7,11 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -211,7 +213,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         //mRecyclerView.scrollToPosition(mRecyclerView.getAdapter().getItemCount() - 1);
                         setData(position, genericViewHolder);
                     }
-                }, 1000);
+                }, 800);
             } else {
                 genericViewHolder.spinKitView.setVisibility(View.GONE);
                 genericViewHolder.bodyLayout.setVisibility(View.VISIBLE);
@@ -719,6 +721,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         Log.v(TAG, "updated associate symptoms selected status");
                     }
                 }
+                AdapterUtils.setToDefault(holder.submitButton);
                 //VisitUtils.scrollNow(holder.recyclerView, 1000, 0, 200);
             }
         });
@@ -971,7 +974,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                     }
                 } else if (holder.selectedNestedOptionIndex > 0) {
-                   for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
+                    for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
                         holder.nestedQuestionsListingAdapter.addItem(options.get(i));
                     }
                 } else {
@@ -1079,6 +1082,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     break;
                                 }
                             }
+                            AdapterUtils.setToDefault(holder.submitButton);
+                            /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+                            holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
 
                             if (mItemList.get(index).isMultiChoice()) {
                                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
@@ -1207,6 +1213,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 //openCamera(getImagePath(), "");
+                node.setDataCaptured(false);
                 mLastImageCaptureSelectedNodeIndex = index;
                 mOnItemSelection.onCameraRequest();
             }
@@ -1296,6 +1303,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
+        String oldDataNumber = "", oldDataType = "";
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1326,10 +1334,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         numberRangeSpinner.setAdapter(adaptador);
         numberRangeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
 
+        String finalOldDataNumber1 = oldDataNumber;
         numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-
+                String newNumber = numberRangeSpinner.getSelectedItem().toString();
+                if (!newNumber.equals(finalOldDataNumber1))
+                    AdapterUtils.setToDefault(submitButton);
             }
 
             @Override
@@ -1351,10 +1362,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         durationTypeSpinner.setAdapter(adaptador1);
         durationTypeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
 
+        String finalOldDataType = oldDataType;
         durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-
+                String newType = durationTypeSpinner.getSelectedItem().toString();
+                if (!newType.equals(finalOldDataType))
+                    AdapterUtils.setToDefault(submitButton);
             }
 
             @Override
@@ -1366,8 +1380,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (!node.getLanguage().isEmpty()) {
             String[] val = node.getLanguage().trim().split(" ");
             if (val.length == 2) {
-                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(val[0]));
-                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(val[1]));
+                oldDataNumber = val[0];
+                oldDataType = val[1];
+                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(oldDataNumber));
+                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(oldDataType));
             }
         }
 
@@ -1482,7 +1498,25 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             else
                 editText.setText(node.getLanguage());
         }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                }
+            }
+        });
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
@@ -1586,6 +1620,25 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             editText.setText(node.getLanguage());
         }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                }
+            }
+        });
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
@@ -1697,6 +1750,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 displayDateButton.setText(simpleDateFormatLocal.format(date));
                 displayDateButton.setTag(dateString);
                 VisitUtils.scrollNow(mRecyclerView, 400, 0, 400);
+                AdapterUtils.setToDefault(submitButton);
             }
         });
         holder.skipButton.setVisibility(View.GONE);

@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_12"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:scrollIndicators="none"
                 android:scrollbars="none"
@@ -123,8 +123,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/description_txt"
                 android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginTop="@dimen/edittext_height_44dp"
-                android:layout_marginEnd="@dimen/margin_24">
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginEnd="@dimen/margin_24"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/globe_img"
@@ -178,7 +179,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relative_info"
-                android:layout_marginTop="@dimen/margin_68dp">
+                android:layout_marginTop="@dimen/margin_24">
 
                 <RelativeLayout
                     android:id="@+id/relative_goto_btn"

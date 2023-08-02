@@ -96,7 +96,7 @@ public class AboutUsActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         images_recyclerview.setLayoutManager(layoutManager);
-        images_recyclerview.addItemDecoration(new CirclePagerIndicatorDecoration(this));
+        //images_recyclerview.addItemDecoration(new CirclePagerIndicatorDecoration(this));
         adapter = new AboutUsAdapter(this);
         images_recyclerview.setAdapter(adapter);
 

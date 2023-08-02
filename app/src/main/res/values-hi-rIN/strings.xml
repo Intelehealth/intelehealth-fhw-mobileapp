@@ -835,8 +835,8 @@
     <string name="weight_kg">वजन (किग्रा)</string>
     <string name="bmi_index_auto_calculated">BMI इंडेक्स (ऑटो-कैलकुलेटेड)</string>
     <string name="enter_the_patient_s_vitals">रोगी के वायटल एंटर करें</string>
-    <string name="bp_sys">BP Sys</string>
-    <string name="bp_dia">BP Dia</string>
+    <string name="bp_sys">BP Systolic</string>
+    <string name="bp_dia">BP Diastolic</string>
     <string name="pulse_bpm">पल्स (bpm)</string>
     <string name="spo2">SpO2 (%)</string>
     <string name="respiratory_rate_breaths_min">श्वसन दर (सांस/मिनट)</string>
@@ -1405,8 +1405,7 @@
     <string name="spo2_eg">जैसे, 98%</string>
     <string name="respiratory_eg">जैसे, 24 सांस/मिनट</string>
     <string name="refreshed_successfully">समन्वित सफल!</string>
-    <string name="aboutus_text">"हम टेक-फ़ॉर-इम्पैक्ट संगठन हैं: इंजीनियरों, क्लेनिशियनों, मैनेजमेंट और पब्लिक हेल्थ ऐक्सपर्ट की एक टीम। हमने अंतिम पंक्ति के लोगों को कनेक्ट करने वाला इनोवेटिव ओपन सोर्स टेलीमेडिसिन प्लेटफॉर्म तैयार किया है। \n\nमिशन: हम उस स्थान पर गुणवत्तापूर्ण स्वास्थ्य देखभाल प्रदान करते हैं जहां डॉक्टर की पहुंच नहीं होती है।
-\n\nहमारा विजन है सभी के लिए स्वास्थ्य। \n\nहम विश्वव्यापी स्वास्थ्य पहुंच के विजन में विश्वास रखते हैं - ताकि आप वित्तीय कठिनाइयों का सामना किए बिना, जब और जहां आपको स्वास्थ्य सेवाओं की आवश्यकता हो, उन्हें प्राप्त पर पाएं। हम विश्वव्यापी स्वास्थ्य पहुंच के विजन में विश्वास रखते हैं - ताकि आप किसी भी वित्तीय कठिनाइयों का सामना किए बिना, जब और जहां आपको स्वास्थ्य सेवाओं की आवश्यकता हो, उन्हें प्राप्त पर पाएं  (WHO)। लेकिन इस विजन को साकार करने के लिए संपूर्ण सिस्टम के मिले-जुले प्रयास की जरूरत है। हमारा लक्ष्य है एक प्रेरणा स्रोत बनना ताकि मौजूदा स्वास्थ्य कार्यक्रमों को सशक्त बनाया जा सके जिससे सु-विकसित उपयोगकर्ता-केंद्रित टेलिमेडिसिन टेक्नोलॉजी और क्रियान्वयन सेवाओं के जरिए अंतिम-मील स्वास्थ्य देखभाल प्रदान हो सके। एक बात जो लोग नहीं समझते वह यह है कि टेलिमेडिसिन से महिलाओं को बहुत सशक्तिकरण मिलेगी। ग्रामीण भारत में रहने वाली किसी महिला के लिए, स्वास्थ्य सुविधा एक अधिकार से अधिक एक विशेषाधिकार है। स्वास्थ्य तक उसकी पहुंच को उसके पति या ससुराल के लोगों जैसे अन्य लोगों द्वारा नियंत्रित किया जा सकता है। उसे पास के शहर के किसी डॉक्टर के पास जाने के लिए अनुमति लेने, पैसे लेने और परिवहन के लिए उन पर निर्भर रहना पड़ता है। जब मैंने इंटेलिहेल्थ पर काम करना शुरू किया, तो मुझे यह देखकर बहुत अच्छा लगा कि कैसे सशक्त महिलाएं अपने घर से बाहर निकलकर टेलिमेडिसिन क्लिनिक में जा सकती हैं, डॉक्टर से बात कर सकती हैं और अपनी शर्तों पर अपना इलाज करा सकती हैं। मैंने देखा कि एक महिला को उसके पति ने बुरी तरह पीटा है, जिसके ससुराल वाले उसे उसकी चोटों के इलाज के लिए पैसा नहीं देने वाले। एक बहुत दूर के डॉक्टर की मदद से स्थानीय स्वास्थ्य कार्यकर्ता उसकी चोटों का इलाज करने में सक्षम थी, उसने उसके दर्द को कम करने के लिए उसे दवाइयां दीं, उसके शरीर पर खरोंच के इलाज के लिए मलहम लगाया और सबसे महत्वपूर्ण उसकी आत्मा को शांत करने के लिए एक सहानुभूतिपूर्ण देखभाल करने वाला मिला मैं एक ऐसी महिला से मिली जिसके पति ने किसी भी प्रकार के जन्म नियंत्रण का उपयोग करने से इनकार कर दिया और जो यह जानने के लिए डॉक्टर से बात करना चाहती थी कि वह कौन से परिवार नियोजन विकल्पों का उपयोग कर सकती है। उसने टेलिकंसल्टेशन पर विभिन्न विकल्पों पर चर्चा की और अंततः एक आईयूडी चुना, जिसे स्थानीय नर्स डालने में सक्षम थी। मैं इन महिलाओं की कहानियां गहराई से समझ में आई। एक महिला होने के नाते जिसने दुर्व्यवहार का अनुभव किया है, मैं यह बता नहीं सकती कि इस एक चीज का क्या मतलब है - अपने शरीर की देखभाल करने की क्षमता आपके नियंत्रण में होना। मैं महिलाओं के लिए सुलभ, सुरक्षित स्थान बनाने में लगातार टेलीमेडिसिन की शक्ति से प्रेरित होती हूं ताकि वे देखभाल प्राप्त कर सकें जिसके वे हकदार हैं। \N\nनेहा वर्मा \nCEO और सह-संस्थापक, इंटेलिहेल्थ"</string>
+    <string name="aboutus_text">Intelehealth is a non-profit delivering high-quality healthcare where there is no doctor via telemedicine. Using our open-source technology platform that\'s driven by an innovative digital health assistant, we connect patients and frontline health workers at the last mile with doctors, diagnostics &amp; medications.\n\nIntelehealth has reached millions of patients, connecting thousands of health workers and doctors to deliver health services for communicable and non communicable diseases. We have worked in partnership with Ministries of Health in India &amp; Kyrgyzstan as well as organizations like UNICEF, Jhpiego, MSF, Ekal Arogya and many more. Intelehealth has been recognized by the World Economic Forum and Niti Aayog India as an impactful Digital Public Good.</string>
     <string name="first_name">पहला नाम</string>
     <string name="middle_name">मध्य नाम</string>
     <string name="last_name">उपनाम</string>
@@ -1428,8 +1427,9 @@
     <string name="normal">सामान्य</string>
     <string name="overweight">अधिक भार</string>
     <string name="obese">स्थूल</string>
-    <string name="severely_obese">गंभीर रूप से स्थूल</string>
-    <string name="morbidly_obese">बहुत अधिक स्थूल</string>
+    <string name="very_severely_obese">बहुत गंभीर(रुग्ण) मोटापा(कक्षा 3)</string>
+    <string name="severely_obese">गंभीर मोटापा(कक्षा 2)</string>
+    <string name="morbidly_obese">मध्यम मोटापा(कक्षा 1)</string>
     <string name="select_height">ऊँचाई चुनिए</string>
     <string name="select_weight">वजन चुनिए</string>
 
