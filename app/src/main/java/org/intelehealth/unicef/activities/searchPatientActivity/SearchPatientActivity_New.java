@@ -12,7 +12,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
@@ -32,6 +35,7 @@ import org.intelehealth.unicef.activities.searchPatientActivity.adapter.SearchCh
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.database.dao.PatientsDAO;
+import org.intelehealth.unicef.database.dao.ProviderDAO;
 import org.intelehealth.unicef.models.dto.PatientDTO;
 import org.intelehealth.unicef.models.dto.VisitDTO;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
@@ -63,8 +67,14 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     private ImageButton backbtn;
     View dividerView;
     ImageView iconSearch;
+    private ImageButton searchFilter;
+    private FrameLayout flFrameLayout;
+    private SwitchMaterial flag;
 
     private RecyclerView mSearchHistoryRecyclerView;
+    private ProviderDAO providerDAO = new ProviderDAO();
+
+    private boolean isFlFrameLayoutVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +91,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         allPatientsTV = findViewById(R.id.all_patients_tv);
         addPatientTV = findViewById(R.id.add_new_patientTV);
         iconSearch = findViewById(R.id.icon_search);
-
+        searchFilter = findViewById(R.id.search_filter);
+        flFrameLayout = findViewById(R.id.filter_framelayout);
+        flag = findViewById(R.id.flaggedcheckbox);
+        flag.setChecked(true);
 
         mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
@@ -91,7 +104,8 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
         previous_SearchResults();
-        queryAllPatients();
+//        queryAllPatients();
+        doQueryForProvider(); // only query provider's patients
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +115,25 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+
+        searchFilter.setOnClickListener(v -> {
+            if (isFlFrameLayoutVisible) {
+                flFrameLayout.setVisibility(View.GONE);
+            } else {
+                flFrameLayout.setVisibility(View.VISIBLE);
+            }
+            isFlFrameLayoutVisible = !isFlFrameLayoutVisible;
+        });
+
+        flag.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                doQueryForProvider();
+            } else {
+                queryAllPatients();
+            }
+            flFrameLayout.setVisibility(View.GONE);
+            isFlFrameLayoutVisible = !isFlFrameLayoutVisible;
         });
 
         iconSearch.setOnClickListener(new View.OnClickListener() {
@@ -120,11 +153,12 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 } else {
                     allPatientsTV.setText(getString(R.string.all_patients_txt));
                     query = "";
-                    doQuery(query);
+                    doQueryForProvider();
 
                 }
             }
         });
+
         backbtn.setOnClickListener(v -> {
             finish();
         });
@@ -144,7 +178,8 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 if (editable.toString().isEmpty()) {
                     allPatientsTV.setText(getString(R.string.all_patients_txt));
                     query = "";
-                    doQuery(query);
+                    doQueryForProvider();
+
                 }
             }
         });
@@ -243,6 +278,27 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         List<PatientDTO> patientDTOList = getQueryPatients(query);  // fetches all the list of patients.
 
         if (patientDTOList.size() > 0) { // ie. the entered text is present in db
+            patientDTOList = fetchDataforTags(patientDTOList);
+            Log.v(TAG, "size: " + patientDTOList.size());
+
+            searchData_Available();
+            try {
+                adapter = new SearchPatientAdapter_New(this, patientDTOList);
+                fullyLoaded = true;
+                search_recycelview.setAdapter(adapter);
+
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Logger.logE("doquery", "doquery", e);
+            }
+        } else {
+            searchData_Unavailable();
+        }
+    }
+
+    private void doQueryForProvider() {
+        List<PatientDTO> patientDTOList = providerDAO.doQueryWithProviders(sessionManager.getProviderID());
+        if (patientDTOList.size() > 0) {
             patientDTOList = fetchDataforTags(patientDTOList);
             Log.v(TAG, "size: " + patientDTOList.size());
 

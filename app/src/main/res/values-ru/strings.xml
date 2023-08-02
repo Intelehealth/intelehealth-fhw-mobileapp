@@ -1476,5 +1476,5 @@
     <string name="aboutus_termscondition">Ознакомьтесь с нашими <a href="https://intelehealth.org/terms-of-use">положениями и условиями.</a></string>
     <string name="permissions_required">Необходимые разрешения</string>
     <string name="enable_permission_for_time_tracking">Пожалуйста, включите требуемое разрешение для отображения функции отслеживания времени.</string>
-
+    <string name="filter_my_patients">Мои родители</string>
 </resources>

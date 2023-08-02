@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginStart="@dimen/margin_10"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginEnd="@dimen/margin_30"
+    android:layout_marginBottom="@dimen/margin_10"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_15"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/my_patients"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/margin_30"
+            android:text="@string/filter_my_patients"
+            android:textColor="@color/header_title_color"
+            android:textSize="@dimen/fu_name_txt_size" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/flaggedcheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+            android:theme="@style/AppTheme.switchColorStyle" />
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

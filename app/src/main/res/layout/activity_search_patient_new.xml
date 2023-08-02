@@ -42,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_margin_top"
                 android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_toStartOf="@id/search_filter"
                 android:layout_toEndOf="@+id/backbtn"
                 android:background="@drawable/search_edittext_vector">
 
@@ -74,8 +75,31 @@
                     android:background="@drawable/ic_search_white_icon8" />
 
             </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/search_filter"
+                android:layout_width="@dimen/toolbar_margin_right"
+                android:layout_height="@dimen/toolbar_margin_right"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_10"
+                android:background="@drawable/ic_baseline_filter_alt_24" />
+
         </RelativeLayout>
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/filter_framelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margin_45"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <include layout="@layout/patient_filter_layout" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/search_hint_text"

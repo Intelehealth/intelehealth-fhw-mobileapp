@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.database.dao;
 
+import static org.intelehealth.unicef.database.dao.PatientsDAO.phoneNumber;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -14,8 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.models.dto.PatientDTO;
 import org.intelehealth.unicef.models.dto.ProviderDTO;
 import org.intelehealth.unicef.utilities.Logger;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
 public class ProviderDAO {
@@ -280,7 +284,7 @@ public class ProviderDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
-           // values.put("uuid", uuid);
+            // values.put("uuid", uuid);
             int i = db.update("tbl_provider", values, whereclause, whereargs);
             Logger.logD("profile", "updated" + i);
             db.setTransactionSuccessful();
@@ -334,6 +338,7 @@ public class ProviderDAO {
 
         return providerDTOList;
     }
+
     public boolean updateLoggedInUserProfileImage(String imagepath, String uuid) throws DAOException {
 
         boolean isUpdated = false;
@@ -361,6 +366,46 @@ public class ProviderDAO {
       /*  if (isupdate == 0)
             isUpdated = insertPatientProfileImages(imagepath, uuid);*/
         return isUpdated;
+    }
+
+    public List<PatientDTO> doQueryWithProviders(String providerUUID) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        List<PatientDTO> modelListwihtoutQuery = new ArrayList<>();
+        String query = "SELECT b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth, b.gender " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
+                "WHERE a.patientuuid = b.uuid AND c.visituuid=a.uuid AND c.provider_uuid = ?" +
+                "GROUP BY a.uuid order by b.first_name ASC";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, new String[]{providerUUID});
+        Logger.logD(TAG, "Cursour count" + cursor.getCount());
+
+        try {
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        PatientDTO model = new PatientDTO();
+                        model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                        model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                        model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                        model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                        model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                        model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                        modelListwihtoutQuery.add(model);
+
+                    } while (cursor.moveToNext());
+                }
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return modelListwihtoutQuery;
     }
 
 }
