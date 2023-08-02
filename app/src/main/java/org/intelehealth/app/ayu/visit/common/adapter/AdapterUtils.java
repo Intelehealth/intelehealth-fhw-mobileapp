@@ -41,4 +41,8 @@ public class AdapterUtils {
         }, 400);
 
     }
+    public static void setToDefault(Button button){
+        button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+        button.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
+    }
 }

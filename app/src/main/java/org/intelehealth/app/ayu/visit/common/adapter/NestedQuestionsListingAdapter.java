@@ -8,9 +8,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -775,6 +777,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             break;
                         }
                     }
+                    AdapterUtils.setToDefault(holder.submitButton);
+                    /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+                    holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
 
                     String type = node.getInputType();
 
@@ -918,6 +923,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         Button skipButton = view.findViewById(R.id.btn_skip);
+        String oldDataNumber = "", oldDataType = "";
+        String finalOldDataNumber = oldDataNumber;
+        String finalOldDataType = oldDataType;
+
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -957,7 +966,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-
+                String newNumber = numberRangeSpinner.getSelectedItem().toString();
+                if (!newNumber.equals(finalOldDataNumber))
+                    AdapterUtils.setToDefault(submitButton);
             }
 
             @Override
@@ -982,7 +993,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-
+                String newType = durationTypeSpinner.getSelectedItem().toString();
+                if (!newType.equals(finalOldDataType))
+                    AdapterUtils.setToDefault(submitButton);
             }
 
             @Override
@@ -994,8 +1007,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (!node.getLanguage().isEmpty()) {
             String[] val = node.getLanguage().trim().split(" ");
             if (val.length == 2) {
-                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(val[0]));
-                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(val[1]));
+                oldDataNumber = val[0];
+                oldDataType = val[1];
+                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(oldDataNumber));
+                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(oldDataType));
             }
         }
 
@@ -1108,7 +1123,25 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
         }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                }
+            }
+        });
         Button skipButton = view.findViewById(R.id.btn_skip);
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
@@ -1218,6 +1251,25 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 editText.setText(node.getLanguage());
 
         }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                }
+            }
+        });
         Button skipButton = view.findViewById(R.id.btn_skip);
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
@@ -1372,6 +1424,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 displayDateButton.setText(simpleDateFormatLocal.format(date));
                 displayDateButton.setTag(dateString);
                 VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400);
+                AdapterUtils.setToDefault(submitButton);
             }
         });
         //holder.skipButton.setVisibility(View.GONE);
