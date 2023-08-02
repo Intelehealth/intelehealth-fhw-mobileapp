@@ -1,7 +1,5 @@
 package org.intelehealth.ezazi.activities.epartogramActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
@@ -12,9 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.webkit.ConsoleMessage;
 import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -24,7 +20,7 @@ import android.webkit.WebViewClient;
 
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 

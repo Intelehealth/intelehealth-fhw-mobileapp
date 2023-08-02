@@ -1,4 +1,4 @@
-package org.intelehealth.ezazi.ui;
+package org.intelehealth.ezazi.ui.shared;
 
 import android.text.Editable;
 import android.text.TextWatcher;

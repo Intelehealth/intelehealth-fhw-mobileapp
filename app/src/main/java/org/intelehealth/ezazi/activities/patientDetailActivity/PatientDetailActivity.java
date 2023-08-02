@@ -51,7 +51,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
-import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.VisitSummaryActivity;
@@ -66,8 +65,7 @@ import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
-import org.intelehealth.ezazi.ui.BaseActionBarActivity;
-import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.DownloadFilesUtils;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -375,19 +373,19 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 VisitsDAO visitsDAO = new VisitsDAO();
 
                 try {
-                    ArrayList<VisitAttributeDTO> attributes = new ArrayList<>();
-                    VisitAttributeDTO general = VisitAttributeDTO.generateNew(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
-                    VisitAttributeDTO holder = VisitAttributeDTO.generateNew(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
-                    attributes.add(general);
-                    attributes.add(holder);
-                    visitDTO.setVisitAttributeDTOS(attributes);
+//                    ArrayList<VisitAttributeDTO> attributes = new ArrayList<>();
+//                    VisitAttributeDTO general = VisitAttributeDTO.generateNew(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
+//                    VisitAttributeDTO holder = VisitAttributeDTO.generateNew(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
+//                    attributes.add(general);
+//                    attributes.add(holder);
+//                    visitDTO.setVisitAttributeDTOS(attributes);
                     visitsDAO.insertPatientToDB(visitDTO);
 
-//                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
-//                    speciality_attributes
-//                            .insertVisitAttributes(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
-//                    speciality_attributes
-//                            .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    speciality_attributes
+                            .insertVisitAttributes(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
+                    speciality_attributes
+                            .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
 
 
                 } catch (DAOException e) {

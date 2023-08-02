@@ -1,10 +1,8 @@
 package org.intelehealth.ezazi.ui.password.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,11 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
-import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
-import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.databinding.FragmentResetPasswordBinding;
-import org.intelehealth.ezazi.ui.InputChangeValidationListener;
+import org.intelehealth.ezazi.ui.shared.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.password.model.ChangePasswordRequestModel;
 import org.intelehealth.ezazi.ui.password.viewmodel.PasswordViewModel;

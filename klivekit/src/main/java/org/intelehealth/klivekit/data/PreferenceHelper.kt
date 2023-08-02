@@ -10,6 +10,7 @@ class PreferenceHelper constructor(val context: Context) {
     companion object {
         const val AUTH_TOKEN: String = "AUTH_TOKEN"
         const val RTC_DATA = "rtc_data"
+        const val ACTIVE_ROOM_ID = "active_room_id"
     }
 
     fun save(key: String?, value: Any?) {

@@ -18,13 +18,19 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
+import org.intelehealth.ezazi.utilities.AppNotification;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
+import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.model.ChatMessage;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,44 +77,65 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
                 if (callState == TelephonyManager.CALL_STATE_IDLE) {
                     startActivity(in);
-                }else{
+                } else {
                     sendNotification(remoteMessage, null);
                 }
 
             } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
                 try {
                     Log.d(TAG, "actionType : TEXT_CHAT");
-                    String fromUUId = remoteMessage.getData().get("toUser");
-                    String toUUId = remoteMessage.getData().get("fromUser");
-                    String patientUUid = remoteMessage.getData().get("patientId");
-                    String visitUUID = remoteMessage.getData().get("visitId");
-                    String patientName = remoteMessage.getData().get("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
+                    Gson gson = new Gson();
+                    ChatMessage chatMessage = gson.fromJson(gson.toJson(remoteMessage.getData()), ChatMessage.class);
+                    RtcArgs args = new RtcArgs();
+                    args.setPatientName(chatMessage.getPatientName());
+                    args.setPatientId(chatMessage.getPatientId());
+                    args.setVisitId(chatMessage.getVisitId());
+                    args.setNurseId(chatMessage.getToUser());
+                    args.setDoctorUuid(chatMessage.getFromUser());
+
+                    try {
+                        String title = new ProviderDAO().getProviderName(args.getDoctorUuid());
+                        new AppNotification.Builder(this)
+                                .title(title)
+                                .body(chatMessage.getMessage())
+                                .pendingIntent(EzaziChatActivity.getPendingIntent(this, args))
+                                .send();
+                    } catch (DAOException e) {
+                        throw new RuntimeException(e);
+                    }
 
 
-                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
-                            NotificationUtils.getPendingIntentFlag());
-                    sendNotification(remoteMessage, pendingIntent);
+//                    String fromUUId = remoteMessage.getData().get("toUser");
+//                    String toUUId = remoteMessage.getData().get("fromUser");
+//                    String patientUUid = remoteMessage.getData().get("patientId");
+//                    String visitUUID = remoteMessage.getData().get("visitId");
+//                    String patientName = remoteMessage.getData().get("patientName");
+//                    JSONObject connectionInfoObject = new JSONObject();
+//                    connectionInfoObject.put("fromUUID", fromUUId);
+//                    connectionInfoObject.put("toUUID", toUUId);
+//                    connectionInfoObject.put("patientUUID", patientUUid);
+//
+//
+//                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
+//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    chatIntent.putExtra("patientName", patientName);
+//                    chatIntent.putExtra("visitUuid", visitUUID);
+//                    chatIntent.putExtra("patientUuid", patientUUid);
+//                    chatIntent.putExtra("fromUuid", fromUUId);
+//                    chatIntent.putExtra("toUuid", toUUId);
+//                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
+//                            NotificationUtils.getPendingIntentFlag());
+//                    sendNotification(remoteMessage, pendingIntent);
+//
+//
+//                    Intent intent = new Intent(ACTION_NAME);
+//                    intent.putExtra("visit_uuid", visitUUID);
+//                    intent.putExtra("connection_info", connectionInfoObject.toString());
+//                    intent.setComponent(new ComponentName("org.intelehealth.ezazi", "org.intelehealth.ezazi.utilities.RTCMessageReceiver"));
+//                    getApplicationContext().sendBroadcast(intent);
 
 
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.ezazi", "org.intelehealth.ezazi.utilities.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
-
-
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

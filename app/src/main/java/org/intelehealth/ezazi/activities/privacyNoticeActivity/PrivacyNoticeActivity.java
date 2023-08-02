@@ -10,16 +10,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.addNewPatient.AddNewPatientActivity;
 import org.intelehealth.ezazi.app.AppConstants;
-import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.json.JSONException;

@@ -1,5 +1,7 @@
 package org.intelehealth.klivekit.socket
 
+import android.content.Intent
+import com.codeglo.coyamore.data.PreferenceHelper
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -8,9 +10,8 @@ import io.socket.client.Socket.EVENT_CONNECT
 import io.socket.client.Socket.EVENT_DISCONNECT
 import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.model.ActiveUser
+import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
-import org.json.JSONObject
-import java.lang.RuntimeException
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
@@ -21,6 +22,12 @@ open class SocketManager {
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
     var activeUsers = HashMap<String, ActiveUser>()
+    var activeRoomId: String? = null
+    var notificationListener: NotificationListener? = null
+
+    interface NotificationListener {
+        fun showNotification(chatMessage: ChatMessage)
+    }
 
     fun connect(url: String?) {
         url?.let {
@@ -49,14 +56,29 @@ open class SocketManager {
     }
 
     private fun emitter(event: String) = Emitter.Listener {
-        Timber.e { "$TAG => $event => ${Gson().toJson(it)}" }
+        val json: String? = Gson().toJson(it)
+        Timber.e { "$TAG => $event => $json" }
         if (event == EVENT_ALL_USER) {
-            val json: String? = Gson().toJson(it);
             json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
+        } else if (event == EVENT_UPDATE_MESSAGE) {
+            json?.let { array -> notifyIfNotActiveRoom(JSONArray(array)); }
         }
 
         emitterListener?.invoke(event)?.call(it)
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
+    }
+
+    private fun notifyIfNotActiveRoom(jsonArray: JSONArray) {
+        if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
+            val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
+            Gson().fromJson(json, ChatMessage::class.java)?.let {
+                if (it.patientId.equals(activeRoomId).not()) showChatNotification(it)
+            }
+        }
+    }
+
+    private fun showChatNotification(message: ChatMessage) {
+        notificationListener?.showNotification(message)
     }
 
     private fun parseAndSaveToLocal(jsonArray: JSONArray) {

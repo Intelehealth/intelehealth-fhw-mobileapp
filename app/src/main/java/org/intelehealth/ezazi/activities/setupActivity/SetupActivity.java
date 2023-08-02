@@ -56,7 +56,7 @@ import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
 import org.intelehealth.ezazi.services.firebase_services.TokenRefreshUtils;
-import org.intelehealth.ezazi.ui.InputChangeValidationListener;
+import org.intelehealth.ezazi.ui.shared.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.password.activity.ForgotPasswordActivity;
 import org.intelehealth.ezazi.utilities.Base64Utils;

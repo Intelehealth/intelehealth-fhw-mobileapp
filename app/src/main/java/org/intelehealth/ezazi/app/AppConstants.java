@@ -1,6 +1,8 @@
 package org.intelehealth.ezazi.app;
 
 
+import static org.intelehealth.klivekit.utils.Constants.NOTIFICATION_RECEIVER;
+
 import android.os.Environment;
 
 import androidx.work.Constraints;
@@ -113,10 +115,9 @@ public class AppConstants {
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
 
-    public static final String SCREEN_REFRESH_EVENT_RECEIVER = "REFRESH_SCREEN_EVENT";
+    public static final String SCREEN_REFRESH_EVENT_RECEIVER = "REFRESH_SCREEN_RECEIVER";
 
     public static final String REFRESH_SCREEN_EVENT = "REFRESH_SCREEN";
-
 
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;

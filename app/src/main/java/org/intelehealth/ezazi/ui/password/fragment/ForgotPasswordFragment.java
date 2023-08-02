@@ -1,12 +1,10 @@
 package org.intelehealth.ezazi.ui.password.fragment;
 
 import android.content.Context;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,7 +20,7 @@ import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.databinding.FragmentForgotPasswordBinding;
-import org.intelehealth.ezazi.ui.InputChangeValidationListener;
+import org.intelehealth.ezazi.ui.shared.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.password.model.RequestOTPModel;
 import org.intelehealth.ezazi.ui.password.viewmodel.PasswordViewModel;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;

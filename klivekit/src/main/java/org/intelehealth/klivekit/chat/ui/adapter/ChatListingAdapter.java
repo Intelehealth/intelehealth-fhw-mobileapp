@@ -211,7 +211,7 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 messageTextView.setVisibility(View.VISIBLE);
             }
 
-            if (message.getIsRead() == 1) {
+            if (message.getIsRead()) {
                 statusTextView.setText(mContext.getString(R.string.read));
                 statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_done_status_icon, 0, 0, 0);
             } else {

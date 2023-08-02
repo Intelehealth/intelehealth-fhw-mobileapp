@@ -5,9 +5,7 @@ import static org.intelehealth.ezazi.partogram.PartogramConstants.STAGE_2;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,19 +20,16 @@ import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
-import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
-import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
-import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
@@ -45,8 +40,6 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -255,14 +248,13 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
     private void startChatActivity(String doctorUuid, String doctorName) {
         if (SocketManager.getInstance().checkUserIsOnline(doctorUuid)) {
-            Intent chatIntent = new Intent(PartogramDataCaptureActivity.this, EzaziChatActivity.class);
-            chatIntent.putExtra("patientName", mPatientName);
-            chatIntent.putExtra("visitUuid", mVisitUUID);
-            chatIntent.putExtra("patientUuid", mPatientUuid);
-            chatIntent.putExtra("fromUuid", new SessionManager(getApplicationContext()).getProviderID()); // provider uuid
-            chatIntent.putExtra("isForVideo", false);
-            chatIntent.putExtra("toUuid", doctorUuid);
-            startActivity(chatIntent);
+            RtcArgs args = new RtcArgs();
+            args.setPatientName(mPatientName);
+            args.setPatientId(mPatientUuid);
+            args.setVisitId(mVisitUUID);
+            args.setNurseId(new SessionManager(getApplicationContext()).getProviderID());
+            args.setDoctorUuid(doctorUuid);
+            EzaziChatActivity.startChatActivity(this, args);
         } else Toast.makeText(this, doctorName + " is offline ", Toast.LENGTH_SHORT).show();
     }
 

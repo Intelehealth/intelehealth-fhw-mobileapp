@@ -13,7 +13,7 @@ public class ChatMessage {
     @SerializedName("id")
     private int mId;
     @SerializedName("isRead")
-    private int mIsRead;
+    private boolean mIsRead;
     @SerializedName("message")
     private String mMessage;
     @SerializedName("patientId")
@@ -67,11 +67,11 @@ public class ChatMessage {
         mId = id;
     }
 
-    public int getIsRead() {
+    public boolean getIsRead() {
         return mIsRead;
     }
 
-    public void setIsRead(int isRead) {
+    public void setIsRead(boolean isRead) {
         mIsRead = isRead;
     }
 
@@ -151,6 +151,10 @@ public class ChatMessage {
         this.visitId = visitId;
     }
 
+    public String getVisitId() {
+        return visitId;
+    }
+
     public boolean isAttachment() {
         if (type == null) return false;
         return type.equals("attachment");
@@ -164,7 +168,7 @@ public class ChatMessage {
         this.loading = loading;
     }
 
-    public String toJson(){
+    public String toJson() {
         return new Gson().toJson(this);
     }
 }

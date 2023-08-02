@@ -111,6 +111,7 @@ import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
 import org.intelehealth.ezazi.ui.dialog.model.SelectAllMultiChoice;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
+import org.intelehealth.ezazi.ui.shared.BaseActivity;
 import org.intelehealth.ezazi.ui.visit.VisitQueryResultBinder;
 import org.intelehealth.ezazi.utilities.DownloadMindMaps;
 import org.intelehealth.ezazi.utilities.FileUtils;
@@ -160,7 +161,7 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class HomeActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -247,25 +248,33 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     String patientUUid = remoteMessage.getString("patientId");
                     String visitUUID = remoteMessage.getString("visitId");
                     String patientName = remoteMessage.getString("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
+//                    JSONObject connectionInfoObject = new JSONObject();
+//                    connectionInfoObject.put("fromUUID", fromUUId);
+//                    connectionInfoObject.put("toUUID", toUUId);
+//                    connectionInfoObject.put("patientUUID", patientUUid);
+//
+//                    Intent intent = new Intent(ACTION_NAME);
+//                    intent.putExtra("visit_uuid", visitUUID);
+//                    intent.putExtra("connection_info", connectionInfoObject.toString());
+//                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+//                    getApplicationContext().sendBroadcast(intent);
+//
+//                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
+//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    chatIntent.putExtra("patientName", patientName);
+//                    chatIntent.putExtra("visitUuid", visitUUID);
+//                    chatIntent.putExtra("patientUuid", patientUUid);
+//                    chatIntent.putExtra("fromUuid", fromUUId);
+//                    chatIntent.putExtra("toUuid", toUUId);
+//                    startActivity(chatIntent);
 
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
-
-                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-                    startActivity(chatIntent);
+                    RtcArgs args = new RtcArgs();
+                    args.setPatientName(patientName);
+                    args.setPatientId(patientUUid);
+                    args.setVisitId(visitUUID);
+                    args.setNurseId(fromUUId);
+                    args.setDoctorUuid(toUUId);
+                    EzaziChatActivity.startChatActivity(this, args);
 
                 } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
                     //Log.d(TAG, "actionType : VIDEO_CALL");
@@ -316,7 +325,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                         startActivity(in);
                     }
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

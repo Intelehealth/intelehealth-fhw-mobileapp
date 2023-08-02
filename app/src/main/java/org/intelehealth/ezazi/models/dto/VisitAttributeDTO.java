@@ -66,7 +66,7 @@ public class VisitAttributeDTO {
         attribute.setVisit_attribute_type_uuid(typeId);
         attribute.setValue(value);
         attribute.setVisit_uuid(visitId);
-        attribute.setSync("false");
+        attribute.setSync("0");
         return attribute;
     }
 }

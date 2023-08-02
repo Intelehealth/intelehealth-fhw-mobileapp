@@ -19,15 +19,12 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.text.InputType;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,7 +32,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +46,6 @@ import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
-import org.intelehealth.ezazi.database.dao.RTCConnectionDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
@@ -58,12 +53,10 @@ import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogStage2AdditionalDataEzaziBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
-import org.intelehealth.ezazi.models.dto.RTCConnectionDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
-import org.intelehealth.ezazi.models.pushRequestApiCall.Attribute;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
-import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
@@ -80,11 +73,8 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -249,14 +239,21 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private void startChatActivity(String doctorUuid, String doctorName) {
         if (SocketManager.getInstance().checkUserIsOnline(doctorUuid)) {
-            Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
-            chatIntent.putExtra("patientName", patientName);
-            chatIntent.putExtra("visitUuid", visitUuid);
-            chatIntent.putExtra("patientUuid", patientUuid);
-            chatIntent.putExtra("fromUuid", sessionManager.getProviderID()); // provider uuid
-            chatIntent.putExtra("isForVideo", false);
-            chatIntent.putExtra("toUuid", doctorUuid);
-            startActivity(chatIntent);
+            RtcArgs args = new RtcArgs();
+            args.setPatientName(patientName);
+            args.setPatientId(patientUuid);
+            args.setVisitId(visitUuid);
+            args.setNurseId(sessionManager.getProviderID());
+            args.setDoctorUuid(doctorUuid);
+            EzaziChatActivity.startChatActivity(this, args);
+//            Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
+//            chatIntent.putExtra("patientName", patientName);
+//            chatIntent.putExtra("visitUuid", visitUuid);
+//            chatIntent.putExtra("patientUuid", patientUuid);
+//            chatIntent.putExtra("fromUuid", sessionManager.getProviderID()); // provider uuid
+//            chatIntent.putExtra("isForVideo", false);
+//            chatIntent.putExtra("toUuid", doctorUuid);
+//            startActivity(chatIntent);
         } else Toast.makeText(this, doctorName + " is offline ", Toast.LENGTH_SHORT).show();
     }
 

@@ -1,6 +1,5 @@
 package org.intelehealth.ezazi.activities.addNewPatient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -9,9 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
-import org.intelehealth.ezazi.activities.privacyNoticeActivity.PrivacyNoticeActivity;
-import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 
 public class AddNewPatientActivity extends BaseActionBarActivity {

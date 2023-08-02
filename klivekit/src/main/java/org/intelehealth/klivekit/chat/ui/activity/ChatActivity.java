@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -60,6 +61,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.codeglo.coyamore.data.PreferenceHelper;
 import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 
@@ -75,6 +77,8 @@ import org.intelehealth.klivekit.utils.AwsS3Utils;
 import org.intelehealth.klivekit.utils.BitmapUtils;
 import org.intelehealth.klivekit.utils.Constants;
 import org.intelehealth.klivekit.utils.RealPathUtil;
+import org.intelehealth.klivekit.utils.RemoteActionType;
+import org.intelehealth.klivekit.utils.RtcUtilsKt;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,6 +125,7 @@ public class ChatActivity extends AppCompatActivity {
     protected LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
     protected EditText mMessageEditText;
     protected TextView mEmptyTextView;
+
 
     protected void setupActionBar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -263,6 +268,7 @@ public class ChatActivity extends AppCompatActivity {
 //        ((TextView) findViewById(R.id.title_incoming_tv)).setText(mPatientName);
         //getSupportActionBar().setSubtitle(mVisitUUID);
         mRequestQueue = Volley.newRequestQueue(this);
+        SocketManager.getInstance().setActiveRoomId(mPatientUUid);
 
         initiateView();
         initListAdapter();
@@ -404,7 +410,7 @@ public class ChatActivity extends AppCompatActivity {
             for (int i = 0; i < response.getData().size(); i++) {
                 //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
                 if (response.getData().get(i).getLayoutType() == Constants.LEFT_ITEM_DOCT
-                        && response.getData().get(i).getIsRead() == 0) {
+                        && response.getData().get(i).getIsRead()) {
                     setReadStatus(response.getData().get(i).getId());
                     break;
                 }
@@ -441,7 +447,7 @@ public class ChatActivity extends AppCompatActivity {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setMessage(message);
         chatMessage.setFromUser(fromUUId);
-        chatMessage.setIsRead(0);
+        chatMessage.setIsRead(false);
         chatMessage.setPatientId(patientUUId);
         chatMessage.setToUser(toUUId);
         chatMessage.setVisitId(mVisitUUID);
@@ -654,10 +660,8 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if (mSocket != null) {
-//            mSocket.disconnect();
-//        }
         unregisterReceiver(mBroadcastReceiver);
+        SocketManager.getInstance().setActiveRoomId(null);
     }
 
     public void sendMessageNow(View view) {

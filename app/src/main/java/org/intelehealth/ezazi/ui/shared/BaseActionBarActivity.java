@@ -1,4 +1,4 @@
-package org.intelehealth.ezazi.ui;
+package org.intelehealth.ezazi.ui.shared;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,7 @@ import java.util.Objects;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public abstract class BaseActionBarActivity extends AppCompatActivity {
+public abstract class BaseActionBarActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

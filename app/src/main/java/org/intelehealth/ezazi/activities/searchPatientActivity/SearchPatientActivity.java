@@ -45,7 +45,7 @@ import org.intelehealth.ezazi.executor.TaskCompleteListener;
 import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
-import org.intelehealth.ezazi.ui.BaseActionBarActivity;
+import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.patient.PatientDataBinder;
 import org.intelehealth.ezazi.utilities.ConfigUtils;
 import org.intelehealth.ezazi.utilities.Logger;

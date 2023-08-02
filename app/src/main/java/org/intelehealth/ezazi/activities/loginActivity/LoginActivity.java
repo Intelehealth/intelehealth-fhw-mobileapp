@@ -39,12 +39,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.setupActivity.SetupActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.loginModel.LoginModel;
 import org.intelehealth.ezazi.models.loginProviderModel.LoginProviderModel;
-import org.intelehealth.ezazi.ui.InputChangeValidationListener;
+import org.intelehealth.ezazi.ui.shared.InputChangeValidationListener;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.password.activity.ForgotPasswordActivity;
 import org.intelehealth.ezazi.utilities.Base64Utils;

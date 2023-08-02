@@ -1,5 +1,7 @@
 package org.intelehealth.klivekit.utils;
 
+import android.content.Context;
+
 public class Constants {
     //TODO: this base url will be same as user input server url, but port no is fixed here.
     // if server will change this port we have change this port no
@@ -87,4 +89,9 @@ public class Constants {
     public static final String IMAGE_CAPTURE_DONE_INTENT_ACTION = "org.intelehealth.app.IMAGE_CAPTURE_DONE_INTENT_ACTION";
     public static final String IMAGE_CAPTURE_REQUEST_INTENT_ACTION = "org.intelehealth.app.IMAGE_CAPTURE_REQUEST_INTENT_ACTION";
 
+    public static final String NOTIFICATION_RECEIVER = "NOTIFICATION_RECEIVER";
+
+    public static String getNotificationReceiver(Context context) {
+        return context.getApplicationContext().getPackageName() + "." + NOTIFICATION_RECEIVER;
+    }
 }

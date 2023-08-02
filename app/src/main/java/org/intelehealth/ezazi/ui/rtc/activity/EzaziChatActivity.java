@@ -1,6 +1,10 @@
 package org.intelehealth.ezazi.ui.rtc.activity;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -8,17 +12,23 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
+
+import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
+import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.chat.ui.activity.ChatActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.RemoteActionType;
+import org.intelehealth.klivekit.utils.RtcUtilsKt;
 
 /**
  * Created by Vaghela Mithun R. on 24-05-2023 - 18:34.
@@ -26,6 +36,30 @@ import org.intelehealth.klivekit.socket.SocketManager;
  * Mob   : +919727206702
  **/
 public class EzaziChatActivity extends ChatActivity {
+    private static final String TAG = "EzaziChatActivity";
+
+    public static void startChatActivity(Context context, RtcArgs args) {
+        Intent chatIntent = new Intent(context, EzaziChatActivity.class);
+        context.startActivity(buildExtra(chatIntent, args));
+    }
+
+    public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
+        Intent chatIntent = new Intent(context, EzaziChatActivity.class);
+        chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(context, 0, buildExtra(chatIntent, args),
+                NotificationUtils.getPendingIntentFlag());
+    }
+
+    private static Intent buildExtra(Intent chatIntent, RtcArgs args) {
+        chatIntent.putExtra("patientName", args.getPatientName());
+        chatIntent.putExtra("visitUuid", args.getVisitId());
+        chatIntent.putExtra("patientUuid", args.getPatientId());
+        chatIntent.putExtra("fromUuid", args.getNurseId()); // provider uuid
+        chatIntent.putExtra("isForVideo", false);
+        chatIntent.putExtra("toUuid", args.getDoctorUuid());
+        return chatIntent;
+    }
+
     @Override
     protected int getContentResourceId() {
         return R.layout.activity_chat_ezazi;

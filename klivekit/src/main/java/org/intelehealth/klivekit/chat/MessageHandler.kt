@@ -1,5 +1,6 @@
 package org.intelehealth.klivekit.chat
 
+import com.codeglo.coyamore.data.PreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,7 +16,8 @@ import org.intelehealth.klivekit.chat.socket.ChatSocket
  * Mob   : +919727206702
  **/
 class MessageHandler(
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val preferenceHelper: PreferenceHelper
 ) : MessageListener, ConversationListener {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
