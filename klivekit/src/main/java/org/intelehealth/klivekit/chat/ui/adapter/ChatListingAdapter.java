@@ -220,5 +220,15 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         }
     }
+
+    public void markMessageAsRead(int id) {
+        for (int i = 0; i < mItemList.size(); i++) {
+            if (id == mItemList.get(0).getId()) {
+                mItemList.get(0).setIsRead(true);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
 }
 

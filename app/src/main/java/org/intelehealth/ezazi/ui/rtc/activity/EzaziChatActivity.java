@@ -3,32 +3,19 @@ package org.intelehealth.ezazi.ui.rtc.activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.gson.Gson;
-
-import org.intelehealth.ezazi.BuildConfig;
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
-import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.chat.ui.activity.ChatActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
-import org.intelehealth.klivekit.socket.SocketManager;
-import org.intelehealth.klivekit.utils.RemoteActionType;
-import org.intelehealth.klivekit.utils.RtcUtilsKt;
 
 /**
  * Created by Vaghela Mithun R. on 24-05-2023 - 18:34.

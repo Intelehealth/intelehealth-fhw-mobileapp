@@ -155,7 +155,8 @@ public class ChatActivity extends AppCompatActivity {
     private void emitEvent(String event, Object... args) {
         switch (event) {
             case SocketManager.EVENT_IS_READ:
-                getAllMessages(false);
+                Log.e(TAG, "emitEvent: IS_READ" + new Gson().toJson(args[0]));
+                markMessageAsRead(args[0]);
                 break;
             case SocketManager.EVENT_UPDATE_MESSAGE:
                 onUpdateMessageEvent(args);
@@ -166,6 +167,16 @@ public class ChatActivity extends AppCompatActivity {
             default:
                 Timber.tag(TAG).d("Event=>" + event);
                 break;
+        }
+    }
+
+    private void markMessageAsRead(Object obj) {
+        try {
+            int id = new JSONArray(obj)
+                    .getJSONArray(0).getJSONObject(0).getInt("id");
+            runOnUiThread(() -> mChatListingAdapter.markMessageAsRead(id));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
     }
 
