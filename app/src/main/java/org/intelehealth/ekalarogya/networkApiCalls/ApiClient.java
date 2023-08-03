@@ -4,6 +4,7 @@ package org.intelehealth.ekalarogya.networkApiCalls;
 import android.content.Context;
 import android.widget.Toast;
 
+import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class ApiClient {
 
     public static <S> S createService(Class<S> serviceClass) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);
         client.connectTimeout(600, TimeUnit.SECONDS);
         client.readTimeout(600, TimeUnit.SECONDS);

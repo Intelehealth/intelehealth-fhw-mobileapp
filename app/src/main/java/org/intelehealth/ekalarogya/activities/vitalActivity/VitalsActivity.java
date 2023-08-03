@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -98,6 +99,7 @@ public class VitalsActivity extends AppCompatActivity {
             mHemoglobin, mSugarRandom, mSugarFasting, mSugarAfterMeal;
     Spinner mBlood_Spinner;
     ArrayAdapter<CharSequence> bloodAdapter;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1509,6 +1511,12 @@ public class VitalsActivity extends AppCompatActivity {
 
                             VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                             try {
+                                // avoiding multi-click by checking if click is within 1000ms than avoid it.
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+
                                 speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
                                 // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
                             } catch (DAOException e) {
@@ -1536,6 +1544,12 @@ public class VitalsActivity extends AppCompatActivity {
                     //-------End Visit----------
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     try {
+                        // avoiding multi-click by checking if click is within 1000ms than avoid it.
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+
                         speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
                         // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
                     } catch (DAOException e) {
