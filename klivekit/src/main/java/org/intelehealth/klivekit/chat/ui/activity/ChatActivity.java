@@ -1,11 +1,8 @@
 package org.intelehealth.klivekit.chat.ui.activity;
 
-import static org.intelehealth.klivekit.utils.RtcUtilsKt.RTC_ARGS;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,13 +10,11 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,13 +33,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.viewmodel.CreationExtras;
-import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,11 +53,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.codeglo.coyamore.data.PreferenceHelper;
 import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 
 import org.intelehealth.klivekit.R;
+import org.intelehealth.klivekit.chat.model.DayHeader;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
 import org.intelehealth.klivekit.model.ChatMessage;
@@ -73,13 +66,10 @@ import org.intelehealth.klivekit.model.ChatResponse;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.ui.activity.VideoCallActivity;
-import org.intelehealth.klivekit.ui.viewmodel.SocketViewModel;
 import org.intelehealth.klivekit.utils.AwsS3Utils;
 import org.intelehealth.klivekit.utils.BitmapUtils;
 import org.intelehealth.klivekit.utils.Constants;
 import org.intelehealth.klivekit.utils.RealPathUtil;
-import org.intelehealth.klivekit.utils.RemoteActionType;
-import org.intelehealth.klivekit.utils.RtcUtilsKt;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,7 +79,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,12 +87,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
-import java.util.TimeZone;
 import java.util.UUID;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import kotlin.jvm.functions.Function1;
 
@@ -405,6 +390,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void updateListAdapter(ChatResponse response, boolean isAlreadySetReadStatus) {
+        ArrayList<ItemHeader> messages = new ArrayList<>();
+        String messageDay = "";
         for (int i = 0; i < response.getData().size(); i++) {
             ChatMessage message = response.getData().get(i);
             message.setMessageStatus(message.getIsRead() ? MessageStatus.READ.getValue() : MessageStatus.SENT.getValue());
@@ -420,10 +407,18 @@ public class ChatActivity extends AppCompatActivity {
             } else {
                 message.setLayoutType(Constants.LEFT_ITEM_DOCT);
             }
+
+            String msgDay = message.getMessageDay();
+            Log.e(TAG, "updateListAdapter: MessageDay[" + i + "]=>" + msgDay);
+            if (!msgDay.equals(messageDay)) {
+                messages.add(DayHeader.buildHeader(message.getCreatedAt()));
+                messageDay = msgDay;
+            }
+            messages.add(message);
         }
 
-        sortList(response.getData());
-        mChatListingAdapter.refresh(response.getData());
+        sortList(messages);
+        mChatListingAdapter.refresh(messages);
 
         if (!isAlreadySetReadStatus)
             for (int i = 0; i < response.getData().size(); i++) {
@@ -436,9 +431,10 @@ public class ChatActivity extends AppCompatActivity {
             }
     }
 
-    private void sortList(List<ChatMessage> messages) {
-        Collections.sort(messages, (Comparator<ChatMessage>) (o1, o2) -> {
+    private void sortList(List<ItemHeader> messages) {
+        Collections.sort(messages, (o1, o2) -> {
             try {
+                if (o1.isHeader() || o2.isHeader()) return -1;
                 Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getCreatedAt());
                 Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getCreatedAt());
                 return b.compareTo(a);
@@ -515,7 +511,7 @@ public class ChatActivity extends AppCompatActivity {
         Log.v(TAG, "setReadStatus - url - " + url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, response -> {
             Log.v(TAG, "setReadStatus - response - " + response.toString());
-            getAllMessages(true);
+//            getAllMessages(true);
 //            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
         }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()));
@@ -527,146 +523,6 @@ public class ChatActivity extends AppCompatActivity {
         if (!SocketManager.getInstance().isConnected()) {
             SocketManager.getInstance().connect(url);
         }
-//        try {
-
-
-//            Log.v(TAG, "connectTOSocket - " + url);
-//            mSocket = IO.socket(url);
-//            mSocket.on("connect", args -> {
-//                for (Object arg : args) {
-//                    Log.d(TAG, "connect: " + String.valueOf(arg));
-//                }
-//            });
-//            mSocket.on("disconnect", args -> {
-//                for (Object arg : args) {
-//                    Log.d(TAG, "disconnect: " + String.valueOf(arg));
-//                }
-//            });
-//            mSocket.on("isread", args -> {
-//                Log.d(TAG, "isread event emit from web: ");
-//                getAllMessages(false);
-//            });
-//            mSocket.on("call", args -> {
-//                Log.d(TAG, "calling...: ");
-//                for (Object arg : args) {
-//                    Log.d(TAG, "call: " + String.valueOf(arg));
-//                }
-//                try {
-//                    if (args[0] instanceof JSONObject) {
-//                        JSONObject jsonObject = (JSONObject) args[0];
-//                        //{"nurseId":"28cea4ab-3188-434a-82f0-055133090a38","doctorName":"Mr Doctor","roomId":"f0f3d654-a7cd-4c7e-904c-f702c1825e0c"}
-//                        Intent in = new Intent(this, VideoCallActivity.class);
-//
-//                        in.putExtra("roomId", jsonObject.getString("roomId"));
-//                        in.putExtra("isInComingRequest", true);
-//                        in.putExtra("doctorname", jsonObject.getString("doctorName"));
-//                        in.putExtra("nurseId", jsonObject.getString("nurseId"));
-//                        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-//                        if (callState == TelephonyManager.CALL_STATE_IDLE) {
-//                            startActivity(in);
-//                        }
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//            mSocket.on("allUsers", args -> {
-//                // try {
-//                for (Object arg : args) {
-//                    Log.d(TAG, "allUsers: " + String.valueOf(arg));
-//                }
-//                    /*if (mToUUId.isEmpty()) {
-//                        JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                parseForToUUID(jsonObject);
-//                            }
-//                        });
-//                    }*/
-//               /* } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }*/
-//            });
-//            // will trigger when got the new message
-//            mSocket.on("updateMessage", args -> {
-//                try {
-//                    for (Object arg : args) {
-//                        Log.d(TAG, "updateMessage: " + String.valueOf(arg));
-//                    }
-//
-//                    JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (mToUUId.isEmpty()) {
-//                                try {
-//                                    mToUUId = jsonObject.getString("fromUser");
-//                                    // save in db
-//                                    JSONObject connectionInfoObject = new JSONObject();
-//                                    connectionInfoObject.put("fromUUID", mFromUUId);
-//                                    connectionInfoObject.put("toUUID", mToUUId);
-//                                    connectionInfoObject.put("patientUUID", mPatientUUid);
-//
-//                                    Intent intent = new Intent(ACTION_NAME);
-//                                    intent.putExtra("visit_uuid", mVisitUUID);
-//                                    intent.putExtra("connection_info", connectionInfoObject.toString());
-//                                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
-//
-//                                    getApplicationContext().sendBroadcast(intent);
-//                                    getAllMessages(false);
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                            } else {
-//                                getAllMessages(false);
-//                                /*if (jsonObject.has("dataValues")) {
-//                                    try {
-//                                        addNewMessage(jsonObject.getJSONObject("dataValues"));
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                } else
-//                                    addNewMessage(jsonObject);*/
-//                            }
-//
-//
-//                        }
-//                    });
-//
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            });
-//            mSocket.connect();
-
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    private void parseForToUUID(JSONObject jsonObject) {
-        try {
-            Iterator<String> keys = jsonObject.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                if (jsonObject.get(key) instanceof JSONObject) {
-                    JSONObject innerJsonObject = (JSONObject) jsonObject.get(key);
-                    String uuid = innerJsonObject.getString("uuid");
-                    if (!mFromUUId.equals(uuid) && !mPatientUUid.equals(uuid)) {
-                        mToUUId = uuid;
-                        getAllMessages(false);
-                        break;
-                    }
-
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void addNewMessage(ChatMessage message) {
@@ -675,19 +531,20 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             message.setLayoutType(Constants.LEFT_ITEM_DOCT);
         }
-        if (message.getCreatedAt() == null) {
-            SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-            rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            message.setCreatedAt(rawSimpleDateFormat.format(new Date()));
+
+        List<ItemHeader> list = mChatListingAdapter.getList();
+        if (list.get(0) instanceof ChatMessage) {
+            ChatMessage lastMsg = (ChatMessage) list.get(0);
+            if (!lastMsg.getMessageDay().equals(message.getMessageDay())) {
+//                list.add(DayHeader.buildHeader(message.getCreatedAt()));
+                mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
+            }
         }
 
-        mChatListingAdapter.addMessage(message);
         mEmptyLinearLayout.setVisibility(View.GONE);
-        sortList(mChatListingAdapter.getList());
-
-//        mChatListingAdapter.addMessage(chatMessage);
+        mChatListingAdapter.addMessage(message);
 //        sortList(mChatListingAdapter.getList());
-//        mChatListingAdapter.refresh(mChatListingAdapter.getList());
+//        mChatListingAdapter.refresh(list);
     }
 
     @Override
@@ -706,6 +563,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
+        SocketManager.getInstance().setEmitterListener(null);
         SocketManager.getInstance().setActiveRoomId(null);
     }
 

@@ -57,7 +57,7 @@ public class EzaziChatActivity extends ChatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         super.setupActionBar();
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> finishAfterTransition());
     }
 
     @Override

@@ -1,14 +1,22 @@
 
 package org.intelehealth.klivekit.model;
 
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import org.intelehealth.klivekit.chat.model.ItemHeader;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
-public class ChatMessage {
+public class ChatMessage implements ItemHeader {
 
     @SerializedName("createdAt")
     private String mCreatedAt;
@@ -49,12 +57,22 @@ public class ChatMessage {
 
     private boolean loading;
 
+    @NonNull
     public String getCreatedAt() {
         if (mCreatedAt == null) {
-            mCreatedAt = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
-                    .format(Calendar.getInstance().getTime());
+            mCreatedAt = DateTimeUtils.getCurrentDateWithDBFormat();
         }
         return mCreatedAt;
+    }
+
+    public String getMessageTime() {
+        Date date = DateTimeUtils.parseUTCDate(getCreatedAt(), DateTimeUtils.DB_FORMAT);
+        return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_TIME_FORMAT);
+    }
+
+    public String getMessageDay() {
+        Date date = DateTimeUtils.parseUTCDate(getCreatedAt(), DateTimeUtils.DB_FORMAT);
+        return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_DAY_FORMAT);
     }
 
     public void setCreatedAt(String createdAt) {
@@ -188,5 +206,10 @@ public class ChatMessage {
 
     public String toJson() {
         return new Gson().toJson(this);
+    }
+
+    @Override
+    public boolean isHeader() {
+        return false;
     }
 }

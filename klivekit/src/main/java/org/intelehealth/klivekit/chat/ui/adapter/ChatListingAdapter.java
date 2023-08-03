@@ -1,5 +1,6 @@
 package org.intelehealth.klivekit.chat.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,114 +10,99 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.klivekit.R;
+import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.utils.Constants;
-import org.json.JSONException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-
-    private Context mContext;
-    private List<ChatMessage> mItemList;
+public class ChatListingAdapter extends DateHeaderAdapter {
 
     public interface AttachmentClickListener {
         void onClick(String url);
     }
 
-    private AttachmentClickListener mAttachmentClickListener;
+    private final AttachmentClickListener mAttachmentClickListener;
 
-    public ChatListingAdapter(Context context, List<ChatMessage> itemList, AttachmentClickListener clickListener) {
-        mContext = context;
-        mItemList = itemList;
+    public ChatListingAdapter(Context context, List<ItemHeader> itemList, AttachmentClickListener clickListener) {
+        super(context, itemList);
         mAttachmentClickListener = clickListener;
     }
 
-    private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
-
-
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == Constants.LEFT_ITEM_DOCT) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.left_chat_layout, parent, false);
-
+            View itemView = inflater.inflate(R.layout.left_chat_layout, parent, false);
             return new LeftViewHolder(itemView);
-        } else {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.right_chat_layout, parent, false);
-
+        } else if (viewType == Constants.RIGHT_ITEM_HW) {
+            View itemView = inflater.inflate(R.layout.right_chat_layout, parent, false);
             return new RightViewHolder(itemView);
-        }
+        } else return super.onCreateViewHolder(parent, viewType);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mItemList.get(position).getLayoutType();
+        if (mItemList.get(position).isHeader()) return DATE_HEADER;
+        else if (mItemList.get(position) instanceof ChatMessage) {
+            ChatMessage message = (ChatMessage) mItemList.get(position);
+            return message.getLayoutType();
+        } else return 0;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof LeftViewHolder) {
-            LeftViewHolder leftViewHolder = (LeftViewHolder) holder;
-            leftViewHolder.bind(mItemList.get(position));
-        } else if (holder instanceof RightViewHolder) {
-            RightViewHolder rightViewHolder = (RightViewHolder) holder;
-            rightViewHolder.bind(mItemList.get(position));
-        }
+        if (mItemList.get(position) instanceof ChatMessage) {
+            ChatMessage message = (ChatMessage) mItemList.get(position);
+            if (holder instanceof LeftViewHolder && message.getLayoutType() == Constants.LEFT_ITEM_DOCT) {
+                LeftViewHolder leftViewHolder = (LeftViewHolder) holder;
+                leftViewHolder.bind(message);
+            } else if (holder instanceof RightViewHolder && message.getLayoutType() == Constants.RIGHT_ITEM_HW) {
+                RightViewHolder rightViewHolder = (RightViewHolder) holder;
+                rightViewHolder.bind(message);
+            }
+        } else super.onBindViewHolder(holder, position);
     }
 
-    private String parseDate(String rawTime) {
-        //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        //Fri, 16 Apr 2021 06:37:30 GM
-        SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-        //rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date = null;
-        try {
-            date = rawSimpleDateFormat.parse(rawTime);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        //Log.v("date", date.toString());
-        if (date == null) date = Calendar.getInstance().getTime();
-
-        SimpleDateFormat displayFormat = new SimpleDateFormat("h:mm a, MMM d");
-        displayFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
-        Date todayDate = new Date();
-        String temp1 = displayFormat.format(date);
-        String temp2 = displayFormat.format(todayDate);
-        return temp1.split(",")[1].equals(temp2.split(",")[1]) ? temp1.split(",")[0] : temp1;
-    }
+//    private String parseDate(String rawTime) {
+//        //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//        //Fri, 16 Apr 2021 06:37:30 GM
+//        Date date = DateTimeUtils.parseDate(rawTime, DateTimeUtils.DB_FORMAT, null);
+//        SimpleDateFormat sdf = DateTimeUtils.getSimpleDateFormat(DateTimeUtils.MESSAGE_TIME_FORMAT, DateTimeUtils.TIME_ZONE_ISD);
+//        Date todayDate = new Date();
+//        String temp1 = sdf.format(date);
+//        String temp2 = sdf.format(todayDate);
+//        return temp1.split(",")[1].equals(temp2.split(",")[1]) ? temp1.split(",")[0] : temp1;
+//    }
 
     @Override
     public int getItemCount() {
         return mItemList.size();
     }
 
-    public void refresh(List<ChatMessage> chatList) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void refresh(List<ItemHeader> chatList) {
         mItemList = chatList;
         notifyDataSetChanged();
     }
 
-    public List<ChatMessage> getList() {
+    public List<ItemHeader> getList() {
         return mItemList;
     }
 
-    public void addMessage(ChatMessage message) {
-        mItemList.add(message);
-        notifyItemChanged(mItemList.size());
+    public void addMessage(ItemHeader message) {
+        mItemList.add(0, message);
+//        notifyDataSetChanged();
+        notifyItemChanged(0);
     }
 
     private class LeftViewHolder extends RecyclerView.ViewHolder {
@@ -138,17 +124,10 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
 
             messageTextView.setText(message.getMessage());
-            String displayDateTime = parseDate(message.getCreatedAt());
-            timeTextView.setText(displayDateTime);
+            timeTextView.setText(message.getMessageTime());
             Log.v("CHAT", "LEFT - ");
 
             if (message.getType() != null && message.getType().equalsIgnoreCase("attachment")) {
-                    /*Glide.with(mContext)
-                            .load(leftViewHolder.jsonObject.getString("message"))
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                            .thumbnail(0.1f)
-                            .into(leftViewHolder.imageView);*/
                 if (message.getMessage().endsWith(".pdf")) {
                     imageView.setImageResource(R.drawable.pdf_icon);
                 } else {
@@ -185,16 +164,9 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void bind(ChatMessage message) {
             imageView.setOnClickListener(view -> mAttachmentClickListener.onClick(message.getMessage()));
             messageTextView.setText(message.getMessage());
-            String displayDateTime = parseDate(message.getCreatedAt());
-            timeTextView.setText(displayDateTime);
+            timeTextView.setText(message.getMessageTime());
             Log.v("CHAT", "RIGHT - ");
             if (message.getType() != null && message.getType().equalsIgnoreCase("attachment")) {
-                   /* Glide.with(mContext)
-                            .load(rightViewHolder.jsonObject.getString("message"))
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                            .thumbnail(0.1f)
-                            .into(rightViewHolder.imageView);*/
                 if (message.getType().endsWith(".pdf")) {
                     imageView.setImageResource(R.drawable.pdf_icon);
                 } else {
@@ -221,29 +193,35 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
             } else {
                 statusTextView.setText(mContext.getString(R.string.sending));
-                statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
+                statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sending_status, 0, 0, 0);
             }
         }
     }
 
     public void markMessageAsRead(int id) {
         for (int i = 0; i < mItemList.size(); i++) {
-            if (id == mItemList.get(i).getId()) {
-                mItemList.get(i).setIsRead(true);
-                mItemList.get(i).setMessageStatus(MessageStatus.READ.getValue());
-                notifyItemChanged(i);
-                break;
+            if (mItemList.get(i) instanceof ChatMessage) {
+                ChatMessage chatMessage = (ChatMessage) mItemList.get(i);
+                if (id == chatMessage.getId()) {
+                    chatMessage.setIsRead(true);
+                    chatMessage.setMessageStatus(MessageStatus.READ.getValue());
+                    notifyItemChanged(i);
+                    break;
+                }
             }
         }
     }
 
     public void updatedMessage(ChatMessage message) {
         for (int i = 0; i < mItemList.size(); i++) {
-            if (message.getMessage().equals(mItemList.get(i).getMessage())) {
-                mItemList.get(i).setId(message.getId());
-                mItemList.get(i).setMessageStatus(message.getMessageStatus());
-                notifyItemChanged(i);
-                break;
+            if (mItemList.get(i) instanceof ChatMessage) {
+                ChatMessage chatMessage = (ChatMessage) mItemList.get(i);
+                if (message.getMessage().equals(chatMessage.getMessage())) {
+                    chatMessage.setId(message.getId());
+                    chatMessage.setMessageStatus(message.getMessageStatus());
+                    notifyItemChanged(i);
+                    break;
+                }
             }
         }
     }
