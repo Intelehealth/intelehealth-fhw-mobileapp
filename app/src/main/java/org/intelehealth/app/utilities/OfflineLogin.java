@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 
@@ -218,7 +219,7 @@ public class OfflineLogin {
            sessionManager.setProviderID(provider_uuid);
            sessionManager.setCreatorID(creator_uuid);
            sessionManager.setChwname(chw_name);
-                Intent intent = new Intent(mContext, HomeActivity.class);
+                Intent intent = new Intent(mContext, HomeScreenActivity_New.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 setOfflineLoginStatus(true);
                 mContext.startActivity(intent);
