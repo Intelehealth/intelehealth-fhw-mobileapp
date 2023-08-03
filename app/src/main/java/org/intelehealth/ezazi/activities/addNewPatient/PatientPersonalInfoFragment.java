@@ -1363,8 +1363,13 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     private void setScrollToFocusedItem() {
         if (requireView().findFocus() != null) {
-            Point point = getLocationOnScreen(mFirstName);
-            scrollviewPersonalInfo.smoothScrollTo(0, 0);
+            View focused = requireView().findFocus();
+            if (focused.getId() == R.id.et_first_name) {
+                scrollviewPersonalInfo.smoothScrollTo(0, 0);
+            } else {
+                Point point = getLocationOnScreen(requireView().findFocus());
+                scrollviewPersonalInfo.smoothScrollTo(0, point.y);
+            }
         }
     }
 
