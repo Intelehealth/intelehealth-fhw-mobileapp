@@ -56,7 +56,8 @@ public class DailyAchievementsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManager = ((MyAchievementsFragment) requireParentFragment()).sessionManager;
+        //sessionManager = ((MyAchievementsFragment) requireParentFragment()).sessionManager;
+        sessionManager = new SessionManager(requireActivity());
     }
 
     @Override

@@ -1,5 +1,8 @@
 package org.intelehealth.app.ayu.visit.reason;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -150,7 +153,7 @@ public class VisitReasonSummaryFragment extends Fragment {
                 System.out.println("Chunk - " + s);
                 //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
                 //if (s.trim().contains("Patient denies -•")) {
-                if (s.trim().contains(getTranslatedPatientDenies(lCode))) {
+                if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
                     associatedSymptomsString = s;
                     System.out.println("associatedSymptomsString - " + associatedSymptomsString);
                 } else {
@@ -231,7 +234,7 @@ public class VisitReasonSummaryFragment extends Fragment {
 
             // ASSOCIATED SYMPTOMS
             String[] tempAS = associatedSymptomsString.split("::");
-            if(tempAS.length>=2) {
+            if (tempAS.length >= 2) {
                 String title = tempAS[0];
                 mAssociateSymptomsLabelTextView.setText(title);
 
@@ -248,19 +251,21 @@ public class VisitReasonSummaryFragment extends Fragment {
 
             for (int i = 0; i < sections.length; i++) {
                 String patientReports = sections[i]; // Patient reports & // Patient denies
-                patientReports = patientReports.substring(1);
-                patientReports = patientReports.replace("•", ", ");
-                View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
-                TextView keyTextView = view.findViewById(R.id.tv_question_label);
-                keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
-                TextView valueTextView = view.findViewById(R.id.tv_answer_value);
-                valueTextView.setText(patientReports);
+                if (patientReports != null && patientReports.length() >= 2) {
+                    patientReports = patientReports.substring(1);
+                    patientReports = patientReports.replace("•", ", ");
+                    View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
+                    TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                    keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
+                    TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+                    valueTextView.setText(patientReports);
                /* if (patientReportsDenies.isEmpty()) {
                     view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
                 } else {
                     view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
                 }*/
-                mAssociateSymptomsLinearLayout.addView(view);
+                    mAssociateSymptomsLinearLayout.addView(view);
+                }
             }
 
 
@@ -277,11 +282,11 @@ public class VisitReasonSummaryFragment extends Fragment {
         }
     }
 
-    /**
-     * @param localeCode
+   /* *//**
+     * @param
      * @return
-     */
-    private String getTranslatedAssociatedSymptomQString(String localeCode) {
+     *//*
+   private String getTranslatedAssociatedSymptomQString(String localeCode) {
         if (localeCode.equalsIgnoreCase("hi")) {
             return "क्या आपको निम्न लक्षण है";
         } else if (localeCode.equalsIgnoreCase("or")) {
@@ -299,7 +304,7 @@ public class VisitReasonSummaryFragment extends Fragment {
         } else {
             return "Patient denies -";
         }
-    }
+    }*/
 
     private void prepareSummary() {
         try {

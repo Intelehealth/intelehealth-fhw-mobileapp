@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
@@ -4857,7 +4858,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             });
 
-    private String getTranslatedAssociatedSymptomQString(String localeCode) {
+    /*private String getTranslatedAssociatedSymptomQString(String localeCode) {
         if (localeCode.equalsIgnoreCase("hi")) {
             return "क्या आपको निम्न लक्षण है";
         } else if (localeCode.equalsIgnoreCase("or")) {
@@ -4875,7 +4876,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         } else {
             return "General Exams";
         }
-    }
+    }*/
 
     private LinearLayout mAssociateSymptomsLinearLayout, mComplainSummaryLinearLayout,
             mPhysicalExamSummamryLinearLayout, mPastMedicalHistorySummaryLinearLayout, mFamilyHistorySummaryLinearLayout;
@@ -5052,11 +5053,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             }
             Log.v(TAG, "patHistory : " + value);
-            if (isInOldFormat){
+            if (isInOldFormat) {
                 patHistView.setVisibility(View.VISIBLE);
                 patHistView.setText(Html.fromHtml(value));
-            }
-            else
+            } else
                 setDataForPatientMedicalHistorySummary(patientHistoryLocaleString);
         }
         // past medical hist - end
@@ -5083,11 +5083,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 }
             }
             Log.v(TAG, "famHistory : " + value);
-            if (isInOldFormat){
+            if (isInOldFormat) {
                 famHistView.setVisibility(View.VISIBLE);
                 famHistView.setText(Html.fromHtml(value));
-            }
-            else
+            } else
                 setDataForFamilyHistorySummary(familyHistoryLocaleString);
         }
         // family history - end
@@ -5111,7 +5110,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             System.out.println("Chunk - " + s);
             //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
             //if (s.trim().contains("Patient denies -•")) {
-            if (s.trim().contains(getTranslatedPatientDenies(lCode))) {
+            if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
                 associatedSymptomsString = s;
                 System.out.println("associatedSymptomsString - " + associatedSymptomsString);
             } else {
@@ -5213,19 +5212,21 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         for (int i = 0; i < sections.length; i++) {
             String patientReports = sections[i]; // Patient reports & // Patient denies
-            patientReports = patientReports.substring(1);
-            patientReports = patientReports.replace("•", ", ");
-            View view = View.inflate(this, R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
-            TextView keyTextView = view.findViewById(R.id.tv_question_label);
-            keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
-            TextView valueTextView = view.findViewById(R.id.tv_answer_value);
-            valueTextView.setText(patientReports);
+            if (patientReports != null && patientReports.length() >= 2) {
+                patientReports = patientReports.substring(1);
+                patientReports = patientReports.replace("•", ", ");
+                View view = View.inflate(this, R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
+                TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
+                TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+                valueTextView.setText(patientReports);
            /* if (patientReportsDenies.isEmpty()) {
                 view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
             } else {
                 view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
             }*/
-            mAssociateSymptomsLinearLayout.addView(view);
+                mAssociateSymptomsLinearLayout.addView(view);
+            }
         }
 
 
@@ -5295,8 +5296,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         }
                         VisitSummaryData summaryData = new VisitSummaryData();
                         summaryData.setQuestion(k1);
-                        while (v.endsWith("-")){
-                            v = v.substring(0, v.length()-1);
+                        while (v.endsWith("-")) {
+                            v = v.substring(0, v.length() - 1);
                         }
                         summaryData.setDisplayValue(v);
                         visitSummaryDataList.add(summaryData);

@@ -15,6 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/demo_imgview"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
 </androidx.cardview.widget.CardView>
