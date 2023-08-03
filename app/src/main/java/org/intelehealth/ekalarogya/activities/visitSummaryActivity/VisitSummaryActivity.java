@@ -1855,22 +1855,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    // todo: once these strings are finalized by PO will add them in strings.xml and add translatins too.
                     
                     doQuery();  // this updates isSyncedFlag here...
                     if (isSynedFlag.equalsIgnoreCase("0")) {
                         // ie. if visit is not uploaded itself than no need to move any further.
-                        showOkDismissDialog(null, "Please upload first before attempting to download the prescription.", getString(R.string.ok));
+                        showOkDismissDialog(null, getString(R.string.please_upload_first_before_attempting_to_download_the_prescription),
+                                getString(R.string.ok));
                         return;
                     }
 
                     if (hasPrescription.equalsIgnoreCase("true")) {
                         // ie. if already presc is downloaded than dont check for any new updates.
-                        showOkDismissDialog(null, "Prescription is already downloaded.", getString(R.string.ok));
+                        showOkDismissDialog(null, getString(R.string.prescription_is_already_downloaded), getString(R.string.ok));
                         return;
                     }
 
-                    Toast.makeText(context, "Fetching details. Please wait...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.fetching_details_please_wait, Toast.LENGTH_LONG).show();
 
                     SyncUtils syncUtils = new SyncUtils();
                     syncUtils.syncForeground("downloadPrescription");
@@ -1882,7 +1882,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         public void run() {
                             downloadPrescription();
                             if (!hasPrescription.equalsIgnoreCase("true"))
-                                showOkDismissDialog(null, "Prescription is not yet provided by doctor.", getString(R.string.ok)); // todo: once this string is finalized add it to strings.xml file.
+                                showOkDismissDialog(null, getString(R.string.prescription_is_not_yet_provided_by_doctor), getString(R.string.ok)); // todo: once this string is finalized add it to strings.xml file.
 //                        pd.dismiss();
                         }
                     }, 5000);

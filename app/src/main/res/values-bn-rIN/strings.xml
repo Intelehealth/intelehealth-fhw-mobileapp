@@ -1154,5 +1154,9 @@
     <string name="wash_before_cooking">রান্না করার আগে ধুয়ে ফেলুন</string>
     <string name="wash_before_after_eating">খাওয়ার আগে এবং পরে ধুয়ে ফেলুন।</string>
     <string name="is_the_source_drinking_water_within_30_minutes">রাউন্ড ট্রিপের 30 মিনিটের মধ্যে পানীয় জলের উৎস কি ,পরিবার থেকে?</string>
+    <string name="please_upload_first_before_attempting_to_download_the_prescription">প্রেসক্রিপশন ডাউনলোড করার চেষ্টা করার আগে অনুগ্রহ করে প্রথমে আপলোড করুন।</string>
+    <string name="prescription_is_already_downloaded">প্রেসক্রিপশন ইতিমধ্যে ডাউনলোড করা হয়েছে.</string>
+    <string name="fetching_details_please_wait">বিস্তারিত আনা হচ্ছে। অনুগ্রহপূর্বক অপেক্ষা করুন...</string>
+    <string name="prescription_is_not_yet_provided_by_doctor">প্রেসক্রিপশন এখনও ডাক্তার দ্বারা প্রদান করা হয় না.</string>
 
 </resources>
