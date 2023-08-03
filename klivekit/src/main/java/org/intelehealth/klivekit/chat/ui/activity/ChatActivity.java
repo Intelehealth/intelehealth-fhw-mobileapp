@@ -66,6 +66,7 @@ import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 
 import org.intelehealth.klivekit.R;
+import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.chat.ui.adapter.ChatListingAdapter;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.ChatResponse;
@@ -191,30 +192,36 @@ public class ChatActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONArray(new Gson().toJson(args[0]))
                     .getJSONObject(0)
                     .getJSONObject("nameValuePairs");
+
+
             runOnUiThread(() -> {
-                if (mToUUId.isEmpty()) {
-                    try {
-                        mToUUId = jsonObject.getString("fromUser");
-                        // save in db
-                        JSONObject connectionInfoObject = new JSONObject();
-                        connectionInfoObject.put("fromUUID", mFromUUId);
-                        connectionInfoObject.put("toUUID", mToUUId);
-                        connectionInfoObject.put("patientUUID", mPatientUUid);
-
-                        Intent intent = new Intent(ACTION_NAME);
-                        intent.putExtra("visit_uuid", mVisitUUID);
-                        intent.putExtra("connection_info", connectionInfoObject.toString());
-                        intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
-
-                        getApplicationContext().sendBroadcast(intent);
-                        getAllMessages(false);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    getAllMessages(false);
-                }
+                ChatMessage message = new Gson().fromJson(jsonObject.toString(), ChatMessage.class);
+                message.setMessageStatus(MessageStatus.RECEIVED.getValue());
+                addNewMessage(message);
+                setReadStatus(message.getId());
+//                if (mToUUId.isEmpty()) {
+//                    try {
+//                        mToUUId = jsonObject.getString("fromUser");
+//                        // save in db
+//                        JSONObject connectionInfoObject = new JSONObject();
+//                        connectionInfoObject.put("fromUUID", mFromUUId);
+//                        connectionInfoObject.put("toUUID", mToUUId);
+//                        connectionInfoObject.put("patientUUID", mPatientUUid);
+//
+//                        Intent intent = new Intent(ACTION_NAME);
+//                        intent.putExtra("visit_uuid", mVisitUUID);
+//                        intent.putExtra("connection_info", connectionInfoObject.toString());
+//                        intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+//
+//                        getApplicationContext().sendBroadcast(intent);
+//                        getAllMessages(false);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                } else {
+//                    getAllMessages(false);
+//                }
 
 
             });
@@ -400,6 +407,7 @@ public class ChatActivity extends AppCompatActivity {
     private void updateListAdapter(ChatResponse response, boolean isAlreadySetReadStatus) {
         for (int i = 0; i < response.getData().size(); i++) {
             ChatMessage message = response.getData().get(i);
+            message.setMessageStatus(message.getIsRead() ? MessageStatus.READ.getValue() : MessageStatus.SENT.getValue());
             if (message.getFromUser().equals(mFromUUId)) {
                 message.setLayoutType(Constants.RIGHT_ITEM_HW);
                 if (message.isAttachment()) {
@@ -464,6 +472,9 @@ public class ChatActivity extends AppCompatActivity {
         chatMessage.setVisitId(mVisitUUID);
         chatMessage.setPatientName(mPatientName);
         chatMessage.setType(type);
+        chatMessage.setMessageStatus(MessageStatus.SENDING.getValue());
+        addNewMessage(chatMessage);
+//        mChatListingAdapter.refresh(response.getData());
         Log.v(TAG, "postMessages - inputJsonObject - " + chatMessage.toJson());
         try {
             JsonObjectRequest objectRequest = new JsonObjectRequest(
@@ -473,9 +484,17 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
                     Log.v(TAG, "postMessages - response - " + response.toString());
-                    mMessageEditText.setText("");
-                    getAllMessages(false);
-                    mLoadingLinearLayout.setVisibility(View.GONE);
+                    try {
+                        ChatMessage msg = new Gson().fromJson(response.getJSONObject("data").toString(), ChatMessage.class);
+                        mMessageEditText.setText("");
+//                        getAllMessages(false);
+                        msg.setMessageStatus(MessageStatus.SENT.getValue());
+                        mChatListingAdapter.updatedMessage(msg);
+                        mLoadingLinearLayout.setVisibility(View.GONE);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -497,7 +516,7 @@ public class ChatActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, response -> {
             Log.v(TAG, "setReadStatus - response - " + response.toString());
             getAllMessages(true);
-            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
+//            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
         }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()));
         mRequestQueue.add(jsonObjectRequest);
@@ -666,6 +685,21 @@ public class ChatActivity extends AppCompatActivity {
         mEmptyLinearLayout.setVisibility(View.GONE);
         sortList(mChatListingAdapter.getList());
 
+//        mChatListingAdapter.addMessage(chatMessage);
+//        sortList(mChatListingAdapter.getList());
+//        mChatListingAdapter.refresh(mChatListingAdapter.getList());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SocketManager.getInstance().setActiveRoomId(mPatientUUid);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SocketManager.getInstance().setActiveRoomId(null);
     }
 
     @Override

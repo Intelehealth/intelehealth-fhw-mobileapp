@@ -20,5 +20,5 @@ data class ChatMessage(
     val time: Long,
     val status: String,
     val msgType: Int,
-    var markAsRead: Int = ReadStatus.UNREAD.value
+    var markAsRead: Int = MessageStatus.SENDING.value
 )

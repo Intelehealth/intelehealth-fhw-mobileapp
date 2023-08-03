@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.klivekit.R;
+import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.utils.Constants;
 import org.json.JSONException;
@@ -211,11 +212,15 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 messageTextView.setVisibility(View.VISIBLE);
             }
 
-            if (message.getIsRead()) {
+            MessageStatus status = MessageStatus.getStatus(message.getMessageStatus());
+            if (status.isRead()) {
                 statusTextView.setText(mContext.getString(R.string.read));
                 statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_done_status_icon, 0, 0, 0);
-            } else {
+            } else if (status.isSent()) {
                 statusTextView.setText(mContext.getString(R.string.sent));
+                statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
+            } else {
+                statusTextView.setText(mContext.getString(R.string.sending));
                 statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
             }
         }
@@ -223,8 +228,20 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void markMessageAsRead(int id) {
         for (int i = 0; i < mItemList.size(); i++) {
-            if (id == mItemList.get(0).getId()) {
-                mItemList.get(0).setIsRead(true);
+            if (id == mItemList.get(i).getId()) {
+                mItemList.get(i).setIsRead(true);
+                mItemList.get(i).setMessageStatus(MessageStatus.READ.getValue());
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    public void updatedMessage(ChatMessage message) {
+        for (int i = 0; i < mItemList.size(); i++) {
+            if (message.getMessage().equals(mItemList.get(i).getMessage())) {
+                mItemList.get(i).setId(message.getId());
+                mItemList.get(i).setMessageStatus(message.getMessageStatus());
                 notifyItemChanged(i);
                 break;
             }

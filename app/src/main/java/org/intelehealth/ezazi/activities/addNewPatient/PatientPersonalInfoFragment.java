@@ -114,6 +114,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -966,7 +967,7 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     private boolean areValidFields() {
 
-        List<ErrorManagerModel> errorDetailsList = new ArrayList<>();
+        LinkedList<ErrorManagerModel> errorDetailsList = new LinkedList<>();
         if (TextUtils.isEmpty(mFirstName.getText().toString())) {
             errorDetailsList.add(new ErrorManagerModel(mFirstName, tvErrorFirstName, getString(R.string.enter_first_name), cardFirstName));
 
@@ -1362,8 +1363,8 @@ public class PatientPersonalInfoFragment extends Fragment {
 
     private void setScrollToFocusedItem() {
         if (requireView().findFocus() != null) {
-            Point point = getLocationOnScreen(requireView().findFocus());
-            scrollviewPersonalInfo.smoothScrollTo(0, point.y);
+            Point point = getLocationOnScreen(mFirstName);
+            scrollviewPersonalInfo.smoothScrollTo(0, 0);
         }
     }
 

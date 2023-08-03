@@ -4,6 +4,10 @@ package org.intelehealth.klivekit.model;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class ChatMessage {
 
     @SerializedName("createdAt")
@@ -21,6 +25,8 @@ public class ChatMessage {
 
     @SerializedName("patientName")
     private String patientName;
+
+    private int messageStatus;
 
     private String hwName;
 
@@ -44,6 +50,10 @@ public class ChatMessage {
     private boolean loading;
 
     public String getCreatedAt() {
+        if (mCreatedAt == null) {
+            mCreatedAt = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
+                    .format(Calendar.getInstance().getTime());
+        }
         return mCreatedAt;
     }
 
@@ -166,6 +176,14 @@ public class ChatMessage {
 
     public void setLoading(boolean loading) {
         this.loading = loading;
+    }
+
+    public void setMessageStatus(int messageStatus) {
+        this.messageStatus = messageStatus;
+    }
+
+    public int getMessageStatus() {
+        return messageStatus;
     }
 
     public String toJson() {

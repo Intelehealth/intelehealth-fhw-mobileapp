@@ -1,7 +1,11 @@
 package org.intelehealth.ezazi.activities.privacyNoticeActivity;
 
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
+
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.text.LineBreaker;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -51,6 +55,7 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
         sessionManager = new SessionManager(this);
         privacy_textview = findViewById(R.id.privacy_text);
         privacy_textview.setAutoLinkMask(Linkify.ALL);
+
         accept = findViewById(R.id.button_accept);
         reject = findViewById(R.id.button_reject);
         checkBox_cho = findViewById(R.id.checkbox_CHO);
@@ -145,6 +150,9 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
             } else {*/
             String privacy_string = obj.getString("privacyNoticeText");
             privacy_textview.setText(privacy_string);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                privacy_textview.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+            }
             //}
             accept.setOnClickListener(this);
             reject.setOnClickListener(this);
