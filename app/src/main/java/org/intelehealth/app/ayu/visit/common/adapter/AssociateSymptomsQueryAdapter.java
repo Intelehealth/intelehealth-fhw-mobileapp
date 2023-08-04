@@ -446,6 +446,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
@@ -464,6 +466,8 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                 String dateString = simpleDateFormat.format(date);
                 displayDateButton.setText(dateString);
+                VisitUtils.scrollNow(mRecyclerView, 400, 0, 400);
+                AdapterUtils.setToDefault(submitButton);
             }
         });
         //holder.skipButton.setVisibility(View.GONE);
@@ -508,6 +512,12 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                     //notifyDataSetChanged();
                     //mOnItemSelection.onSelect(node, index);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+
+                        }
+                    });
                     VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
                 }
             }
