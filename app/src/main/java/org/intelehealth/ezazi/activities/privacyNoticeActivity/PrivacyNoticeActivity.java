@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.FileUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.ezazi.utilities.TextThemeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -150,9 +152,10 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
             } else {*/
             String privacy_string = obj.getString("privacyNoticeText");
             privacy_textview.setText(privacy_string);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                privacy_textview.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                privacy_textview.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+//            }
+//            TextThemeUtils.justify(privacy_textview);
             //}
             accept.setOnClickListener(this);
             reject.setOnClickListener(this);
@@ -162,6 +165,7 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
     }
+
 
     @Override
     protected int getScreenTitle() {

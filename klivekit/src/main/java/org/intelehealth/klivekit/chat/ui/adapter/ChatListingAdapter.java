@@ -101,8 +101,8 @@ public class ChatListingAdapter extends DateHeaderAdapter {
 
     public void addMessage(ItemHeader message) {
         mItemList.add(0, message);
-//        notifyDataSetChanged();
-        notifyItemChanged(0);
+        notifyDataSetChanged();
+//        notifyItemChanged(0);
     }
 
     private class LeftViewHolder extends RecyclerView.ViewHolder {
@@ -202,12 +202,12 @@ public class ChatListingAdapter extends DateHeaderAdapter {
         for (int i = 0; i < mItemList.size(); i++) {
             if (mItemList.get(i) instanceof ChatMessage) {
                 ChatMessage chatMessage = (ChatMessage) mItemList.get(i);
-                if (id == chatMessage.getId()) {
-                    chatMessage.setIsRead(true);
-                    chatMessage.setMessageStatus(MessageStatus.READ.getValue());
-                    notifyItemChanged(i);
-                    break;
-                }
+//                if (id == chatMessage.getId()) {
+                chatMessage.setIsRead(true);
+                chatMessage.setMessageStatus(MessageStatus.READ.getValue());
+                notifyItemChanged(i);
+//                    break;
+//                }
             }
         }
     }

@@ -167,7 +167,6 @@ open class SocketManager {
         const val EVENT_MESSAGE_READ_ACK = "message_read_ack" // message mark as read ack
         const val EVENT_CHAT_READ_ACK = "chat_read_ack" // all message mark as read
         const val EVENT_CHAT_READ_ACK_SUCCESS = "chat_read_ack_success" // all message mark as read
-        const val EVENT_CHAT_READ =
-            "chat_read"//sender received status, all message read by receiver
+        const val EVENT_CHAT_READ = "chat_read"//sender received status, all message read by receiver
     }
 }

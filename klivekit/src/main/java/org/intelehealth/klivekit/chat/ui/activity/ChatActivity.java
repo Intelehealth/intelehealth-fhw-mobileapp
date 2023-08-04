@@ -533,13 +533,17 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         List<ItemHeader> list = mChatListingAdapter.getList();
-        if (list.get(0) instanceof ChatMessage) {
-            ChatMessage lastMsg = (ChatMessage) list.get(0);
-            if (!lastMsg.getMessageDay().equals(message.getMessageDay())) {
-//                list.add(DayHeader.buildHeader(message.getCreatedAt()));
-                mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
+        if (list.size() > 0) {
+            if (list.get(0) instanceof ChatMessage) {
+                ChatMessage lastMsg = (ChatMessage) list.get(0);
+                if (!lastMsg.getMessageDay().equals(message.getMessageDay())) {
+                    mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
+                }
             }
+        } else {
+            mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
         }
+
 
         mEmptyLinearLayout.setVisibility(View.GONE);
         mChatListingAdapter.addMessage(message);

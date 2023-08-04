@@ -120,16 +120,16 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
         override fun onFinish() {}
     }
 
-    private val callPickupTimeUpTimer = object : CountDownTimer(CALL_PICKUP_EXP_TIME, 1000) {
+    private val callTimeoutTimer = object : CountDownTimer(CALL_PICKUP_EXP_TIME, 1000) {
         override fun onTick(millisUntilFinished: Long) {}
         override fun onFinish() {
             mutableCallTimeUpData.postValue(true)
         }
     }
 
-    fun startCallTimeUpTimer() = callPickupTimeUpTimer.start()
+    fun startCallTimeoutTimer() = callTimeoutTimer.start()
 
-    fun stopCallTimeUpTimer() = callPickupTimeUpTimer.cancel()
+    fun stopCallTimeoutTimer() = callTimeoutTimer.cancel()
 
     fun startCallDurationTimer(): CountDownTimer = callDurationTimer.start()
 

@@ -1,15 +1,10 @@
 package org.intelehealth.klivekit.ui.activity
 
 import android.Manifest
-import android.content.Context
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.Ringtone
+import android.media.MediaPlayer
 import android.media.RingtoneManager
-import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
@@ -71,15 +66,23 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     private val neededPermissions =
         arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
 
+
     // initiate the incoming call ringtone
-    private val ringtone: Ringtone by lazy {
-        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL)
-        RingtoneManager.getRingtone(applicationContext, notification)
-    }
+//    private val ringtone: Ringtone by lazy {
+//        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+//        RingtoneManager.getRingtone(applicationContext, notification)
+//    }
 
 //    private val audioManager: AudioManager by lazy {
 //        applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 //    }
+
+    private val mediaPlayer: MediaPlayer by lazy {
+        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        MediaPlayer.create(this, notification).apply {
+            isLooping = true
+        };
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -210,11 +213,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         }
     }
 
-    open fun playRingtone() = ringtone.play()
+    open fun playRingtone() {
+//        mediaPlayer.prepare()
+        mediaPlayer.start()
+    }
 
     open fun stopRingtone() {
-        Timber.e { "stopRingtone ${ringtone.isPlaying}" }
-        if (ringtone.isPlaying) ringtone.stop()
+        Timber.e { "stopRingtone ${mediaPlayer.isPlaying}" }
+        if (mediaPlayer.isPlaying) mediaPlayer.stop()
     }
 
     override fun onResume() {
@@ -233,17 +239,17 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     open fun onCallAccept() {
         Timber.d { "Call accepted by you" }
-        videoCallViewModel.stopCallTimeUpTimer()
+        videoCallViewModel.stopCallTimeoutTimer()
     }
 
     open fun onCallDecline() {
         Timber.d { "Call declined by you" }
-        videoCallViewModel.stopCallTimeUpTimer()
+        videoCallViewModel.stopCallTimeoutTimer()
     }
 
     open fun onIncomingCall() {
         Timber.d { "Incoming call from ${args.doctorName}" }
-        videoCallViewModel.startCallTimeUpTimer()
+        videoCallViewModel.startCallTimeoutTimer()
     }
 
     open fun onMicrophoneStatusChanged(status: Boolean) {
@@ -264,8 +270,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //            0
 //        )
         playRingtone()
-        Timber.e { "playRingtone ${ringtone.isPlaying}" }
-        videoCallViewModel.startCallTimeUpTimer()
+        videoCallViewModel.startCallTimeoutTimer()
         socketViewModel.connectWithDoctor()
         startConnecting()
     }

@@ -739,7 +739,11 @@ public class PatientOtherInfoFragment extends Fragment {
             Log.e(TAG, "setScrollToFocusedItem: scroll " + scroll.x + ", " + scroll.y + "");
             Point point = getLocationOnScreen(requireView().findFocus());
             Log.e(TAG, "setScrollToFocusedItem: focused " + point.x + ", " + point.y + "");
-            scrollviewOtherInfo.smoothScrollTo(0, point.y - scroll.y);
+            int coordinate = point.y - scroll.y;
+            Log.e(TAG, "setScrollToFocusedItem: point.y - scroll.y =>" + coordinate);
+            if (coordinate <= 0) scrollviewOtherInfo.smoothScrollTo(0, 0);
+            else if (scroll.y > coordinate) coordinate = point.y;
+            scrollviewOtherInfo.smoothScrollTo(0, coordinate);
 //            if (focused.getId() == R.id.et_admission_date || focused.getId() == R.id.et_admission_time) {
 //                scrollviewOtherInfo.smoothScrollTo(0, 0);
 //            } else {

@@ -18,6 +18,8 @@ import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.utils.RemoteActionType;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -50,7 +52,7 @@ public class CallInitializer {
 
     public static HashMap<String, String> getDoctorsDetails(String patientUuid) {
         PatientsDAO patientsDAO = new PatientsDAO();
-        HashMap<String, String> doctors = new HashMap<>();
+        LinkedHashMap<String, String> doctors = new LinkedHashMap<>();
         try {
             List<Attribute> patientAttributes = patientsDAO.getPatientAttributes(patientUuid);
             for (int i = 0; i < patientAttributes.size(); i++) {
