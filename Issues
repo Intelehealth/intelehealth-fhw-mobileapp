@@ -1,8 +1,11 @@
 Target
-- Chat issues
-- Scrolling issue
-- Privacy issue
+- Chat issues - DONE
+- Scrolling issue - IN PROGRESS
+- Privacy issue - IN PROGRESS
 
+- In between video calls when I minimize the app and reopen that time web app side video screen is showing a blank.
+- when the web browser is minimized and HW call from the mobile app that time unable to see the notification on the app browser when I opened the web app page then I can see the call notification
+- The phone ringtone is ringing for 30 sec only then it is unable to repeat when I call from the web app.
 
 Longest text visit = BackEvent Test - 58238b29-20e6-4033-a512-de8cdd88096e,
 EndShift Test = 2797e639-3592-4284-a0f8-6bae717bf4c0

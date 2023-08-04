@@ -735,12 +735,16 @@ public class PatientOtherInfoFragment extends Fragment {
     private void setScrollToFocusedItem() {
         if (requireView().findFocus() != null) {
             View focused = requireView().findFocus();
-            if (focused.getId() == R.id.et_admission_date || focused.getId() == R.id.et_admission_time) {
-                scrollviewOtherInfo.smoothScrollTo(0, 0);
-            } else {
-                Point point = getLocationOnScreen(requireView().findFocus());
-                scrollviewOtherInfo.smoothScrollTo(0, point.y);
-            }
+            Point scroll = getLocationOnScreen(scrollviewOtherInfo);
+            Log.e(TAG, "setScrollToFocusedItem: scroll " + scroll.x + ", " + scroll.y + "");
+            Point point = getLocationOnScreen(requireView().findFocus());
+            Log.e(TAG, "setScrollToFocusedItem: focused " + point.x + ", " + point.y + "");
+            scrollviewOtherInfo.smoothScrollTo(0, point.y - scroll.y);
+//            if (focused.getId() == R.id.et_admission_date || focused.getId() == R.id.et_admission_time) {
+//                scrollviewOtherInfo.smoothScrollTo(0, 0);
+//            } else {
+//                scrollviewOtherInfo.smoothScrollTo(0, point.y);
+//            }
         }
     }
 
@@ -1096,6 +1100,8 @@ public class PatientOtherInfoFragment extends Fragment {
 
     private boolean areValidFields() {
         errorDetailsList = new ArrayList<>();
+        if (requireView().findFocus() != null)
+            requireView().clearFocus();
 
         if (TextUtils.isEmpty(mAdmissionDateTextView.getText().toString())) {
             mAdmissionDateTextView.requestFocus();
