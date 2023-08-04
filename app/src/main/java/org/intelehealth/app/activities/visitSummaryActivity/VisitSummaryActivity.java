@@ -4175,7 +4175,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String firstName = providerCursor.getString(providerCursor.getColumnIndex("given_name"));
                 String lastName = providerCursor.getString(providerCursor.getColumnIndex("family_name"));
                 if (firstName != null && !firstName.isEmpty() && !firstName.trim().equalsIgnoreCase(""))
-                    creator_name = firstName.substring(0, 1);
+                    creator_name = firstName.substring(0, 1).toUpperCase(Locale.getDefault());
                 if (lastName != null && !lastName.isEmpty() && !lastName.trim().equalsIgnoreCase(""))
                     creator_name = creator_name + " " + lastName;
                 creator_reg_num = getCreatorRegNumber(providerUuid);
