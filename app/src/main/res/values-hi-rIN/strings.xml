@@ -1165,5 +1165,6 @@
     <string name="prescription_is_already_downloaded">प्रिस्क्रिप्शन पहले ही डाउनलोड हो चुका है.</string>
     <string name="fetching_details_please_wait">विवरण लाया जा रहा है. कृपया प्रतीक्षा करें...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">डॉक्टर द्वारा प्रिस्क्रिप्शन अभी तक उपलब्ध नहीं कराया गया है।</string>
+    <string name="download_prescription_first">सबसे पहले प्रिस्क्रिप्शन डाउनलोड करें.</string>
 
 </resources>

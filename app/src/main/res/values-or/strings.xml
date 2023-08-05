@@ -1049,5 +1049,6 @@
     <string name="prescription_is_already_downloaded">ପ୍ରେସକ୍ରିପସନ୍ ପୂର୍ବରୁ ଡାଉନଲୋଡ୍ ହୋଇସାରିଛି |</string>
     <string name="fetching_details_please_wait">ସବିଶେଷ ତଥ୍ୟ ଆଣିବା | ଦୟାକରି ଅପେକ୍ଷା କର...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">ଡାକ୍ତରଙ୍କ ଦ୍ Pres ାରା ପ୍ରେସକ୍ରିପସନ୍ ଏପର୍ଯ୍ୟନ୍ତ ପ୍ରଦାନ କରାଯାଇ ନାହିଁ |</string>
+    <string name="download_prescription_first">ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
 
 </resources>

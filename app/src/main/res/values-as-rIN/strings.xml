@@ -1137,5 +1137,6 @@
     <string name="prescription_is_already_downloaded">ইতিমধ্যে প্ৰেছক্ৰিপচন ডাউনলোড কৰা হৈছে।</string>
     <string name="fetching_details_please_wait">সবিশেষ আনিছে। অনুগ্ৰহ কৰি অপেক্ষা কৰক...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">প্ৰেছক্ৰিপচন এতিয়াও চিকিৎসকৰ দ্বাৰা দিয়া হোৱা নাই।</string>
+    <string name="download_prescription_first">প্ৰথমে প্ৰেছক্ৰিপচন ডাউনলোড কৰক।</string>
 
 </resources>

@@ -652,9 +652,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!language.equalsIgnoreCase("")) {
+                    Locale locale = new Locale(language);
+                    Locale.setDefault(locale);
+                    Configuration config = new Configuration();
+                    config.locale = locale;
+                    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+                }
 
                 try {
-                    doWebViewPrint_Button();
+                    if (hasPrescription.equalsIgnoreCase("true"))
+                        doWebViewPrint_Button();
+                    else
+                        showOkDismissDialog(null, getString(R.string.download_prescription_first), getString(R.string.ok));
+
                 } catch (ParseException | StringIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -1870,7 +1881,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         return;
                     }
 
-                    Toast.makeText(context, R.string.fetching_details_please_wait, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.fetching_details_please_wait), Toast.LENGTH_LONG).show();
 
                     SyncUtils syncUtils = new SyncUtils();
                     syncUtils.syncForeground("downloadPrescription");
@@ -4424,7 +4435,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void showOkDismissDialog(String title, String message, String okBtn) {
-        DialogUtils.showOkDialog(VisitSummaryActivity.this, title, message, okBtn);
+        try {
+            DialogUtils.showOkDialog(VisitSummaryActivity.this, title, message, okBtn);
+        }
+        catch (Exception e) {
+
+        }
     }
 
 }
