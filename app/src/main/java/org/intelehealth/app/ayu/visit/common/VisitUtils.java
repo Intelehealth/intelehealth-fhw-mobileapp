@@ -44,7 +44,7 @@ public class VisitUtils {
     }
 
     public static String replaceEnglishCommonString(String data, String locale) {
-        Log.v("VisitUtils", "RAW - "+data);
+        Log.v("VisitUtils", "RAW - " + data);
         String result = data;
         if (locale.equalsIgnoreCase("hi")) {
 
@@ -171,7 +171,90 @@ public class VisitUtils {
                     .replace("times per month", "மாதம் முறை")
                     .replace("times per year", "வருடத்திற்கு முறை");
         }
-        Log.v("VisitUtils", "OUT - "+result);
+        Log.v("VisitUtils", "OUT - " + result);
+
+        return result;
+    }
+
+    public static String replaceToEnglishCommonString(String data, String locale) {
+        Log.v("VisitUtils", "replaceToEnglishCommonString - " + data);
+        String result = data;
+        if (locale.equalsIgnoreCase("hi")) {
+
+            result = result.replace("घंटे", "Hours")
+                    .replace("दिन", "Days")
+                    .replace("हफ्तों", "Weeks")
+                    .replace("महीने", "Months")
+                    .replace("वर्ष", "Years");
+        } else if (locale.equalsIgnoreCase("or")) {
+            result = result.replace("ଘଣ୍ଟା", "Hours")
+                    .replace("ଦିନ", "Days")
+                    .replace("ସପ୍ତାହ", "Weeks")
+                    .replace("ମାସ", "Months")
+                    .replace("ବର୍ଷ", "Years");
+
+        } else if (locale.equalsIgnoreCase("gu")) {
+            result = result.replace("કલાક", "Hours")
+                    .replace("દિવસ", "Days")
+                    .replace("અઠવાડિયું", "Weeks")
+                    .replace("માસ", "Months")
+                    .replace("વર્ષ", "Years");
+
+        } else if (locale.equalsIgnoreCase("te")) {
+            result = result.replace("గంటలు", "Hours")
+                    .replace("రోజులు", "Days")
+                    .replace("వారాలు", "Weeks")
+                    .replace("నెలల", "Months")
+                    .replace("సంవత్సరాలు", "Years");
+
+        } else if (locale.equalsIgnoreCase("mr")) {
+            result = result.replace("तास", "Hours")
+                    .replace("दिवस", "Days")
+                    .replace("आठवडे", "Weeks")
+                    .replace("महिने", "Months")
+                    .replace("वर्षे", "Years");
+
+
+        } else if (locale.equalsIgnoreCase("kn")) {
+            result = result.replace("ಗಂಟೆಗಳು", "Hours")
+                    .replace("ದಿನಗಳು", "Days")
+                    .replace("ವಾರಗಳು", "Weeks")
+                    .replace("ತಿಂಗಳುಗಳು", "Months")
+                    .replace("ವರ್ಷಗಳು", "Years");
+
+        } else if (locale.equalsIgnoreCase("as")) {
+            result = result.replace("ঘণ্টা", "Hours")
+                    .replace("দিনসমূহ", "Days")
+                    .replace("সপ্তাহ", "Weeks")
+                    .replace("মাহ", "Months")
+                    .replace("বছৰ", "Years");
+
+        }
+        //Malyalam Language Support...
+        else if (locale.equalsIgnoreCase("ml")) {
+            result = result.replace("മണിക്കൂറുകൾ", "Hours")
+                    .replace("ദിവസങ്ങളിൽ", "Days")
+                    .replace("ആഴ്ചകൾ", "Weeks")
+                    .replace("മാസങ്ങൾ", "Months")
+                    .replace("വർഷങ്ങൾ", "Years");
+
+        } else if (locale.equalsIgnoreCase("bn")) {
+            result = result.replace("ঘন্টার", "Hours")
+                    .replace("দিনগুলি", "Days")
+                    .replace("সপ্তাহ", "Weeks")
+                    .replace("মাস", "Months")
+                    .replace("বছর", "Years");
+
+        } else if (locale.equalsIgnoreCase("ta")) {
+            result = result.replace("மணி", "Hours")
+                    .replace("நாட்கள்", "Days")
+                    .replace("வாரங்கள்", "Weeks")
+                    .replace("மாதங்கள்", "Months")
+                    .replace("ஆண்டுகள்", "Years");
+
+
+        }
+        Log.v("VisitUtils", "OUT - " + result);
 
         return result;
     }
@@ -233,7 +316,6 @@ public class VisitUtils {
         return result;
 
     }
-
 
 
 }

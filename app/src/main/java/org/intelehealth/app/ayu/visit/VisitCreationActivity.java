@@ -508,6 +508,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     insertionLocale = insertionLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
                 }
             }
+            insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
             jsonObject.put("en", insertion);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
@@ -965,6 +966,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         physicalStringLocale = physicalStringLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
                     }
                 }
+                physicalString = VisitUtils.replaceToEnglishCommonString(physicalString, sessionManager.getAppLanguage());
                 jsonObject.put("en", physicalString);
                 //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
@@ -1028,6 +1030,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
             }
 
+            patientHistory = VisitUtils.replaceToEnglishCommonString(patientHistory, sessionManager.getAppLanguage());
             jsonObject.put("en", patientHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
@@ -1044,6 +1047,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
             }
 
+            familyHistory = VisitUtils.replaceToEnglishCommonString(familyHistory, sessionManager.getAppLanguage());
             jsonObject1.put("en", familyHistory);
             //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
