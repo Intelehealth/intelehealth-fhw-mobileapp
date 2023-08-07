@@ -185,16 +185,19 @@ public class ChatListingAdapter extends DateHeaderAdapter {
             }
 
             MessageStatus status = MessageStatus.getStatus(message.getMessageStatus());
-            if (status.isRead()) {
-                statusTextView.setText(mContext.getString(R.string.read));
-                statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_done_status_icon, 0, 0, 0);
-            } else if (status.isSent()) {
-                statusTextView.setText(mContext.getString(R.string.sent));
-                statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
-            } else {
-                statusTextView.setText(mContext.getString(R.string.sending));
-                statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sending_status, 0, 0, 0);
-            }
+            if (getAdapterPosition() == 0) {
+                statusTextView.setVisibility(View.VISIBLE);
+                if (status.isRead()) {
+                    statusTextView.setText(mContext.getString(R.string.read));
+                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_done_status_icon, 0, 0, 0);
+                } else if (status.isSent()) {
+                    statusTextView.setText(mContext.getString(R.string.sent));
+                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
+                } else {
+                    statusTextView.setText(mContext.getString(R.string.sending));
+                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sending_status, 0, 0, 0);
+                }
+            } else statusTextView.setVisibility(View.GONE);
         }
     }
 
