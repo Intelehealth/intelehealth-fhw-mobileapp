@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
@@ -56,7 +57,7 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
 
         sessionManager = new SessionManager(this);
         privacy_textview = findViewById(R.id.privacy_text);
-        privacy_textview.setAutoLinkMask(Linkify.ALL);
+//        privacy_textview.setAutoLinkMask(Linkify.ALL);
 
         accept = findViewById(R.id.button_accept);
         reject = findViewById(R.id.button_reject);
@@ -152,6 +153,9 @@ public class PrivacyNoticeActivity extends BaseActionBarActivity implements View
             } else {*/
             String privacy_string = obj.getString("privacyNoticeText");
             privacy_textview.setText(privacy_string);
+            final SpannableString span_string = new SpannableString(privacy_string);
+            Linkify.addLinks(span_string, Linkify.ALL);
+            privacy_textview.setText(span_string);
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                privacy_textview.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
 //            }
