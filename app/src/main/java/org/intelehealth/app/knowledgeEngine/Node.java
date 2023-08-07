@@ -1310,7 +1310,7 @@ public class Node implements Serializable {
 
         final String[] doctorUnits = new String[]{"times per hour", "time per day", "times per week", "times per month", "times per year"};
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);  // NAS-256
         quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
@@ -1917,7 +1917,7 @@ public class Node implements Serializable {
 
         final String[] doctorUnits = context.getResources().getStringArray(R.array.doctor_units);
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
