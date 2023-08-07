@@ -3956,8 +3956,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 if (newAdviceReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
                         newAdviceReturned = "<strike><font color=\'#000000\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
-                    else if (comment == null || comment.trim().isEmpty())
-                        newAdviceReturned = value; //no added statement will be added here because everytime the first advice will be to start call with doctor.
+                    else if (comment == null || comment.trim().isEmpty()) {
+                            newAdviceReturned = newAdviceReturned + "<br><br>" + value + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, "") + "</font>";
+                    }
                 }
 
                 if (!adviceReturned.isEmpty() && (comment == null || comment.trim().isEmpty())) {
@@ -4126,9 +4127,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             if (stringarray[4].contains(" ")) {
                 String[] names = stringarray[4].split(" ");
                 String fname = String.valueOf(names[0].toCharArray()[0]);
-                doctorName = fname + " " + names[1];
+                doctorName = fname + " " + names[names.length-1];
             }
-            if (stringarray[5].equalsIgnoreCase("NA"))
+            if (stringarray[5].equalsIgnoreCase("NA") || stringarray[5].equalsIgnoreCase("null"))
                 obsAddedByString = getResources().getString(R.string.added_by) + " " + doctorName + "<br>" + valueTimeStamp;
             else
                 obsAddedByString = getResources().getString(R.string.added_by) + " " + doctorName + " (" + stringarray[5] + ") " + "<br>" + valueTimeStamp;
@@ -4182,11 +4183,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             } while (providerCursor.moveToNext());
         }
         providerCursor.close();
-        return creator_name + " (" + creator_reg_num + ")";
+        String creatorDetails = creator_name;
+        if(!creator_reg_num.equalsIgnoreCase("NA"))
+            creatorDetails = creator_name + " (" + creator_reg_num + ")";
+        return creatorDetails;
     }
 
     private String getCreatorRegNumber(String providerUuid) {
-        String registrationNum = "N/A";
+        String registrationNum = "NA";
         String[] columns = {"provideruuid", "value", " attributetypeuuid"};
         String providerSelection = "provideruuid = ? AND attributetypeuuid = ?";
         String[] providerArgs = {providerUuid, "992ccbdd-201a-44ef-8abb-c2eee079886d"};
@@ -4212,14 +4216,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         if (stringarray[2].contains(" ")) {
             String[] names = stringarray[2].split(" ");
             String fname = String.valueOf(names[0].toCharArray()[0]);
-            doctorName = fname + " " + names[1];
+            doctorName = fname + " " + names[names.length-1];
         }
 
-        if (stringarray[3].equalsIgnoreCase("NA"))
+        if (stringarray[3].equalsIgnoreCase("NA") || stringarray[5].equalsIgnoreCase("null"))
             formattedComment = getResources().getString(R.string.deleted_by) + " " + doctorName + "<br>" + valueTimeStamp;
         else
             formattedComment = getResources().getString(R.string.deleted_by) + " " + doctorName + " (" + stringarray[3] + ") " + "<br> " + valueTimeStamp;
-
 
         return formattedComment;
     }
