@@ -52,4 +52,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="mesg_hints">Type text here ...</string>
+    <string name="accept_webrtc">Accept</string>
+    <string name="decline_webrtc">Decline</string>
+    <string name="calling_webrtc">Calling..</string>
 </resources>

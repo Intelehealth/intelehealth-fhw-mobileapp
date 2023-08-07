@@ -52,4 +52,7 @@
     <string name="yes">نعم</string>
     <string name="no">رقم</string>
     <string name="mesg_hints">اكتب النص هنا ...</string>
+    <string name="accept_webrtc">قبول</string>
+    <string name="decline_webrtc">انخفاض</string>
+    <string name="calling_webrtc">جارٍ الاتصال ..</string>
 </resources>

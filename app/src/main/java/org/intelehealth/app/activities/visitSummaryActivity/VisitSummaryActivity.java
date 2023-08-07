@@ -4125,7 +4125,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             valueTimeStamp = formatTimeForComment(stringarray[6]);
             if (stringarray[4].contains(" ")) {
                 String[] names = stringarray[4].split(" ");
-                String fname = String.valueOf(names[0].toCharArray()[0]).toUpperCase(Locale.getDefault());
+                String fname = String.valueOf(names[0].toCharArray()[0]);
                 doctorName = fname + " " + names[1];
             }
             if (stringarray[5].equalsIgnoreCase("NA"))
@@ -4175,7 +4175,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String firstName = providerCursor.getString(providerCursor.getColumnIndex("given_name"));
                 String lastName = providerCursor.getString(providerCursor.getColumnIndex("family_name"));
                 if (firstName != null && !firstName.isEmpty() && !firstName.trim().equalsIgnoreCase(""))
-                    creator_name = firstName.substring(0, 1).toUpperCase(Locale.getDefault());
+                    creator_name = firstName.substring(0, 1);
                 if (lastName != null && !lastName.isEmpty() && !lastName.trim().equalsIgnoreCase(""))
                     creator_name = creator_name + " " + lastName;
                 creator_reg_num = getCreatorRegNumber(providerUuid);
@@ -4211,7 +4211,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         String doctorName = stringarray[2];
         if (stringarray[2].contains(" ")) {
             String[] names = stringarray[2].split(" ");
-            String fname = String.valueOf(names[0].toCharArray()[0]).toUpperCase(Locale.getDefault());
+            String fname = String.valueOf(names[0].toCharArray()[0]);
             doctorName = fname + " " + names[1];
         }
 
