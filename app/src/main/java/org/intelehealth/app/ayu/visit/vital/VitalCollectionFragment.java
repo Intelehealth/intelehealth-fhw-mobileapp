@@ -625,6 +625,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         //35.0 to 39.9: Severe Obesity (Class 2)
         //40.0 & Above: Very Severe (Morbid) Obesity (Class 3)"
         BMIStatus bmiStatus = new BMIStatus();
+        bmiStatus.setStatus("");
+        bmiStatus.setColor(R.color.gray);
         if (bmi < 18.5) {
             bmiStatus.setStatus(getResources().getString(R.string.underweight));
             bmiStatus.setColor(R.color.ui2_bmi1);
