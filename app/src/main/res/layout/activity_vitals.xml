@@ -329,6 +329,8 @@
 
                             <ImageButton
                                 android:id="@+id/bp_Btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -419,6 +421,8 @@
 
                             <ImageButton
                                 android:id="@+id/spo2_Btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -605,6 +609,8 @@
 
                             <ImageButton
                                 android:id="@+id/bloodGlucose_Btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -647,6 +653,8 @@
 
                             <ImageButton
                                 android:id="@+id/bloodGlucoseRandom_Btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -689,6 +697,8 @@
 
                             <ImageButton
                                 android:id="@+id/bloodGlucose_Btn_fasting"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -731,6 +741,8 @@
 
                             <ImageButton
                                 android:id="@+id/bloodGlucosePostPrandial_Btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -773,6 +785,8 @@
 
                             <ImageButton
                                 android:id="@+id/haemoglobin_btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -815,6 +829,8 @@
 
                             <ImageButton
                                 android:id="@+id/uricAcid_btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -857,6 +873,8 @@
 
                             <ImageButton
                                 android:id="@+id/totalCholestrol_btn"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"

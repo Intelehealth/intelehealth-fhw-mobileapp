@@ -1,15 +1,15 @@
 package org.intelehealth.app.activities.devicesActivity;
 
-import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
+/*import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE_CALIBRATION;
 import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
 import static com.healthcubed.ezdxlib.model.TestName.CHOLESTEROL_CALIBRATION;
 import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
-import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN_CALIBRATION;
-import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
-import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID_CALIBRATION;
+import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN_CALIBRATION;*/
+//import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
+//import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID_CALIBRATION;
 
-import static org.intelehealth.app.app.AppConstants.key;
+// import static org.intelehealth.app.app.AppConstants.key;
 import static org.intelehealth.app.utilities.DialogUtils.showInfoDialog;
 
 import androidx.appcompat.app.AlertDialog;
@@ -30,13 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
+/*import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
 import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothStatus;
 import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
 import com.healthcubed.ezdxlib.model.EzdxData;
 import com.healthcubed.ezdxlib.model.HCDeviceData;
 import com.healthcubed.ezdxlib.model.Status;
-import com.healthcubed.ezdxlib.model.TestName;
+import com.healthcubed.ezdxlib.model.TestName;*/
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
@@ -53,7 +53,7 @@ import java.util.List;
  * Github: prajwalmw
  */
 
-public class DevicesActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback {
+public class DevicesActivity extends AppCompatActivity /*implements BluetoothService.OnBluetoothEventCallback*/ {
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
@@ -62,8 +62,8 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
     TextView textView;
     AlertDialog alertDialog;
     Context context;
-    BluetoothService bluetoothService;
-    HCDeviceData hcDeviceData = null;
+   // BluetoothService bluetoothService;
+  // HCDeviceData hcDeviceData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +71,9 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
         setContentView(R.layout.activity_devices);
         setTitle(getString(R.string.devices));
         context = DevicesActivity.this;
-        EzdxBT.authenticate(key); // Authenticate Key before starting the test.
-        bluetoothService = BluetoothService.getDefaultInstance();
-        bluetoothService.setOnEventCallback(this);
+//        EzdxBT.authenticate(key); // Authenticate Key before starting the test.
+//        bluetoothService = BluetoothService.getDefaultInstance();
+//        bluetoothService.setOnEventCallback(this);
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         expandableListDetail = ExpandableList_DataModel.getData(this);
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
@@ -92,15 +92,18 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                 if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.healthcube_device_info))) {
 
+/*
                     if (hcDeviceData != null) {
                         try {
                             showInfoDialog(DevicesActivity.this, hcDeviceData.toString(), getString(R.string.healthcube_device_info));
                         } catch (Exception e) {
                         }
                     }
+*/
                 }
 
                 // Blood Glucose Calibration
+/*
                 if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.blood_glucose_calibration))) {
                     Status status = EzdxBT.startBloodGlucoseCalibration();
@@ -114,8 +117,10 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                     }
 
                 }
+*/
 
                 // Blood Glucose Calibration
+/*
                 if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.hemoglobin_calibration))) {
                     Status status = EzdxBT.startHemoglobinCalibration();
@@ -125,8 +130,10 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                         showTestDialog();
                     }
                 }
+*/
 
                 // Uric Acid Calibration
+/*
                 if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.uric_acid_calibration))) {
                     Status status = EzdxBT.startUricAcidCalibration();
@@ -136,8 +143,10 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                         showTestDialog();
                     }
                 }
+*/
 
                 // Total Cholesterol Calibration
+/*
                 if (expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition)
                         .equalsIgnoreCase(getString(R.string.total_cholesterol_calibration))) {
                     Status status = EzdxBT.startCholestrolCalibration();
@@ -147,6 +156,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
                         showTestDialog();
                     }
                 }
+*/
 
                 return false;
             }
@@ -168,7 +178,7 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
-                EzdxBT.stopCurrentTest(); // stopping the test is necessary...
+               // EzdxBT.stopCurrentTest(); // stopping the test is necessary...
                 Toast.makeText(context, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
             }
         });
@@ -185,51 +195,52 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
-    private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
-        if (testName.equals(BLOOD_GLUCOSE_CALIBRATION))
-            imageView.setImageDrawable(getDrawable(R.drawable.glucose_calibration));
+//    private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
+//        if (testName.equals(BLOOD_GLUCOSE_CALIBRATION))
+//            imageView.setImageDrawable(getDrawable(R.drawable.glucose_calibration));
+//
+//        else if (testName.equals(HEMOGLOBIN_CALIBRATION) ||
+//                testName.equals(URIC_ACID_CALIBRATION) ||
+//                testName.equals(CHOLESTEROL_CALIBRATION)) {
+//            imageView.setImageDrawable(getDrawable(R.drawable.hemoglobin_calibration));
+//        }
+//
+//        // Status reading...
+//        if (ezdxData.getStatus().equals(Status.STARTED)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.calibration_started_successfully);
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.INITIALIZING)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.initializing);
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.INSERT_CALIBRATION_STRIP)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.insert_calibration_strip);
+//                textView.setTextColor(getColor(R.color.red3));
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.STOPPED)) {
+//            Toast.makeText(this, R.string.calibration_stopped_successfully, Toast.LENGTH_SHORT).show();
+//            textView.setTextColor(getColor(R.color.red3));
+//        }
+//
+//        if (ezdxData.getStatus().equals(Status.CALIBRATION_COMPLETED)) {
+//            if (alertDialog != null) {
+//                alertDialog.dismiss();
+//            }
+//            Toast.makeText(this, R.string.calibration_completed_successfully, Toast.LENGTH_SHORT).show();
+//            EzdxBT.stopCurrentTest();
+//                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
+//                     ‘stopCurrentTest()’ method to stop the test.
+//                     Otherwise callback will be called every second until stop is called.*/
+//        }
+//    }
 
-        else if (testName.equals(HEMOGLOBIN_CALIBRATION) ||
-                testName.equals(URIC_ACID_CALIBRATION) ||
-                testName.equals(CHOLESTEROL_CALIBRATION)) {
-            imageView.setImageDrawable(getDrawable(R.drawable.hemoglobin_calibration));
-        }
 
-        // Status reading...
-        if (ezdxData.getStatus().equals(Status.STARTED)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.calibration_started_successfully);
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INITIALIZING)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.initializing);
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INSERT_CALIBRATION_STRIP)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.insert_calibration_strip);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.STOPPED)) {
-            Toast.makeText(this, R.string.calibration_stopped_successfully, Toast.LENGTH_SHORT).show();
-            textView.setTextColor(getColor(R.color.red3));
-        }
-
-        if (ezdxData.getStatus().equals(Status.CALIBRATION_COMPLETED)) {
-            if (alertDialog != null) {
-                alertDialog.dismiss();
-            }
-            Toast.makeText(this, R.string.calibration_completed_successfully, Toast.LENGTH_SHORT).show();
-            EzdxBT.stopCurrentTest();
-                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
-                     ‘stopCurrentTest()’ method to stop the test.
-                     Otherwise callback will be called every second until stop is called.*/
-        }
-    }
-
-
+/*
     @Override
     public void onEzdxData(EzdxData ezdxData) {
         switch (ezdxData.getTestName()) {
@@ -245,16 +256,21 @@ public class DevicesActivity extends AppCompatActivity implements BluetoothServi
 
         }
     }
+*/
 
+/*
     @Override
     public void onHCDeviceInfo(HCDeviceData hcDeviceData) {
         if (hcDeviceData != null) {
             this.hcDeviceData = hcDeviceData;
         }
     }
+*/
 
+/*
     @Override
     public void onStatusChange(BluetoothStatus bluetoothStatus) {
 
     }
+*/
 }

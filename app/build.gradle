@@ -79,7 +79,7 @@ android {
 dependencies {
     implementation project(':webrtc')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation files('libs/ezdxlib.aar') // HealthCube
+  //  implementation files('libs/ezdxlib.aar') // HealthCube
     implementation files('libs/printer_library.jar') // Thermal Printer
     implementation 'org.pytorch:pytorch_android:1.6.0'
     implementation 'org.pytorch:pytorch_android_torchvision:1.6.0'

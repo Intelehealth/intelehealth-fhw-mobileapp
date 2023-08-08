@@ -1,13 +1,13 @@
 package org.intelehealth.app.activities.vitalActivity;
 
-import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
-import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
-import static com.healthcubed.ezdxlib.model.TestName.CHOLESTEROL;
-import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
-import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
-import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
+//import static com.healthcubed.ezdxlib.model.TestName.BLOOD_GLUCOSE;
+//import static com.healthcubed.ezdxlib.model.TestName.BLOOD_PRESSURE;
+//import static com.healthcubed.ezdxlib.model.TestName.CHOLESTEROL;
+//import static com.healthcubed.ezdxlib.model.TestName.HEMOGLOBIN;
+//import static com.healthcubed.ezdxlib.model.TestName.PULSE_OXIMETER;
+//import static com.healthcubed.ezdxlib.model.TestName.URIC_ACID;
 
-import static org.intelehealth.app.app.AppConstants.key;
+//import static org.intelehealth.app.app.AppConstants.key;
 import static org.intelehealth.app.utilities.EditTextUtils.*;
 
 import android.app.ProgressDialog;
@@ -22,13 +22,13 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
+/*import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothService;
 import com.healthcubed.ezdxlib.bluetoothHandler.BluetoothStatus;
 import com.healthcubed.ezdxlib.bluetoothHandler.EzdxBT;
 import com.healthcubed.ezdxlib.model.EzdxData;
 import com.healthcubed.ezdxlib.model.HCDeviceData;
 import com.healthcubed.ezdxlib.model.Status;
-import com.healthcubed.ezdxlib.model.TestName;
+import com.healthcubed.ezdxlib.model.TestName;*/
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,7 +78,7 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VitalsActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback {
+public class VitalsActivity extends AppCompatActivity /*implements BluetoothService.OnBluetoothEventCallback*/ {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "", patientFName = "", patientLName = "";
@@ -103,7 +103,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             haemoglobin_editText, uricAcid_editText, totalCholestrol_editText;
     ImageButton bloodGlucose_Btn, bloodGlucose_Btn_Fasting, bloodGlucoseRandom_Btn, bloodGlucosePostPrandial_Btn, haemoglobin_btn, bp_Btn, spo2_Btn,
             uricAcid_btn, cholesterol_btn;
-    BluetoothService bluetoothService;
+ //   BluetoothService bluetoothService;
     AppCompatImageView imageView;
     TextView textView;
     AlertDialog alertDialog;
@@ -144,7 +144,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
-        EzdxBT.authenticate(key); // Authenticate Key before starting the test.
+      //  EzdxBT.authenticate(key); // Authenticate Key before starting the test.
 
 
 //        Setting the title
@@ -179,9 +179,9 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         mResp = findViewById(R.id.table_respiratory);
         mBMI.setEnabled(false);
 
-        bluetoothService = BluetoothService.getDefaultInstance();
+       /* bluetoothService = BluetoothService.getDefaultInstance();
         bluetoothService.setOnEventCallback(this);
-
+*/
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
@@ -304,40 +304,50 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             }
         });
 
+/*
         bp_Btn.setOnClickListener(view -> {
             EzdxBT.startAdultBloodPressure();
             showTestDialog();
         });
+*/
 
+/*
         bloodGlucose_Btn.setOnClickListener(view -> { // Diabetes // Non-Fasting
             Status status = EzdxBT.startBloodGlucose();
             Log.v("Details", "gluc_nonfast: " + status.toString());
             showTestDialog();
             btnClick = 1;
         });
+*/
 
+/*
         bloodGlucoseRandom_Btn.setOnClickListener(view -> {
             Status status = EzdxBT.startBloodGlucose();
             Log.v("Details", "gluc_random: " + status.toString());
             showTestDialog();
             btnClick = 3;
         });
+*/
 
+/*
         bloodGlucosePostPrandial_Btn.setOnClickListener(view -> {
             Status status = EzdxBT.startBloodGlucose();
             Log.v("Details", "gluc_post_prandial: " + status.toString());
             showTestDialog();
             btnClick = 4;
         });
+*/
 
+/*
         bloodGlucose_Btn_Fasting.setOnClickListener(view -> { // Diabetes // Fasting
             Status status = EzdxBT.startBloodGlucose();
             Log.v("Details", "gluc_fast: " + status.toString());
             showTestDialog();
             btnClick = 2;
         });
+*/
 
-        haemoglobin_btn.setOnClickListener(view -> { // Anaemia
+      /*  haemoglobin_btn.setOnClickListener(view -> { // Anaemia
             EzdxBT.startHemoglobin();
             showTestDialog();
         });
@@ -356,7 +366,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             EzdxBT.startCholestrol();
             showTestDialog();
         });
-
+*/
 
         mWeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -867,7 +877,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
-                EzdxBT.stopCurrentTest(); // stopping the test is necessary...
+              //  EzdxBT.stopCurrentTest(); // stopping the test is necessary...
                 Toast.makeText(VitalsActivity.this, getString(R.string.test_stopped), Toast.LENGTH_SHORT).show();
             }
         });
@@ -1866,6 +1876,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
     public void onBackPressed() {
     }
 
+/*
     @Override
     public void onEzdxData(EzdxData ezdxData) {
         switch (ezdxData.getTestName()) {
@@ -1897,6 +1908,7 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
 
         }
     }
+*/
 
     private void updateBillEncounter(String encounterBill, String obsConceptID, String price) {
         ObsDAO obsDAO = new ObsDAO();
@@ -1921,123 +1933,127 @@ public class VitalsActivity extends AppCompatActivity implements BluetoothServic
         }
     }
 
-    private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
-        if (testName.equals(BLOOD_PRESSURE)) {
-            imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
-                mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
-            }
-        } else if (testName.equals(BLOOD_GLUCOSE)) { // Diabetes
-            imageView.setImageDrawable(getDrawable(R.drawable.glucose_meter));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                if (btnClick != 0) {
-                    if (btnClick == 1)
-                        bloodGlucose_editText.setText(String.valueOf(ezdxData.getResult1()));
-                    else if (btnClick == 2)
-                        bloodGlucose_editText_fasting.setText(String.valueOf(ezdxData.getResult1()));
-                    else if (btnClick == 3)
-                        bloodGlucoseRandom_editText.setText(String.valueOf(ezdxData.getResult1()));
-                    else if (btnClick == 4)
-                        bloodGlucosePostPrandial_editText.setText(String.valueOf(ezdxData.getResult1()));
-                }
-                btnClick = 0;
-            }
-        } else if (testName.equals(HEMOGLOBIN)) { // HEMOGLOBIN (Anaemia)
-            imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED))
-                haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
-        } else if (testName.equals(PULSE_OXIMETER)) { // SPO2 and BPM
-            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                mSpo2.setText(String.valueOf(ezdxData.getResult1()));
-                mPulse.setText(String.valueOf(ezdxData.getResult2()));
-            }
-        } else if (testName.equals(URIC_ACID)) { // Uric acid
-            imageView.setImageDrawable(getDrawable(R.drawable.urine_sample));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                uricAcid_editText.setText(String.valueOf(ezdxData.getResult1()));
-            }
-        } else if (testName.equals(CHOLESTEROL)) { // Cholesterol
-            imageView.setImageDrawable(getDrawable(R.drawable.cholesterol));
-            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-                totalCholestrol_editText.setText(String.valueOf(ezdxData.getResult1()));
-            }
-        }
+//    private void fetchStatusOfTest(EzdxData ezdxData, TestName testName) {
+//        if (testName.equals(BLOOD_PRESSURE)) {
+//            imageView.setImageDrawable(getDrawable(R.drawable.blood_pressure));
+//            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+//                mBpSys.setText(String.valueOf(ezdxData.getResult1())); // Systolic
+//                mBpDia.setText(String.valueOf(ezdxData.getResult2())); // Diastolic
+//            }
+//        } else if (testName.equals(BLOOD_GLUCOSE)) { // Diabetes
+//            imageView.setImageDrawable(getDrawable(R.drawable.glucose_meter));
+//            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+//                if (btnClick != 0) {
+//                    if (btnClick == 1)
+//                        bloodGlucose_editText.setText(String.valueOf(ezdxData.getResult1()));
+//                    else if (btnClick == 2)
+//                        bloodGlucose_editText_fasting.setText(String.valueOf(ezdxData.getResult1()));
+//                    else if (btnClick == 3)
+//                        bloodGlucoseRandom_editText.setText(String.valueOf(ezdxData.getResult1()));
+//                    else if (btnClick == 4)
+//                        bloodGlucosePostPrandial_editText.setText(String.valueOf(ezdxData.getResult1()));
+//                }
+//                btnClick = 0;
+//            }
+//        } else if (testName.equals(HEMOGLOBIN)) { // HEMOGLOBIN (Anaemia)
+//            imageView.setImageDrawable(getDrawable(R.drawable.haemoglobin_sample));
+//            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED))
+//                haemoglobin_editText.setText(String.valueOf(ezdxData.getResult1()));
+//        } else if (testName.equals(PULSE_OXIMETER)) { // SPO2 and BPM
+//            imageView.setImageDrawable(getDrawable(R.drawable.pulse_oximeter));
+//            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+//                mSpo2.setText(String.valueOf(ezdxData.getResult1()));
+//                mPulse.setText(String.valueOf(ezdxData.getResult2()));
+//            }
+//        } else if (testName.equals(URIC_ACID)) { // Uric acid
+//            imageView.setImageDrawable(getDrawable(R.drawable.urine_sample));
+//            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+//                uricAcid_editText.setText(String.valueOf(ezdxData.getResult1()));
+//            }
+//        } else if (testName.equals(CHOLESTEROL)) { // Cholesterol
+//            imageView.setImageDrawable(getDrawable(R.drawable.cholesterol));
+//            if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+//                totalCholestrol_editText.setText(String.valueOf(ezdxData.getResult1()));
+//            }
+//        }
+//
+//        // Status reading...
+//        if (ezdxData.getStatus().equals(Status.STARTED)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.test_has_started);
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.INITIALIZING)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.initializing);
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.INSERT_TEST_STRIP)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.insert_test_strip);
+//                textView.setTextColor(getColor(R.color.red3));
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.INSERT_VALID_TEST_STRIP)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.insert_valid_test_strip);
+//                textView.setTextColor(getColor(R.color.red3));
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.STRIP_DETECTED_APPLY_BLOOD)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.strip_detected_apply_blood);
+//                textView.setTextColor(getColor(R.color.red3));
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.PLACE_FINGER_IN_THE_PROBE)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.place_finger_in_probe);
+//                textView.setTextColor(getColor(R.color.red3));
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.SENSOR_PROBE_NOT_CONNECTED)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.connect_sensor_probe_to_device);
+//                textView.setTextColor(getColor(R.color.red3));
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.ANALYSING)) {
+//            if (alertDialog != null) {
+//                textView.setText(R.string.analysing);
+//                textView.setTextColor(getColor(R.color.colorPrimaryDark));
+//            }
+//        }
+//        if (ezdxData.getStatus().equals(Status.STOPPED)) {
+//            Toast.makeText(this, R.string.test_stopped, Toast.LENGTH_SHORT).show();
+//        }
+//
+//        if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
+//            if (alertDialog != null) {
+//                alertDialog.dismiss();
+//            }
+//            Toast.makeText(this, getString(R.string.test_completed), Toast.LENGTH_SHORT).show();
+//            EzdxBT.stopCurrentTest();
+//                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
+//                     ‘stopCurrentTest()’ method to stop the test.
+//                     Otherwise callback will be called every second until stop is called.*/
+//        }
+//    }
 
-        // Status reading...
-        if (ezdxData.getStatus().equals(Status.STARTED)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.test_has_started);
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INITIALIZING)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.initializing);
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INSERT_TEST_STRIP)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.insert_test_strip);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.INSERT_VALID_TEST_STRIP)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.insert_valid_test_strip);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.STRIP_DETECTED_APPLY_BLOOD)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.strip_detected_apply_blood);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.PLACE_FINGER_IN_THE_PROBE)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.place_finger_in_probe);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.SENSOR_PROBE_NOT_CONNECTED)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.connect_sensor_probe_to_device);
-                textView.setTextColor(getColor(R.color.red3));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.ANALYSING)) {
-            if (alertDialog != null) {
-                textView.setText(R.string.analysing);
-                textView.setTextColor(getColor(R.color.colorPrimaryDark));
-            }
-        }
-        if (ezdxData.getStatus().equals(Status.STOPPED)) {
-            Toast.makeText(this, R.string.test_stopped, Toast.LENGTH_SHORT).show();
-        }
-
-        if (ezdxData.getStatus().equals(Status.TEST_COMPLETED)) {
-            if (alertDialog != null) {
-                alertDialog.dismiss();
-            }
-            Toast.makeText(this, getString(R.string.test_completed), Toast.LENGTH_SHORT).show();
-            EzdxBT.stopCurrentTest();
-                    /*Once the test gives the ‘TEST_COMPLETED’ state, fetch the result from the object and call the
-                     ‘stopCurrentTest()’ method to stop the test.
-                     Otherwise callback will be called every second until stop is called.*/
-        }
-    }
-
+/*
     @Override
     public void onHCDeviceInfo(HCDeviceData hcDeviceData) {
 
     }
+*/
 
+/*
     @Override
     public void onStatusChange(BluetoothStatus bluetoothStatus) {
 //        if (!bluetoothStatus.equals(BluetoothStatus.CONNECTED))
 //            Toast.makeText(this, "Please connect to Health cube device", Toast.LENGTH_SHORT).show();
     }
+*/
 
     private String getPrice(String price, int indexOf) {
         return price.substring(0, indexOf);
