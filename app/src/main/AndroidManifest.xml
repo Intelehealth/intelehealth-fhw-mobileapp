@@ -309,7 +309,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.smartcaredoc.app.fileprovider"
+            android:authorities="com.mysmartcaredoc.app.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
