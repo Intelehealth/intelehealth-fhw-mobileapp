@@ -55,4 +55,5 @@
     <string name="accept_webrtc">قبول</string>
     <string name="decline_webrtc">انخفاض</string>
     <string name="calling_webrtc">جارٍ الاتصال ..</string>
+    <string name="disconnected_webrtc">غير متصل!</string>
 </resources>
