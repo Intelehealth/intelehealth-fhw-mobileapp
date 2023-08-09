@@ -1248,14 +1248,14 @@ public class Node implements Serializable {
 
         startPicker.setMinValue(0);
         startPicker.setMaxValue(100);
-        endPicker.setMinValue(0);
+        endPicker.setMinValue(1);   // NAS-256
         endPicker.setMaxValue(100);
         rangeDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startPicker.setValue(startPicker.getValue());
                 endPicker.setValue(endPicker.getValue());
-                String durationString = startPicker.getValue() + " to " + endPicker.getValue();
+                String durationString = startPicker.getValue() + context.getString(R.string.to) + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
 
                 if (node.getLanguage().contains("_")) {
@@ -1857,14 +1857,14 @@ public class Node implements Serializable {
 
         startPicker.setMinValue(0);
         startPicker.setMaxValue(100);
-        endPicker.setMinValue(0);
+        endPicker.setMinValue(1);   // NAS-256
         endPicker.setMaxValue(100);
         rangeDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startPicker.setValue(startPicker.getValue());
                 endPicker.setValue(endPicker.getValue());
-                String durationString = startPicker.getValue() + " to " + endPicker.getValue();
+                String durationString = startPicker.getValue() + context.getString(R.string.to) + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
 
                 if (node.getLanguage().contains("_")) {
