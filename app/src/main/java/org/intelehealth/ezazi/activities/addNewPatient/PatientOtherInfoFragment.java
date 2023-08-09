@@ -85,9 +85,11 @@ public class PatientOtherInfoFragment extends Fragment {
     }
 
     View view;
-    AutoCompleteTextView mRiskFactorsTextView, mPrimaryDoctorTextView, mSecondaryDoctorTextView;
+    private AutoCompleteTextView mRiskFactorsTextView, mPrimaryDoctorTextView, mSecondaryDoctorTextView;
     Context mContext;
-    TextInputEditText mAdmissionDateTextView, mAdmissionTimeTextView, mTotalBirthEditText, mTotalMiscarriageEditText, mActiveLaborDiagnosedDateTextView, mActiveLaborDiagnosedTimeTextView, mMembraneRupturedDateTextView, mMembraneRupturedTimeTextView, etBedNumber, etHospitalOther;
+    TextInputEditText mAdmissionDateTextView, mAdmissionTimeTextView,
+            mTotalBirthEditText, mTotalMiscarriageEditText, mActiveLaborDiagnosedDateTextView,
+            mActiveLaborDiagnosedTimeTextView, mMembraneRupturedDateTextView, mMembraneRupturedTimeTextView, etBedNumber, etHospitalOther;
     MaterialButton btnBack, btnNext;
     TextView optionHospital, optionMaternity, optionOther;
     Intent i_privacy;
@@ -132,12 +134,17 @@ public class PatientOtherInfoFragment extends Fragment {
     //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
 //    TextView tvPersonalInfo, tvAddressInfo, tvOtherInfo;
     private TextView tvErrorAdmissionDate, tvErrorAdmissionTime, tvErrorTotalBirth, tvErrorTotalMiscarriage, tvErrorLabourOnset, tvErrorSacRupturedDate, tvErrorSacRupturedTime, tvErrorPrimaryDoctor, tvErrorSecondaryDoctor, tvErrorBedNumber, tvErrorLabourDiagnosedDate, tvErrorLabourDiagnosedTime, tvErrorRiskFactor, tvErrorHospital, tvErrorHospitalOther;
-    private MaterialCardView cardAdmissionDate, cardAdmissionTime, cardTotalBirth, cardTotalMiscarraige, cardSacRupturedDate, cardSacRupturedTime, cardPrimaryDoctor, cardSecondaryDoctor, cardBedNumber, cardDiagnosedDate, cardDiagnosedTime, dropdownRiskFactors, cardHospitalOther;
+    private MaterialCardView cardAdmissionDate, cardAdmissionTime, cardTotalBirth,
+            cardTotalMiscarraige, cardSacRupturedDate, cardSacRupturedTime,
+            cardPrimaryDoctor, cardSecondaryDoctor, cardBedNumber,
+            cardDiagnosedDate, cardDiagnosedTime, dropdownRiskFactors, cardOtherRisk, cardHospitalOther;
     private LinearLayout layoutErrorLabourOnset, layoutSacRuptured, cardOptions;
     private boolean isUnknownChecked;
     private PatientAttributesModel patientAttributesModel;
     private List<ErrorManagerModel> errorDetailsList;
     private NestedScrollView scrollviewOtherInfo;
+    private EditText etHighRisk;
+    private TextView tvErrorHighRisk;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -177,6 +184,9 @@ public class PatientOtherInfoFragment extends Fragment {
         mUnknownMembraneRupturedCheckBox = view.findViewById(R.id.mUnknownMembraneRupturedCheckBox);
         mRiskFactorsTextView = view.findViewById(R.id.autotv_risk_factors);
         dropdownRiskFactors = view.findViewById(R.id.dropdown_risk_factors);
+        etHighRisk = view.findViewById(R.id.etOtherRiskFactor);
+        tvErrorHighRisk = view.findViewById(R.id.tv_error_risk_factor_other);
+        cardOtherRisk = view.findViewById(R.id.cardOtherRiskFactor);
         etHospitalOther = view.findViewById(R.id.et_hospital_other);
         scrollviewOtherInfo = view.findViewById(R.id.scroll_other_info);
 
@@ -187,9 +197,6 @@ public class PatientOtherInfoFragment extends Fragment {
 
         handleOptionsForMaternity();
 
-        mRiskFactorsTextView.setOnClickListener(v -> {
-            // showRiskFactorsDialog();
-        });
         /*new*/
         ProviderDAO providerDAO = new ProviderDAO();
         try {
@@ -342,10 +349,10 @@ public class PatientOtherInfoFragment extends Fragment {
         mMembraneRupturedDateTextView.addTextChangedListener(new MyTextWatcher(mMembraneRupturedDateTextView));
         mMembraneRupturedTimeTextView.addTextChangedListener(new MyTextWatcher(mMembraneRupturedTimeTextView));
         mRiskFactorsTextView.addTextChangedListener(new MyTextWatcher(mRiskFactorsTextView));
-        //etHospitalOther.addTextChangedListener(new MyTextWatcher(etHospitalOther));
+        etHighRisk.addTextChangedListener(new MyTextWatcher(etHighRisk));
         mPrimaryDoctorTextView.addTextChangedListener(new MyTextWatcher(mPrimaryDoctorTextView));
         mSecondaryDoctorTextView.addTextChangedListener(new MyTextWatcher(mSecondaryDoctorTextView));
-        etBedNumber.addTextChangedListener(new MyTextWatcher(etBedNumber));
+//        etBedNumber.addTextChangedListener(new MyTextWatcher(etBedNumber));
 
         etHospitalOther.addTextChangedListener(new TextWatcher() {
             @Override
@@ -582,66 +589,8 @@ public class PatientOtherInfoFragment extends Fragment {
             selectTimeForAllParameters("membraneRupturedTime");
 
         });
-        etLayoutRiskFactors.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
-                dialog1.isSearchable(true);
-                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
-                List<String> items = Arrays.asList(itemsArray);
-
-                dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
-                dialog1.setListener(selectedItems -> {
-                    if (selectedItems.size() > 0) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 0; i < selectedItems.size(); i++) {
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-                            stringBuilder.append(selectedItems.get(i));
-
-                        }
-                        mRiskFactorsString = stringBuilder.toString();
-                        mRiskFactorsTextView.setText(mRiskFactorsString);
-                    }
-
-                });
-
-                assert getFragmentManager() != null;
-                dialog1.show(getFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
-            }
-        });
-        mRiskFactorsTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
-                dialog1.isSearchable(true);
-                final String[] itemsArray = getResources().getStringArray(R.array.risk_factors);
-//                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
-                List<String> items = Arrays.asList(itemsArray);
-
-                dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
-                dialog1.setListener(selectedItems -> {
-                    if (selectedItems.size() > 0) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 0; i < selectedItems.size(); i++) {
-                            if (selectedItems.get(i).equals(getString(R.string.other_risk))) {
-                                // visible other risk input text
-                            } else {
-                                if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-                                stringBuilder.append(selectedItems.get(i));
-                            }
-                        }
-                        mRiskFactorsString = stringBuilder.toString();
-                        mRiskFactorsTextView.setText(mRiskFactorsString);
-                    }
-
-                });
-
-                assert getFragmentManager() != null;
-                dialog1.show(getChildFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
-            }
-        });
+        etLayoutRiskFactors.setEndIconOnClickListener(v -> showRiskFactorSelectionDialog());
+        mRiskFactorsTextView.setOnClickListener(v -> showRiskFactorSelectionDialog());
         etLayoutPrimaryDoctor.setEndIconOnClickListener(v -> selectPrimaryDoctor());
         mPrimaryDoctorTextView.setOnClickListener(v -> selectPrimaryDoctor());
 
@@ -696,6 +645,36 @@ public class PatientOtherInfoFragment extends Fragment {
             generateUuid();
 
         }*/
+    }
+
+    private void showRiskFactorSelectionDialog() {
+        MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
+        dialog1.isSearchable(true);
+        final String[] itemsArray = getResources().getStringArray(R.array.risk_factors);
+//                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+        List<String> items = Arrays.asList(itemsArray);
+
+        dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
+        dialog1.setListener(selectedItems -> {
+            if (selectedItems.size() > 0) {
+                View otherRiskFactor = view.findViewById(R.id.llViewOtherRiskFactor);
+                StringBuilder stringBuilder = new StringBuilder();
+                otherRiskFactor.setVisibility(View.GONE);
+                for (int i = 0; i < selectedItems.size(); i++) {
+                    if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                    stringBuilder.append(selectedItems.get(i));
+                    if (selectedItems.get(i).equals(getString(R.string.other_risk))) {
+                        otherRiskFactor.setVisibility(View.VISIBLE);
+                    }
+                }
+                mRiskFactorsString = stringBuilder.toString();
+                mRiskFactorsTextView.setText(mRiskFactorsString);
+            }
+
+        });
+
+        assert getFragmentManager() != null;
+        dialog1.show(getChildFragmentManager(), MultiChoiceDialogFragment.class.getCanonicalName());
     }
 
     @Override
@@ -880,6 +859,12 @@ public class PatientOtherInfoFragment extends Fragment {
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //Risk factors
+            Log.e(TAG, "onPatientCreateClicked: Risk factor before => " + mRiskFactorsString);
+            if (mRiskFactorsString.contains(getString(R.string.other_risk))) {
+                mRiskFactorsString = mRiskFactorsString.replace(getString(R.string.other_risk), etHighRisk.getText().toString());
+                Log.e(TAG, "onPatientCreateClicked: Risk factor after => " + mRiskFactorsString);
+            }
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
@@ -929,7 +914,9 @@ public class PatientOtherInfoFragment extends Fragment {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute(PatientAttributesDTO.Columns.BED_NUMBER.value));
-            patientAttributesDTO.setValue(StringUtils.getValue(etBedNumber.getText().toString()));
+            if (!TextUtils.isEmpty(etBedNumber.getText().toString())) {
+                patientAttributesDTO.setValue(StringUtils.getValue(etBedNumber.getText().toString()));
+            } else patientAttributesDTO.setValue(StringUtils.getValue(AppConstants.NOT_APPLICABLE));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             /*new*/
@@ -1268,17 +1255,15 @@ public class PatientOtherInfoFragment extends Fragment {
 
         if (TextUtils.isEmpty(mRiskFactorsTextView.getText().toString())) {
             setFocus(mRiskFactorsTextView);
-       /*     mRiskFactorsTextView.requestFocus();
-
-            tvErrorRiskFactor.setVisibility(View.VISIBLE);
-            tvErrorRiskFactor.setText(getString(R.string.please_select_risk_factor));
-            dropdownRiskFactors.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
             errorDetailsList.add(new ErrorManagerModel(mRiskFactorsTextView, tvErrorRiskFactor, getString(R.string.please_select_risk_factor), dropdownRiskFactors));
-
+        } else if (etHighRisk.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etHighRisk.getText().toString())) {
+            setFocus(etHighRisk);
+            errorDetailsList.add(new ErrorManagerModel(etHighRisk, tvErrorHighRisk, getString(R.string.error_other_risk), cardOtherRisk));
         } else {
             tvErrorRiskFactor.setVisibility(View.GONE);
             dropdownRiskFactors.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
+
         Log.d(TAG, "areValidFields: mHospitalMaternityString : " + mHospitalMaternityString);
         if (mHospitalMaternityString.isEmpty()) {
             tvErrorHospital.setVisibility(View.VISIBLE);
@@ -1348,19 +1333,19 @@ public class PatientOtherInfoFragment extends Fragment {
             tvErrorSecondaryDoctor.setVisibility(View.GONE);
             cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
-        if (TextUtils.isEmpty(etBedNumber.getText().toString())) {
-            setFocus(etBedNumber);
-          /*  etBedNumber.requestFocus();
-
-            tvErrorBedNumber.setVisibility(View.VISIBLE);
-            tvErrorBedNumber.setText(getString(R.string.enter_bed_no));
-            cardBedNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
-            errorDetailsList.add(new ErrorManagerModel(etBedNumber, tvErrorBedNumber, getString(R.string.enter_bed_no), cardBedNumber));
-
-        } else {
-            tvErrorBedNumber.setVisibility(View.GONE);
-            cardBedNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
+//        if (TextUtils.isEmpty(etBedNumber.getText().toString())) {
+//            setFocus(etBedNumber);
+//          /*  etBedNumber.requestFocus();
+//
+//            tvErrorBedNumber.setVisibility(View.VISIBLE);
+//            tvErrorBedNumber.setText(getString(R.string.enter_bed_no));
+//            cardBedNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+//            errorDetailsList.add(new ErrorManagerModel(etBedNumber, tvErrorBedNumber, getString(R.string.enter_bed_no), cardBedNumber));
+//
+//        } else {
+//            tvErrorBedNumber.setVisibility(View.GONE);
+//            cardBedNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//        }
 
         if (errorDetailsList.size() > 0) {
             for (int i = 0; i < errorDetailsList.size(); i++) {
@@ -1432,7 +1417,9 @@ public class PatientOtherInfoFragment extends Fragment {
         patientAttributesModel.setSecondaryDoctor(mSecondaryDoctorTextView.getText().toString());
 
         patientAttributesModel.setRiskFactors(mRiskFactorsString);
-        patientAttributesModel.setBedNumber(etBedNumber.getText().toString());
+        if (!TextUtils.isEmpty(etBedNumber.getText().toString())) {
+            patientAttributesModel.setBedNumber(etBedNumber.getText().toString());
+        } else patientAttributesModel.setBedNumber(AppConstants.NOT_APPLICABLE);
         patientAttributesModel.setMembraneCheckboxChecked(mUnknownMembraneRupturedCheckBox.isChecked());
         if (mUnknownMembraneRupturedCheckBox.isChecked()) {
             mMembraneRupturedDate = "";
@@ -2021,27 +2008,24 @@ public class PatientOtherInfoFragment extends Fragment {
                         dropdownRiskFactors.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 
                     }
-                }/* else if (mHospitalMaternityString.equalsIgnoreCase("other")) {
-                    tvErrorHospital.setVisibility(View.GONE);
-                    tvErrorHospitalOther.setVisibility(View.GONE);
-                    val = etHospitalOther.getText().toString();
+                } else if (editText.getId() == R.id.etOtherRiskFactor) {
+                    tvErrorHighRisk.setVisibility(View.GONE);
+                    val = etHighRisk.getText().toString();
                     if (val.isEmpty()) {
-                        tvErrorHospital.setVisibility(View.GONE);
-                        tvErrorHospitalOther.setVisibility(View.VISIBLE);
-
-                        tvErrorHospitalOther.setText(getString(R.string.enter_hospital_other_error));
-                        cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
+                        tvErrorHighRisk.setVisibility(View.VISIBLE);
+                        tvErrorHighRisk.setText(getString(R.string.error_other_risk));
+                        cardOtherRisk.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));
                     } else {
-                        tvErrorHospital.setVisibility(View.GONE);
-                        tvErrorHospitalOther.setVisibility(View.GONE);
-                        cardHospitalOther.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-
+                        tvErrorHighRisk.setVisibility(View.GONE);
+                        cardOtherRisk.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
                     }
-                }*/ /*else if (mHospitalMaternityString.isEmpty()) {
+                }
+                /*else if (mHospitalMaternityString.isEmpty()) {
                     tvErrorHospital.setVisibility(View.VISIBLE);
                     tvErrorHospital.setText(getString(R.string.hospital_matermnity_val_txt));
 
-                } */ else if (this.editText.getId() == R.id.autotv_primary_doctor) {
+                } */
+                else if (this.editText.getId() == R.id.autotv_primary_doctor) {
                     if (val.isEmpty()) {
 
                         tvErrorPrimaryDoctor.setVisibility(View.VISIBLE);

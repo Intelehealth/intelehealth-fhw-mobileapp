@@ -119,6 +119,8 @@ public class AppConstants {
 
     public static final String REFRESH_SCREEN_EVENT = "REFRESH_SCREEN";
 
+    public static final String NOT_APPLICABLE = "NA";
+
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }

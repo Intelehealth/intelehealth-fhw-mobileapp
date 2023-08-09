@@ -60,4 +60,6 @@
     <string name="fill_required_fields">Please fill required fields</string>
     <string name="hint_search_common">Type to search here…</string>
     <string name="other_risk">Other High Risk Pregnancy*</string>
+    <string name="hint_other_risk">Enter other high risk</string>
+    <string name="error_other_risk">Require Other high risk pregnancy</string>
 </resources>

@@ -857,7 +857,7 @@
     <string name="missed_interval"><u>Missed</u></string>
     <string name="submitted_interval"><u>Submitted</u></string>
     <string name="add_patient_txt">Add Patient</string>
-    <string name="title_activity_epartogram">Partogram View</string>
+    <string name="title_activity_epartogram">WHO LCG View</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="live_birth">Live Birth</string>
@@ -940,7 +940,7 @@
     <string name="hospital_maternity">Hospital/Maternity?*</string>
     <string name="primary_doctor">Primary Doctor*</string>
     <string name="secondary_doctor">Secondary Doctor*</string>
-    <string name="bed_number">Bed Number*</string>
+    <string name="bed_number">Bed Number</string>
     <string name="hospital">Hospital</string>
     <string name="maternity">Maternity</string>
     <string name="lbl_sos">SOS</string>
