@@ -375,7 +375,7 @@ public class ProviderDAO {
         String query = "SELECT b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth, b.gender " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                 "WHERE a.patientuuid = b.uuid AND c.visituuid=a.uuid AND c.provider_uuid = ?" +
-                "GROUP BY a.uuid order by b.first_name ASC";
+                "GROUP BY a.uuid order by b.modified_date ASC";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, new String[]{providerUUID});
         Logger.logD(TAG, "Cursour count" + cursor.getCount());
