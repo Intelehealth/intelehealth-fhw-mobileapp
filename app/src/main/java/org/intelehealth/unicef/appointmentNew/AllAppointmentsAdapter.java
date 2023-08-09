@@ -185,6 +185,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             //holder.ivTime.setVisibility(View.VISIBLE);
             holder.tvDate.setVisibility(View.VISIBLE);
             holder.tvPrescRecStatus.setVisibility(View.GONE);
+            holder.rlPrescriptionBackground.setVisibility(View.GONE);
 
             String timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
             holder.tvDate.setText(timeText);

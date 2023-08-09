@@ -27,7 +27,8 @@ public class AppointmentSync {
     public static void getAppointments(Context context) {
         Log.v(TAG, "getAppointments");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        String selectedStartDate = simpleDateFormat.format(new Date());
+//        String selectedStartDate = simpleDateFormat.format(new Date());
+        String selectedStartDate = "01/01/1970"; // start date set as unix epoch date for fetching appointment data
         String selectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
 
         String baseurl = "https://" + new SessionManager(context).getServerUrl() + ":3004";

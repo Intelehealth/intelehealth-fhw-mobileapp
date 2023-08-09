@@ -47,7 +47,8 @@ public class AppointmentListingActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.appointment_listing_title);
         rvAppointments = findViewById(R.id.rvAppointments);
         rvAppointments.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        mSelectedStartDate = simpleDateFormat.format(new Date());
+//        mSelectedStartDate = simpleDateFormat.format(new Date());
+        mSelectedStartDate = "01/01/1970";
         mSelectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
         getAppointments();
         getSlots();

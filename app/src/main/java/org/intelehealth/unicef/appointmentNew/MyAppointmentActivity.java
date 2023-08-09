@@ -75,14 +75,13 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     }
 
     private void loaAllAppointments() {
+        String startDate = "01/01/1970";
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
             Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_START);
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                        new SessionManager(this).getLocationUuid())
+                .getSlotsAll(startDate, DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(), new SessionManager(this).getLocationUuid())
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
