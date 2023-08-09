@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.partogram;
 
+import androidx.annotation.NonNull;
+
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -36,6 +38,16 @@ public class PartogramConstants {
 //            ,
 //            "Initials"
     };
+
+    public enum Params {
+        SYSTOLIC_BP("Systolic BP"),
+        DIASTOLIC_BP("Diastolic BP");
+        public String value;
+
+        Params(String value) {
+            this.value = value;
+        }
+    }
 
     public static TreeMap<String, List<ParamInfo>> getSectionParamInfoMasterMap(int stage) {
         TreeMap<String, List<ParamInfo>> sectionParamInfoMap = new TreeMap<>();
@@ -158,14 +170,14 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[2]);
-        paramInfo.setParamName("Systolic BP");
+        paramInfo.setParamName(Params.SYSTOLIC_BP.value);
         paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setConceptUUID("5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         stringList.add(paramInfo);
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[2]);
-        paramInfo.setParamName("Diastolic BP");
+        paramInfo.setParamName(Params.DIASTOLIC_BP.value);
         paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setConceptUUID("5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         stringList.add(paramInfo);
@@ -181,10 +193,19 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[2]);
         paramInfo.setParamName("Urine protein");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"No Proteinuria", "Trace of Proteinuria (+)", "Trace of Proteinuria (++)", "Trace of Proteinuria (+++)"});
-        paramInfo.setValues(new String[]{"P", "P1", "P2", "P3"});
+        paramInfo.setOptions(new String[]{"No Proteinuria", "Trace of proteinuria", "Trace of Proteinuria (+)", "Trace of Proteinuria (++)", "Trace of Proteinuria (+++)"});
+        paramInfo.setValues(new String[]{"P-", "P", "P1", "P2", "P3"});
         paramInfo.setConceptUUID("9d3168a7-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
+
+//        paramInfo = new ParamInfo();
+//        paramInfo.setParamSectionName(SECTION_LIST[2]);
+//        paramInfo.setParamName("Urine Acetone");
+//        paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
+//        paramInfo.setOptions(new String[]{"No Acetonuria", "Trace of Acetonuria", "Trace of Acetonuria (+)", "Trace of Acetonuria (++)", "Trace of Acetonuria (+++)"});
+//        paramInfo.setValues(new String[]{"A-", "A", "A1", "A2", "A3"});
+//        paramInfo.setConceptUUID("9d3168a7-538f-11e6-9cfe-86f436325720");
+//        stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[2], stringList);//Woman
 

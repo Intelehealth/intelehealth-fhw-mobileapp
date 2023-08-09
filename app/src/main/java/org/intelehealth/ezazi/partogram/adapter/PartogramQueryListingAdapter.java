@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -222,8 +223,11 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         dataEditText.requestFocus();
                         return;
                     }
-
                 }
+
+
+                clearDiastolic(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), position);
+                validDiastolicBP(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), dataEditText);
             }
 
             @Override
@@ -235,6 +239,44 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
             }
         });
+    }
+
+    private void clearDiastolic(String input, int position, List<ParamInfo> paramInfos, int adapterPosition) {
+        ParamInfo info = paramInfos.get(position);
+        if (!TextUtils.isEmpty(input) && info.getParamName().equals(PartogramConstants.Params.SYSTOLIC_BP.value)) {
+            String dBp = paramInfos.get(position + 1).getCapturedValue();
+            if (!TextUtils.isEmpty(dBp)) {
+                int systolic = Integer.parseInt(input);
+                int diastolic = Integer.parseInt(dBp);
+                if (systolic < diastolic) {
+                    paramInfos.get(position + 1).setCapturedValue("");
+                    notifyDataSetChanged();
+                }
+            }
+        }
+//        else if (TextUtils.isEmpty(input) && info.getParamName().equals(PartogramConstants.Params.SYSTOLIC_BP.value)) {
+//            paramInfos.get(position + 1).setCapturedValue("");
+//            notifyDataSetChanged();
+//        }
+    }
+
+    private void validDiastolicBP(String input, int position, List<ParamInfo> paramInfos, EditText editText) {
+        ParamInfo info = paramInfos.get(position);
+        if (!TextUtils.isEmpty(input) && info.getParamName().equals(PartogramConstants.Params.DIASTOLIC_BP.value)) {
+            if (!TextUtils.isEmpty(paramInfos.get(position - 1).getCapturedValue())) {
+                int systolic = Integer.parseInt(paramInfos.get(position - 1).getCapturedValue());
+                int diastolic = Integer.parseInt(input);
+                if (systolic < diastolic) {
+                    Toast.makeText(mContext, "Diastolic BP must be less than Systolic BP", Toast.LENGTH_LONG).show();
+                    editText.setText("");
+                    editText.requestFocus();
+                }
+            } else {
+                editText.setText("");
+                editText.requestFocus();
+                Toast.makeText(mContext, "Enter Systolic BP before Diastolic BP", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void showListOptions(final View tempView, final int position, final int positionChild) {
