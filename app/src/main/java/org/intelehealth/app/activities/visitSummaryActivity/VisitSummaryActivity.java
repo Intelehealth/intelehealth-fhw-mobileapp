@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
@@ -31,7 +29,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.print.PdfPrint;
 import android.print.PrintAttributes;
@@ -45,7 +42,6 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -105,7 +101,6 @@ import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
@@ -141,17 +136,9 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.ScheduleListingActivity;
-import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.appointment.dao.AppointmentDAO;
-import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
-import org.intelehealth.app.appointment.model.CancelRequest;
-import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -167,14 +154,8 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
-import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
-import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
-import org.intelehealth.app.networkApiCalls.ApiClient;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -182,26 +163,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -211,9 +173,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity /*implements PrinterObserver*/ {
 
@@ -2037,17 +1996,21 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         // follow up re-schedule - start
         followupRescheduleBtn.setOnClickListener(v -> {
+            // fetch only remark from the txtview (only if it exists).
             String fuData = followUpDateTextView.getText().toString().trim();
             String followupDate = "";
+
             if (fuData.contains("Remark")) {    // ie. 08-08-2023, Remark: abc
                 followupDate = fuData.substring(0, fuData.indexOf(","));
+                String remark = fuData.substring(fuData.indexOf(","));
+                showFollowupRescheduleDialog(remark);
+                Log.d(TAG, "reschedule btn: " + remark);
             }
             else {  // ie. 08-08-2023
-                followupDate = fuData;
+              //  followupDate = fuData;
+                showFollowupRescheduleDialog(null);
             }
             Log.d(TAG, "reschedule btn: " + followupDate);
-
-            showFollowupRescheduleDialog();
 
 
             //  body = body + getString(R.string.visit_summary_follow_up_date) + ":" + followUpDateTextView.getText().toString() + "\n";
@@ -2055,15 +2018,15 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         // follow up re-schedule - end
     }
 
-    private void showFollowupRescheduleDialog() {
+    private void showFollowupRescheduleDialog(String remark) {
         final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
         final LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_reschedule_followup, null);
         TextInputEditText et_date = convertView.findViewById(R.id.et_enter_followup_date);
         TextInputEditText et_reason = convertView.findViewById(R.id.et_enter_reason);
 
-        dialog.setPositiveButton("Update", null);
-        dialog.setNegativeButton("Cancel", null);
+        dialog.setPositiveButton(context.getString(R.string.update), null);
+        dialog.setNegativeButton(context.getString(R.string.cancel), null);
 
         dialog.setView(convertView);
         AlertDialog alertDialog = dialog.show();
@@ -2078,23 +2041,43 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        positiveButton.setOnClickListener(v -> {
+        et_date.setOnClickListener(v -> {
+        // show calendar picker and set to editText.
+        });
+
+        positiveButton.setOnClickListener(v -> {    // Update button.
             if (et_date.getText().toString().trim().isEmpty() && et_reason.getText().toString().trim().isEmpty()) {
                 et_date.requestFocus();
                 et_date.setError("This field mandatory");
                 et_reason.setError("This field mandatory");
             }
-            else {
+            else {  // ie. date is not empty ie. user has selected the date from the date picker.
                 et_date.setError(null);
                 et_reason.setError(null);
+
+                String followupValue = et_date.getText().toString().trim();
+                if (remark != null)
+                    followupValue =  followupValue + remark;    // ie. 08-08-2023, Remark: abc
+
+                Log.d(TAG, "showFollowupRescheduleDialog: " + followupValue);
+                updateIntoDb_PushFollowupValues(followupValue);
+                alertDialog.dismiss();
             }
         });
 
-        negativeButton.setOnClickListener(v -> {
+        negativeButton.setOnClickListener(v -> {    // Cancel button.
             alertDialog.dismiss();
         });
 
         IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
+    }
+
+    private void updateIntoDb_PushFollowupValues(String followupValue) {
+        // 1. update value in local db ie. update the value column for the follow up obs
+        // 2. just update the date and keep remark as it is and set sync = false for this entry
+        // 3. Also, insert new row for this follow up in db with the REASON value and set sync = false
+        // 4. Now, once data inserted in db, sync() so that this updated value be pushed to remote.
+
     }
 
     private void fetchVisitIdAfterSomeTime() {
