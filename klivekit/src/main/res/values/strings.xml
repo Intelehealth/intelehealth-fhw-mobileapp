@@ -60,6 +60,7 @@
     <string name="choose_documents">Choose Documents</string>
     <string name="read">Read</string>
     <string name="sent">Sent</string>
+    <string name="msg_delivered">Delivered</string>
     <string name="sending" translatable="false">Sending</string>
     <string name="max_5_image">Maximum 5 Images you can send per one case</string>
     <string name="max_2_image">Maximum 2 Images you can send per one case</string>

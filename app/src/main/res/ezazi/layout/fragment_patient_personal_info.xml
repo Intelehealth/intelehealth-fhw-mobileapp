@@ -190,6 +190,36 @@
                     android:visibility="gone" />
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardGender"
+                    style="@style/Theme.EZazi.Material.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/screen_container_padding">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Theme.EZazi.Input.Add.Patient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/list_container_padding"
+                        android:enabled="false"
+                        android:hint="@string/gender">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etGender"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:nextFocusForward="@id/et_dob"
+                            android:singleLine="true"
+                            android:text="@string/gender_female"
+                            android:textSize="@dimen/input_inner_size" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_dob"
                     style="@style/Theme.EZazi.Material.CardView"
                     android:layout_width="match_parent"

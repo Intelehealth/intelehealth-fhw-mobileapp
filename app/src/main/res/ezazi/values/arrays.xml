@@ -1,18 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="risk_factors">
         <item>None</item>
-        <item>Under age 20</item>
-        <item>Women over age 35</item>
-        <item>Diabetes</item>
-        <item>Obesity</item>
-        <item>Underweight</item>
-        <item>High blood pressure</item>
-        <item>PCOS</item>
-        <item>Kidney disease</item>
-        <item>Thyroid disease</item>
-        <item>Asthma</item>
-        <item>Uterine fibroids</item>
+        <item>Previous LSCS (History of Cesarean Section)</item>
+        <item>Young Primigravida (Age less than 20 Years)</item>
+        <item>Elderly Gravida (Age more that 35 Years)</item>
+        <item>Grand Multipara (&gt; 4 Livebirths)</item>
+        <item>History of Abortions (Bad Obstetric History)</item>
+        <item>History of Stillbirth (Bad Obstetric History)</item>
+        <item>History of Neonatal Deaths (Bad Obstetric History)</item>
+        <item>History of Newborn with Congenital Defect (Bad Obstetric History)</item>
+        <item>History of Obstructed Labour (Bad Obstetric History)</item>
+        <item>History of Premature Birth (Bad Obstetric History)</item>
+        <item>History of Newborn with Low Birth Weight (&lt; 2500 g)</item>
+        <item>History of Newborn with Excess Birth Weight (&gt; 4500 g)</item>
+        <item>History of Treatment for Infertility</item>
+        <item>History of Surgery on Reproductive Tract</item>
+        <item>History of Spinal Deformities (Scoliosis/Kyphosis/Polio)</item>
+        <item>History of Admission for High BP in the previous pregnancy</item>
+        <item>History of Thalassemia</item>
+        <item>Short Stature (Height &lt; 145 cm)</item>
+        <item>Pregnancy Induced Hypertension (PIH)(Hihg BP in Pregnancy)</item>
+        <item>Pre-eclampsia</item>
+        <item>Severe Pre-eclampsia</item>
+        <item>Eclampsia (Pre-eclamsic Toxemia)</item>
+        <item>Severe Anemia (Hb &lt; 7 g/dl)</item>
+        <item>Rh Negative Pregnancy</item>
+        <item>Gestational Diabetes Mellitus (GDM)</item>
+        <item>Hypothyroidism (Pregnancy/Systemic Disease)</item>
+        <item>Syphilis</item>
+        <item>Twin (Multiple) Pregnancy</item>
+        <item>Placenta Previa (Low lying placenta)</item>
+        <item>Intra-Uterine Growth Retardation (IUGR)</item>
+        <item>HIV (AIDS) Infection</item>
+        <item>Hepatitis B Infection</item>
+        <item>Malpresentation</item>
+        <item>Diabetes Mellitus (Systemic Disease)</item>
+        <item>Asthma (Systemic Disease)</item>
+        <item>Epilepsy (Seizure Disorder/Convulsions)(Systemic Disease)</item>
+        <item>Tuberculosis (Systemic Disease)</item>
+        <item>Hypertension (High BP) (Systemic Disease)</item>
+        <item>Heart Disease (Systemic Disease)</item>
+        <item>@string/other_risk</item>
     </string-array>
 
     <string-array name="months">

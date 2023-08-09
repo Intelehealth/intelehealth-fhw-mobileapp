@@ -19,23 +19,10 @@ public class PatientQueryBuilder extends QueryBuilder {
     public static final String TAG = "PatientQueryBuilder";
 
     public String searchQuery(String keyword) {
-//        SELECT P.uuid, P.openmrs_id, P.first_name, P.last_name, P.middle_name, P.date_of_birth,
-//                CASE WHEN P.middle_name IS NULL THEN P.first_name || ' ' || P.last_name
-//        ELSE P.first_name || ' ' || P.middle_name || ' ' || P.last_name END fullName,
-//        (SELECT CASE WHEN O.value LIKE '%discharge%'  THEN 'DAMA' WHEN O.value LIKE '%Refer%'  THEN 'RTOH' ELSE O.value END outcome
-//        FROM tbl_encounter E, tbl_obs O
-//        WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid AND O.conceptuuid IN ('23601d71-50e6-483f-968d-aeef3031346d', '9414cc17-1f97-4a27-8066-17591c11e513') LIMIT 1)as birthStatus,
-//        (SELECT CASE WHEN U.name LIKE '%Stage1%'  THEN 'Stage1' WHEN U.name LIKE '%Stage2%'  THEN 'Stage2' ELSE U.name END Stage
-//        FROM tbl_encounter E, tbl_uuid_dictionary U WHERE E.visituuid =V.uuid  and E.voided = '0'  and U.uuid = E.encounter_type_uuid
-//        ORDER BY U.name DESC LIMIT 1)  as stage, CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber,
-//                CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo  FROM tbl_patient P
-//        LEFT OUTER JOIN tbl_visit V ON P.uuid = V.patientuuid
-//        LEFT OUTER JOIN tbl_patient_attribute PA ON PA.patientuuid = P.uuid
-//        AND PA.person_attribute_type_uuid IN ((SELECT uuid FROM tbl_patient_attribute_master WHERE name = 'Bed Number'), '14d4f066-15f5-102d-96e4-000c29c2a5d7')
-//        WHERE LOWER (fullName)  LIKE LOWER('%abc%') OR P.openmrs_id LIKE LOWER('%ABC%')
-//        COLLATE NOCASE GROUP BY P.uuid  ORDER BY P.first_name ASC
         String query = selectQuery()
-                .where(" LOWER(fullName) LIKE LOWER('%" + keyword + "%') " + "OR LOWER(P.openmrs_id) LIKE LOWER('%" + keyword + "%') ")
+                .where(" LOWER(fullName) LIKE LOWER('%" + keyword + "%') "
+                        + "OR LOWER(P.openmrs_id) LIKE LOWER('%" + keyword + "%') "
+                        + "OR LOWER(birthStatus) LIKE LOWER('%" + keyword + "%') ")
                 .groupBy("P.uuid")
                 .orderBy("P.first_name")
                 .orderIn("ASC")
@@ -57,25 +44,6 @@ public class PatientQueryBuilder extends QueryBuilder {
     }
 
     private QueryBuilder selectQuery() {
-//        SELECT P.uuid, P.openmrs_id, P.first_name, P.last_name, P.middle_name, P.date_of_birth,
-//                (SELECT  CASE
-//        WHEN O.value LIKE '%discharge%'  THEN 'DAMA'
-//        WHEN O.value LIKE '%Refer%'  THEN 'RTOH' ELSE O.value
-//        END outcome
-//        FROM tbl_encounter E, tbl_obs O
-//        WHERE E.visituuid =V.uuid  and E.voided = '0'  and O.encounteruuid = E.uuid AND O.conceptuuid IN ('23601d71-50e6-483f-968d-aeef3031346d', '9414cc17-1f97-4a27-8066-17591c11e513') LIMIT 1)  as birthStatus,
-//        (SELECT CASE
-//        WHEN U.name LIKE '%Stage1%'  THEN 'Stage1'
-//        WHEN U.name LIKE '%Stage2%'  THEN 'Stage2' ELSE U.name
-//        END Stage FROM tbl_encounter E, tbl_uuid_dictionary U
-//        WHERE E.visituuid =V.uuid  and E.voided = '0'  and U.uuid = E.encounter_type_uuid  ORDER BY U.name DESC LIMIT 1)  as stage,
-//        CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber,
-//                CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo
-//        FROM  tbl_patient P
-//        LEFT OUTER JOIN tbl_visit  V ON P.uuid = V.patientuuid
-//        LEFT OUTER JOIN tbl_patient_attribute PA ON PA.patientuuid = P.uuid
-//        AND PA.person_attribute_type_uuid IN ((SELECT uuid FROM tbl_patient_attribute_master  WHERE name = 'Bed Number'), '14d4f066-15f5-102d-96e4-000c29c2a5d7')
-//        GROUP BY P.uuid  ORDER BY P.first_name ASC
         return select("P.uuid, P.openmrs_id, P.first_name, P.last_name, P.middle_name, P.date_of_birth, " +
                 "CASE WHEN P.middle_name IS NULL THEN P.first_name || ' ' || P.last_name " +
                 "ELSE P.first_name || ' ' || P.middle_name || ' ' || P.last_name " +
@@ -89,7 +57,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "FROM tbl_encounter E, tbl_obs O " +
                 "WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid " +
                 "AND O.conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', '"
-                + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME + "') LIMIT 1)as birthStatus, " +
+                + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME + "') LIMIT 1) as birthStatus, " +
                 "(SELECT CASE " +
                 "WHEN U.name LIKE '%Stage1%'  THEN 'Stage1' " +
                 "WHEN U.name LIKE '%Stage2%'  THEN 'Stage2' ELSE U.name " +

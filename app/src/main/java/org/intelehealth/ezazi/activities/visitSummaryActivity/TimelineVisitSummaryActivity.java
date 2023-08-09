@@ -549,19 +549,21 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
     private void checkForOutOfTime(String outcome) {
+        MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
         boolean isOutOfTime = new ObsDAO().checkIsOutOfTimeEncounter(isVCEPresent);
         if (isOutOfTime) {
-            MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
             button.setTag(1);
             button.setVisibility(View.VISIBLE);
             button.setTag(R.id.btnAddOutOfTimeReason, outcome);
             if (!outcome.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
                 button.setTag(2);
-                button.setText(getString(R.string.update_out_of_time_reason));
+                button.setText(getString(R.string.view_more));
                 updateOutOfTimeOutcomeText(outcome);
             }
             button.setOnClickListener(outOfTimeClickListener);
-            button.setVisibility(hwHasEditAccess ? View.VISIBLE : View.GONE);
+            button.setVisibility(View.VISIBLE);
+        } else {
+            button.setVisibility(View.GONE);
         }
     }
 
@@ -591,26 +593,40 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         DialogOutOfTimeEzaziBinding binding = DialogOutOfTimeEzaziBinding.inflate(getLayoutInflater(), null, true);
         binding.etOutOfTimeReason.setText(content);
         binding.etOutOfTimeReasonLayout.setMultilineInputEndIconGravity();
-        showCustomViewDialog(R.string.time_out_reason,
-                isUpdateRequest == 2 ? R.string.update_out_of_time_reason : R.string.add_out_of_time_reason,
-                R.string.cancel, binding.getRoot(), () -> {
-                    String reason = binding.etOutOfTimeReason.getText().toString();
-                    if (reason.length() > 0) {
-                        int updated = new ObsDAO().updateOutOfTimeEncounterReason(reason, isVCEPresent, visitUuid);
-                        if (updated > 0) {
-                            Toast.makeText(context, context.getString(R.string.time_out_info_submitted_successfully), Toast.LENGTH_SHORT).show();
+        binding.etOutOfTimeReason.setEnabled(hwHasEditAccess);
+        int positiveLbl = hwHasEditAccess
+                ? isUpdateRequest == 2 ? R.string.update_out_of_time_reason : R.string.add_out_of_time_reason
+                : R.string.okay;
+
+        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this)
+                .title(R.string.time_out_reason)
+                .positiveButtonLabel(positiveLbl)
+                .negativeButtonLabel(R.string.cancel)
+                .hideNegativeButton(!hwHasEditAccess)
+                .view(binding.getRoot())
+                .build();
+
+        if (hwHasEditAccess) {
+            dialog.setListener(() -> {
+                String reason = binding.etOutOfTimeReason.getText().toString();
+                if (reason.length() > 0) {
+                    int updated = new ObsDAO().updateOutOfTimeEncounterReason(reason, isVCEPresent, visitUuid);
+                    if (updated > 0) {
+                        Toast.makeText(context, context.getString(R.string.time_out_info_submitted_successfully), Toast.LENGTH_SHORT).show();
 //                            outcomeTV.setText(getString(R.string.lbl_outcome, reason));
-                            updateOutOfTimeOutcomeText(reason);
-                            updateButtonText(R.string.update_out_of_time_reason, 2, reason);
-                            SyncUtils syncUtils = new SyncUtils();
-                            syncUtils.syncBackground();
-                        } else {
-                            Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                        }
+                        updateOutOfTimeOutcomeText(reason);
+                        updateButtonText(R.string.view_more, 2, reason);
+                        SyncUtils syncUtils = new SyncUtils();
+                        syncUtils.syncBackground();
                     } else {
-                        Toast.makeText(context, "Time out reason should not be empty", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
-                });
+                } else {
+                    Toast.makeText(context, "Time out reason should not be empty", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void updateButtonText(int label, int tag, String content) {
@@ -761,7 +777,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                                       CustomViewDialogFragment.OnConfirmationActionListener listener) {
         CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this)
                 .title(title)
-                .positiveButtonLabel(R.string.yes)
+                .positiveButtonLabel(positiveLbl)
+                .negativeButtonLabel(negLbl)
                 .view(view)
                 .build();
 

@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
+import static org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -419,7 +421,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     }
 
     private void updateEditIconVisibility(MaterialButton editButton) {
+        Log.e(TAG, "updateEditIconVisibility: isVCEPresent=>" + isVCEPresent);
         if (!nurseHasEditAccess) {
+            editButton.setVisibility(View.GONE);
+        } else if (!isVCEPresent.equalsIgnoreCase("")) {
             editButton.setVisibility(View.GONE);
         }
     }

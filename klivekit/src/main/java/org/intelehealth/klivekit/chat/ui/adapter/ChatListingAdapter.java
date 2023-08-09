@@ -3,7 +3,6 @@ package org.intelehealth.klivekit.chat.ui.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,11 +17,7 @@ import org.intelehealth.klivekit.chat.model.ItemHeader;
 import org.intelehealth.klivekit.chat.model.MessageStatus;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.utils.Constants;
-import org.intelehealth.klivekit.utils.DateTimeUtils;
-import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class ChatListingAdapter extends DateHeaderAdapter {
@@ -189,13 +184,16 @@ public class ChatListingAdapter extends DateHeaderAdapter {
                 statusTextView.setVisibility(View.VISIBLE);
                 if (status.isRead()) {
                     statusTextView.setText(mContext.getString(R.string.read));
-                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_done_status_icon, 0, 0, 0);
+                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_status_msg_read, 0, 0, 0);
+                } else if (status.isDelivered()) {
+                    statusTextView.setText(mContext.getString(R.string.msg_delivered));
+                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_status_msg_delivered, 0, 0, 0);
                 } else if (status.isSent()) {
                     statusTextView.setText(mContext.getString(R.string.sent));
-                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.read_status_icon, 0, 0, 0);
+                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_status_msg_sent, 0, 0, 0);
                 } else {
                     statusTextView.setText(mContext.getString(R.string.sending));
-                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sending_status, 0, 0, 0);
+                    statusTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_status_msg_sending, 0, 0, 0);
                 }
             } else statusTextView.setVisibility(View.GONE);
         }
@@ -208,6 +206,20 @@ public class ChatListingAdapter extends DateHeaderAdapter {
 //                if (id == chatMessage.getId()) {
                 chatMessage.setIsRead(true);
                 chatMessage.setMessageStatus(MessageStatus.READ.getValue());
+                notifyItemChanged(i);
+//                    break;
+//                }
+            }
+        }
+    }
+
+    public void markMessageAsDelivered(int id) {
+        for (int i = 0; i < mItemList.size(); i++) {
+            if (mItemList.get(i) instanceof ChatMessage) {
+                ChatMessage chatMessage = (ChatMessage) mItemList.get(i);
+//                if (id == chatMessage.getId()) {
+                chatMessage.setIsRead(false);
+                chatMessage.setMessageStatus(MessageStatus.DELIVERED.getValue());
                 notifyItemChanged(i);
 //                    break;
 //                }

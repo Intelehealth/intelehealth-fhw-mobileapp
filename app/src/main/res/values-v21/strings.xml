@@ -3,7 +3,7 @@
     <string name="search_visits_hint">Search visits...</string>
     <string name="daughter_wife_of">Daughter/Wife of</string>
     <string name="total_birth_count_val_txt">Please enter the total birth count</string>
-    <string name="total_miscarriage_count_val_txt">Please enter the total miscarriage count</string>
+    <string name="total_miscarriage_count_val_txt">Please enter the total abortion count</string>
     <string name="labor_onset_val_txt">"Please select labor onset "</string>
     <string name="active_labor_diagnosed_date_val_txt">Select the active labor diagnosed date</string>
     <string name="active_labor_diagnosed_time_val_txt">Select the active labor diagnosed time</string>

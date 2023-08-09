@@ -616,7 +616,8 @@ public class PatientOtherInfoFragment extends Fragment {
 
                 MultiChoiceDialogFragment<String> dialog1 = new MultiChoiceDialogFragment.Builder<String>(mContext).title(R.string.select_risk_factors).positiveButtonLabel(R.string.save_button).build();
                 dialog1.isSearchable(true);
-                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
+                final String[] itemsArray = getResources().getStringArray(R.array.risk_factors);
+//                final String[] itemsArray = {"None", "under age 20", "Women over age 35", "Diabetes", "Obesity", "Underweight", "High blood pressure", "PCOS", "Kidney disease", "Thyroid disease", "Asthma", "Uterine fibroids"};
                 List<String> items = Arrays.asList(itemsArray);
 
                 dialog1.setAdapter(new RiskFactorMultiChoiceAdapter(mContext, new ArrayList<>(items)));
@@ -624,9 +625,12 @@ public class PatientOtherInfoFragment extends Fragment {
                     if (selectedItems.size() > 0) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < selectedItems.size(); i++) {
-                            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-                            stringBuilder.append(selectedItems.get(i));
-
+                            if (selectedItems.get(i).equals(getString(R.string.other_risk))) {
+                                // visible other risk input text
+                            } else {
+                                if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                                stringBuilder.append(selectedItems.get(i));
+                            }
                         }
                         mRiskFactorsString = stringBuilder.toString();
                         mRiskFactorsTextView.setText(mRiskFactorsString);

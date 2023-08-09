@@ -7,7 +7,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.CountDownTimer
 import android.telephony.TelephonyManager
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.github.ajalt.timberkt.Timber
 import org.intelehealth.klivekit.utils.AwsS3Utils
 import org.intelehealth.klivekit.utils.extensions.hide
 
@@ -36,6 +38,7 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
 
     private val mutableCallTimeUpData = MutableLiveData(false)
     val callTimeUpStatus = mutableCallTimeUpData.hide()
+
 
     private val callEndBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -122,6 +125,7 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
 
     private val callTimeoutTimer = object : CountDownTimer(CALL_PICKUP_EXP_TIME, 1000) {
         override fun onTick(millisUntilFinished: Long) {}
+
         override fun onFinish() {
             mutableCallTimeUpData.postValue(true)
         }

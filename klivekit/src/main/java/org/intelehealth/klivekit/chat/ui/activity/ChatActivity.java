@@ -147,12 +147,25 @@ public class ChatActivity extends AppCompatActivity {
             case SocketManager.EVENT_UPDATE_MESSAGE:
                 onUpdateMessageEvent(args);
                 break;
+            case SocketManager.EVENT_MSG_DELIVERED:
+                onMessageDelivered(args[0]);
+                break;
             case SocketManager.EVENT_CALL:
                 onCallEvent(args);
                 break;
             default:
                 Timber.tag(TAG).d("Event=>" + event);
                 break;
+        }
+    }
+
+    private void onMessageDelivered(Object args) {
+        try {
+            int id = new JSONArray(args)
+                    .getJSONArray(0).getJSONObject(0).getInt("id");
+            runOnUiThread(() -> mChatListingAdapter.markMessageAsDelivered(id));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -941,7 +941,7 @@ public class PatientPersonalInfoFragment extends Fragment {
             patientDTO.setLastname(mLastName.getText().toString());
             patientDTO.setPhonenumber(mMobileNumber.getText().toString());
             patientDTO.setDateofbirth(tvDobForDb.getText().toString());
-
+            patientDTO.setGender(((EditText) view.findViewById(R.id.etGender)).getText().toString());
             // Bundle data
             Bundle bundle = new Bundle();
             bundle.putSerializable("patientDTO", (Serializable) patientDTO);

@@ -838,7 +838,7 @@
     <string name="search_visits_hint">Search cases...</string>
     <string name="daughter_wife_of">Daughter/Wife of</string>
     <string name="total_birth_count_val_txt">Please enter the total birth count</string>
-    <string name="total_miscarriage_count_val_txt">Please enter the total miscarriage count</string>
+    <string name="total_miscarriage_count_val_txt">Please enter the total abortion count</string>
     <string name="labor_onset_val_txt">"Please select labor onset "</string>
     <string name="active_labor_diagnosed_date_val_txt">Select the active labor diagnosed date</string>
     <string name="active_labor_diagnosed_time_val_txt">Select the active labor diagnosed time</string>
@@ -851,6 +851,7 @@
     <string name="end2StageButton">End Second Stage</string>
     <string name="add_out_of_time_reason">Add Reason</string>
     <string name="update_out_of_time_reason">Update Reason</string>
+    <string name="view_more">View More</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
     <string name="click_to_enter"><u>Click to Enter</u></string>
     <string name="missed_interval"><u>Missed</u></string>
@@ -929,7 +930,7 @@
     <string name="time">Time*</string>
     <string name="parity">Parity*</string>
     <string name="total_birth">Total Birth</string>
-    <string name="total_miscarriage">Total Miscarriage</string>
+    <string name="total_miscarriage">Total Abortion</string>
     <string name="labor_onset">Labor Onset*</string>
     <string name="spontaneous">Spontaneous</string>
     <string name="induced">Induced</string>
