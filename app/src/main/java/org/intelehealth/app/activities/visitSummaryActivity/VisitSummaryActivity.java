@@ -87,6 +87,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -388,7 +389,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     DownloadPrescriptionService downloadPrescriptionService;
     private TextView additionalImageDownloadText;
-    private TextView physcialExaminationDownloadText;
+    private TextView physcialExaminationDownloadText, followupRescheduleBtn;
 
     ImageView ivPrescription;
     private String hasPrescription = "";
@@ -786,6 +787,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         requestedTestsCard = findViewById(R.id.cardView_tests);
         additionalCommentsCard = findViewById(R.id.cardView_additional_comments);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
+        followupRescheduleBtn = findViewById(R.id.followupRescheduleBtn);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
@@ -2032,6 +2034,67 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         generateBillBtn.setOnClickListener(v -> {
             generateBill();
         });
+
+        // follow up re-schedule - start
+        followupRescheduleBtn.setOnClickListener(v -> {
+            String fuData = followUpDateTextView.getText().toString().trim();
+            String followupDate = "";
+            if (fuData.contains("Remark")) {    // ie. 08-08-2023, Remark: abc
+                followupDate = fuData.substring(0, fuData.indexOf(","));
+            }
+            else {  // ie. 08-08-2023
+                followupDate = fuData;
+            }
+            Log.d(TAG, "reschedule btn: " + followupDate);
+
+            showFollowupRescheduleDialog();
+
+
+            //  body = body + getString(R.string.visit_summary_follow_up_date) + ":" + followUpDateTextView.getText().toString() + "\n";
+        });
+        // follow up re-schedule - end
+    }
+
+    private void showFollowupRescheduleDialog() {
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+        final LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_reschedule_followup, null);
+        TextInputEditText et_date = convertView.findViewById(R.id.et_enter_followup_date);
+        TextInputEditText et_reason = convertView.findViewById(R.id.et_enter_reason);
+
+        dialog.setPositiveButton("Update", null);
+        dialog.setNegativeButton("Cancel", null);
+
+        dialog.setView(convertView);
+        AlertDialog alertDialog = dialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
+
+        // Get the alert dialog buttons reference
+        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        // Change the alert dialog buttons text and background color
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        positiveButton.setOnClickListener(v -> {
+            if (et_date.getText().toString().trim().isEmpty() && et_reason.getText().toString().trim().isEmpty()) {
+                et_date.requestFocus();
+                et_date.setError("This field mandatory");
+                et_reason.setError("This field mandatory");
+            }
+            else {
+                et_date.setError(null);
+                et_reason.setError(null);
+            }
+        });
+
+        negativeButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+
+        IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
     }
 
     private void fetchVisitIdAfterSomeTime() {
@@ -3996,10 +4059,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 } else {
                     followUpDate = value;
                 }
+
                 if (followUpDateCard.getVisibility() != View.VISIBLE) {
                     followUpDateCard.setVisibility(View.VISIBLE);
                 }
+
                 followUpDateTextView.setText(followUpDate);
+
+                if (followUpDateCard.getVisibility() == View.VISIBLE) {
+                    String fuData = followUpDateTextView.getText().toString().trim();
+                    if (!fuData.isEmpty() && (fuData.contains(",") || !fuData.contains("Remark"))) {    // ie. date is present and this can we changed too.
+                        followupRescheduleBtn.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        followupRescheduleBtn.setVisibility(View.GONE);
+
+                }
+
                 //checkForDoctor();
                 break;
             }

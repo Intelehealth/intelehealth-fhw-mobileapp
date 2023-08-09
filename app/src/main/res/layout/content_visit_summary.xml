@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_marginTop="-1500dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary">
@@ -1214,6 +1215,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:visibility="gone"
+            tools:visibility="visible"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -1235,6 +1237,7 @@
                     android:textSize="@dimen/card_content_text_size" />
 
                 <TableLayout
+                    android:id="@+id/tb_followup_txtv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textView_heading_follow_up_date"
@@ -1252,10 +1255,30 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
+                            tools:text="08-08-2023, Remark: Bring doc."
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
                 </TableLayout>
+
+                <TextView
+                    android:id="@+id/followupRescheduleBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/twelve"
+                    android:layout_below="@+id/tb_followup_txtv"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="16dip"
+                    android:background="@drawable/red_button_rounded"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="@string/reschedule_follow_up"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
