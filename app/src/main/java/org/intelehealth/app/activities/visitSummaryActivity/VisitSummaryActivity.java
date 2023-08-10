@@ -2122,33 +2122,45 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         Log.d(TAG, "updateFollowup_localDB: " + encUUID);   // aabde527-02ae-4b84-b5bf-0942e80e8cd0
 
         // update in obs table using encID and followup concept id.
+        ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
+
+        obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setEncounteruuid(encUUID);
         obsDTO.setConceptuuid(FOLLOW_UP_VISIT); //e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
         obsDTO.setValue(followupValue);
+        obsDTO.setUuid(obsDAO.getObsuuid(encUUID, FOLLOW_UP_VISIT));
 
-        ObsDAO obsDAO = new ObsDAO();
-        obsDAO.updateFollowUpValue_Obs(obsDTO);
+        obsDAO.updateObs(obsDTO);
 
         // Now, insert new item of REASON in obs tbl.
-        obsDTO.setConceptuuid(UuidDictionary.FOLLOW_UP_RESCHEDULE_REASON);
-        obsDTO.setEncounteruuid(encUUID);
-        obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(reasonValue));
-        boolean isInserted = false;
-        try {
-            isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
+        ObsDAO obsDAO_IN = new ObsDAO();
+        ObsDTO obsDTO_IN = new ObsDTO();
+
+        obsDTO_IN.setCreator(sessionManager.getCreatorID());//
+        obsDTO_IN.setEncounteruuid(encUUID);//
+        obsDTO_IN.setConceptuuid(UuidDictionary.FOLLOW_UP_RESCHEDULE_REASON); // 07fc7651-bda9-4dfb-b429-bfcea7f02df6
+        obsDTO_IN.setValue(org.intelehealth.app.utilities.StringUtils.getValue(reasonValue));
+        obsDTO_IN.setUuid(obsDAO_IN.getObsuuid(encUUID, UuidDictionary.FOLLOW_UP_RESCHEDULE_REASON));
+
+        obsDAO_IN.updateObs(obsDTO_IN);
 
         // Update encounter row
+        //making flag to false in the encounter table so it will sync again
+
         try {
             encounterDAO.updateEncounterSync("false", encUUID);
             encounterDAO.updateEncounterModifiedDate(encUUID);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+        //sync has to be performed once the vitals are updated for the bill update feature
+        SyncUtils syncUtils = new SyncUtils();
+        boolean success = false;
+        success = syncUtils.syncForeground("followup");
+
+        // enc - end
 
     }
 
