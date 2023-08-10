@@ -212,7 +212,6 @@ public class EncounterDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
-
             values.put("uuid", uuid);
 
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
@@ -280,7 +279,7 @@ public class EncounterDAO {
         return isExecuted;
     }
 
-    public String getEmergencyEncounters(String visitUuid, String encounterType) throws DAOException {
+    public String getEncounterUUIDByConceptID(String visitUuid, String encounterType) throws DAOException {
         String uuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -315,6 +314,7 @@ public class EncounterDAO {
         try {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("encounter_time", AppConstants.dateAndTimeUtils.currentDateTime());
+
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD(tag, "updated" + i);
             db.setTransactionSuccessful();

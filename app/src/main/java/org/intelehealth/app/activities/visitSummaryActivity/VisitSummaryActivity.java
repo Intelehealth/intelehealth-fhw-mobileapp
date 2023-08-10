@@ -2,7 +2,9 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -57,6 +59,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -981,7 +984,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         EncounterDAO encounterDAO = new EncounterDAO();
         String emergencyUuid = "";
         try {
-            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+            emergencyUuid = encounterDAO.getEncounterUUIDByConceptID(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -2042,7 +2045,29 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
         et_date.setOnClickListener(v -> {
-        // show calendar picker and set to editText.
+            // show calendar picker and set to editText.
+            Calendar mCalendar = Calendar.getInstance();
+            int year = mCalendar.get(Calendar.YEAR);
+            int month = mCalendar.get(Calendar.MONTH);
+            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(year, month, dayOfMonth);
+                    Date date = cal.getTime();
+
+                    String dateString = simpleDateFormat.format(date);
+                    Log.d(TAG, "onDateSet: " + dateString);
+                    et_date.setText(dateString);
+                }
+            }, year, month, dayOfMonth);
+
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + 1000);
+            datePickerDialog.show();
         });
 
         positiveButton.setOnClickListener(v -> {    // Update button.
@@ -2056,11 +2081,17 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 et_reason.setError(null);
 
                 String followupValue = et_date.getText().toString().trim();
+                String reasonValue = et_reason.getText().toString().trim();
+
                 if (remark != null)
                     followupValue =  followupValue + remark;    // ie. 08-08-2023, Remark: abc
 
                 Log.d(TAG, "showFollowupRescheduleDialog: " + followupValue);
-                updateIntoDb_PushFollowupValues(followupValue);
+                try {
+                    updateIntoDb_PushFollowupValues(followupValue, reasonValue);
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
                 alertDialog.dismiss();
             }
         });
@@ -2072,11 +2103,52 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
     }
 
-    private void updateIntoDb_PushFollowupValues(String followupValue) {
+    private void updateIntoDb_PushFollowupValues(String followupValue, String reasonValue) throws DAOException {
         // 1. update value in local db ie. update the value column for the follow up obs
         // 2. just update the date and keep remark as it is and set sync = false for this entry
         // 3. Also, insert new row for this follow up in db with the REASON value and set sync = false
         // 4. Now, once data inserted in db, sync() so that this updated value be pushed to remote.
+
+        // 1. update localdb obs row for followup value.
+        updateFollowup_localDB(followupValue, reasonValue);
+    }
+
+    private void updateFollowup_localDB(String followupValue, String reasonValue) throws DAOException {
+        // 1. udpate followup exisitng value.
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        // 2. udpate obs tbl now.
+        String encUUID = encounterDAO.getEncounterUUIDByConceptID(visitUuid, encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE"));
+        Log.d(TAG, "updateFollowup_localDB: " + encUUID);   // aabde527-02ae-4b84-b5bf-0942e80e8cd0
+
+        // update in obs table using encID and followup concept id.
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setEncounteruuid(encUUID);
+        obsDTO.setConceptuuid(FOLLOW_UP_VISIT); //e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
+        obsDTO.setValue(followupValue);
+
+        ObsDAO obsDAO = new ObsDAO();
+        obsDAO.updateFollowUpValue_Obs(obsDTO);
+
+        // Now, insert new item of REASON in obs tbl.
+        obsDTO.setConceptuuid(UuidDictionary.FOLLOW_UP_RESCHEDULE_REASON);
+        obsDTO.setEncounteruuid(encUUID);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(reasonValue));
+        boolean isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // Update encounter row
+        try {
+            encounterDAO.updateEncounterSync("false", encUUID);
+            encounterDAO.updateEncounterModifiedDate(encUUID);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
 
     }
 
