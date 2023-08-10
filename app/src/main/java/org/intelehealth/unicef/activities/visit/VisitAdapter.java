@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -154,7 +156,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview, fu_priority_tag;
         private ImageView profile_image;
-        private TextView shareicon;
+        private LinearLayoutCompat shareicon;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IHUtils</string>
-    <string name="util_permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
-    <string name="util_permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
-    <string name="util_permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
-    <string name="util_button_allow">Allow</string>
-    <string name="util_button_deny">Deny</string>
+    <string name="util_permission_camera_rationale">Для отображения предварительного просмотра камеры требуется разрешение камеры.</string>
+    <string name="util_permission_camera_denied">В разрешении камеры было отказано. Пожалуйста, подумайте о том, чтобы предоставить его для доступа к камере!</string>
+    <string name="util_permission_camera_never_askagain">В разрешении камеры было отказано с помощью команды "Никогда не спрашивать снова.</string>
+    <string name="util_button_allow">Разрешить</string>
+    <string name="util_button_deny">Запретить</string>
     <string name="util_button_ok">OK</string>
-    <string name="util_button_cancel">Cancel</string>
+    <string name="util_button_cancel">Отменить</string>
     <string name="util_picture_taken">Сделанный снимок</string>
-    <string name="util_switch_flash">Switch flash</string>
-    <string name="util_switch_camera">Switch camera</string>
+    <string name="util_switch_flash">Включить вспышку</string>
+    <string name="util_switch_camera">Переключить камеру</string>
     <string name="util_flash_auto">Автоматическая вспышка</string>
     <string name="util_flash_off">Вспышка выключена</string>
     <string name="util_flash_on">Вспышка включена</string>

@@ -7,7 +7,11 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:fillViewport="true"
         android:scrollIndicators="none"
         android:scrollbars="none">
@@ -16,7 +20,7 @@
         <RelativeLayout
             android:id="@+id/frame_26086"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true">
@@ -132,8 +136,10 @@
             <RelativeLayout
                 android:id="@+id/main_block"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/visit_pending_card_header"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:visibility="visible">
 
                 <!--Filter View - start -->
@@ -280,6 +286,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/you_can_add"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/card_padding"
@@ -377,7 +386,6 @@
 
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
-    >
 
     <ProgressBar
         android:id="@+id/progress"

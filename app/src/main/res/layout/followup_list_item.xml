@@ -11,7 +11,7 @@
     app:cardCornerRadius="@dimen/margin_10"
     app:cardElevation="@dimen/margin_5">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/frame_10014"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -110,7 +110,8 @@
 
             <FrameLayout
                 android:layout_width="@dimen/btn_prioirty_w_60dp"
-                android:layout_height="@dimen/btn_prioirty_h_20dp">
+                android:layout_height="@dimen/btn_prioirty_h_20dp"
+                android:layout_gravity="end">
 
                 <TextView
                     android:id="@+id/fu_priority_tag"
@@ -130,22 +131,38 @@
 
             </FrameLayout>
 
-            <TextView
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/shareicon"
-                android:layout_width="@dimen/btn_prioirty_w_60dp"
-                android:layout_height="@dimen/btn_prioirty_h_20dp"
-                android:gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/fu_margin_start"
-                android:background="@null"
-                android:letterSpacing="0.04"
-                android:fontFamily="@font/lato_medium"
-                android:text="@string/share"
-                android:textColor="@color/share_button_color"
-                android:textSize="@dimen/text_13sp"
+                android:gravity="bottom"
+                android:orientation="horizontal"
                 android:visibility="gone"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_visit_share"
-                tools:visibility="visible" />
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_visit_share" />
+
+                <TextView
+                    android:id="@+id/add_new_patientTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:elevation="8dip"
+                    android:fontFamily="@font/lato_medium"
+                    android:gravity="center_vertical"
+                    android:letterSpacing="0.04"
+                    android:text="@string/share"
+                    android:textColor="@color/share_button_color"
+                    android:textSize="@dimen/text_13sp"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </LinearLayout>
 
 

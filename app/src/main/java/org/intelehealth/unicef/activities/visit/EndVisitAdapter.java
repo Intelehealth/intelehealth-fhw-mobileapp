@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -145,7 +147,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview;
         private ImageView profile_image;
-        private TextView shareicon;
+        private LinearLayoutCompat shareicon;
 
 
         public Myholder(@NonNull View itemView) {

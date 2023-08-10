@@ -815,7 +815,9 @@ public class VisitPendingFragment extends Fragment {
 //        List<PrescriptionModel> month = new ArrayList<>();
 
         recent.addAll(recentList);
-        older.addAll(olderList);
+
+        if (olderList != null)
+            older.addAll(olderList);
 //        month.addAll(monthsList);
 
         if (!query.isEmpty()) {
@@ -846,25 +848,28 @@ public class VisitPendingFragment extends Fragment {
 
             // weeks - start
             older.clear();
-            for (PrescriptionModel model : olderList) {
-                String firstName = model.getFirst_name().toLowerCase();
-                String lastName = model.getLast_name().toLowerCase();
-                String fullName = firstName + " " + lastName;
 
-                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
-                    older.add(model);
-                } else {
-                    // do nothing
+            if (olderList != null) {
+                for (PrescriptionModel model : olderList) {
+                    String firstName = model.getFirst_name().toLowerCase();
+                    String lastName = model.getLast_name().toLowerCase();
+                    String fullName = firstName + " " + lastName;
+
+                    if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
+                        older.add(model);
+                    } else {
+                        // do nothing
+                    }
+
+                    totalCounts_older = older.size();
+                    if (totalCounts_older == 0 || totalCounts_older < 0)
+                        older_nodata.setVisibility(View.VISIBLE);
+                    else
+                        older_nodata.setVisibility(View.GONE);
+                    //older_adapter = new VisitAdapter(getActivity(), older);
+                    //recycler_older.setNestedScrollingEnabled(false);
+                    //recycler_older.setAdapter(older_adapter);
                 }
-
-                totalCounts_older = older.size();
-                if (totalCounts_older == 0 || totalCounts_older < 0)
-                    older_nodata.setVisibility(View.VISIBLE);
-                else
-                    older_nodata.setVisibility(View.GONE);
-                //older_adapter = new VisitAdapter(getActivity(), older);
-                //recycler_older.setNestedScrollingEnabled(false);
-                //recycler_older.setAdapter(older_adapter);
             }
             // weeks - end
 
