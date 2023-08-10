@@ -3914,6 +3914,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
             case UuidDictionary.JSV_MEDICATIONS: {
                 Log.e(TAG, "parseData: JSV_MEDICATIONS=>" + value);
+                if(value.contains("\n"))
+                    value = value.replace("\n","<br>");
+
                 if (!newRxReturned.isEmpty()) {
                     if (comment != null && !comment.trim().isEmpty())
                         newRxReturned = newRxReturned + "<br><br>" + "<strike><font color=\\'#000000\\'>" + value + "</font></strike>" + "<br><font color=\'#2F1E91\'>" + formatCreatorDetails(creator, created_date, comment) + "</font>" + "<br><font color=\'#ff0000\'>" + formatComment(comment) + "</font>";
@@ -4724,6 +4727,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     } while (encounterCursor.moveToNext());
 
                 }
+
+                if(visitnote.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(context, getResources().getString(R.string.no_presc_available), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (encounterCursor != null) {
                     encounterCursor.close();
                 }
