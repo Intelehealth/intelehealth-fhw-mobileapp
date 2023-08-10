@@ -163,6 +163,7 @@ public class ChatActivity extends AppCompatActivity {
         try {
             int id = new JSONArray(args)
                     .getJSONArray(0).getJSONObject(0).getInt("id");
+            Log.e(TAG, "onMessageDelivered: " + id);
             runOnUiThread(() -> mChatListingAdapter.markMessageAsDelivered(id));
         } catch (JSONException e) {
             throw new RuntimeException(e);

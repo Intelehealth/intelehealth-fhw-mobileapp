@@ -121,6 +121,8 @@ public class AppConstants {
 
     public static final String NOT_APPLICABLE = "NA";
 
+    public static final String OTHER_OPTION = "Other";
+
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }

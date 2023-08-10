@@ -65,10 +65,11 @@ public class PartogramAlertEngine {
                 if (paramInfo.getCapturedValue().equalsIgnoreCase("OA")) {
                     alert = "G";
                 } else if (paramInfo.getCapturedValue().equalsIgnoreCase("OP") || paramInfo.getCapturedValue().equalsIgnoreCase("OT")) {
-                    alert = "Y";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("M+++") || paramInfo.getCapturedValue().equalsIgnoreCase("B")) {
                     alert = "R";
                 }
+//                else if (paramInfo.getCapturedValue().equalsIgnoreCase("M+++") || paramInfo.getCapturedValue().equalsIgnoreCase("B")) {
+//                    alert = "R";
+//                }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Caput")) {
                 if (paramInfo.getCapturedValue().equalsIgnoreCase("N") || paramInfo.getCapturedValue().equalsIgnoreCase("+") || paramInfo.getCapturedValue().equalsIgnoreCase("++")) {
                     alert = "G";
@@ -116,11 +117,23 @@ public class PartogramAlertEngine {
                     alert = "G";
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Urine protein")) {
-                if (paramInfo.getCapturedValue().equalsIgnoreCase("P") || paramInfo.getCapturedValue().equalsIgnoreCase("P1")) {
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("P-")) {
                     alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2")) {
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("P1")) {
                     alert = "Y";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P3")) {
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("P3")) {
+                    alert = "R";
+                }
+            } else if (paramInfo.getParamName().equalsIgnoreCase("Urine Acetone")) {
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("A-")) {
+                    alert = "G";
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("A1")) {
+                    alert = "Y";
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A2")
+                        || paramInfo.getCapturedValue().equalsIgnoreCase("A3")) {
                     alert = "R";
                 }
             }

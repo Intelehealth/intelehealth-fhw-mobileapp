@@ -751,6 +751,7 @@ public class PatientOtherInfoFragment extends Fragment {
             return;
         }        //code for adding to the database
 
+        Log.e(TAG, "onPatientCreateClicked: validation completed");
         mTotalBirthCount = mTotalBirthEditText.getText().toString().trim();
         mTotalMiscarriageCount = mTotalMiscarriageEditText.getText().toString().trim();
         if (mHospitalMaternityString.trim().equalsIgnoreCase("other")) {
@@ -1253,10 +1254,11 @@ public class PatientOtherInfoFragment extends Fragment {
 
         }
 
+        View otherRiskFactor = view.findViewById(R.id.llViewOtherRiskFactor);
         if (TextUtils.isEmpty(mRiskFactorsTextView.getText().toString())) {
             setFocus(mRiskFactorsTextView);
             errorDetailsList.add(new ErrorManagerModel(mRiskFactorsTextView, tvErrorRiskFactor, getString(R.string.please_select_risk_factor), dropdownRiskFactors));
-        } else if (etHighRisk.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etHighRisk.getText().toString())) {
+        } else if (otherRiskFactor.getVisibility() == View.VISIBLE && TextUtils.isEmpty(etHighRisk.getText().toString())) {
             setFocus(etHighRisk);
             errorDetailsList.add(new ErrorManagerModel(etHighRisk, tvErrorHighRisk, getString(R.string.error_other_risk), cardOtherRisk));
         } else {
@@ -1347,6 +1349,7 @@ public class PatientOtherInfoFragment extends Fragment {
 //            cardBedNumber.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
 //        }
 
+        Log.e(TAG, "areValidFields: size of error =>" + errorDetailsList.size());
         if (errorDetailsList.size() > 0) {
             for (int i = 0; i < errorDetailsList.size(); i++) {
                 ErrorManagerModel errorModel = errorDetailsList.get(i);

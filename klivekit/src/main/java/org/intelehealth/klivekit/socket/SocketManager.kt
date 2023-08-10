@@ -12,6 +12,7 @@ import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
+import org.json.JSONObject
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
@@ -62,7 +63,7 @@ open class SocketManager {
         if (event == EVENT_ALL_USER) {
             json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
         } else if (event == EVENT_UPDATE_MESSAGE) {
-//            emit(EVENT_ACK_MSG_RECEIVED)
+            json?.let { array -> ackMsgReceived(JSONArray(array)) }
             json?.let { array -> notifyIfNotActiveRoom(JSONArray(array)); }
         }
 
@@ -75,6 +76,19 @@ open class SocketManager {
             val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
             Gson().fromJson(json, ChatMessage::class.java)?.let {
                 if (it.patientId.equals(activeRoomId).not()) showChatNotification(it)
+            }
+        }
+    }
+
+    private fun ackMsgReceived(jsonArray: JSONArray) {
+        if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
+            val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
+            Gson().fromJson(json, ChatMessage::class.java)?.let {
+                HashMap<String, Int>().apply {
+                    put("messageId", it.id)
+                }.also {
+                    emit(EVENT_ACK_MSG_RECEIVED, Gson().toJson(it))
+                }
             }
         }
     }

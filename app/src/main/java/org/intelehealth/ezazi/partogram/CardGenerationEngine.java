@@ -1,24 +1,20 @@
 package org.intelehealth.ezazi.partogram;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
@@ -209,7 +205,7 @@ public class CardGenerationEngine {
         ObsDAO obsDAO = new ObsDAO();
         boolean isInserted = false;
         try {
-            String encounterUuid = new EncounterDAO().insert_VisitCompleteEncounterToDb(visitId, sessionManager.getProviderID());
+            String encounterUuid = new EncounterDAO().insertVisitCompleteEncounterToDb(visitId, sessionManager.getProviderID());
             VisitsDAO visitsDAO = new VisitsDAO();
             visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
             obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(),

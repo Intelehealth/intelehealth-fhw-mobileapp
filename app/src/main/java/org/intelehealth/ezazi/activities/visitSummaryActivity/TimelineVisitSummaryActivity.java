@@ -745,7 +745,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private void selfDischarge(String value) {
         boolean isInserted = false;
         try {
-            isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.REFER_TYPE);
+            isInserted = insertVisitCompleteObs(visitUuid, value, UuidDictionary.REFER_TYPE);
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -1044,7 +1044,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             referOtherHospitalDialog(value);
         else if (position == 3) { // self discharge // call visit complete enc.
             try {
-                isInserted = insertVisitComplete_Obs(visitUuid,
+                isInserted = insertVisitCompleteObs(visitUuid,
                         context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -1066,7 +1066,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         boolean isInserted = false;
         String encounterUuid = "";
-        encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+        encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
 
         VisitsDAO visitsDAO = new VisitsDAO();
         visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
@@ -1156,7 +1156,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                                                                      String hospitalName, String doctorName, String note) throws DAOException {
         boolean isInserted = true;
         String encounterUuid = "";
-        encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+        encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
 
         VisitsDAO visitsDAO = new VisitsDAO();
         visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
@@ -1302,12 +1302,12 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
 
-    private boolean insertVisitComplete_Obs(String visitUuid, String value, String conceptId) throws DAOException {
+    private boolean insertVisitCompleteObs(String visitUuid, String value, String conceptId) throws DAOException {
         //  EncounterDAO encounterDAO = new EncounterDAO();
         ObsDAO obsDAO = new ObsDAO();
         boolean isInserted = false;
         String encounterUuid = "";
-        encounterUuid = encounterDAO.insert_VisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+        encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
 
         VisitsDAO visitsDAO = new VisitsDAO();
         try {

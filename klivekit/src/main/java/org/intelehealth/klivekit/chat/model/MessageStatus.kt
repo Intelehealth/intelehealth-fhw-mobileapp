@@ -33,6 +33,7 @@ enum class MessageStatus(val value: Int) {
             READ.value -> READ
             SENDING.value -> SENDING
             SENT.value -> SENT
+            DELIVERED.value -> DELIVERED
             else -> SENT
         }
     }

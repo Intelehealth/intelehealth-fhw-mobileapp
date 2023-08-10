@@ -16,6 +16,8 @@ public class ParamInfo implements Serializable {
 
     private int currentStage;
 
+    private String[] radioOptions;
+
     public String getParamSectionName() {
         return paramSectionName;
     }
@@ -102,5 +104,13 @@ public class ParamInfo implements Serializable {
 
     public int getCurrentStage() {
         return currentStage;
+    }
+
+    public void setRadioOptions(String[] radioOptions) {
+        this.radioOptions = radioOptions;
+    }
+
+    public String[] getRadioOptions() {
+        return radioOptions;
     }
 }

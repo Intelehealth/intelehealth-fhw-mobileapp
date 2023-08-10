@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.partogram;
 
 import androidx.annotation.NonNull;
 
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.utilities.SessionManager;
@@ -22,6 +23,8 @@ public class PartogramConstants {
     public static String INPUT_INT_2_DIG_TYPE = "F";
     public static String INPUT_INT_3_DIG_TYPE = "G";
     public static String INPUT_DOUBLE_4_DIG_TYPE = "H";
+
+    public static String RADIO_SELECT_TYPE = "I";
 
     private static SessionManager sessionManager = null;
 
@@ -193,19 +196,19 @@ public class PartogramConstants {
         paramInfo.setParamSectionName(SECTION_LIST[2]);
         paramInfo.setParamName("Urine protein");
         paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"No Proteinuria", "Trace of proteinuria", "Trace of Proteinuria (+)", "Trace of Proteinuria (++)", "Trace of Proteinuria (+++)"});
+        paramInfo.setOptions(new String[]{"No Proteinuria", "Trace of Proteinuria", "Trace of Proteinuria (+)", "Trace of Proteinuria (++)", "Trace of Proteinuria (+++)"});
         paramInfo.setValues(new String[]{"P-", "P", "P1", "P2", "P3"});
         paramInfo.setConceptUUID("9d3168a7-538f-11e6-9cfe-86f436325720");
         stringList.add(paramInfo);
 
-//        paramInfo = new ParamInfo();
-//        paramInfo.setParamSectionName(SECTION_LIST[2]);
-//        paramInfo.setParamName("Urine Acetone");
-//        paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-//        paramInfo.setOptions(new String[]{"No Acetonuria", "Trace of Acetonuria", "Trace of Acetonuria (+)", "Trace of Acetonuria (++)", "Trace of Acetonuria (+++)"});
-//        paramInfo.setValues(new String[]{"A-", "A", "A1", "A2", "A3"});
-//        paramInfo.setConceptUUID("9d3168a7-538f-11e6-9cfe-86f436325720");
-//        stringList.add(paramInfo);
+        paramInfo = new ParamInfo();
+        paramInfo.setParamSectionName(SECTION_LIST[2]);
+        paramInfo.setParamName("Urine Acetone");
+        paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
+        paramInfo.setOptions(new String[]{"No Acetonuria", "Trace of Acetonuria", "Trace of Acetonuria (+)", "Trace of Acetonuria (++)", "Trace of Acetonuria (+++)"});
+        paramInfo.setValues(new String[]{"A-", "A", "A1", "A2", "A3"});
+        paramInfo.setConceptUUID("968f9bc2-b33d-4daf-b59f-79d9a899e018");
+        stringList.add(paramInfo);
 
         sectionParamInfoMap.put(SECTION_LIST[2], stringList);//Woman
 
@@ -283,9 +286,10 @@ public class PartogramConstants {
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[4]);
         paramInfo.setParamName("IV Fluids");
-        paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
-        paramInfo.setOptions(new String[]{"Yes", "No"});
-        paramInfo.setValues(new String[]{"Y", "N"});
+        paramInfo.setParamDateType(RADIO_SELECT_TYPE);
+        paramInfo.setRadioOptions(new String[]{"Yes", "No"});
+        paramInfo.setOptions(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", "Other IV Fluid*"});
+        paramInfo.setValues(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", AppConstants.OTHER_OPTION});
         paramInfo.setConceptUUID("98c5881f-b214-4597-83d4-509666e9a7c9");
         paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);

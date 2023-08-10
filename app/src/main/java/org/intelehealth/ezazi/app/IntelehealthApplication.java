@@ -16,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.github.ajalt.timberkt.Timber;
 import com.parse.Parse;
 
 import org.intelehealth.ezazi.BuildConfig;
@@ -110,6 +111,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //        initSocketConnection();
 //        startRealTimeObserver();
         startRealTimeObserverAndSocket();
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree());
+        }
     }
 
     public void startRealTimeObserverAndSocket() {

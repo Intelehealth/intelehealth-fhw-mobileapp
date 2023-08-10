@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,6 +94,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.AUTOCOMPLETE_SUGGESTION_EDITTEXT)) {
                     View tempView = View.inflate(mContext, R.layout.parto_lbl_autocomplete_edittext_ezazi, null);
                     showAutoComplete_EditText(tempView, position, i, paramInfo.getParamDateType());
+                    genericViewHolder.containerLinearLayout.addView(tempView);
+                } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.RADIO_SELECT_TYPE)) {
+                    View tempView = View.inflate(mContext, R.layout.parto_lbl_radio_view_ezazi, null);
+                    showRadioOptionBox(tempView, position, i, paramInfo.getParamDateType());
                     genericViewHolder.containerLinearLayout.addView(tempView);
                 }
             }
@@ -237,6 +242,41 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 } else {
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
+            }
+        });
+    }
+
+    private void showRadioOptionBox(final View tempView, final int position, final int positionChild, final String paramDateType) {
+        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
+        paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
+        RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioYes) {
+                final String[] items = mItemList.get(position).getParamInfoList().get(positionChild).getOptions();
+
+                ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+                for (int i = 0; i < items.length; i++) {
+                    SingChoiceItem item = new SingChoiceItem();
+                    item.setItemIndex(i);
+                    item.setItem(items[i]);
+                    choiceItems.add(item);
+                }
+
+                String title = "Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName();
+                SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
+                        .title(title)
+                        .content(choiceItems)
+                        .build();
+
+                dialog.setListener(item -> {
+                    ParamInfo paramInfo = mItemList.get(position).getParamInfoList().get(positionChild);
+                    paramInfo.setCapturedValue(paramInfo.getValues()[item.getItemIndex()]);
+                });
+
+                dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+            } else {
+                ParamInfo paramInfo = mItemList.get(position).getParamInfoList().get(positionChild);
+                paramInfo.setCapturedValue("");
             }
         });
     }

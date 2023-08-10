@@ -181,6 +181,7 @@ public class ChatListingAdapter extends DateHeaderAdapter {
 
             MessageStatus status = MessageStatus.getStatus(message.getMessageStatus());
             if (getAdapterPosition() == 0) {
+                Log.e("ChatAdapter", "bind: status" + status.getValue());
                 statusTextView.setVisibility(View.VISIBLE);
                 if (status.isRead()) {
                     statusTextView.setText(mContext.getString(R.string.read));
@@ -217,12 +218,13 @@ public class ChatListingAdapter extends DateHeaderAdapter {
         for (int i = 0; i < mItemList.size(); i++) {
             if (mItemList.get(i) instanceof ChatMessage) {
                 ChatMessage chatMessage = (ChatMessage) mItemList.get(i);
-//                if (id == chatMessage.getId()) {
-                chatMessage.setIsRead(false);
-                chatMessage.setMessageStatus(MessageStatus.DELIVERED.getValue());
-                notifyItemChanged(i);
-//                    break;
-//                }
+                if (id == chatMessage.getId()) {
+                    chatMessage.setIsRead(false);
+                    chatMessage.setMessageStatus(MessageStatus.DELIVERED.getValue());
+                    Log.e("ChatAdapter", "markMessageAsDelivered: " + chatMessage.getMessage());
+                    notifyItemChanged(i);
+                    break;
+                }
             }
         }
     }
