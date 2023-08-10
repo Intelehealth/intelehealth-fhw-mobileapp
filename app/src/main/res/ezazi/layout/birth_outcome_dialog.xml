@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/list_container_padding">
+
+            <!--   <com.google.android.material.checkbox.MaterialCheckBox
+                   android:id="@+id/cbLabourCompleted"
+                   style="@style/Theme.EZazi.Text.Dialog.Content"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:layout_gravity="center_vertical"
+                   android:button="@drawable/checlbox_custom"
+                   android:layout_marginTop="@dimen/other_info_checkbox_margin_top"
+                   android:fontFamily="@font/dm_sans_medium"
+                   android:layoutDirection="rtl"
+                   android:padding="@dimen/small_btn_horizontal_padding"
+                   android:text="@string/labour_completed"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintRight_toRightOf="parent" />-->
+
+            <RelativeLayout
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/other_info_checkbox_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Theme.EZazi.Text.Dialog.Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/tv_labour_margin_end"
+                    android:text="@string/labour_completed" />
+
+                <CheckBox
+                    android:id="@+id/cbLabourCompleted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:checked="false" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Theme.EZazi.Text.Dialog.Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/tv_labour_margin_end"
+                    android:text="@string/mother_deceased" />
+
+                <CheckBox
+                    android:id="@+id/cbMotherDeceased"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:checked="false" />
+            </RelativeLayout>
+
+
+            <!--<com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvMotherDeceased"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@string/mother_deceased" />-->
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvReferToOtherHospital"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@string/refer_to_other_hospital" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvSelfDischarge"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@string/self_discharge_medical_advice" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvShiftToSection"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@string/shift_to_c_section" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvReferToICU"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@string/refer_to_icu" />
+
+            <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/etOutOfTimeReasonLayout"
+                style="@style/Theme.EZazi.Input.Login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                app:boxStrokeColor="@color/colorLoginInputStroke"
+                app:boxStrokeWidth="@dimen/input_stroke_size"
+                app:counterEnabled="true"
+                app:counterMaxLength="300"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etOtherCommentOutcomes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:gravity="start"
+                    android:hint="@string/enter_other_comment"
+                    android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="@dimen/std_4dp"
+                    android:lines="5"
+                    android:maxLength="300"
+                    android:textColor="@color/colorInputText"
+                    android:textSize="@dimen/input_inner_size" />
+
+            </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+            <!--<EditText
+                android:id="@+id/etOtherCommentOutcomes"
+                style="@style/Theme.EZazi.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_other_comment"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:nextFocusForward="@id/apgar_1min"
+                android:padding="@dimen/input_padding"
+                android:paddingStart="@dimen/input_box_padding_start"
+                android:textSize="@dimen/dialog_input_hints"
+                app:drawableEndCompat="@drawable/ic_space"
+                tools:ignore="TextFields" />-->
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

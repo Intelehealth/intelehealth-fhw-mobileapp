@@ -527,6 +527,10 @@ public class EncounterDAO {
     }
 
     public String insert_VisitCompleteEncounterToDb(String visitUuid, String providerUUID) throws DAOException {
+        if (!visitUuid.isEmpty()) {
+
+            return "";
+        }
         String encounteruuid = UUID.randomUUID().toString();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //   db.beginTransaction();

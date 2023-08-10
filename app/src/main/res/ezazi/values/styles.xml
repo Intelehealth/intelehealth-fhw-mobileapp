@@ -412,8 +412,8 @@
         <item name="strokeColor">@color/colorInputBgBorder</item>
         <item name="android:paddingBottom">@dimen/list_container_padding</item>
         <item name="android:paddingTop">@dimen/list_container_padding</item>
-<!--        <item name="android:paddingStart">@dimen/list_container_padding</item>-->
-<!--        <item name="android:paddingEnd">@dimen/list_container_padding</item>-->
+        <!--        <item name="android:paddingStart">@dimen/list_container_padding</item>-->
+        <!--        <item name="android:paddingEnd">@dimen/list_container_padding</item>-->
 
     </style>
 
@@ -636,11 +636,23 @@
         <!--        <item name="android:fadeScrollbars">false</item>-->
         <!--        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>-->
     </style>
+
     <style name="Theme.EZazi.Text.Stages" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/add_patient_subheading_text_size</item>
         <item name="android:textColor">@color/color_icon_btn_text</item>
         <item name="android:gravity">center</item>
         <item name="fontFamily">@font/dm_sans_medium</item>
         <item name="android:fontFamily">@font/dm_sans_medium</item>
+    </style>
+
+    <style name="Theme.EZazi.Input.Dialog.Stage2" parent="Theme.EZazi.Input">
+        <item name="boxStrokeColor">@color/input_focus_color</item>
+        <item name="errorTextAppearance">@style/Theme.EZazi.Input.Error</item>
+        <item name="boxBackgroundColor">@color/color_input_bg</item>
+        <item name="hintTextColor">@color/colorInputBgBorder</item>
+    </style>
+    <style name="DialogAnimationSlideIn">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 </resources>
