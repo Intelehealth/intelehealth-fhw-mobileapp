@@ -154,7 +154,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview, fu_priority_tag;
         private ImageView profile_image;
-        private ImageButton shareicon;
+        private TextView shareicon;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);

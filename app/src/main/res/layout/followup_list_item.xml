@@ -130,15 +130,21 @@
 
             </FrameLayout>
 
-            <ImageButton
+            <TextView
                 android:id="@+id/shareicon"
                 android:layout_width="@dimen/btn_prioirty_w_60dp"
                 android:layout_height="@dimen/btn_prioirty_h_20dp"
-                android:layout_gravity="bottom"
+                android:gravity="bottom"
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:background="@null"
-                android:src="@drawable/visit_share_presc_icon"
+                android:letterSpacing="0.04"
+                android:fontFamily="@font/lato_medium"
+                android:text="@string/share"
+                android:textColor="@color/share_button_color"
+                android:textSize="@dimen/text_13sp"
                 android:visibility="gone"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_visit_share"
                 tools:visibility="visible" />
         </LinearLayout>
 

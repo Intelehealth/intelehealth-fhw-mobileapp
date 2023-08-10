@@ -145,7 +145,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview;
         private ImageView profile_image;
-        private ImageButton shareicon;
+        private TextView shareicon;
 
 
         public Myholder(@NonNull View itemView) {
