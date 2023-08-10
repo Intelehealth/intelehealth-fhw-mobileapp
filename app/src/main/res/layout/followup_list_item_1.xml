@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fu_cardview_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -77,16 +78,23 @@
                     android:textColor="@null"
                     android:textSize="@dimen/fu_male_textsize" />
 
-                <ImageView
+                <TextView
                     android:id="@+id/fu_priority_tag"
                     android:layout_width="@dimen/btn_prioirty_w_60dp"
                     android:layout_height="@dimen/btn_prioirty_h_20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="top"
 
+                    android:background="@drawable/drawable_priority_background"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
                     android:lineSpacingExtra="0sp"
-                    android:src="@drawable/ui2_frame_priority"
-                    android:visibility="gone" />
+                    android:text="@string/priority_uppercase"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </RelativeLayout>
         </RelativeLayout>
 

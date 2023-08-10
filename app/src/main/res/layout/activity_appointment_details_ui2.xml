@@ -82,7 +82,8 @@
                             android:layout_gravity="center"
                             android:gravity="center_horizontal|center_vertical"
                             android:lineSpacingExtra="-3sp"
-                            android:maxLines="1" android:maxLength="15"
+                            android:maxLength="15"
+                            android:maxLines="1"
                             android:text="@string/fu_visit_name"
                             android:textAppearance="@style/label_16sp"
                             android:textColor="@null"
@@ -189,14 +190,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <TextView
                     android:id="@+id/priority_tag_app_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_prioirty_w_60dp"
+                    android:layout_height="@dimen/btn_prioirty_h_20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/cp_margin_start"
-                    android:src="@drawable/ui2_frame_priority"
-                    android:visibility="gone" />
+                    android:layout_weight="0.6"
+                    android:background="@drawable/drawable_priority_background"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/priority_uppercase"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/chief_complaint_txt"

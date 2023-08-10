@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fu_cardview_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -147,7 +148,7 @@
 
             </RelativeLayout>
 
-            <ImageView
+            <TextView
                 android:id="@+id/priority_tag_imgview"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/search_priority_tag"
@@ -155,9 +156,15 @@
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/fu_margin_start"
                 android:layout_weight="0.6"
+                android:background="@drawable/drawable_priority_background"
+                android:fontFamily="@font/lato_bold"
                 android:gravity="center"
                 android:lineSpacingExtra="0sp"
-                android:src="@drawable/ui2_frame_priority" />
+                android:text="@string/priority_uppercase"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

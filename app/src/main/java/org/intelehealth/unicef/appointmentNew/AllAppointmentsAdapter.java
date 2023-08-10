@@ -235,8 +235,8 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent;
-        TextView tvPatientName, tvDate, tvPrescRecStatus, doctNameTextView, tvPresStatus;
-        ImageView ivProfileImage, IvPriorityTag/*, ivTime*/;
+        TextView tvPatientName, tvDate, tvPrescRecStatus, doctNameTextView, tvPresStatus, IvPriorityTag;
+        ImageView ivProfileImage /*, ivTime*/;
         RelativeLayout rlPrescriptionBackground;
 
 

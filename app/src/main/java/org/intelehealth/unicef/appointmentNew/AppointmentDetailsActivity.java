@@ -93,7 +93,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     View layoutSummaryBtns;
     FloatingActionButton fabHelp;
     int appointment_id = 0;
-    private ImageView priorityTag;
+    private TextView priorityTag;
     private boolean isEmergency, hasPrescription;
     private String patientName, patientUuid, gender, age, openmrsID,
             visitID, visit_speciality, followupDate, patient_photo_path, app_start_date,

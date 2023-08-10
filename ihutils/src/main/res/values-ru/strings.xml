@@ -8,7 +8,7 @@
     <string name="util_button_deny">Deny</string>
     <string name="util_button_ok">OK</string>
     <string name="util_button_cancel">Cancel</string>
-    <string name="util_picture_taken">Picture taken</string>
+    <string name="util_picture_taken">Сделанный снимок</string>
     <string name="util_switch_flash">Switch flash</string>
     <string name="util_switch_camera">Switch camera</string>
     <string name="util_flash_auto">Автоматическая вспышка</string>

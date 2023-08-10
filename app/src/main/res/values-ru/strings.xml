@@ -842,7 +842,7 @@
     <string name="education">образование</string>
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
     <string name="end_visits">End Visits</string>
-    <string name="empty_message_for_patinet_search_visit_screen">Use correct name or ID to search or add a new patient.</string>
+    <string name="empty_message_for_patinet_search_visit_screen">Используйте правильное имя или идентификатор для поиска или добавления нового пациента.</string>
     <string name="confirm_end_visit_reason">End this visit?</string>
     <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
     <string name="support_mobile_no_1">919503692181</string>
@@ -1477,4 +1477,13 @@
     <string name="permissions_required">Необходимые разрешения</string>
     <string name="enable_permission_for_time_tracking">Пожалуйста, включите требуемое разрешение для отображения функции отслеживания времени.</string>
     <string name="filter_my_patients">Мои родители</string>
+
+    <string name="refreshed_successfully">Успешно обновлено!</string>
+    <string name="no_visit_found">Посещение не найдено</string>
+    <string name="search_pat_not_found_txt">Пациент не найден!</string>
+    <string name="search_pat_hint_txt">Используйте правильное имя пользователя или ID для поиска, или вы можете зарегистрировать нового пациента.</string>
+    <string name="patients_waiting_for_closure">3 Посещения пациентов ожидают закрытия, пожалуйста, завершите посещение.</string>
+    <string name="results_for">Результаты для</string>
+    <string name="priority_uppercase">Приоритет</string>
+
 </resources>

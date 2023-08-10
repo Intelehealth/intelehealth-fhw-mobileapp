@@ -199,8 +199,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     class Myholder extends RecyclerView.ViewHolder {
         CardView cardView;
         private View rootView;
-        TextView fu_patname_txtview, fu_date_txtview;
-        ImageView fu_priority_tag, profile_image;
+        TextView fu_patname_txtview, fu_date_txtview, fu_priority_tag;
+        ImageView profile_image;
 
         public Myholder(View itemView) {
             super(itemView);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_todays_appointments1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -128,9 +129,9 @@
                 android:layout_below="@+id/search_date_relative"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="@dimen/fu_vs_margin_start"
+                android:background="@drawable/pres_received_drawable_rounded_corners"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
-                android:background="@drawable/pres_received_drawable_rounded_corners"
                 android:visibility="gone">
 
                 <TextView
@@ -151,19 +152,25 @@
 
         </LinearLayout>
 
-        <ImageView
+        <TextView
             android:id="@+id/iv_priority_tag1_todays"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/btn_prioirty_w_60dp"
             android:layout_height="@dimen/item_ta_priority_tag_height"
             android:layout_alignParentEnd="true"
             android:layout_gravity="top|end|center"
             android:layout_marginTop="@dimen/item_ta_priority_tag_margin_top"
             android:layout_marginEnd="@dimen/item_ta_priority_tag_margin_end"
             android:layout_weight="0.5"
+            android:background="@drawable/drawable_priority_background"
+            android:fontFamily="@font/lato_bold"
             android:gravity="center"
             android:lineSpacingExtra="0sp"
-            android:src="@drawable/ui2_frame_priority"
-            android:visibility="gone" />
+            android:text="@string/priority_uppercase"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
 
     </RelativeLayout>

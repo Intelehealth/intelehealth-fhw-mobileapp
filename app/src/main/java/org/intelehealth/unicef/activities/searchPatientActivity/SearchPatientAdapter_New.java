@@ -152,8 +152,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
-        TextView search_gender, search_name, search_date_relative, presStatusText;
-        ImageView priority_tag_imgview, fu_item_calendar, presc_tag_imgview, profile_imgview;
+        TextView search_gender, search_name, search_date_relative, presStatusText, priority_tag_imgview;
+        ImageView fu_item_calendar, presc_tag_imgview, profile_imgview;
         PatientDTO patientDTO;
         RelativeLayout rlPresBackground;
 

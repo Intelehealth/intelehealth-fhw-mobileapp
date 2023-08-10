@@ -2138,5 +2138,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="tag_prescription_received">Prescription received</string>
     <string name="tag_prescription_pending">Prescription pending</string>
     <string name="filter_my_patients">My Patients</string>
+    <string name="priority_uppercase">PRIORITY</string>
+
 
 </resources>
