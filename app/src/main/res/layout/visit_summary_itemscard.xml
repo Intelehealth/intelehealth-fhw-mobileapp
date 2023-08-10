@@ -518,6 +518,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/cc_title"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentStart="true"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/margin_8"
                         android:layout_marginEnd="@dimen/fu_margin_start"

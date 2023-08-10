@@ -388,13 +388,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
 
-                String complaint = currentNode.getText();
+                String complaint = currentNode.findDisplay();
                 //    complaintDetails.put(complaint, complaintFormatted);
 
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
             } else {
-                String complaint = currentNode.getText();
+                String complaint = currentNode.getDisplay();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
 //                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                     insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
