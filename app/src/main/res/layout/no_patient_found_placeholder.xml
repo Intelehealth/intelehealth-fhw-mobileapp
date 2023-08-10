@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
     android:visibility="gone"
-    tools:visibility="gone">
+    tools:visibility="visible">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -61,9 +62,17 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/toolbar_margin_right"
                 android:layout_marginBottom="@dimen/margin_20dp"
-                android:background="@drawable/ic_add_patient_svg"
+                android:background="@drawable/bg_add_patient"
                 android:clickable="true"
-                android:elevation="8dip" />
+                android:elevation="8dip"
+                android:letterSpacing="0.02"
+                android:fontFamily="@font/lato_bold"
+                android:gravity="center_vertical"
+                android:text="@string/add_new_patient"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txtsize_patdetail_14sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_add_patient_drawable" />
 
         </RelativeLayout>
     </FrameLayout>
