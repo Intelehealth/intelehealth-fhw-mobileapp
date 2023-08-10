@@ -550,7 +550,7 @@
     <string name="failed_synced">#VALUE!</string>
     <string name="visit_not_uploaded">زيارة لم يتم تحميلها</string>
     <string name="upload_started">تحميل ...</string>
-    <string name="visit_uploaded_successfully">تم تحميل الزيار بنجاح</string>
+    <string name="visit_uploaded_successfully">تم تحميل الزيارة بنجاح</string>
     <string name="visit_uploaded_failed">سيتم تحميلها عند توفر الإنترنت</string>
     <string name="visitID">بطاقة زيارة تعريفية</string>
 
