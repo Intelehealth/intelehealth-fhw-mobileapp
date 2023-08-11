@@ -314,7 +314,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     Button btnAppointment, openall_btn;
     private FrameLayout filter_framelayout;
     private View hl_2;
-
+    private boolean priorityVisit = false;
     private ObjectAnimator syncAnimator;
 
     public void startTextChat(View view) {
@@ -891,14 +891,21 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         // vitals values set.
         if (height.getValue() != null) {
-            if (height.getValue().trim().equals("0")) {
-                heightView.setText("-");
+            if (height.getValue().trim().isEmpty() || height.getValue().trim().equals("0")) {
+                heightView.setText(getResources().getString(R.string.no_information));
             } else {
                 heightView.setText(height.getValue());
             }
         }
 
-        weightView.setText(weight.getValue());
+        if(weight.getValue()!=null) {
+            if (weight.getValue().trim().isEmpty() || weight.getValue().trim().equals("0"))
+                weightView.setText(getResources().getString(R.string.no_information));
+            else
+                weightView.setText(weight.getValue());
+        }
+        else
+            weightView.setText(getResources().getString(R.string.no_information));
 
         Log.d(TAG, "onCreate: " + weight.getValue());
         if (weight.getValue() != null) {
@@ -912,22 +919,42 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             } else {
                 mBMI = "";
             }
-            bmiView.setText(mBMI);
+
+            if (mBMI.trim().isEmpty() || mBMI.equalsIgnoreCase(""))
+                bmiView.setText(getResources().getString(R.string.no_information));
+            else
+                bmiView.setText(mBMI);
 
         }
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
         if (bpText.equals("/")) {  //when new patient is being registered we get / for BP
-            bpView.setText("");
+            bpView.setText(getResources().getString(R.string.no_information));
         } else if (bpText.equalsIgnoreCase("null/null")) {
             //when we setup app and get data from other users, we get null/null from server...
-            bpView.setText("");
+            bpView.setText(getResources().getString(R.string.no_information));
         } else {
             bpView.setText(bpText);
         }
 
-        pulseView.setText(pulse.getValue());
-        spO2View.setText(spO2.getValue());
+        if(pulse.getValue()!=null) {
+            if (pulse.getValue().trim().isEmpty() || pulse.getValue().trim().equals("0"))
+                pulseView.setText(getResources().getString(R.string.no_information));
+            else
+                pulseView.setText(pulse.getValue());
+        }
+        else
+            pulseView.setText(getResources().getString(R.string.no_information));
+
+        if(spO2.getValue()!=null) {
+            if (spO2.getValue().trim().isEmpty() || spO2.getValue().trim().equals("0"))
+                spO2View.setText(getResources().getString(R.string.no_information));
+            else
+                spO2View.setText(spO2.getValue());
+        }
+        else
+            spO2View.setText(getResources().getString(R.string.no_information));
+
 
         // temperature - start
         try {
@@ -952,6 +979,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
             }
+
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -965,7 +993,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             respiratoryText.setVisibility(View.GONE);
             respiratory.setVisibility(View.GONE);
         }
-        respiratory.setText(resp.getValue());
+
+        if(resp.getValue()!=null) {
+            if (resp.getValue().trim().isEmpty() || resp.getValue().trim().equals("0"))
+                respiratory.setText(getResources().getString(R.string.no_information));
+            else
+                respiratory.setText(resp.getValue());
+        }
+        else
+            respiratory.setText(getResources().getString(R.string.no_information));
         // vitals values set - end
 
         setQAData();
@@ -1105,6 +1141,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
                 flag.setChecked(true);
                 flag.setEnabled(false);
+                priorityVisit = true;
             }
         }
 
@@ -1112,6 +1149,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                priorityVisit = isChecked;
                 try {
                     EncounterDAO encounterDAO = new EncounterDAO();
                     encounterDAO.setEmergency(visitUuid, isChecked);
@@ -2187,19 +2225,22 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isVisitSpecialityExists) {
-                    Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
-                    in.putExtra("visitUuid", visitUuid);
-                    in.putExtra("patientUuid", patientUuid);
-                    in.putExtra("patientName", patientName);
-                    in.putExtra("appointmentId", 0);
-                    in.putExtra("actionTag", "new_schedule");
-                    in.putExtra("openMrsId", patient.getOpenmrs_id());
-                    in.putExtra("speciality", speciality_selected);
-                    mStartForScheduleAppointment.launch(in);
+                if (!priorityVisit) {
+                    if (isVisitSpecialityExists) {
+                        Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+                        in.putExtra("visitUuid", visitUuid);
+                        in.putExtra("patientUuid", patientUuid);
+                        in.putExtra("patientName", patientName);
+                        in.putExtra("appointmentId", 0);
+                        in.putExtra("actionTag", "new_schedule");
+                        in.putExtra("openMrsId", patient.getOpenmrs_id());
+                        in.putExtra("speciality", speciality_selected);
+                        mStartForScheduleAppointment.launch(in);
+                    } else
+                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
                 } else
-                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
-                //finish();
+                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -2501,6 +2542,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
 
             if (flag.isChecked()) {
+                priorityVisit = true;
                 try {
                     EncounterDAO encounterDAO = new EncounterDAO();
                     encounterDAO.setEmergency(visitUuid, true);

@@ -197,7 +197,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="168" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -234,7 +234,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="72" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -271,7 +271,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="21.03" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -308,7 +308,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="125/85" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -345,7 +345,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="75" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -382,7 +382,7 @@
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
                         android:lineSpacingExtra="1sp"
-                        android:text="101" />
+                        android:text="@string/no_information" />
                 </LinearLayout>
 
                 <LinearLayout
