@@ -63,4 +63,36 @@
     <string name="hint_other_risk">Enter other high risk</string>
     <string name="error_other_risk">Require Other high risk pregnancy</string>
     <string name="enter_other_ivfluid">Enter IV Fluids</string>
+    <string name="labour_completed">Labour completed</string>
+    <string name="mother_deceased">Mother deceased</string>
+    <string name="select_labour_completed">Select labour completed</string>
+    <string name="other_comment">Other Comments</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="select_birth_weight">Select Birth Weight</string>
+    <string name="select_apgar_at_1_min">Select Apgar at 1 min</string>
+    <string name="select_apgar_at_5_min">Select Apgar at 5 min</string>
+    <string name="f">F</string>
+    <string name="m">M</string>
+    <string name="o">Other</string>
+    <string name="enter_other_comment">Enter Other Comment</string>
+    <string name="comment_added_successful">Comment added successfully</string>
+    <string name="reason_added_successful">Reason added successfully</string>
+    <string name="reason_of_death">Reason Of Death</string>
+    <string name="select_labour_completed_mother">Select labour completed and mother deceased</string>
+    <string name="weight_in_kg">kg</string>
+    <string name="weight_in_gram">gm</string>
+    <string name="comments">Comments</string>
+    <string name="enter_reason_death">Enter reason of death</string>
+    <string name="data_added_successfully">Data added successfully</string>
+    <string name="enter_reason_deceased">Enter Deceased Reason</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="baby_sex">Baby Sex</string>
+    <string name="complete_visit">Complete Visit</string>
+    <string name="shift_to_c_section">Shift to C-Section</string>
+    <string name="refer_to_icu">Refer to high dependency unit / ICU</string>
+    <string name="please_enter_reason">Please enter reason</string>
+    <string name="add_details_for_labour_completed">Please add details for labour completed</string>
+    <string name="please_enter_reason_deceased">Please enter deceased reason</string>
+
 </resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_baby_status"
+        style="@style/Theme.EZazi.Material.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_input_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_baby_gender">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etLayout_baby_status"
+            style="@style/Theme.EZazi.Input.Add.Patient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_container_padding"
+            android:hint="@string/baby_status">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_baby_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                android:lineSpacingExtra="@dimen/std_4dp"
+                android:lines="5"
+                android:maxLength="300"
+                android:paddingStart="20dp"
+                android:textSize="@dimen/input_inner_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

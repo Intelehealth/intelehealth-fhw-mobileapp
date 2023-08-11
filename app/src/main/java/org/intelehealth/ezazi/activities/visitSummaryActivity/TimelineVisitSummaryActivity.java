@@ -2,10 +2,12 @@ package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -18,24 +20,43 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.Html;
+import android.text.Selection;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.R;
@@ -48,9 +69,12 @@ import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
+import org.intelehealth.ezazi.databinding.BirthOutcomeDialogBinding;
 import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogStage2AdditionalDataEzaziBinding;
+import org.intelehealth.ezazi.databinding.LabourCompleteAndMotherDeceasedDialogBinding;
+import org.intelehealth.ezazi.databinding.MotherDeceasedDialogBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
@@ -84,7 +108,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
+import timber.log.Timber;
+
+public class TimelineVisitSummaryActivity extends BaseActionBarActivity implements View.OnClickListener {
     RecyclerView recyclerView;
     TimelineAdapter adapter;
     Context context;
@@ -108,6 +134,26 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     boolean isAdded = false;
 
     private boolean hwHasEditAccess = true;
+    private MaterialTextView tvReferToOtherHospital, tvSelfDischarge, tvReferToICU, tvShiftToCSection;
+    private String dialogFor = "";
+    private EditText etOtherCommentLabour, etOtherCommentOutcome, etReasonMotherDeceased;
+    private boolean birthOutcomeSelected = false;
+    private CheckBox cbLabourCompleted, cbMotherDeceased;
+    private TextView selectedTextview;
+    private String apgar1Min, apgar5Min, birthWeightInKg, birthWeightUnit, gender, labourCompletedValue;
+
+    //private boolean isLabourCompleteSelected, isMotherDeceasedSelected, isLabourAndMotherDeceased;
+    private String selectedBirthOutcome = "";
+    private final String LABOUR_AND_MOTHER = "labourAndMother";
+    private final String LABOUR_COMPLETED = "labourCompleted";
+    private final String MOTHER_DECEASED = "motherDeceased";
+    private String babyStatus, motherStatus, otherCommentLabour, motherDeceasedReason;
+    private boolean isLabourCompletedChecked = false;
+    private boolean isMotherDeceasedChecked = false;
+    private boolean isLabourAndMotherDeceased = false;
+    private String selectedViewText = "";
+    private boolean labourCompletedSelected;
+    private BottomSheetDialog bottomSheetDialogVisitComplete;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -221,10 +267,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             choiceItems.add(item);
         }
 
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
-                .title(R.string.select_doctor)
-                .content(choiceItems)
-                .build();
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this).title(R.string.select_doctor).content(choiceItems).build();
 
         dialog.setListener(item -> {
             if (isChat) {
@@ -321,11 +364,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //            };
 
     private void showEmergencyDialog() {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .title(R.string.emergency)
-                .positiveButtonLabel(R.string.yes)
-                .content(getString(R.string.are_you_sure_to_capture_emergency_data))
-                .build();
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).title(R.string.emergency).positiveButtonLabel(R.string.yes).content(getString(R.string.are_you_sure_to_capture_emergency_data)).build();
 
         dialog.setListener(this::collectEmergencyData);
 
@@ -374,8 +413,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_view_partogram:
                 boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-                if (isTablet)
-                    showEpartogram();
+                if (isTablet) showEpartogram();
                 else showRequireTabletView();
                 break;
             case android.R.id.home:
@@ -387,11 +425,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
     private void showRequireTabletView() {
-        new ConfirmationDialogFragment.Builder(this)
-                .content(getString(R.string.this_option_available_tablet_device))
-                .positiveButtonLabel(R.string.ok)
-                .hideNegativeButton(true)
-                .build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
+        new ConfirmationDialogFragment.Builder(this).content(getString(R.string.this_option_available_tablet_device)).positiveButtonLabel(R.string.ok).hideNegativeButton(true).build().show(getSupportFragmentManager(), "ConfirmationDialogFragment");
     }
 
     private void showEpartogram() {
@@ -480,8 +514,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             hwHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
             Log.v("timeline", "patientname_1 " + patientName + " " + patientUuid + " " + visitUuid);
 
-            if (whichScreenUserCameFromTag != null &&
-                    whichScreenUserCameFromTag.equalsIgnoreCase("new")) {
+            if (whichScreenUserCameFromTag != null && whichScreenUserCameFromTag.equalsIgnoreCase("new")) {
                 triggerAlarm_Stage1_every30mins(); // Notification to show every 30min.
                 Log.v("timeline", "whichscreen: " + whichScreenUserCameFromTag);
             } else {
@@ -638,8 +671,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     private void showEndShiftDialog() {
         Log.e(TAG, "showEndShiftDialog");
-        final String stage1Options[] = {getString(R.string.move_to_stage2),
-                getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
+        final String stage1Options[] = {getString(R.string.move_to_stage2), getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
         ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
         int count = 0;
         for (String str : stage1Options) {
@@ -650,11 +682,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             count++;
         }
 
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
-                .title(R.string.select_an_option)
-                .positiveButtonLabel(R.string.yes)
-                .content(choiceItems)
-                .build();
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this).title(R.string.select_an_option).positiveButtonLabel(R.string.yes).content(choiceItems).build();
 
         dialog.setListener(item -> manageStageSelection(item.getItemIndex(), item.getItem()));
 
@@ -720,8 +748,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
     private void manageStageSelection(int position, String value) {
-        if (position == 0)
-            cancelStage1ConfirmationDialog(); // cancel and start stage 2
+        if (position == 0) cancelStage1ConfirmationDialog(); // cancel and start stage 2
         else if (position == 1) // refer other hospital // call visit complete enc.
             showReferToOtherHospitalConfirmationDialog(value);
         else if (position == 2) { // self discharge // call visit complete enc.
@@ -760,10 +787,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
     private void showConfirmationDialog(@StringRes int content, ConfirmationDialogFragment.OnConfirmationActionListener listener) {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
-                .content(getString(content))
-                .positiveButtonLabel(R.string.yes)
-                .build();
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).content(getString(content)).positiveButtonLabel(R.string.yes).build();
 
         dialog.setListener(listener);
 
@@ -784,7 +808,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         dialog.setListener(listener);
 
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void referOtherHospitalDialog(String referType) {
@@ -794,9 +817,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         showCustomViewDialog(R.string.refer_section, R.string.yes, R.string.no, binding.getRoot(), () -> {
             boolean isInserted = false;
-            String hospitalName = binding.referHospitalName.getText().toString(),
-                    doctorName = binding.referDoctorName.getText().toString(),
-                    note = binding.referNote.getText().toString();
+            String hospitalName = binding.referHospitalName.getText().toString(), doctorName = binding.referDoctorName.getText().toString(), note = binding.referNote.getText().toString();
 
             // call visitcompleteenc and add obs for refer type and referal values entered...
             try {
@@ -805,8 +826,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 e.printStackTrace();
             }
 
-            Log.v(TAG, "referValue: " + "visit uuid: " + visitUuid + ", " + referType + ", "
-                    + hospitalName + ", " + doctorName + ", " + note);
+            Log.v(TAG, "referValue: " + "visit uuid: " + visitUuid + ", " + referType + ", " + hospitalName + ", " + doctorName + ", " + note);
 
             if (isInserted) {
                 Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
@@ -936,6 +956,64 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
 
     private void birthOutcomeSelectionDialog() {
+        dialogFor = "birthoutcome";
+        BirthOutcomeDialogBinding binding = BirthOutcomeDialogBinding.inflate(getLayoutInflater(), null, true);
+        cbLabourCompleted = binding.cbLabourCompleted;
+        cbMotherDeceased = binding.cbMotherDeceased;
+        tvReferToOtherHospital = binding.tvReferToOtherHospital;
+        tvSelfDischarge = binding.tvSelfDischarge;
+        etOtherCommentOutcome = binding.etOtherCommentOutcomes;
+        tvShiftToCSection = binding.tvShiftToSection;
+        tvReferToICU = binding.tvReferToICU;
+
+        tvReferToOtherHospital.setOnClickListener(this);
+        tvSelfDischarge.setOnClickListener(this);
+        tvShiftToCSection.setOnClickListener(this);
+        tvReferToICU.setOnClickListener(this);
+
+        cbLabourCompleted.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (selectedTextview != null) {
+                    selectedTextview.clearFocus();
+                    selectedTextview.setSelected(false);
+                    etOtherCommentOutcome.clearFocus();
+                    etOtherCommentOutcome.setCursorVisible(false);
+                    hideKeyboard(TimelineVisitSummaryActivity.this);
+
+                }
+            }
+        });
+        cbMotherDeceased.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (selectedTextview != null) {
+                    selectedTextview.clearFocus();
+                    selectedTextview.setSelected(false);
+                    etOtherCommentOutcome.clearFocus();
+                    etOtherCommentOutcome.setCursorVisible(false);
+                    hideKeyboard(TimelineVisitSummaryActivity.this);
+
+                }
+            }
+        });
+
+        etOtherCommentOutcome.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                birthOutcomeSelected = false;
+                cbLabourCompleted.setChecked(false);
+                cbMotherDeceased.setChecked(false);
+                tvReferToOtherHospital.setSelected(false);
+                tvSelfDischarge.setSelected(false);
+                tvShiftToCSection.setSelected(false);
+                tvReferToICU.setSelected(false);
+                etOtherCommentOutcome.setCursorVisible(true);
+
+                showKeyboard(v);
+            }
+        });
+
+        showCustomViewDialog(R.string.additional_information, R.string.cancel, R.string.next, binding.getRoot(), this::manageBirthOutcomeSelection);
+
+/*
 
 //        positionStage = -1;
         final String[] items = {getString(R.string.live_birth), getString(R.string.still_birth),
@@ -959,6 +1037,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         dialog.setListener(item -> manageBirthOutcomeSelection(item.getItemIndex(), item.getItem()));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+*/
 
 //        value = "";
 //        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
@@ -1027,24 +1106,27 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
+/*
     private void manageBirthOutcomeSelection(int position, String value) {
         boolean isInserted = false;
         // Birth Outcome
         if (position == 0 || position == 1) {
             Log.v("birthoutcome", "value: " + value);
-            stage2captureAdditionalData(value);
+            stage2captureAdditionalData();
             Log.v("isInserted", "isInserted_livebirth: " + isInserted);
+*/
 /*                            try {
                                 isInserted = insertVisitComplete_Obs(visitUuid, value, UuidDictionary.BIRTH_OUTCOME);
                             } catch (DAOException e) {
                                 e.printStackTrace();
                                 Log.e("birthoutcome", "insert visit complete: " + e);
-                            }*/
+                            }*//*
+
         } else if (position == 2) // refer other hospital // call visit complete enc.
             referOtherHospitalDialog(value);
         else if (position == 3) { // self discharge // call visit complete enc.
             try {
-                isInserted = insertVisitCompleteObs(visitUuid,
+                isInserted = insertVisitComplete_Obs(visitUuid,
                         context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -1060,9 +1142,17 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             checkInternetAndUploadVisit_Encounter();
         }
     }
+*/
 
-    private boolean insertStage2_AdditionalData(String visitUuid, String birthoutcome, String birthWeight, String apgar1min, String apgar5Min,
-                                                String sex, String babyStatus, String mother_status) throws DAOException {
+    private boolean insertStage2_AdditionalData(String visitUuid, String birthoutcome, String birthWeight, String apgar1min, String apgar5Min, String sex, String babyStatus, String mother_status) throws DAOException {
+        Log.d(TAG, "insertStage2_AdditionalData: visitUuid : " + visitUuid);
+        Log.d(TAG, "insertStage2_AdditionalData: birthoutcome : " + birthoutcome);
+        Log.d(TAG, "insertStage2_AdditionalData: birthWeight : " + birthWeight);
+        Log.d(TAG, "insertStage2_AdditionalData: apgar1min : " + apgar1min);
+        Log.d(TAG, "insertStage2_AdditionalData: apgar5Min : " + apgar5Min);
+        Log.d(TAG, "insertStage2_AdditionalData: sex : " + sex);
+        Log.d(TAG, "insertStage2_AdditionalData: babyStatus : " + babyStatus);
+        Log.d(TAG, "insertStage2_AdditionalData: mother_status : " + mother_status);
 
         boolean isInserted = false;
         String encounterUuid = "";
@@ -1152,8 +1242,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         return isInserted;
     }
 
-    private boolean insertVisitCompleteEncounterAndObs_ReferHospital(String visitUuid, String referType,
-                                                                     String hospitalName, String doctorName, String note) throws DAOException {
+    private boolean insertVisitCompleteEncounterAndObs_ReferHospital(String visitUuid, String referType, String hospitalName, String doctorName, String note) throws DAOException {
         boolean isInserted = true;
         String encounterUuid = "";
         encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
@@ -1212,12 +1301,37 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         return isInserted;
     }
 
-    private boolean stage2captureAdditionalData(String value) {
+    private boolean stage2captureAdditionalData(String selectedBirthOutcome) {
         isAdded = false;
+
+         /*   String birthW = binding.birthWeight.getText().toString(),
+                    apgar1min = binding.apgar1min.getText().toString(),
+                    apgar5min = binding.apgar5min.getText().toString(),
+                    sexValue = binding.sex.getText().toString(),
+                    babyStatus = binding.babyStatus.getText().toString(),
+                    motherStatus = binding.motherStatus.getText().toString();
+
+            // call visitcompleteenc and add obs for additional values entered...
+            try {
+                isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+
+            if (isAdded) {
+                Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, HomeActivity.class);
+                startActivity(intent);
+                checkInternetAndUploadVisit_Encounter();
+            } else {
+                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }*/
+
+
 //        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
 //        String referOptions[] = {getString(R.string.birth_weight), getString(R.string.apgar_1min),
 //                getString(R.string.apgar_5min), getString(R.string.sex), getString(R.string.baby_status), getString(R.string.mother_status)};
-        DialogStage2AdditionalDataEzaziBinding binding = DialogStage2AdditionalDataEzaziBinding.inflate(getLayoutInflater(), null, true);
+      /*  old code - start - DialogStage2AdditionalDataEzaziBinding binding = DialogStage2AdditionalDataEzaziBinding.inflate(getLayoutInflater(), null, true);
         showCustomViewDialog(R.string.additional_information, R.string.yes, R.string.no, binding.getRoot(), () -> {
             String birthW = binding.birthWeight.getText().toString(),
                     apgar1min = binding.apgar1min.getText().toString(),
@@ -1241,7 +1355,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             } else {
                 Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
-        });
+        });  -- end*/
 //        View view = LayoutInflater.from(context).inflate(R.layout.dialog_stage2_additional_data, null);
 //        dialogBuilder.setView(view);
 //        dialogBuilder.setTitle(R.string.additional_information);
@@ -1301,6 +1415,23 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         return isAdded;
     }
 
+    private void collectDataForMotherDeceased() {
+        try {
+            boolean isInsertedMotherDeceaseFlag = insertVisitComplete_Obs(visitUuid, String.valueOf(isMotherDeceasedChecked), UuidDictionary.MOTHER_DECEASED_FLAG);
+            boolean isInsertedMotherDecease = insertVisitComplete_Obs(visitUuid, motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
+            if (isInsertedMotherDecease && isInsertedMotherDeceaseFlag) {
+                Toast.makeText(context, context.getString(R.string.reason_added_successful), Toast.LENGTH_SHORT).show();
+                bottomSheetDialogVisitComplete.dismiss();
+                Intent intent = new Intent(context, HomeActivity.class);
+                startActivity(intent);
+                checkInternetAndUploadVisit_Encounter();
+            } else {
+                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private boolean insertVisitCompleteObs(String visitUuid, String value, String conceptId) throws DAOException {
         //  EncounterDAO encounterDAO = new EncounterDAO();
@@ -1396,8 +1527,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
         // to set different alarms for different patients.
         // vistiuuid: 0 - 4 index for stage 2
         alarmManager.cancel(pendingIntent);
@@ -1408,8 +1538,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag());
         // to set different alarms for different patients.
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
@@ -1505,8 +1634,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
         // to set different alarams for different patients.
 
         /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -1531,8 +1659,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
         Log.v("timeline", "visituuid_int_30min " + visitUuid.replaceAll("[^\\d]", ""));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag()); // to set different alarams for different patients.
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag()); // to set different alarams for different patients.
 
         /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (alarmManager != null) {
@@ -1583,5 +1710,411 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 Log.e(TAG, "onGlobalLayout: keyboard close");
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        hideKeyboard(TimelineVisitSummaryActivity.this);
+
+        isLabourAndMotherDeceased = false;
+        labourCompletedSelected = false;
+
+        if (dialogFor.equals("birthoutcome")) {
+            birthOutcomeSelected = true;
+            if (etOtherCommentOutcome != null && etOtherCommentOutcome.hasFocus())
+                etOtherCommentOutcome.clearFocus();
+            cbLabourCompleted.setChecked(false);
+            cbMotherDeceased.setChecked(false);
+
+        } /*else if (dialogFor.equals("labourCompleted")) {
+            labourCompletedSelected = true;
+            if (etOtherCommentLabour != null && etOtherCommentLabour.hasFocus())
+                etOtherCommentLabour.clearFocus();
+        } else if (dialogFor.equals("labourCompletedMotherDeceased")) {
+            if ((etOtherCommentLabour != null && etOtherCommentLabour.hasFocus())) {
+                etOtherCommentOutcome.clearFocus();
+            }
+        }*/
+
+        //for labour completed and mother deceased both selected
+        if (selectedTextview != null) {
+           /* if ((selectedTextview.getId() == tvLabourCompleted.getId() && view.getId() == tvMotherDeceased.getId() || selectedTextview.getId() == tvMotherDeceased.getId() && view.getId() == tvLabourCompleted.getId())) {
+                Log.d(TAG, "onClick: in for labour completed and mother deceased");
+                isLabourAndMotherDeceased = true;
+            }
+            if (view.getId() == tvReferToOtherHospital.getId() || view.getId() == tvSelfDischarge.getId()) {
+                //unselect the other options
+                isLabourAndMotherDeceased = false;
+                tvLabourCompleted.setSelected(false);
+                tvMotherDeceased.setSelected(false);
+            }*/
+
+            if (cbLabourCompleted.isChecked() && cbMotherDeceased.isChecked()) {
+
+            } else {
+                // Unselect the previously selected view
+                selectedTextview.setSelected(false);
+            }
+        }
+        // Select the clicked view
+        view.setSelected(true);
+        selectedTextview = (TextView) view;
+        selectedViewText = "";
+        selectedViewText = ((TextView) view).getText().toString();
+    }
+
+    private void manageBirthOutcomeSelection() {
+        isLabourCompletedChecked = cbLabourCompleted.isChecked();
+        isMotherDeceasedChecked = cbMotherDeceased.isChecked();
+
+        if (!isLabourCompletedChecked && !isMotherDeceasedChecked && selectedTextview == null && etOtherCommentOutcome.getText().toString().isEmpty()) {
+            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
+        } else {
+            if (isLabourCompletedChecked && isMotherDeceasedChecked) {
+                // show ui for both labour completed and mother deceased
+                selectedBirthOutcome = LABOUR_AND_MOTHER;
+                showBottomSheetDialog(selectedBirthOutcome);
+
+            } else if (isLabourCompletedChecked) {
+
+                // show ui for labour completed only
+                selectedBirthOutcome = LABOUR_COMPLETED;
+                showBottomSheetDialog(selectedBirthOutcome);
+            } else if (isMotherDeceasedChecked) {
+                // show ui for mother deceased only
+                selectedBirthOutcome = MOTHER_DECEASED;
+                //  showBottomSheetDialog(selectedBirthOutcome);
+                showMotherDeceasedDialog();
+
+            } else if (selectedTextview.getId() == R.id.tvReferToOtherHospital) {
+                // refer other hospital // call visit complete enc.
+                referOtherHospitalDialog(value);
+
+            } else if (selectedTextview.getId() == R.id.tvSelfDischarge) {
+                // self discharge // call visit complete enc.
+                try {
+                    boolean isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
+                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
+
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+            } else if (selectedTextview.getId() == R.id.tvShiftToSection) {
+                // Shift to C-Section // call visit complete enc.
+                try {
+                    boolean isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.shift_to_c_section), UuidDictionary.REFER_TYPE);
+                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
+
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+            } else if (selectedTextview.getId() == R.id.tvReferToICU) {
+                //Refer to high dependency unit / ICU// call visit complete enc.
+                try {
+                    boolean isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.refer_to_icu), UuidDictionary.REFER_TYPE);
+                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
+
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+            } else if (!etOtherCommentOutcome.getText().toString().isEmpty()) {
+                //for other comments - REFER_TYPE
+                try {
+                    boolean isInserted = insertVisitComplete_Obs(visitUuid, etOtherCommentOutcome.getText().toString(), UuidDictionary.REFER_TYPE);
+                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
+
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    private void showToastAndUploadVisit(boolean isInserted, String message) {
+        if (isInserted) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
+            Intent intent = new Intent(context, HomeActivity.class);
+            startActivity(intent);
+            checkInternetAndUploadVisit_Encounter();
+        } else {
+            Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setDropdownsData(LabourCompleteAndMotherDeceasedDialogBinding binding) {
+        //for labour completed dropdown
+        final String[] birthOutcomeList = {getString(R.string.live_birth), getString(R.string.still_birth), getString(R.string.other_comment)};
+        ArrayAdapter<String> labourCompletedAdapter = new ArrayAdapter<>(this, R.layout.spinner_textview, birthOutcomeList);
+        binding.autotvLabourCompleted.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        binding.autotvLabourCompleted.setAdapter(labourCompletedAdapter);
+        binding.autotvLabourCompleted.setOnItemClickListener((parent, view, position, id) -> {
+            hideKeyboard(TimelineVisitSummaryActivity.this);
+            labourCompletedValue = parent.getItemAtPosition(position).toString();
+            String otherString = getString(R.string.other_comment).toLowerCase();
+            if (!labourCompletedValue.isEmpty() && labourCompletedValue.equalsIgnoreCase(otherString)) {
+                binding.etOtherComment.setEnabled(true);
+                binding.etLayoutBirthWeight.setEnabled(false);
+                binding.etLayoutApgar1.setEnabled(false);
+                binding.etLayoutApgar5.setEnabled(false);
+                binding.etLayoutBabyGender.setEnabled(false);
+                binding.etLayoutBabyStatus.setEnabled(false);
+                binding.etLayoutMotherStatus.setEnabled(false);
+            } else {
+                binding.etOtherComment.setEnabled(false);
+                binding.etLayoutBirthWeight.setEnabled(true);
+                binding.etLayoutApgar1.setEnabled(true);
+                binding.etLayoutApgar5.setEnabled(true);
+                binding.etLayoutBabyGender.setEnabled(true);
+                binding.etLayoutBabyStatus.setEnabled(true);
+                binding.etLayoutMotherStatus.setEnabled(true);
+            }
+        });
+
+        List<Integer> itemsList = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            itemsList.add(i);
+        }
+        List<Double> birthWeightList = new ArrayList<>();
+        for (double i = 0.5; i <= 5; i += 0.5) {
+            birthWeightList.add(i);
+        }
+        //for gender dropdown
+        final String[] items = {getString(R.string.female), getString(R.string.male), getString(R.string.other)};
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(this, R.layout.spinner_textview, items);
+        binding.autotvBabyGender.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        binding.autotvBabyGender.setAdapter(genderAdapter);
+        binding.autotvBabyGender.setOnItemClickListener((parent, view, position, id) -> {
+            hideKeyboard(TimelineVisitSummaryActivity.this);
+            gender = parent.getItemAtPosition(position).toString();
+        });
+
+        //for birth weight dropdown - in kg
+        ArrayAdapter<Double> weightAdapter = new ArrayAdapter<>(this, R.layout.spinner_textview, birthWeightList);
+        binding.autotvBirthWeight.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        binding.autotvBirthWeight.setAdapter(weightAdapter);
+        binding.autotvBirthWeight.setOnItemClickListener((parent, view, position, id) -> {
+            hideKeyboard(TimelineVisitSummaryActivity.this);
+            birthWeightInKg = parent.getItemAtPosition(position).toString();
+        });
+
+        //for Apgar at 1min
+        ArrayAdapter<Integer> apgar1 = new ArrayAdapter<>(this, R.layout.spinner_textview, itemsList);
+        binding.autotvApgar1min.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        binding.autotvApgar1min.setAdapter(apgar1);
+        binding.autotvApgar1min.setOnItemClickListener((parent, view, position, id) -> {
+            hideKeyboard(TimelineVisitSummaryActivity.this);
+            apgar1Min = parent.getItemAtPosition(position).toString();
+        });
+
+        //for Apgar at 5min
+        ArrayAdapter<Integer> apgar2 = new ArrayAdapter<>(this, R.layout.spinner_textview, itemsList);
+        binding.autotvApgar5min.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+        binding.autotvApgar5min.setAdapter(apgar2);
+        binding.autotvApgar5min.setOnItemClickListener((parent, view, position, id) -> {
+            hideKeyboard(TimelineVisitSummaryActivity.this);
+            apgar5Min = parent.getItemAtPosition(position).toString();
+        });
+
+    }
+
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void collectDataForLabourCompleted() {
+
+        // call visitcompleteenc and add obs for additional values entered...
+        try {
+
+            isAdded = insertStage2_AdditionalData(visitUuid, getSelectedBirthOutcomeValue(selectedBirthOutcome), birthWeightInKg, apgar1Min, apgar5Min, gender, babyStatus, motherStatus);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        if (isAdded) {
+            Toast.makeText(context, context.getString(R.string.additional_info_submitted_successfully), Toast.LENGTH_SHORT).show();
+            bottomSheetDialogVisitComplete.dismiss();
+            Intent intent = new Intent(context, HomeActivity.class);
+            startActivity(intent);
+            checkInternetAndUploadVisit_Encounter();
+
+        } else {
+            Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void collectDataForLabourAndMotherBoth() {
+        try {
+            boolean isLabourCompletedInserted = insertStage2_AdditionalData(visitUuid, getSelectedBirthOutcomeValue(selectedBirthOutcome), birthWeightInKg, apgar1Min, apgar5Min, gender, babyStatus, motherStatus);
+            boolean isMotherDeceaseInsertedFlag = insertVisitComplete_Obs(visitUuid, String.valueOf(cbMotherDeceased.isChecked()), UuidDictionary.MOTHER_DECEASED_FLAG);
+            boolean isMotherDeceaseInserted = insertVisitComplete_Obs(visitUuid, motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
+            if (isLabourCompletedInserted && isMotherDeceaseInserted && isMotherDeceaseInsertedFlag) {
+                Toast.makeText(context, context.getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();
+                bottomSheetDialogVisitComplete.dismiss();
+                Intent intent = new Intent(context, HomeActivity.class);
+                startActivity(intent);
+                checkInternetAndUploadVisit_Encounter();
+            } else {
+                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void manageUIAsPerSelectedBirthOutcome(String selectedBirthOutcome, LabourCompleteAndMotherDeceasedDialogBinding binding) {
+
+        if (selectedBirthOutcome.equals(LABOUR_AND_MOTHER)) {
+
+        } else if (selectedBirthOutcome.equals(LABOUR_COMPLETED)) {
+            binding.etLayoutDeceasedReason.setEnabled(false);
+
+        } else if (selectedBirthOutcome.equals(MOTHER_DECEASED)) {
+            showMotherDeceasedDialog();
+           /* binding.etLayoutLabour.setEnabled(false);
+            binding.etLayoutBirthWeight.setEnabled(false);
+            binding.etLayoutApgar1.setEnabled(false);
+            binding.etLayoutApgar5.setEnabled(false);
+            binding.etLayoutBabyGender.setEnabled(false);
+            binding.etLayoutBabyStatus.setEnabled(false);
+            binding.etLayoutMotherStatus.setEnabled(false);
+            binding.etLayoutOtherComment.setEnabled(false);*/
+        }
+    }
+
+    private void showBottomSheetDialog(String selectedBirthOutcome) {
+        bottomSheetDialogVisitComplete = new BottomSheetDialog(TimelineVisitSummaryActivity.this);
+        LabourCompleteAndMotherDeceasedDialogBinding binding = LabourCompleteAndMotherDeceasedDialogBinding.inflate(getLayoutInflater(), null, true);
+        bottomSheetDialogVisitComplete.setContentView(binding.getRoot());
+        bottomSheetDialogVisitComplete.setCancelable(false);
+        bottomSheetDialogVisitComplete.getWindow().setWindowAnimations(R.style.DialogAnimationSlideIn);
+        enableAndDisableAllFields(binding, false);
+        setDropdownsData(binding);
+        manageUIAsPerSelectedBirthOutcome(selectedBirthOutcome, binding);
+
+        binding.toolbar.setTitle(getString(R.string.complete_visit));
+        binding.toolbar.setNavigationOnClickListener(v -> bottomSheetDialogVisitComplete.dismiss());
+        bottomSheetDialogVisitComplete.setOnDismissListener(dialogInterface -> dialogInterface.dismiss());
+        binding.btnSubmit.setOnClickListener(v -> {
+            saveVisitCompletionDetails(binding);
+        });
+
+        bottomSheetDialogVisitComplete.show();
+    }
+
+    private void saveVisitCompletionDetails(LabourCompleteAndMotherDeceasedDialogBinding binding) {
+        babyStatus = binding.etBabyStatus.getText().toString();
+        motherStatus = binding.etMotherStatus.getText().toString();
+        otherCommentLabour = binding.etOtherComment.getText().toString();
+        motherDeceasedReason = binding.etDeceasedReason.getText().toString();
+
+        if (selectedBirthOutcome.equals(LABOUR_AND_MOTHER)) {
+            if (isValidForLabourAndMotherDeceased()) {
+                collectDataForLabourAndMotherBoth();
+            }
+
+        } else if (selectedBirthOutcome.equals(LABOUR_COMPLETED)) {
+            if ((labourCompletedValue.isEmpty() && gender.isEmpty() && birthWeightInKg.isEmpty() &&
+                    apgar1Min.isEmpty() && apgar5Min.isEmpty() && etOtherCommentLabour.getText().toString().isEmpty())) {
+                //please select/enter birth outcome
+                Toast.makeText(context, getString(R.string.add_details_for_labour_completed), Toast.LENGTH_SHORT).show();
+            } else {
+                collectDataForLabourCompleted();
+            }
+
+        } else if (selectedBirthOutcome.equals(MOTHER_DECEASED)) {
+            if (!motherDeceasedReason.isEmpty()) {
+                collectDataForMotherDeceased();
+            } else {
+                Toast.makeText(context, getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void showKeyboard(View editText) {
+        InputMethodManager imm = (InputMethodManager) TimelineVisitSummaryActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void showMotherDeceasedDialog() {
+        MotherDeceasedDialogBinding binding = MotherDeceasedDialogBinding.inflate(getLayoutInflater(), null, false);
+
+        showCustomViewDialog(R.string.mother_deceased, R.string.yes, R.string.no, binding.getRoot(), () -> {
+            boolean isInserted = false;
+            boolean isInsertedFlag = false;
+
+
+            // call visitcompleteenc and add obs for mother deceased
+            if (!binding.etMotherDeceasedReason.getText().toString().isEmpty()) {
+
+            } else {
+                Toast.makeText(context, getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
+            }
+            try {
+                isInsertedFlag = insertVisitComplete_Obs(visitUuid, String.valueOf(cbMotherDeceased.isChecked()), UuidDictionary.MOTHER_DECEASED_FLAG);
+                isInserted = insertVisitComplete_Obs(visitUuid, binding.etMotherDeceasedReason.getText().toString(), UuidDictionary.MOTHER_DECEASED);
+                if (isInsertedFlag && isInserted)
+                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
+
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+
+            if (isInserted) {
+                Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
+                bottomSheetDialogVisitComplete.dismiss();
+                Intent intent = new Intent(context, HomeActivity.class);
+                startActivity(intent);
+                checkInternetAndUploadVisit_Encounter();
+            } else {
+                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private String getSelectedBirthOutcomeValue(String selectedBirthOutcome) {
+        String selectedBirthOutcomeValue = "";
+        if (!selectedBirthOutcome.isEmpty()) {
+            if (selectedBirthOutcome.equalsIgnoreCase(LABOUR_COMPLETED)) {
+                selectedBirthOutcomeValue = getString(R.string.labour_completed);
+            } else if (selectedBirthOutcome.equalsIgnoreCase(LABOUR_AND_MOTHER)) {
+                selectedBirthOutcomeValue = getString(R.string.labour_completed);
+
+            } else if (selectedBirthOutcome.equalsIgnoreCase(MOTHER_DECEASED)) {
+                selectedBirthOutcomeValue = getString(R.string.mother_deceased);
+            }
+        }
+        return selectedBirthOutcomeValue;
+    }
+
+    private void enableAndDisableAllFields(LabourCompleteAndMotherDeceasedDialogBinding binding, boolean flag) {
+        binding.etLayoutBirthWeight.setEnabled(flag);
+        binding.etLayoutApgar1.setEnabled(flag);
+        binding.etLayoutApgar5.setEnabled(flag);
+        binding.etLayoutBabyGender.setEnabled(flag);
+        binding.etLayoutBabyStatus.setEnabled(flag);
+        binding.etLayoutMotherStatus.setEnabled(flag);
+        binding.etLayoutOtherComment.setEnabled(flag);
+    }
+
+    private boolean isValidForLabourAndMotherDeceased() {
+        //validation for labour completed and mother deceased
+        // labourCompletedValue  gender birthWeightInKg apgar1Min apgar5Min - fields for labour completed
+        boolean result = false;
+        if ((labourCompletedValue.isEmpty() && gender.isEmpty() && birthWeightInKg.isEmpty() &&
+                apgar1Min.isEmpty() && apgar5Min.isEmpty() && etOtherCommentLabour.getText().toString().isEmpty())) {
+            Toast.makeText(context, getString(R.string.add_details_for_labour_completed), Toast.LENGTH_SHORT).show();
+        } else if (motherDeceasedReason.isEmpty()) {
+            Toast.makeText(context, getString(R.string.please_enter_reason_deceased), Toast.LENGTH_SHORT).show();
+        } else {
+            result = true;
+        }
+        return result;
     }
 }

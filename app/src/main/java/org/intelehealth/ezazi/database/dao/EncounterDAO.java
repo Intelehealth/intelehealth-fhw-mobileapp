@@ -535,7 +535,6 @@ public class EncounterDAO {
             values.put("uuid", encounteruuid);
             values.put("visituuid", visitUuid);
             values.put("encounter_time", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
-//            values.put("encounter_time", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("encounter_type_uuid", ENCOUNTER_VISIT_COMPLETE);
             values.put("provider_uuid", providerUUID);
 //            values.put("modified_date", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
@@ -544,10 +543,10 @@ public class EncounterDAO {
 
             db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             //        db.setTransactionSuccessful();
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             throw new DAOException(e.getMessage(), e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        } finally {
+            //     db.endTransaction();
         }
 
         return encounteruuid;
