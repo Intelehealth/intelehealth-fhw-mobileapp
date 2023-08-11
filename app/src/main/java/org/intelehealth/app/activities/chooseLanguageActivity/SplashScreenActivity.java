@@ -73,6 +73,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     String appLanguage;
     SessionManager sessionManager = null;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
+
     String LOG_TAG = "SplashActivity";
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
@@ -270,49 +271,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }, 2000);
             }
         }
-//        else
-//        {
-//            checkPerm();
-//        }
-       /* PermissionListener permissionlistener = new PermissionListener() {
-
-            @Override
-            public void onPermissionGranted() {
-//                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-//                Timer t = new Timer();
-//                t.schedule(new splash(), 2000);
-
-//                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
-//                TempDialog.setMessage("Data migrating...");
-//                TempDialog.setCancelable(false);
-//                TempDialog.setProgress(i);
-//                TempDialog.show();
-
-
-            }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(SplashActivity.this, getString(R.string.permission_denied) + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-        };
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage(R.string.reject_permission_results)
-                .setPermissions(*//*Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_NETWORK_STATE,*//*
-                        Manifest.permission.GET_ACCOUNTS,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check();*/
     }
 
     private void nextActivity() {
-
         boolean setup = sessionManager.isSetupComplete();
-
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
         if (sessionManager.isFirstTimeLaunch()) {
@@ -322,22 +284,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             finish();
         } else {
             if (setup) {
-
-                /*if (sessionManager.isLogout()) {
-                    Logger.logD(LOG_TAG, "Starting login");
-                    Intent intent = new Intent(this, LoginActivityNew.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Logger.logD(LOG_TAG, "Starting home");
-                    Intent intent = new Intent(this, HomeScreenActivity_New.class);
-                    intent.putExtra("from", "splash");
-                    intent.putExtra("username", "");
-                    intent.putExtra("password", "");
-                    startActivity(intent);
-                    finish();
-                }*/
-
                 if (sessionManager.isEnableAppLock())
                     fingerPrintAuthenticate();
                 else
@@ -588,18 +534,21 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == GROUP_PERMISSION_REQUEST) {
             boolean allGranted = grantResults.length != 0;
+            boolean permissionsCheck = false;
             for (int grantResult : grantResults) {
+                permissionsCheck = true;
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
                     allGranted = false;
                     break;
                 }
             }
-            if (allGranted) {
-                checkPerm();
-            } else {
-                showPermissionDeniedAlert(permissions);
+            if(permissionsCheck) {
+                if (allGranted) {
+                    checkPerm();
+                } else {
+                    showPermissionDeniedAlert(permissions);
+                }
             }
-
         }
     }
 
@@ -617,36 +566,5 @@ public class SplashScreenActivity extends AppCompatActivity {
                         }
                     }
                 });
-        /*MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
-
-        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        alertdialogBuilder.setMessage(R.string.reject_permission_results);
-        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                checkPerm();
-            }
-        });
-        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-
-        AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
-
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-
-        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
-        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
-        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
     }
-
-
 }
