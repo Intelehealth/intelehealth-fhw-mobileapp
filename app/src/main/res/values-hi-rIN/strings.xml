@@ -717,6 +717,7 @@
     <string name = "booked_txt">बुक किया गया</string>
     <string name = "cancelled_txt">रद्द किया गया</string>
     <string name = "please_upload_visit">कृपया अपॉइंटमेंट बुक करने से पहले विज़िट अपलोड करें।</string>
+    <string name="no_appointment_for_priority">प्राथमिकता विज़िट के लिए अपॉइंटमेंट बुकिंग उपलब्ध नहीं है।</string>
     <string name = "appointment_booked_successfully">अपॉइंटमेंट सफलतापूर्वक बुक हो गया!</string>
     <string name="appointment_booked_failed">अपॉइंटमेंट बुक करना विफल रहा!</string>
     <string name = "postal_code_invalid_txt">कृपया मान्य पोस्टल कोड दर्ज करें</string>

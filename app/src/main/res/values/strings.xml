@@ -831,6 +831,7 @@
     <string name="booked_txt">booked</string>
     <string name="cancelled_txt">cancelled</string>
     <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
+    <string name="no_appointment_for_priority">Appointment booking is not available for priority visits.</string>
     <string name="appointment_booked_successfully">Appointment booked successfully!</string>
     <string name="appointment_booked_failed">Appointment booked failed!</string>
     <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
