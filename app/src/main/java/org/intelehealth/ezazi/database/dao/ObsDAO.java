@@ -676,7 +676,7 @@ public class ObsDAO {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? " +
-                        "AND voided='0' AND conceptuuid = ?",
+                        "AND voided IN ('0', 'false', 'FALSE') AND conceptuuid = ?",
                 new String[]{encounterUuid, UuidDictionary.OUT_OF_TIME});
 
         if (idCursor.getCount() > 0) {
@@ -699,7 +699,7 @@ public class ObsDAO {
         ContentValues values = new ContentValues();
         values.put("value", value);
         values.put("sync", "0");
-        String whereClause = " encounteruuid = ? AND conceptuuid = ? AND voided = '0'";
+        String whereClause = " encounteruuid = ? AND conceptuuid = ? AND voided IN ('0', 'false', 'FALSE')";
         String[] whereArgs = {encounterUuid, UuidDictionary.OUT_OF_TIME};
         return db.update("tbl_obs", values, whereClause, whereArgs);
     }

@@ -190,6 +190,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     } else return "";
                 }
                 });
+            } else if (conceptId.equals("9d316d82-538f-11e6-9cfe-86f436325720")) {
+                dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
             }
         } else {
 

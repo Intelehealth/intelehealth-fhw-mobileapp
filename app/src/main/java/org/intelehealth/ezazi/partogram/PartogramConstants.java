@@ -263,11 +263,11 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[4]);
-        if (sessionManager.getOxytocinValue() != null)
-            paramInfo.setParamName("Oxytocin (" + sessionManager.getOxytocinValue() + ")");
-        else
-            paramInfo.setParamName("Oxytocin (U/L, drops/min)");
-        paramInfo.setParamDateType(INPUT_INT_2_DIG_TYPE);
+//        if (sessionManager.getOxytocinValue() != null)
+//            paramInfo.setParamName("Oxytocin (" + sessionManager.getOxytocinValue() + ")");
+//        else
+        paramInfo.setParamName("Oxytocin (U/L, drops/min)");
+        paramInfo.setParamDateType(INPUT_TXT_TYPE);
         paramInfo.setConceptUUID("9d316d82-538f-11e6-9cfe-86f436325720");
         paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
