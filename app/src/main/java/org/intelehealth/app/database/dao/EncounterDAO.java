@@ -327,6 +327,31 @@ public class EncounterDAO {
 
         return isUpdated;
     }
+    public boolean updateEncounterDateTime(String encounterUuid, String DATETIME) throws DAOException {
+        boolean isUpdated = true;
+        Logger.logD("encounterdao", "update encounter date and time" + encounterUuid + "" + AppConstants.dateAndTimeUtils.currentDateTime());
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {encounterUuid};
+        try {
+            values.put("modified_date", DATETIME);
+            values.put("encounter_time", DATETIME);
+
+            int i = db.update("tbl_encounter", values, whereclause, whereargs);
+            Logger.logD(tag, "updated" + i);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD(tag, "updated" + sql.getMessage());
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+        }
+
+        return isUpdated;
+    }
 
 
     public String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {

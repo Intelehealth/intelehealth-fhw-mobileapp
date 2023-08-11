@@ -13,7 +13,9 @@ import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivi
 import org.intelehealth.app.app.IntelehealthApplication;
 
 public class VisitUtils {
-    public static void endVisit(Context activityContext, String visitUUID, String patientUuid, String followUpDate, String encounterVitals, String encounterUuidAdultIntial, String state, String patientName, String intentTag) {
+    public static void endVisit(Context activityContext, String visitUUID, String patientUuid,
+                                String followUpDate, String encounterVitals, String encounterUuidAdultIntial,
+                                String state, String patientName, String intentTag) {
         //end visit
         if (visitUUID != null && !visitUUID.isEmpty()) {
             if (followUpDate != null && !followUpDate.isEmpty()) {

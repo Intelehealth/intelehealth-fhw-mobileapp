@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.utilities.DateAndTimeUtils.formatDateFromOnetoAnother;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.minus_MinutesAgo;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
@@ -1984,7 +1986,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         try {
             VisitsDAO visitsDAO = new VisitsDAO();
-            String date = visitsDAO.getDateFromVisitUUID(visitUuid);
+            String date = visitsDAO.getDateFromVisitUUID(visitUuid, "startdate");
             String originalFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
             String targetFormat = "dd/MM/yyyy, HH:mm:ss a";
 
@@ -2102,9 +2104,11 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 Log.d(TAG, "showFollowupRescheduleDialog: " + followupValue);
                 try {
                     update_insertIntoDb_PushFollowupValues(followupValue, reasonValue);
-                } catch (DAOException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+
+                followUpDate = followupValue;   // upating the global variable here.
                 alertDialog.dismiss();
             }
         });
@@ -2116,11 +2120,14 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
     }
 
-    private void update_insertIntoDb_PushFollowupValues(String followupValue, String reasonValue) throws DAOException {
+    private void update_insertIntoDb_PushFollowupValues(String followupValue, String reasonValue) throws DAOException, ParseException {
         // 1. update value in local db ie. update the value column for the follow up obs
         // 2. just update the date and keep remark as it is and set sync = false for this entry
         // 3. Also, insert new row for this follow up in db with the REASON value and set sync = false
         // 4. Now, once data inserted in db, sync() so that this updated value be pushed to remote.
+
+        // 1. set value to textview of followup card.
+        followUpDateTextView.setText(followupValue);
 
         // 1. update localdb obs row for followup value.
         // 1. udpate followup exisitng value.
@@ -2154,12 +2161,29 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         obsDAO_IN.updateObs(obsDTO_IN);
 
+        // Visit DAO - fetch endDate.
+        VisitsDAO visitsDAO = new VisitsDAO();
+        String visitendDate = visitsDAO.getDateFromVisitUUID(visitUuid, "enddate");
+        Log.d(TAG, "endDate: " + visitendDate);  // Aug 11, 2023 04:42:30 PM
+
+        String encounterTIME_MINUS_ONE_MINUTE;
+        if (visitendDate != null) {
+        /* convert this visit end-date from: Aug 11, 2023 04:42:30 PM TO 2023-08-11T17:52:17.777+0530 format.
+         and than minus -10secs from it and store it as encounterTime and modifiedDate. */
+            encounterTIME_MINUS_ONE_MINUTE = formatDateFromOnetoAnother
+                    (visitendDate, "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            encounterTIME_MINUS_ONE_MINUTE = minus_MinutesAgo(encounterTIME_MINUS_ONE_MINUTE, 1);   // ie. minus 1mins.
+        }
+        else {
+            encounterTIME_MINUS_ONE_MINUTE = AppConstants.dateAndTimeUtils.currentDateTime();
+        }
+
         // Update encounter row
         //making flag to false in the encounter table so it will sync again
-
         try {
             encounterDAO.updateEncounterSync("false", encUUID);
-            encounterDAO.updateEncounterModifiedDate(encUUID);
+            //   encounterDAO.updateEncounterModifiedDate(encUUID);
+            encounterDAO.updateEncounterDateTime(encUUID, encounterTIME_MINUS_ONE_MINUTE);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -3777,7 +3801,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
 
 
-        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
+        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid,
+                followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
     }
 
 
@@ -3902,6 +3927,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        Log.i(TAG, "1.parseData: " + dbConceptID + " : " + dbValue + "\n");
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
@@ -3921,6 +3947,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
+                    Log.i(TAG, "2.parseData: " + dbConceptID + " : " + dbValue + "\n");
                     parseData(dbConceptID, dbValue);
                 } while (encountercursor.moveToNext());
             }
@@ -4666,6 +4693,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
+
+                        Log.i(TAG, "3.parseData: " + dbConceptID + " : " + dbValue + "\n");
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
@@ -4720,6 +4749,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
+                Log.i(TAG, "4.parseData: " + dbConceptID + " : " + dbValue + "\n");
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
@@ -4786,6 +4816,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                    Log.i(TAG, "5.parseData: " + dbConceptID + " : " + dbValue + "\n");
                     parseData(dbConceptID, dbValue);
                 } while (visitCursor.moveToNext());
             }
