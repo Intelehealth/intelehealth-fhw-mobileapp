@@ -50,6 +50,10 @@ public class PhysicalExam extends Node {
         this.pageTitlesLocale = determineTitlesLocale();
     }
 
+    public void refreshOnlyLocaleTitle() {
+        this.pageTitlesLocale = determineTitlesLocale();
+    }
+
     /**
      * When this object is first created, the constructor requires an input string of the exams for the current patient.
      * These exams are located first, and a copy of the original mind map is created using only those required exams.
@@ -83,14 +87,11 @@ public class PhysicalExam extends Node {
             }
 
 
-
-
             //Find the other exams that need to be conducted and add them in
             if (selection == null || selection.isEmpty()) {
                 //If no exams were required, just do the general ones
                 return newOptionsList;
-            }
-            else {
+            } else {
                 for (String current : selection) {
                     if (!current.trim().isEmpty()) {
                 /*
@@ -270,11 +271,11 @@ public class PhysicalExam extends Node {
                 boolean checkSet = rootStrings.add(levelOne);
 
                 if (checkSet)
-                    stringsList.add(bullet_arrow+"<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
+                    stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
                 else stringsList.add(bullet + " " + node.getLanguage());
                 if (!node.isTerminal()) {
                     String lang = node.formLanguage();
-                    Log.i(TAG, "generateFindings: "+ lang);
+                    Log.i(TAG, "generateFindings: " + lang);
                     stringsList.add(lang);
                 }
             }
@@ -301,18 +302,20 @@ public class PhysicalExam extends Node {
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
         mLanguage = mLanguage.replaceAll("% - ", "");
-        mLanguage = mLanguage.replace(next_line,"-");
-        mLanguage = mLanguage.replaceAll("-"+ bullet, next_line + bullet);
-        mLanguage = mLanguage.replaceAll("-"+"<b>", next_line +"<b>");
-        mLanguage = mLanguage.replaceAll("</b>"+ bullet,"</b>"+ next_line + bullet);
+        mLanguage = mLanguage.replace(next_line, "-");
+        mLanguage = mLanguage.replaceAll("-" + bullet, next_line + bullet);
+        mLanguage = mLanguage.replaceAll(bullet_arrow + "<b>", next_line + bullet_arrow + "<b>");
+        mLanguage = mLanguage.replaceAll("-" + "<b>", next_line + "<b>");
+        mLanguage = mLanguage.replaceAll("</b>" + bullet, "</b>" + next_line + bullet);
 
-        if(StringUtils.right(mLanguage,2).equals(" -")){
-            mLanguage = mLanguage.substring(0,mLanguage.length()-2);
+        if (StringUtils.right(mLanguage, 2).equals(" -")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 2);
         }
 
-        mLanguage = mLanguage.replaceAll("%-"," ");
+        mLanguage = mLanguage.replaceAll("%-", " ");
         return mLanguage;
     }
+
     public String generateFindingsByLocale(String localeCode) {
         String mLanguage = "";
         Set<String> rootStrings = new HashSet<>();
@@ -321,28 +324,28 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            Log.v(TAG, "getExamNode - "+node.toString() );
+            Log.v(TAG, "getExamNode - " + node.toString());
 
             String title = getPageTitlesLocale().get(i);
-            Log.v(TAG, "getPageTitlesLocale - "+node.toString() );
+            Log.v(TAG, "getPageTitlesLocale - " + node.toString());
             String[] split = title.split(" : ");
             String levelOne = split[0];
-            Log.v(TAG, "levelOne - "+levelOne );
+            Log.v(TAG, "levelOne - " + levelOne);
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
-                Log.i(TAG, "rootStrings: "+ rootStrings);
+                Log.i(TAG, "rootStrings: " + rootStrings);
                 if (checkSet)
                     //stringsList.add(bullet_arrow+"<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
-                    stringsList.add(bullet_arrow+"<b>"+levelOne + ": "+"</b>" + bullet + " " + node.findDisplay());
-                //else stringsList.add(bullet + " " + node.getLanguage());
+                    stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay());
+                    //else stringsList.add(bullet + " " + node.getLanguage());
                 else stringsList.add(bullet + " " + node.findDisplay());
-                Log.i(TAG, "stringsList: "+ stringsList);
+                Log.i(TAG, "stringsList: " + stringsList);
                 if (!node.isTerminal()) {
                     //String lang = node.formLanguage();
                     String lang = node.formQuestionAnswer(0);
-                    Log.i(TAG, "generateFindings: "+ lang);
+                    Log.i(TAG, "generateFindings: " + lang);
                     stringsList.add(lang);
-                    Log.i(TAG, "Not isTerminal - stringsList: "+ stringsList);
+                    Log.i(TAG, "Not isTerminal - stringsList: " + stringsList);
                 }
 
             }
@@ -369,16 +372,16 @@ public class PhysicalExam extends Node {
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
         mLanguage = mLanguage.replaceAll("% - ", "");
-        mLanguage = mLanguage.replace(next_line,"-");
-        mLanguage = mLanguage.replaceAll("-"+ bullet, next_line + bullet);
-        mLanguage = mLanguage.replaceAll("-"+"<b>", next_line +"<b>");
-        mLanguage = mLanguage.replaceAll("</b>"+ bullet,"</b>"+ next_line + bullet);
+        mLanguage = mLanguage.replace(next_line, "-");
+        mLanguage = mLanguage.replaceAll("-" + bullet, next_line + bullet);
+        mLanguage = mLanguage.replaceAll("-" + "<b>", next_line + "<b>");
+        mLanguage = mLanguage.replaceAll("</b>" + bullet, "</b>" + next_line + bullet);
 
-        if(StringUtils.right(mLanguage,2).equals(" -")){
-            mLanguage = mLanguage.substring(0,mLanguage.length()-2);
+        if (StringUtils.right(mLanguage, 2).equals(" -")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 2);
         }
 
-        mLanguage = mLanguage.replaceAll("%-"," ");
+        mLanguage = mLanguage.replaceAll("%-", " ");
         return mLanguage;
     }
 

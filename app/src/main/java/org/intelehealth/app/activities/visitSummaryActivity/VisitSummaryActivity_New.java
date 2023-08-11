@@ -5016,7 +5016,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 physFindingsView.setVisibility(View.VISIBLE);
                 String valueArray[] = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
                         .split("<b>General exams: </b><br/>");
-                physFindingsView.setText(Html.fromHtml(valueArray[1].replaceFirst("<b>", "<br/><b>")));
+                physFindingsView.setText(Html.fromHtml(valueArray[1]));//.replaceFirst("<b>", "<br/><b>")));
             } else {
                 //physFindingsView.setText(Html.fromHtml(value.replaceFirst("<b>", "<br/><b>")));
                 setDataForPhysicalExamSummary(physicalExamLocaleString);
@@ -5172,8 +5172,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(complainName);
-                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
-
+                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
+                view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
@@ -5274,7 +5274,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(_complain);
-                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+                Log.v("PH0_complain", _complain);
+                if(_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))){
+                    complainLabelTextView.setVisibility(View.GONE);
+                }
+                view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
+                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
@@ -5516,7 +5521,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 complainLabelTextView.setText(_complain);
                 complainLabelTextView.setVisibility(View.GONE);
                 vv.setVisibility(View.GONE);
-                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
@@ -5596,7 +5601,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
 
                 }
-
+                Log.v("visitSummaryDataList", visitSummaryDataList.size() + " visitSummaryDataList");
                 SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
 
                     @Override

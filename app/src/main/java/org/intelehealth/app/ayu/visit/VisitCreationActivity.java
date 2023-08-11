@@ -244,9 +244,10 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
         }.getType());
 
-        if (!sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty())
+        if (!sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()) {
             physicalExamMap = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid), PhysicalExam.class);
-        else
+            physicalExamMap.refreshOnlyLocaleTitle();
+        } else
             loadPhysicalExam();
 
         if (!sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty())
@@ -555,6 +556,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         ArrayList<String> selectedExamsList = new ArrayList<>(selectedExams);
         Log.v(TAG, "selectedExamsList- " + new Gson().toJson(selectedExamsList));
         physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), selectedExamsList);
+        physicalExamMap.refreshOnlyLocaleTitle();
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
             /*if (i == 0) {

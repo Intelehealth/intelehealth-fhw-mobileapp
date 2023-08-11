@@ -279,6 +279,17 @@ public class VisitUtils {
         }
     }
 
+
+    public static String getTranslatedGeneralExamString(String localeCode) {
+        if (localeCode.equalsIgnoreCase("hi")) {
+            return "सामान्य परीक्षण:";
+        } else if (localeCode.equalsIgnoreCase("or")) {
+            return "ସାଧାରଣ ପରୀକ୍ଷା:";
+        } else {
+            return "General exams:";
+        }
+    }
+
     public static String convertFtoC(String TAG, String temperature) {
         Log.i(TAG, "convertFtoC IN: " + temperature);
         if (temperature != null && temperature.length() > 0) {
