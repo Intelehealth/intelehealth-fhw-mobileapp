@@ -23,9 +23,9 @@
 
     <style name="Theme.EZazi.Input.Error" parent="TextAppearance.AppCompat">
         <item name="android:textAlignment">viewEnd</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
         <item name="android:textSize">@dimen/caption</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="Theme.EZazi.Input.Login" parent="Theme.EZazi.Input">
@@ -71,8 +71,8 @@
     <style name="LabelStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/input_label_size</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="Theme.EZazi.Text.Dialog.Title" parent="@style/LabelStyle">
@@ -80,14 +80,14 @@
     </style>
 
     <style name="Theme.EZazi.Text.Dialog.Content" parent="@style/LabelStyle">
-        <item name="fontFamily">@font/dm_sans_regular</item>
-        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:textSize">@dimen/input_inner_size</item>
     </style>
 
     <style name="Theme.EZazi.Text.Dialog.Alert.Title" parent="@style/LabelStyle">
-        <item name="fontFamily">@font/dm_sans_bold</item>
-        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textSize">@dimen/alert_text_size</item>
     </style>
 
@@ -95,8 +95,8 @@
         <item name="android:textSize">@dimen/subheading_text_size</item>
         <item name="android:textColor">@color/color_icon_btn_text</item>
         <item name="android:gravity">center</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="Theme.EZazi.Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -105,8 +105,8 @@
         <item name="android:minHeight">@dimen/input_height</item>
         <item name="android:textSize">@dimen/button_text_size</item>
         <item name="rippleColor">@color/white</item>
-        <item name="fontFamily">@font/dm_sans_bold</item>
-        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="backgroundTint">@color/btn_blue_color_selector</item>
@@ -135,7 +135,7 @@
 
     <style name="Theme.EZazi.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textSize">@dimen/forgot_pwd_size</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:paddingStart">0dp</item>
@@ -143,7 +143,7 @@
         <item name="android:paddingTop">@dimen/small_btn_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/small_btn_vertical_padding</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
         <item name="rippleColor">@color/gray_2</item>
     </style>
 
@@ -161,42 +161,42 @@
     <style name="Theme.EZazi.Screen.Title" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/screen_title_size</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_bold</item>
-        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
     </style>
 
     <style name="Theme.EZazi.Screen.Welcome" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/welcome_text_size</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="Theme.EZazi.Bottom.Menu.Text" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/bottom_menu_text_size</item>
-        <item name="fontFamily">@font/dm_sans_bold</item>
-        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
     </style>
 
     <style name="Theme.EZazi.Heading1" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/heading1</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="Theme.EZazi.Heading2" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/heading2</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="Theme.EZazi.Body" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/body</item>
-        <item name="fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="Theme.EZazi.Caption" parent="Theme.EZazi.Body">
@@ -255,8 +255,8 @@
     <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/custom_appbar_title_size</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
         <item name="lineHeight">@dimen/std_31dp</item>
 
     </style>
@@ -278,8 +278,8 @@
         <item name="textAllCaps">false</item>
         <item name="android:paddingEnd">@dimen/screen_container_padding</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_bold</item>
-        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:gravity">start</item>
     </style>
 
@@ -364,8 +364,8 @@
     <!--    <style name="Theme.EZazi.Screen.Name" parent="TextAppearance.AppCompat">-->
     <!--        <item name="android:textSize">@dimen/custom_appbar_title_size</item>-->
     <!--        <item name="android:textColor">@color/font_black_0</item>-->
-    <!--        <item name="fontFamily">@font/dm_sans_medium</item>-->
-    <!--        <item name="android:fontFamily">@font/dm_sans_medium</item>-->
+    <!--        <item name="fontFamily">@font/lato_medium</item>-->
+    <!--        <item name="android:fontFamily">@font/lato_medium</item>-->
     <!--        <item name="android:lineHeight">@dimen/std_31dp</item>-->
 
     <!--    </style>-->
@@ -388,8 +388,8 @@
     </style>
 
     <style name="Theme.EZazi.Text.Regular" parent="TextAppearance.AppCompat">
-        <item name="fontFamily">@font/dm_sans_regular</item>
-        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:textColor">@color/darkGray</item>
     </style>
 
@@ -441,15 +441,15 @@
         <item name="strokeColor">@color/colorPrimary</item>
         <item name="strokeWidth">0.5dp</item>
         <item name="android:textSize">12sp</item>
-        <item name="fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
 
     </style>
 
     <style name="LabelStyleAddPatient" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/input_label_size_add_patient</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
 
@@ -494,15 +494,15 @@
     <style name="LabelStyleSummary" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/body</item>
         <item name="android:textColor">@color/darkGray</item>
-        <item name="fontFamily">@font/dm_sans_regular</item>
-        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="LabelStyleSummaryValues" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/input_label_size_values</item>
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_regular</item>
-        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="CalendarSpinnerTheme" parent="android:Widget.Spinner">
@@ -540,8 +540,8 @@
     <style name="Textview_Validation_Error" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/validation_error_tv_size</item>
         <item name="android:textColor">@color/red</item>
-        <item name="fontFamily">@font/dm_sans_regular</item>
-        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
@@ -583,14 +583,14 @@
 
     <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_regular</item>
-        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
         <item name="android:textColor">@color/font_black_0</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="CalendarWidgetHeader" parent="android:TextAppearance.DeviceDefault.Small">
@@ -599,8 +599,8 @@
 
     <style name="Theme.EZazi.CalendarView.Selected.Date" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">@dimen/input_inner_text_size</item>
-        <item name="fontFamily">@font/dm_sans_bold</item>
-        <item name="android:fontFamily">@font/dm_sans_bold</item>
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textColor">?colorPrimary</item>
         <item name="android:background">@drawable/timepicker_timer_bg</item>
     </style>
@@ -640,7 +640,7 @@
         <item name="android:textSize">@dimen/add_patient_subheading_text_size</item>
         <item name="android:textColor">@color/color_icon_btn_text</item>
         <item name="android:gravity">center</item>
-        <item name="fontFamily">@font/dm_sans_medium</item>
-        <item name="android:fontFamily">@font/dm_sans_medium</item>
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 </resources>

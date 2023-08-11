@@ -774,6 +774,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 //            sessionManager.setOfllineOpenMRSID(patient_new.getOpenmrs_id());
         } else {
             idView.setText(getString(R.string.patient_not_registered));
+            newVisit.setEnabled(false);
         }
 
 //        if (!NetworkConnection.isOnline(getApplication())) {
@@ -1510,9 +1511,11 @@ public class PatientDetailActivity extends BaseActionBarActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-
+                String patientId = patientsDAO.getOpenmrsId(patientUuid);
                 String id = "Patient ID: " + patientsDAO.getOpenmrsId(patientUuid);
                 idView.setText(id);
+                if (patientId == null) newVisit.setEnabled(false);
+                else newVisit.setEnabled(true);
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }

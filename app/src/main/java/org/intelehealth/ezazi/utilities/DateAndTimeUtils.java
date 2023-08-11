@@ -13,6 +13,7 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -21,6 +22,19 @@ import org.intelehealth.ezazi.R;
 
 public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
+
+    public static String twoMinutesAgo(String timeStamp) throws ParseException {
+        // NOTE: Since server error -> "The encounter datetime should be between the visit start and stop dates."
+
+//        long FIVE_MINS_IN_MILLIS = 2 * 60 * 1000;
+        long TWO_MINS_IN_MILLIS = 2 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time - TWO_MINS_IN_MILLIS);
+
+        return df.format(calendar.getTime());
+    }
 
     public static float getFloat_Age_Year_Month(String date_of_birth) {
         float year_month = 0;

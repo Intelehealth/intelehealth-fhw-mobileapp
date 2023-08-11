@@ -1548,9 +1548,10 @@ public class PatientOtherInfoFragment extends Fragment {
         dialog.setListener((hours, minutes, amPm, value) -> {
             Log.d("ThemeTimePickerDialog", "value : " + value);
             boolean isPM = (hours >= 12);
-            String timeString = String.format("%02d:%02d %s", (hours == 12 || hours == 0) ? 12 : hours % 12, minutes, isPM ? "PM" : "AM");
+            String timeString = String.format("%02d:%02d %s", hours, minutes, amPm);
             Log.d(TAG, "selectTime: timeString : " + timeString);
 
+//            timeString = value;
             if (forWhichParameter.equals("admissionTimeString")) {
                 mAdmissionTimeString = timeString;
                 mAdmissionTimeTextView.setText(timeString);
@@ -1562,7 +1563,7 @@ public class PatientOtherInfoFragment extends Fragment {
                 mMembraneRupturedTimeTextView.setText(timeString);
             }
         });
-        dialog.show(getFragmentManager(), "ThemeTimePickerDialog");
+        dialog.show(getChildFragmentManager(), "ThemeTimePickerDialog");
     }
 
     private void setscreen(String patientUID) {

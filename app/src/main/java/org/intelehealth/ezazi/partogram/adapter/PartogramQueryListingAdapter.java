@@ -358,12 +358,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 //        }
     }
 
-//    private ParamInfo findDiastolicBp() {
-//        for (int i = 0; i < mItemList.size(); i++) {
-//            ParamInfo info = mItemList.get(i).getParamInfoList()
-//        }
-//    }
-
     private void validDiastolicBP(String input, int position, List<ParamInfo> paramInfos, EditText editText) {
         ParamInfo info = paramInfos.get(position);
         if (!TextUtils.isEmpty(input) && info.getParamName().equals(PartogramConstants.Params.DIASTOLIC_BP.value)) {

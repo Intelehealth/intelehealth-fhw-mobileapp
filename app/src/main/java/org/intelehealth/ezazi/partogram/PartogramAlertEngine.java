@@ -121,7 +121,7 @@ public class PartogramAlertEngine {
                     alert = "G";
                 } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P")
                         || paramInfo.getCapturedValue().equalsIgnoreCase("P1")) {
-                    alert = "Y";
+                    alert = "G";
                 } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2")
                         || paramInfo.getCapturedValue().equalsIgnoreCase("P3")) {
                     alert = "R";
@@ -131,7 +131,7 @@ public class PartogramAlertEngine {
                     alert = "G";
                 } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A")
                         || paramInfo.getCapturedValue().equalsIgnoreCase("A1")) {
-                    alert = "Y";
+                    alert = "G";
                 } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A2")
                         || paramInfo.getCapturedValue().equalsIgnoreCase("A3")) {
                     alert = "R";

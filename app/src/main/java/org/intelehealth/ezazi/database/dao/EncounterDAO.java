@@ -534,8 +534,8 @@ public class EncounterDAO {
         try {
             values.put("uuid", encounteruuid);
             values.put("visituuid", visitUuid);
-//            values.put("encounter_time", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
-            values.put("encounter_time", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("encounter_time", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
+//            values.put("encounter_time", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("encounter_type_uuid", ENCOUNTER_VISIT_COMPLETE);
             values.put("provider_uuid", providerUUID);
 //            values.put("modified_date", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
@@ -546,8 +546,8 @@ public class EncounterDAO {
             //        db.setTransactionSuccessful();
         } catch (SQLException e) {
             throw new DAOException(e.getMessage(), e);
-        } finally {
-            //     db.endTransaction();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
 
         return encounteruuid;
