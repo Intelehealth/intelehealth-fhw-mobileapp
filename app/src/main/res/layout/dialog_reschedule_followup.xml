@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:hint="Select follow up date"
             android:focusable="true"
-            android:focusableInTouchMode="true"/>
+            android:focusableInTouchMode="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

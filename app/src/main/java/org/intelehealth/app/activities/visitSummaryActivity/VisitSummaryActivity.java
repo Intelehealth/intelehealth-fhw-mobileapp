@@ -2072,10 +2072,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         positiveButton.setOnClickListener(v -> {    // Update button.
             if (et_date.getText().toString().trim().isEmpty() && et_reason.getText().toString().trim().isEmpty()) {
-                et_date.requestFocus();
-                et_date.setError("This field mandatory");
-                et_reason.setError("This field mandatory");
+                et_date.setError(context.getString(R.string.error_field_required));
+                et_reason.setError(context.getString(R.string.error_field_required));
             }
+
+            //If et_date is empty... et_reason is not empty...
+            else if (et_date.getText().toString().trim().isEmpty() && !et_reason.getText().toString().trim().isEmpty()) {
+                et_date.requestFocus();
+                et_date.setError(context.getString(R.string.error_field_required));
+            }
+
+            //If et_reason is empty... et_date is not empty...
+            else if (!et_date.getText().toString().trim().isEmpty() && et_reason.getText().toString().trim().isEmpty()) {
+                et_reason.requestFocus();
+                et_reason.setError(context.getString(R.string.error_field_required));
+            }
+
+
             else {  // ie. date is not empty ie. user has selected the date from the date picker.
                 et_date.setError(null);
                 et_reason.setError(null);
@@ -2088,7 +2101,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
                 Log.d(TAG, "showFollowupRescheduleDialog: " + followupValue);
                 try {
-                    updateIntoDb_PushFollowupValues(followupValue, reasonValue);
+                    update_insertIntoDb_PushFollowupValues(followupValue, reasonValue);
                 } catch (DAOException e) {
                     throw new RuntimeException(e);
                 }
@@ -2103,17 +2116,13 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
     }
 
-    private void updateIntoDb_PushFollowupValues(String followupValue, String reasonValue) throws DAOException {
+    private void update_insertIntoDb_PushFollowupValues(String followupValue, String reasonValue) throws DAOException {
         // 1. update value in local db ie. update the value column for the follow up obs
         // 2. just update the date and keep remark as it is and set sync = false for this entry
         // 3. Also, insert new row for this follow up in db with the REASON value and set sync = false
         // 4. Now, once data inserted in db, sync() so that this updated value be pushed to remote.
 
         // 1. update localdb obs row for followup value.
-        updateFollowup_localDB(followupValue, reasonValue);
-    }
-
-    private void updateFollowup_localDB(String followupValue, String reasonValue) throws DAOException {
         // 1. udpate followup exisitng value.
         EncounterDAO encounterDAO = new EncounterDAO();
 
@@ -2158,10 +2167,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         //sync has to be performed once the vitals are updated for the bill update feature
         SyncUtils syncUtils = new SyncUtils();
         boolean success = false;
-        success = syncUtils.syncForeground("followup");
+        success = syncUtils.syncForeground("followup");   // TODO: uncomment later.
 
         // enc - end
-
     }
 
     private void fetchVisitIdAfterSomeTime() {
