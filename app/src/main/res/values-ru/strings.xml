@@ -787,7 +787,7 @@
     <string name="doctor_is_not_available">Врач недоступен</string>
     <string name="patient_is_not_available">Пациент недоступен</string>
     <string name="others">Другое</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
+    <string name="please_enter_the_reason_details">Пожалуйста, укажите причину</string>
     <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="please_enter_reason_txt">Пожалуйста, укажите причину</string>
 
@@ -1485,5 +1485,8 @@
     <string name="patients_waiting_for_closure">3 Посещения пациентов ожидают закрытия, пожалуйста, завершите посещение.</string>
     <string name="results_for">Результаты для</string>
     <string name="priority_uppercase">Приоритет</string>
+
+    <string name="previously_scheduled_on">Ранее запланировано на</string>
+    <string name="rescheduled_on">Перенесено на</string>
 
 </resources>
