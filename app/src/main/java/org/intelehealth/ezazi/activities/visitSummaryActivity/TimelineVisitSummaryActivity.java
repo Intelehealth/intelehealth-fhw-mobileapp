@@ -808,6 +808,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
 
         dialog.setListener(listener);
 
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void referOtherHospitalDialog(String referType) {
@@ -1011,7 +1012,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             }
         });
 
-        showCustomViewDialog(R.string.additional_information, R.string.cancel, R.string.next, binding.getRoot(), this::manageBirthOutcomeSelection);
+        showCustomViewDialog(R.string.additional_information, R.string.cancel,
+                R.string.next, binding.getRoot(), this::manageBirthOutcomeSelection);
 
 /*
 
@@ -1378,7 +1380,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
 //
 //                // call visitcompleteenc and add obs for additional values entered...
 //                try {
-//                    isAdded = insertStage2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
+//                    isAdded = insertStaThge2_AdditionalData(visitUuid, value, birthW, apgar1min, apgar5min, sexValue, babyStatus, motherStatus);
 //                } catch (DAOException e) {
 //                    e.printStackTrace();
 //                }
@@ -1417,8 +1419,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
 
     private void collectDataForMotherDeceased() {
         try {
-            boolean isInsertedMotherDeceaseFlag = insertVisitComplete_Obs(visitUuid, String.valueOf(isMotherDeceasedChecked), UuidDictionary.MOTHER_DECEASED_FLAG);
-            boolean isInsertedMotherDecease = insertVisitComplete_Obs(visitUuid, motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
+            boolean isInsertedMotherDeceaseFlag = insertVisitCompleteObs(visitUuid, String.valueOf(isMotherDeceasedChecked), UuidDictionary.MOTHER_DECEASED_FLAG);
+            boolean isInsertedMotherDecease = insertVisitCompleteObs(visitUuid, motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
             if (isInsertedMotherDecease && isInsertedMotherDeceaseFlag) {
                 Toast.makeText(context, context.getString(R.string.reason_added_successful), Toast.LENGTH_SHORT).show();
                 bottomSheetDialogVisitComplete.dismiss();
@@ -1793,7 +1795,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             } else if (selectedTextview.getId() == R.id.tvSelfDischarge) {
                 // self discharge // call visit complete enc.
                 try {
-                    boolean isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
+                    boolean isInserted = insertVisitCompleteObs(visitUuid, context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
                     showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
 
                 } catch (DAOException e) {
@@ -1802,7 +1804,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             } else if (selectedTextview.getId() == R.id.tvShiftToSection) {
                 // Shift to C-Section // call visit complete enc.
                 try {
-                    boolean isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.shift_to_c_section), UuidDictionary.REFER_TYPE);
+                    boolean isInserted = insertVisitCompleteObs(visitUuid, context.getString(R.string.shift_to_c_section), UuidDictionary.REFER_TYPE);
                     showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
 
                 } catch (DAOException e) {
@@ -1811,7 +1813,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             } else if (selectedTextview.getId() == R.id.tvReferToICU) {
                 //Refer to high dependency unit / ICU// call visit complete enc.
                 try {
-                    boolean isInserted = insertVisitComplete_Obs(visitUuid, context.getString(R.string.refer_to_icu), UuidDictionary.REFER_TYPE);
+                    boolean isInserted = insertVisitCompleteObs(visitUuid, context.getString(R.string.refer_to_icu), UuidDictionary.REFER_TYPE);
                     showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
 
                 } catch (DAOException e) {
@@ -1820,7 +1822,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             } else if (!etOtherCommentOutcome.getText().toString().isEmpty()) {
                 //for other comments - REFER_TYPE
                 try {
-                    boolean isInserted = insertVisitComplete_Obs(visitUuid, etOtherCommentOutcome.getText().toString(), UuidDictionary.REFER_TYPE);
+                    boolean isInserted = insertVisitCompleteObs(visitUuid, etOtherCommentOutcome.getText().toString(), UuidDictionary.REFER_TYPE);
                     showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
 
                 } catch (DAOException e) {
@@ -1952,8 +1954,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
     private void collectDataForLabourAndMotherBoth() {
         try {
             boolean isLabourCompletedInserted = insertStage2_AdditionalData(visitUuid, getSelectedBirthOutcomeValue(selectedBirthOutcome), birthWeightInKg, apgar1Min, apgar5Min, gender, babyStatus, motherStatus);
-            boolean isMotherDeceaseInsertedFlag = insertVisitComplete_Obs(visitUuid, String.valueOf(cbMotherDeceased.isChecked()), UuidDictionary.MOTHER_DECEASED_FLAG);
-            boolean isMotherDeceaseInserted = insertVisitComplete_Obs(visitUuid, motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
+            boolean isMotherDeceaseInsertedFlag = insertVisitCompleteObs(visitUuid, String.valueOf(cbMotherDeceased.isChecked()), UuidDictionary.MOTHER_DECEASED_FLAG);
+            boolean isMotherDeceaseInserted = insertVisitCompleteObs(visitUuid, motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
             if (isLabourCompletedInserted && isMotherDeceaseInserted && isMotherDeceaseInsertedFlag) {
                 Toast.makeText(context, context.getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();
                 bottomSheetDialogVisitComplete.dismiss();
@@ -2057,8 +2059,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
                 Toast.makeText(context, getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
             }
             try {
-                isInsertedFlag = insertVisitComplete_Obs(visitUuid, String.valueOf(cbMotherDeceased.isChecked()), UuidDictionary.MOTHER_DECEASED_FLAG);
-                isInserted = insertVisitComplete_Obs(visitUuid, binding.etMotherDeceasedReason.getText().toString(), UuidDictionary.MOTHER_DECEASED);
+                isInsertedFlag = insertVisitCompleteObs(visitUuid, String.valueOf(cbMotherDeceased.isChecked()), UuidDictionary.MOTHER_DECEASED_FLAG);
+                isInserted = insertVisitCompleteObs(visitUuid, binding.etMotherDeceasedReason.getText().toString(), UuidDictionary.MOTHER_DECEASED);
                 if (isInsertedFlag && isInserted)
                     showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
 
