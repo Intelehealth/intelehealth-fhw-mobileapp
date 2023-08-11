@@ -304,6 +304,13 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
 
         Button skipButton = view.findViewById(R.id.btn_skip);
+
+        if(node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        }else{
+            AdapterUtils.setToDefault(skipButton);
+        }
+
         if (node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         final EditText editText = view.findViewById(R.id.actv_reasons);
@@ -330,6 +337,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
             public void afterTextChanged(Editable editable) {
                 if (!editable.toString().trim().equals(oldValue)) {
                     AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
                 }
             }
         });
@@ -353,22 +361,10 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 } else {
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
 
-                        if (node.isDataCaptured()) {
-                            if (node.getLanguage().contains(" : ")) {
-                                node.addLanguage(node.getLanguage().split(":")[0] + " : " + editText.getText().toString());
-                            } else {
-                                node.addLanguage(editText.getText().toString());
-                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                            }
-                        } else {
-                            if (node.getLanguage().contains("_")) {
-                                node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                            } else if (node.getLanguage().contains("%")) {
-                                node.addLanguage(editText.getText().toString());
-                            } else {
-                                node.addLanguage(node.getLanguage() + " : " + editText.getText().toString());
-                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                            }
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else{
+                            node.addLanguage(editText.getText().toString());
                         }
 
                        /* if (node.getLanguage().contains("_")) {
@@ -400,16 +396,17 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         //   node.setSelected(true);
                         //}
                     }
+                    AdapterUtils.setToDisable(skipButton);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
 
+                        }
+                    });
+                    // scroll little bit
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
                 }
-                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
-                    @Override
-                    public void onFinish() {
 
-                    }
-                });
-                // scroll little bit
-                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
 
             }
         });
@@ -446,6 +443,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
+        final Button skipButton = view.findViewById(R.id.btn_skip);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
@@ -468,10 +466,16 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                 displayDateButton.setText(dateString);
                 VisitUtils.scrollNow(mRecyclerView, 400, 0, 400);
                 AdapterUtils.setToDefault(submitButton);
+                AdapterUtils.setToDefault(skipButton);
             }
         });
         //holder.skipButton.setVisibility(View.GONE);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+
+        if(node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        }else{
+            AdapterUtils.setToDefault(skipButton);
+        }
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {

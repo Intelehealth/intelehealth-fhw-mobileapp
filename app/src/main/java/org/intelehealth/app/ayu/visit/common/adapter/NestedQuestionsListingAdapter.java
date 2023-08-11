@@ -639,7 +639,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
             holder.submitButton.setVisibility(View.VISIBLE);
             holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-
+            if (selectedNode.isDataCaptured()) {
+                AdapterUtils.setToDisable(holder.skipButton);
+            } else {
+                AdapterUtils.setToDefault(holder.skipButton);
+            }
         } else {
             holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
             holder.submitButton.setVisibility(View.GONE);
@@ -778,6 +782,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         }
                     }
                     AdapterUtils.setToDefault(holder.submitButton);
+                    AdapterUtils.setToDefault(holder.skipButton);
                     /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
                     holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
 
@@ -927,6 +932,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         String finalOldDataNumber = oldDataNumber;
         String finalOldDataType = oldDataType;
 
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -967,8 +978,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
                 String newNumber = numberRangeSpinner.getSelectedItem().toString();
-                if (!newNumber.equals(finalOldDataNumber))
+                if (!newNumber.equals(finalOldDataNumber)) {
                     AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
             }
 
             @Override
@@ -994,8 +1007,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
                 String newType = durationTypeSpinner.getSelectedItem().toString();
-                if (!newType.equals(finalOldDataType))
+                if (!newType.equals(finalOldDataType)) {
                     AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
             }
 
             @Override
@@ -1044,6 +1059,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 parentNode.setDataCaptured(true);
 
                 //notifyDataSetChanged();
+                AdapterUtils.setToDisable(skipButton);
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
@@ -1118,6 +1134,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+        Button skipButton = view.findViewById(R.id.btn_skip);
 
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
@@ -1139,10 +1156,15 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             public void afterTextChanged(Editable editable) {
                 if (!editable.toString().trim().equals(oldValue)) {
                     AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
                 }
             }
         });
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -1178,11 +1200,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else if (node.getLanguage().contains("%")) {
+                        } else{
                             node.addLanguage(editText.getText().toString());
-                        } else {
-                            node.addLanguage(node.getLanguage() + " : " + editText.getText().toString());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
                         node.setSelected(true);
                         //holder.node.setSelected(true);
@@ -1213,6 +1232,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         //}
                     }
                     //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
@@ -1244,6 +1264,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
+        Button skipButton = view.findViewById(R.id.btn_skip);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
@@ -1267,10 +1288,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             public void afterTextChanged(Editable editable) {
                 if (!editable.toString().trim().equals(oldValue)) {
                     AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
                 }
             }
         });
-        Button skipButton = view.findViewById(R.id.btn_skip);
+
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -1302,22 +1329,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 } else {
 
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                        if (node.isDataCaptured()) {
-                            if (node.getLanguage().contains(" : ")) {
-                                node.addLanguage(node.getLanguage().split(":")[0] + " : " + editText.getText().toString());
-                            } else {
-                                node.addLanguage(editText.getText().toString());
-                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                            }
-                        } else {
-                            if (node.getLanguage().contains("_")) {
-                                node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                            } else if (node.getLanguage().contains("%")) {
-                                node.addLanguage(editText.getText().toString());
-                            } else {
-                                node.addLanguage(node.getLanguage() + " : " + editText.getText().toString());
-                                //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                            }
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else{
+                            node.addLanguage(editText.getText().toString());
                         }
                         node.setSelected(true);
                         //holder.node.setSelected(true);
@@ -1347,6 +1362,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         //}
                     }
                     //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
@@ -1388,6 +1404,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Log.v(TAG, "addDateView - " + node.getLanguage());
         String langVal = node.getLanguage();
+        Button skipButton = view.findViewById(R.id.btn_skip);
+
         if (langVal != null && !langVal.isEmpty() && !langVal.equals("%") && node.isDataCaptured()) {
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
@@ -1425,10 +1443,15 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 displayDateButton.setTag(dateString);
                 VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400);
                 AdapterUtils.setToDefault(submitButton);
+                AdapterUtils.setToDefault(skipButton);
             }
         });
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
         //holder.skipButton.setVisibility(View.GONE);
-        Button skipButton = view.findViewById(R.id.btn_skip);
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -1477,6 +1500,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     parentNode.setDataCaptured(true);
 
                     //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
@@ -1533,6 +1557,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onClick(View view) {
                     if (mItemList.get(index).isSelected()) {
+                        AdapterUtils.setToDisable(skipButton);
                         AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                             @Override
                             public void onFinish() {

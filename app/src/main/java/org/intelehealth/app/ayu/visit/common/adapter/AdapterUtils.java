@@ -44,5 +44,14 @@ public class AdapterUtils {
     public static void setToDefault(Button button){
         button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
         button.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
+        button.setClickable(true);
+        button.setEnabled(true);
+    }
+
+    public static void setToDisable(Button button){
+        button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+        button.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
+        button.setClickable(false);
+        button.setEnabled(false);
     }
 }
