@@ -4,8 +4,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:background="@drawable/container_bg_rounded"
         android:layout_height="wrap_content"
+        android:background="@drawable/container_bg_rounded"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -18,15 +18,16 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical"
                     app:navigationIcon="@drawable/baseline_close_24"
                     app:popupTheme="@style/Theme.EZazi.PopupOverlay" />
 
@@ -304,40 +305,79 @@
                         android:layout_marginTop="@dimen/dialog_input_margin_top"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/card_mother_status"
-                        app:strokeColor="@android:color/transparent"
-                        app:strokeWidth="0dp">
+                        app:layout_constraintTop_toBottomOf="@id/card_mother_status">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/etLayout_other_comment"
-                            style="@style/Theme.EZazi.Input.Login"
+                            style="@style/Theme.EZazi.Input.Add.Patient"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:boxStrokeColor="@color/colorLoginInputStroke"
-                            app:boxStrokeWidth="@dimen/input_stroke_size"
-                            app:counterEnabled="true"
-                            app:counterMaxLength="300"
-                            app:endIconMode="clear_text">
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/baby_status">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_other_comment"
-                                style="@style/Theme.EZazi.Input.Dialog.Stage2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/white"
                                 android:gravity="start"
-                                android:hint="@string/enter_other_comment"
-                                android:imeOptions="actionDone"
-                                android:inputType="textMultiLine"
+                                android:imeOptions="actionNext"
+                                android:importantForAutofill="no"
+                                android:inputType="none"
                                 android:lineSpacingExtra="@dimen/std_4dp"
                                 android:lines="5"
                                 android:maxLength="300"
                                 android:paddingStart="20dp"
-                                android:textColor="@color/colorInputText"
                                 android:textSize="@dimen/input_inner_size" />
-
                         </com.google.android.material.textfield.TextInputLayout>
+
                     </com.google.android.material.card.MaterialCardView>
+
+
+                    <!--
+                                        <com.google.android.material.card.MaterialCardView
+                                            android:id="@+id/card_other_comment"
+                                            style="@style/Theme.EZazi.Material.CardView"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/dialog_input_margin_top"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@id/card_mother_status"
+                                            app:strokeColor="@android:color/transparent"
+                                            app:strokeWidth="0dp">
+
+                                            <com.google.android.material.textfield.TextInputLayout
+                                                android:id="@+id/etLayout_other_comment"
+                                                style="@style/Theme.EZazi.Input.Login"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="@dimen/list_container_padding"
+                                                app:boxStrokeColor="@color/colorLoginInputStroke"
+                                                app:boxStrokeWidth="@dimen/input_stroke_size"
+                                                app:counterEnabled="true"
+                                                app:counterMaxLength="300"
+                                                app:endIconMode="clear_text">
+
+                                                <com.google.android.material.textfield.TextInputEditText
+                                                    android:id="@+id/et_other_comment"
+                                                    style="@style/Theme.EZazi.Input.Dialog.Stage2"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:backgroundTint="@color/white"
+                                                    android:gravity="start"
+                                                    android:hint="@string/enter_other_comment"
+                                                    android:imeOptions="actionDone"
+                                                    android:inputType="textMultiLine"
+                                                    android:lineSpacingExtra="@dimen/std_4dp"
+                                                    android:lines="5"
+                                                    android:maxLength="300"
+                                                    android:paddingStart="20dp"
+                                                    android:textColor="@color/colorInputText"
+                                                    android:textSize="@dimen/input_inner_size" />
+
+                                            </com.google.android.material.textfield.TextInputLayout>
+                                        </com.google.android.material.card.MaterialCardView>
+                    -->
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_deceased_reason"

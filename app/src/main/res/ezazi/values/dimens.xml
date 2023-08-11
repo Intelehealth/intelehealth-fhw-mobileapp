@@ -282,5 +282,6 @@
     <dimen name="tab_margin_from_text">@dimen/std_16dp</dimen>
     <dimen name="dialog_input_margin_top">10dp</dimen>
     <dimen name="tv_labour_margin_end">30dp</dimen>
+    <dimen name="dropdown_max_height_dialog">140dp</dimen>
 
 </resources>

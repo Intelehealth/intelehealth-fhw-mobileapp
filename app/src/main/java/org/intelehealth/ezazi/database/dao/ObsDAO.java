@@ -208,9 +208,9 @@ public class ObsDAO {
     }
 
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
-        if (obsDTO.size() > 0) {
+       /* ##remove##kz if (obsDTO.size() > 0) {
             return false;
-        }
+        }*/
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
