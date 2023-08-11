@@ -62,4 +62,5 @@
     <string name="other_risk">Other High Risk Pregnancy*</string>
     <string name="hint_other_risk">Enter other high risk</string>
     <string name="error_other_risk">Require Other high risk pregnancy</string>
+    <string name="enter_other_ivfluid">Enter IV Fluids</string>
 </resources>

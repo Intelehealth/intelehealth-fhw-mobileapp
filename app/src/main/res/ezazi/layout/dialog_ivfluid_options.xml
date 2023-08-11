@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="items"
+            type="String[]" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/list_container_padding">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvRingerLactate"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_dialog_list_item"
+            android:onClick="@{clickListener}"
+            android:padding="@dimen/small_btn_horizontal_padding"
+            android:text="@{items[0]}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Yes" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvNormalSaline"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@drawable/selector_dialog_list_item"
+            android:onClick="@{clickListener}"
+            android:padding="@dimen/small_btn_horizontal_padding"
+            android:text="@{items[1]}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRingerLactate"
+            tools:text="Yes" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvDextrose"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@drawable/selector_dialog_list_item"
+            android:onClick="@{clickListener}"
+            android:padding="@dimen/small_btn_horizontal_padding"
+            android:text="@{items[2]}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNormalSaline"
+            tools:text="Yes" />
+
+        <EditText
+            android:id="@+id/etOtherFluid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@drawable/selector_dialog_list_item"
+            android:gravity="center_vertical"
+            android:hint="@{items[3]}"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="200"
+            android:padding="@dimen/small_btn_horizontal_padding"
+            android:textSize="@dimen/input_inner_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDextrose"
+            tools:text="@string/enter_other_ivfluid" />
+
+        <!--        <androidx.appcompat.widget.LinearLayoutCompat-->
+        <!--            android:id="@+id/clBirthWeight"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="@dimen/list_container_padding"-->
+        <!--            android:background="@drawable/selector_dialog_list_item"-->
+        <!--            android:padding="@dimen/screen_container_padding"-->
+        <!--            android:weightSum="2"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/tvDextrose">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvBirthWeight"-->
+        <!--                style="@style/Theme.EZazi.Text.Dialog.Content"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="center_vertical"-->
+        <!--                android:layout_weight="0.8"-->
+        <!--                android:text="@{items[3]}"-->
+        <!--                android:textSize="@dimen/caption"-->
+        <!--                tools:text="Title"-->
+        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                app:layout_constraintEnd_toStartOf="@id/birth_weight"-->
+        <!--                app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--            -->
+
+        <!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -22,16 +22,15 @@
             android:layout_height="wrap_content"
             android:text="Param name"
             android:textSize="@dimen/caption"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/radioYesNoGroup"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/radioYesNoGroup" />
 
         <RadioGroup
             android:id="@+id/radioYesNoGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="@dimen/obs_input_min_width">
@@ -51,6 +50,18 @@
                 android:layout_marginStart="@dimen/screen_padding"
                 android:text="@string/no" />
         </RadioGroup>
+
+        <TextView
+            android:id="@+id/tvSelectedValue"
+            style="@style/LabelStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/screen_container_padding"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radioYesNoGroup"
+            app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

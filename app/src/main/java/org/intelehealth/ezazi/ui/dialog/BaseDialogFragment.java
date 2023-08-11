@@ -35,6 +35,7 @@ import java.util.Objects;
 abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements OnDialogActionListener, View.OnClickListener {
     public static final String ARGS = "dialog_args";
     protected DialogArg<T> args;
+    private boolean requireValidation;
 
     public static Bundle getDialogArgument(DialogArg<?> arg) {
         Bundle bundle = new Bundle();
@@ -90,7 +91,8 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
     public void onClick(View view) {
         if (view.getId() == R.id.btnSubmit) {
             onSubmit();
-            dismiss();
+            if (!requireValidation)
+                dismiss();
         } else if (view.getId() == R.id.btnDismiss) {
             onDismiss();
             dismiss();
@@ -133,6 +135,10 @@ abstract class BaseDialogFragment<T> extends AppCompatDialogFragment implements 
 
     public boolean isWrapContentDialog() {
         return false;
+    }
+
+    public void requireValidationBeforeDismiss(boolean isRequire) {
+        this.requireValidation = isRequire;
     }
 
     /**
