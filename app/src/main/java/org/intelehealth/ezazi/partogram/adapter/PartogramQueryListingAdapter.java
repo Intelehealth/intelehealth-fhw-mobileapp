@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -256,10 +257,14 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         if (!TextUtils.isEmpty(selected.getText())) selected.setVisibility(View.VISIBLE);
         RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.radioYes) {
+            RadioButton radioButton = tempView.findViewById(checkedId);
+            if (checkedId == R.id.radioYes && radioButton.isChecked()) {
                 showIVFluidDialog(title, info.getOptions(), info, tempView);
-            } else {
-                info.setCapturedValue("");
+            } else if (checkedId == R.id.radioNo && radioButton.isChecked()) {
+                if (!TextUtils.isEmpty(info.getCapturedValue())) {
+                    info.setCapturedValue("");
+                    selected.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -282,7 +287,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                uncheckAllOptions(binding);
+                if (s.length() > 0)
+                    uncheckAllOptions(binding);
             }
 
             @Override
@@ -311,23 +317,26 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onAccept() {
                 if (TextUtils.isEmpty(selected.getText()) && TextUtils.isEmpty(binding.etOtherFluid.getText())) {
-                    Toast.makeText(mContext, "Please choose the any option", Toast.LENGTH_LONG).show();
-                } else if (TextUtils.isEmpty(selected.getText())) {
+                    Toast.makeText(mContext, "Please choose the any one option", Toast.LENGTH_LONG).show();
+                } else if (!TextUtils.isEmpty(binding.etOtherFluid.getText())) {
                     info.setCapturedValue(binding.etOtherFluid.getText().toString());
                     selected.setText(info.getCapturedValue());
+                    if (info.getCapturedValue() != null && info.getCapturedValue().length() > 0)
+                        selected.setVisibility(View.VISIBLE);
                     dialog.dismiss();
                 } else dialog.dismiss();
             }
 
             @Override
             public void onDecline() {
+                RadioGroup radioGroup = view.findViewById(R.id.radioYesNoGroup);
                 if (selected.getTag() != null) {
                     String oldValue = (String) selected.getTag();
                     info.setCapturedValue(oldValue);
                     selected.setVisibility(View.VISIBLE);
+                    radioGroup.check(R.id.radioYes);
                 } else {
                     selected.setVisibility(View.GONE);
-                    RadioGroup radioGroup = view.findViewById(R.id.radioYesNoGroup);
                     radioGroup.check(R.id.radioNo);
                 }
                 selected.setText(info.getCapturedValue());
