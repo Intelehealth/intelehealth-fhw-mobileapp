@@ -561,7 +561,8 @@ public class VisitsDAO {
                 .select("V.uuid, V.patientuuid, V.locationuuid, V.startdate, V.enddate, V.creator, V.visit_type_uuid")
                 .from("tbl_visit V")
                 .join(" LEFT OUTER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid ")
-                .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " + "AND V.voided = '0' AND VA.value = '" + providerId + "'")
+                .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
+                        "AND V.voided = '0' AND VA.value = '" + providerId + "' AND V.enddate IS NULL ")
                 .groupBy("V.uuid").orderBy("V.startdate")
                 .orderIn("DESC")
                 .build();
