@@ -559,9 +559,12 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                 button.setTag(2);
                 button.setText(getString(R.string.view_more));
                 updateOutOfTimeOutcomeText(outcome);
+                button.setOnClickListener(outOfTimeClickListener);
+            } else if (!hwHasEditAccess) {
+                button.setVisibility(View.GONE);
+            } else {
+                button.setVisibility(View.VISIBLE);
             }
-            button.setOnClickListener(outOfTimeClickListener);
-            button.setVisibility(View.VISIBLE);
         } else {
             button.setVisibility(View.GONE);
         }
