@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
+import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.content.Context;
@@ -278,12 +280,23 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
         int pendingCountTotalVisits = getCurrentMonthsVisits(false);
         int countReceivedPrescription = getCurrentMonthsVisits(true);
+
         int total = pendingCountTotalVisits + countReceivedPrescription;
         prescriptionCountTextView.setText(countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " "  + total);
-        int countPendingCloseVisits = getThisMonthsNotEndedVisits();
+
+      //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
-        countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int countPendingCloseVisits = recentNotEndedVisits().size() + olderNotEndedVisits().size();    // IDA: 1337 - fetching wrong data.
+                getActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits)));
+            }
+        }).start();
+
+
         getUpcomingAppointments();
+
         int count = countPendingFollowupVisits();
         TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
         countPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
