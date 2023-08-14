@@ -294,7 +294,7 @@
                     android:textAppearance="@style/you_can_add"
                     android:textSize="@dimen/fu_male_textsize"
                     android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/older_nodata"
@@ -307,7 +307,7 @@
                     android:textAppearance="@style/caption"
                     android:textColor="@null"
                     android:textSize="@dimen/fu_male_textsize"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_older"
@@ -317,7 +317,7 @@
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/margin_5"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
                     tools:listitem="@layout/followup_list_item" />
