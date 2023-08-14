@@ -282,7 +282,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         int countReceivedPrescription = getCurrentMonthsVisits(true);
 
         int total = pendingCountTotalVisits + countReceivedPrescription;
-        prescriptionCountTextView.setText(countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " "  + total);
+        prescriptionCountTextView.setText(countReceivedPrescription + " " +
+                getResources().getString(R.string.out_of) + " "  + total + " " +
+                getResources().getString(R.string.received).toLowerCase());
 
       //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
