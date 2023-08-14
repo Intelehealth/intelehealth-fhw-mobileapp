@@ -2,7 +2,7 @@ package org.intelehealth.app.activities.identificationActivity;
 
 import static android.app.Activity.RESULT_OK;
 import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
-import static org.intelehealth.app.utilities.StringUtils.inputFilter_Name;
+import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -151,11 +151,11 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         address_icon = getActivity().findViewById(R.id.addresslocation_icon);
         other_icon = getActivity().findViewById(R.id.other_icon);
         mFirstNameEditText = view.findViewById(R.id.firstname_edittext);
-        mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
         mMiddleNameEditText = view.findViewById(R.id.middlename_edittext);
-        mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
         mLastNameEditText = view.findViewById(R.id.lastname_edittext);
-        mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
         mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
         mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
         mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
