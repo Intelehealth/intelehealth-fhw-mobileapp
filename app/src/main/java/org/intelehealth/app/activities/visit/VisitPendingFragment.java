@@ -153,6 +153,7 @@ public class VisitPendingFragment extends Fragment {
         priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
+        olderList = new ArrayList<>();  // IDA-1347 ticket.
     }
 
     private void defaultData() {
@@ -846,7 +847,7 @@ public class VisitPendingFragment extends Fragment {
 //        List<PrescriptionModel> month = new ArrayList<>();
 
         recent.addAll(recentList);
-        older.addAll(olderList);
+      //  older.addAll(olderList);
 //        month.addAll(monthsList);
 
         if (!query.isEmpty()) {
