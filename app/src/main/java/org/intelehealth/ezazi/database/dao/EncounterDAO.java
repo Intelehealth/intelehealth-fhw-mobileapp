@@ -89,7 +89,7 @@ public class EncounterDAO {
     public boolean isEncounterAlreadyAvailable(String visitUUid, String encounterTypeUUID) {
         boolean flag = true;
         if (visitUUid == null || encounterTypeUUID == null) return false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid  = ? and encounter_type_uuid  = ? COLLATE NOCASE limit 1", new String[]{visitUUid, encounterTypeUUID});
         try {
             if (cursor == null || cursor.getCount() == 0) {
