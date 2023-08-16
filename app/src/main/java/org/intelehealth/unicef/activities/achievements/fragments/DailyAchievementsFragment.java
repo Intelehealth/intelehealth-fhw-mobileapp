@@ -153,7 +153,7 @@ public class DailyAchievementsFragment extends Fragment {
 
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
         Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startDate, endDate);
-        overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
+        overallUsageStats = aggregateStatsMap.get("org.intelehealth.unicef");
 
         requireActivity().runOnUiThread(() -> {
             String totalTimeSpent = "";

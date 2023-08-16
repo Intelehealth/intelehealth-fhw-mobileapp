@@ -1488,5 +1488,12 @@
 
     <string name="previously_scheduled_on">Ранее запланировано на</string>
     <string name="rescheduled_on">Перенесено на</string>
+    <string name="please_wait_sync_progress">Пожалуйста, подождите немного, пока приложение синхронизируется.</string>
+    <string name="search_txt_enter">Введите имя пациента или ID</string>
+    <string name="please_wait_app_reset">Пожалуйста, подождите немного, пока приложение перезагрузится.</string>
+    <string name="button_continue">Продолжить</string>
+    <string name="patient_registered">Пациент зарегистрирован!</string>
+    <string name="does_patient_start_visit_now">Хочет ли пациент начать визит сейчас?</string>
+    <string name="appointment_denied_message">Пожалуйста, проверьте экран записи на прием</string>
 
 </resources>

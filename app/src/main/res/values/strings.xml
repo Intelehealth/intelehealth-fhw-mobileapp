@@ -2139,6 +2139,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="tag_prescription_pending">Prescription pending</string>
     <string name="filter_my_patients">My Patients</string>
     <string name="priority_uppercase">PRIORITY</string>
-
+    <string name="appointment_denied_message">Please check the Appointments screen this visit\'s appointment.</string>
 
 </resources>

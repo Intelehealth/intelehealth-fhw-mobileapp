@@ -224,7 +224,7 @@
             <LinearLayout
                 android:id="@+id/ll_total_time_spent"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
                 android:layout_weight="1"
                 android:background="@drawable/ui2_patients_card_bg_1"

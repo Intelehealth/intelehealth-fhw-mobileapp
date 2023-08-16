@@ -48,6 +48,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -72,6 +73,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -101,6 +103,8 @@ import org.intelehealth.unicef.activities.visit.EndVisitActivity;
 import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
+import org.intelehealth.unicef.appointment.model.AppointmentInfo;
 import org.intelehealth.unicef.appointmentNew.MyAppointmentActivity;
 import org.intelehealth.unicef.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.unicef.ayu.visit.VisitCreationActivity;
@@ -184,7 +188,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private float float_ageYear_Month;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
-    Boolean isPastVisit = false, isVisitSpecialityExists = false;
+    Boolean isPastVisit = false, isVisitSpecialityExists = false, doesAppointmentExist = false;
     Boolean isReceiverRegistered = false;
     ArrayList<String> physicalExams;
     VisitSummaryActivity_New.DownloadPrescriptionService downloadPrescriptionService;
@@ -609,6 +613,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             add_additional_doc.setVisibility(View.VISIBLE);
             editAddDocs.setVisibility(View.VISIBLE);
         }
+    }
+
+    private Boolean checkIfAppointmentExists(String visitUUID) {
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        return appointmentDAO.getAppointmentByVisitId(visitUUID) != null;
     }
 
     private int mOpenCount = 0;
@@ -1038,6 +1047,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
 
+            doesAppointmentExist = checkIfAppointmentExists(visitUUID);
 
             editAddDocs.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2283,20 +2293,24 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isVisitSpecialityExists) {
-                    Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
-                    in.putExtra("visitUuid", visitUuid);
-                    in.putExtra("patientUuid", patientUuid);
-                    in.putExtra("patientName", patientName);
-                    in.putExtra("appointmentId", 0);
-                    in.putExtra("actionTag", "new_schedule");
-                    in.putExtra("openMrsId", patient.getOpenmrs_id());
-                    in.putExtra("speciality", speciality_selected);
-                    mStartForScheduleAppointment.launch(in);
-                } else
-                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
-                //finish();
+                if (!doesAppointmentExist) {
+                    if (isVisitSpecialityExists) {
+                        Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+                        in.putExtra("visitUuid", visitUuid);
+                        in.putExtra("patientUuid", patientUuid);
+                        in.putExtra("patientName", patientName);
+                        in.putExtra("appointmentId", 0);
+                        in.putExtra("actionTag", "new_schedule");
+                        in.putExtra("openMrsId", patient.getOpenmrs_id());
+                        in.putExtra("speciality", speciality_selected);
+                        mStartForScheduleAppointment.launch(in);
+                    } else
+                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                    //finish();
 
+                } else {
+                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getText(R.string.appointment_denied_message), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -2694,6 +2708,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Button positive_btn = convertView.findViewById(R.id.positive_btn);
         Button negative_btn = convertView.findViewById(R.id.negative_btn);
         negative_btn.setVisibility(View.GONE);  // as this view requires only one button so other button has hidden.
+
+        LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.weight = 2.0f;
+        positive_btn.setLayoutParams(params);
 
         icon.setImageDrawable(drawable);
         dialog_title.setText(title);
