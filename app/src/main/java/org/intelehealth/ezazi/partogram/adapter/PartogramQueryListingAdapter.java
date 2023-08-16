@@ -230,9 +230,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         return;
                     }
                 }
-
-                clearDiastolic(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), position);
-                validDiastolicBP(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), dataEditText);
             }
 
             @Override
@@ -242,6 +239,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 } else {
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
+                clearDiastolic(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), position);
+                validDiastolicBP(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), dataEditText);
             }
         });
     }
@@ -254,15 +253,26 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView selected = tempView.findViewById(R.id.tvSelectedValue);
         selected.setTag(info.getCapturedValue());
         selected.setText(info.getCapturedValue());
-        if (!TextUtils.isEmpty(selected.getText())) selected.setVisibility(View.VISIBLE);
         RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
+
+        if (info.getCapturedValue() != null &&
+                !TextUtils.isEmpty(info.getCapturedValue())
+                && !info.getCapturedValue().equalsIgnoreCase("NO")) {
+            selected.setVisibility(View.VISIBLE);
+            radioGroup.check(R.id.radioYes);
+        } else {
+            radioGroup.check(R.id.radioNo);
+            info.setCapturedValue("No");
+            selected.setVisibility(View.GONE);
+        }
+
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton radioButton = tempView.findViewById(checkedId);
             if (checkedId == R.id.radioYes && radioButton.isChecked()) {
                 showIVFluidDialog(title, info.getOptions(), info, tempView);
             } else if (checkedId == R.id.radioNo && radioButton.isChecked()) {
                 if (!TextUtils.isEmpty(info.getCapturedValue())) {
-                    info.setCapturedValue("");
+                    info.setCapturedValue("NO");
                     selected.setVisibility(View.GONE);
                 }
             }
@@ -333,8 +343,11 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 if (selected.getTag() != null) {
                     String oldValue = (String) selected.getTag();
                     info.setCapturedValue(oldValue);
-                    selected.setVisibility(View.VISIBLE);
-                    radioGroup.check(R.id.radioYes);
+                    String value = (String) selected.getTag();
+                    if (!value.equalsIgnoreCase("NO")) {
+                        selected.setVisibility(View.VISIBLE);
+                        radioGroup.check(R.id.radioYes);
+                    }
                 } else {
                     selected.setVisibility(View.GONE);
                     radioGroup.check(R.id.radioNo);
@@ -379,10 +392,12 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     Toast.makeText(mContext, "Diastolic BP must be less than Systolic BP", Toast.LENGTH_LONG).show();
                     editText.setText("");
                     editText.requestFocus();
+                    info.setCapturedValue("");
                 }
             } else {
                 editText.setText("");
                 editText.requestFocus();
+                info.setCapturedValue("");
                 Toast.makeText(mContext, "Enter Systolic BP before Diastolic BP", Toast.LENGTH_LONG).show();
             }
         }

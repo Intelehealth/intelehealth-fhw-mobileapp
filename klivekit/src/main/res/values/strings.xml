@@ -78,5 +78,6 @@
     <string name="accept">Accept</string>
     <string name="doctor_profile_picture">Doctor profile picture</string>
     <string name="poor_connection">Poor Connection</string>
-    <string name="remote_participant_mic_off_status">Remote participant mic off status</string>
+    <string name="remote_participant_mic_off_status" translatable="false">Remote participant mic off status</string>
+    <string name="sender_image" translatable="false">Sender Image</string>
 </resources>

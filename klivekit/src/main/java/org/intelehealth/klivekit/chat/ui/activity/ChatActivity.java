@@ -83,9 +83,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -425,7 +423,7 @@ public class ChatActivity extends AppCompatActivity {
             String msgDay = message.getMessageDay();
             Log.e(TAG, "updateListAdapter: MessageDay[" + i + "]=>" + msgDay);
             if (!msgDay.equals(messageDay)) {
-                messages.add(DayHeader.buildHeader(message.getCreatedAt()));
+                messages.add(DayHeader.buildHeader(message.createdDate()));
                 messageDay = msgDay;
             }
             messages.add(message);
@@ -449,8 +447,8 @@ public class ChatActivity extends AppCompatActivity {
         Collections.sort(messages, (o1, o2) -> {
             try {
                 if (o1.isHeader() || o2.isHeader()) return -1;
-                Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getCreatedAt());
-                Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getCreatedAt());
+                Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.createdDate());
+                Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.createdDate());
                 return b.compareTo(a);
             } catch (ParseException e) {
                 return -1;
@@ -551,11 +549,11 @@ public class ChatActivity extends AppCompatActivity {
             if (list.get(0) instanceof ChatMessage) {
                 ChatMessage lastMsg = (ChatMessage) list.get(0);
                 if (!lastMsg.getMessageDay().equals(message.getMessageDay())) {
-                    mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
+                    mChatListingAdapter.addMessage(DayHeader.buildHeader(message.createdDate()));
                 }
             }
         } else {
-            mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
+            mChatListingAdapter.addMessage(DayHeader.buildHeader(message.createdDate()));
         }
 
 

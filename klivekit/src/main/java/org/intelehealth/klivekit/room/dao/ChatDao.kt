@@ -24,7 +24,7 @@ interface ChatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMessage(message: ChatMessage)
 
-    @Query("UPDATE tbl_chat_message SET status= :status where messageId =:messageId")
+    @Query("UPDATE tbl_chat_message SET messageStatus= :status where messageId =:messageId")
     suspend fun changeMessageStatus(messageId: String, status: String)
 
     @Query("DELETE FROM tbl_chat_message")
