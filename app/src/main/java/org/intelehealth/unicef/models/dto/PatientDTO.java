@@ -65,6 +65,9 @@ public class PatientDTO implements Serializable {
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+    @SerializedName("creatoruuid")
+    private String creator_uuid;
+
     private String son_dau_wife;
     private String occupation;
     private String nationalID;
@@ -262,7 +265,7 @@ public class PatientDTO implements Serializable {
         this.prescription_exists = prescription_exists;
     }
 
-    public String  getSon_dau_wife() {
+    public String getSon_dau_wife() {
         return son_dau_wife;
     }
 
@@ -308,6 +311,14 @@ public class PatientDTO implements Serializable {
 
     public void setNationalID(String nationalID) {
         this.nationalID = nationalID;
+    }
+
+    public String getCreator_uuid() {
+        return creator_uuid;
+    }
+
+    public void setCreator_uuid(String creator_uuid) {
+        this.creator_uuid = creator_uuid;
     }
 
     @Override
