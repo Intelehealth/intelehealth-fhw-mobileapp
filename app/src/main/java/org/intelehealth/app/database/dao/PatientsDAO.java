@@ -611,7 +611,7 @@ public class PatientsDAO {
     }
 
     public static List<PatientDTO> getQueryPatients(String query) {
-        String search = query.trim().replaceAll("\\s", "");
+        String search = query/*.trim().replaceAll("\\s", "")*/;
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -642,8 +642,8 @@ public class PatientsDAO {
                         " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " +
                         "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
                         "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
-                        "(first_name || last_name) LIKE '%" + search + "%' OR openmrs_id " +
-                        "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
+                        "(first_name || last_name) LIKE '%" + search + "%'" +
+                        "OR openmrs_id " + "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
                 //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
                 try {
                     if (searchCursor.moveToFirst()) {
@@ -672,8 +672,11 @@ public class PatientsDAO {
             final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
                     "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
                     "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
-                    "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR " +
-                    "openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
+                    "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
+                    "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " +
+                    "OR middle_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
+                    "OR first_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
+                    " OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
 
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
             try {

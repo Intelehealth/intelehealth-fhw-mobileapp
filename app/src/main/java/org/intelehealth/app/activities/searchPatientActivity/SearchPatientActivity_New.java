@@ -154,7 +154,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+                iconClear.setVisibility(View.GONE);
+                iconSearch.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -163,6 +166,8 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                     allPatientsTV.setText(getString(R.string.all_patients_txt));
                     query = "";
                     doQuery(query);
+                    iconClear.setVisibility(View.GONE);
+                    iconSearch.setVisibility(View.VISIBLE);
                 }
 //                else
 //                    iconClear.setVisibility(View.VISIBLE);
@@ -301,6 +306,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             @Override
             public void onSelect(String data) {
                 mSearchEditText.setText(data);
+                mSearchEditText.setSelection(mSearchEditText.getText().length());
                 iconSearch.performClick();
             }
 
