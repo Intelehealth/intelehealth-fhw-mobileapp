@@ -91,6 +91,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
+import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -163,6 +164,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     IntentFilter filter;
     Button startVisitBtn;
     EncounterDTO encounterDTO;
+    ImageView cancelBtn;
     //private boolean returning;
     //private String encounterAdultIntials = "";
     //String phistory = "";
@@ -177,12 +179,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private boolean returning;
     private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
+    String tag = "";
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, HomeScreenActivity_New.class);
-        startActivity(intent);
     }
 
     @Override
@@ -216,6 +217,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
         Intent intent = getIntent();
         if (intent != null) {
+            tag = intent.getStringExtra("tag");
+
             if (intent.hasExtra("BUNDLE")) {
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
@@ -350,6 +353,13 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -445,24 +455,6 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
         cursor.close();
 
-//                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
-//                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
-//                        null, null, null);
-//                if (cursor1.moveToFirst()) {
-//                    // rows present
-//                    do {
-//                        fhistory = fhistory + cursor1.getString(0);
-//                    }
-//                    while (cursor1.moveToNext());
-//                    returning = true;
-//                    sessionManager.setReturning(returning);
-//                }
-//                cursor1.close();
-
-        // Will display data for patient as it is present in database
-        // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
-        // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
-
         Intent intent2 = new Intent(PatientDetailActivity2.this, VisitCreationActivity.class);
         String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
         String patientUuid = patientDTO.getUuid();
@@ -531,6 +523,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         personal_edit = findViewById(R.id.personal_edit);
         address_edit = findViewById(R.id.address_edit);
         others_edit = findViewById(R.id.others_edit);
+        cancelbtn = findViewById(R.id.cancelbtn);
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
 
@@ -1114,7 +1107,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             state = getResources().getString(R.string.no_state_added);
         }
-        patientstate.setText(getStateTranslated(state,sessionManager.getAppLanguage()));
+        patientstate.setText(getStateTranslated(state, sessionManager.getAppLanguage()));
 
         // setting district and city
         String[] district_city = patientDTO.getCityvillage().trim().split(":");
@@ -1403,9 +1396,9 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
             String sName = mStateDistMaster.getStateDataList().get(i).getState();
             if (sName.equalsIgnoreCase(state)) {
-                if(language.equalsIgnoreCase("hi"))
+                if (language.equalsIgnoreCase("hi"))
                     desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
-                else if(language.equalsIgnoreCase("en"))
+                else if (language.equalsIgnoreCase("en"))
                     desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
                 break;
             }
@@ -1428,10 +1421,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
 
         for (int i = 0; i <= distDataList.size(); i++) {
-            if(distDataList.get(i).getName().equalsIgnoreCase(district)) {
-                if(language.equalsIgnoreCase("hi"))
+            if (distDataList.get(i).getName().equalsIgnoreCase(district)) {
+                if (language.equalsIgnoreCase("hi"))
                     desiredVal = distDataList.get(i).getNameHindi();
-                else if(language.equalsIgnoreCase("en"))
+                else if (language.equalsIgnoreCase("en"))
                     desiredVal = distDataList.get(i).getName();
                 break;
             }
@@ -1494,6 +1487,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     }
 
     public void backPress(View view) {
+        Intent intent = new Intent(this, SearchPatientActivity_New.class);
+        startActivity(intent);
         finish();
     }
 
@@ -1872,8 +1867,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             } else {
                 findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
             }
-
-
         }
     }
+
 }

@@ -172,7 +172,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                     Intent intent = new Intent(context, PatientDetailActivity2.class);
                     intent.putExtra("patientUuid", patientDTO.getUuid());
                     intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
-                    intent.putExtra("tag", "newPatient");
+                    intent.putExtra("tag", "searchPatient");
                     intent.putExtra("hasPrescription", "false");
                     //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
                     //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
