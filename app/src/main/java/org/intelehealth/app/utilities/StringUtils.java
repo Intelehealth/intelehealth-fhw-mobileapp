@@ -3961,6 +3961,36 @@ public final class StringUtils {
         }
     };
 
+    public static InputFilter inputFilter_SearchBar = new InputFilter() { //filter input for all other fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int i2, int i3) {
+            boolean keepOriginal = true;
+            StringBuilder sb = new StringBuilder(end - start);
+            for (int i = start; i < end; i++) {
+                char c = charSequence.charAt(i);
+                if (isCharAllowed(c)) // put your condition here
+                    sb.append(c);
+                else
+                    keepOriginal = false;
+            }
+            if (keepOriginal)
+                return null;
+            else {
+                if (charSequence instanceof Spanned) {
+                    SpannableString sp = new SpannableString(sb);
+                    TextUtils.copySpansFrom((Spanned) charSequence, start, sb.length(), null, sp, 0);
+                    return sp;
+                } else {
+                    return sb;
+                }
+            }
+        }
+
+        private boolean isCharAllowed(char c) {
+            return Character.isLetterOrDigit(c) || Character.valueOf(c).equals('-') || Character.valueOf(c).equals(' ');
+        }
+    };
+
     public static String formatDoubleValues(Double value) {
         DecimalFormat df = new DecimalFormat("0.0");
         df.setRoundingMode(RoundingMode.HALF_UP);

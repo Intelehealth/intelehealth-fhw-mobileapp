@@ -3,6 +3,8 @@ package org.intelehealth.app.activities.searchPatientActivity;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
+import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
+import static org.intelehealth.app.utilities.StringUtils.inputFilter_SearchBar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +16,16 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -71,7 +79,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     private SQLiteDatabase db;
     private ImageButton backbtn;
     View dividerView;
-    ImageView iconSearch;
+    ImageView iconSearch, iconClear;
 
     private RecyclerView mSearchHistoryRecyclerView;
 
@@ -83,6 +91,8 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
         mSearchEditText = findViewById(R.id.search_txt_enter);
+        mSearchEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_SearchBar}); //maxlength 25
+
         search_hint_text = findViewById(R.id.search_hint_text);
         view_nopatientfound = findViewById(R.id.view_nopatientfound);
         backbtn = findViewById(R.id.backbtn);
@@ -90,6 +100,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         allPatientsTV = findViewById(R.id.all_patients_tv);
         addPatientTV = findViewById(R.id.add_new_patientTV);
         iconSearch = findViewById(R.id.icon_search);
+        iconClear = findViewById(R.id.icon_clear);
 
 
         mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
@@ -113,34 +124,29 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
         });
 
-        iconSearch.setOnClickListener(new View.OnClickListener() {
+        iconClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!mSearchEditText.getText().toString().isEmpty()) {
-                    //dividerView.setVisibility(View.GONE);
-                    //allPatientsTV.setVisibility(View.GONE);
-                    String text = mSearchEditText.getText().toString();
-                    if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                        allPatientsTV.setText( "\"" + text + "\"" + " " + getResources().getString(R.string.results_for));
-                    else
-                        allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
-                    mSearchEditText.setTextColor(getResources().getColor(R.color.white));
-                    managePreviousSearchStorage(text);
-//                  sessionManager.setPreviousSearchQuery(text); // previous search feature.
-                    query = text;
-                    doQuery(text);
-
-                } else {
-                    allPatientsTV.setText(getString(R.string.all_patients_txt));
-                    query = "";
-                    doQuery(query);
-
+                    mSearchEditText.setText("");
+                    view.setVisibility(View.GONE);
+                    iconSearch.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+        iconSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String searchText = mSearchEditText.getText().toString();
+                performSearch(searchText);
+            }
+        });
+
         backbtn.setOnClickListener(v -> {
             finish();
         });
+
         mSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -148,8 +154,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+                iconClear.setVisibility(View.GONE);
+                iconSearch.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -158,9 +166,44 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                     allPatientsTV.setText(getString(R.string.all_patients_txt));
                     query = "";
                     doQuery(query);
+                    iconClear.setVisibility(View.GONE);
+                    iconSearch.setVisibility(View.VISIBLE);
                 }
+//                else
+//                    iconClear.setVisibility(View.VISIBLE);
             }
         });
+
+        mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch(mSearchEditText.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void performSearch(String searchText) {
+        if (!searchText.isEmpty()) {
+            iconSearch.setVisibility(View.GONE);
+            iconClear.setVisibility(View.VISIBLE);
+            String text = searchText;
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                allPatientsTV.setText("\"" + text + "\"" + " " + getResources().getString(R.string.results_for));
+            else
+                allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
+            mSearchEditText.setTextColor(getResources().getColor(R.color.white));
+            managePreviousSearchStorage(text);
+            query = text;
+            doQuery(text);
+        } else {
+            allPatientsTV.setText(getString(R.string.all_patients_txt));
+            query = "";
+            doQuery(query);
+        }
     }
 
     private void managePreviousSearchStorage(String text) {
@@ -263,6 +306,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             @Override
             public void onSelect(String data) {
                 mSearchEditText.setText(data);
+                mSearchEditText.setSelection(mSearchEditText.getText().length());
                 iconSearch.performClick();
             }
 
@@ -379,4 +423,5 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         mSearchEditText.setText("");
         view.setVisibility(View.GONE);
     }
-}
+
+    }
