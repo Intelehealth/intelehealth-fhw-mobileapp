@@ -66,7 +66,11 @@ public class PatientDTO implements Serializable {
     @Expose
     private Boolean syncd;
     @SerializedName("creatoruuid")
+    @Expose
     private String creator_uuid;
+    @SerializedName("datecreated")
+    @Expose
+    private String dateCreated;
 
     private String son_dau_wife;
     private String occupation;
@@ -319,6 +323,14 @@ public class PatientDTO implements Serializable {
 
     public void setCreator_uuid(String creator_uuid) {
         this.creator_uuid = creator_uuid;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     @Override

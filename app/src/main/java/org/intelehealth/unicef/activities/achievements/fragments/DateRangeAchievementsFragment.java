@@ -18,9 +18,11 @@ import androidx.fragment.app.Fragment;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.models.Patient;
 import org.intelehealth.unicef.models.dto.EncounterDTO;
 import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.models.dto.PatientAttributesDTO;
+import org.intelehealth.unicef.models.dto.PatientDTO;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringUtils;
@@ -140,26 +142,22 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void setPatientsCreatedInRange() {
-        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        List<String> patientDTOList = new ArrayList<>();
 
-        String patientsCreatedTodayQuery = "SELECT DISTINCT(patientuuid), value FROM tbl_patient_attribute WHERE patientuuid IN (SELECT DISTINCT(patientuuid) FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"84f94425-789d-4293-a0d8-9dc01dbb4f07\" AND value = ?) AND person_attribute_type_uuid = \"ffc8ebee-f70c-4743-bc3c-2fe4ac843245\" ";
+        String patientsCreatedTodayQuery = "SELECT date_created FROM tbl_patient WHERE creator_uuid = ?";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        final Cursor rangePatientsCreatedCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID()});
+        final Cursor rangePatientsCreatedCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getCreatorID()});
 
         if (rangePatientsCreatedCursor.moveToFirst()) {
             do {
-                String patientUuid = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("patientuuid"));
-                String value = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("value"));
-                PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setPatientuuid(patientUuid);
-                patientAttributesDTO.setValue(value);
-                patientAttributesDTOList.add(patientAttributesDTO);
+                String dateCreated = rangePatientsCreatedCursor.getString(rangePatientsCreatedCursor.getColumnIndexOrThrow("date_created"));
+                patientDTOList.add(dateCreated);
             } while (rangePatientsCreatedCursor.moveToNext());
         }
 
         int numberOfPatients = 0;
-        if (!patientAttributesDTOList.isEmpty()) {
-            numberOfPatients = countPatientsCreatedBetweenRange(patientAttributesDTOList);
+        if (!patientDTOList.isEmpty()) {
+            numberOfPatients = countPatientsCreatedBetweenRange(patientDTOList);
         }
 
         int finalCount = numberOfPatients;
@@ -244,10 +242,11 @@ public class DateRangeAchievementsFragment extends Fragment {
         });
     }
 
-    private int countPatientsCreatedBetweenRange(List<PatientAttributesDTO> patientAttributesDTOList) {
+    private int countPatientsCreatedBetweenRange(List<String> patientDTOList) {
         int numberOfPatients = 0;
-        for (PatientAttributesDTO dto : patientAttributesDTOList) {
-            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(dto.getValue(), startDate, endDate, "dd MMM, yyyy")) {
+        for (String date : patientDTOList) {
+            String convertedDate = DateAndTimeUtils.formatDateFromOnetoAnother(date, "yyyy-MM-dd hh:mm:ss", "dd MMM, yyyy");
+            if (DateAndTimeUtils.isGivenDateBetweenTwoDates(convertedDate, startDate, endDate, "dd MMM, yyyy")) {
                 numberOfPatients++;
             }
         }

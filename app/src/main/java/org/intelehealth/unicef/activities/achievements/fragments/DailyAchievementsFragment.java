@@ -101,9 +101,9 @@ public class DailyAchievementsFragment extends Fragment {
 
     // get the number patients who were Created today as per their provider uuid
     private void setPatientsCreatedToday() {
-        String patientsCreatedTodayQuery = "SELECT COUNT(DISTINCT patientuuid) FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"84f94425-789d-4293-a0d8-9dc01dbb4f07\" AND value = ? AND patientuuid IN (SELECT patientuuid FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"ffc8ebee-f70c-4743-bc3c-2fe4ac843245\" AND value = ?)";
+        String patientsCreatedTodayQuery = "SELECT COUNT(DISTINCT uuid) FROM tbl_patient WHERE creator_uuid = ? AND date_created LIKE '" + todaysDateInYYYYMMDD + "%'";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        final Cursor todayPatientsCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID(), todaysDate});
+        final Cursor todayPatientsCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getCreatorID()});
         todayPatientsCursor.moveToFirst();
         String todayPatientsCount = todayPatientsCursor.getString(todayPatientsCursor.getColumnIndex(todayPatientsCursor.getColumnName(0)));
         requireActivity().runOnUiThread(() -> tvPatientsCreatedToday.setText(todayPatientsCount));

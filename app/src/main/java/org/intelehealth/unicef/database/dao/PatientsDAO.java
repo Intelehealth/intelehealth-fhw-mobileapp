@@ -73,6 +73,7 @@ public class PatientsDAO {
             values.put("state_province", patient.getStateprovince());
             values.put("city_village", patient.getCityvillage());
             values.put("creator_uuid", patient.getCreator_uuid());
+            values.put("date_created", patient.getDateCreated());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());

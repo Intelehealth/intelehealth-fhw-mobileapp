@@ -73,9 +73,9 @@ public class OverallAchievementsFragment extends Fragment {
 
     // get the overall number of visits that were ended by the current health worker
     private void setOverallPatientsCreated() {
-        String patientsCreatedTodayQuery = "SELECT COUNT(DISTINCT patientuuid) FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"84f94425-789d-4293-a0d8-9dc01dbb4f07\" AND value = ?";
+        String patientsCreatedTodayQuery = "SELECT COUNT(DISTINCT uuid) FROM tbl_patient WHERE creator_uuid = ?";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        final Cursor overallPatientsCreatedCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID()});
+        final Cursor overallPatientsCreatedCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getCreatorID()});
         overallPatientsCreatedCursor.moveToFirst();
         String overallPatientsCreatedCount = overallPatientsCreatedCursor.getString(overallPatientsCreatedCursor.getColumnIndex(overallPatientsCreatedCursor.getColumnName(0)));
         requireActivity().runOnUiThread(() -> tvOverallPatientsAdded.setText(overallPatientsCreatedCount));
