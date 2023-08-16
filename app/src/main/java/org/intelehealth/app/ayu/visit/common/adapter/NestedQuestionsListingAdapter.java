@@ -841,7 +841,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
-        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
         newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -855,7 +855,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                node.setImageUploaded(false);
                 //openCamera(getImagePath(), "");
+                node.setImageUploaded(false);
+                node.setDataCaptured(false);
                 mLastImageCaptureSelectedNodeIndex = index;
                 mOnItemSelection.onCameraRequest();
             }
@@ -866,6 +869,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
+                        node.setImageUploaded(true);
                         mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
 
                     }
@@ -880,11 +884,15 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
                 @Override
                 public void onImageRemoved(int index, String image) {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
                     mOnItemSelection.onImageRemoved(index, image);
                 }
 
                 @Override
                 public void onNewImageRequest() {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
                     mLastImageCaptureSelectedNodeIndex = index;
                     mOnItemSelection.onCameraRequest();
                 }
