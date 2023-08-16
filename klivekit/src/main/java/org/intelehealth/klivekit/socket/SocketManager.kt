@@ -53,6 +53,7 @@ open class SocketManager {
             socket?.on(EVENT_CALL_REJECT_BY_DR, emitter(EVENT_CALL_REJECT_BY_DR))
             socket?.on(EVENT_CALL_CANCEL_BY_DR, emitter(EVENT_CALL_CANCEL_BY_DR))
             socket?.on(EVENT_MSG_DELIVERED, emitter(EVENT_MSG_DELIVERED))
+            socket?.on(EVENT_CALL_TIME_UP, emitter(EVENT_CALL_TIME_UP))
             socket?.connect() ?: Timber.e { "Socket is null" }
         } ?: Timber.e { "Socket url must not be empty" }
     }
@@ -75,6 +76,7 @@ open class SocketManager {
         if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
             val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
             Gson().fromJson(json, ChatMessage::class.java)?.let {
+                Timber.e { "activeRoomId => $activeRoomId" }
                 if (it.patientId.equals(activeRoomId).not()) showChatNotification(it)
             }
         }
@@ -139,6 +141,7 @@ open class SocketManager {
         socket?.off(EVENT_CALL_REJECT_BY_DR)
         socket?.off(EVENT_CALL_CANCEL_BY_DR)
         socket?.off(EVENT_MSG_DELIVERED)
+        socket?.off(EVENT_CALL_TIME_UP)
         socket?.disconnect()
     }
 
@@ -176,6 +179,7 @@ open class SocketManager {
         const val EVENT_CALL_CANCEL_BY_DR = "cancel_dr"
         const val EVENT_ACK_MSG_RECEIVED = "ack_msg_received"
         const val EVENT_MSG_DELIVERED = "msg_delivered"
+        const val EVENT_CALL_TIME_UP = "call_time_up"
 
         // Chat event
         const val EVENT_MESSAGE_RECEIVED = "message_received" // message read by receiver

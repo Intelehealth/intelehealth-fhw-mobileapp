@@ -121,6 +121,12 @@ public class AppConstants {
 
     public static final String NOT_APPLICABLE = "NA";
 
+    public static final String PRIMARY = "Primary";
+
+    public static final String SECONDARY = "Secondary";
+
+    public static final String NOT_APPLICABLE_FULL_TEXT = "Not Applicable";
+
     public static final String OTHER_OPTION = "Other";
 
     public static String getFirebaseRTDBUrl() {

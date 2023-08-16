@@ -130,12 +130,16 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             it?.let { checkCallDisconnectReason(it) }
         }
 
-        videoCallViewModel.callTimeUpStatus.observe(this) {
-            if (it) {
-                socketViewModel.emit(SocketManager.EVENT_NO_ANSWER, "app")
-                showToast("Call time up")
-                finish()
-            }
+        videoCallViewModel.callTimeUpStatus.observe(this) { callTimeUp(it) }
+        socketViewModel.eventCallTimeUp.observe(this) { callTimeUp(it) }
+    }
+
+    private fun callTimeUp(it: Boolean) {
+        if (it) {
+            socketViewModel.emit(SocketManager.EVENT_NO_ANSWER, "app")
+            videoCallViewModel.stopCallTimeoutTimer()
+            showToast("Call time up")
+            finish()
         }
     }
 

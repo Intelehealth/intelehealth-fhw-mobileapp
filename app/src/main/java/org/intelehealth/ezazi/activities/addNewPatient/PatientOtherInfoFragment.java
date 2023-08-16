@@ -891,12 +891,14 @@ public class PatientOtherInfoFragment extends Fragment {
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //SecondaryDoctor
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute(PatientAttributesDTO.Columns.SECONDARY_DOCTOR.value));
-            patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString) + "@#@" + mSecondaryDoctorTextView.getText());
-            patientAttributesDTOList.add(patientAttributesDTO);
+            if (mSecondaryDoctorTextView.getText().length() > 0) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute(PatientAttributesDTO.Columns.SECONDARY_DOCTOR.value));
+                patientAttributesDTO.setValue(StringUtils.getValue(mSecondaryDoctorUUIDString) + "@#@" + mSecondaryDoctorTextView.getText());
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             Log.d(TAG, "onPatientCreateClicked: country : " + patientDTO.getCountry());
             Log.d(TAG, "onPatientCreateClicked: state : " + patientDTO.getStateprovince());
@@ -1322,19 +1324,19 @@ public class PatientOtherInfoFragment extends Fragment {
             tvErrorPrimaryDoctor.setVisibility(View.GONE);
             cardPrimaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
-        if (TextUtils.isEmpty(mSecondaryDoctorTextView.getText().toString())) {
-            setFocus(mSecondaryDoctorTextView);
-         /*   mSecondaryDoctorTextView.requestFocus();
-
-            tvErrorSecondaryDoctor.setVisibility(View.VISIBLE);
-            tvErrorSecondaryDoctor.setText(getString(R.string.select_secondary_doctor));
-            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
-            errorDetailsList.add(new ErrorManagerModel(mSecondaryDoctorTextView, tvErrorSecondaryDoctor, getString(R.string.select_secondary_doctor), cardSecondaryDoctor));
-
-        } else {
-            tvErrorSecondaryDoctor.setVisibility(View.GONE);
-            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-        }
+//        if (TextUtils.isEmpty(mSecondaryDoctorTextView.getText().toString())) {
+//            setFocus(mSecondaryDoctorTextView);
+//         /*   mSecondaryDoctorTextView.requestFocus();
+//
+//            tvErrorSecondaryDoctor.setVisibility(View.VISIBLE);
+//            tvErrorSecondaryDoctor.setText(getString(R.string.select_secondary_doctor));
+//            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+//            errorDetailsList.add(new ErrorManagerModel(mSecondaryDoctorTextView, tvErrorSecondaryDoctor, getString(R.string.select_secondary_doctor), cardSecondaryDoctor));
+//
+//        } else {
+//            tvErrorSecondaryDoctor.setVisibility(View.GONE);
+//            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+//        }
 //        if (TextUtils.isEmpty(etBedNumber.getText().toString())) {
 //            setFocus(etBedNumber);
 //          /*  etBedNumber.requestFocus();
@@ -1417,7 +1419,9 @@ public class PatientOtherInfoFragment extends Fragment {
 
         patientAttributesModel.setHospitalMaternity(mHospitalMaternityString);
         patientAttributesModel.setPrimaryDoctor(mPrimaryDoctorTextView.getText().toString());
-        patientAttributesModel.setSecondaryDoctor(mSecondaryDoctorTextView.getText().toString());
+        if (mSecondaryDoctorTextView.getText().length() > 0) {
+            patientAttributesModel.setSecondaryDoctor(mSecondaryDoctorTextView.getText().toString());
+        }
 
         patientAttributesModel.setRiskFactors(mRiskFactorsString);
         if (!TextUtils.isEmpty(etBedNumber.getText().toString())) {
@@ -1516,22 +1520,27 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         }
         ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
-        int selectedId = 0;
         for (int i = 0; i < providerDoctorList.size(); i++) {
             SingChoiceItem item = new SingChoiceItem();
             item.setItem(providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName());
             item.setItemId(providerDoctorList.get(i).getUserUuid());
             item.setItemIndex(i);
+            item.setSelected(mSecondaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()));
             choiceItems.add(item);
-            if (mSecondaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()))
-                selectedId = i;
         }
+
+        SingChoiceItem itemNA = new SingChoiceItem();
+        itemNA.setItem(AppConstants.NOT_APPLICABLE_FULL_TEXT);
+        itemNA.setItemId(AppConstants.NOT_APPLICABLE);
+        itemNA.setItemIndex(choiceItems.size());
+        choiceItems.add(itemNA);
 
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment
                 .Builder(mContext)
                 .title(R.string.select_secondary_doctor)
                 .positiveButtonLabel(R.string.save_button)
                 .content(choiceItems).build();
+
         dialog.isSearchable(true);
         dialog.setListener(item -> {
             Log.d(TAG, "selectSecondaryDoctor: position : " + item.getItemIndex());
@@ -1748,7 +1757,7 @@ public class PatientOtherInfoFragment extends Fragment {
         }
 
         //secondaryDoctor
-        if (patient.getPrimaryDoctor() != null) {
+        if (patient.getPrimaryDoctor() != null && patient.getSecondaryDoctor() != null) {
             mSecondaryDoctorUUIDString = patient.getSecondaryDoctor().split("@#@")[0];
             mSecondaryDoctorTextView.setText(patient.getSecondaryDoctor().split("@#@")[1]);
         }

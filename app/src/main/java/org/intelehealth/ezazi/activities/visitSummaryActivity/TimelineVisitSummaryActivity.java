@@ -78,6 +78,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -212,14 +213,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
      * to video call with selected doctor from list
      */
     private void showDoctorSelectionDialog(boolean isChat) {
-        HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(patientUuid);
-        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
-        for (String key : doctors.keySet()) {
-            SingChoiceItem item = new SingChoiceItem();
-            item.setItemId(doctors.get(key));
-            item.setItem(key);
-            choiceItems.add(item);
-        }
+        LinkedList<SingChoiceItem> choiceItems = CallInitializer.getDoctorsDetails(patientUuid);
 
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_doctor)
@@ -228,23 +222,23 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         dialog.setListener(item -> {
             if (isChat) {
-                startChatActivity(doctors.get(item.getItem()), item.getItem());
+                startChatActivity(item);
             } else {
-                startVideoCallActivity(doctors, item.getItem());
+                startVideoCallActivity(item);
             }
         });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void startChatActivity(String doctorUuid, String doctorName) {
-        if (SocketManager.getInstance().checkUserIsOnline(doctorUuid)) {
+    private void startChatActivity(SingChoiceItem item) {
+        if (SocketManager.getInstance().checkUserIsOnline(item.getItemId())) {
             RtcArgs args = new RtcArgs();
             args.setPatientName(patientName);
             args.setPatientId(patientUuid);
             args.setVisitId(visitUuid);
             args.setNurseId(sessionManager.getProviderID());
-            args.setDoctorUuid(doctorUuid);
+            args.setDoctorUuid(item.getItemId());
             EzaziChatActivity.startChatActivity(this, args);
 //            Intent chatIntent = new Intent(TimelineVisitSummaryActivity.this, EzaziChatActivity.class);
 //            chatIntent.putExtra("patientName", patientName);
@@ -254,19 +248,18 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //            chatIntent.putExtra("isForVideo", false);
 //            chatIntent.putExtra("toUuid", doctorUuid);
 //            startActivity(chatIntent);
-        } else Toast.makeText(this, doctorName + " is offline ", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(this, item.getItem() + " is offline ", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Start video call with selected doctor from primary and secondary list.
      *
-     * @param doctors    HashMap
-     * @param doctorName String
+     * @param item SingChoiceItem
      */
-    private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
-        if (SocketManager.getInstance().checkUserIsOnline(doctors.get(doctorName))) {
-            Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
-            Log.v(TAG, "doctors  - " + doctorName);
+    private void startVideoCallActivity(SingChoiceItem item) {
+        if (SocketManager.getInstance().checkUserIsOnline(item.getItemId())) {
+            Toast.makeText(this, item.getItem(), Toast.LENGTH_LONG).show();
+            Log.v(TAG, "doctors  - " + item.getItem());
 //        SocketManager.getInstance().setEmitterListener(emitter);
             EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUuid);
             RtcArgs args = new RtcArgs();
@@ -288,8 +281,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
             args.setPatientId(patientUuid);
             args.setPatientPersonUuid(patientUuid);
             args.setPatientName(patientName);
-            args.setDoctorName(doctorName);
-            args.setDoctorUuid(doctors.get(doctorName));
+            args.setDoctorName(item.getItem());
+            args.setDoctorUuid(item.getItemId());
             args.setIncomingCall(false);
             args.setNurseId(nurseId);
             args.setNurseName(sessionManager.getChwname());
@@ -311,7 +304,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 //            startActivity(in);
 //        }
         } else {
-            Toast.makeText(this, doctorName + " is offline", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, item.getItem() + " is offline", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="value"
             type="org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem" />
@@ -28,5 +30,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Yes" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvSecondaryName"
+            style="@style/Theme.EZazi.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_btn_horizontal_padding"
+            android:text="@{value.secondaryName}"
+            android:textColor="@color/gray_3"
+            android:visibility="@{value.secondaryName != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tvChoice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvChoice"
+            tools:text="Secondary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

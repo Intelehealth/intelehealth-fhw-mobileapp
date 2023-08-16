@@ -9,7 +9,7 @@
     tools:context=".activities.loginActivity.LoginActivity">
 
     <ImageView
-        android:id="@+id/iv_logo"
+        android:id="@+id/ivAppLogo"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_above="@+id/ll_center"

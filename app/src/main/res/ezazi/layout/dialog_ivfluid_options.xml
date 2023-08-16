@@ -20,7 +20,7 @@
         android:paddingVertical="@dimen/list_container_padding">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvRingerLactate"
+            android:id="@+id/tvNone"
             style="@style/Theme.EZazi.Text.Dialog.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             tools:text="Yes" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvNormalSaline"
+            android:id="@+id/tvRingerLactate"
             style="@style/Theme.EZazi.Text.Dialog.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,6 +43,21 @@
             android:onClick="@{clickListener}"
             android:padding="@dimen/small_btn_horizontal_padding"
             android:text="@{items[1]}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNone"
+            tools:text="Yes" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvNormalSaline"
+            style="@style/Theme.EZazi.Text.Dialog.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:background="@drawable/selector_dialog_list_item"
+            android:onClick="@{clickListener}"
+            android:padding="@dimen/small_btn_horizontal_padding"
+            android:text="@{items[2]}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRingerLactate"
@@ -57,7 +72,7 @@
             android:background="@drawable/selector_dialog_list_item"
             android:onClick="@{clickListener}"
             android:padding="@dimen/small_btn_horizontal_padding"
-            android:text="@{items[2]}"
+            android:text="@{items[3]}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvNormalSaline"
@@ -71,7 +86,7 @@
             android:layout_marginTop="@dimen/list_container_padding"
             android:background="@drawable/selector_dialog_list_item"
             android:gravity="center_vertical"
-            android:hint="@{items[3]}"
+            android:hint="@{items[4]}"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="200"
