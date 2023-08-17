@@ -52,7 +52,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 public class VisitPendingFragment extends Fragment {
-    private RecyclerView recycler_recent/*, recycler_older, recycler_month*/;
+    private RecyclerView recycler_recent, recycler_older /*, recycler_month*/;
     private CardView visit_pending_card_header;
     private List<PrescriptionModel> model;
     private static SQLiteDatabase db;
@@ -62,7 +62,7 @@ public class VisitPendingFragment extends Fragment {
     private CardView filter_menu;
     private RelativeLayout filter_relative, no_patient_found_block, main_block;
     private List<PrescriptionModel> recentList, olderList, monthsList;
-    private VisitAdapter recent_adapter/*, older_adapter, months_adapter*/;
+    private VisitAdapter recent_adapter, older_adapter /*, months_adapter*/;
     TextView recent_nodata, older_nodata, month_nodata;
     private androidx.appcompat.widget.SearchView searchview_pending;
     private ImageView closeButton;
@@ -143,7 +143,7 @@ public class VisitPendingFragment extends Fragment {
         month_nodata = view.findViewById(R.id.month_nodata);
 
         recycler_recent = view.findViewById(R.id.recycler_recent);
-        //recycler_older = view.findViewById(R.id.rv_older);
+        recycler_older = view.findViewById(R.id.rv_older);
         //recycler_month = view.findViewById(R.id.rv_thismonth);
         pending_endvisit_no = view.findViewById(R.id.pending_endvisit_no);
 
@@ -153,11 +153,12 @@ public class VisitPendingFragment extends Fragment {
         priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
+      //  olderList = new ArrayList<>();  // IDA-1347 ticket.
     }
 
     private void defaultData() {
         recentVisits();
-        //olderVisits();
+        olderVisits();
         int totalCount = totalCounts_recent + totalCounts_older;
 
         // loaded month data 1st for showing the count in main ui
@@ -259,9 +260,9 @@ public class VisitPendingFragment extends Fragment {
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
-       // older_adapter = new VisitAdapter(getActivity(), prio_weeks);
-        //recycler_older.setNestedScrollingEnabled(false);
-        //recycler_older.setAdapter(older_adapter);
+        older_adapter = new VisitAdapter(getActivity(), prio_weeks);
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
         // weeks - end
 
         // months - start
@@ -307,10 +308,10 @@ public class VisitPendingFragment extends Fragment {
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         //" e.encounter_type_uuid != ?  and " +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " " +
-                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
-                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                        "  group by e.visituuid ORDER BY v.startdate DESC"
+                      //  " " +
+//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
+//                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
+                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC"
                 , new String[]{});
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -546,9 +547,9 @@ public class VisitPendingFragment extends Fragment {
         else
             older_nodata.setVisibility(View.GONE);
 
-        //older_adapter = new VisitAdapter(getActivity(), olderList);
-        //recycler_older.setNestedScrollingEnabled(false);
-        //recycler_older.setAdapter(older_adapter);
+        older_adapter = new VisitAdapter(getActivity(), olderList);
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
 
         //  thisMonths_Visits();
 
@@ -893,9 +894,9 @@ public class VisitPendingFragment extends Fragment {
                     older_nodata.setVisibility(View.VISIBLE);
                 else
                     older_nodata.setVisibility(View.GONE);
-                //older_adapter = new VisitAdapter(getActivity(), older);
-                //recycler_older.setNestedScrollingEnabled(false);
-                //recycler_older.setAdapter(older_adapter);
+                older_adapter = new VisitAdapter(getActivity(), older);
+                recycler_older.setNestedScrollingEnabled(false);
+                recycler_older.setAdapter(older_adapter);
             }
             // weeks - end
 

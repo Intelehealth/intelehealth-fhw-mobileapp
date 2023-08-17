@@ -136,7 +136,10 @@
                         android:textSize="@dimen/common_hint_text_size"
                         app:endIconDrawable="@drawable/ui2_ic_chevron_down"
                         app:endIconMode="custom"
-                        tools:ignore="SpeakableTextPresentCheck" />
+                        tools:ignore="SpeakableTextPresentCheck"
+                        android:inputType="none"
+                        android:focusableInTouchMode="false"
+                        android:cursorVisible="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

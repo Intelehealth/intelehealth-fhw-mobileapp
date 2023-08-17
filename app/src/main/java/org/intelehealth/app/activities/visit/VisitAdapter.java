@@ -94,6 +94,10 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
+            //  1. Age
+            String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);
+
             // Patient Photo
             //1.
             try {
@@ -131,7 +135,9 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             // visit start date
             if (!model.getVisit_start_date().equalsIgnoreCase("null") || !model.getVisit_start_date().isEmpty()) {
                 String startDate = model.getVisit_start_date();
-                startDate = DateAndTimeUtils.date_formatter(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMMM");
+             //   startDate = DateAndTimeUtils.date_formatter(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMMM");
+                startDate = DateAndTimeUtils.date_formatter(startDate,
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
                 Log.v("startdate", "startDAte: " + startDate);
                 holder.fu_date_txtview.setText(startDate);
             }
@@ -155,8 +161,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
-                String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-                intent.putExtra("age", age);
+                String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+                intent.putExtra("age", age1);
                 intent.putExtra("priority_tag", model.isEmergency());
                 intent.putExtra("hasPrescription", model.isHasPrescription());
                 intent.putExtra("openmrsID", model.getOpenmrs_id());
@@ -183,7 +189,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
     public class Myholder extends RecyclerView.ViewHolder {
         private CardView fu_cardview_item;
-        private TextView name, fu_date_txtview;
+        private TextView name, fu_date_txtview, search_gender;
         private ImageView profile_image, fu_priority_tag;
         private LinearLayout shareicon;
 
@@ -191,6 +197,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             super(itemView);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
             name = itemView.findViewById(R.id.fu_patname_txtview);
+            search_gender = itemView.findViewById(R.id.search_gender);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);

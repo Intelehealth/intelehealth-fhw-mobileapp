@@ -599,6 +599,7 @@ public class SetupActivityNew extends AppCompatActivity {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                             String selectedValue = (String) adapterView.getItemAtPosition(i);
+                                            autotvLocations.setThreshold(100);  // Setting high threshold so that everytime all suggestions are shown.
                                             autotvLocations.setText("");
                                             autotvLocations.setText(selectedValue);
                                             int pos = items.indexOf(selectedValue);

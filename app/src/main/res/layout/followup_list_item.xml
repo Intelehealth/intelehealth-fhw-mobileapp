@@ -46,11 +46,22 @@
                     android:layout_toEndOf="@+id/fu_profile_imgv"
                     android:layout_marginStart="@dimen/fu_margin_start">
 
+                    <!-- Label -->
+                    <LinearLayout
+                        android:id="@+id/lll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
                     <!-- fu_patname_txtview -->
                     <TextView
                         android:id="@+id/fu_patname_txtview"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:gravity="center_vertical"
                         android:lineSpacingExtra="3sp"
                         android:text="@string/fu_item_title"
@@ -58,11 +69,25 @@
                         android:textColor="@null"
                         android:textSize="@dimen/fu_name_txt_size" />
 
+                        <TextView
+                            android:id="@+id/search_gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/cal_margnin_start"
+                            android:layout_toEndOf="@+id/search_name"
+                            android:gravity="center_vertical"
+                            android:lineSpacingExtra="3sp"
+                            android:text="@string/search_gender"
+                            android:textAppearance="@style/label_misc_txt_14sp"
+                            android:textColor="@null"
+                            android:textSize="@dimen/fu_name_txt_size" />
+                    </LinearLayout>
+
                     <ImageView
                         android:id="@+id/fu_item_calendar"
                         android:layout_width="@dimen/cal_size"
                         android:layout_height="@dimen/cal_size"
-                        android:layout_below="@+id/fu_patname_txtview"
+                        android:layout_below="@+id/lll"
                         android:layout_marginTop="@dimen/cal_margin_top"
                         android:src="@drawable/followup_item_calendar" />
 
@@ -70,7 +95,7 @@
                         android:id="@+id/fu_date_txtview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/fu_patname_txtview"
+                        android:layout_below="@+id/lll"
                         android:layout_marginStart="@dimen/cal_margnin_start"
                         android:layout_marginTop="@dimen/cal_margnin_start"
                         android:layout_toEndOf="@+id/fu_item_calendar"
