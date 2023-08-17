@@ -60,7 +60,6 @@
         android:layout_gravity="start"
         android:background="@drawable/ui2_home_nav_drawer_background"
         android:fitsSystemWindows="false"
-        android:visibility="gone"
         app:headerLayout="@layout/nav_header_home_ui2"
         app:itemIconPadding="@dimen/itemIconPadding_drawer"
         app:itemIconTint="@color/colorPrimary"
