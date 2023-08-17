@@ -1688,7 +1688,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="patients">patients</string>
     <string name="you_can_remind_doctor">you can remind the doctor.</string>
     <string name="please_select_at_least_one_complaint">Please select at least one complaint!</string>
-    <string name="awaiting_their_prescription">are awaiting their prescriptions. Please send</string>
+    <string name="awaiting_their_prescription">are awaiting their prescriptions.</string>
     <string name="cm">cm</string>
     <string name="kg">kg</string>
     <string name="kg_m">kg/m</string>
