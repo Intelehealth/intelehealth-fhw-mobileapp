@@ -70,21 +70,21 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             userName = extras.getString("userName");
             userPhoneNum = extras.getString("userPhoneNum");
         }
-        buttonVerifyOtp = findViewById(R.id.button_verify_otp);
-        LinearLayout layoutPinView = findViewById(R.id.pinview_otp);
+        buttonVerifyOtp = findViewById(R.id.otpVerificationContinueBtn);
+        LinearLayout layoutPinView = findViewById(R.id.otpVerificationPinView);
 
-        etPin1 = layoutPinView.findViewById(R.id.et_pin_1);
-        etPin2 = layoutPinView.findViewById(R.id.et_pin_2);
-        etPin3 = layoutPinView.findViewById(R.id.et_pin_3);
-        etPin4 = layoutPinView.findViewById(R.id.et_pin_4);
-        etPin5 = layoutPinView.findViewById(R.id.et_pin_5);
-        etPin6 = layoutPinView.findViewById(R.id.et_pin_6);
-        tvOtpError = findViewById(R.id.tv_otp_error);
-        tvResendOtp = findViewById(R.id.textview_no_otp);
+        etPin1 = layoutPinView.findViewById(R.id.otpVerificationOtpPin1);
+        etPin2 = layoutPinView.findViewById(R.id.otpVerificationOtpPin2);
+        etPin3 = layoutPinView.findViewById(R.id.otpVerificationOtpPin3);
+        etPin4 = layoutPinView.findViewById(R.id.otpVerificationOtpPin4);
+        etPin5 = layoutPinView.findViewById(R.id.otpVerificationOtpPin5);
+        etPin6 = layoutPinView.findViewById(R.id.otpVerificationOtpPin6);
+        tvOtpError = findViewById(R.id.otpVerificationErrorTextView);
+        tvResendOtp = findViewById(R.id.otpVerificationResendTextView);
         tvResendOtp.setPaintFlags(tvResendOtp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         snackbarUtils = new SnackbarUtils();
-        layoutParent = findViewById(R.id.layout_parent_otp);
-        rvHelpInfo = findViewById(R.id.rv_help_info);
+        layoutParent = findViewById(R.id.otpVerificationParentLayout);
+        rvHelpInfo = findViewById(R.id.otpVerificationHelpLayout);
         etPin1.requestFocus();
 
         tvResendOtp.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +103,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             }
         });
 
-        ImageView ivBack = findViewById(R.id.imageview_back_otp_verify);
+        ImageView ivBack = findViewById(R.id.otpVerificationBackArrowImageView);
         ivBack.setOnClickListener(v -> {
             Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, SetupActivityNew.class);
             startActivity(intent);

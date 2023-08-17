@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_parent_otp"
+    android:id="@+id/otpVerificationParentLayout"
+    android:contentDescription="OTP Verification Parent LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -16,7 +17,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageview_back_otp_verify"
+            android:id="@+id/otpVerificationBackArrowImageView"
+            android:contentDescription="OTP Verification Back Arrow ImageView"
             android:layout_width="@dimen/back_arrow_demo1_width"
             android:layout_height="@dimen/back_arrow_demo1_width"
             android:layout_alignParentStart="true"
@@ -26,7 +28,8 @@
             android:src="@drawable/ic_baseline_arrow_back_24" />
 
         <LinearLayout
-            android:id="@+id/rv_help_info"
+            android:id="@+id/otpVerificationHelpLayout"
+            android:contentDescription="OTP Verification Help LinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -36,17 +39,19 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_forgot_password_help"
+                android:id="@+id/otpVerificationHelpTextView"
+                android:contentDescription="OTP Verification Help TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/iv_help_info_otp"
+                android:layout_toStartOf="@+id/otpVerificationHelpImageView"
                 android:drawableTint="@color/iconTintWhite"
                 android:text="@string/help"
                 android:textColor="@color/textColorWhite"
                 android:textSize="@dimen/common_hint_text_size" />
 
             <ImageView
-                android:id="@+id/iv_help_info_otp"
+                android:id="@+id/otpVerificationHelpImageView"
+                android:contentDescription="OTP Verification Help ImageView"
                 android:layout_width="@dimen/back_arrow_demo1_width"
                 android:layout_height="@dimen/back_arrow_demo1_width"
                 android:layout_marginStart="@dimen/iv_help_info_margin_start"
@@ -56,10 +61,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_forgot_password"
+            android:id="@+id/otpVerificationForgotPasswordTitleTextView"
+            android:contentDescription="OTP Verification Forgot Password Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageview_back_otp_verify"
+            android:layout_below="@+id/otpVerificationBackArrowImageView"
             android:layout_marginTop="@dimen/forgot_password_top_margin"
             android:gravity="center_horizontal"
             android:text="@string/forgot_password"
@@ -68,10 +74,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_please_continue"
+            android:id="@+id/otpVerificationSubtitleTextView"
+            android:contentDescription="OTP Verification Subtitle TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_forgot_password"
+            android:layout_below="@+id/otpVerificationForgotPasswordTitleTextView"
             android:layout_marginTop="@dimen/margin_10"
             android:gravity="center_horizontal"
             android:text="@string/forgot_password_instruction"
@@ -81,7 +88,7 @@
         <ImageView
             android:layout_width="@dimen/image_intelehealth_login_width"
             android:layout_height="@dimen/image_intelehealth_login_height"
-            android:layout_below="@+id/tv_please_continue"
+            android:layout_below="@+id/otpVerificationSubtitleTextView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/iv_main_icon_otp_margin_top"
             android:src="@drawable/ui2_ic_forgot_password_icon" />
@@ -110,12 +117,14 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/layout_otp_verification"
+                    android:id="@+id/otpVerificationChildLayout"
+                    android:contentDescription="OTP Verification Child RelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/textview_enter_mobileno"
+                        android:id="@+id/otpVerificationEnterCodeTitleTextView"
+                        android:contentDescription="OTP Verification Enter Code Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_10"
@@ -125,30 +134,33 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textview_mobile_no_note"
+                        android:id="@+id/otpVerificationEnterCodeSubtitleTextView"
+                        android:contentDescription="OTP Verification Enter Code Subtitle TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textview_enter_mobileno"
+                        android:layout_below="@+id/otpVerificationEnterCodeTitleTextView"
                         android:layout_marginTop="@dimen/margin_20"
                         android:text="@string/otp_sent"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size" />
 
                     <include
-                        android:id="@+id/pinview_otp"
+                        android:id="@+id/otpVerificationPinView"
+                        android:contentDescription="OTP Verification Pin View"
                         layout="@layout/otp_pinview_layout_ui2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textview_mobile_no_note"
+                        android:layout_below="@+id/otpVerificationEnterCodeSubtitleTextView"
                         android:layout_marginTop="@dimen/otp_pinview_margin_top"
                         android:focusable="true"
                         android:focusableInTouchMode="true" />
 
                     <TextView
-                        android:id="@+id/tv_otp_error"
+                        android:id="@+id/otpVerificationErrorTextView"
+                        android:contentDescription="OTP Verification Error TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/pinview_otp"
+                        android:layout_below="@id/otpVerificationPinView"
                         android:layout_alignParentStart="true"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:lineSpacingExtra="0sp"
@@ -169,17 +181,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/pinview_otp"
+                        android:layout_below="@+id/otpVerificationPinView"
                         android:layout_marginTop="@dimen/otp_pinview_margin_top"
                         android:text="@string/no_otp_received"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size" />
 
                     <TextView
-                        android:id="@+id/textview_no_otp"
+                        android:id="@+id/otpVerificationResendTextView"
+                        android:contentDescription="OTP Verification Resend TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/pinview_otp"
+                        android:layout_below="@+id/otpVerificationPinView"
                         android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
                         android:layout_marginTop="@dimen/otp_pinview_margin_top"
                         android:text="@string/resend_otp_in"
@@ -192,7 +205,8 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/button_verify_otp"
+            android:id="@+id/otpVerificationContinueBtn"
+            android:contentDescription="OTP Verification Continue Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

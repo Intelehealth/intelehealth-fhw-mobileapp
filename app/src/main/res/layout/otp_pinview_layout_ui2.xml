@@ -5,7 +5,8 @@
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/et_pin_1"
+        android:id="@+id/otpVerificationOtpPin1"
+        android:contentDescription="OTP Verification Pin 1"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +19,8 @@
         android:paddingBottom="@dimen/otp_pinview_padding_top_bottom" />
 
     <EditText
-        android:id="@+id/et_pin_2"
+        android:id="@+id/otpVerificationOtpPin2"
+        android:contentDescription="OTP Verification Pin 2"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +31,8 @@
         />
 
     <EditText
-        android:id="@+id/et_pin_3"
+        android:id="@+id/otpVerificationOtpPin3"
+        android:contentDescription="OTP Verification Pin 3"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +43,8 @@
         />
 
     <EditText
-        android:id="@+id/et_pin_4"
+        android:id="@+id/otpVerificationOtpPin4"
+        android:contentDescription="OTP Verification Pin 4"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,19 +54,18 @@
        />
 
     <EditText
-        android:id="@+id/et_pin_5"
+        android:id="@+id/otpVerificationOtpPin5"
+        android:contentDescription="OTP Verification Pin 5"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/otp_pinview_margin_end"
         android:background="@drawable/otp_pinview_bg_pin_ui2"
-        android:imeOptions="actionNext"
-
-
-        />
+        android:imeOptions="actionNext" />
 
     <EditText
-        android:id="@+id/et_pin_6"
+        android:id="@+id/otpVerificationOtpPin6"
+        android:contentDescription="OTP Verification Pin 6"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
