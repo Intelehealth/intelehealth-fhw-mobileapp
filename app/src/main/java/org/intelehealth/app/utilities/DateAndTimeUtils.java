@@ -344,8 +344,7 @@ public class DateAndTimeUtils {
         return period.getMonths();
     }
 
-    public static String formatDateFromOnetoAnother(String date, String sourceFormat, String
-            anotherFormat) {
+    public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
 
         String result = "";
         SimpleDateFormat sdf;
@@ -406,6 +405,14 @@ public class DateAndTimeUtils {
                 mDOBPicker.show();
             }
         });
+    }
+
+    public static String minus_MinutesAgo(String timeStamp, int minute) throws ParseException {
+        long FIVE_MINS_IN_MILLIS = minute * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
     }
 
 

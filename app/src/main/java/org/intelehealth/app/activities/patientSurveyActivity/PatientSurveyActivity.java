@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.patientSurveyActivity;
 
+import static org.intelehealth.app.utilities.DateAndTimeUtils.minus_MinutesAgo;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -166,7 +168,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
         try {
-            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+            encounterDTO.setEncounterTime(minus_MinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime(), 5));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -212,14 +214,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
     }
 
-    public String fiveMinutesAgo(String timeStamp) throws ParseException {
-
-        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        long time = df.parse(timeStamp).getTime();
-
-        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
-    }
 
     private void endVisit() {
         VisitsDAO visitsDAO = new VisitsDAO();

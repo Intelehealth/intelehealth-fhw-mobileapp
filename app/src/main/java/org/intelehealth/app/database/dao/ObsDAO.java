@@ -152,6 +152,47 @@ public class ObsDAO {
         return true;
     }
 
+    public boolean updateFollowUpValue_Obs(ObsDTO obsDTO) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        int updatedCount = 0;
+        ContentValues values = new ContentValues();
+        String selection = "encounteruuid = ? and conceptuuid = ?";
+        try {
+
+//            values.put("encounteruuid", obsDTO.getEncounteruuid());
+//            values.put("creator", obsDTO.getCreator());
+//            values.put("conceptuuid", obsDTO.getConceptuuid());
+
+            values.put("value", obsDTO.getValue());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "0");
+            values.put("sync", "false");
+
+            updatedCount = db.update("tbl_obs", values, selection, new String[]{
+                    obsDTO.getEncounteruuid(), obsDTO.getConceptuuid()});
+
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            Logger.logE(TAG, "exception ", e);
+
+        } finally {
+            db.endTransaction();
+
+        }
+//        If no value is not found, then update fails so insert instead.
+        if (updatedCount == 0) {
+            try {
+                insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+
+
+        return true;
+    }
+
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;

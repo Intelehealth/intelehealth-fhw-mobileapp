@@ -1557,4 +1557,5 @@
     <string name="training_setup">Training Setup</string>
     <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
     <string name="to">" to "</string>
+    <string name="reschedule_follow_up">Reschedule Follow Up</string>
 </resources>

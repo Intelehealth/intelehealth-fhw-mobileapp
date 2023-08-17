@@ -1,13 +1,16 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.utilities.DateAndTimeUtils.formatDateFromOnetoAnother;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.minus_MinutesAgo;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +19,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
@@ -31,7 +33,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.print.PdfPrint;
 import android.print.PrintAttributes;
@@ -45,7 +46,6 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,6 +61,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -87,6 +88,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -104,7 +106,6 @@ import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
@@ -140,17 +141,9 @@ import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivi
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.activities.prescription.PrescriptionActivity;
-import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.ScheduleListingActivity;
-import org.intelehealth.app.appointment.api.ApiClientAppointment;
-import org.intelehealth.app.appointment.dao.AppointmentDAO;
-import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
-import org.intelehealth.app.appointment.model.CancelRequest;
-import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -166,14 +159,8 @@ import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
-import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
-import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
-import org.intelehealth.app.networkApiCalls.ApiClient;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -181,26 +168,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -210,9 +178,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity /*implements PrinterObserver*/ {
 
@@ -388,7 +353,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
     DownloadPrescriptionService downloadPrescriptionService;
     private TextView additionalImageDownloadText;
-    private TextView physcialExaminationDownloadText;
+    private TextView physcialExaminationDownloadText, followupRescheduleBtn;
 
     ImageView ivPrescription;
     private String hasPrescription = "";
@@ -786,6 +751,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         requestedTestsCard = findViewById(R.id.cardView_tests);
         additionalCommentsCard = findViewById(R.id.cardView_additional_comments);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
+        followupRescheduleBtn = findViewById(R.id.followupRescheduleBtn);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
@@ -1020,7 +986,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         EncounterDAO encounterDAO = new EncounterDAO();
         String emergencyUuid = "";
         try {
-            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+            emergencyUuid = encounterDAO.getEncounterUUIDByConceptID(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -2020,7 +1986,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
 
         try {
             VisitsDAO visitsDAO = new VisitsDAO();
-            String date = visitsDAO.getDateFromVisitUUID(visitUuid);
+            String date = visitsDAO.getDateFromVisitUUID(visitUuid, "startdate");
             String originalFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
             String targetFormat = "dd/MM/yyyy, HH:mm:ss a";
 
@@ -2032,6 +1998,202 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         generateBillBtn.setOnClickListener(v -> {
             generateBill();
         });
+
+        // follow up re-schedule - start
+        followupRescheduleBtn.setOnClickListener(v -> {
+            // fetch only remark from the txtview (only if it exists).
+            String fuData = followUpDateTextView.getText().toString().trim();
+            String followupDate = "";
+
+            if (fuData.contains("Remark")) {    // ie. 08-08-2023, Remark: abc
+                followupDate = fuData.substring(0, fuData.indexOf(","));
+                String remark = fuData.substring(fuData.indexOf(","));
+                showFollowupRescheduleDialog(remark);
+                Log.d(TAG, "reschedule btn: " + remark);
+            }
+            else {  // ie. 08-08-2023
+              //  followupDate = fuData;
+                showFollowupRescheduleDialog(null);
+            }
+            Log.d(TAG, "reschedule btn: " + followupDate);
+
+
+            //  body = body + getString(R.string.visit_summary_follow_up_date) + ":" + followUpDateTextView.getText().toString() + "\n";
+        });
+        // follow up re-schedule - end
+    }
+
+    private void showFollowupRescheduleDialog(String remark) {
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+        final LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_reschedule_followup, null);
+        TextInputEditText et_date = convertView.findViewById(R.id.et_enter_followup_date);
+        TextInputEditText et_reason = convertView.findViewById(R.id.et_enter_reason);
+
+        dialog.setPositiveButton(context.getString(R.string.update), null);
+        dialog.setNegativeButton(context.getString(R.string.cancel), null);
+
+        dialog.setView(convertView);
+        AlertDialog alertDialog = dialog.show();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
+
+        // Get the alert dialog buttons reference
+        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        // Change the alert dialog buttons text and background color
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        et_date.setOnClickListener(v -> {
+            // show calendar picker and set to editText.
+            Calendar mCalendar = Calendar.getInstance();
+            int year = mCalendar.get(Calendar.YEAR);
+            int month = mCalendar.get(Calendar.MONTH);
+            int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), R.style.DatePicker_Theme, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(year, month, dayOfMonth);
+                    Date date = cal.getTime();
+
+                    String dateString = simpleDateFormat.format(date);
+                    Log.d(TAG, "onDateSet: " + dateString);
+                    et_date.setText(dateString);
+                }
+            }, year, month, dayOfMonth);
+
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + 1000);
+            datePickerDialog.show();
+        });
+
+        positiveButton.setOnClickListener(v -> {    // Update button.
+            if (et_date.getText().toString().trim().isEmpty() && et_reason.getText().toString().trim().isEmpty()) {
+                et_date.setError(context.getString(R.string.error_field_required));
+                et_reason.setError(context.getString(R.string.error_field_required));
+            }
+
+            //If et_date is empty... et_reason is not empty...
+            else if (et_date.getText().toString().trim().isEmpty() && !et_reason.getText().toString().trim().isEmpty()) {
+                et_date.requestFocus();
+                et_date.setError(context.getString(R.string.error_field_required));
+            }
+
+            //If et_reason is empty... et_date is not empty...
+            else if (!et_date.getText().toString().trim().isEmpty() && et_reason.getText().toString().trim().isEmpty()) {
+                et_reason.requestFocus();
+                et_reason.setError(context.getString(R.string.error_field_required));
+            }
+
+
+            else {  // ie. date is not empty ie. user has selected the date from the date picker.
+                et_date.setError(null);
+                et_reason.setError(null);
+
+                String followupValue = et_date.getText().toString().trim();
+                String reasonValue = et_reason.getText().toString().trim();
+
+                if (remark != null)
+                    followupValue =  followupValue + remark;    // ie. 08-08-2023, Remark: abc
+
+                Log.d(TAG, "showFollowupRescheduleDialog: " + followupValue);
+                try {
+                    update_insertIntoDb_PushFollowupValues(followupValue, reasonValue);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+                followUpDate = followupValue;   // upating the global variable here.
+                alertDialog.dismiss();
+            }
+        });
+
+        negativeButton.setOnClickListener(v -> {    // Cancel button.
+            alertDialog.dismiss();
+        });
+
+        IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
+    }
+
+    private void update_insertIntoDb_PushFollowupValues(String followupValue, String reasonValue) throws DAOException, ParseException {
+        // 1. update value in local db ie. update the value column for the follow up obs
+        // 2. just update the date and keep remark as it is and set sync = false for this entry
+        // 3. Also, insert new row for this follow up in db with the REASON value and set sync = false
+        // 4. Now, once data inserted in db, sync() so that this updated value be pushed to remote.
+
+        // 1. set value to textview of followup card.
+        followUpDateTextView.setText(followupValue);
+
+        // 1. update localdb obs row for followup value.
+        // 1. udpate followup exisitng value.
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        // 2. udpate obs tbl now.
+        String encUUID = encounterDAO.getEncounterUUIDByConceptID(visitUuid, encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE"));
+        Log.d(TAG, "updateFollowup_localDB: " + encUUID);   // aabde527-02ae-4b84-b5bf-0942e80e8cd0
+
+        // update in obs table using encID and followup concept id.
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setEncounteruuid(encUUID);
+        obsDTO.setConceptuuid(FOLLOW_UP_VISIT); //e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
+        obsDTO.setValue(followupValue);
+        obsDTO.setUuid(obsDAO.getObsuuid(encUUID, FOLLOW_UP_VISIT));
+
+        obsDAO.updateObs(obsDTO);
+
+        // Now, insert new item of REASON in obs tbl.
+        ObsDAO obsDAO_IN = new ObsDAO();
+        ObsDTO obsDTO_IN = new ObsDTO();
+
+        obsDTO_IN.setCreator(sessionManager.getCreatorID());//
+        obsDTO_IN.setEncounteruuid(encUUID);//
+        obsDTO_IN.setConceptuuid(UuidDictionary.FOLLOW_UP_RESCHEDULE_REASON); // 07fc7651-bda9-4dfb-b429-bfcea7f02df6
+        obsDTO_IN.setValue(org.intelehealth.app.utilities.StringUtils.getValue(reasonValue));
+        obsDTO_IN.setUuid(obsDAO_IN.getObsuuid(encUUID, UuidDictionary.FOLLOW_UP_RESCHEDULE_REASON));
+
+        obsDAO_IN.updateObs(obsDTO_IN);
+
+        // Visit DAO - fetch endDate.
+        VisitsDAO visitsDAO = new VisitsDAO();
+        String visitendDate = visitsDAO.getDateFromVisitUUID(visitUuid, "enddate");
+        Log.d(TAG, "endDate: " + visitendDate);  // Aug 11, 2023 04:42:30 PM
+
+        String encounterTIME_MINUS_ONE_MINUTE;
+        if (visitendDate != null) {
+        /* convert this visit end-date from: Aug 11, 2023 04:42:30 PM TO 2023-08-11T17:52:17.777+0530 format.
+         and than minus -10secs from it and store it as encounterTime and modifiedDate. */
+            encounterTIME_MINUS_ONE_MINUTE = formatDateFromOnetoAnother
+                    (visitendDate, "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            encounterTIME_MINUS_ONE_MINUTE = minus_MinutesAgo(encounterTIME_MINUS_ONE_MINUTE, 1);   // ie. minus 1mins.
+        }
+        else {
+            encounterTIME_MINUS_ONE_MINUTE = AppConstants.dateAndTimeUtils.currentDateTime();
+        }
+
+        // Update encounter row
+        //making flag to false in the encounter table so it will sync again
+        try {
+            encounterDAO.updateEncounterSync("false", encUUID);
+            //   encounterDAO.updateEncounterModifiedDate(encUUID);
+            encounterDAO.updateEncounterDateTime(encUUID, encounterTIME_MINUS_ONE_MINUTE);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //sync has to be performed once the vitals are updated for the bill update feature
+        SyncUtils syncUtils = new SyncUtils();
+        boolean success = false;
+        success = syncUtils.syncForeground("followup");   // TODO: uncomment later.
+
+        // enc - end
     }
 
     private void fetchVisitIdAfterSomeTime() {
@@ -3639,7 +3801,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         }
 
 
-        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
+        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid,
+                followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
     }
 
 
@@ -3764,6 +3927,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        Log.i(TAG, "1.parseData: " + dbConceptID + " : " + dbValue + "\n");
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
@@ -3783,6 +3947,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
+                    Log.i(TAG, "2.parseData: " + dbConceptID + " : " + dbValue + "\n");
                     parseData(dbConceptID, dbValue);
                 } while (encountercursor.moveToNext());
             }
@@ -3996,10 +4161,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 } else {
                     followUpDate = value;
                 }
+
                 if (followUpDateCard.getVisibility() != View.VISIBLE) {
                     followUpDateCard.setVisibility(View.VISIBLE);
                 }
+
                 followUpDateTextView.setText(followUpDate);
+
+                if (followUpDateCard.getVisibility() == View.VISIBLE) {
+                    String fuData = followUpDateTextView.getText().toString().trim();
+                    if (!fuData.isEmpty() && (fuData.contains(",") || !fuData.contains("Remark"))) {    // ie. date is present and this can we changed too.
+                        followupRescheduleBtn.setVisibility(View.VISIBLE);
+                    }
+                    else
+                        followupRescheduleBtn.setVisibility(View.GONE);
+
+                }
+
                 //checkForDoctor();
                 break;
             }
@@ -4515,6 +4693,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         hasPrescription = "true"; //if any kind of prescription data is present...
+
+                        Log.i(TAG, "3.parseData: " + dbConceptID + " : " + dbValue + "\n");
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
@@ -4569,6 +4749,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                 hasPrescription = "true"; //if any kind of prescription data is present...
+                Log.i(TAG, "4.parseData: " + dbConceptID + " : " + dbValue + "\n");
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
@@ -4635,6 +4816,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 do {
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                    Log.i(TAG, "5.parseData: " + dbConceptID + " : " + dbValue + "\n");
                     parseData(dbConceptID, dbValue);
                 } while (visitCursor.moveToNext());
             }

@@ -55,7 +55,8 @@ public class VisitsDAO {
             values.put("locationuuid", visit.getLocationuuid());
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
             values.put("creator", visit.getCreatoruuid());
-            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(),
+                    "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", visit.getSyncd());
@@ -446,16 +447,16 @@ public class VisitsDAO {
         return isDownloaded;
     }
 
-    public String getDateFromVisitUUID(String visitUUID) throws DAOException {
+    public String getDateFromVisitUUID(String visitUUID, String DATE) throws DAOException {
         String date = null;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
-            Cursor cursor = db.rawQuery("SELECT startdate FROM tbl_visit WHERE uuid = ?", new String[]{visitUUID});
+            Cursor cursor = db.rawQuery("SELECT " + DATE + " FROM tbl_visit WHERE uuid = ?", new String[]{visitUUID});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
-                    date = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+                    date = cursor.getString(cursor.getColumnIndexOrThrow(DATE));
                 }
             }
             cursor.close();
