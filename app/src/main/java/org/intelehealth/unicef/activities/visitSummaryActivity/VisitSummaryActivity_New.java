@@ -617,7 +617,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private Boolean checkIfAppointmentExists(String visitUUID) {
         AppointmentDAO appointmentDAO = new AppointmentDAO();
-        return appointmentDAO.getAppointmentByVisitId(visitUUID) != null;
+        AppointmentInfo appointmentInfo = appointmentDAO.getAppointmentByVisitId(visitUUID);
+        return appointmentInfo != null && !appointmentInfo.getStatus().equalsIgnoreCase("cancelled");
     }
 
     private int mOpenCount = 0;
