@@ -2,20 +2,23 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_parent_login"
+    android:id="@+id/loginParentLayout"
+    android:contentDescription="Login Screen Parent Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".activities.loginActivity.LoginActivityNew">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/loginAppBarLayout"
+        android:contentDescription="Login Screen AppBar Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/layout_collapsing"
+            android:id="@+id/loginCollapsingToolbarLayout"
+            android:contentDescription="Login Screen Collapsing Toolbar Layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_collapsing_layout_height"
             android:fitsSystemWindows="true"
@@ -24,14 +27,16 @@
             app:title="@string/login">
 
             <RelativeLayout
-                android:id="@+id/login"
+                android:id="@+id/loginChildRelativeLayout"
+                android:contentDescription="Login Screen Child Relative Layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_welcome_back"
+                    android:id="@+id/tvLoginWelcomeBack"
+                    android:contentDescription="Login Screen Welcome Back! TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/welcome_back_top_margin"
@@ -43,10 +48,11 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_please_continue"
+                    android:id="@+id/tvLoginPleaseContinue"
+                    android:contentDescription="Login Screen Please Continue TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_welcome_back"
+                    android:layout_below="@+id/tvLoginWelcomeBack"
                     android:layout_marginTop="@dimen/tv_please_login_margin_top"
                     android:gravity="center_horizontal"
                     android:text="@string/please_login"
@@ -56,7 +62,7 @@
                 <ImageView
                     android:layout_width="@dimen/image_intelehealth_login_width"
                     android:layout_height="@dimen/image_intelehealth_login_height"
-                    android:layout_below="@+id/tv_please_continue"
+                    android:layout_below="@+id/tvLoginPleaseContinue"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/image_intelehealth_margin_top"
                     android:src="@drawable/ui2_ic_intelehealth_logo" />
@@ -94,7 +100,8 @@
 
 
             <LinearLayout
-                android:id="@+id/layout_login1"
+                android:id="@+id/loginChildLinearLayout"
+                android:contentDescription="Login Screen Child Linear Layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -114,7 +121,8 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/iv_login_details_info"
+                        android:id="@+id/ivLoginDetailsInfo"
+                        android:contentDescription="Login Screen Details Info ImageView"
                         android:layout_width="@dimen/tv_login_details_info_height_width"
                         android:layout_height="@dimen/tv_login_details_info_height_width"
                         android:layout_gravity="center_vertical|center_horizontal"
@@ -138,7 +146,8 @@
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_username_login"
+                        android:id="@+id/etLoginUsername"
+                        android:contentDescription="Login Screen Username Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"
@@ -155,7 +164,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/tv_username_error"
+                    android:id="@+id/tvLoginUsernameError"
+                    android:contentDescription="Login Screen Username Edittext Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -185,7 +195,8 @@
                     app:passwordToggleTint="@color/iconTintGray">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_password_login"
+                        android:id="@+id/etLoginPassword"
+                        android:contentDescription="Login Screen Password Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"
@@ -201,7 +212,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/tv_password_error"
+                    android:id="@+id/tvLoginPasswordError"
+                    android:contentDescription="Login Screen Password Edittext Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -214,7 +226,8 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/tv_forgot_password1"
+                    android:id="@+id/tvLoginForgotPassword"
+                    android:contentDescription="Login Screen Forgot Password TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_forgotpass_margin_top"
@@ -232,10 +245,11 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/btnLogin"
+        android:contentDescription="Login Screen Login Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_login1"
+        android:layout_below="@+id/loginChildLinearLayout"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginStart="@dimen/layout_login_padding_start"
