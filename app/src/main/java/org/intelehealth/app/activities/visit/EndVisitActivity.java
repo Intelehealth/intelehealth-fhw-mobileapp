@@ -33,11 +33,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
-    RecyclerView recycler_recent, recycler_older, recycler_month;
+    RecyclerView rvCloseVisitRecentData, rvCloseVisitOlderData, recycler_month;
     private static SQLiteDatabase db;
     private int total_counts = 0, todays_count = 0, weeks_count = 0, months_count = 0;
-    private ImageButton backArrow, refresh;
-    TextView recent_nodata, older_nodata, month_nodata;
+    private ImageButton imgBtnCloseVisitBackArrow, imgBtnCloseVisitRefresh;
+    TextView tvCloseVisitRecentNoData, tvCloseVisitOlderNoData, month_nodata;
     private NetworkUtils networkUtils;
     private ObjectAnimator syncAnimator;
 
@@ -57,8 +57,8 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
         initViews();
         endVisits_data();
 
-        refresh.setOnClickListener(v -> {
-            syncNow(EndVisitActivity.this, refresh, syncAnimator);
+        imgBtnCloseVisitRefresh.setOnClickListener(v -> {
+            syncNow(EndVisitActivity.this, imgBtnCloseVisitRefresh, syncAnimator);
         });
     }
 
@@ -87,16 +87,16 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     }
 
     private void initViews() {
-        recycler_recent = findViewById(R.id.recycler_recent);
-        recycler_older = findViewById(R.id.recycler_older);
+        rvCloseVisitRecentData = findViewById(R.id.rvCloseVisitRecentData);
+        rvCloseVisitOlderData = findViewById(R.id.rvCloseVisitOlderData);
         recycler_month = findViewById(R.id.recycler_month);
-        recent_nodata = findViewById(R.id.recent_nodata);
-        older_nodata = findViewById(R.id.older_nodata);
+        tvCloseVisitRecentNoData = findViewById(R.id.tvCloseVisitRecentNoData);
+        tvCloseVisitOlderNoData = findViewById(R.id.tvCloseVisitOlderNoData);
         month_nodata = findViewById(R.id.month_nodata);
-        backArrow = findViewById(R.id.backArrow);
-        refresh = findViewById(R.id.refresh);
+        imgBtnCloseVisitBackArrow = findViewById(R.id.imgBtnCloseVisitBackArrow);
+        imgBtnCloseVisitRefresh = findViewById(R.id.imgBtnCloseVisitRefresh);
 
-        backArrow.setOnClickListener(v -> {
+        imgBtnCloseVisitBackArrow.setOnClickListener(v -> {
             finish();
         });
     }
@@ -110,25 +110,25 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     private void todays_EndVisits() {
         List<PrescriptionModel> arrayList = recentNotEndedVisits();
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
-        recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
-        recycler_recent.setAdapter(adapter_new);
+        rvCloseVisitRecentData.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
+        rvCloseVisitRecentData.setAdapter(adapter_new);
         todays_count = arrayList.size();
         if (todays_count == 0 || todays_count < 0)
-            recent_nodata.setVisibility(View.VISIBLE);
+            tvCloseVisitRecentNoData.setVisibility(View.VISIBLE);
         else
-            recent_nodata.setVisibility(View.GONE);
+            tvCloseVisitRecentNoData.setVisibility(View.GONE);
     }
 
     private void thisWeeks_EndVisits() {
         List<PrescriptionModel> arrayList = olderNotEndedVisits();
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
-        recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(adapter_new);
+        rvCloseVisitOlderData.setNestedScrollingEnabled(false);
+        rvCloseVisitOlderData.setAdapter(adapter_new);
         weeks_count = arrayList.size();
         if (weeks_count == 0 || weeks_count < 0)
-            older_nodata.setVisibility(View.VISIBLE);
+            tvCloseVisitOlderNoData.setVisibility(View.VISIBLE);
         else
-            older_nodata.setVisibility(View.GONE);
+            tvCloseVisitOlderNoData.setVisibility(View.GONE);
     }
 
     private void thisMonths_EndVisits() {
@@ -147,9 +147,9 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            imgBtnCloseVisitRefresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            imgBtnCloseVisitRefresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
 
