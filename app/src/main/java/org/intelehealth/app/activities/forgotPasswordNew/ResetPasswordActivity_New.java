@@ -76,17 +76,17 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         context = ResetPasswordActivity_New.this;
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
-        rvHelpInfo = findViewById(R.id.rv_help_info);
-        layoutParent = findViewById(R.id.layout_parent_otp);
+        rvHelpInfo = findViewById(R.id.resetPassHelpLayout);
+        layoutParent = findViewById(R.id.resetPassParentLayout);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             otp = extras.getString("otp");
             userUuid = extras.getString("userUuid");
         }
-        etNewPassword = findViewById(R.id.et_new_password);
-        etConfirmPassword = findViewById(R.id.et_confirm_password);
-        btnSavePassword = findViewById(R.id.btn_save_password);
-        ImageView ivBack = findViewById(R.id.imageview_back_reset);
+        etNewPassword = findViewById(R.id.resetPassEnterNewPassEdittext);
+        etConfirmPassword = findViewById(R.id.resetPassConfirmNewPassEdittext);
+        btnSavePassword = findViewById(R.id.resetPassSaveBtn);
+        ImageView ivBack = findViewById(R.id.resetPassBackArrowImageView);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +94,9 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
-        tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
-        tvGeneratePassword = findViewById(R.id.tv_generate_password);
+        tvErrorNewPassword = findViewById(R.id.resetPassNewPassErrorTextView);
+        tvErrorConfirmPassword = findViewById(R.id.resetPassConfirmNewPassErrorTextView);
+        tvGeneratePassword = findViewById(R.id.resetPassGeneratePassTextView);
         tvGeneratePassword.setOnClickListener(v -> {
             randomString(8);
         });
