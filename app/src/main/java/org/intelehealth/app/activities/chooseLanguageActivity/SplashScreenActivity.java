@@ -83,11 +83,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screenactivity_ui2);
         sessionManager = new SessionManager(SplashScreenActivity.this);
-        rvSelectLanguage = findViewById(R.id.rv_select_language);
-        layoutLanguage = findViewById(R.id.layout_panel);
-        layoutParent = findViewById(R.id.layout_parent);
-        layoutHeader = findViewById(R.id.layout_child1);
-        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        rvSelectLanguage = findViewById(R.id.splashLanguagePanelRecyclerView);
+        layoutLanguage = findViewById(R.id.splashLanguagePanelConstraintLayout);
+        layoutParent = findViewById(R.id.splashParentConstraintLayout);
+        layoutHeader = findViewById(R.id.splashChildConstraintLayout);
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
@@ -149,7 +148,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             setLocale(appLanguage);
         }
 
-        Button btnNextToIntro = findViewById(R.id.btn_next_to_intro);
+        Button btnNextToIntro = findViewById(R.id.splashLanguagePanelNextBtn);
         btnNextToIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -335,7 +334,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void showChooseLanguageUI(boolean show) {
         Transition transition = new Slide(Gravity.BOTTOM);
         transition.setDuration(2000);
-        transition.addTarget(R.id.layout_panel);
+        transition.addTarget(R.id.splashLanguagePanelConstraintLayout);
 
         TransitionManager.beginDelayedTransition(layoutParent, transition);
         layoutLanguage.setVisibility(show ? View.VISIBLE : View.GONE);
