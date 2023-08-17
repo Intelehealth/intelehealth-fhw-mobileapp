@@ -23,6 +23,8 @@ class ChatClient(
 
     fun connect(socketUrl: String) = chatSocket.connect(socketUrl)
 
+    fun isConnected() = chatSocket.isConnected()
+
     fun sendMessage(chatMessage: ChatMessage, callback: EventCallback<String>? = null) =
         chatSocket.sentMessage(chatMessage)
 

@@ -44,7 +44,6 @@ public class VisitAttributeListDAO {
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
-            isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -55,8 +54,15 @@ public class VisitAttributeListDAO {
 
     private boolean checkVisitAttributesExist(VisitAttributeDTO attribute, SQLiteDatabase db) {
         String[] args = {attribute.getVisitUuid(), attribute.getVisitAttributeTypeUuid()};
-        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit_attribute WHERE visit_uuid = ? AND visit_attribute_type_uuid = ?", args);
-        return cursor.getCount() > 0;
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit_attribute WHERE visit_uuid = ? AND visit_attribute_type_uuid = ? limit 1", args);
+        try {
+            return cursor.getCount() > 0;
+        } catch (Exception e) {
+            Log.e(TAG, "checkVisitAttributesExist: " + e.getMessage());
+            return false;
+        } finally {
+            cursor.close();
+        }
     }
 
     private boolean updateVisitAttributes(VisitAttributeDTO attribute, SQLiteDatabase db) {

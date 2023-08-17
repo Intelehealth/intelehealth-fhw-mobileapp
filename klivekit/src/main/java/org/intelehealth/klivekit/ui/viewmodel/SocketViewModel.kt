@@ -73,6 +73,9 @@ class SocketViewModel(
     private val mutableCallCancelByDoctor = MutableLiveData(false)
     val eventCallCancelByDoctor = mutableCallCancelByDoctor.hide()
 
+    private val mutableCallTimeUp = MutableLiveData(false)
+    val eventCallTimeUp = mutableCallTimeUp.hide()
+
     private fun emitter(event: String) = Emitter.Listener {
         when (event) {
             SocketManager.EVENT_BYE -> sayByeToWeb()
@@ -80,6 +83,7 @@ class SocketViewModel(
             SocketManager.EVENT_FULL -> {}
             SocketManager.EVENT_IP_ADDRESS -> {}
             SocketManager.EVENT_IS_READ -> executeInUIThread { mutableEventIsRead.postValue(true) }
+            SocketManager.EVENT_CALL_TIME_UP -> executeInUIThread { mutableCallTimeUp.postValue(true) }
             SocketManager.EVENT_JOIN -> executeInUIThread { mutableEventJoin.postValue(true) }
             SocketManager.EVENT_JOINED -> executeInUIThread { mutableEventJoined.postValue(true) }
             SocketManager.EVENT_LOG -> {}
@@ -99,6 +103,7 @@ class SocketViewModel(
             }
 
             SocketManager.EVENT_ALL_USER -> checkActiveUser(it, SocketManager.EVENT_ALL_USER)
+
             Socket.EVENT_CONNECT -> connected(it)
             Socket.EVENT_DISCONNECT -> executeInUIThread { mutableSocketDisconnected.postValue(true) }
         }

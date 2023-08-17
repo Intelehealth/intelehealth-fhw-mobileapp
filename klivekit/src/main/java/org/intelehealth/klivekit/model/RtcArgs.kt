@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.model
 
 import android.os.Parcelable
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import org.intelehealth.klivekit.utils.RemoteActionType
@@ -35,4 +36,6 @@ data class RtcArgs(
     var actionType: String = RemoteActionType.TEXT_CHAT.name,
     var callEnded: Boolean = false,
     var timestamp: Long = 0
-) : Parcelable
+) : Parcelable {
+    fun toJson(): String = Gson().toJson(this)
+}

@@ -10,7 +10,7 @@ import org.intelehealth.klivekit.utils.extensions.toLocalDateFormat
  **/
 class DayHeader(val date: String) : ItemHeader {
     override fun isHeader(): Boolean = true
-    override fun getCreatedAt(): String {
+    override fun createdDate(): String {
         return date
     }
 

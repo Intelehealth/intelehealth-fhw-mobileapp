@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.ui.shared;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ import java.util.Objects;
  * Mob   : +919727206702
  **/
 public class BaseActivity extends AppCompatActivity implements SocketManager.NotificationListener {
+    private static final String TAG = "BaseActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,7 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
         args.setVisitId(chatMessage.getVisitId());
         args.setNurseId(chatMessage.getToUser());
         args.setDoctorUuid(chatMessage.getFromUser());
-
+        Log.e(TAG, "showNotification: " + args.toJson());
         try {
             String title = new ProviderDAO().getProviderName(args.getDoctorUuid());
             new AppNotification.Builder(this)

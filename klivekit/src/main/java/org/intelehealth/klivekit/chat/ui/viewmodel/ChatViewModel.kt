@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.ViewModel
 import io.socket.emitter.Emitter
+import org.intelehealth.klivekit.chat.ChatClient
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.utils.AwsS3Utils
@@ -15,11 +16,7 @@ import org.intelehealth.klivekit.utils.AwsS3Utils
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class ChatViewModel(private val socketManager: SocketManager) : ViewModel() {
-
-    init {
-        socketManager.emitterListener = this::emitter
-    }
+class ChatViewModel(private val chatClient: ChatClient) : ViewModel() {
 
     private val fileUploadBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -43,7 +40,7 @@ class ChatViewModel(private val socketManager: SocketManager) : ViewModel() {
     }
 
     fun connect(url: String) {
-        if (socketManager.isConnected().not()) socketManager.connect(url)
+        if (chatClient.isConnected().not()) chatClient.connect(url)
     }
 
 }

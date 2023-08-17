@@ -84,7 +84,7 @@
                     android:id="@+id/etOtherRiskFactor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890, "
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.- "
                     android:focusable="true"
                     android:hint="@string/hint_other_risk"
                     android:imeOptions="actionNext"

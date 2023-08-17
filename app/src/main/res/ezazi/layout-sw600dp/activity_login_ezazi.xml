@@ -19,10 +19,11 @@
 
 
     <ImageView
-        android:id="@+id/iv_logo"
+        android:id="@+id/ivAppLogo"
         android:layout_width="@dimen/login_logo_size"
         android:layout_height="wrap_content"
         android:src="@drawable/login_screen_icon"
+        android:contentDescription="Ezazi logo"
         app:layout_constraintBottom_toTopOf="@id/clLoginContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

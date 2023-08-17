@@ -814,8 +814,6 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private void sync() {
         if (isNetworkConnected()) {
             Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
-            //ivSync.clearAnimation();
-            //syncAnimator.start();
             syncUtils.syncForeground("home");
         } else {
             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
@@ -1562,7 +1560,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private BroadcastReceiver screenRefreshReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            recreate();
+           sync();
         }
     };
 
@@ -1665,6 +1663,9 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
         registerReceiver(mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
         registerReceiver(screenRefreshReceiver, new IntentFilter(AppConstants.getScreenRefreshEventReceiver()));
+        loadVisits();
+        //        sync();
+//        recreate();
     }
 
     @Override
@@ -2037,23 +2038,6 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             showResetProgressbar();
             deleteCache(getApplicationContext());
         });
-//        MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
-//        resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
-//        resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                showResetProgressbar();
-//                deleteCache(getApplicationContext());
-//            }
-//        });
-//        resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-//        AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
-//        resetAlertDialog.show();
-//        Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-//        Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-//        resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-//        IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
     }
 
 

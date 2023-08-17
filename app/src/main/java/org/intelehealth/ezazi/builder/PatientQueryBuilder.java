@@ -123,12 +123,12 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "P.date_of_birth, " +
                 "CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo, " +
                 "CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber, " +
-                "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided = '0' AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) as latestEncounterId, " +
+                "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided IN ('0', 'false', 'FALSE') AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) as latestEncounterId, " +
                 "(SELECT CASE " +
                 " WHEN U.name LIKE '%Stage1%' THEN 'Stage-1' " +
                 " WHEN U.name LIKE '%Stage2%' THEN 'Stage-2' ELSE '' " +
                 " END Stage FROM tbl_encounter E, tbl_uuid_dictionary U  " +
-                " WHERE E.visituuid =V.uuid  and E.voided = '0'  and U.uuid = E.encounter_type_uuid  " +
+                " WHERE E.visituuid =V.uuid  and E.voided IN ('0', 'false', 'FALSE')  and U.uuid = E.encounter_type_uuid  " +
                 " ORDER BY U.name DESC LIMIT 1)  as stage")
                 .from("tbl_visit  V")
                 .join("LEFT OUTER JOIN tbl_patient P ON P.uuid = V.patientuuid " +
@@ -137,7 +137,8 @@ public class PatientQueryBuilder extends QueryBuilder {
                         " AND PA.person_attribute_type_uuid = (SELECT uuid FROM tbl_patient_attribute_master " +
                         " WHERE name = '" + PatientAttributesDTO.Columns.BED_NUMBER.value + "')")
                 .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
-                        "AND V.voided = '0' AND VA.value = '" + providerId + "'")
+                        "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "'" +
+                        " AND V.enddate IS NULL ")
                 .groupBy("V.uuid")
                 .orderBy("V.startdate")
                 .orderIn("DESC")

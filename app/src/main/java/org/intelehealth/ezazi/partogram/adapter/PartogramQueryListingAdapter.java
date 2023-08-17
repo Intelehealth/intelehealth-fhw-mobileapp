@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -190,6 +191,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     } else return "";
                 }
                 });
+            } else if (conceptId.equals("9d316d82-538f-11e6-9cfe-86f436325720")) {
+                dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
             }
         } else {
 
@@ -227,9 +230,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         return;
                     }
                 }
-
-                clearDiastolic(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), position);
-                validDiastolicBP(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), dataEditText);
             }
 
             @Override
@@ -239,6 +239,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 } else {
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
+                clearDiastolic(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), position);
+                validDiastolicBP(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), dataEditText);
             }
         });
     }
@@ -251,27 +253,44 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView selected = tempView.findViewById(R.id.tvSelectedValue);
         selected.setTag(info.getCapturedValue());
         selected.setText(info.getCapturedValue());
-        if (!TextUtils.isEmpty(selected.getText())) selected.setVisibility(View.VISIBLE);
         RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
+
+        if (info.getCapturedValue() != null &&
+                !TextUtils.isEmpty(info.getCapturedValue())
+                && !info.getCapturedValue().equalsIgnoreCase("NO")) {
+            selected.setVisibility(View.VISIBLE);
+            radioGroup.check(R.id.radioYes);
+        } else {
+            radioGroup.check(R.id.radioNo);
+            info.setCapturedValue("No");
+            selected.setVisibility(View.GONE);
+        }
+
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.radioYes) {
-                showIVFluidDialog(title, info.getOptions(), info, tempView);
-            } else {
-                info.setCapturedValue("");
+            RadioButton radioButton = tempView.findViewById(checkedId);
+            if (checkedId == R.id.radioYes && radioButton.isChecked()) {
+                showIVFluidDialog(title, info, tempView);
+            } else if (checkedId == R.id.radioNo && radioButton.isChecked()) {
+                if (!TextUtils.isEmpty(info.getCapturedValue())) {
+                    info.setCapturedValue("NO");
+                    selected.setVisibility(View.GONE);
+                }
             }
         });
     }
 
     private void uncheckAllOptions(DialogIvfluidOptionsBinding binding) {
         binding.tvDextrose.setSelected(false);
+        binding.tvNone.setSelected(false);
         binding.tvNormalSaline.setSelected(false);
         binding.tvRingerLactate.setSelected(false);
     }
 
-    private void showIVFluidDialog(String title, String[] items, ParamInfo info, View view) {
+    private void showIVFluidDialog(String title, ParamInfo info, View view) {
         DialogIvfluidOptionsBinding binding = DialogIvfluidOptionsBinding.inflate(LayoutInflater.from(mContext));
-        binding.setItems(items);
-        TextView selected = view.findViewById(R.id.tvSelectedValue);
+        binding.setItems(info.getOptions());
+//        TextView selected = view.findViewById(R.id.tvSelectedValue);
+        TextView selected = view.findViewById(R.id.tvData);
 
         binding.etOtherFluid.addTextChangedListener(new TextWatcher() {
             @Override
@@ -280,7 +299,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                uncheckAllOptions(binding);
+                if (s.length() > 0)
+                    uncheckAllOptions(binding);
             }
 
             @Override
@@ -292,9 +312,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             uncheckAllOptions(binding);
             v.setSelected(true);
             info.setCapturedValue(((TextView) v).getText().toString());
-            selected.setText(info.getCapturedValue());
             binding.etOtherFluid.setText("");
-            selected.setVisibility(View.VISIBLE);
+            selected.setText(info.getCapturedValue());
+//            selected.setVisibility(View.VISIBLE);
         });
 
         CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(mContext)
@@ -308,28 +328,34 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         dialog.setListener(new CustomViewDialogFragment.OnConfirmationActionListener() {
             @Override
             public void onAccept() {
-                if (TextUtils.isEmpty(selected.getText()) && TextUtils.isEmpty(binding.etOtherFluid.getText())) {
-                    Toast.makeText(mContext, "Please choose the any option", Toast.LENGTH_LONG).show();
-                } else if (TextUtils.isEmpty(selected.getText())) {
+                if (TextUtils.isEmpty(info.getCapturedValue()) && TextUtils.isEmpty(binding.etOtherFluid.getText())) {
+                    Toast.makeText(mContext, "Please choose the any one option", Toast.LENGTH_LONG).show();
+                } else if (!TextUtils.isEmpty(binding.etOtherFluid.getText())) {
                     info.setCapturedValue(binding.etOtherFluid.getText().toString());
                     selected.setText(info.getCapturedValue());
+//                    if (info.getCapturedValue() != null && info.getCapturedValue().length() > 0)
+//                        selected.setVisibility(View.VISIBLE);
                     dialog.dismiss();
                 } else dialog.dismiss();
             }
 
-            @Override
-            public void onDecline() {
-                if (selected.getTag() != null) {
-                    String oldValue = (String) selected.getTag();
-                    info.setCapturedValue(oldValue);
-                    selected.setVisibility(View.VISIBLE);
-                } else {
-                    selected.setVisibility(View.GONE);
-                    RadioGroup radioGroup = view.findViewById(R.id.radioYesNoGroup);
-                    radioGroup.check(R.id.radioNo);
-                }
-                selected.setText(info.getCapturedValue());
-            }
+//            @Override
+//            public void onDecline() {
+////                RadioGroup radioGroup = view.findViewById(R.id.radioYesNoGroup);
+//                if (selected.getTag() != null) {
+//                    String oldValue = (String) selected.getTag();
+//                    info.setCapturedValue(oldValue);
+//                    String value = (String) selected.getTag();
+////                    if (!value.equalsIgnoreCase("NO")) {
+////                        selected.setVisibility(View.VISIBLE);
+////                        radioGroup.check(R.id.radioYes);
+////                    }
+//                } else {
+//                    selected.setVisibility(View.GONE);
+////                    radioGroup.check(R.id.radioNo);
+//                }
+////                selected.setText(info.getCapturedValue());
+//            }
         });
 
         dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
@@ -368,10 +394,12 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     Toast.makeText(mContext, "Diastolic BP must be less than Systolic BP", Toast.LENGTH_LONG).show();
                     editText.setText("");
                     editText.requestFocus();
+                    info.setCapturedValue("");
                 }
             } else {
                 editText.setText("");
                 editText.requestFocus();
+                info.setCapturedValue("");
                 Toast.makeText(mContext, "Enter Systolic BP before Diastolic BP", Toast.LENGTH_LONG).show();
             }
         }
@@ -380,6 +408,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showListOptions(final View tempView, final int position, final int positionChild) {
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         TextView dropdownTextView = tempView.findViewById(R.id.tvData);
+        ParamInfo info = mItemList.get(position).getParamInfoList().get(positionChild);
+        dropdownTextView.setTag(info);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null &&
                 !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
@@ -388,48 +418,36 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     .indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
         }
 
-        dropdownTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String[] items = mItemList.get(position).getParamInfoList().get(positionChild).getOptions();
+        dropdownTextView.setOnClickListener(v -> {
+            if (v.getTag() instanceof ParamInfo) {
+                ParamInfo ivFluidInfo = (ParamInfo) v.getTag();
+                if (ivFluidInfo.getParamName().equalsIgnoreCase(PartogramConstants.Params.IV_FLUID.value)) {
+                    showIVFluidDialog(ivFluidInfo.getParamName(), ivFluidInfo, tempView);
+                } else {
+                    final String[] items = mItemList.get(position).getParamInfoList().get(positionChild).getOptions();
 
-                ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
-                for (int i = 0; i < items.length; i++) {
-                    SingChoiceItem item = new SingChoiceItem();
-                    item.setItemIndex(i);
-                    item.setItem(items[i]);
-                    choiceItems.add(item);
+                    ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+                    for (int i = 0; i < items.length; i++) {
+                        SingChoiceItem item = new SingChoiceItem();
+                        item.setItemIndex(i);
+                        item.setItem(items[i]);
+                        choiceItems.add(item);
+                    }
+
+                    String title = "Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName();
+                    SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
+                            .title(title)
+                            .content(choiceItems)
+                            .build();
+
+                    dialog.setListener(item -> {
+                        ParamInfo paramInfo = mItemList.get(position).getParamInfoList().get(positionChild);
+                        dropdownTextView.setText(paramInfo.getOptions()[item.getItemIndex()]);
+                        paramInfo.setCapturedValue(paramInfo.getValues()[item.getItemIndex()]);
+                    });
+
+                    dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
                 }
-
-                String title = "Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName();
-                SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
-                        .title(title)
-                        .content(choiceItems)
-                        .build();
-
-                dialog.setListener(item -> {
-                    ParamInfo paramInfo = mItemList.get(position).getParamInfoList().get(positionChild);
-                    dropdownTextView.setText(paramInfo.getOptions()[item.getItemIndex()]);
-                    paramInfo.setCapturedValue(paramInfo.getValues()[item.getItemIndex()]);
-                });
-
-                dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-
-//                AlertDialog.Builder builder =
-//                        new AlertDialog.Builder(mContext);
-//
-//                builder.setTitle("Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName())
-//                        .setItems(items, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[which]);
-//                                mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(mItemList.get(position).getParamInfoList().get(positionChild).getValues()[which]);
-//                                dialog.dismiss();
-//                            }
-//                        });
-//
-//
-//                builder.create().show();
             }
         });
 

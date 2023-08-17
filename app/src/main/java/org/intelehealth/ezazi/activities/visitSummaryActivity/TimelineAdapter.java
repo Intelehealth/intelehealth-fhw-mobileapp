@@ -71,7 +71,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
-            patientName = intent.getStringExtra("name");
+            patientName = intent.getStringExtra("patientNameTimeline");
             nurseHasEditAccess = new VisitsDAO().checkLoggedInUserAccessVisit(visitUuid, sessionManager.getProviderID());
             Log.e("TimelineAdapter", "TimelineAdapter: nurseHasEditAccess=>" + nurseHasEditAccess);
 //            String time = intent.getStringExtra("encounter_time");

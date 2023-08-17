@@ -10,6 +10,10 @@ public class SingChoiceItem {
     private String item;
     private String itemId;
 
+    private boolean selected;
+
+    private String secondaryName;
+
     public int getItemIndex() {
         return itemIndex;
     }
@@ -32,5 +36,21 @@ public class SingChoiceItem {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSecondaryName(String secondaryName) {
+        this.secondaryName = secondaryName;
+    }
+
+    public String getSecondaryName() {
+        return secondaryName;
     }
 }

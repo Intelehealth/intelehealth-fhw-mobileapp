@@ -7,5 +7,5 @@ package org.intelehealth.klivekit.chat.model
  **/
 interface ItemHeader {
     fun isHeader(): Boolean
-    fun getCreatedAt(): String
+    fun createdDate(): String
 }

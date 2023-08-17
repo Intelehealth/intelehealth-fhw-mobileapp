@@ -83,9 +83,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -195,14 +193,18 @@ public class ChatActivity extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 ChatMessage message = new Gson().fromJson(jsonObject.toString(), ChatMessage.class);
-                message.setMessageStatus(MessageStatus.RECEIVED.getValue());
-                addNewMessage(message);
-                setReadStatus(message.getId());
+                Log.e(TAG, "onUpdateMessageEvent: socket => " + message.getPatientId());
+                Log.e(TAG, "onUpdateMessageEvent: screen => " + mPatientUUid);
+                if (message.getPatientId().equalsIgnoreCase(mPatientUUid)) {
+                    message.setMessageStatus(MessageStatus.RECEIVED.getValue());
+                    addNewMessage(message);
+                    setReadStatus(message.getId());
+                }
 //                if (mToUUId.isEmpty()) {
 //                    try {
 //                        mToUUId = jsonObject.getString("fromUser");
-//                        // save in db
-//                        JSONObject connectionInfoObject = new JSONObject();
+//                        // save in db "patientId":"4942b4a5-642e-4eff-bf6e-8300b084a787","patientName":"Unit Test"
+//                        JSONObject connectionInfoObject = new JSONObject(); "patientId":"85503a1c-728d-484c-992a-21a20e4152b5","message":"44444444"
 //                        connectionInfoObject.put("fromUUID", mFromUUId);
 //                        connectionInfoObject.put("toUUID", mToUUId);
 //                        connectionInfoObject.put("patientUUID", mPatientUUid);
@@ -259,9 +261,9 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentResourceId());
         mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
-        SocketManager.getInstance().setEmitterListener(emitter);
         if (getIntent().hasExtra("patientUuid")) {
             mPatientUUid = getIntent().getStringExtra("patientUuid");
+            SocketManager.getInstance().setActiveRoomId(mPatientUUid);
         }
         if (getIntent().hasExtra("fromUuid")) {
             mFromUUId = getIntent().getStringExtra("fromUuid");
@@ -285,7 +287,6 @@ public class ChatActivity extends AppCompatActivity {
 //        ((TextView) findViewById(R.id.title_incoming_tv)).setText(mPatientName);
         //getSupportActionBar().setSubtitle(mVisitUUID);
         mRequestQueue = Volley.newRequestQueue(this);
-        SocketManager.getInstance().setActiveRoomId(mPatientUUid);
 
         initiateView();
         initListAdapter();
@@ -316,7 +317,6 @@ public class ChatActivity extends AppCompatActivity {
         //Doctor id - a4ac4fee-538f-11e6-9cfe-86f436325720
         connectTOSocket();
 
-        getAllMessages(false);
         //postMessages(FROM_UUID, TO_UUID, PATIENT_UUID, "hell.. mobile test - " + System.currentTimeMillis());
         mMessageEditText.setImeOptions(EditorInfo.IME_ACTION_SEND);
         mMessageEditText.setOnEditorActionListener((v, actionId, event) -> {
@@ -425,7 +425,7 @@ public class ChatActivity extends AppCompatActivity {
             String msgDay = message.getMessageDay();
             Log.e(TAG, "updateListAdapter: MessageDay[" + i + "]=>" + msgDay);
             if (!msgDay.equals(messageDay)) {
-                messages.add(DayHeader.buildHeader(message.getCreatedAt()));
+                messages.add(DayHeader.buildHeader(message.createdDate()));
                 messageDay = msgDay;
             }
             messages.add(message);
@@ -449,8 +449,8 @@ public class ChatActivity extends AppCompatActivity {
         Collections.sort(messages, (o1, o2) -> {
             try {
                 if (o1.isHeader() || o2.isHeader()) return -1;
-                Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getCreatedAt());
-                Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getCreatedAt());
+                Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.createdDate());
+                Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.createdDate());
                 return b.compareTo(a);
             } catch (ParseException e) {
                 return -1;
@@ -536,6 +536,7 @@ public class ChatActivity extends AppCompatActivity {
         String url = Constants.BASE_URL + "?userId=" + mFromUUId + "&name=" + mFromUUId;
         if (!SocketManager.getInstance().isConnected()) {
             SocketManager.getInstance().connect(url);
+            Log.e(TAG, "connectTOSocket: reconnecting");
         }
     }
 
@@ -551,11 +552,11 @@ public class ChatActivity extends AppCompatActivity {
             if (list.get(0) instanceof ChatMessage) {
                 ChatMessage lastMsg = (ChatMessage) list.get(0);
                 if (!lastMsg.getMessageDay().equals(message.getMessageDay())) {
-                    mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
+                    mChatListingAdapter.addMessage(DayHeader.buildHeader(message.createdDate()));
                 }
             }
         } else {
-            mChatListingAdapter.addMessage(DayHeader.buildHeader(message.getCreatedAt()));
+            mChatListingAdapter.addMessage(DayHeader.buildHeader(message.createdDate()));
         }
 
 
@@ -569,20 +570,24 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SocketManager.getInstance().setActiveRoomId(mPatientUUid);
+        SocketManager.getInstance().setEmitterListener(emitter);
+        getAllMessages(false);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         SocketManager.getInstance().setActiveRoomId(null);
+        SocketManager.getInstance().setEmitterListener(null);
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
-        SocketManager.getInstance().setEmitterListener(null);
-        SocketManager.getInstance().setActiveRoomId(null);
+//        SocketManager.getInstance().setEmitterListener(null);
+        super.onDestroy();
+
+//        SocketManager.getInstance().setActiveRoomId(null);
     }
 
     public void sendMessageNow(View view) {

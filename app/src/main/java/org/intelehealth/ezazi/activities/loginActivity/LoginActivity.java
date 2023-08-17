@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        icLogo = findViewById(R.id.iv_logo);
+        icLogo = findViewById(R.id.ivAppLogo);
         setLogo();
 
         // Set up the login form.

@@ -43,6 +43,7 @@ import org.intelehealth.klivekit.socket.SocketManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PartogramDataCaptureActivity extends BaseActionBarActivity {
@@ -224,14 +225,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     }
 
     private void showDoctorSelectionDialog(boolean isChat) {
-        HashMap<String, String> doctors = CallInitializer.getDoctorsDetails(mPatientUuid);
-        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
-        for (String key : doctors.keySet()) {
-            SingChoiceItem item = new SingChoiceItem();
-            item.setItemId(doctors.get(key));
-            item.setItem(key);
-            choiceItems.add(item);
-        }
+        LinkedList<SingChoiceItem> choiceItems = CallInitializer.getDoctorsDetails(mPatientUuid);
 
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_doctor)
@@ -239,30 +233,30 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 .build();
 
         dialog.setListener(item -> {
-            if (isChat) startChatActivity(doctors.get(item.getItem()), item.getItem());
-            else startVideoCallActivity(doctors, item.getItem());
+            if (isChat) startChatActivity(item);
+            else startVideoCallActivity(item);
         });
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void startChatActivity(String doctorUuid, String doctorName) {
-        if (SocketManager.getInstance().checkUserIsOnline(doctorUuid)) {
+    private void startChatActivity(SingChoiceItem item) {
+        if (SocketManager.getInstance().checkUserIsOnline(item.getItemId())) {
             RtcArgs args = new RtcArgs();
             args.setPatientName(mPatientName);
             args.setPatientId(mPatientUuid);
             args.setVisitId(mVisitUUID);
             args.setNurseId(new SessionManager(getApplicationContext()).getProviderID());
-            args.setDoctorUuid(doctorUuid);
+            args.setDoctorUuid(item.getItemId());
             EzaziChatActivity.startChatActivity(this, args);
-        } else Toast.makeText(this, doctorName + " is offline ", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(this, item.getItem() + " is offline ", Toast.LENGTH_SHORT).show();
     }
 
-    private void startVideoCallActivity(HashMap<String, String> doctors, String doctorName) {
-        if (SocketManager.getInstance().checkUserIsOnline(doctors.get(doctorName))) {
+    private void startVideoCallActivity(SingChoiceItem item) {
+        if (SocketManager.getInstance().checkUserIsOnline(item.getItemId())) {
             SessionManager sessionManager = new SessionManager(this);
-            Toast.makeText(this, doctorName, Toast.LENGTH_LONG).show();
-            Log.v(TAG, "doctors  - " + doctorName);
+            Toast.makeText(this, item.getItem(), Toast.LENGTH_LONG).show();
+            Log.v(TAG, "doctors  - " + item.getItem());
             EncounterDTO encounterDTO = new EncounterDAO().getEncounterByVisitUUIDLimit1(mVisitUUID);
             RtcArgs args = new RtcArgs();
             try {
@@ -279,15 +273,15 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             args.setPatientId(mPatientUuid);
             args.setPatientPersonUuid(mPatientUuid);
             args.setPatientName(mPatientName);
-            args.setDoctorName(doctorName);
-            args.setDoctorUuid(doctors.get(doctorName));
+            args.setDoctorName(item.getItem());
+            args.setDoctorUuid(item.getItemId());
             args.setIncomingCall(false);
             args.setNurseId(nurseId);
             args.setNurseName(sessionManager.getChwname());
             args.setRoomId(roomId);
             new CallInitializer(args).initiateVideoCall(args1 -> EzaziVideoCallActivity.startVideoCallActivity(PartogramDataCaptureActivity.this, args1));
         } else {
-            Toast.makeText(this, doctorName + " is offline", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, item.getItem() + " is offline", Toast.LENGTH_LONG).show();
         }
     }
 
