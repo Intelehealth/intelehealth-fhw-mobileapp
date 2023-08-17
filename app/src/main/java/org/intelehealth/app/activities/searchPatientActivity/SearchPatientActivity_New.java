@@ -156,6 +156,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
             {
+                mSearchEditText.requestFocus();
                 iconClear.setVisibility(View.GONE);
                 iconSearch.setVisibility(View.VISIBLE);
             }
