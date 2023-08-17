@@ -408,7 +408,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             allPatientsTV.setVisibility(View.VISIBLE);
             dividerView.setVisibility(View.GONE);
         }
-        findViewById(R.id.search_clear_tv).setVisibility(View.VISIBLE);
+//        findViewById(R.id.search_clear_tv).setVisibility(View.VISIBLE);
     }
 
     private void searchData_Unavailable() {
