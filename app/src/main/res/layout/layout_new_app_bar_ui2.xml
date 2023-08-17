@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_home"
-        android:layout_marginTop="@dimen/home_framelayout_margin_top"
+        android:layout_marginTop="@dimen/margin_12"
         android:paddingBottom="@dimen/home_framelayout_padding_bottom"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

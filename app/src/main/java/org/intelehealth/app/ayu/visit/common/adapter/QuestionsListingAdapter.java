@@ -1214,7 +1214,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
-        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
         LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
@@ -1222,6 +1222,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 //openCamera(getImagePath(), "");
+                node.setImageUploaded(false);
                 node.setDataCaptured(false);
                 mLastImageCaptureSelectedNodeIndex = index;
                 mOnItemSelection.onCameraRequest();
@@ -1231,6 +1232,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 //openCamera(getImagePath(), "");
+                node.setImageUploaded(false);
+                node.setDataCaptured(false);
                 mLastImageCaptureSelectedNodeIndex = index;
                 mOnItemSelection.onCameraRequest();
             }
@@ -1241,6 +1244,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
+                        node.setImageUploaded(true);
                         mOnItemSelection.onSelect(node, index, false, null);
 
                     }
@@ -1267,11 +1271,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
                 @Override
                 public void onImageRemoved(int index, String image) {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
                     mOnItemSelection.onImageRemoved(index, image);
                 }
 
                 @Override
                 public void onNewImageRequest() {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
                     mLastImageCaptureSelectedNodeIndex = index;
                     mOnItemSelection.onCameraRequest();
                 }
@@ -1571,7 +1579,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else{
+                        } else {
                             node.addLanguage(editText.getText().toString());
                         }
 
@@ -1688,7 +1696,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else{
+                        } else {
                             node.addLanguage(editText.getText().toString());
                         }
                         node.setSelected(true);

@@ -15,21 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include
-            layout="@layout/layout_new_app_bar_ui2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <include
-            android:id="@+id/survey_snackbar_cv"
-            layout="@layout/custom_snackbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/bottom_nav_home"
-            android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/margin_24"
-            android:layout_marginBottom="@dimen/margin_24" />
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_home"
             android:layout_width="match_parent"
@@ -44,6 +29,24 @@
             app:itemTextColor="@drawable/ui2_selector_for_all_bottomnavs"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/menu_home_footer" />
+
+        <include
+            layout="@layout/layout_new_app_bar_ui2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_nav_home" />
+
+        <include
+            android:id="@+id/survey_snackbar_cv"
+            layout="@layout/custom_snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bottom_nav_home"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_24" />
+
+
         <!--
                 app:itemIconTint="@drawable/ui2_selector_for_all_bottomnavs"
         -->
@@ -57,6 +60,7 @@
         android:layout_gravity="start"
         android:background="@drawable/ui2_home_nav_drawer_background"
         android:fitsSystemWindows="false"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header_home_ui2"
         app:itemIconPadding="@dimen/itemIconPadding_drawer"
         app:itemIconTint="@color/colorPrimary"

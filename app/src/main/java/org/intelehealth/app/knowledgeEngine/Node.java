@@ -79,6 +79,7 @@ public class Node implements Serializable {
     private boolean isExclusiveOption;
     private boolean havingNestedQuestion;
     private boolean isDataCaptured;
+    private boolean isImageUploaded;
     private boolean optional;
     private String id;
     private String text;
@@ -3295,6 +3296,14 @@ public class Node implements Serializable {
                 }
             }
         }
+    }
+
+    public boolean isImageUploaded() {
+        return isImageUploaded;
+    }
+
+    public void setImageUploaded(boolean imageUploaded) {
+        isImageUploaded = imageUploaded;
     }
 }
 
