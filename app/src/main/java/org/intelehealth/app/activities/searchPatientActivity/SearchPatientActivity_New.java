@@ -307,6 +307,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             public void onSelect(String data) {
                 mSearchEditText.setText(data);
                 mSearchEditText.setSelection(mSearchEditText.getText().length());
+                mSearchEditText.clearFocus();
                 iconSearch.performClick();
             }
 
