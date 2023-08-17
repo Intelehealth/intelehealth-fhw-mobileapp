@@ -54,18 +54,11 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_privacy_note_ui2);
-        tvTermsAndPrivacy = findViewById(R.id.tv_privacy_notice_link_1);
+        tvTermsAndPrivacy = findViewById(R.id.setupAyuIntroAcceptTCandPPTextView);
         termsAndPrivacyPolicy();
-        Button btnSetup = findViewById(R.id.btn_setup);
-        cardNoteSnack = findViewById(R.id.card_note_snack_policy);
-
-        /*TextView tcTextView = (TextView) findViewById(R.id.tv_privacy_notice_link_2);
-        tcTextView.setPaintFlags(tcTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        TextView ppTextView = (TextView) findViewById(R.id.tv_privacy_notice_link_4);
-        ppTextView.setPaintFlags(ppTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);*/
-
-        ImageView ivBack = findViewById(R.id.iv_setup_privacy_back);
+        Button btnSetup = findViewById(R.id.setupAyuIntroSetupBtn);
+        cardNoteSnack = findViewById(R.id.setupAyuIntroAcceptTCandPPSnackBar);
+        ImageView ivBack = findViewById(R.id.setupAyuIntroBackArrowImageView);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,10 +66,8 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
         btnSetup.getBackground().setAlpha(60);
-        CheckBox chkBoxPrivacyPolicy = findViewById(R.id.checkbox_privacy_policy);
+        CheckBox chkBoxPrivacyPolicy = findViewById(R.id.setupAyuIntroAcceptTCandPPCheckBox);
         btnSetup.setEnabled(false);
 
         chkBoxPrivacyPolicy.setOnClickListener(new View.OnClickListener() {

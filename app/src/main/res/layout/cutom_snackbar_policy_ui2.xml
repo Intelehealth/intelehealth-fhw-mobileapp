@@ -15,7 +15,8 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/snackbar_icon"
+            android:id="@+id/acceptPolicySnackBarIcon"
+            android:contentDescription="Accept Policy Snackbar Icon (From Setup Ayu Intro)"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -25,10 +26,11 @@
             android:src="@drawable/ui2_ic_policy"/>
 
         <TextView
-            android:id="@+id/snackbar_text"
+            android:id="@+id/acceptPolicySnackBarTextView"
+            android:contentDescription="Accept Policy Snackbar TextView (From Setup Ayu Intro)"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/snackbar_icon"
+            android:layout_toEndOf="@+id/acceptPolicySnackBarIcon"
             android:layout_marginStart="@dimen/fu_margin_start"
             android:layout_marginTop="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/fu_margin_start"
