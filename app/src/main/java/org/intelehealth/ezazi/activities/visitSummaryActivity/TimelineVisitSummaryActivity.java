@@ -976,7 +976,6 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
                     etOtherCommentOutcome.clearFocus();
                     etOtherCommentOutcome.setCursorVisible(false);
                     hideKeyboard(TimelineVisitSummaryActivity.this);
-
                 }
             }
         });

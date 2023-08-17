@@ -29,51 +29,91 @@
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintRight_toRightOf="parent" />-->
 
-            <RelativeLayout
-                style="@style/Theme.EZazi.Text.Dialog.Content"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/other_info_checkbox_margin_top"
                 android:background="@drawable/selector_dialog_list_item"
-                android:orientation="horizontal">
+                android:padding="@dimen/small_btn_horizontal_padding">
 
-                <TextView
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbLabourCompleted"
                     style="@style/Theme.EZazi.Text.Dialog.Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/tv_labour_margin_end"
-                    android:text="@string/labour_completed" />
+                    android:layoutDirection="rtl"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="@string/labour_completed"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <CheckBox
-                    android:id="@+id/cbLabourCompleted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false" />
-            </RelativeLayout>
+            <!--            <RelativeLayout-->
+            <!--                style="@style/Theme.EZazi.Text.Dialog.Content"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/other_info_checkbox_margin_top"-->
+            <!--                android:background="@drawable/selector_dialog_list_item"-->
+            <!--                android:orientation="horizontal">-->
 
-            <RelativeLayout
-                style="@style/Theme.EZazi.Text.Dialog.Content"
+            <!--                <TextView-->
+            <!--                    style="@style/Theme.EZazi.Text.Dialog.Content"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginEnd="@dimen/tv_labour_margin_end"-->
+            <!--                    android:text="@string/labour_completed" />-->
+
+            <!--                <CheckBox-->
+            <!--                    android:id="@+id/cbLabourCompleted"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_alignParentEnd="true"-->
+            <!--                    android:checked="false" />-->
+            <!--            </RelativeLayout>-->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_input_margin_top"
                 android:background="@drawable/selector_dialog_list_item"
-                android:orientation="horizontal">
+                android:padding="@dimen/small_btn_horizontal_padding">
 
-                <TextView
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbMotherDeceased"
                     style="@style/Theme.EZazi.Text.Dialog.Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/tv_labour_margin_end"
-                    android:text="@string/mother_deceased" />
+                    android:layoutDirection="rtl"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="@string/mother_deceased"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--            <RelativeLayout-->
+            <!--                style="@style/Theme.EZazi.Text.Dialog.Content"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/dialog_input_margin_top"-->
+            <!--                android:background="@drawable/selector_dialog_list_item"-->
+            <!--                android:orientation="horizontal">-->
 
-                <CheckBox
-                    android:id="@+id/cbMotherDeceased"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false" />
-            </RelativeLayout>
+            <!--                <TextView-->
+            <!--                    style="@style/Theme.EZazi.Text.Dialog.Content"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginEnd="@dimen/tv_labour_margin_end"-->
+            <!--                    android:text="@string/mother_deceased" />-->
+
+            <!--                <CheckBox-->
+            <!--                    android:id="@+id/cbMotherDeceased"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_alignParentEnd="true"-->
+            <!--                    android:checked="false" />-->
+            <!--            </RelativeLayout>-->
 
 
             <!--<com.google.android.material.textview.MaterialTextView
