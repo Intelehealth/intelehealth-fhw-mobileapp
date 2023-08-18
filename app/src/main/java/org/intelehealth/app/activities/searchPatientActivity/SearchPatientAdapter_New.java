@@ -157,7 +157,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
-            search_gender = itemView.findViewById(R.id.search_gender);
+            search_gender = itemView.findViewById(R.id.tvGenderAgeRowItem);
             search_name = itemView.findViewById(R.id.search_name);
             priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);

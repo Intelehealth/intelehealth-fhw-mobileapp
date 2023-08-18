@@ -236,7 +236,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         hl_2.setVisibility(View.GONE);
 
         patName_txt = findViewById(R.id.textView_name_value);
-        profile_image = findViewById(R.id.profile_image);
+        profile_image = findViewById(R.id.ivPatientImageRowItem);
         gender_age_txt = findViewById(R.id.textView_gender_value);
         openmrsID_txt = findViewById(R.id.textView_id_value);
         mCHWname = findViewById(R.id.chw_details);
@@ -340,7 +340,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         // settind data - end
 
         // Patient Photo
-        profile_image = findViewById(R.id.profile_image);
+        profile_image = findViewById(R.id.ivPatientImageRowItem);
         if (patient_photo_path != null) {
             Glide.with(this)
                     .load(patient_photo_path)
