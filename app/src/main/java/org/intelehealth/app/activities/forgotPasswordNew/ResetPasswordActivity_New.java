@@ -76,17 +76,17 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
         context = ResetPasswordActivity_New.this;
         cpd = new CustomProgressDialog(context);
         snackbarUtils = new SnackbarUtils();
-        rvHelpInfo = findViewById(R.id.resetPassHelpLayout);
-        layoutParent = findViewById(R.id.resetPassParentLayout);
+        rvHelpInfo = findViewById(R.id.llHelpResetPass);
+        layoutParent = findViewById(R.id.llParentResetPass);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             otp = extras.getString("otp");
             userUuid = extras.getString("userUuid");
         }
-        etNewPassword = findViewById(R.id.resetPassEnterNewPassEdittext);
-        etConfirmPassword = findViewById(R.id.resetPassConfirmNewPassEdittext);
-        btnSavePassword = findViewById(R.id.resetPassSaveBtn);
-        ImageView ivBack = findViewById(R.id.resetPassBackArrowImageView);
+        etNewPassword = findViewById(R.id.etEnterNewPassResetPass);
+        etConfirmPassword = findViewById(R.id.etConfirmNewPassResetPass);
+        btnSavePassword = findViewById(R.id.btnSaveResetPassword);
+        ImageView ivBack = findViewById(R.id.ivBackArrowResetPass);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +94,9 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        tvErrorNewPassword = findViewById(R.id.resetPassNewPassErrorTextView);
-        tvErrorConfirmPassword = findViewById(R.id.resetPassConfirmNewPassErrorTextView);
-        tvGeneratePassword = findViewById(R.id.resetPassGeneratePassTextView);
+        tvErrorNewPassword = findViewById(R.id.tvNewPassErrorResetPass);
+        tvErrorConfirmPassword = findViewById(R.id.tvConfirmNewPassErrorResetPass);
+        tvGeneratePassword = findViewById(R.id.tvGeneratePassResetPass);
         tvGeneratePassword.setOnClickListener(v -> {
             randomString(8);
         });
