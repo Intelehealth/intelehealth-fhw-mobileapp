@@ -13,6 +13,7 @@
 
         <ImageView
             android:id="@+id/ivIconPatientRegisteredDialog"
+            android:contentDescription="Patient Registration Dialog Icon ImageView"
             android:layout_width="@dimen/patregist_profileimg_icon"
             android:layout_height="@dimen/patregist_profileimg_icon"
             android:layout_centerHorizontal="true"
@@ -30,6 +31,7 @@
 
             <TextView
                 android:id="@+id/tvTitlePatientRegisteredDialog"
+                android:contentDescription="Patient Registration Dialog Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
@@ -42,6 +44,7 @@
 
             <TextView
                 android:id="@+id/tvSubtitlePatientRegisteredDialog"
+                android:contentDescription="Patient Registration Dialog Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvTitlePatientRegisteredDialog"
@@ -65,6 +68,7 @@
 
                 <Button
                     android:id="@+id/btnNegPatientRegisteredDialog"
+                    android:contentDescription="Patient Registration Dialog Negative (No) Button"
                     style="@style/negative_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -77,6 +81,7 @@
 
                 <Button
                     android:id="@+id/btnPosPatientRegisteredDialog"
+                    android:contentDescription="Patient Registration Dialog Positive (Yes) Button"
                     style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

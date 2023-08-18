@@ -67,6 +67,7 @@
 
             <ImageButton
                 android:id="@+id/ibRefreshLanguageProtocol"
+                android:contentDescription="Language Protocol Refresh ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
@@ -80,6 +81,7 @@
     <!--Language - Start-->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvLangLanguageProtocol"
+        android:contentDescription="Language Protocol - Language CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlToolbarParentLanguageProtocol"
@@ -97,6 +99,7 @@
 
             <RelativeLayout
                 android:id="@+id/rlLangTitleLanguageProtocol"
+                android:contentDescription="Language Protocol Change Language Card Title RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -106,6 +109,7 @@
 
                 <ImageView
                     android:id="@+id/ivLangIconLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language Card Icon ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_2dp"
@@ -123,6 +127,7 @@
 
                 <ImageButton
                     android:id="@+id/ibLangCardCollapseLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language Card Collapse ImageButton"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:layout_alignParentEnd="true"
@@ -135,12 +140,14 @@
             <!--Expanded Vitals-->
             <RelativeLayout
                 android:id="@+id/rlLangExpandViewLanguageProtocol"
+                android:contentDescription="Language Protocol Change Language Card Expanded RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlLangTitleLanguageProtocol">
 
                 <View
                     android:id="@+id/viewLangLayoutDividerLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language Card Divider View"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -152,6 +159,7 @@
                 <!--Language Relative - Start-->
                 <RelativeLayout
                     android:id="@+id/rlChangeLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language RelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/viewLangLayoutDividerLanguageProtocol"
@@ -169,6 +177,7 @@
 
                     <Spinner
                         android:id="@+id/spinnerChangeLanguageProtocol"
+                        android:contentDescription="Language Protocol Change Language Spinner"
                         style="@style/SmallSpinnerTheme"
                         android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -185,6 +194,7 @@
 
                     <TextView
                         android:id="@+id/tvLangSpinnerLanguageProtocol"
+                        android:contentDescription="Language Protocol Change Language Spinner TextView"
                         style="@style/SmallSpinnerTheme"
                         android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -198,6 +208,7 @@
 
                 <RelativeLayout
                     android:id="@+id/rlResetLanguageProtocol"
+                    android:contentDescription="Language Protocol Reset Language RelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rlChangeLanguageProtocol"
@@ -216,6 +227,7 @@
 
                     <RelativeLayout
                         android:id="@+id/btnResetLanguageProtocol"
+                        android:contentDescription="Language Protocol Reset Language Button RelativeLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -258,6 +270,7 @@
     <!--Protocols - Start-->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvProtocolLanguageProtocol"
+        android:contentDescription="Language Protocol - Protocol CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cvLangLanguageProtocol"
@@ -275,6 +288,7 @@
 
             <RelativeLayout
                 android:id="@+id/rlProtocolTitleLanguageProtocol"
+                android:contentDescription="Language Protocol Update Protocol Card Title RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -284,6 +298,7 @@
 
                 <ImageView
                     android:id="@+id/ivProtocolIconLanguageProtocol"
+                    android:contentDescription="Language Protocol Update Protocol Card Icon ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_2dp"
@@ -301,6 +316,7 @@
 
                 <ImageButton
                     android:id="@+id/ibProtocolCardCollapseLanguageProtocol"
+                    android:contentDescription="Language Protocol Update Protocol Card Collapse ImageButton"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:layout_alignParentEnd="true"
@@ -313,12 +329,14 @@
             <!--Expanded Vitals-->
             <RelativeLayout
                 android:id="@+id/rlProtocolExpandViewLanguageProtocol"
+                android:contentDescription="Language Protocol Update Protocol Card Expanded RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlProtocolTitleLanguageProtocol">
 
                 <View
                     android:id="@+id/viewProtocolLayoutDividerLanguageProtocol"
+                    android:contentDescription="Language Protocol Update Protocol Card Divider View"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -347,6 +365,7 @@
 
                     <RelativeLayout
                         android:id="@+id/rlUpdateLanguageProtocol"
+                        android:contentDescription="Language Protocol Update Protocol RelativeLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -376,6 +395,7 @@
 
     <include
         android:id="@+id/snackbarLanguageProtocol"
+        android:contentDescription="Language Protocol Snackbar"
         layout="@layout/custom_snackbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
