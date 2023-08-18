@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/loginParentLayout"
+    android:id="@+id/clParentLogin"
     android:contentDescription="Login Screen Parent Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,14 +10,14 @@
     tools:context=".activities.loginActivity.LoginActivityNew">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/loginAppBarLayout"
+        android:id="@+id/appBarLayoutLogin"
         android:contentDescription="Login Screen AppBar Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/loginCollapsingToolbarLayout"
+            android:id="@+id/collapsingToolbarLayoutLogin"
             android:contentDescription="Login Screen Collapsing Toolbar Layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_collapsing_layout_height"
@@ -27,7 +27,7 @@
             app:title="@string/login">
 
             <RelativeLayout
-                android:id="@+id/loginChildRelativeLayout"
+                android:id="@+id/rlChildLogin"
                 android:contentDescription="Login Screen Child Relative Layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -35,7 +35,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvLoginWelcomeBack"
+                    android:id="@+id/tvWelcomeBackLogin"
                     android:contentDescription="Login Screen Welcome Back! TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,11 +48,11 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvLoginPleaseContinue"
+                    android:id="@+id/tvPleaseContinueLogin"
                     android:contentDescription="Login Screen Please Continue TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvLoginWelcomeBack"
+                    android:layout_below="@+id/tvWelcomeBackLogin"
                     android:layout_marginTop="@dimen/tv_please_login_margin_top"
                     android:gravity="center_horizontal"
                     android:text="@string/please_login"
@@ -100,7 +100,7 @@
 
 
             <LinearLayout
-                android:id="@+id/loginChildLinearLayout"
+                android:id="@+id/llChildLogin"
                 android:contentDescription="Login Screen Child Linear Layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -121,7 +121,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/ivLoginDetailsInfo"
+                        android:id="@+id/ivDetailsInfoLogin"
                         android:contentDescription="Login Screen Details Info ImageView"
                         android:layout_width="@dimen/tv_login_details_info_height_width"
                         android:layout_height="@dimen/tv_login_details_info_height_width"
@@ -146,7 +146,7 @@
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etLoginUsername"
+                        android:id="@+id/etUsernameLogin"
                         android:contentDescription="Login Screen Username Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/tvLoginUsernameError"
+                    android:id="@+id/tvUsernameErrorLogin"
                     android:contentDescription="Login Screen Username Edittext Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
                     app:passwordToggleTint="@color/iconTintGray">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etLoginPassword"
+                        android:id="@+id/etPasswordLogin"
                         android:contentDescription="Login Screen Password Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -212,7 +212,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/tvLoginPasswordError"
+                    android:id="@+id/tvPasswordErrorLogin"
                     android:contentDescription="Login Screen Password Edittext Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/tvLoginForgotPassword"
+                    android:id="@+id/tvForgotPasswordLogin"
                     android:contentDescription="Login Screen Forgot Password TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -245,7 +245,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnLoginScreen"
         android:contentDescription="Login Screen Login Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
