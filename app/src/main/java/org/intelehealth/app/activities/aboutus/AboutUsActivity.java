@@ -82,14 +82,14 @@ public class AboutUsActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        images_recyclerview = findViewById(R.id.aboutUsDisplayImagesRecyclerView);
-        globe_link = findViewById(R.id.aboutUsVisitWebsiteLinkTextView);
+        images_recyclerview = findViewById(R.id.rvDisplayImagesAboutUs);
+        globe_link = findViewById(R.id.tvVisitWebsiteLinkAboutUs);
         globe_link.setAutoLinkMask(Linkify.ALL);    // When you want to show directly the Link to the user as text.
 
-        info_link = findViewById(R.id.aboutUsCheckTnCLinkTextView);
+        info_link = findViewById(R.id.tvCheckTnCLinkAboutUs);
         info_link.setMovementMethod(LinkMovementMethod.getInstance());  // When you need to show custom text rather than link to user.
 
-        ivRefresh = findViewById(R.id.aboutUsRefreshImageButton);
+        ivRefresh = findViewById(R.id.ibRefreshAboutUs);
         ivRefresh.setOnClickListener(v -> {
             SyncUtils.syncNow(AboutUsActivity.this, ivRefresh, syncAnimator);
         });
@@ -103,7 +103,7 @@ public class AboutUsActivity extends AppCompatActivity {
 //        MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity());
 //        rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
 
-        gotoButton = findViewById(R.id.aboutUsGoToWebsiteBtn);
+        gotoButton = findViewById(R.id.btnGoToWebsiteAboutUs);
         gotoButton.setOnClickListener(v -> {
             String url = "https://intelehealth.org/";
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
