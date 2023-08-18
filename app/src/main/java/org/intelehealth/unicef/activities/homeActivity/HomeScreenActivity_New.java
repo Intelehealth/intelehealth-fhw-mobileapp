@@ -950,7 +950,13 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         Log.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
         //toolbarHome.setVisibility(View.VISIBLE);
-        String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
+
+        String lastSyncTime = sessionManager.getLastSyncDateTime();
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            lastSyncTime = StringUtils.getFullMonthName(lastSyncTime);
+            lastSyncTime = StringUtils.en__ru_dob(lastSyncTime);
+        }
+        String lastSync = getResources().getString(R.string.last_sync) + ": " + lastSyncTime;
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header

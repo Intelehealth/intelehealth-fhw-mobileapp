@@ -1518,5 +1518,9 @@
     <string name="how_we_can_improve_experience">Оцените нас, чтобы мы могли улучшить ваш опыт.</string>
     <string name="give_feedback">Оставить отзыв</string>
     <string name="type_here_patient_survey">Введите здесь…</string>
+    <string name="terms_and_conditions">Положения и условия</string>
+
+    <string name="exit_app">Выйти из приложения</string>
+
 
 </resources>
