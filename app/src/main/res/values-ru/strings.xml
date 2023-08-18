@@ -1521,6 +1521,7 @@
     <string name="terms_and_conditions">Положения и условия</string>
 
     <string name="exit_app">Выйти из приложения</string>
-
+    <string name="language_successfully_changed_to">Язык успешно изменен на</string>
+    <string name="language_successfully_changed">Язык успешно изменен</string>
 
 </resources>

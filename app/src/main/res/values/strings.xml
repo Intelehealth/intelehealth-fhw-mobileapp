@@ -1928,7 +1928,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="about_app">About App</string>
     <string name="sure_change_language">Are you sure you want to change language to</string>
     <string name="change_language">Change language?</string>
-    <string name="language_successfully_changed">Language successfully changed to</string>
+    <string name="language_successfully_changed_to">Language successfully changed to</string>
+    <string name="language_successfully_changed">Language successfully changed</string>
     <string name="changing_protocols">Changing protocols</string>
     <string name="wait_while_protocols_changing">Please wait while the protocols are being changed.</string>
     <string name="protocols_successfully_changed">Protocols have been successfully changed!</string>
