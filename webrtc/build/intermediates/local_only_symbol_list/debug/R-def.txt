@@ -143,6 +143,11 @@ drawable message_icon
 drawable round_corner_16_blue_light
 drawable round_corner_16_gray_light
 drawable rounded_bg
+drawable vc_new_call_end_icon
+drawable vc_new_call_mic_icon
+drawable vc_new_chat_icon
+drawable vc_new_switch_camera_icon
+drawable vc_new_v_camera_icon
 id audio_imv
 id audio_rec_imv
 id call_end_imv
