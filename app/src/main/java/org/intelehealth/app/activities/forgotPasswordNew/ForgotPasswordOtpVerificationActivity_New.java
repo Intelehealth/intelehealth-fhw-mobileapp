@@ -56,7 +56,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
     String userUuid = "", userPhoneNum, userName;
     TextView tvOtpError, tvResendOtp;
     EditText etPin1, etPin2, etPin3, etPin4, etPin5, etPin6;
-    LinearLayout layoutParent, rvHelpInfo;
+    LinearLayout layoutParent, llHelpInfo;
     SnackbarUtils snackbarUtils;
     Button buttonVerifyOtp;
 
@@ -70,21 +70,21 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             userName = extras.getString("userName");
             userPhoneNum = extras.getString("userPhoneNum");
         }
-        buttonVerifyOtp = findViewById(R.id.otpVerificationContinueBtn);
+        buttonVerifyOtp = findViewById(R.id.btnContinueOtpVerification);
         LinearLayout layoutPinView = findViewById(R.id.otpVerificationPinView);
 
-        etPin1 = layoutPinView.findViewById(R.id.otpVerificationOtpPin1);
-        etPin2 = layoutPinView.findViewById(R.id.otpVerificationOtpPin2);
-        etPin3 = layoutPinView.findViewById(R.id.otpVerificationOtpPin3);
-        etPin4 = layoutPinView.findViewById(R.id.otpVerificationOtpPin4);
-        etPin5 = layoutPinView.findViewById(R.id.otpVerificationOtpPin5);
-        etPin6 = layoutPinView.findViewById(R.id.otpVerificationOtpPin6);
-        tvOtpError = findViewById(R.id.otpVerificationErrorTextView);
-        tvResendOtp = findViewById(R.id.otpVerificationResendTextView);
+        etPin1 = layoutPinView.findViewById(R.id.otpPin1OtpVerification);
+        etPin2 = layoutPinView.findViewById(R.id.otpPin2OtpVerification);
+        etPin3 = layoutPinView.findViewById(R.id.otpPin3OtpVerification);
+        etPin4 = layoutPinView.findViewById(R.id.otpPin4OtpVerification);
+        etPin5 = layoutPinView.findViewById(R.id.otpPin5OtpVerification);
+        etPin6 = layoutPinView.findViewById(R.id.otpPin6OtpVerification);
+        tvOtpError = findViewById(R.id.tvErrorOtpVerification);
+        tvResendOtp = findViewById(R.id.tvResendOtpVerification);
         tvResendOtp.setPaintFlags(tvResendOtp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         snackbarUtils = new SnackbarUtils();
-        layoutParent = findViewById(R.id.otpVerificationParentLayout);
-        rvHelpInfo = findViewById(R.id.otpVerificationHelpLayout);
+        layoutParent = findViewById(R.id.llParentOtpVerification);
+        llHelpInfo = findViewById(R.id.llHelpOtpVerification);
         etPin1.requestFocus();
 
         tvResendOtp.setOnClickListener(new View.OnClickListener() {
@@ -103,13 +103,13 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             }
         });
 
-        ImageView ivBack = findViewById(R.id.otpVerificationBackArrowImageView);
+        ImageView ivBack = findViewById(R.id.ivBackArrowOtpVerification);
         ivBack.setOnClickListener(v -> {
             Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, SetupActivityNew.class);
             startActivity(intent);
         });
 
-        rvHelpInfo.setOnClickListener(v -> {
+        llHelpInfo.setOnClickListener(v -> {
             /*Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ChatSupportHelpActivity_New.class);
             startActivity(intent);*/
 

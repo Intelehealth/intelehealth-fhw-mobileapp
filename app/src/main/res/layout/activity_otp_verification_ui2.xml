@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/otpVerificationParentLayout"
+    android:id="@+id/llParentOtpVerification"
     android:contentDescription="OTP Verification Parent LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/otpVerificationBackArrowImageView"
+            android:id="@+id/ivBackArrowOtpVerification"
             android:contentDescription="OTP Verification Back Arrow ImageView"
             android:layout_width="@dimen/back_arrow_demo1_width"
             android:layout_height="@dimen/back_arrow_demo1_width"
@@ -28,7 +28,7 @@
             android:src="@drawable/ic_baseline_arrow_back_24" />
 
         <LinearLayout
-            android:id="@+id/otpVerificationHelpLayout"
+            android:id="@+id/llHelpOtpVerification"
             android:contentDescription="OTP Verification Help LinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/otpVerificationHelpTextView"
+                android:id="@+id/tvHelpOtpVerification"
                 android:contentDescription="OTP Verification Help TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:textSize="@dimen/common_hint_text_size" />
 
             <ImageView
-                android:id="@+id/otpVerificationHelpImageView"
+                android:id="@+id/ivHelpOtpVerification"
                 android:contentDescription="OTP Verification Help ImageView"
                 android:layout_width="@dimen/back_arrow_demo1_width"
                 android:layout_height="@dimen/back_arrow_demo1_width"
@@ -61,11 +61,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/otpVerificationForgotPasswordTitleTextView"
+            android:id="@+id/tvForgotPasswordTitleOtpVerification"
             android:contentDescription="OTP Verification Forgot Password Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/otpVerificationBackArrowImageView"
+            android:layout_below="@+id/ivBackArrowOtpVerification"
             android:layout_marginTop="@dimen/forgot_password_top_margin"
             android:gravity="center_horizontal"
             android:text="@string/forgot_password"
@@ -74,11 +74,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/otpVerificationSubtitleTextView"
+            android:id="@+id/tvForgotPasswordSubtitleOtpVerification"
             android:contentDescription="OTP Verification Subtitle TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/otpVerificationForgotPasswordTitleTextView"
+            android:layout_below="@+id/tvForgotPasswordTitleOtpVerification"
             android:layout_marginTop="@dimen/margin_10"
             android:gravity="center_horizontal"
             android:text="@string/forgot_password_instruction"
@@ -88,7 +88,7 @@
         <ImageView
             android:layout_width="@dimen/image_intelehealth_login_width"
             android:layout_height="@dimen/image_intelehealth_login_height"
-            android:layout_below="@+id/otpVerificationSubtitleTextView"
+            android:layout_below="@+id/tvForgotPasswordSubtitleOtpVerification"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/iv_main_icon_otp_margin_top"
             android:src="@drawable/ui2_ic_forgot_password_icon" />
@@ -117,13 +117,13 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/otpVerificationChildLayout"
+                    android:id="@+id/rlChildOtpVerification"
                     android:contentDescription="OTP Verification Child RelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/otpVerificationEnterCodeTitleTextView"
+                        android:id="@+id/tvEnterCodeTitleOtpVerification"
                         android:contentDescription="OTP Verification Enter Code Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -134,33 +134,33 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/otpVerificationEnterCodeSubtitleTextView"
+                        android:id="@+id/tvEnterCodeSubtitleOtpVerification"
                         android:contentDescription="OTP Verification Enter Code Subtitle TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/otpVerificationEnterCodeTitleTextView"
+                        android:layout_below="@+id/tvEnterCodeTitleOtpVerification"
                         android:layout_marginTop="@dimen/margin_20"
                         android:text="@string/otp_sent"
                         android:textColor="@color/textColorGray"
                         android:textSize="@dimen/common_label_text_size" />
 
                     <include
-                        android:id="@+id/otpVerificationPinView"
-                        android:contentDescription="OTP Verification Pin View"
+                        android:id="@+id/pinViewOtpVerification"
                         layout="@layout/otp_pinview_layout_ui2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/otpVerificationEnterCodeSubtitleTextView"
+                        android:layout_below="@+id/tvEnterCodeSubtitleOtpVerification"
                         android:layout_marginTop="@dimen/otp_pinview_margin_top"
+                        android:contentDescription="OTP Verification Pin View"
                         android:focusable="true"
                         android:focusableInTouchMode="true" />
 
                     <TextView
-                        android:id="@+id/otpVerificationErrorTextView"
+                        android:id="@+id/tvErrorOtpVerification"
                         android:contentDescription="OTP Verification Error TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/otpVerificationPinView"
+                        android:layout_below="@id/pinViewOtpVerification"
                         android:layout_alignParentStart="true"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
                         android:lineSpacingExtra="0sp"
@@ -188,7 +188,7 @@
                         android:textSize="@dimen/common_label_text_size" />
 
                     <TextView
-                        android:id="@+id/otpVerificationResendTextView"
+                        android:id="@+id/tvResendOtpVerification"
                         android:contentDescription="OTP Verification Resend TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/otpVerificationContinueBtn"
+            android:id="@+id/btnContinueOtpVerification"
             android:contentDescription="OTP Verification Continue Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

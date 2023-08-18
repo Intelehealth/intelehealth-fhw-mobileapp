@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/otpVerificationOtpPin1"
+        android:id="@+id/otpPin1OtpVerification"
         android:contentDescription="OTP Verification Pin 1"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
         android:paddingBottom="@dimen/otp_pinview_padding_top_bottom" />
 
     <EditText
-        android:id="@+id/otpVerificationOtpPin2"
+        android:id="@+id/otpPin2OtpVerification"
         android:contentDescription="OTP Verification Pin 2"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         />
 
     <EditText
-        android:id="@+id/otpVerificationOtpPin3"
+        android:id="@+id/otpPin3OtpVerification"
         android:contentDescription="OTP Verification Pin 3"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
         />
 
     <EditText
-        android:id="@+id/otpVerificationOtpPin4"
+        android:id="@+id/otpPin4OtpVerification"
         android:contentDescription="OTP Verification Pin 4"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
        />
 
     <EditText
-        android:id="@+id/otpVerificationOtpPin5"
+        android:id="@+id/otpPin5OtpVerification"
         android:contentDescription="OTP Verification Pin 5"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
         android:imeOptions="actionNext" />
 
     <EditText
-        android:id="@+id/otpVerificationOtpPin6"
+        android:id="@+id/otpPin6OtpVerification"
         android:contentDescription="OTP Verification Pin 6"
         style="@style/OtpTextStyle"
         android:layout_width="wrap_content"
