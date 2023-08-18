@@ -6,7 +6,7 @@
     tools:context=".activities.IntroActivity.IntroScreensActivity_New">
 
     <ImageView
-        android:id="@+id/ivIntroBackArrow"
+        android:id="@+id/ivBackArrowIntro"
         android:contentDescription="Intro Screen Back Arrow ImageView"
         android:layout_width="@dimen/back_arrow_intro_width"
         android:layout_height="@dimen/back_arrow_intro_height"
@@ -16,25 +16,25 @@
         android:visibility="gone" />
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/introViewPagerScreens"
+        android:id="@+id/vpIntro"
         android:contentDescription="Intro Screen View Pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/introViewPagerDotsLayout"
-        android:layout_below="@+id/ivIntroBackArrow" />
+        android:layout_above="@+id/llViewPagerDotsIntro"
+        android:layout_below="@+id/ivBackArrowIntro" />
 
     <LinearLayout
-        android:id="@+id/introViewPagerDotsLayout"
+        android:id="@+id/llViewPagerDotsIntro"
         android:contentDescription="Intro Screen View Pager Dots Layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_dots_height"
-        android:layout_above="@+id/introSkipBtn"
+        android:layout_above="@+id/btnSkipIntro"
         android:layout_marginTop="@dimen/layout_dots_margin_top"
         android:gravity="center"
         android:orientation="horizontal" />
 
     <Button
-        android:id="@+id/introSkipBtn"
+        android:id="@+id/btnSkipIntro"
         android:contentDescription="Intro Screen Skip Screen Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
+    android:id="@+id/rlParentIntroScreenThird"
+    android:contentDescription="Intro Screen Third Parent Relative Layout"
 android:layout_height="match_parent">
 
 <LinearLayout
+    android:id="@+id/llChildIntroScreenThird"
+    android:contentDescription="Intro Screen Third Child Linear Layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/ivDisplayIntroScreenThird"
+        android:contentDescription="Intro Screen Third Display ImageView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_gravity="center"
         android:src="@drawable/third" />
 
     <TextView
+        android:id="@+id/tvTitleIntroScreenThird"
+        android:contentDescription="Intro Screen Third Title TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/intro_heading_margin_top"
@@ -27,6 +35,8 @@ android:layout_height="match_parent">
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvSubtitleIntroScreenThird"
+        android:contentDescription="Intro Screen Third Subtitle TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/intro_description_margin_start"

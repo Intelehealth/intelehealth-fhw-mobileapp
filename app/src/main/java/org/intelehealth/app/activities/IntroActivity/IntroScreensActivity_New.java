@@ -58,11 +58,11 @@ public class IntroScreensActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_screens_new_ui2);
-        viewPager = findViewById(R.id.introViewPagerScreens);
-        dotsLayout = findViewById(R.id.introViewPagerDotsLayout);
-        Button btnSkip = findViewById(R.id.introSkipBtn);
+        viewPager = findViewById(R.id.vpIntro);
+        dotsLayout = findViewById(R.id.llViewPagerDotsIntro);
+        Button btnSkip = findViewById(R.id.btnSkipIntro);
         sessionManager = new SessionManager(IntroScreensActivity_New.this);
-        ImageView ivBack = findViewById(R.id.ivIntroBackArrow);
+        ImageView ivBack = findViewById(R.id.ivBackArrowIntro);
         /*ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
