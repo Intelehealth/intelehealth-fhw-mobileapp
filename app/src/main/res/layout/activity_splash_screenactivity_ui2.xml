@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/splashParentConstraintLayout"
+    android:id="@+id/clParentSplash"
     android:contentDescription="Splash Screen Parent Constraint Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +11,7 @@
     tools:context=".activities.chooseLanguageActivity.SplashScreenActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/splashChildConstraintLayout"
+        android:id="@+id/clChildSplash"
         android:contentDescription="Splash Screen Child Constraint Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ivSplashIntelehealthLogo"
+            android:id="@+id/ivIntelehealthLogoSplash"
             android:contentDescription="Splash Screen Intelehealth logo ImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/iv_intele_logo_height"
@@ -37,11 +37,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvSplashIntelehealthTitle"
+            android:id="@+id/tvIntelehealthTitleSplash"
             android:contentDescription="Splash Screen Intelehealth Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivSplashIntelehealthLogo"
+            android:layout_below="@+id/ivIntelehealthLogoSplash"
             android:gravity="center"
             android:lineHeight="@dimen/tv_desc_line_height"
             android:lineSpacingExtra="@dimen/tv_desc_line_spacing"
@@ -50,25 +50,26 @@
             android:textSize="@dimen/sub_heading_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivSplashIntelehealthLogo" />
+            app:layout_constraintTop_toBottomOf="@+id/ivIntelehealthLogoSplash" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/splashLanguagePanelConstraintLayout"
+        android:id="@+id/clLanguagePanelSplash"
         android:contentDescription="Splash Screen Bottom Language Panel Constraint Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/splashChildConstraintLayout"
+        android:layout_below="@+id/clChildSplash"
         android:layout_marginTop="60dp"
         android:background="@drawable/top_rounded_whitebg"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splashChildConstraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/clChildSplash">
 
         <View
-            android:id="@+id/splashLanguagePanelView"
+            android:id="@+id/viewLanguagePanelSplash"
             android:contentDescription="Splash Screen Bottom Language Panel View"
             android:layout_width="@dimen/view_splash_width"
             android:layout_height="@dimen/view_splash_height"
@@ -81,7 +82,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/splashLanguagePanelTextView"
+            android:id="@+id/tvLanguagePanelSplash"
             android:contentDescription="Splash Screen Bottom Language Panel Select Language TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,11 +96,11 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/splashLanguagePanelView" />
+            app:layout_constraintTop_toBottomOf="@+id/viewLanguagePanelSplash" />
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/splashLanguagePanelRecyclerView"
+            android:id="@+id/rvLanguagePanelSplash"
             android:contentDescription="Splash Screen Bottom Language Panel Choose Language Recycler View"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -110,15 +111,15 @@
             android:scrollbars="vertical"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/splashLanguagePanelNextBtn"
+            app:layout_constraintBottom_toTopOf="@+id/btnNextSplash"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="wrap"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/splashLanguagePanelTextView"
+            app:layout_constraintTop_toBottomOf="@+id/tvLanguagePanelSplash"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/splashLanguagePanelNextBtn"
+            android:id="@+id/btnNextSplash"
             android:contentDescription="Splash Screen Bottom Language Panel Save Selected Language Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,7 +139,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/splashLanguagePanelTextView"
+            app:layout_constraintTop_toBottomOf="@+id/tvLanguagePanelSplash"
             tools:layout_editor_absoluteX="85dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
