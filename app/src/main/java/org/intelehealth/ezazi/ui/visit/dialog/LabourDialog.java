@@ -182,7 +182,7 @@ public class LabourDialog extends VisitCompletionHelper {
                     birthOutcomeStatus = insertStage2AdditionalData(encounterId);
                 }
 
-                motherDeceasedStatus = obsDAO.insertMotherDeceasedFlatObs(encounterId, String.valueOf(hasMotherDeceased), UuidDictionary.MOTHER_DECEASED_FLAG);
+                motherDeceasedStatus = obsDAO.insertMotherDeceasedFlatObs(encounterId, sessionManager.getCreatorID(), String.valueOf(hasMotherDeceased));
 
                 if (hasMotherDeceased) {
                     obsDAO.insert_Obs(encounterId, sessionManager.getCreatorID(),
@@ -240,6 +240,10 @@ public class LabourDialog extends VisitCompletionHelper {
             // 6. Mother Status
             if (labourInfo.getMotherStatus() != null && !labourInfo.getMotherStatus().isEmpty()) {
                 obsDTOList.add(createObs(encounterId, UuidDictionary.MOTHER_STATUS, labourInfo.getMotherStatus()));
+            }
+
+            if (labourInfo.getOtherComment() != null && !labourInfo.getOtherComment().isEmpty()) {
+                obsDTOList.add(createObs(encounterId, UuidDictionary.LABOUR_OTHER, labourInfo.getOtherComment()));
             }
 
             isInserted = new ObsDAO().insertObsToDb(obsDTOList);

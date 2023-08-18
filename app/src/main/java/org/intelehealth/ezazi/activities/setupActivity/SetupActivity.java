@@ -254,6 +254,7 @@ public class SetupActivity extends AppCompatActivity {
             LocationArrayAdapter adapter = new LocationArrayAdapter
                     (SetupActivity.this, new ArrayList<String>());
             mDropdownLocation.setOnItemClickListener((parent, view, position, id) -> {
+                Log.e(TAG, "onCreate: "+view.getId());
                 mLocationInputView.setError(null);
                 changeButtonStatus(true);
             });

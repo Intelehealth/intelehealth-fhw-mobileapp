@@ -136,4 +136,6 @@ public class UuidDictionary {
 
     public static final String LABOUR_OTHER = "ac99754c-d3a9-4736-a8b8-276c78953315";
 
+    public static final String END_2ND_STAGE_OTHER = "d319ebbc-5260-4eff-aa3f-2af11b177ec4";
+
 }
