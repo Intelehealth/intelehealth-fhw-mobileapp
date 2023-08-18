@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/collapsingToolbarAppBarLayout"
+        android:id="@+id/ablCollapsingToolbar"
         android:contentDescription="Login Screen AppBar Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             app:title="@string/login">
 
             <RelativeLayout
-                android:id="@+id/collapsingToolbarChildRelativeLayout"
+                android:id="@+id/rlChildCollapsingToolbar"
                 android:contentDescription="Login Screen Child Relative Layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -32,7 +32,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvCollapsingToolbarWelcomeBack"
+                    android:id="@+id/tvWelcomeBackCollapsingToolbar"
                     android:contentDescription="Login Screen Welcome Back! TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -44,10 +44,10 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvCollapsingToolbarPleaseContinue"
+                    android:id="@+id/tvPleaseContinueCollapsingToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvCollapsingToolbarWelcomeBack"
+                    android:layout_below="@+id/tvWelcomeBackCollapsingToolbar"
                     android:layout_marginTop="@dimen/margin_10"
                     android:contentDescription="Login Screen Please Continue TextView"
                     android:gravity="center_horizontal"
@@ -58,7 +58,7 @@
                 <ImageView
                     android:layout_width="@dimen/image_intelehealth_login_width"
                     android:layout_height="@dimen/image_intelehealth_login_height"
-                    android:layout_below="@+id/tvCollapsingToolbarPleaseContinue"
+                    android:layout_below="@+id/tvPleaseContinueCollapsingToolbar"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/margin_15"
                     android:src="@drawable/intelehealth_logo_white" />
@@ -127,7 +127,7 @@
                     app:passwordToggleTint="@android:color/transparent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etCollapsingToolbarUserName"
+                        android:id="@+id/etUsernameCollapsingToolbar"
                         android:contentDescription="Collapsing Toolbar Username Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                     app:passwordToggleTint="@color/iconTintGray">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etCollapsingToolbarPassword"
+                        android:id="@+id/etPasswordCollapsingToolbar"
                         android:contentDescription="Collapsing Toolbar Password Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/tvCollapsingToolbarForgotPassword"
+                    android:id="@+id/tvForgotPasswordCollapsingToolbar"
                     android:contentDescription="Collapsing Toolbar Forgot Password Edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
