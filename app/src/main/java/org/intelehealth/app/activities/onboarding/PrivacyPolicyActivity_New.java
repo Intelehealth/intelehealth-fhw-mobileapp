@@ -43,8 +43,8 @@ public class PrivacyPolicyActivity_New extends AppCompatActivity {
         }
         mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
         intentType = getIntent().getStringExtra("intentType");
-        ImageView ivBack = findViewById(R.id.privacyPolicyBackArrowImageView);
-        btn_accept_privacy = findViewById(R.id.privacyPolicyAcceptButton);
+        ImageView ivBack = findViewById(R.id.ivBackArrowPrivacyPolicy);
+        btn_accept_privacy = findViewById(R.id.btnAcceptPrivacyPolicy);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
