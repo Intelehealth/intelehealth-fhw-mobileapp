@@ -289,8 +289,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showIVFluidDialog(String title, ParamInfo info, View view) {
         DialogIvfluidOptionsBinding binding = DialogIvfluidOptionsBinding.inflate(LayoutInflater.from(mContext));
         binding.setItems(info.getOptions());
-//        TextView selected = view.findViewById(R.id.tvSelectedValue);
-        TextView selected = view.findViewById(R.id.tvData);
+        TextView selected = view.findViewById(R.id.tvSelectedValue);
+//        TextView selected = view.findViewById(R.id.tvData);
 
         binding.etOtherFluid.addTextChangedListener(new TextWatcher() {
             @Override
@@ -314,7 +314,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             info.setCapturedValue(((TextView) v).getText().toString());
             binding.etOtherFluid.setText("");
             selected.setText(info.getCapturedValue());
-//            selected.setVisibility(View.VISIBLE);
+            selected.setVisibility(View.VISIBLE);
         });
 
         CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(mContext)
@@ -333,29 +333,29 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 } else if (!TextUtils.isEmpty(binding.etOtherFluid.getText())) {
                     info.setCapturedValue(binding.etOtherFluid.getText().toString());
                     selected.setText(info.getCapturedValue());
-//                    if (info.getCapturedValue() != null && info.getCapturedValue().length() > 0)
-//                        selected.setVisibility(View.VISIBLE);
+                    if (info.getCapturedValue() != null && info.getCapturedValue().length() > 0)
+                        selected.setVisibility(View.VISIBLE);
                     dialog.dismiss();
                 } else dialog.dismiss();
             }
 
-//            @Override
-//            public void onDecline() {
-////                RadioGroup radioGroup = view.findViewById(R.id.radioYesNoGroup);
-//                if (selected.getTag() != null) {
-//                    String oldValue = (String) selected.getTag();
-//                    info.setCapturedValue(oldValue);
-//                    String value = (String) selected.getTag();
-////                    if (!value.equalsIgnoreCase("NO")) {
-////                        selected.setVisibility(View.VISIBLE);
-////                        radioGroup.check(R.id.radioYes);
-////                    }
-//                } else {
-//                    selected.setVisibility(View.GONE);
-////                    radioGroup.check(R.id.radioNo);
-//                }
-////                selected.setText(info.getCapturedValue());
-//            }
+            @Override
+            public void onDecline() {
+                RadioGroup radioGroup = view.findViewById(R.id.radioYesNoGroup);
+                if (selected.getTag() != null) {
+                    String oldValue = (String) selected.getTag();
+                    info.setCapturedValue(oldValue);
+                    String value = (String) selected.getTag();
+                    if (!value.equalsIgnoreCase("NO")) {
+                        selected.setVisibility(View.VISIBLE);
+                        radioGroup.check(R.id.radioYes);
+                    }
+                } else {
+                    selected.setVisibility(View.GONE);
+                    radioGroup.check(R.id.radioNo);
+                }
+                selected.setText(info.getCapturedValue());
+            }
         });
 
         dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());

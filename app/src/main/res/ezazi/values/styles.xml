@@ -380,7 +380,7 @@
         <item name="boxCornerRadiusTopEnd">8dp</item>
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="hintTextColor">@color/darkGray</item>
-        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundColor">@color/color_input_bg</item>
         <item name="hintEnabled">true</item>
         <item name="boxBackgroundMode">filled</item>
         <item name="android:padding">0dp</item>
@@ -651,6 +651,7 @@
         <item name="boxBackgroundColor">@color/color_input_bg</item>
         <item name="hintTextColor">@color/colorInputBgBorder</item>
     </style>
+
     <style name="DialogAnimationSlideIn">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>

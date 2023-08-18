@@ -7,7 +7,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -20,42 +19,29 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Selection;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -72,7 +58,6 @@ import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.databinding.BirthOutcomeDialogBinding;
 import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
-import org.intelehealth.ezazi.databinding.DialogStage2AdditionalDataEzaziBinding;
 import org.intelehealth.ezazi.databinding.LabourCompleteAndMotherDeceasedDialogBinding;
 import org.intelehealth.ezazi.databinding.MotherDeceasedDialogBinding;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
@@ -88,6 +73,8 @@ import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
+import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEnd2StageDialog;
+import org.intelehealth.ezazi.ui.visit.dialog.LabourDialog;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
@@ -108,8 +95,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-
-import timber.log.Timber;
 
 public class TimelineVisitSummaryActivity extends BaseActionBarActivity implements View.OnClickListener {
     RecyclerView recyclerView;
@@ -568,10 +553,21 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
                 // cancelStage1_ConfirmationDialog();// cancel and start stage 2
             } else if (stageNo == 2) {
                 // show dialog and add birth outcome also show extra options like: Refer to other hospital & Self Discharge
-                birthOutcomeSelectionDialog();
+//                birthOutcomeSelectionDialog();
+                new CompleteVisitOnEnd2StageDialog(this, visitUuid, (hasLabour, hasMotherDeceased) -> {
+                    if (!hasLabour) {
+                        showToastAndUploadVisit(true, getResources().getString(R.string.data_added_successfully));
+                    } else {
+                        showLabourBottomSheetDialog(true, hasMotherDeceased);
+                    }
+                }).buildDialog();
             }
         });
         mCountDownTimer.start();
+    }
+
+    private void showLabourBottomSheetDialog(boolean hasLabour, boolean hasMotherDeceased) {
+        new LabourDialog(this, hasMotherDeceased, visitUuid, () -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully))).buildDialog();
     }
 
     private void checkForOutOfTime(String outcome) {

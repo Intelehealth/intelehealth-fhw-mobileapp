@@ -134,5 +134,6 @@ public class UuidDictionary {
     public static final String OUT_OF_TIME = "893b3d20-171b-4023-a6f5-3d3bdf81a094"; //newly added
     public static final String MOTHER_DECEASED_FLAG = "9d31f9f8-538f-11e6-9cfe-86f436325720"; //newly added
 
+    public static final String LABOUR_OTHER = "ac99754c-d3a9-4736-a8b8-276c78953315";
 
 }

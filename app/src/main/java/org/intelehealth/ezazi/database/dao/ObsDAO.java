@@ -571,6 +571,10 @@ public class ObsDAO {
         return isMissed;
     }
 
+    public boolean insertMotherDeceasedFlatObs(String encounteruuid, String creatorID, String value) throws DAOException {
+        return insert_Obs(encounteruuid, creatorID, value, UuidDictionary.MOTHER_DECEASED_FLAG);
+    }
+
     public boolean insert_Obs(String encounteruuid, String creatorID, String value, String conceptId) throws DAOException {
         boolean isUpdated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

@@ -287,10 +287,10 @@ public class PartogramConstants {
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[4]);
         paramInfo.setParamName(Params.IV_FLUID.value);
-        paramInfo.setParamDateType(DROPDOWN_SINGLE_SELECT_TYPE);
+        paramInfo.setParamDateType(RADIO_SELECT_TYPE);
         paramInfo.setRadioOptions(new String[]{"Yes", "No"});
-        paramInfo.setOptions(new String[]{"None", "Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", "Other IV Fluid*"});
-        paramInfo.setValues(new String[]{"None", "Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", AppConstants.OTHER_OPTION});
+        paramInfo.setOptions(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", "Other IV Fluid*"});
+        paramInfo.setValues(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", AppConstants.OTHER_OPTION});
         paramInfo.setConceptUUID("98c5881f-b214-4597-83d4-509666e9a7c9");
         paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);

@@ -59,4 +59,16 @@
         <item>Nov</item>
         <item>Dec</item>
     </string-array>
+
+    <string-array name="labours">
+        <item>@string/live_birth</item>
+        <item>@string/still_birth</item>
+        <item>@string/other</item>
+    </string-array>
+
+    <string-array name="gender">
+        <item>@string/male</item>
+        <item>@string/female</item>
+        <item>@string/other</item>
+    </string-array>
 </resources>
