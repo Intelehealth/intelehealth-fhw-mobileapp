@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/setupParentRelativeLayout"
+    android:id="@+id/rlParentSetup"
     android:contentDescription="Setup Screen Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +11,7 @@
     tools:context=".activities.setupActivity.SetupActivityNew">
 
     <ImageView
-        android:id="@+id/setupBackArrorImageView"
+        android:id="@+id/ivBackArrowSetup"
         android:contentDescription="Setup Screen Back Arrow ImageView"
         android:layout_width="@dimen/back_arrow_demo1_width"
         android:layout_height="@dimen/back_arrow_demo1_height"
@@ -22,11 +22,11 @@
         android:visibility="invisible" />
 
     <TextView
-        android:id="@+id/setupTitleTextView"
+        android:id="@+id/tvTitleSetup"
         android:contentDescription="Setup Screen Setup Title TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_back_arrow"
+        android:layout_below="@+id/ivBackArrowSetup"
         android:layout_marginStart="@dimen/tv_Setup_margin_start"
         android:layout_marginTop="@dimen/tv_Setup_margin_top"
         android:gravity="start"
@@ -36,11 +36,11 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/setupSubtitleTextView"
+        android:id="@+id/tvSubtitleSetup"
         android:contentDescription="Setup Screen Setup Subtitle TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setupTitleTextView"
+        android:layout_below="@+id/tvTitleSetup"
         android:layout_marginStart="@dimen/tv_setup_note_margin_start"
         android:layout_marginTop="@dimen/tv_setup_note_margin_top"
         android:gravity="start"
@@ -51,7 +51,7 @@
     <ImageView
         android:layout_width="@dimen/iv_setup_width"
         android:layout_height="@dimen/iv_setup_height"
-        android:layout_below="@+id/setupBackArrorImageView"
+        android:layout_below="@+id/ivBackArrowSetup"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/iv_setup_margin_top"
         android:src="@drawable/ui2_ic_setup_screen_icon" />
@@ -60,7 +60,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setupSubtitleTextView"
+        android:layout_below="@+id/tvSubtitleSetup"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/layout_setup_margin_top"
         android:background="@drawable/top_rounded_whitebg"
@@ -88,20 +88,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/setupEnterDetailsTextView"
+                    android:id="@+id/tvEnterDetailsSetup"
                     android:contentDescription="Setup Screen Enter Details TextView"
                     android:text="@string/enter_following_details"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/common_header_text_size" />
 
                 <ImageView
-                    android:id="@+id/setupDetailsInfoImageView"
+                    android:id="@+id/ivDetailsInfoSetup"
                     android:contentDescription="Setup Screen Details Info ImageView"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_centerInParent="true"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_toEndOf="@id/setupEnterDetailsTextView"
+                    android:layout_toEndOf="@id/tvEnterDetailsSetup"
                     android:src="@drawable/ui2_ic_info_question_mark"/>
 
             </RelativeLayout>
@@ -117,7 +117,7 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/setupLocationTIL"
+                    android:id="@+id/tilLocationSetup"
                     android:contentDescription="Setup Screen Location TextInputLayout"
                     style="@style/AutocompleteviewStyle"
                     android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                     app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
 
                     <AutoCompleteTextView
-                        android:id="@+id/setupLocationACTextView"
+                        android:id="@+id/actvLocationSetup"
                         android:contentDescription="Setup Screen Location ACTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/setupLocationErrorTextView"
+                    android:id="@+id/tvLocationErrorSetup"
                     android:contentDescription="Setup Screen Location Error TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/setupUsernameEdittext"
+                        android:id="@+id/etUsernameSetup"
                         android:contentDescription="Setup Screen Username Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/setupUsernameErrorTextView"
+                    android:id="@+id/tvUsernameErrorSetup"
                     android:contentDescription="Setup Screen Username Error TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                     app:passwordToggleTint="@color/iconTintGray">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/setupPasswordEdittext"
+                        android:id="@+id/etPasswordSetup"
                         android:contentDescription="Setup Screen Password Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/setupPasswordErrorTextView"
+                    android:id="@+id/tvPasswordErrorSetup"
                     android:contentDescription="Setup Screen Password Error TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -263,7 +263,7 @@
                     android:visibility="visible" />
 
                 <TextView
-                    android:id="@+id/setupForgotPasswordTextView"
+                    android:id="@+id/tvForgotPassSetup"
                     android:contentDescription="Setup Screen Forgot Password TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -274,7 +274,6 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -304,7 +303,7 @@
                             android:layout_height="10dp" />
 
                         <RadioButton
-                            android:id="@+id/setupDemoMMRadioBtn"
+                            android:id="@+id/rbDemoMMSetup"
                             android:contentDescription="Setup Screen Demo MM RadioBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -318,7 +317,7 @@
 
 
                         <RadioButton
-                            android:id="@+id/setupDownloadMMRadioBtn"
+                            android:id="@+id/rbDownloadMMSetup"
                             android:contentDescription="Setup Screen Download MM RadioBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -339,7 +338,7 @@
                     android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/setupAdminPasswordEdittext"
+                        android:id="@+id/etAdminPassSetup"
                         android:contentDescription="Setup Screen Admin Password Edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -361,7 +360,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/setupScreenSetupBtn"
+        android:id="@+id/btnSetupScreen"
         android:contentDescription="Setup Screen Setup Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

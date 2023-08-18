@@ -116,17 +116,17 @@ public class SetupActivityNew extends AppCompatActivity {
         setContentView(R.layout.activity_setup_new_ui2);
         sessionManager = new SessionManager(this);
         context = SetupActivityNew.this;
-        questionIV = findViewById(R.id.setupDetailsInfoImageView);
+        questionIV = findViewById(R.id.ivDetailsInfoSetup);
         customProgressDialog = new CustomProgressDialog(context);
-        autotvLocations = findViewById(R.id.setupLocationACTextView);
-        Button btnSetup = findViewById(R.id.setupScreenSetupBtn);
-        TextView tvForgotPassword = findViewById(R.id.setupForgotPasswordTextView);
-        etUsername = findViewById(R.id.setupUsernameEdittext);
-        etPassword = findViewById(R.id.setupPasswordEdittext);
-        etAdminPassword = findViewById(R.id.setupAdminPasswordEdittext);
-        mLocationErrorTextView = findViewById(R.id.setupLocationErrorTextView);
-        mUserNameErrorTextView = findViewById(R.id.setupUsernameErrorTextView);
-        mPasswordErrorTextView = findViewById(R.id.setupPasswordErrorTextView);
+        autotvLocations = findViewById(R.id.actvLocationSetup);
+        Button btnSetup = findViewById(R.id.btnSetupScreen);
+        TextView tvForgotPassword = findViewById(R.id.tvForgotPassSetup);
+        etUsername = findViewById(R.id.etUsernameSetup);
+        etPassword = findViewById(R.id.etPasswordSetup);
+        etAdminPassword = findViewById(R.id.etAdminPassSetup);
+        mLocationErrorTextView = findViewById(R.id.tvLocationErrorSetup);
+        mUserNameErrorTextView = findViewById(R.id.tvUsernameErrorSetup);
+        mPasswordErrorTextView = findViewById(R.id.tvPasswordErrorSetup);
         mLocationErrorTextView.setVisibility(View.GONE);
         mUserNameErrorTextView.setVisibility(View.GONE);
         mPasswordErrorTextView.setVisibility(View.GONE);
@@ -134,7 +134,7 @@ public class SetupActivityNew extends AppCompatActivity {
         etPassword.addTextChangedListener(new MyTextWatcher(etPassword));
         tipWindow = new TooltipWindow(SetupActivityNew.this);
 
-        ImageView ivBackArrow = findViewById(R.id.setupBackArrorImageView);
+        ImageView ivBackArrow = findViewById(R.id.ivBackArrowSetup);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,8 +143,8 @@ public class SetupActivityNew extends AppCompatActivity {
         });
 
 
-        r1 = findViewById(R.id.setupDemoMMRadioBtn);
-        r2 = findViewById(R.id.setupDownloadMMRadioBtn);
+        r1 = findViewById(R.id.rbDemoMMSetup);
+        r2 = findViewById(R.id.rbDownloadMMSetup);
 
         questionIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +181,7 @@ public class SetupActivityNew extends AppCompatActivity {
         etAdminPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.setupAdminPasswordEdittext || id == EditorInfo.IME_NULL) {
+                if (id == R.id.etAdminPassSetup || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -242,7 +242,7 @@ public class SetupActivityNew extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.setupUsernameEdittext) {
+            if (this.editText.getId() == R.id.etUsernameSetup) {
                 if (val.isEmpty()) {
                     mUserNameErrorTextView.setVisibility(View.VISIBLE);
                     mUserNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -251,7 +251,7 @@ public class SetupActivityNew extends AppCompatActivity {
                     mUserNameErrorTextView.setVisibility(View.GONE);
                     etUsername.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
                 }
-            } else if (this.editText.getId() == R.id.setupPasswordEdittext) {
+            } else if (this.editText.getId() == R.id.etPasswordSetup) {
                 if (val.isEmpty()) {
                     mPasswordErrorTextView.setVisibility(View.VISIBLE);
                     mPasswordErrorTextView.setText(getString(R.string.error_field_required));
@@ -697,13 +697,13 @@ public class SetupActivityNew extends AppCompatActivity {
     public void onRadioClick(View v) {
         boolean checked = ((RadioButton) v).isChecked();
         switch (v.getId()) {
-            case R.id.setupDemoMMRadioBtn:
+            case R.id.rbDemoMMSetup:
                 if (checked) {
                     r2.setChecked(false);
                 }
                 break;
 
-            case R.id.setupDownloadMMRadioBtn:
+            case R.id.rbDownloadMMSetup:
                 if (NetworkConnection.isOnline(this)) {
                     if (checked) {
                         r1.setChecked(false);
@@ -732,8 +732,8 @@ public class SetupActivityNew extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
+                                EditText text = promptsView.findViewById(R.id.actvKeyUpdateProtocolDialog);
+                                EditText url = promptsView.findViewById(R.id.actvUrlUpdateProtocolDialog);
 
                                 url.setError(null);
                                 text.setError(null);
