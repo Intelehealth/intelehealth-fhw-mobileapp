@@ -108,11 +108,11 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
     }
 
     private void clickListeners() {
-        Button buttonUsername = findViewById(R.id.forgotPasswordChooseUsernameButton);
-        buttonContinue = findViewById(R.id.forgotPasswordContinueButton);
-        Button buttonMobileNumber = findViewById(R.id.forgotPasswordChooseNumberButton);
-        RelativeLayout layoutMobileNo = findViewById(R.id.forgotPasswordChooseNumberLayout);
-        LinearLayout layoutUsername = findViewById(R.id.forgotPasswordChooseUsernameLayout);
+        Button buttonUsername = findViewById(R.id.btnChooseUsernameForgotPassword);
+        buttonContinue = findViewById(R.id.btnContinueForgotPassword);
+        Button buttonMobileNumber = findViewById(R.id.btnChooseNumberForgotPassword);
+        RelativeLayout layoutMobileNo = findViewById(R.id.rlChooseNumberForgotPassword);
+        LinearLayout layoutUsername = findViewById(R.id.llChooseUsernameForgotPassword);
 
         imageviewBack.setOnClickListener(v -> {
             /*Intent intent = new Intent(ForgotPasswordActivity_New.this, SetupActivityNew.class);
@@ -163,13 +163,13 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
     private void initUI() {
 
-        etUsername = findViewById(R.id.forgotPasswordUsernameEdittext);
-        etMobileNo = findViewById(R.id.forgotPasswordNumberEdittext);
-        layoutParent = findViewById(R.id.forgotPasswordParentLinearLayout);
-        imageviewBack = findViewById(R.id.forgotPasswordBackArrowImageView);
-        tvUsernameError = findViewById(R.id.forgotPasswordUsernameErrorTextView);
-        tvMobileError = findViewById(R.id.forgotPasswordNumberErrorTextView);
-        countryCodePicker = findViewById(R.id.forgotPasswordCountryCodePicker);
+        etUsername = findViewById(R.id.etUsernameForgotPassword);
+        etMobileNo = findViewById(R.id.etNumberForgotPassword);
+        layoutParent = findViewById(R.id.llParentForgotPassword);
+        imageviewBack = findViewById(R.id.ivBackArrowForgotPassword);
+        tvUsernameError = findViewById(R.id.tvUsernameErrorForgotPassword);
+        tvMobileError = findViewById(R.id.tvNumberErrorForgotPassword);
+        countryCodePicker = findViewById(R.id.ccpForgotPassword);
         countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
         countryCodePicker.setNumberAutoFormattingEnabled(false);
 
