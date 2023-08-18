@@ -31,6 +31,8 @@
             android:textColor="@color/header_title_color"/>
 
         <View
+            android:id="@+id/viewDivider1NotificationFilter"
+            android:contentDescription="Notification filter Divider View 1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/notifi_divider_color" />
@@ -47,6 +49,8 @@
             android:textColor="@color/header_title_color"/>
 
         <View
+            android:id="@+id/viewDivider2NotificationFilter"
+            android:contentDescription="Notification filter Divider View 2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/margin_12"
@@ -61,7 +65,6 @@
             android:paddingEnd="@dimen/margin_50"
             android:layout_marginTop="@dimen/margin_12"
             android:textSize="@dimen/fu_name_txt_size"
-
             android:textColor="@color/header_title_color"/>
 
 

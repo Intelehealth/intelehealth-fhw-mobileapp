@@ -71,8 +71,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             userPhoneNum = extras.getString("userPhoneNum");
         }
         buttonVerifyOtp = findViewById(R.id.btnContinueOtpVerification);
-        LinearLayout layoutPinView = findViewById(R.id.otpVerificationPinView);
-
+        LinearLayout layoutPinView = findViewById(R.id.pinViewOtpVerification);
         etPin1 = layoutPinView.findViewById(R.id.otpPin1OtpVerification);
         etPin2 = layoutPinView.findViewById(R.id.otpPin2OtpVerification);
         etPin3 = layoutPinView.findViewById(R.id.otpPin3OtpVerification);

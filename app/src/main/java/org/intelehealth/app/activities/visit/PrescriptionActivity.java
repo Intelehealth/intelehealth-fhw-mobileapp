@@ -224,15 +224,15 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         filter_framelayout = findViewById(R.id.filter_framelayout);
         filter = findViewById(R.id.filter);
 
-        reminder = findViewById(R.id.reminder);
+        reminder = findViewById(R.id.tvReminderNotificationsFilter);
         reminder.setText(getResources().getString(R.string.action_home));
 
-        incomplete_act = findViewById(R.id.incomplete_act);
+        incomplete_act = findViewById(R.id.tvIncompleteNotificationsFilter);
         incomplete_act.setText(getResources().getString(R.string.action_end_visit));
 
-        archieved_notifi = findViewById(R.id.archieved_notifi);
+        archieved_notifi = findViewById(R.id.tvArchivedNotificationsFilter);
         archieved_notifi.setVisibility(View.GONE);
-        hl_2 = findViewById(R.id.hl_2);
+        hl_2 = findViewById(R.id.viewDivider2NotificationFilter);
         hl_2.setVisibility(View.GONE);
 
         patName_txt = findViewById(R.id.textView_name_value);
@@ -1206,11 +1206,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
         alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+        ImageView icon = convertView.findViewById(R.id.ivIconPatientRegisteredDialog);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitlePatientRegisteredDialog);
+        TextView dialog_subtitle = convertView.findViewById(R.id.tvSubtitlePatientRegisteredDialog);
+        Button positive_btn = convertView.findViewById(R.id.btnPosPatientRegisteredDialog);
+        Button negative_btn = convertView.findViewById(R.id.btnNegPatientRegisteredDialog);
         negative_btn.setVisibility(View.GONE);  // as this view requires only one button so other button has hidden.
 
         icon.setImageDrawable(drawable);
