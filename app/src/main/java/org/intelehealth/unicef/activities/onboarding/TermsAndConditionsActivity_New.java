@@ -40,14 +40,19 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                finish();
             }
         });
-        TextView tvText = findViewById(R.id.tv_term_condition);
+        TextView tvText1 = findViewById(R.id.tv_term_condition_1);
+        TextView tvText2 = findViewById(R.id.tv_term_condition_2);
         JSONObject obj = null;
         try {
             obj = new JSONObject(Objects.requireNonNullElse(
                     FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
                     String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
-            String privacy_string = obj.getString("terms_and_conditions");
-            tvText.setText(HtmlCompat.fromHtml(privacy_string, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+            String privacy_string_1 = obj.getString("terms_and_conditions_1");
+            String privacy_string_2 = obj.getString("terms_and_conditions_2");
+
+            tvText1.setText(HtmlCompat.fromHtml(privacy_string_1, HtmlCompat.FROM_HTML_MODE_LEGACY));
+            tvText2.setText(HtmlCompat.fromHtml(privacy_string_2, HtmlCompat.FROM_HTML_MODE_LEGACY));
         } catch (JSONException e) {
             e.printStackTrace();
         }

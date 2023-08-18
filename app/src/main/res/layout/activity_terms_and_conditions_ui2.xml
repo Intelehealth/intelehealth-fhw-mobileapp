@@ -39,17 +39,32 @@
         android:layout_above="@+id/layout_button_privacy"
         android:layout_below="@+id/ll_action_bar">
 
-
-        <TextView
-            android:id="@+id/tv_term_condition"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/content_margin_start"
-            android:layout_toEndOf="@+id/iv_back_arrow_terms"
-            android:fontFamily="@font/lato_regular"
-            android:justificationMode="inter_word"
-            android:textSize="14sp" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_term_condition_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/content_margin_start"
+                android:layout_toEndOf="@+id/iv_back_arrow_terms"
+                android:fontFamily="@font/lato_regular"
+                android:justificationMode="inter_word"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_term_condition_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/content_margin_start"
+                android:layout_toEndOf="@+id/iv_back_arrow_terms"
+                android:fontFamily="@font/lato_regular"
+                android:justificationMode="inter_word"
+                android:textSize="14sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>
 

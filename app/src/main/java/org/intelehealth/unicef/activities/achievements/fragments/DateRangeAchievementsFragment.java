@@ -86,6 +86,9 @@ public class DateRangeAchievementsFragment extends Fragment {
             displayStartDate = StringUtils.en__ru_dob(displayStartDate);
             displayEndDate = StringUtils.getFullMonthName(endDate);
             displayEndDate = StringUtils.en__ru_dob(displayEndDate);
+        } else {
+            displayStartDate = StringUtils.getFullMonthName(startDate);
+            displayEndDate = StringUtils.getFullMonthName(endDate);
         }
 
         tvStartDate.setText(displayStartDate);
@@ -130,6 +133,9 @@ public class DateRangeAchievementsFragment extends Fragment {
             startDate = StringUtils.hi_or_bn_en_noEdit(startDate, "ru");
             startDate = StringUtils.getShortMonthName(startDate);
             endDate = StringUtils.hi_or_bn_en_noEdit(endDate, "ru");
+            endDate = StringUtils.getShortMonthName(endDate);
+        } else {
+            startDate = StringUtils.getShortMonthName(startDate);
             endDate = StringUtils.getShortMonthName(endDate);
         }
 
