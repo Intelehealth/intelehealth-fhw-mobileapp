@@ -700,11 +700,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
         alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.iv_dialog_image);
-        TextView dialog_title = convertView.findViewById(R.id.tv_title_book_app);
-        TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
-        Button noButton = convertView.findViewById(R.id.button_no_appointment);
-        Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
+        ImageView icon = convertView.findViewById(R.id.ivIconBookAppointmentDialog);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitleBookAppointmentDialog);
+        TextView tvInfo = convertView.findViewById(R.id.tvSubtitleBookAppointmentDialog);
+        Button noButton = convertView.findViewById(R.id.btnNegBookAppointmentDialog);
+        Button yesButton = convertView.findViewById(R.id.btnPosBookAppointmentDialog);
 
         icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
 
@@ -739,11 +739,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_book_appointment_dialog_ui2, null);
         alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.iv_dialog_image);
-        TextView dialog_title = convertView.findViewById(R.id.tv_title_book_app);
-        TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
-        Button noButton = convertView.findViewById(R.id.button_no_appointment);
-        Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
+        ImageView icon = convertView.findViewById(R.id.ivIconBookAppointmentDialog);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitleBookAppointmentDialog);
+        TextView tvInfo = convertView.findViewById(R.id.tvSubtitleBookAppointmentDialog);
+        Button noButton = convertView.findViewById(R.id.btnNegBookAppointmentDialog);
+        Button yesButton = convertView.findViewById(R.id.btnPosBookAppointmentDialog);
 
         icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_exit_app));
 
