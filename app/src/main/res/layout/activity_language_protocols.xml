@@ -206,13 +206,37 @@
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
-                    <ImageButton
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/reset_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/update_reset_btn_size"
+                        android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_alignParentEnd="true"
-                        android:background="@null"
-                        android:src="@drawable/reset_lang_icon" />
+                        android:background="@drawable/bg_reset_update"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/reset_icon" />
+
+                        <TextView
+                            android:id="@+id/tv_reset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/margin_5"
+                            android:layout_marginEnd="@dimen/margin_16dp"
+                            android:layout_toStartOf="@id/reset_btn"
+                            android:layout_weight="2"
+                            android:text="@string/reset"
+                            android:textColor="@color/reset_update_button_text_color"
+                            android:textSize="@dimen/margin_16dp"
+                            android:textStyle="bold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                 </RelativeLayout>
                 <!--Language Relative - End-->
 
@@ -309,18 +333,44 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/margin_5"
                         android:layout_toStartOf="@id/update_protocols_btn"
                         android:text="@string/update_app_protocols"
                         android:textColor="@color/hint_text_color"
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
-                    <ImageButton
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/update_protocols_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/update_reset_btn_size"
+                        android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_alignParentEnd="true"
-                        android:background="@null"
-                        android:src="@drawable/update_protocols_icon" />
+                        android:background="@drawable/bg_reset_update"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/margin_16">
+
+                        <TextView
+                            android:id="@+id/tv_update"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_vertical"
+                            android:layout_toStartOf="@id/reset_btn"
+                            android:text="@string/update"
+                            android:textColor="@color/reset_update_button_text_color"
+                            android:textSize="@dimen/edittext_textsize_16sp"
+                            android:textStyle="bold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!--                    <ImageButton-->
+                    <!--                        android:id="@+id/update_protocols_btn"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_alignParentEnd="true"-->
+                    <!--                        android:background="@null"-->
+                    <!--                        android:src="@drawable/update_protocols_icon" />-->
                 </RelativeLayout>
                 <!--Protocols Relative - End-->
 

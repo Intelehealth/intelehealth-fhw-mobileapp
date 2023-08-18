@@ -135,7 +135,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, /*patientdistrict,*/
-            village, address1, son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
+            village, address1, son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID, address2;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -488,6 +488,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 //        patientdistrict = findViewById(R.id.district);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
+        address2 = findViewById(R.id.address2);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
@@ -1002,6 +1003,15 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             address1.setText(patientDTO.getAddress1());
         }
+
+        // setting address1
+        if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) {
+            //  address1.setVisibility(View.GONE);
+            address2.setText(getResources().getString(R.string.no_address_added));
+        } else {
+            address2.setText(patientDTO.getAddress2());
+        }
+
        /* if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { // todo: as per figma not needed.
             addr2Row.setVisibility(View.GONE);
         } else {

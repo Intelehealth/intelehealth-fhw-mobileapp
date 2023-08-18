@@ -802,6 +802,7 @@
     <string name="no_network_sync">Вы не подключены к Интернету. Повторите попытку позже.</string>
     <string name="app_sync">Синхронизация приложения..</string>
     <string name="type_to_search">Введите для поиска..</string>
+    <string name="app_sync_dialog_title">Синхронизация приложения</string>
 
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">Протокол доступен, после чего загружается। Нажмите \'Да\', чтобы подтвердить загрузку протокола। Нажмите \'Нет\' для продолжения работы с демонстрационным протоколом।</string>
@@ -818,7 +819,7 @@
     <string name="spo2">SpO2 (%)</string>
     <string name="respiratory_rate_breaths_min">Respiratory Rate (breaths/min)</string>
     <string name="temperature_f_new">Temperature (F)</string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">Подтвердить</string>
     <string name="ui2_physical_exam_summay_title">3/4. Physical examination summary</string>
     <string name="ui2_medical_hist_title_text">4/4. Medical history summary</string>
     <string name="sync_strated">"Sync started! "</string>
@@ -843,12 +844,12 @@
     <string name="enter_your_relation_with_patient">Enter your relation with patient</string>
     <string name="end_visits">End Visits</string>
     <string name="empty_message_for_patinet_search_visit_screen">Используйте правильное имя или идентификатор для поиска или добавления нового пациента.</string>
-    <string name="confirm_end_visit_reason">End this visit?</string>
-    <string name="confirm_end_visit_reason_message">"Are you sure you want to end this visit for "</string>
+    <string name="confirm_end_visit_reason">Закрыть визит?</string>
+    <string name="confirm_end_visit_reason_message">"Вы уверены, что хотите завершить этот визит "</string>
     <string name="support_mobile_no_1">919503692181</string>
     <string name="help_whatsapp_string">Hello I’m  %1$s I need some assistance</string>
-    <string name="update_app_protocol">Update app protocol!</string>
-    <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Please enter the server url with license key to download the protocols?</string>
+    <string name="update_app_protocol">Обновление протоколов приложения!</string>
+    <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Пожалуйста, введите URL сервера с лицензионным ключом, чтобы загрузить протоколы</string>
     <string name="previously_scheduled_appointment_details">Информация о ранее запланированной встрече</string>
     <string name="loading_slots">Загрузка…</string>
     <string name="alert_txt">Alert!</string>
@@ -1496,5 +1497,26 @@
     <string name="appointment_denied_message">Пожалуйста, проверьте экран записи на прием</string>
     <string name="sync_successful">Синхронизация успешна</string>
     <string name="login_success">Вход успешный</string>
+
+    <string name="gender">Пол</string>
+    <string name="date_of_birth">Дата рождения</string>
+    <string name="age">Возраст</string>
+    <string name="country">Страна</string>
+    <string name="state">Область</string>
+    <string name="village_town_city">Деревня/город/город</string>
+    <string name="_corresponding_address_1">Соответствующий \nадрес 1</string>
+    <string name="_corresponding_address_2">Соответствующий \nадрес 2</string>
+    <string name="other_details">Другие данные</string>
+    <string name="national_ID_other_details">Идентификационный номер</string>
+
+    <string name="open_visit">Открытый визит</string>
+    <string name="past_visits">Посещения в прошлом</string>
+    <string name="reset">Сбросить</string>
+    <string name="close_visit">Закрыть визит</string>
+    <string name="feedback">Отзывы</string>
+    <string name="rate_your_experience">Оцените свой опыт</string>
+    <string name="how_we_can_improve_experience">Оцените нас, чтобы мы могли улучшить ваш опыт.</string>
+    <string name="give_feedback">Оставить отзыв</string>
+    <string name="type_here_patient_survey">Введите здесь…</string>
 
 </resources>

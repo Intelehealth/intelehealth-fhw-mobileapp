@@ -137,6 +137,8 @@
     <color name="priority_background_color">#FF475D</color>
     <color name="share_button_color">#0FD197</color>
     <color name="add_patient_button_color">#2E1E91</color>
+    <color name="reset_update_button_background_color">#EFE8FF</color>
+    <color name="reset_update_button_text_color">#2E1E91</color>
 
     <!--END-->
 </resources>

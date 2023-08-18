@@ -295,6 +295,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")
                     && !currentNode.findDisplay().equalsIgnoreCase("સંકળાયેલ લક્ષણો")
                     && !currentNode.findDisplay().equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ")
+                    && !currentNode.findDisplay().equalsIgnoreCase("Сопутствующие симптомы")
 
             ) {
                 //code added to handle multiple and single option selection.
@@ -599,7 +600,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))) {
+                    .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))
+                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("Сопутствующие симптомы"))) {
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
                 assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);

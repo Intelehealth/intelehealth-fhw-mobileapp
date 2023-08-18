@@ -13,6 +13,7 @@ import androidx.core.text.HtmlCompat;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.utilities.FileUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+                finish();
             }
         });
         TextView tvText1 = findViewById(R.id.tv_term_condition_1);
@@ -48,8 +49,17 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
                     FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
                     String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
 
-            String privacy_string_1 = obj.getString("terms_and_conditions_1");
-            String privacy_string_2 = obj.getString("terms_and_conditions_2");
+            String privacy_string_1 = "";
+            String privacy_string_2 = "";
+
+            if (new SessionManager(this).getAppLanguage().equalsIgnoreCase("ru")) {
+                privacy_string_1 = obj.getString("terms_and_conditions_1_ru");
+                privacy_string_2 = obj.getString("terms_and_conditions_2_ru");
+            } else {
+                privacy_string_1 = obj.getString("terms_and_conditions_1");
+                privacy_string_2 = obj.getString("terms_and_conditions_2");
+            }
+
 
             tvText1.setText(HtmlCompat.fromHtml(privacy_string_1, HtmlCompat.FROM_HTML_MODE_LEGACY));
             tvText2.setText(HtmlCompat.fromHtml(privacy_string_2, HtmlCompat.FROM_HTML_MODE_LEGACY));

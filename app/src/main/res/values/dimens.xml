@@ -1009,5 +1009,6 @@
     <dimen name="icons_appoint_height">40dp</dimen>
     <dimen name="margin_3">3dp</dimen>
     <dimen name="text_12sp">12sp</dimen>
+    <dimen name="update_reset_btn_size">140dp</dimen>
 
 </resources>

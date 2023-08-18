@@ -535,7 +535,13 @@ public class Fragment_SecondScreen extends Fragment {
 
                         if (fromThirdScreen || fromFirstScreen)
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-                        else mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
+                        else {
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                                mStateNameSpinner.setSelection(stateAdapter.getPosition("Выберите"));
+                            } else {
+                                mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
+                            }
+                        }
 
 
                     } else if (mCountryName.equalsIgnoreCase("Kyrgyzstan")) {
@@ -546,7 +552,13 @@ public class Fragment_SecondScreen extends Fragment {
 
                         if (fromThirdScreen || fromFirstScreen)
                             mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-                        else mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
+                        else {
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                                mStateNameSpinner.setSelection(stateAdapter.getPosition("Выберите"));
+                            } else {
+                                mStateNameSpinner.setSelection(stateAdapter.getPosition("Select"));
+                            }
+                        }
                     } else {
                         mIsIndiaSelected = false;
                         mStateEditText.setVisibility(View.VISIBLE);
@@ -587,7 +599,11 @@ public class Fragment_SecondScreen extends Fragment {
             stateList = new String[mStateDistMaster.getStateDataList().size() + 1];
         }
 
-        stateList[0] = "Select";
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            stateList[0] = "Выберите";
+        } else {
+            stateList[0] = "Select";
+        }
 
         for (int i = 1; i <= mStateDistMaster.getStateDataList().size(); i++) {
             stateList[i] = mStateDistMaster.getStateDataList().get(i - 1).getState();
@@ -595,7 +611,6 @@ public class Fragment_SecondScreen extends Fragment {
 
         stateAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_spinner_item_1, stateList);
         stateAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-
         mStateNameSpinner.setAdapter(stateAdapter);
         mStateNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
     }

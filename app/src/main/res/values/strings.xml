@@ -2095,7 +2095,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="general_exams">General Exams</string>
     <string name="do_you_have_family_history">Do you have a family history of any of the following?</string>
     <string name="enter_postal_code">Enter postal code</string>
-    <string name="type_here_patient_survey">Type here...</string>
+    <string name="type_here_patient_survey">Type here…</string>
     <string name="enter_date_of_birth">Enter Date of Birth</string>
     <string name="enter_age">Enter Age</string>
     <string name="auto_calculate">Auto-Calculate</string>
@@ -2140,5 +2140,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="filter_my_patients">My Patients</string>
     <string name="priority_uppercase">PRIORITY</string>
     <string name="appointment_denied_message">Please check the Appointments screen this visit\'s appointment.</string>
+    <string name="reset">Reset</string>
 
 </resources>

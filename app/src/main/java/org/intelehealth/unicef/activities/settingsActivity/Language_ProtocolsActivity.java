@@ -3,6 +3,7 @@ package org.intelehealth.unicef.activities.settingsActivity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 
 import android.animation.ObjectAnimator;
@@ -52,7 +53,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Language_ProtocolsActivity extends AppCompatActivity {
     private Spinner lang_spinner;
-    private ImageButton reset_btn, update_protocols_btn, btRefresh;
+    private ImageButton btRefresh;
+    private LinearLayoutCompat reset_btn, update_protocols_btn;
     private String selected_language = "English";
     private Context context;
     private ArrayAdapter<String> langAdapter;
