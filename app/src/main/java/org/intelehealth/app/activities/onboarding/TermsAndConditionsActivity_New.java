@@ -41,14 +41,14 @@ public class TermsAndConditionsActivity_New extends AppCompatActivity {
         }
 
 
-        ImageView ivBack = findViewById(R.id.tncBackArrowImageView);
+        ImageView ivBack = findViewById(R.id.ivBackArrowTandC);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                finish();
             }
         });
-        TextView tvText = findViewById(R.id.tncContentTextView);
+        TextView tvText = findViewById(R.id.tvContentTandC);
         JSONObject obj = null;
         try {
             obj = new JSONObject(Objects.requireNonNullElse(
