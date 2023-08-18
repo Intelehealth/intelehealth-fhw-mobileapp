@@ -8,7 +8,7 @@
     tools:context=".activities.onboarding.SetupPrivacyNoteActivity_New">
 
     <ImageView
-        android:id="@+id/setupAyuIntroBackArrowImageView"
+        android:id="@+id/ivBackArrowSetupAyuIntro"
         android:contentDescription="Setup Ayu Intro Screen Back Arrow ImageView"
         android:layout_width="@dimen/back_arrow_demo1_width"
         android:layout_height="@dimen/back_arrow_demo1_height"
@@ -20,7 +20,7 @@
 
 
     <ImageView
-        android:id="@+id/setupAyuIntroAyuLogoImageView"
+        android:id="@+id/ivAyuLogoSetupAyuIntro"
         android:contentDescription="Setup Ayu Intro Screen Ayu Logo ImageView"
         android:layout_width="@dimen/demo1_ayu_image_width"
         android:layout_height="@dimen/demo1_ayu_image_height"
@@ -29,11 +29,11 @@
         android:src="@drawable/ui2_ic_ayu_image" />
 
     <TextView
-        android:id="@+id/setupAyuIntroHelloTextView"
+        android:id="@+id/tvHelloSetupAyuIntro"
         android:contentDescription="Setup Ayu Intro Screen Hello TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setupAyuIntroAyuLogoImageView"
+        android:layout_below="@+id/ivAyuLogoSetupAyuIntro"
         android:layout_marginTop="@dimen/setup_title_margin_top"
         android:gravity="center"
         android:lineHeight="@dimen/setup_title_line_height"
@@ -45,7 +45,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setupAyuIntroHelloTextView"
+        android:layout_below="@+id/tvHelloSetupAyuIntro"
         android:layout_marginTop="@dimen/setup_info_margin_top"
         android:gravity="center"
         android:lineHeight="@dimen/setup_info_line_height"
@@ -62,7 +62,7 @@
         android:padding="@dimen/padding_25">
 
         <CheckBox
-            android:id="@+id/setupAyuIntroAcceptTCandPPCheckBox"
+            android:id="@+id/cbAcceptTCandPPSetupAyuIntro"
             android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,15 +70,15 @@
             android:button="@drawable/ui2_ic_default_checkbox" />
 
         <LinearLayout
-            android:id="@+id/setupAyuIntroAcceptTCandPPLayout"
+            android:id="@+id/llAcceptTCandPPSetupAyuIntro"
             android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP Linear Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_10"
-            android:layout_toEndOf="@+id/setupAyuIntroAcceptTCandPPCheckBox">
+            android:layout_toEndOf="@+id/cbAcceptTCandPPSetupAyuIntro">
 
             <TextView
-                android:id="@+id/setupAyuIntroAcceptTCandPPTextView"
+                android:id="@+id/tvAcceptTcandPPSetupAyuIntro"
                 android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,11 +90,11 @@
 
 
         <Button
-            android:id="@+id/setupAyuIntroSetupBtn"
+            android:id="@+id/btnSetupAyuIntro"
             android:contentDescription="Setup Ayu Intro Screen Setup Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/setupAyuIntroAcceptTCandPPLayout"
+            android:layout_below="@+id/llAcceptTCandPPSetupAyuIntro"
             android:layout_marginTop="@dimen/button_setup_margin_top"
             android:layout_marginBottom="@dimen/button_setup_margin_bottom"
             android:background="@drawable/common_button_bg_primary_new_ui2"
@@ -109,7 +109,7 @@
     </RelativeLayout>
 
     <include
-        android:id="@+id/setupAyuIntroAcceptTCandPPSnackBar"
+        android:id="@+id/snackbarAcceptTCandPPSetupAyuIntro"
         android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP Snackbar"
         layout="@layout/cutom_snackbar_policy_ui2"
         android:layout_width="match_parent"
