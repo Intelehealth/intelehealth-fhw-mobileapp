@@ -208,7 +208,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             cardView = itemView.findViewById(R.id.fu_cardview_item);
             fu_patname_txtview = itemView.findViewById(R.id.tvPatientNameRowItem);
             fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
-            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fu_priority_tag = itemView.findViewById(R.id.ivPriorityTagRowItem);
             profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
             rootView = itemView;
 

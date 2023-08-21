@@ -78,7 +78,7 @@
                     android:textSize="@dimen/fu_male_textsize" />
 
                 <ImageView
-                    android:id="@+id/fu_priority_tag"
+                    android:id="@+id/ivPriorityTagRowItem"
                     android:layout_width="@dimen/btn_prioirty_w_60dp"
                     android:layout_height="@dimen/btn_prioirty_h_20dp"
                     android:layout_alignParentEnd="true"

@@ -131,24 +131,24 @@ public class VisitReceivedFragment extends Fragment {
         main_block = view.findViewById(R.id.main_block);
 
         visit_received_card_header = view.findViewById(R.id.visit_received_card_header);
-        searchview_received = view.findViewById(R.id.searchview_received);
+        searchview_received = view.findViewById(R.id.svReceivedPrescriptions);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
 
-        recent_nodata = view.findViewById(R.id.recent_nodata);
+        recent_nodata = view.findViewById(R.id.tvNoDataRecentVisitReceivedPrescription);
         older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
 
         recycler_recent = view.findViewById(R.id.recycler_recent);
-        recycler_older = view.findViewById(R.id.rv_older);
+        recycler_older = view.findViewById(R.id.tvNoDataOlderVisitReceivedPrescription);
         //recycler_month = view.findViewById(R.id.rv_thismonth);
-        received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
+        received_endvisit_no = view.findViewById(R.id.tvAwaitingCountReceivedPrescriptions);
 
         filter_icon = view.findViewById(R.id.filter_icon);
         filter_menu = view.findViewById(R.id.filter_menu);
         allvisits_txt = view.findViewById(R.id.allvisits_txt);
         priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
         filter_relative = view.findViewById(R.id.filter_relative);
-        priority_cancel = view.findViewById(R.id.priority_cancel);
+        priority_cancel = view.findViewById(R.id.imgBtnPriorityVisitsCancelReceivedPrescriptions);
      //   olderList = new ArrayList<>();
 
 //        visit_received_card_header.setOnClickListener(v -> {

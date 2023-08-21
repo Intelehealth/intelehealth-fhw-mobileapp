@@ -145,7 +145,8 @@
                 android:layout_height="@dimen/btn_prioirty_h_20dp">
 
                 <ImageView
-                    android:id="@+id/fu_priority_tag"
+                    android:id="@+id/ivPriorityTagRowItem"
+                    android:contentDescription="priority tag imageview in row item"
                     android:layout_width="@dimen/btn_prioirty_w_60dp"
                     android:layout_height="@dimen/btn_prioirty_h_20dp"
                     android:src="@drawable/ui2_frame_priority"
@@ -153,7 +154,7 @@
                     android:layout_gravity="top"
                     android:gravity="center"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     />
 
             </FrameLayout>
@@ -186,7 +187,8 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/shareicon"
+                android:id="@+id/imgbtnSharePrescriptionRowItem"
+                android:contentDescription="share prescription image button in row item"
                 android:layout_width="@dimen/btn_prioirty_w_60dp"
                 android:layout_height="@dimen/btn_prioirty_h_20dp"
                 android:src="@drawable/visit_share_presc_icon"

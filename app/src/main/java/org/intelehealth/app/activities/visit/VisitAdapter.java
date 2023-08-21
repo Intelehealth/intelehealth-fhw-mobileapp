@@ -197,7 +197,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             search_gender = itemView.findViewById(R.id.tvGenderAgeRowItem);
             fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
             profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
-            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fu_priority_tag = itemView.findViewById(R.id.ivPriorityTagRowItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
         }
     }

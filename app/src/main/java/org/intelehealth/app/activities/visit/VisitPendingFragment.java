@@ -135,17 +135,17 @@ public class VisitPendingFragment extends Fragment {
         main_block = view.findViewById(R.id.main_block);
 
         visit_pending_card_header = view.findViewById(R.id.visit_pending_card_header);
-        searchview_pending = view.findViewById(R.id.searchview_pending);
+        searchview_pending = view.findViewById(R.id.svPendingPrescriptions);
         closeButton = searchview_pending.findViewById(R.id.search_close_btn);
 
-        recent_nodata = view.findViewById(R.id.recent_nodata);
+        recent_nodata = view.findViewById(R.id.tvNoDataRecentVisitPendingPrescription);
         older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
 
         recycler_recent = view.findViewById(R.id.recycler_recent);
-        recycler_older = view.findViewById(R.id.rv_older);
+        recycler_older = view.findViewById(R.id.tvNoDataOlderVisitPendingPrescription);
         //recycler_month = view.findViewById(R.id.rv_thismonth);
-        pending_endvisit_no = view.findViewById(R.id.pending_endvisit_no);
+        pending_endvisit_no = view.findViewById(R.id.tvAwaitingPrescriptionPendingPrescription);
 
         filter_icon = view.findViewById(R.id.filter_icon);
         filter_menu = view.findViewById(R.id.filter_menu);

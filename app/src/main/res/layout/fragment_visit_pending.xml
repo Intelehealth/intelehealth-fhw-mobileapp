@@ -30,7 +30,8 @@
                 android:layout_marginEnd="@dimen/margin_5">
 
                 <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchview_pending"
+                    android:id="@+id/svPendingPrescriptions"
+                    android:contentDescription="pending prescriptions searchview to search records"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -88,7 +89,8 @@
 
                     <!-- label-text -->
                     <TextView
-                        android:id="@+id/pending_endvisit_no"
+                        android:id="@+id/tvAwaitingPrescriptionPendingPrescription"
+                        android:contentDescription="textview to display count of total awaiting prescriptions in pending prescriptions."
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -157,7 +159,8 @@
                         />
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/filter_priority_relative"
+                            android:id="@+id/cvPriorityVisitsFilterPendingPrescription"
+                            android:contentDescription="cardview for priority visits filter item in pending prescription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/filter_header"
@@ -176,7 +179,8 @@
                                 android:background="@color/grey_button_bg">
 
                                 <TextView
-                                    android:id="@+id/filter_priority"
+                                    android:id="@+id/tvPriorityVisitsFilterPendingPrescription"
+                                    android:contentDescription="textview to show priority visit tag in pending prescription screen"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/margin_4"
@@ -190,7 +194,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/margin_2dp"
-                                    android:layout_toEndOf="@id/filter_priority"
+                                    android:layout_toEndOf="@id/tvPriorityVisitsFilterPendingPrescription"
                                     android:background="@null"
                                     android:src="@drawable/cancel_small_crossbtn"
                                     app:tint="@color/colorPrimary" />
@@ -208,7 +212,7 @@
                                             app:contentPaddingBottom="@dimen/margin_6"
                                             app:cardCornerRadius="@dimen/corner_radius_8dp"
                                             android:layout_marginEnd="@dimen/margin_10"
-                                            android:layout_toEndOf="@+id/filter_priority_relative"
+                                            android:layout_toEndOf="@+id/cvPriorityVisitsFilterPendingPrescription"
                                             android:backgroundTint="@color/grey_button_bg">
 
                                             <RelativeLayout
@@ -244,7 +248,8 @@
 
                 <!-- You can add all acco -->
                 <TextView
-                    android:id="@+id/you_can_add"
+                    android:id="@+id/tvRecentVisitsTitlePendingPrescription"
+                    android:contentDescription="recent visits title textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/filter_relative"
@@ -258,10 +263,11 @@
 
                 <!-- Frame 100314 -->
                 <TextView
-                    android:id="@+id/recent_nodata"
+                    android:id="@+id/tvNoDataRecentVisitPendingPrescription"
+                    android:contentDescription="no data textview for recent visits"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/you_can_add"
+                    android:layout_below="@+id/tvRecentVisitsTitlePendingPrescription"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_visit_found"
@@ -274,7 +280,7 @@
                     android:id="@+id/recycler_recent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/you_can_add"
+                    android:layout_below="@+id/tvRecentVisitsTitlePendingPrescription"
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/card_padding"
@@ -284,7 +290,8 @@
 
                 <!--            This week-->
                 <TextView
-                    android:id="@+id/older"
+                    android:id="@+id/tvOlderVisitsPendingPrescription"
+                    android:contentDescription="older visits title textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/recycler_recent"
@@ -300,7 +307,7 @@
                     android:id="@+id/older_nodata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/older"
+                    android:layout_below="@+id/tvOlderVisitsPendingPrescription"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_visit_found"
@@ -310,10 +317,11 @@
                     android:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_older"
+                    android:id="@+id/tvNoDataOlderVisitPendingPrescription"
+                    android:contentDescription="no data for older visits pending prescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/older"
+                    android:layout_below="@+id/tvOlderVisitsPendingPrescription"
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/margin_5"
@@ -327,7 +335,7 @@
                     android:id="@+id/this_month"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rv_older"
+                    android:layout_below="@+id/tvNoDataOlderVisitPendingPrescription"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/this_months_visits"
