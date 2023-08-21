@@ -2,7 +2,6 @@ package org.intelehealth.app.activities.followuppatients;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
-import org.intelehealth.app.activities.visit.VisitDetailsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -34,7 +32,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -209,10 +206,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             super(itemView);
 
             cardView = itemView.findViewById(R.id.fu_cardview_item);
-            fu_patname_txtview = itemView.findViewById(R.id.fu_patname_txtview);
-            fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
+            fu_patname_txtview = itemView.findViewById(R.id.tvPatientNameRowItem);
+            fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
-            profile_image = itemView.findViewById(R.id.profile_image);
+            profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
             rootView = itemView;
 
             fu_date_txtview.setText("22 June"); // todo: testing.

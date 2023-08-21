@@ -42,7 +42,8 @@
 
                 <!-- arrow-right -->
                 <ImageButton
-                    android:id="@+id/backArrow"
+                    android:id="@+id/imgBtnCloseVisitBackArrow"
+                    android:contentDescription="move to previous screen"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
@@ -55,7 +56,8 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/label"
+                    android:id="@+id/tvCloseVisitsTitle"
+                    android:contentDescription="close visits screen title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -70,7 +72,8 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/imgBtnCloseVisitRefresh"
+                android:contentDescription="refresh button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
@@ -105,7 +108,8 @@
 
             <!-- You can add all acco -->
             <TextView
-                android:id="@+id/you_can_add"
+                android:id="@+id/tvCloseVisitRecentTitle"
+                android:contentDescription="recent visits title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/visit_card_header"
@@ -118,23 +122,26 @@
 
             <!-- Frame 100314 -->
             <TextView
-                android:id="@+id/recent_nodata"
+                android:id="@+id/tvCloseVisitRecentNoData"
+                android:contentDescription="no data text for recent visits"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/you_can_add"
+                android:layout_below="@+id/tvCloseVisitRecentTitle"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
                 android:text="@string/no_visit_found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize"
+                tools:visibility="visible"
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_recent"
+                android:id="@+id/rvCloseVisitRecentData"
+                android:contentDescription="recent visits recycler data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/you_can_add"
+                android:layout_below="@+id/tvCloseVisitRecentTitle"
                 android:layout_marginTop="@dimen/text_margin"
                 android:nestedScrollingEnabled="false"
                 android:padding="@dimen/card_padding"
@@ -144,10 +151,11 @@
 
             <!--            This week-->
             <TextView
-                android:id="@+id/this_week"
+                android:id="@+id/tvCloseVisitOlderVisits"
+                android:contentDescription="older visits title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/recycler_recent"
+                android:layout_below="@+id/rvCloseVisitRecentData"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/older_visits"
@@ -156,23 +164,26 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/older_nodata"
+                android:id="@+id/tvCloseVisitOlderNoData"
+                android:contentDescription="no data text for older visits"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/this_week"
+                android:layout_below="@+id/tvCloseVisitOlderVisits"
                 android:gravity="center"
                 android:padding="@dimen/card_padding"
                 android:text="@string/no_visit_found"
                 android:textAppearance="@style/caption"
                 android:textColor="@null"
                 android:textSize="@dimen/fu_male_textsize"
+                tools:visibility="visible"
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_older"
+                android:id="@+id/rvCloseVisitOlderData"
+                android:contentDescription="older visits recycler data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/this_week"
+                android:layout_below="@+id/tvCloseVisitOlderVisits"
                 android:layout_marginTop="@dimen/text_margin"
                 android:nestedScrollingEnabled="false"
                 android:padding="@dimen/margin_5"
@@ -185,7 +196,7 @@
                 android:id="@+id/this_month"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/recycler_older"
+                android:layout_below="@+id/rvCloseVisitOlderData"
                 android:layout_marginTop="@dimen/text_margin"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
