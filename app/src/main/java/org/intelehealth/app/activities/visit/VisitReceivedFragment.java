@@ -158,8 +158,8 @@ public class VisitReceivedFragment extends Fragment {
     }
 
     private void defaultData() {
-        recentVisits();
-        olderVisits();
+        recentVisits(20, 0);
+        olderVisits(20, 0);
         int totalCounts = totalCounts_recent + totalCounts_older;
 
 //        thisMonths_Visits();
@@ -384,7 +384,7 @@ public class VisitReceivedFragment extends Fragment {
         // months - end
     }
 
-    private void recentVisits() {
+    private void recentVisits(int limit, int offset) {
         recentList = new ArrayList<>();
         db.beginTransaction();
 
@@ -397,8 +397,8 @@ public class VisitReceivedFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
 //                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
                         " v.startdate > DATETIME('now', '-4 day') " +
-                        " group by e.visituuid ORDER BY v.startdate DESC"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        " group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?"
+                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df", String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
         db.setTransactionSuccessful();
         db.endTransaction();
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -577,7 +577,7 @@ public class VisitReceivedFragment extends Fragment {
     }
 
 
-    private void olderVisits() {
+    private void olderVisits(int limit, int offset) {   // Todo: temporary added. Later need to add pagination.
         // new
         List<PrescriptionModel> priorityRecentList = new ArrayList<>();
         List<PrescriptionModel> nonPriorityRecentList = new ArrayList<>();
@@ -594,8 +594,8 @@ public class VisitReceivedFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
                         " v.startdate < DATETIME('now', '-4 day') " +
-                        "group by p.openmrs_id ORDER BY v.startdate DESC"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?"
+                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df", String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {

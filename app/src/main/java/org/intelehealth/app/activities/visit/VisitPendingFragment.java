@@ -157,8 +157,8 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void defaultData() {
-        recentVisits();
-        olderVisits();
+        recentVisits(20, 0);
+        olderVisits(20, 0);
         int totalCount = totalCounts_recent + totalCounts_older;
 
         // loaded month data 1st for showing the count in main ui
@@ -283,7 +283,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void recentVisits() {
+    private void recentVisits(int limit, int offset) {
         // new
         recentList = new ArrayList<>();
         db.beginTransaction();
@@ -311,8 +311,9 @@ public class VisitPendingFragment extends Fragment {
                       //  " " +
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
 //                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC"
-                , new String[]{});
+                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?"
+                , new String[]{String.valueOf(limit), String.valueOf(offset)});
+
         db.setTransactionSuccessful();
         db.endTransaction();
 
@@ -473,7 +474,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void olderVisits() {
+    private void olderVisits(int limit, int offset) {
         // VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
         //  recycler_week.setAdapter(adapter_new);
 
@@ -497,9 +498,9 @@ public class VisitPendingFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
                         " and e.encounter_type_uuid = ? " +
-                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC"
+                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC limit ? offset ?"
 
-                , new String[]{ENCOUNTER_VISIT_NOTE});
+                , new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
