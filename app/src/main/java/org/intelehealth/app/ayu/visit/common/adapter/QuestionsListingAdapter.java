@@ -91,7 +91,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void removeImageInLastNode(int index, String image) {
         Log.v("showCameraView", "removeImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
         Log.v("showCameraView", "removeImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
-        mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
+        if (mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList() != null && mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().size() > 0)
+            mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
         notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
         VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700);
     }

@@ -237,6 +237,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
+            if(val.equals(".")){
+                editText.setText("");
+                return;
+            }
             if (this.editText.getId() == R.id.etv_pulse) {
                 if (val.isEmpty()) {
                     /*mPulseErrorTextView.setVisibility(View.VISIBLE);
