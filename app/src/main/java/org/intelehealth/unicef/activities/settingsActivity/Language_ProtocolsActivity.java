@@ -95,6 +95,17 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
+        sessionManager = new SessionManager(this);
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            Locale locale = new Locale(appLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+
         initUI();
         clickListeners();
     }
@@ -186,7 +197,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         lang_spinner.setAdapter(langAdapter); // setting up language spinners.
         lang_spinner.setPopupBackgroundResource(R.drawable.popup_menu_background);
 
-        String l = sessionManager.getCurrentLang();
+        String l = sessionManager.getAppLanguage();
         if (l.equalsIgnoreCase("en"))
             l = "English";
         if (l.equalsIgnoreCase("ru"))
