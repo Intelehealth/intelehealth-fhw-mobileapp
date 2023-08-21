@@ -99,7 +99,6 @@ import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDoc
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
-import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointmentNew.MyAppointmentActivity;
@@ -125,7 +124,6 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -149,7 +147,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -3797,7 +3794,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
-        String colon = ":";
+        /*String colon = ":";
         String mComplaint_new = "";
         if (complaints != null) {
             for (String comp : complaints) {
@@ -3830,7 +3827,25 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         } else {
 
+        }*/
+        // added the chief complain from pre-generated list during visit summary display and commenting above old logic
+        //if (mIsCCInOldFormat) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < mChiefComplainList.size(); i++) {
+
+            String val = mChiefComplainList.get(i).trim();
+            val = val.replaceAll("<.*?>", "");
+            Log.v("mChiefComplainList", "CC - "+val);
+            if (!val.toLowerCase().contains("h/o specific illness")) {
+                if (!stringBuilder.toString().isEmpty()) {
+                    stringBuilder.append(",");
+                }
+                stringBuilder.append(val);
+            }
+
         }
+        mComplaint = stringBuilder.toString().trim();
+        //}
 
 
         if (mPatientOpenMRSID == null) {
@@ -4008,10 +4023,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
                                     "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
-                                    "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                                     "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
@@ -4034,7 +4049,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                             (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "",
                             (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
+                            /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
@@ -4947,8 +4962,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private LinearLayout mAssociateSymptomsLinearLayout, mComplainSummaryLinearLayout,
             mPhysicalExamSummamryLinearLayout, mPastMedicalHistorySummaryLinearLayout, mFamilyHistorySummaryLinearLayout;
     private TextView mAssociateSymptomsLabelTextView;
+    private boolean mIsCCInOldFormat = true;
+    ;
 
     private void setQAData() {
+        mIsCCInOldFormat = false;
         mFamilyHistorySummaryLinearLayout = findViewById(R.id.ll_family_history_summary);
         mPastMedicalHistorySummaryLinearLayout = findViewById(R.id.ll_patient_history_summary);
 
@@ -4962,7 +4980,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // complaints data
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
-            boolean isInOldFormat = true;
+            //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
             if (value.startsWith("{") && value.endsWith("}")) {
@@ -4970,21 +4988,21 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                     JSONObject jsonObject = new JSONObject(value);
                     if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
                         value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                        isInOldFormat = false;
+                        mIsCCInOldFormat = false;
                     } else {
                         value = jsonObject.getString("en");
-                        isInOldFormat = true;
+                        mIsCCInOldFormat = true;
                     }
                     complaintLocalString = value;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            Log.v(TAG, "isInOldFormat: " + isInOldFormat);
+            Log.v(TAG, "isInOldFormat: " + mIsCCInOldFormat);
             Log.v(TAG, "complaint: " + value);
             String valueArray[] = null;
             boolean isAssociateSymptomFound = false;
-            if (isInOldFormat) {
+            if (mIsCCInOldFormat) {
                 complaintView.setVisibility(View.VISIBLE);
                 findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
                 findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
@@ -4995,16 +5013,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 Log.v(TAG, "complaint associated: " + (isAssociateSymptomFound ? valueArray[1] : "no Associated Symptom found in value"));
                 String[] headerchips = valueArray[0].split("►");
                 List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
-                List<String> cc_list = new ArrayList<>();
+
 
                 for (int i = 0; i < cc_tempvalues.size(); i++) {
                     if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
-                        cc_list.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
+                        mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
                 }
 
                 cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
                 cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
-                cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
+                cc_adapter = new ComplaintHeaderAdapter(this, mChiefComplainList);
                 cc_recyclerview.setAdapter(cc_adapter);
 
                 String patientReports = getResources().getString(R.string.no_data_added);
@@ -5159,7 +5177,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // medical history data - end
     }
 
+    List<String> mChiefComplainList = new ArrayList<>();
+
     private void setDataForChiefComplainSummary(String answerInLocale) {
+        mChiefComplainList.clear();
         String lCode = sessionManager.getAppLanguage();
         //String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
         answerInLocale = answerInLocale.replaceAll("<.*?>", "");
@@ -5185,7 +5206,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         }
         mComplainSummaryLinearLayout.removeAllViews();
-        List<String> cc_list = new ArrayList<>();
+
 
         for (int i = 0; i < list.size(); i++) {
             String complainName = "";
@@ -5195,7 +5216,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (value.contains("::")) {
                     complainName = value.replace("::", "");
                     System.out.println(complainName);
-                    cc_list.add(complainName);
+                    mChiefComplainList.add(complainName);
                 } else {
                     String[] qa = value.split("•");
                     if (qa.length == 2) {
@@ -5256,7 +5277,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         // set all chief complain list
         cc_recyclerview_gridlayout = new GridLayoutManager(this, 2);
         cc_recyclerview.setLayoutManager(cc_recyclerview_gridlayout);
-        cc_adapter = new ComplaintHeaderAdapter(this, cc_list);
+        cc_adapter = new ComplaintHeaderAdapter(this, mChiefComplainList);
         cc_recyclerview.setAdapter(cc_adapter);
 
         // ASSOCIATED SYMPTOMS
