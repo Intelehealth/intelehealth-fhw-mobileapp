@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
@@ -73,6 +75,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
@@ -103,6 +106,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -591,7 +595,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                         fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
-                                Toast.makeText(PrescriptionActivity.this,getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.downloaded_to) + " " + path, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -899,7 +903,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp =  getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getResources().getString(R.string.prescription_temp_c) + " " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
@@ -1075,7 +1079,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + details.getUuid() + "_sign.png";
+            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
@@ -2079,6 +2083,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
 //    }
     // presc share - end
 
+    private boolean mIsCCInOldFormat = true;
+    private List<String> mChiefComplainList = new ArrayList<>();
+    private String complaintLocalString = "";
+
     // Print - start
     private void doWebViewPrint_Button() throws ParseException {
         // Create a WebView object specifically for printing
@@ -2172,7 +2180,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = org.apache.commons.lang3.StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
-        String colon = ":";
+        /*String colon = ":";
         String mComplaint_new = "";
         if (complaints != null) {
             for (String comp : complaints) {
@@ -2205,7 +2213,107 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             }
         } else {
 
+        }*/
+
+        if (complaint.getValue() != null) {
+            String value = complaint.getValue();
+            //boolean isInOldFormat = true;
+            //Show Visit summary data in Clinical Format for English language only
+            //Else for other language keep the data in Question Answer format
+            if (value.startsWith("{") && value.endsWith("}")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(value);
+                    if (!sessionManager.getAppLanguage().equals("en") && jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                        value = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                        mIsCCInOldFormat = false;
+                    } else {
+                        value = jsonObject.getString("en");
+                        mIsCCInOldFormat = true;
+                    }
+                    complaintLocalString = value;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String valueArray[] = null;
+            boolean isAssociateSymptomFound = false;
+            if (mIsCCInOldFormat) {
+
+                valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
+                isAssociateSymptomFound = valueArray.length >= 2;
+                String[] headerchips = valueArray[0].split("►");
+                List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
+
+
+                for (int i = 0; i < cc_tempvalues.size(); i++) {
+                    if (!cc_tempvalues.get(i).equalsIgnoreCase(""))
+                        mChiefComplainList.add(cc_tempvalues.get(i).substring(0, headerchips[i].indexOf(":")));
+                }
+
+
+            } else {
+                String answerInLocale = complaintLocalString;
+                mChiefComplainList.clear();
+                String lCode = sessionManager.getAppLanguage();
+                //String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);
+                answerInLocale = answerInLocale.replaceAll("<.*?>", "");
+                System.out.println(answerInLocale);
+                //Log.v(TAG, answerInLocale);
+                //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+
+                String[] spt = answerInLocale.split("►");
+                List<String> list = new ArrayList<>();
+                String associatedSymptomsString = "";
+                for (String s : spt) {
+                    if (s.isEmpty()) continue;
+                    //String s1 =  new String(s.getBytes(), "UTF-8");
+                    System.out.println("Chunk - " + s);
+                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                    //if (s.trim().contains("Patient denies -•")) {
+                    if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
+                        associatedSymptomsString = s;
+                        System.out.println("associatedSymptomsString - " + associatedSymptomsString);
+                    } else {
+                        list.add(s);
+                    }
+
+                }
+
+
+                for (int i = 0; i < list.size(); i++) {
+                    String complainName = "";
+                    List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
+                    String[] spt1 = list.get(i).split("●");
+                    for (String v1 : spt1) {
+                        if (v1.contains("::")) {
+                            complainName = v1.replace("::", "");
+                            System.out.println(complainName);
+                            mChiefComplainList.add(complainName);
+                        }
+                    }
+
+                }
+            }
+
+
         }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < mChiefComplainList.size(); i++) {
+
+            String val = mChiefComplainList.get(i).trim();
+            val = val.replaceAll("<.*?>", "");
+            Log.v("mChiefComplainList", "CC - " + val);
+            if (!val.toLowerCase().contains("h/o specific illness")) {
+                if (!stringBuilder.toString().isEmpty()) {
+                    stringBuilder.append(",");
+                }
+                stringBuilder.append(val);
+            }
+
+        }
+        mComplaint = stringBuilder.toString().trim();
 
 
         if (mPatientOpenMRSID == null) {
@@ -2330,7 +2438,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = details.getTextOfSign();
 
-            sign_url = "https://"+AppConstants.DEMO_URL+"/ds/" + details.getUuid() + "_sign.png";
+            sign_url = "https://" + AppConstants.DEMO_URL + "/ds/" + details.getUuid() + "_sign.png";
             Log.v("signurl", "signurl: " + sign_url);
 
             doctrRegistartionNum = !TextUtils.isEmpty(details.getRegistrationNumber()) ?
