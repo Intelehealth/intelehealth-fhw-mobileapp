@@ -16,9 +16,9 @@ android {
         applicationId "org.intelehealth.app"
         minSdkVersion 26
         targetSdkVersion 31
-        versionCode 63
+        versionCode 64
         buildToolsVersion('29.0.2')
-        versionName '4.0.1.1 - Beta'
+        versionName '4.1 - Beta'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
