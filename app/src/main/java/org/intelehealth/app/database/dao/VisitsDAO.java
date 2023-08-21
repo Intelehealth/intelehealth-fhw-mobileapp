@@ -489,7 +489,7 @@ public class VisitsDAO {
     /**
      * Todays Visits that are not Ended.
      */
-    public static List<PrescriptionModel> recentNotEndedVisits() {
+    public static List<PrescriptionModel> recentNotEndedVisits(int limit, int offset) {
         List<PrescriptionModel> arrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -499,7 +499,8 @@ public class VisitsDAO {
                 "v.voided = 0 AND " +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
                 " v.startdate > DATETIME('now', '-4 day') " +
-                " AND v.enddate IS NULL ORDER BY v.startdate DESC", new String[]{});
+                " AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -527,7 +528,7 @@ public class VisitsDAO {
     /**
      * This Weeks Visits that are not Ended.
      */
-    public static List<PrescriptionModel> olderNotEndedVisits() {
+    public static List<PrescriptionModel> olderNotEndedVisits(int limit, int offset) {
         List<PrescriptionModel> arrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -538,7 +539,8 @@ public class VisitsDAO {
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
 //                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
                 " v.startdate < DATETIME('now', '-4 day') AND " +
-                "v.enddate IS NULL ORDER BY v.startdate DESC", new String[]{});
+                "v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {

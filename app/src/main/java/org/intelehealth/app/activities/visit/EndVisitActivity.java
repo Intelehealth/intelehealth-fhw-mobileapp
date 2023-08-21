@@ -102,13 +102,13 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     }
 
     private void endVisits_data() {
-        todays_EndVisits();
-        thisWeeks_EndVisits();
+        todays_EndVisits(50, 0);    // todo: temporary added.
+        thisWeeks_EndVisits(50, 0);
 //        thisMonths_EndVisits();
     }
 
-    private void todays_EndVisits() {
-        List<PrescriptionModel> arrayList = recentNotEndedVisits();
+    private void todays_EndVisits(int limit, int offset) {
+        List<PrescriptionModel> arrayList = recentNotEndedVisits(limit, offset);
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(adapter_new);
@@ -119,8 +119,8 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
             recent_nodata.setVisibility(View.GONE);
     }
 
-    private void thisWeeks_EndVisits() {
-        List<PrescriptionModel> arrayList = olderNotEndedVisits();
+    private void thisWeeks_EndVisits(int limit, int offset) {
+        List<PrescriptionModel> arrayList = olderNotEndedVisits(limit, offset);
         EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(adapter_new);
