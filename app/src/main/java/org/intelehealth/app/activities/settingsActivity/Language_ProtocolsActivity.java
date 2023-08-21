@@ -123,13 +123,13 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     private void initUI() {
         context = Language_ProtocolsActivity.this;
-        lang_spinner = findViewById(R.id.lang_spinner);
-        reset_btn = findViewById(R.id.reset_btn);
-        snackbar_cv = findViewById(R.id.snackbar_cv);
-        snackbar_text = findViewById(R.id.snackbar_text);
-        update_protocols_btn = findViewById(R.id.update_protocols_btn);
-        btRefresh = findViewById(R.id.refresh);
-        mLangTextView = findViewById(R.id.lang_spinner_txt);
+        lang_spinner = findViewById(R.id.spinnerChangeLanguageProtocol);
+        reset_btn = findViewById(R.id.btnResetLanguageProtocol);
+        snackbar_cv = findViewById(R.id.snackbarLanguageProtocol);
+        snackbar_text = findViewById(R.id.tvSnackbarContent);
+        update_protocols_btn = findViewById(R.id.rlUpdateLanguageProtocol);
+        btRefresh = findViewById(R.id.ibRefreshLanguageProtocol);
+        mLangTextView = findViewById(R.id.tvLangSpinnerLanguageProtocol);
 
         Intent intent = getIntent();
         if (intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equalsIgnoreCase("refresh"))
@@ -205,7 +205,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         View convertView = inflater.inflate(R.layout.list_dialog_language, null);
         alertDialogBuilder.setView(convertView);
 
-        RecyclerView recyclerView = convertView.findViewById(R.id.lang_dialog_list_view);
+        RecyclerView recyclerView = convertView.findViewById(R.id.rvLangListLanguageProtocol);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(Language_ProtocolsActivity.this, RecyclerView.VERTICAL, false));
         DialogListAdapter dialogListAdapter = new DialogListAdapter(recyclerView, Language_ProtocolsActivity.this, mItemList, new DialogListAdapter.OnItemSelection() {
@@ -313,11 +313,11 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
             LayoutInflater li = LayoutInflater.from(Language_ProtocolsActivity.this);
             View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
             alertdialogBuilder.setView(promptsView);
-            Button positive_btn = promptsView.findViewById(R.id.positive_btn);
-            Button negative_btn = promptsView.findViewById(R.id.negative_btn);
+            Button positive_btn = promptsView.findViewById(R.id.btnPosUpdateProtocolDialog);
+            Button negative_btn = promptsView.findViewById(R.id.btnNegUpdateProtocolDialog);
 
-            text = promptsView.findViewById(R.id.licensekey);
-            url = promptsView.findViewById(R.id.licenseurl);
+            text = promptsView.findViewById(R.id.actvKeyUpdateProtocolDialog);
+            url = promptsView.findViewById(R.id.actvUrlUpdateProtocolDialog);
 
             if (!sessionManager.getLicenseKey().isEmpty()) {
 
@@ -426,11 +426,11 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
         alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+        ImageView icon = convertView.findViewById(R.id.ivIconPatientRegisteredDialog);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitlePatientRegisteredDialog);
+        TextView dialog_subtitle = convertView.findViewById(R.id.tvSubtitlePatientRegisteredDialog);
+        Button positive_btn = convertView.findViewById(R.id.btnPosPatientRegisteredDialog);
+        Button negative_btn = convertView.findViewById(R.id.btnNegPatientRegisteredDialog);
 
         icon.setImageDrawable(drawable);
         dialog_title.setText(title);

@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/margin_16dp"
     app:cardElevation="@dimen/hamburger_margin_start"
-
     app:contentPadding="@dimen/padding_20">
 
     <LinearLayout
@@ -14,7 +13,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/dialog_icon"
+            android:id="@+id/ivIconUpdateProtocolDialog"
+            android:contentDescription="Update Protocol Dialog Icon ImageView"
             android:layout_width="@dimen/patregist_profileimg_icon"
             android:layout_height="@dimen/patregist_profileimg_icon"
             android:layout_gravity="center_horizontal"
@@ -22,7 +22,8 @@
             android:src="@drawable/protocols_icon" />
 
         <TextView
-            android:id="@+id/dialog_title"
+            android:id="@+id/tvTitleUpdateProtocolDialog"
+            android:contentDescription="Update Protocol Dialog Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
@@ -34,7 +35,8 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/dialog_subtitle"
+            android:id="@+id/tvSubtitleUpdateProtocolDialog"
+            android:contentDescription="Update Protocol Dialog Subtitle TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fu_margin_start"
@@ -50,7 +52,8 @@
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/licenseurl"
+                android:id="@+id/actvUrlUpdateProtocolDialog"
+                android:contentDescription="Update Protocol Dialog Server Url AutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -72,7 +75,8 @@
 
 
             <AutoCompleteTextView
-                android:id="@+id/licensekey"
+                android:id="@+id/actvKeyUpdateProtocolDialog"
+                android:contentDescription="Update Protocol Dialog License Key AutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -99,7 +103,8 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/negative_btn"
+                android:id="@+id/btnNegUpdateProtocolDialog"
+                android:contentDescription="Update Protocol Dialog Negative (Cancel) Button"
                 style="@style/negative_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +116,8 @@
                 android:text="@string/cancel" />
 
             <Button
-                android:id="@+id/positive_btn"
+                android:id="@+id/btnPosUpdateProtocolDialog"
+                android:contentDescription="Update Protocol Dialog Positive (Update) Button"
                 style="@style/positive_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

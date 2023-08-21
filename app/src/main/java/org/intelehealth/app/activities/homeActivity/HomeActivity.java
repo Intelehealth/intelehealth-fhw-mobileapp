@@ -644,8 +644,8 @@ public class HomeActivity extends AppCompatActivity {
                         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                        text = promptsView.findViewById(R.id.licensekey);
-                        url = promptsView.findViewById(R.id.licenseurl);
+                        text = promptsView.findViewById(R.id.actvKeyUpdateProtocolDialog);
+                        url = promptsView.findViewById(R.id.actvUrlUpdateProtocolDialog);
 
                         if (!sessionManager.getLicenseKey().isEmpty()) {
 

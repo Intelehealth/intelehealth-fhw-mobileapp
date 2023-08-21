@@ -7,7 +7,8 @@
     tools:context=".activities.onboarding.TermsAndConditionsActivity_New">
 
     <LinearLayout
-        android:id="@+id/ll_action_bar"
+        android:id="@+id/llToolbarTandC"
+        android:contentDescription="Terms and Conditions Toolbar Parent Layout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_marginStart="@dimen/back_arrow_margin_start"
@@ -15,14 +16,15 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_back_arrow_terms"
+            android:id="@+id/ivBackArrowTandC"
+            android:contentDescription="Terms and Conditions Back Arrow ImageView"
             android:layout_width="@dimen/back_arrow_width"
             android:layout_height="@dimen/back_arrow_height"
-
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
-            android:id="@+id/tv_title_privacy"
+            android:id="@+id/tvTitleTandC"
+            android:contentDescription="Terms and Conditions Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
@@ -33,15 +35,17 @@
 
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_content"
+        android:id="@+id/svContentTandC"
+        android:contentDescription="Terms and Conditions Content ScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/layout_button_privacy"
-        android:layout_below="@+id/ll_action_bar">
+        android:layout_above="@+id/llButtonTandC"
+        android:layout_below="@+id/llToolbarTandC">
 
 
         <TextView
-            android:id="@+id/tv_term_condition"
+            android:id="@+id/tvContentTandC"
+            android:contentDescription="Terms and Conditions Content TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/content_margin_start"
@@ -56,7 +60,8 @@
 
 
     <LinearLayout
-        android:id="@+id/layout_button_privacy"
+        android:id="@+id/llButtonTandC"
+        android:contentDescription="Terms and Conditions Button LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -66,7 +71,8 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_decline_privacy"
+            android:id="@+id/btnDeclineTandC"
+            android:contentDescription="Terms and Conditions Decline Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/decline_button_margin_start"
@@ -82,7 +88,8 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_accept_privacy"
+            android:id="@+id/btnAcceptTandC"
+            android:contentDescription="Terms and Conditions Accept Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

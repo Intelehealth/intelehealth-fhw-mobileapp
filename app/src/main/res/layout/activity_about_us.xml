@@ -7,33 +7,28 @@
     tools:context=".activities.aboutus.AboutUsActivity">
 
     <!--    Toolbar - start -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar_relative"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:id="@+id/rlToolbarParentAboutUs"
+        android:contentDescription="About Us Toolbar Parent Relative Layout"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/followup_toolbar"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/toolbar_top_minus_24dp"
         android:background="@drawable/frame_10021">
 
-        <!-- Frame 100167 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10016"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="@dimen/followup_toolbar"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/fu_margin_start"
             android:layout_marginTop="@dimen/toolbar_margin_top"
             android:layout_marginRight="@dimen/fu_margin_start"
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <!-- Frame 100116 -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10011"
+            <LinearLayout
+                android:id="@+id/llToolbarChildAboutUs"
+                android:contentDescription="About Us Toolbar Child Linear Layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.7"
@@ -41,13 +36,10 @@
 
                 <!-- arrow-right -->
                 <ImageButton
-                    android:id="@+id/vector"
+                    android:id="@+id/ivBackArrowAboutUs"
+                    android:contentDescription="About Us Back Arrow ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
                     android:background="@null"
                     android:onClick="backPress"
                     android:padding="@dimen/margin_5"
@@ -55,7 +47,8 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/label"
+                    android:id="@+id/tvTitleAboutUs"
+                    android:contentDescription="About Us Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -70,7 +63,8 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/ibRefreshAboutUs"
+                android:contentDescription="About Us Refresh ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
@@ -85,7 +79,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_relative"
+        android:layout_below="@+id/rlToolbarParentAboutUs"
         android:fillViewport="true">
 
         <RelativeLayout
@@ -93,7 +87,8 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/images_recyclerview"
+                android:id="@+id/rvDisplayImagesAboutUs"
+                android:contentDescription="About Us Display Images Horizontal Recycler View"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_24"
@@ -105,10 +100,11 @@
                 tools:listitem="@layout/aboutus_listitem" />
 
             <TextView
-                android:id="@+id/description_txt"
+                android:id="@+id/tvDescriptionAboutUs"
+                android:contentDescription="About Us Description TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/images_recyclerview"
+                android:layout_below="@+id/rvDisplayImagesAboutUs"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
@@ -118,27 +114,30 @@
                 android:textSize="@dimen/txtsize_patdetail_14sp" />
 
             <RelativeLayout
-                android:id="@+id/globe_relative"
+                android:id="@+id/rlVisitWebsiteAboutUs"
+                android:contentDescription="About Us Visit Website Relative Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/description_txt"
+                android:layout_below="@+id/tvDescriptionAboutUs"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:visibility="gone">
 
                 <ImageView
-                    android:id="@+id/globe_img"
+                    android:id="@+id/ivVisitWebsiteIconAboutUs"
+                    android:contentDescription="About Us Visit Website Icon ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/globe_blue_svg" />
 
                 <TextView
-                    android:id="@+id/globe_link"
+                    android:id="@+id/tvVisitWebsiteLinkAboutUs"
+                    android:contentDescription="About Us Visit Website Link TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/globe_img"
+                    android:layout_toEndOf="@+id/ivVisitWebsiteIconAboutUs"
                     android:autoLink="web"
                     android:text="@string/visit_intelehealth_for_more"
                     android:textColorLink="@color/blue_1"
@@ -148,26 +147,29 @@
 
             <!--Info - Start-->
             <RelativeLayout
-                android:id="@+id/relative_info"
+                android:id="@+id/rlCheckTnCAboutUs"
+                android:contentDescription="About Us Check TnC Relative Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/globe_relative"
+                android:layout_below="@+id/rlVisitWebsiteAboutUs"
                 android:layout_marginStart="@dimen/margin_24"
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:layout_marginEnd="@dimen/margin_24">
 
                 <ImageView
-                    android:id="@+id/info_img"
+                    android:id="@+id/ivCheckTnCIconAboutUs"
+                    android:contentDescription="About Us Check TnC Icon ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/info_blue_svg" />
 
                 <TextView
-                    android:id="@+id/info_link"
+                    android:id="@+id/tvCheckTnCLinkAboutUs"
+                    android:contentDescription="About Us Check TnC Link TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/info_img"
+                    android:layout_toEndOf="@+id/ivCheckTnCIconAboutUs"
                     android:text="@string/aboutus_termscondition"
                     android:textColorLink="@color/blue_1"
                     android:textSize="@dimen/txtsize_patdetail_14sp" />
@@ -175,20 +177,18 @@
             <!--Info - End-->
 
             <FrameLayout
-                android:id="@+id/frame_gotobtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relative_info"
+                android:layout_below="@+id/rlCheckTnCAboutUs"
                 android:layout_marginTop="@dimen/margin_24">
 
                 <RelativeLayout
-                    android:id="@+id/relative_goto_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible">
+                    android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/goto_btn"
+                        android:id="@+id/btnGoToWebsiteAboutUs"
+                        android:contentDescription="About Us Go To Website Button"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/fu_btn_size"
                         android:layout_marginStart="@dimen/margin_24"

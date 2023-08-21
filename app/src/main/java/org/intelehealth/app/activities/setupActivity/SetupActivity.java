@@ -1120,8 +1120,8 @@ public class SetupActivity extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
+                                EditText text = promptsView.findViewById(R.id.actvKeyUpdateProtocolDialog);
+                                EditText url = promptsView.findViewById(R.id.actvUrlUpdateProtocolDialog);
 
                                 url.setError(null);
                                 text.setError(null);
