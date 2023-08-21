@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -138,7 +139,7 @@ public class Fragment_SecondScreen extends Fragment {
         mDistrictNameSpinner = view.findViewById(R.id.district_spinner);
         mDistrictET = view.findViewById(R.id.district_edittext);
         mCityVillageET = view.findViewById(R.id.city_village_edittext);
-        mCityVillageET.setFilters(new InputFilter[]{new InputFilter.AllCaps()}); //all capital input
+        mCityVillageET.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         mAddress1EditText = view.findViewById(R.id.address1_edittext);
         mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
         mAddress2EditText = view.findViewById(R.id.address2_edittext);
