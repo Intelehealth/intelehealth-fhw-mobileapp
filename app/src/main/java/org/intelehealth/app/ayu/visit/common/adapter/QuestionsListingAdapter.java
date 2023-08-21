@@ -1062,7 +1062,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         for (int i = 0; i < options.size(); i++) {
                             if (options.get(i).isSelected()) {
                                 mItemList.get(index).setSelected(true);
-                                mItemList.get(index).setDataCaptured(true);
+                                //mItemList.get(index).setDataCaptured(true);
                                 break;
                             }
                         }
@@ -1106,8 +1106,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (!isLoadingForNestedEditData)
+                                        if (!isLoadingForNestedEditData) {
+
                                             notifyItemChanged(index);
+                                        }
                                     }
                                 }, 100);
                                 if (!isLoadingForNestedEditData)

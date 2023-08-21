@@ -12,7 +12,6 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.mSwitch_hi_en_te_State_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
@@ -1841,8 +1840,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                                     pastVisitData.setChiefComplain(visitValue);
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                    mCurrentVisitDataList.add(pastVisitData);
-                                    Log.v(TAG, new Gson().toJson(mCurrentVisitDataList));
+                                    mPastVisitDataList.add(pastVisitData);
+                                    Log.v(TAG, new Gson().toJson(mPastVisitDataList));
 
                                 } catch (ParseException e) {
                                     FirebaseCrashlytics.getInstance().recordException(e);
