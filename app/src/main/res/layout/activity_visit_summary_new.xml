@@ -93,6 +93,7 @@
                     android:layout_marginStart="@dimen/margin_5"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:visibility="gone"
                     android:src="@drawable/download_icon_toolbar" />
 
                 <ImageButton
