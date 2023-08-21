@@ -534,6 +534,7 @@
         <item name="boxStrokeColor">@color/white</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="hintEnabled">true</item>
+        <item name="hintTextAppearance">@style/Theme.EZazi.Hint.Text</item>
         <item name="boxBackgroundMode">filled</item>
     </style>
 
@@ -655,5 +656,15 @@
     <style name="DialogAnimationSlideIn">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_height">@dimen/match_parent</item>
+        <item name="android:layout_width">@dimen/match_parent</item>
     </style>
 </resources>

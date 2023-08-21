@@ -369,6 +369,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
                 visitDTO.setLocationuuid(sessionManager.getLocationUuid());
                 visitDTO.setSyncd(false);
+                visitDTO.setEnddate(null);
                 visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
                 VisitsDAO visitsDAO = new VisitsDAO();
 
@@ -401,7 +402,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 stage1Hr1_1_EncounterUuid = UUID.randomUUID().toString();
                 eDTO.setUuid(stage1Hr1_1_EncounterUuid);
                 eDTO.setVisituuid(uuid);
-                eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.twoMinuteDelayTime());
                 eDTO.setProvideruuid(sessionManager.getProviderID());
                 eDTO.setEncounterTypeUuid(eDAO.getEncounterTypeUuid("Stage1_Hour1_1"));
                 eDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...

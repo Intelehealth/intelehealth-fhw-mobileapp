@@ -3,10 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,10 +47,11 @@
                     android:layoutDirection="rtl"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:text="@string/labour_completed"
+                    android:text="@{CompletedVisitStatus.LABOUR.label}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/labour_completed" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--            <RelativeLayout-->
@@ -87,44 +92,12 @@
                     android:layoutDirection="rtl"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:text="@string/mother_deceased"
+                    android:text="@{CompletedVisitStatus.MOTHER_DECEASED.label}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/mother_deceased" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <!--            <RelativeLayout-->
-            <!--                style="@style/Theme.EZazi.Text.Dialog.Content"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="@dimen/dialog_input_margin_top"-->
-            <!--                android:background="@drawable/selector_dialog_list_item"-->
-            <!--                android:orientation="horizontal">-->
-
-            <!--                <TextView-->
-            <!--                    style="@style/Theme.EZazi.Text.Dialog.Content"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginEnd="@dimen/tv_labour_margin_end"-->
-            <!--                    android:text="@string/mother_deceased" />-->
-
-            <!--                <CheckBox-->
-            <!--                    android:id="@+id/cbMotherDeceased"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_alignParentEnd="true"-->
-            <!--                    android:checked="false" />-->
-            <!--            </RelativeLayout>-->
-
-
-            <!--<com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvMotherDeceased"
-                style="@style/Theme.EZazi.Text.Dialog.Content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dialog_input_margin_top"
-                android:background="@drawable/selector_dialog_list_item"
-                android:padding="@dimen/small_btn_horizontal_padding"
-                android:text="@string/mother_deceased" />-->
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvReferToOtherHospital"
@@ -134,7 +107,8 @@
                 android:layout_marginTop="@dimen/dialog_input_margin_top"
                 android:background="@drawable/selector_dialog_list_item"
                 android:padding="@dimen/small_btn_horizontal_padding"
-                android:text="@string/refer_to_other_hospital" />
+                android:text="@{CompletedVisitStatus.REFER_TO_HOSPITAL.label}"
+                tools:text="@string/refer_to_other_hospital" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvSelfDischarge"
@@ -144,7 +118,8 @@
                 android:layout_marginTop="@dimen/dialog_input_margin_top"
                 android:background="@drawable/selector_dialog_list_item"
                 android:padding="@dimen/small_btn_horizontal_padding"
-                android:text="@string/self_discharge_medical_advice" />
+                android:text="@{CompletedVisitStatus.SELF_DISCHARGE.label}"
+                tools:text="@string/self_discharge_medical_advice" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvShiftToSection"
@@ -154,7 +129,8 @@
                 android:layout_marginTop="@dimen/dialog_input_margin_top"
                 android:background="@drawable/selector_dialog_list_item"
                 android:padding="@dimen/small_btn_horizontal_padding"
-                android:text="@string/shift_to_c_section" />
+                android:text="@{CompletedVisitStatus.SHIFT_TO_C_SECTION.label}"
+                tools:text="@string/shift_to_c_section" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvReferToICU"
@@ -164,7 +140,8 @@
                 android:layout_marginTop="@dimen/dialog_input_margin_top"
                 android:background="@drawable/selector_dialog_list_item"
                 android:padding="@dimen/small_btn_horizontal_padding"
-                android:text="@string/refer_to_icu" />
+                android:text="@{CompletedVisitStatus.REFER_TO_HIGH_ICU.label}"
+                tools:text="@string/refer_to_icu" />
 
             <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                 android:id="@+id/etOutOfTimeReasonLayout"

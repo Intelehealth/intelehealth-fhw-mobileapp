@@ -61,8 +61,8 @@ public class VisitsDAO {
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
             values.put("creator", visit.getCreatoruuid());
             values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
-            values.put("enddate", visit.getEnddate());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("enddate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getEnddate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+            values.put("modified_date", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getModifiedDate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("sync", visit.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
@@ -90,7 +90,7 @@ public class VisitsDAO {
             values.put("creator", visit.getCreatoruuid());
             values.put("startdate", visit.getStartdate());
             values.put("enddate", visit.getEnddate());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("modified_date", visit.getModifiedDate());
             values.put("sync", false);
 
             visitAttributeDTOS = visit.getVisitAttributeDTOS();
@@ -99,6 +99,7 @@ public class VisitsDAO {
             }
 
             createdRecordsCount1 = db.insert("tbl_visit", null, values);
+            isCreated = createdRecordsCount1 > 0;
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
@@ -234,7 +235,7 @@ public class VisitsDAO {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where sync IN (?,?,?) COLLATE NOCASE", new String[]{"0", "false", "FALSE"});
         VisitDTO visitDTO = new VisitDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -371,6 +372,7 @@ public class VisitsDAO {
             values.put("enddate", enddate);
             values.put("sync", "0");
             int i = db.update("tbl_visit", values, whereclause, whereargs);
+            isUpdated = i > 0;
             Logger.logD("visit", "updated" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
@@ -562,10 +564,11 @@ public class VisitsDAO {
                 .from("tbl_visit V")
                 .join(" LEFT OUTER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid ")
                 .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
-                        "AND V.voided = '0' AND VA.value = '" + providerId + "' AND V.enddate IS NULL ")
+                        "AND V.voided = '0' AND VA.value = '" + providerId + "' AND V.enddate IN (NULL, '') ")
                 .groupBy("V.uuid").orderBy("V.startdate")
                 .orderIn("DESC")
                 .build();
+        Log.e(TAG, "getAllActiveVisitByProviderId: query => " + query);
 //        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
         Cursor idCursor = db.rawQuery(query, null);
         VisitDTO visitDTO = new VisitDTO();

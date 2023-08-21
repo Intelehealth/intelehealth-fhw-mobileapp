@@ -23,6 +23,7 @@ import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivi
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
+import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
@@ -361,7 +362,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 new EncounterDAO().updateEncounterSync("false", mEncounterUUID);
 
 
-                //visitsDAO.updateVisitSync(mVisitUUID, "false");
+                new VisitsDAO().updateVisitSync(mVisitUUID, "false");
 
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("visitSummary");

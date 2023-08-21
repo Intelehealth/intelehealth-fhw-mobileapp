@@ -31,6 +31,7 @@ import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import org.intelehealth.klivekit.utils.extensions.showToast
 import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
+import java.util.Calendar
 
 
 /**
@@ -125,7 +126,12 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteParticipantDisconnected.observe(this) { if (it) sayBye("${args.doctorName} left the call") }
         videoCallViewModel.cameraPosition.observe(this) { onCameraPositionChanged(it) }
         socketViewModel.eventCallRejectByDoctor.observe(this) { if (it) sayBye("Call rejected by ${args.doctorName}") }
-        socketViewModel.eventCallCancelByDoctor.observe(this) { if (it) sayBye("Call canceled by ${args.doctorName}") }
+        socketViewModel.eventCallCancelByDoctor.observe(this) {
+            if (it) {
+                Timber.e { "Remain time up mil ${videoCallViewModel.remainTimeupMilliseconds}" }
+                sayBye("Call canceled by ${args.doctorName}")
+            }
+        }
         videoCallViewModel.remoteCallDisconnectedReason.observe(this) {
             it?.let { checkCallDisconnectReason(it) }
         }
@@ -136,10 +142,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     private fun callTimeUp(it: Boolean) {
         if (it) {
-            socketViewModel.emit(SocketManager.EVENT_NO_ANSWER, "app")
+            finish()
+            Timber.e { "Call time up ${Calendar.getInstance().time}" }
             videoCallViewModel.stopCallTimeoutTimer()
             showToast("Call time up")
-            finish()
         }
     }
 
@@ -326,6 +332,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     open fun sayBye(message: String, arg: String? = null) {
+        Timber.e { "$message ${Calendar.getInstance().time}" }
         showToast(message)
         arg?.let {
             socketViewModel.emit("bye", args)
@@ -366,6 +373,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        SocketManager.instance.resetCallTimeUpFlag()
         super.onDestroy()
         stopRingtone()
     }

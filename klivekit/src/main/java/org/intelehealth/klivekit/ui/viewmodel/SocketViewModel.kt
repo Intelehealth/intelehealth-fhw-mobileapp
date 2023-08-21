@@ -165,6 +165,10 @@ class SocketViewModel(
 
     fun reconnect() = socketManager.reconnect()
 
+    fun updateCallTimeupStatus() {
+        mutableCallCancelByDoctor.postValue(false)
+    }
+
     override fun onCleared() {
         super.onCleared()
 //        disconnect()

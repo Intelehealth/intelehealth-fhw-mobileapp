@@ -73,6 +73,7 @@ import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
+import org.intelehealth.ezazi.ui.visit.dialog.BottomSheetLabourDialog;
 import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEnd2StageDialog;
 import org.intelehealth.ezazi.ui.visit.dialog.LabourDialog;
 import org.intelehealth.ezazi.utilities.Logger;
@@ -141,7 +142,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
 //    private boolean labourCompletedSelected;
 //    private BottomSheetDialog bottomSheetDialogVisitComplete;
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Extract data included in the Intent
@@ -149,15 +150,25 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         }
     };
 
+    private final BroadcastReceiver visitTimeOutReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            recreate();
+            checkInternetAndUploadVisit_Encounter();
+        }
+    };
+
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mMessageReceiver);
+        unregisterReceiver(visitTimeOutReceiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_OUT_OF_TIME_ACTION));
         registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
 
     }
@@ -567,7 +578,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
     }
 
     private void showLabourBottomSheetDialog(boolean hasLabour, boolean hasMotherDeceased) {
-        new LabourDialog(this, hasMotherDeceased, visitUuid, () -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully))).buildDialog();
+        BottomSheetLabourDialog dialog = BottomSheetLabourDialog.getInstance(visitUuid, hasMotherDeceased);
+        dialog.setListener(() -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully)));
+        dialog.show(getSupportFragmentManager(), dialog.getTag());
+//        new LabourDialog(this, hasMotherDeceased, visitUuid, () -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully))).buildDialog();
     }
 
     private void checkForOutOfTime(String outcome) {

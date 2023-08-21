@@ -13,6 +13,7 @@ import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.Calendar
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
@@ -25,6 +26,7 @@ open class SocketManager {
     var activeUsers = HashMap<String, ActiveUser>()
     var activeRoomId: String? = null
     var notificationListener: NotificationListener? = null
+    private var isCallTimeUp = false
 
     interface NotificationListener {
         fun showNotification(chatMessage: ChatMessage)
@@ -61,6 +63,11 @@ open class SocketManager {
     private fun emitter(event: String) = Emitter.Listener {
         val json: String? = Gson().toJson(it)
         Timber.e { "$TAG => $event => $json" }
+        Timber.e { "$TAG => $event => ${Calendar.getInstance().time}" }
+        if (event == EVENT_CALL_TIME_UP) {
+            isCallTimeUp = true
+        }
+
         if (event == EVENT_ALL_USER) {
             json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
         } else if (event == EVENT_UPDATE_MESSAGE) {
@@ -68,7 +75,9 @@ open class SocketManager {
             json?.let { array -> notifyIfNotActiveRoom(JSONArray(array)); }
         }
 
+        if (isCallTimeUp && event == EVENT_CALL_CANCEL_BY_DR) return@Listener
         emitterListener?.invoke(event)?.call(it)
+
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }
 
@@ -151,6 +160,10 @@ open class SocketManager {
 
     fun checkUserIsOnline(id: String) =
         activeUsers.containsKey(id) && activeUsers.get(id)!!.isOnline()
+
+    fun resetCallTimeUpFlag() {
+        isCallTimeUp = false
+    }
 
     companion object {
         const val TAG = "SocketManager"

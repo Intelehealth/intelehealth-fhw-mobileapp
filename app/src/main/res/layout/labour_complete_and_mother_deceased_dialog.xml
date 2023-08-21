@@ -2,404 +2,344 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/container_bg_rounded"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:backgroundTint="@color/white"
+        android:orientation="vertical">
 
+        <include
+            android:id="@+id/bottomSheetAppBar"
+            layout="@layout/bottom_sheet_appbar" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                style="@style/Theme.EZazi.ActionBar.Padding"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/selector_dialog_cancel"
-                app:popupTheme="@style/Theme.EZazi.PopupOverlay"
-                app:title="@string/complete_visit" />
+                android:orientation="vertical">
 
-            <View
-                android:id="@+id/view1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorGray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:padding="@dimen/screen_padding"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view1">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_labour_complete"
-                    style="@style/Theme.EZazi.Material.CardView"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_marginHorizontal="@dimen/screen_padding"
+                    android:background="@drawable/container_bg_rounded"
+                    android:padding="@dimen/screen_container_padding">
 
-                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/etLayoutLabour"
-                        style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_labour_complete"
+                        style="@style/Theme.EZazi.Material.CardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/labour_completed">
+                        android:contentDescription="@string/labour_completed"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/autotv_labour_completed"
-                            style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/etLayoutLabour"
+                            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:dropDownSelector="@color/white"
-                            android:inputType="textPostalAddress"
-                            android:maxLines="1"
-                            android:textAlignment="viewStart"
-                            android:textSize="@dimen/input_inner_size" />
+                            android:layout_height="match_parent"
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/labour_completed">
 
-                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+                            <AutoCompleteTextView
+                                android:id="@+id/autotv_labour_completed"
+                                style="@style/Theme.EZazi.Scrollbar.Thumb"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:dropDownSelector="@color/white"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:minHeight="@dimen/max_address_input_height"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/input_inner_size" />
 
-                </com.google.android.material.card.MaterialCardView>
+                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/tv_birth_weight"-->
-                <!--                    style="@style/LabelStyle"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_gravity="center_vertical"-->
-                <!--                    android:layout_marginStart="@dimen/list_container_padding"-->
-                <!--                    android:layout_marginTop="16dp"-->
-                <!--                    android:text="@string/birth_weight"-->
-                <!--                    android:textSize="@dimen/caption"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@id/card_labour_complete" />-->
+                    </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_birth_weight"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_labour_complete">
-
-                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/etLayoutBirthWeight"
-                        style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_birth_weight"
+                        style="@style/Theme.EZazi.Material.CardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/select_birth_weight">
+                        android:layout_marginTop="@dimen/dialog_input_margin_top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_labour_complete">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/autotv_birth_weight"
-                            style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/etLayoutBirthWeight"
+                            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:dropDownSelector="@color/white"
-                            android:inputType="textPostalAddress"
-                            android:maxLines="1"
-                            android:textAlignment="viewStart"
-                            android:textSize="@dimen/input_inner_size" />
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/select_birth_weight">
 
-                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+                            <AutoCompleteTextView
+                                android:id="@+id/autotv_birth_weight"
+                                style="@style/Theme.EZazi.Scrollbar.Thumb"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:dropDownHeight="@dimen/dropdown_max_height"
+                                android:dropDownSelector="@color/white"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:minHeight="@dimen/max_address_input_height"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/input_inner_size" />
 
-                </com.google.android.material.card.MaterialCardView>
+                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_apgar_1min"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_birth_weight">
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/etLayoutApgar1"
-                        style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_apgar_1min"
+                        style="@style/Theme.EZazi.Material.CardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/apgar_1min">
+                        android:layout_marginTop="@dimen/dialog_input_margin_top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_birth_weight">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/autotv_apgar_1min"
-                            style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/etLayoutApgar1"
+                            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:dropDownSelector="@color/white"
-                            android:inputType="textPostalAddress"
-                            android:maxLines="1"
-                            android:textAlignment="viewStart"
-                            android:textSize="@dimen/input_inner_size" />
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/apgar_1min">
 
-                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+                            <AutoCompleteTextView
+                                android:id="@+id/autotv_apgar_1min"
+                                style="@style/Theme.EZazi.Scrollbar.Thumb"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:dropDownHeight="@dimen/dropdown_max_height"
+                                android:dropDownSelector="@color/white"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:minHeight="@dimen/max_address_input_height"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/input_inner_size" />
 
-                </com.google.android.material.card.MaterialCardView>
+                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_apgar_5min"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_apgar_1min">
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/etLayoutApgar5"
-                        style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_apgar_5min"
+                        style="@style/Theme.EZazi.Material.CardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/apgar_5min">
+                        android:layout_marginTop="@dimen/dialog_input_margin_top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_apgar_1min">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/autotv_apgar_5min"
-                            style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/etLayoutApgar5"
+                            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:dropDownSelector="@color/white"
-                            android:inputType="textPostalAddress"
-                            android:maxLines="1"
-                            android:textAlignment="viewStart"
-                            android:textSize="@dimen/input_inner_size" />
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/apgar_5min">
 
-                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+                            <AutoCompleteTextView
+                                android:id="@+id/autotv_apgar_5min"
+                                style="@style/Theme.EZazi.Scrollbar.Thumb"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:dropDownHeight="@dimen/dropdown_max_height"
+                                android:dropDownSelector="@color/white"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:minHeight="@dimen/max_address_input_height"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/input_inner_size" />
 
-                </com.google.android.material.card.MaterialCardView>
+                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_baby_gender"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_apgar_5min">
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/etLayoutBabyGender"
-                        style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_baby_gender"
+                        style="@style/Theme.EZazi.Material.CardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/baby_sex">
+                        android:layout_marginTop="@dimen/dialog_input_margin_top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_apgar_5min">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/autotv_baby_gender"
-                            style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/etLayoutBabyGender"
+                            style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:dropDownSelector="@color/white"
-                            android:inputType="textPostalAddress"
-                            android:maxLines="1"
-                            android:textAlignment="viewStart"
-                            android:textSize="@dimen/input_inner_size" />
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/baby_sex">
 
-                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+                            <AutoCompleteTextView
+                                android:id="@+id/autotv_baby_gender"
+                                style="@style/Theme.EZazi.Scrollbar.Thumb"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:dropDownSelector="@color/white"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:minHeight="@dimen/max_address_input_height"
+                                android:textAlignment="viewStart"
+                                android:textSize="@dimen/input_inner_size" />
 
-                </com.google.android.material.card.MaterialCardView>
+                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_baby_status"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_baby_gender">
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/etLayout_baby_status"
-                        style="@style/Theme.EZazi.Input.Add.Patient"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_baby_status"
+                        style="@style/Theme.EZazi.Material.CardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/baby_status">
+                        android:layout_marginTop="@dimen/dialog_input_margin_top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_baby_gender">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_baby_status"
+                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/etLayout_baby_status"
+                            style="@style/Theme.EZazi.Input.Add.Patient"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:importantForAutofill="no"
-                            android:inputType="none"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:textSize="@dimen/input_inner_size" />
-                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/baby_status">
 
-                </com.google.android.material.card.MaterialCardView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_baby_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:imeOptions="actionNext"
+                                android:importantForAutofill="no"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/input_inner_size" />
+                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_mother_status"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_baby_status">
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                        android:id="@+id/etLayout_mother_status"
-                        style="@style/Theme.EZazi.Input.Add.Patient"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_mother_status"
+                        style="@style/Theme.EZazi.Material.CardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/mother_status">
+                        android:layout_marginTop="@dimen/dialog_input_margin_top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_baby_status">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_mother_status"
+                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                            android:id="@+id/etLayout_mother_status"
+                            style="@style/Theme.EZazi.Input.Add.Patient"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:importantForAutofill="no"
-                            android:inputType="none"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:textSize="@dimen/input_inner_size" />
-                    </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+                            android:layout_margin="@dimen/list_container_padding"
+                            android:hint="@string/mother_status">
 
-                </com.google.android.material.card.MaterialCardView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_mother_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:imeOptions="actionNext"
+                                android:importantForAutofill="no"
+                                android:inputType="none"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/input_inner_size" />
+                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_other_comment"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_mother_status">
+                    </com.google.android.material.card.MaterialCardView>
 
                     <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/etLayout_other_comment"
                         style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/list_container_padding"
-                        android:hint="@string/other_comment">
+                        android:layout_marginTop="@dimen/list_container_padding"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="300"
+                        app:endIconMode="clear_text"
+                        app:hintEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_mother_status">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_other_comment"
+                            style="@style/Theme.EZazi.Input.Dialog.Stage2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@color/color_input_bg"
                             android:gravity="start"
+                            android:hint="@string/enter_other_comment"
                             android:imeOptions="actionNext"
-                            android:importantForAutofill="no"
-                            android:inputType="none"
+                            android:inputType="textMultiLine"
                             android:lineSpacingExtra="@dimen/std_4dp"
                             android:lines="5"
                             android:maxLength="300"
-                            android:paddingStart="20dp"
+                            android:textColor="@color/colorInputText"
                             android:textSize="@dimen/input_inner_size" />
+
                     </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-                <!--
-                                    <com.google.android.material.card.MaterialCardView
-                                        android:id="@+id/card_other_comment"
-                                        style="@style/Theme.EZazi.Material.CardView"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/dialog_input_margin_top"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toBottomOf="@id/card_mother_status"
-                                        app:strokeColor="@android:color/transparent"
-                                        app:strokeWidth="0dp">
-
-                                        <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
-                                            android:id="@+id/etLayout_other_comment"
-                                            style="@style/Theme.EZazi.Input.Login"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_margin="@dimen/list_container_padding"
-                                            app:boxStrokeColor="@color/colorLoginInputStroke"
-                                            app:boxStrokeWidth="@dimen/input_stroke_size"
-                                            app:counterEnabled="true"
-                                            app:counterMaxLength="300"
-                                            app:endIconMode="clear_text">
-
-                                            <com.google.android.material.textfield.TextInputEditText
-                                                android:id="@+id/et_other_comment"
-                                                style="@style/Theme.EZazi.Input.Dialog.Stage2"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:backgroundTint="@color/white"
-                                                android:gravity="start"
-                                                android:hint="@string/enter_other_comment"
-                                                android:imeOptions="actionDone"
-                                                android:inputType="textMultiLine"
-                                                android:lineSpacingExtra="@dimen/std_4dp"
-                                                android:lines="5"
-                                                android:maxLength="300"
-                                                android:paddingStart="20dp"
-                                                android:textColor="@color/colorInputText"
-                                                android:textSize="@dimen/input_inner_size" />
-
-                                        </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
-                                    </com.google.android.material.card.MaterialCardView>
-                -->
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_deceased_reason"
-                    style="@style/Theme.EZazi.Material.CardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dialog_input_margin_top"
-                    android:background="@color/colorContainer"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_other_comment"
-                    app:strokeColor="@android:color/transparent"
-                    app:strokeWidth="0dp">
 
                     <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/etLayout_deceased_reason"
-                        style="@style/Theme.EZazi.Input.Login"
+                        style="@style/Theme.EZazi.Input.Add.Patient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:boxStrokeColor="@color/colorLoginInputStroke"
-                        app:boxStrokeWidth="@dimen/input_stroke_size"
+                        android:layout_marginTop="@dimen/list_container_padding"
                         app:counterEnabled="true"
                         app:counterMaxLength="300"
-                        app:endIconMode="clear_text">
+                        app:endIconMode="clear_text"
+                        app:hintEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etLayout_other_comment">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_deceased_reason"
                             style="@style/Theme.EZazi.Input.Dialog.Stage2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/white"
                             android:gravity="start"
                             android:hint="@string/enter_reason_deceased"
                             android:imeOptions="actionDone"
@@ -407,25 +347,23 @@
                             android:lineSpacingExtra="@dimen/std_4dp"
                             android:lines="5"
                             android:maxLength="300"
-                            android:paddingStart="20dp"
                             android:textColor="@color/colorInputText"
                             android:textSize="@dimen/input_inner_size" />
 
                     </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
-                </com.google.android.material.card.MaterialCardView>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSubmit"
-                    style="@style/Theme.EZazi.Dialog.Button.Next"
+                    style="@style/Theme.EZazi.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:contentDescription="@string/submit"
-                    android:text="@string/save_button"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_deceased_reason" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                    android:layout_marginHorizontal="@dimen/screen_padding"
+                    android:layout_marginVertical="@dimen/screen_padding"
+                    android:text="@string/save_button" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -38,6 +38,9 @@ public class VisitDTO {
 
     private List<VisitAttributeDTO> visitAttributeDTOS;
 
+    @SerializedName("modified_date")
+    private String modifiedDate;
+
     public String getPatientuuid() {
         return patientuuid;
     }
@@ -119,6 +122,14 @@ public class VisitDTO {
         this.attributes = attributes;
     }
 
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
     public enum CompletedStatus {
         LIVE_BIRTH("Live Birth"),
         STILL_BIRTH("Still Birth"),
@@ -131,4 +142,5 @@ public class VisitDTO {
             this.value = value;
         }
     }
+
 }

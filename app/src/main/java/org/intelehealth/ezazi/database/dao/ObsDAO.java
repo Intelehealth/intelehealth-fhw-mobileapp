@@ -24,6 +24,7 @@ import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
 import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
+import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -641,9 +642,15 @@ public class ObsDAO {
     public String getCompletedVisitType(String encounterUuid) {
         String valueData = "";
         db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        String query = "SELECT value, conceptuuid FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?, ?)";
+        String query = "SELECT value, conceptuuid FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?, ?, ?, ?, ?)";
         final Cursor idCursor = db.rawQuery(query, new String[]{encounterUuid,
-                UuidDictionary.BIRTH_OUTCOME, UuidDictionary.REFER_TYPE, UuidDictionary.OUT_OF_TIME});
+                UuidDictionary.BIRTH_OUTCOME,
+                UuidDictionary.REFER_TYPE,
+                UuidDictionary.MOTHER_DECEASED_FLAG,
+                UuidDictionary.MOTHER_DECEASED,
+                UuidDictionary.END_2ND_STAGE_OTHER,
+                UuidDictionary.OUT_OF_TIME});
+
         //do some insertions or whatever you need
 //        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid = ?",
 //                new String[]{encounterUuid, BIRTH_OUTCOME});
@@ -653,13 +660,21 @@ public class ObsDAO {
                 Context context = IntelehealthApplication.getAppContext();
                 valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
 //                String conceptId = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
-                if (valueData.equals(context.getString(R.string.refer_to_other_hospital))) {
-                    valueData = VisitDTO.CompletedStatus.RTOH.value;
-                } else if (valueData.equals(context.getString(R.string.self_discharge_medical_advice))) {
-                    valueData = VisitDTO.CompletedStatus.DAMA.value;
-                }
-//                else if (valueData.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
-//                    valueData = VisitDTO.CompletedStatus.OUT_OF_TIME.value;
+//                if (valueData.equals(CompletedVisitStatus.ReferType.REFER_TO_OTHER.value())) {
+//                    valueData = CompletedVisitStatus.ReferType.REFER_TO_OTHER.sortValue();
+//                } else if (valueData.equals(CompletedVisitStatus.ReferType.SELF_DISCHARGE.value())) {
+//                    valueData = CompletedVisitStatus.ReferType.SELF_DISCHARGE.sortValue();
+//                } else if (valueData.equals(CompletedVisitStatus.ReferType.SHIFT_TO_C_SECTION.value())) {
+//                    valueData = CompletedVisitStatus.ReferType.SHIFT_TO_C_SECTION.sortValue();
+//                } else if (valueData.equals(CompletedVisitStatus.ReferType.REFER_TO_ICU.value())) {
+//                    valueData = CompletedVisitStatus.ReferType.REFER_TO_ICU.sortValue();
+//                } else
+//                if (conceptId.equals(CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_FLAG.uuid())) {
+//                    valueData = CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_FLAG.sortValue();
+//                } else if (conceptId.equals(CompletedVisitStatus.Labour.conceptUuid()) && valueData.equals(CompletedVisitStatus.Labour.OTHER.value())) {
+//                    valueData = CompletedVisitStatus.Labour.OTHER.sortValue();
+//                } else if (conceptId.equals(CompletedVisitStatus.OtherComment.OTHER.uuid())) {
+//                    valueData = CompletedVisitStatus.OtherComment.OTHER.sortValue();
 //                }
             }
         } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.

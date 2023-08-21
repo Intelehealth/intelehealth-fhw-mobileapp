@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:theme="@style/Theme.EZazi.AppBarOverlay"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Theme.EZazi.ActionBar.Padding"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            app:navigationIcon="@drawable/selector_dialog_cancel"
+            app:popupTheme="@style/Theme.EZazi.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+</layout>

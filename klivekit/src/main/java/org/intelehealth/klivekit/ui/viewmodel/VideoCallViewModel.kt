@@ -39,6 +39,7 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
     private val mutableCallTimeUpData = MutableLiveData(false)
     val callTimeUpStatus = mutableCallTimeUpData.hide()
 
+    var remainTimeupMilliseconds = CALL_PICKUP_EXP_TIME;
 
     private val callEndBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -124,14 +125,16 @@ class VideoCallViewModel(url: String, token: String, application: Application) :
     }
 
     private val callTimeoutTimer = object : CountDownTimer(CALL_PICKUP_EXP_TIME, 1000) {
-        override fun onTick(millisUntilFinished: Long) {}
+        override fun onTick(millisUntilFinished: Long) {
+            remainTimeupMilliseconds = millisUntilFinished
+        }
 
         override fun onFinish() {
             mutableCallTimeUpData.postValue(true)
         }
     }
 
-    fun startCallTimeoutTimer() = callTimeoutTimer.start()
+    fun startCallTimeoutTimer(): CountDownTimer = callTimeoutTimer.start()
 
     fun stopCallTimeoutTimer() = callTimeoutTimer.cancel()
 

@@ -85,8 +85,20 @@ public class DateAndTimeUtils {
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
-        Date todayDate = new Date();
-        return date.format(todayDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        return date.format(calendar.getTime());
+    }
+
+    public String twoMinuteDelayTime() {
+        Locale.setDefault(Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.MINUTE, 2);
+        return date.format(calendar.getTime());
     }
 
     public static int getAge(String s, Context context) {

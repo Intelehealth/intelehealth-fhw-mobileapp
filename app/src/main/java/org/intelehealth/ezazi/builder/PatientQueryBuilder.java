@@ -7,6 +7,7 @@ import android.util.Log;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.dto.PatientAttributesDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
+import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 
@@ -47,22 +48,7 @@ public class PatientQueryBuilder extends QueryBuilder {
         return select("P.uuid, P.openmrs_id, P.first_name, P.last_name, P.middle_name, P.date_of_birth, " +
                 "CASE WHEN P.middle_name IS NULL THEN P.first_name || ' ' || P.last_name " +
                 "ELSE P.first_name || ' ' || P.middle_name || ' ' || P.last_name " +
-                "END fullName, " +
-                "(SELECT CASE " +
-                "WHEN O.value LIKE '%discharge%'  THEN '" + VisitDTO.CompletedStatus.DAMA.value + "' " +
-                "WHEN O.value LIKE '%Refer%'  THEN '" + VisitDTO.CompletedStatus.RTOH.value + "' " +
-                "WHEN O.conceptuuid = '" + UuidDictionary.OUT_OF_TIME + "' THEN '" + VisitDTO.CompletedStatus.OUT_OF_TIME.value + "' " +
-                "ELSE O.value " +
-                "END outcome " +
-                "FROM tbl_encounter E, tbl_obs O " +
-                "WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid " +
-                "AND O.conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', '"
-                + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME + "') LIMIT 1) as birthStatus, " +
-                "(SELECT CASE " +
-                "WHEN U.name LIKE '%Stage1%'  THEN 'Stage1' " +
-                "WHEN U.name LIKE '%Stage2%'  THEN 'Stage2' ELSE U.name " +
-                "END Stage FROM tbl_encounter E, tbl_uuid_dictionary U " +
-                "WHERE E.visituuid =V.uuid  and E.voided = '0'  and U.uuid = E.encounter_type_uuid  ORDER BY U.name DESC LIMIT 1)  as stage, " +
+                "END fullName, " + getCompletedVisitStatusCase() + getCurrentStageCase() + ", " +
                 "CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber, " +
                 "CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo ")
                 .from("tbl_patient P")
@@ -124,12 +110,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo, " +
                 "CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber, " +
                 "(SELECT uuid FROM tbl_encounter where visituuid = V.uuid and voided IN ('0', 'false', 'FALSE') AND encounter_type_uuid != '" + ENCOUNTER_VISIT_COMPLETE + "' ORDER BY encounter_time DESC limit 1) as latestEncounterId, " +
-                "(SELECT CASE " +
-                " WHEN U.name LIKE '%Stage1%' THEN 'Stage-1' " +
-                " WHEN U.name LIKE '%Stage2%' THEN 'Stage-2' ELSE '' " +
-                " END Stage FROM tbl_encounter E, tbl_uuid_dictionary U  " +
-                " WHERE E.visituuid =V.uuid  and E.voided IN ('0', 'false', 'FALSE')  and U.uuid = E.encounter_type_uuid  " +
-                " ORDER BY U.name DESC LIMIT 1)  as stage")
+                getCurrentStageCase())
                 .from("tbl_visit  V")
                 .join("LEFT OUTER JOIN tbl_patient P ON P.uuid = V.patientuuid " +
                         " LEFT OUTER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid " +
@@ -138,7 +119,7 @@ public class PatientQueryBuilder extends QueryBuilder {
                         " WHERE name = '" + PatientAttributesDTO.Columns.BED_NUMBER.value + "')")
                 .where("V.uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " +
                         "AND V.voided IN ('0', 'false', 'FALSE') AND VA.value = '" + providerId + "'" +
-                        " AND V.enddate IS NULL ")
+                        " AND V.enddate IN (NULL, '')")
                 .groupBy("V.uuid")
                 .orderBy("V.startdate")
                 .orderIn("DESC")
@@ -147,5 +128,63 @@ public class PatientQueryBuilder extends QueryBuilder {
                 .build();
         Log.e(TAG, "activePatientQuery => " + query);
         return query;
+    }
+
+    private String getCompletedVisitStatusCase() {
+//        return "(SELECT CASE " +
+//                "WHEN O.value LIKE '%discharge%'  THEN '" + VisitDTO.CompletedStatus.DAMA.value + "' " +
+//                "WHEN O.value LIKE '%Refer%'  THEN '" + VisitDTO.CompletedStatus.RTOH.value + "' " +
+//                "WHEN O.conceptuuid = '" + UuidDictionary.OUT_OF_TIME + "' THEN '" + VisitDTO.CompletedStatus.OUT_OF_TIME.value + "' " +
+//                "ELSE O.value " +
+//                "END outcome " +
+//                "FROM tbl_encounter E, tbl_obs O " +
+//                "WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid " +
+//                "AND O.conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', '"
+//                + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME + "') LIMIT 1) as birthStatus, ";
+
+        return "(SELECT CASE " +
+                // start refer type case
+                "WHEN O.conceptuuid = '" + CompletedVisitStatus.ReferType.conceptUuid() + "' THEN " +
+                "(CASE WHEN O.value = '" + CompletedVisitStatus.ReferType.REFER_TO_OTHER.value() +
+                "' THEN '" + CompletedVisitStatus.ReferType.REFER_TO_OTHER.sortValue() + "'" +
+                " WHEN O.value = '" + CompletedVisitStatus.ReferType.SELF_DISCHARGE.value() +
+                "' THEN '" + CompletedVisitStatus.ReferType.SELF_DISCHARGE.sortValue() + "'" +
+                " WHEN O.value = '" + CompletedVisitStatus.ReferType.REFER_TO_ICU.value() +
+                "' THEN '" + CompletedVisitStatus.ReferType.REFER_TO_ICU.sortValue() + "'" +
+                " WHEN O.value = '" + CompletedVisitStatus.ReferType.SHIFT_TO_C_SECTION.value() +
+                "' THEN '" + CompletedVisitStatus.ReferType.SHIFT_TO_C_SECTION.sortValue() + "'" +
+                "ELSE O.value END) " +
+                // end refer type case
+                // start birth outcome case
+                "WHEN O.conceptuuid = '" + CompletedVisitStatus.Labour.conceptUuid() + "' THEN O.value " +
+                // end birth outcome case
+                // start out of time case
+                "WHEN O.conceptuuid = '" + UuidDictionary.OUT_OF_TIME
+                + "' THEN '" + VisitDTO.CompletedStatus.OUT_OF_TIME.value + "' " +
+                // end out of time case
+                // start out of time case
+                "WHEN O.conceptuuid = '" + CompletedVisitStatus.OtherComment.OTHER.uuid()
+                + "' THEN '" + CompletedVisitStatus.OtherComment.OTHER.sortValue() + "' " +
+                // end out of time case
+                // start out of time case
+                "WHEN O.conceptuuid = '" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_FLAG.uuid() + "' AND O.value = 'true'" +
+                " THEN '" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue() + "' " +
+                // end out of time case
+                "ELSE O.value " +
+                "END outcome " +
+                "FROM tbl_encounter E, tbl_obs O " +
+                "WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid " +
+                "AND O.conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', " +
+                "'" + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME
+                + "','" + UuidDictionary.MOTHER_DECEASED_FLAG + "','" + UuidDictionary.MOTHER_DECEASED
+                + "','" + UuidDictionary.END_2ND_STAGE_OTHER + "') LIMIT 1) as birthStatus, ";
+    }
+
+    private String getCurrentStageCase() {
+        return "(SELECT CASE " +
+                "WHEN U.name LIKE '%Stage1%'  THEN 'Stage-1' " +
+                "WHEN U.name LIKE '%Stage2%'  THEN 'Stage-2' ELSE U.name " +
+                "END Stage FROM tbl_encounter E, tbl_uuid_dictionary U " +
+                "WHERE E.visituuid =V.uuid  and E.voided = '0'  and U.uuid = E.encounter_type_uuid  ORDER BY U.name DESC LIMIT 1)  as stage ";
     }
 }

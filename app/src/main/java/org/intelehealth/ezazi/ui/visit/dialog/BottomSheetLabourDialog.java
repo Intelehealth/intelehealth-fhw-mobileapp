@@ -1,22 +1,29 @@
 package org.intelehealth.ezazi.ui.visit.dialog;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.intelehealth.ezazi.R;
-import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.databinding.LabourCompleteAndMotherDeceasedDialogBinding;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.ui.visit.model.LabourInfo;
+import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.ezazi.utilities.Utils;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -25,44 +32,99 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Vaghela Mithun R. on 17-08-2023 - 21:03.
+ * Created by Vaghela Mithun R. on 19-08-2023 - 11:25.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class LabourDialog extends VisitCompletionHelper {
-    private final boolean hasMotherDeceased;
-    private final OnLabourCompleteListener listener;
-    private BottomSheetDialog bottomSheetDialogVisitComplete;
+public class BottomSheetLabourDialog extends BottomSheetDialogFragment {
+    private static final String ARG_VISIT_ID = "visitId";
+    private static final String ARG_HAS_MOTHER_DECEASED = "has_mother_deceased";
+    private LabourCompleteAndMotherDeceasedDialogBinding binding;
     private LabourInfo labourInfo;
+    private String visitId;
+    private boolean hasMotherDeceased;
+    private VisitCompletionHelper helper;
+    private OnLabourCompleteListener listener;
 
     public interface OnLabourCompleteListener {
         void onLabourCompleted();
     }
 
-    public LabourDialog(Context context, boolean hasMotherDeceased, String visitId, OnLabourCompleteListener listener) {
-        super(context, visitId);
-        this.hasMotherDeceased = hasMotherDeceased;
+    public static BottomSheetLabourDialog getInstance(String visitId, boolean hasMotherDeceased) {
+        BottomSheetLabourDialog fragment = new BottomSheetLabourDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_VISIT_ID, visitId);
+        bundle.putBoolean(ARG_HAS_MOTHER_DECEASED, hasMotherDeceased);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public BottomSheetLabourDialog() {
+        super(R.layout.labour_complete_and_mother_deceased_dialog);
+    }
+
+    public void setListener(OnLabourCompleteListener listener) {
         this.listener = listener;
     }
 
-    public void buildDialog() {
-        bottomSheetDialogVisitComplete = new BottomSheetDialog(context);
-        LabourCompleteAndMotherDeceasedDialogBinding binding = LabourCompleteAndMotherDeceasedDialogBinding.inflate(inflater, null, true);
-        bottomSheetDialogVisitComplete.setContentView(binding.getRoot());
-        bottomSheetDialogVisitComplete.setCancelable(false);
-        bottomSheetDialogVisitComplete.getWindow().setWindowAnimations(R.style.DialogAnimationSlideIn);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme);
+        binding = LabourCompleteAndMotherDeceasedDialogBinding.bind(view);
+        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) binding.getRoot().getParent());
+        behavior.setPeekHeight(ScreenUtils.getInstance(requireContext()).getHeight());
+        fetchArgument();
+        initView();
+        validatedInput();
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
+    }
+
+    private void fetchArgument() {
+        if (requireArguments().containsKey(ARG_VISIT_ID)) {
+            visitId = requireArguments().getString(ARG_VISIT_ID);
+            hasMotherDeceased = requireArguments().getBoolean(ARG_HAS_MOTHER_DECEASED);
+        }
+    }
+
+    private void initView() {
+        helper = new VisitCompletionHelper(requireContext(), visitId);
         enableAndDisableAllFields(binding, false);
         setDropdownsData(binding);
         binding.etLayoutDeceasedReason.setVisibility(hasMotherDeceased ? View.VISIBLE : View.GONE);
-
-        binding.bottomSheetAppBar.toolbar.setTitle(context.getString(R.string.complete_visit));
-        binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> bottomSheetDialogVisitComplete.dismiss());
-        bottomSheetDialogVisitComplete.setOnDismissListener(DialogInterface::dismiss);
+        binding.etLayoutDeceasedReason.setMultilineInputEndIconGravity();
+        binding.etLayoutOtherComment.setMultilineInputEndIconGravity();
+        binding.bottomSheetAppBar.toolbar.setTitle(getString(R.string.complete_visit));
+        binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> dismiss());
         binding.btnSubmit.setOnClickListener(v -> {
             saveVisitCompletionDetails(binding);
         });
 
-        bottomSheetDialogVisitComplete.show();
+        binding.etDeceasedReason.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) labourInfo.setMotherDeceasedReason(s.toString());
+                else labourInfo.setMotherDeceasedReason(null);
+                validatedInput();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void enableAndDisableAllFields(LabourCompleteAndMotherDeceasedDialogBinding binding, boolean flag) {
@@ -75,17 +137,25 @@ public class LabourDialog extends VisitCompletionHelper {
         binding.etLayoutOtherComment.setEnabled(flag);
     }
 
+//    private void disableDropDownEditMode(){
+//        binding.autotvLabourCompleted.setEnabled(false);
+//        binding.etLayoutApgar1.setEnabled(flag);
+//        binding.etLayoutApgar5.setEnabled(flag);
+//        binding.etLayoutBabyGender.setEnabled(flag);
+//    }
+
     private void setDropdownsData(LabourCompleteAndMotherDeceasedDialogBinding binding) {
         //for labour completed dropdown
         labourInfo = new LabourInfo();
-        final String[] birthOutcomeList = context.getResources().getStringArray(R.array.labours);
-        ArrayAdapter<String> labourCompletedAdapter = new ArrayAdapter<>(context, R.layout.spinner_textview, birthOutcomeList);
+        final String[] birthOutcomeList = getResources().getStringArray(R.array.labours);
+        ArrayAdapter<String> labourCompletedAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_textview, birthOutcomeList);
         binding.autotvLabourCompleted.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         binding.autotvLabourCompleted.setAdapter(labourCompletedAdapter);
         binding.autotvLabourCompleted.setOnItemClickListener((parent, view, position, id) -> {
-            Utils.hideKeyboard((AppCompatActivity) context);
+            Utils.hideKeyboard((AppCompatActivity) requireContext());
             labourInfo.setBirthOutcome(parent.getItemAtPosition(position).toString());
-            String otherString = context.getString(R.string.other).toLowerCase();
+            validatedInput();
+            String otherString = getString(R.string.other).toLowerCase();
             if (!labourInfo.getBirthOutcome().isEmpty() && labourInfo.getBirthOutcome().equalsIgnoreCase(otherString)) {
                 binding.etOtherComment.setEnabled(true);
                 binding.etLayoutBirthWeight.setEnabled(false);
@@ -109,44 +179,44 @@ public class LabourDialog extends VisitCompletionHelper {
         for (int i = 1; i <= 10; i++) {
             itemsList.add(i);
         }
-        List<Double> birthWeightList = new ArrayList<>();
+        List<String> birthWeightList = new ArrayList<>();
         for (double i = 0.5; i <= 5; i += 0.5) {
-            birthWeightList.add(i);
+            birthWeightList.add(i + " kg");
         }
         //for gender dropdown
-        final String[] items = context.getResources().getStringArray(R.array.gender);
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(context, R.layout.spinner_textview, items);
+        final String[] items = getResources().getStringArray(R.array.gender);
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_textview, items);
         binding.autotvBabyGender.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         binding.autotvBabyGender.setAdapter(genderAdapter);
         binding.autotvBabyGender.setOnItemClickListener((parent, view, position, id) -> {
-            Utils.hideKeyboard((AppCompatActivity) context);
+            Utils.hideKeyboard((AppCompatActivity) requireContext());
             labourInfo.setGender(parent.getItemAtPosition(position).toString());
         });
 
         //for birth weight dropdown - in kg
-        ArrayAdapter<Double> weightAdapter = new ArrayAdapter<>(context, R.layout.spinner_textview, birthWeightList);
+        ArrayAdapter<String> weightAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_textview, birthWeightList);
         binding.autotvBirthWeight.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         binding.autotvBirthWeight.setAdapter(weightAdapter);
         binding.autotvBirthWeight.setOnItemClickListener((parent, view, position, id) -> {
-            Utils.hideKeyboard((AppCompatActivity) context);
+            Utils.hideKeyboard((AppCompatActivity) requireContext());
             labourInfo.setBirthWeight(parent.getItemAtPosition(position).toString());
         });
 
         //for Apgar at 1min
-        ArrayAdapter<Integer> apgar1 = new ArrayAdapter<>(context, R.layout.spinner_textview, itemsList);
+        ArrayAdapter<Integer> apgar1 = new ArrayAdapter<>(requireContext(), R.layout.spinner_textview, itemsList);
         binding.autotvApgar1min.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         binding.autotvApgar1min.setAdapter(apgar1);
         binding.autotvApgar1min.setOnItemClickListener((parent, view, position, id) -> {
-            Utils.hideKeyboard((AppCompatActivity) context);
+            Utils.hideKeyboard((AppCompatActivity) requireContext());
             labourInfo.setApgar1Min(parent.getItemAtPosition(position).toString());
         });
 
         //for Apgar at 5min
-        ArrayAdapter<Integer> apgar2 = new ArrayAdapter<>(context, R.layout.spinner_textview, itemsList);
+        ArrayAdapter<Integer> apgar2 = new ArrayAdapter<>(requireContext(), R.layout.spinner_textview, itemsList);
         binding.autotvApgar5min.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         binding.autotvApgar5min.setAdapter(apgar2);
         binding.autotvApgar5min.setOnItemClickListener((parent, view, position, id) -> {
-            Utils.hideKeyboard((AppCompatActivity) context);
+            Utils.hideKeyboard((AppCompatActivity) requireContext());
             labourInfo.setApgar5Min(parent.getItemAtPosition(position).toString());
         });
 
@@ -159,7 +229,7 @@ public class LabourDialog extends VisitCompletionHelper {
         labourInfo.setMotherDeceasedReason(binding.etDeceasedReason.getText().toString());
 
         if (labourInfo.isInvalidData()) {
-            Toast.makeText(context, context.getString(R.string.add_details_for_labour_completed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.add_details_for_labour_completed), Toast.LENGTH_SHORT).show();
         } else {
             collectDataForLabourAndMotherBoth();
         }
@@ -171,30 +241,30 @@ public class LabourDialog extends VisitCompletionHelper {
             boolean birthOutcomeStatus;
             boolean motherDeceasedStatus;
 
-            String encounterId = insertVisitCompleteEncounter();
+            String encounterId = helper.insertVisitCompleteEncounter();
             if (encounterId != null && encounterId.length() > 0) {
-                if (labourInfo.getBirthOutcome().equalsIgnoreCase(context.getString(R.string.other))) {
-                    birthOutcomeStatus = obsDAO.insert_Obs(encounterId, sessionManager.getCreatorID(),
+                if (labourInfo.getBirthOutcome().equalsIgnoreCase(getString(R.string.other))) {
+                    birthOutcomeStatus = obsDAO.insert_Obs(encounterId, helper.sessionManager.getCreatorID(),
                             labourInfo.getBirthOutcome(), UuidDictionary.BIRTH_OUTCOME);
-                    obsDAO.insert_Obs(encounterId, sessionManager.getCreatorID(),
+                    obsDAO.insert_Obs(encounterId, helper.sessionManager.getCreatorID(),
                             labourInfo.getOtherComment(), UuidDictionary.LABOUR_OTHER);
                 } else {
                     birthOutcomeStatus = insertStage2AdditionalData(encounterId);
                 }
 
-                motherDeceasedStatus = obsDAO.insertMotherDeceasedFlatObs(encounterId, sessionManager.getCreatorID(), String.valueOf(hasMotherDeceased));
+                motherDeceasedStatus = obsDAO.insertMotherDeceasedFlatObs(encounterId, helper.sessionManager.getCreatorID(), String.valueOf(hasMotherDeceased));
 
                 if (hasMotherDeceased) {
-                    obsDAO.insert_Obs(encounterId, sessionManager.getCreatorID(),
+                    obsDAO.insert_Obs(encounterId, helper.sessionManager.getCreatorID(),
                             labourInfo.getMotherDeceasedReason(), UuidDictionary.MOTHER_DECEASED);
                 }
 
                 if (birthOutcomeStatus && motherDeceasedStatus) {
                     listener.onLabourCompleted();
-                    bottomSheetDialogVisitComplete.dismiss();
-                    Toast.makeText(context, context.getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();
+                    dismiss();
+                    Toast.makeText(requireContext(), getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (DAOException e) {
@@ -210,45 +280,60 @@ public class LabourDialog extends VisitCompletionHelper {
             List<ObsDTO> obsDTOList = new ArrayList<>();
 
             // *. Birth Outcome
-            obsDTOList.add(createObs(encounterId, UuidDictionary.BIRTH_OUTCOME, labourInfo.getBirthOutcome()));
+            obsDTOList.add(helper.createObs(encounterId, UuidDictionary.BIRTH_OUTCOME, labourInfo.getBirthOutcome()));
 
             // 1. Birth Weight
             if (labourInfo.getBirthWeight() != null && labourInfo.getBirthWeight().length() > 0) {
-                obsDTOList.add(createObs(encounterId, UuidDictionary.BIRTH_WEIGHT, labourInfo.getBirthWeight()));
+                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.BIRTH_WEIGHT, labourInfo.getBirthWeight()));
             }
 
             // 2. Apgar 1 min
             if (labourInfo.getApgar1Min() != null && labourInfo.getApgar1Min().length() > 0) {
-                obsDTOList.add(createObs(encounterId, UuidDictionary.APGAR_1_MIN, labourInfo.getApgar1Min()));
+                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.APGAR_1_MIN, labourInfo.getApgar1Min()));
             }
 
             // 3. Apgar 5min
             if (labourInfo.getApgar5Min() != null && !labourInfo.getApgar5Min().isEmpty()) {
-                obsDTOList.add(createObs(encounterId, UuidDictionary.APGAR_5_MIN, labourInfo.getApgar5Min()));
+                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.APGAR_5_MIN, labourInfo.getApgar5Min()));
             }
 
             // 4. Sex
             if (labourInfo.getGender() != null && !labourInfo.getGender().isEmpty()) {
-                obsDTOList.add(createObs(encounterId, UuidDictionary.SEX, labourInfo.getGender()));
+                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.SEX, labourInfo.getGender()));
             }
 
             // 5. Baby Status
             if (labourInfo.getBabyStatus() != null && !labourInfo.getBabyStatus().isEmpty()) {
-                obsDTOList.add(createObs(encounterId, UuidDictionary.BABY_STATUS, labourInfo.getBabyStatus()));
+                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.BABY_STATUS, labourInfo.getBabyStatus()));
             }
 
             // 6. Mother Status
             if (labourInfo.getMotherStatus() != null && !labourInfo.getMotherStatus().isEmpty()) {
-                obsDTOList.add(createObs(encounterId, UuidDictionary.MOTHER_STATUS, labourInfo.getMotherStatus()));
+                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.MOTHER_STATUS, labourInfo.getMotherStatus()));
             }
 
             if (labourInfo.getOtherComment() != null && !labourInfo.getOtherComment().isEmpty()) {
-                obsDTOList.add(createObs(encounterId, UuidDictionary.LABOUR_OTHER, labourInfo.getOtherComment()));
+                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.LABOUR_OTHER, labourInfo.getOtherComment()));
             }
 
             isInserted = new ObsDAO().insertObsToDb(obsDTOList);
         }
 
         return isInserted;
+    }
+
+    private void validatedInput() {
+        binding.btnSubmit.setEnabled(validBirthOutcome() && validMotherDeceased());
+    }
+
+    private boolean validBirthOutcome() {
+        return labourInfo.getBirthOutcome() != null && labourInfo.getBirthOutcome().length() > 0;
+    }
+
+    private boolean validMotherDeceased() {
+        if (hasMotherDeceased) {
+            return labourInfo.getMotherDeceasedReason() != null && labourInfo.getMotherDeceasedReason().length() > 0;
+        }
+        return true;
     }
 }

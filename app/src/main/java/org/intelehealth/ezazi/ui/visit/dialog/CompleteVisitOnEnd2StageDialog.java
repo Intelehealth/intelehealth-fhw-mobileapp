@@ -339,16 +339,9 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
         dialog.requireValidationBeforeDismiss(true);
         dialog.setListener(() -> {
             if (Objects.requireNonNull(binding.etMotherDeceasedReason.getText()).length() > 0) {
-                try {
-                    ObsDAO obsDAO = new ObsDAO();
-                    String value = binding.etMotherDeceasedReason.getText().toString();
-                    String encounterUuid = insertVisitCompleteEncounter();
-                    boolean isInsertedFlag = obsDAO.insertMotherDeceasedFlatObs(encounterUuid, sessionManager.getCreatorID(), "true");
-                    boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), value, UuidDictionary.MOTHER_DECEASED);
-                    if (isInserted && isInsertedFlag) listener.onVisitCompleted(false, true);
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
-                }
+                String value = binding.etMotherDeceasedReason.getText().toString();
+                boolean isInserted = addMotherDeceasedObs(true, value);
+                if (isInserted) listener.onVisitCompleted(false, true);
                 dialog.dismiss();
             } else {
                 Toast.makeText(context, context.getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
