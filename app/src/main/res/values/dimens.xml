@@ -447,7 +447,7 @@
     <dimen name="forgot_pass_note_margin_top">10dp</dimen>
     <dimen name="forgot_pass_iv_margin_top">20dp</dimen>
     <dimen name="layout_forgot_padding_start">24dp</dimen>
-    <dimen name="layout_forgot_padding_top">45dp</dimen>
+    <dimen name="layout_forgot_padding_top">40dp</dimen>
     <dimen name="layout_forgot_padding_end">24dp</dimen>
     <dimen name="layout_forgot_padding_bottom">20dp</dimen>
     <dimen name="btn_username_margin_end">12dp</dimen>

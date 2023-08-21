@@ -858,7 +858,7 @@
     <string name="enter_username1">Enter your username</string>
     <string name="enter_password1">Enter your password</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="forgot_password_instruction">Follow up the instructions below to \nuse your account again</string>
+    <string name="forgot_password_instruction">Follow the instructions below to \naccess your account again</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="enter_username2">Enter username</string>
     <string name="enter_username_given">Please enter your username provided by \nIntelehealth</string>
@@ -1688,7 +1688,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="patients">patients</string>
     <string name="you_can_remind_doctor">you can remind the doctor.</string>
     <string name="please_select_at_least_one_complaint">Please select at least one complaint!</string>
-    <string name="awaiting_their_prescription">are awaiting their prescriptions. Please send</string>
+    <string name="awaiting_their_prescription">are awaiting their prescriptions.</string>
     <string name="cm">cm</string>
     <string name="kg">kg</string>
     <string name="kg_m">kg/m</string>

@@ -3,6 +3,8 @@ package org.intelehealth.app.activities.visitSummaryActivity;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
@@ -10,6 +12,7 @@ import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyy
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -898,13 +901,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             }
         }
 
-        if(weight.getValue()!=null) {
+        if (weight.getValue() != null) {
             if (weight.getValue().trim().isEmpty() || weight.getValue().trim().equals("0"))
                 weightView.setText(getResources().getString(R.string.no_information));
             else
                 weightView.setText(weight.getValue());
-        }
-        else
+        } else
             weightView.setText(getResources().getString(R.string.no_information));
 
         Log.d(TAG, "onCreate: " + weight.getValue());
@@ -937,22 +939,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             bpView.setText(bpText);
         }
 
-        if(pulse.getValue()!=null) {
+        if (pulse.getValue() != null) {
             if (pulse.getValue().trim().isEmpty() || pulse.getValue().trim().equals("0"))
                 pulseView.setText(getResources().getString(R.string.no_information));
             else
                 pulseView.setText(pulse.getValue());
-        }
-        else
+        } else
             pulseView.setText(getResources().getString(R.string.no_information));
 
-        if(spO2.getValue()!=null) {
+        if (spO2.getValue() != null) {
             if (spO2.getValue().trim().isEmpty() || spO2.getValue().trim().equals("0"))
                 spO2View.setText(getResources().getString(R.string.no_information));
             else
                 spO2View.setText(spO2.getValue());
-        }
-        else
+        } else
             spO2View.setText(getResources().getString(R.string.no_information));
 
 
@@ -994,13 +994,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             respiratory.setVisibility(View.GONE);
         }
 
-        if(resp.getValue()!=null) {
+        if (resp.getValue() != null) {
             if (resp.getValue().trim().isEmpty() || resp.getValue().trim().equals("0"))
                 respiratory.setText(getResources().getString(R.string.no_information));
             else
                 respiratory.setText(resp.getValue());
-        }
-        else
+        } else
             respiratory.setText(getResources().getString(R.string.no_information));
         // vitals values set - end
 
@@ -1774,12 +1773,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         incomplete_act.setOnClickListener(v -> {
             // filter options
-            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
+//            startActivity(intent);
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else
                 filter_framelayout.setVisibility(View.VISIBLE);
+
+            showEndVisitConfirmationDialog();
         });
 
         archieved_notifi.setOnClickListener(v -> {
@@ -1788,6 +1789,29 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 filter_framelayout.setVisibility(View.GONE);
             else
                 filter_framelayout.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void showEndVisitConfirmationDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(this, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
+                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+
+                    endVisit(
+                            context,
+                            visitUUID,
+                            patient.getUuid(),
+                            followUpDate,
+                            vitalsUUID, adultInitialUUID,
+                            "state",
+                            patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1),
+                            "VisitDetailsActivity");
+                }
+            }
         });
     }
 
@@ -5317,7 +5341,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 complainLabelTextView.setText(_complain);
                 Log.v("PH0_complain", _complain);
-                if(_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))){
+                if (_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))) {
                     complainLabelTextView.setVisibility(View.GONE);
                 }
                 view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
