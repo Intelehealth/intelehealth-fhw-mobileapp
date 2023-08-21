@@ -178,7 +178,7 @@ public class VisitPendingFragment extends Fragment {
 
         // Total of End visits.
         int total = getTotalCounts_EndVisit();
-        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>," + getResources().getString(R.string.you_can_remind_doctor);
+        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
         pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
 
         // Filter - start
