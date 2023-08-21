@@ -122,7 +122,6 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -146,7 +145,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -2070,7 +2068,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         backArrow = findViewById(R.id.backArrow);
         refresh = findViewById(R.id.refresh);
-        profile_image = findViewById(R.id.profile_image);
+        profile_image = findViewById(R.id.ivPatientImageRowItem);
         downloadbtn = findViewById(R.id.downloadbtn);
         nameView = findViewById(R.id.textView_name_value);
         genderView = findViewById(R.id.textView_gender_value);

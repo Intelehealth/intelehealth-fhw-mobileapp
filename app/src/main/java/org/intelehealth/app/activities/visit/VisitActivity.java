@@ -12,13 +12,11 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.se.omapi.Session;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -58,8 +56,8 @@ public class VisitActivity extends FragmentActivity implements
         setContentView(R.layout.activity_visit);
         sessionManager = new SessionManager(this);
         networkUtils = new NetworkUtils(this, this);
-        ibBack = findViewById(R.id.vector);
-        refresh = findViewById(R.id.refresh);
+        ibBack = findViewById(R.id.imgBtnBackPrescriptions);
+        refresh = findViewById(R.id.imgBtnRefreshPrescriptions);
 
         ibBack.setOnClickListener(v -> {
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
@@ -123,8 +121,8 @@ public class VisitActivity extends FragmentActivity implements
     }
 
     public void configureTabLayout() {
-        tabLayout = findViewById(R.id.tablayout_appointments);
-        viewPager = findViewById(R.id.pager_appointments);
+        tabLayout = findViewById(R.id.tabPrescriptions);
+        viewPager = findViewById(R.id.vpPrescriptions);
         VisitPagerAdapter adapter = new VisitPagerAdapter
                 (VisitActivity.this);
         viewPager.setAdapter(adapter);

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -213,11 +212,11 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
-            end_visit_btn = itemView.findViewById(R.id.end_visit_btn);
+            end_visit_btn = itemView.findViewById(R.id.btnEndVisitRowItem);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
-            name = itemView.findViewById(R.id.fu_patname_txtview);
-            fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
-            profile_image = itemView.findViewById(R.id.profile_image);
+            name = itemView.findViewById(R.id.tvPatientNameRowItem);
+            fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
+            profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
             end_visit_btn.setVisibility(View.VISIBLE);
         }

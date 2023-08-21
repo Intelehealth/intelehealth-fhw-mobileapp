@@ -120,7 +120,7 @@
                         app:cardCornerRadius="40dp">
 
                         <ImageView
-                            android:id="@+id/profile_image"
+                            android:id="@+id/ivPatientImageRowItem"
                             android:layout_width="@dimen/patdetail_profile_imgview_14sp"
                             android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                             android:src="@drawable/avatar1" />

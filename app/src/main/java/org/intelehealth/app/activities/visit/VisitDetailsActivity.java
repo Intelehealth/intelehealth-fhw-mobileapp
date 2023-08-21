@@ -206,7 +206,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         });
 
         // Patient Photo
-        profile_image = findViewById(R.id.profile_image);
+        profile_image = findViewById(R.id.ivPatientImageRowItem);
         if (patient_photo_path != null) {
             Glide.with(this)
                     .load(patient_photo_path)

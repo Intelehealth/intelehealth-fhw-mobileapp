@@ -12,7 +12,6 @@ import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.mSwitch_hi_en_te_State_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
@@ -496,7 +495,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         refresh = findViewById(R.id.refresh);
         cancelbtn = findViewById(R.id.cancelbtn);
 
-        profile_image = findViewById(R.id.profile_image);
+        profile_image = findViewById(R.id.ivPatientImageRowItem);
         name_txtview = findViewById(R.id.name_txtview);
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
 

@@ -75,7 +75,7 @@
                             android:textSize="@dimen/fu_name_txt_size" />
 
                         <TextView
-                            android:id="@+id/search_gender"
+                            android:id="@+id/tvGenderAgeRowItem"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/cal_margnin_start"
