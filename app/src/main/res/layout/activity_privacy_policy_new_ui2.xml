@@ -41,13 +41,15 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/svContentPrivacyPolicy"
+        android:contentDescription="Privacy Policy Content ScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/llButtonPrivacyPolicy"
-        android:layout_below="@+id/llToolbarPrivacyPolicy"
-        android:contentDescription="Privacy Policy Content ScrollView">
+        android:layout_below="@+id/llToolbarPrivacyPolicy">
 
         <TextView
+            android:id="@+id/tvContentPrivacyPolicy"
+            android:contentDescription="Privacy Policy Content TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/content_margin_start"
