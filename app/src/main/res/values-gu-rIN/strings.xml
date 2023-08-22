@@ -566,7 +566,7 @@
     <string name="update_app_note">નવું સંસ્કરણ નવી સુવિધાઓ સાથે ઉપલબ્ધ છે કૃપા કરીને એપ્લિકેશનને અપડેટ કરો</string>
     <string name="update">અપડેટ કરો</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"હેલો, Intelehealth નો ઉપયોગ કરવા બદલ આભાર. તમારું પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરવા કૃપા કરીને અહીં ક્લિક કરો "</string>
-    <string name="and_enter_your_patient_id">" અને તમારું પેશન્ટ ID દાખલ કરો -"</string>
+    <string name="and_enter_your_patient_id">" અને તમારું પેશન્ટ ID દાખલ કરો - "</string>
 
     <!--New Ayu Related Changes-->
     <string name="what_is_the_reason_for_your_visit">તમારી મુલાકાતનું કારણ શું છે?</string>
