@@ -19,7 +19,7 @@
 
             <fragment
                 android:id="@+id/fragmentLabourComplete"
-                android:name="org.intelehealth.ezazi.ui.visit.dialog.BottomSheetLabourDialog"
+                android:name="org.intelehealth.ezazi.ui.visit.dialog.LabourCompletionFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </androidx.fragment.app.FragmentContainerView>

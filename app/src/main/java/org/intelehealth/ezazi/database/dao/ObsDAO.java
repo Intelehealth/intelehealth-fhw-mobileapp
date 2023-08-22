@@ -566,8 +566,8 @@ public class ObsDAO {
         int isMissed = 0;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
-                new String[]{encounterUuid});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid != ?",
+                new String[]{encounterUuid, UuidDictionary.ENCOUNTER_TYPE});
 
         if (idCursor.getCount() <= 0) {
             /* This means against this enc there is no obs. Which means this obs is not filled yet. */

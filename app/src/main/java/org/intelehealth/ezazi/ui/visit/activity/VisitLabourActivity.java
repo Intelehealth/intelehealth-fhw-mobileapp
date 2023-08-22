@@ -79,9 +79,7 @@ public class VisitLabourActivity extends BaseActivity {
 
     public void checkInternetAndUploadVisitEncounter() {
         if (NetworkConnection.isOnline(getApplication())) {
-            Toast.makeText(this, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
-            SyncDAO syncDAO = new SyncDAO();
-
+//            Toast.makeText(this, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -89,7 +87,7 @@ public class VisitLabourActivity extends BaseActivity {
                     //   Added the 4 sec delay and then push data.For some reason doing immediately does not work
                     //Do something after 100ms
                     SyncUtils syncUtils = new SyncUtils();
-                    boolean isSynced = syncUtils.syncForeground("timeline");
+                    syncUtils.syncForeground("timeline");
                 }
             }, 4000);
         } else {

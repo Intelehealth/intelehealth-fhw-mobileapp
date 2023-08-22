@@ -31,6 +31,8 @@ public class AppNotification {
     private String title;
     private String message;
 
+    private int notificationId = 100100;
+
     public void sendNotification(Context context) {
         String channelId = "CHANNEL_ID";
 
@@ -65,8 +67,9 @@ public class AppNotification {
 //        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 //            return;
 //        }
-        notificationManager.notify(1, notificationBuilder.build());
+        notificationManager.notify(notificationId, notificationBuilder.build());
     }
+
 
     public static class Builder {
         private Context context;

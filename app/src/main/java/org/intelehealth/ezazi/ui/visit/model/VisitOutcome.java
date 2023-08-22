@@ -6,10 +6,15 @@ package org.intelehealth.ezazi.ui.visit.model;
  * Mob   : +919727206702
  **/
 public class VisitOutcome {
+    private String conceptId;
     private String outcome;
     private boolean hasMotherDeceased;
     private String motherDeceasedReason;
     private String otherComment;
+
+    public enum MotherDeceased {
+        YES, NO
+    }
 
     public String getOutcome() {
         return outcome;
@@ -41,5 +46,13 @@ public class VisitOutcome {
 
     public void setOtherComment(String otherComment) {
         this.otherComment = otherComment;
+    }
+
+    public void setConceptId(String conceptId) {
+        this.conceptId = conceptId;
+    }
+
+    public String getConceptId() {
+        return conceptId;
     }
 }

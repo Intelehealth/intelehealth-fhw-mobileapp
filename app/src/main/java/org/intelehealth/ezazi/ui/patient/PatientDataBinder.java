@@ -8,6 +8,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.models.dto.PatientDTO;
+import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
+import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
 import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
@@ -35,9 +37,16 @@ public class PatientDataBinder {
                 model.setPhonenumber(StringUtils.mobileNumberEmpty(searchCursor.getString(searchCursor.getColumnIndexOrThrow("phoneNumber"))));
                 model.setBedNo(searchCursor.getString(searchCursor.getColumnIndexOrThrow("bedNo")));
                 String birthStatus = searchCursor.getString(searchCursor.getColumnIndexOrThrow("birthStatus"));
+                String motherDeceased = searchCursor.getString(searchCursor.getColumnIndexOrThrow("motherDeceased"));
+                String stage = searchCursor.getString(searchCursor.getColumnIndexOrThrow("stage"));
+                if (motherDeceased != null && motherDeceased.equals(VisitOutcome.MotherDeceased.YES.name())) {
+                    motherDeceased = CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue();
+                    birthStatus = birthStatus != null ? birthStatus + "\n" + motherDeceased : motherDeceased;
+                }
+
                 if (birthStatus != null) model.setStage(birthStatus);
-                else
-                    model.setStage(searchCursor.getString(searchCursor.getColumnIndexOrThrow("stage")));
+                else model.setStage(stage);
+
                 patients.add(model);
             } while (searchCursor.moveToNext());
         }

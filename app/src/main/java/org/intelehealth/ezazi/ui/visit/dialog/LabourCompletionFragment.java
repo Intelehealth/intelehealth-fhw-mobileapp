@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.ui.visit.dialog;
 import static org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity.ARG_HAS_MOTHER_DECEASED;
 import static org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity.ARG_VISIT_ID;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -16,8 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.databinding.LabourCompleteAndMotherDeceasedDialogBinding;
@@ -25,7 +24,6 @@ import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity;
 import org.intelehealth.ezazi.ui.visit.model.LabourInfo;
-import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.ezazi.utilities.Utils;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -38,7 +36,7 @@ import java.util.List;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class BottomSheetLabourDialog extends Fragment {
+public class LabourCompletionFragment extends Fragment {
     //    private static final String ARG_VISIT_ID = "visitId";
 //    private static final String ARG_HAS_MOTHER_DECEASED = "has_mother_deceased";
     private LabourCompleteAndMotherDeceasedDialogBinding binding;
@@ -51,8 +49,8 @@ public class BottomSheetLabourDialog extends Fragment {
 //        void onLabourCompleted();
 //    }
 
-    public static BottomSheetLabourDialog getInstance(String visitId, boolean hasMotherDeceased) {
-        BottomSheetLabourDialog fragment = new BottomSheetLabourDialog();
+    public static LabourCompletionFragment getInstance(String visitId, boolean hasMotherDeceased) {
+        LabourCompletionFragment fragment = new LabourCompletionFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_VISIT_ID, visitId);
         bundle.putBoolean(ARG_HAS_MOTHER_DECEASED, hasMotherDeceased);
@@ -60,7 +58,7 @@ public class BottomSheetLabourDialog extends Fragment {
         return fragment;
     }
 
-    public BottomSheetLabourDialog() {
+    public LabourCompletionFragment() {
         super(R.layout.labour_complete_and_mother_deceased_dialog);
     }
 
@@ -244,6 +242,7 @@ public class BottomSheetLabourDialog extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void collectDataForLabourAndMotherBoth() {
         try {
             ObsDAO obsDAO = new ObsDAO();
@@ -271,7 +270,7 @@ public class BottomSheetLabourDialog extends Fragment {
 //                }
 
                 if (birthOutcomeStatus && motherDeceasedStatus) {
-
+                    binding.btnSubmit.setText("Visit Completing...Please wait");
                     ((VisitLabourActivity) requireActivity()).checkInternetAndUploadVisitEncounter();
 //                    dismiss();
                     Toast.makeText(requireContext(), getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();

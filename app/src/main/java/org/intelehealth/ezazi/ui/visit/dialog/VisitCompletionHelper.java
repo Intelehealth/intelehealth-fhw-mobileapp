@@ -9,6 +9,7 @@ import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -54,7 +55,8 @@ public class VisitCompletionHelper {
             ObsDAO obsDAO = new ObsDAO();
             String encounterUuid = insertVisitCompleteEncounter();
             if (encounterUuid != null && encounterUuid.length() > 0) {
-                isInserted = obsDAO.insertMotherDeceasedFlatObs(encounterUuid, sessionManager.getCreatorID(), isMotherDeceased ? "YES" : "NO");
+                isInserted = obsDAO.insertMotherDeceasedFlatObs(encounterUuid, sessionManager.getCreatorID(),
+                        isMotherDeceased ? VisitOutcome.MotherDeceased.YES.name() : VisitOutcome.MotherDeceased.NO.name());
                 if (isMotherDeceased) {
                     isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
                 }

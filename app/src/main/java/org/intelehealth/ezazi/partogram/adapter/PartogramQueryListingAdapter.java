@@ -239,8 +239,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 } else {
                 }
                 mItemList.get(position).getParamInfoList().get(positionChild).setCapturedValue(s.toString().trim());
-                clearDiastolic(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), position);
-                validDiastolicBP(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), dataEditText);
+                if (s.length() > 0) {
+                    clearDiastolic(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), position);
+                    validDiastolicBP(s.toString(), positionChild, mItemList.get(position).getParamInfoList(), dataEditText);
+                }
             }
         });
     }

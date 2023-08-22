@@ -22,9 +22,9 @@ android {
         applicationId "org.intelehealth.ezazi"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 57
+        versionCode 58
         buildToolsVersion('29.0.2')
-        versionName '3.3.7'
+        versionName '3.3.8'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true

@@ -48,7 +48,7 @@ public class PatientQueryBuilder extends QueryBuilder {
         return select("P.uuid, P.openmrs_id, P.first_name, P.last_name, P.middle_name, P.date_of_birth, " +
                 "CASE WHEN P.middle_name IS NULL THEN P.first_name || ' ' || P.last_name " +
                 "ELSE P.first_name || ' ' || P.middle_name || ' ' || P.last_name " +
-                "END fullName, " + getCompletedVisitStatusCase() + getCurrentStageCase() + ", " +
+                "END fullName, " + getCompletedVisitStatusCase() + getCurrentStageCase() + ", " + caseOfMotherDeceased()+
                 "CASE PA.person_attribute_type_uuid WHEN '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END phoneNumber, " +
                 "CASE WHEN PA.person_attribute_type_uuid  != '14d4f066-15f5-102d-96e4-000c29c2a5d7' THEN PA.value END bedNo ")
                 .from("tbl_patient P")
@@ -163,22 +163,19 @@ public class PatientQueryBuilder extends QueryBuilder {
                 // start out of time case
                 "WHEN O.conceptuuid = '" + CompletedVisitStatus.OutOfTime.OUT_OF_TIME.uuid() + "' THEN '" + CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value() + "' " +
                 // end out of time case
-                // start out of time case
-//                "WHEN O.conceptuuid = '" + CompletedVisitStatus.OtherComment.OTHER.uuid()
-//                + "' THEN '" + CompletedVisitStatus.OtherComment.OTHER.sortValue() + "' " +
-                // end out of time case
-                // start out of time case
-                "WHEN O.conceptuuid = '" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_FLAG.uuid() + "'" +
-                " THEN '" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue() + "' " +
-                // end out of time case
                 "ELSE O.value " +
                 "END outcome " +
                 "FROM tbl_encounter E, tbl_obs O " +
                 "WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid " +
                 "AND O.conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', " +
-                "'" + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME
-                + "','" + UuidDictionary.MOTHER_DECEASED_FLAG + "','" + UuidDictionary.MOTHER_DECEASED
-                + "','" + UuidDictionary.END_2ND_STAGE_OTHER + "') LIMIT 1) as birthStatus, ";
+                "'" + UuidDictionary.REFER_TYPE + "','" + UuidDictionary.OUT_OF_TIME + "') LIMIT 1) as birthStatus, ";
+    }
+
+    private String caseOfMotherDeceased() {
+        return " (SELECT O.value " +
+                "FROM tbl_encounter E, tbl_obs O " +
+                "WHERE E.visituuid =V.uuid  and E.voided = '0' and O.encounteruuid = E.uuid " +
+                "AND O.conceptuuid = '" + UuidDictionary.MOTHER_DECEASED_FLAG + "' LIMIT 1) as motherDeceased, ";
     }
 
     private String getCurrentStageCase() {

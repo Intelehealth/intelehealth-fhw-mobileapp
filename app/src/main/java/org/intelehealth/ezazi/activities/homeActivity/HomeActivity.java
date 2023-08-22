@@ -1011,6 +1011,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
                     if (!encounterUUID.equalsIgnoreCase("")) { // blinking part
                         int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
+                        Log.e(TAG, "loadVisits: blinking" + issubmitted);
                         if (issubmitted == 1) { // not yet filled
                             activePatientModels.get(j).setObsExistsFlag(true);
                             activePatientModels.get(j).setVisibilityOrder(4);
@@ -1044,141 +1045,141 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
             setActiveCasesCount();
 
-            mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
-                @Override
-                @SuppressLint("Range")
-                public void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription) {
-                    String encounterAdultIntialslocal = "";
-                    String encounterVitalslocal = null;
-                    String encounterIDSelection = "visituuid = ?";
-
-                    String visitUuid = activePatientModel.getUuid();
-                    String visitnote = "", followupdate = "";
-                    String[] encounterIDArgs = {visitUuid};
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                        do {
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                        } while (encounterCursor.moveToNext());
-                    }
-                    encounterCursor.close();
-
-                    String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
-                    String[] columns = {"value", " conceptuuid"};
-                    String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
-                    Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-                    if (visitCursor.moveToFirst()) {
-                        do {
-//                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                            followupdate = dbValue;
-                        } while (visitCursor.moveToNext());
-                    }
-                    visitCursor.close();
-
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(HomeActivity.this);
-                    //if (hasPrescription) {
-                    alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.end_visit_msg));
-                    alertDialogBuilder.setNegativeButton(HomeActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    String finalFollowupdate = followupdate;
-                    String finalEncounterVitalslocal = encounterVitalslocal;
-                    String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
-                    alertDialogBuilder.setPositiveButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-
-                            EncounterDTO encounterDTO = new EncounterDTO();
-                            String uuid = UUID.randomUUID().toString();
-                            EncounterDAO encounterDAO = new EncounterDAO();
-                            encounterDTO = new EncounterDTO();
-                            encounterDTO.setUuid(uuid);
-                            encounterDTO.setEncounterTypeUuid("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e");
-
-                            //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
-                            try {
-                                encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            encounterDTO.setVisituuid(visitUuid);
-                            //        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());  //handles correct provideruuid for every patient
-                            encounterDTO.setProvideruuid(sessionManager.getProviderID());  //handles correct provideruuid for every patient
-                            encounterDTO.setSyncd(false);
-                            encounterDTO.setVoided(0);
-                            try {
-                                encounterDAO.createEncountersToDB(encounterDTO);
-                            } catch (DAOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
-
-                            VisitsDAO visitsDAO = new VisitsDAO();
-                            try {
-                                visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
-                            } catch (DAOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
-
-                            //SyncDAO syncDAO = new SyncDAO();
-                            //syncDAO.pushDataApi();
-                            syncUtils.syncForeground("survey"); //Sync function will work in foreground of org and
-                            // the Time will be changed for last sync.
-
-//        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
-
-                            sessionManager.removeVisitSummary(activePatientModel.getPatientuuid(), visitUuid);
-
-                               /* VisitUtils.endVisit(HomeActivity.this,
-                                        visitUuid,
-                                        activePatientModel.getPatientuuid(),
-                                        finalFollowupdate,
-                                        finalEncounterVitalslocal,
-                                        finalEncounterAdultIntialslocal,
-                                        null,
-                                        String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
-                                        ""
-                                );*/
-
-
-//                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-//                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.show();
-                    //alertDialog.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
-
-                    /*} else {
-                        alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.error_no_data));
-                        alertDialogBuilder.setNeutralButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
-                        //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
-                    }*/
-                }
-            });
+//            mActivePatientAdapter.setActionListener(new ActivePatientAdapter.OnActionListener() {
+//                @Override
+//                @SuppressLint("Range")
+//                public void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription) {
+//                    String encounterAdultIntialslocal = "";
+//                    String encounterVitalslocal = null;
+//                    String encounterIDSelection = "visituuid = ?";
+//
+//                    String visitUuid = activePatientModel.getUuid();
+//                    String visitnote = "", followupdate = "";
+//                    String[] encounterIDArgs = {visitUuid};
+//                    EncounterDAO encounterDAO = new EncounterDAO();
+//                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+//                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+//                        do {
+//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+//                                encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+//                            }
+//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+//                                encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+//                            }
+//
+//                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+//                                visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+//                            }
+//
+//                        } while (encounterCursor.moveToNext());
+//                    }
+//                    encounterCursor.close();
+//
+//                    String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
+//                    String[] columns = {"value", " conceptuuid"};
+//                    String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
+//                    Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+//                    if (visitCursor.moveToFirst()) {
+//                        do {
+////                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+//                            String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+//                            followupdate = dbValue;
+//                        } while (visitCursor.moveToNext());
+//                    }
+//                    visitCursor.close();
+//
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(HomeActivity.this);
+//                    //if (hasPrescription) {
+//                    alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.end_visit_msg));
+//                    alertDialogBuilder.setNegativeButton(HomeActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.dismiss();
+//                        }
+//                    });
+//                    String finalFollowupdate = followupdate;
+//                    String finalEncounterVitalslocal = encounterVitalslocal;
+//                    String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+//                    alertDialogBuilder.setPositiveButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//
+//                            EncounterDTO encounterDTO = new EncounterDTO();
+//                            String uuid = UUID.randomUUID().toString();
+//                            EncounterDAO encounterDAO = new EncounterDAO();
+//                            encounterDTO = new EncounterDTO();
+//                            encounterDTO.setUuid(uuid);
+//                            encounterDTO.setEncounterTypeUuid("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e");
+//
+//                            //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
+//                            try {
+//                                encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            encounterDTO.setVisituuid(visitUuid);
+//                            //        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());  //handles correct provideruuid for every patient
+//                            encounterDTO.setProvideruuid(sessionManager.getProviderID());  //handles correct provideruuid for every patient
+//                            encounterDTO.setSyncd(false);
+//                            encounterDTO.setVoided(0);
+//                            try {
+//                                encounterDAO.createEncountersToDB(encounterDTO);
+//                            } catch (DAOException e) {
+//                                FirebaseCrashlytics.getInstance().recordException(e);
+//                            }
+//
+//                            VisitsDAO visitsDAO = new VisitsDAO();
+//                            try {
+//                                visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+//                            } catch (DAOException e) {
+//                                FirebaseCrashlytics.getInstance().recordException(e);
+//                            }
+//
+//                            //SyncDAO syncDAO = new SyncDAO();
+//                            //syncDAO.pushDataApi();
+//                            syncUtils.syncForeground("survey"); //Sync function will work in foreground of org and
+//                            // the Time will be changed for last sync.
+//
+////        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
+//
+//                            sessionManager.removeVisitSummary(activePatientModel.getPatientuuid(), visitUuid);
+//
+//                               /* VisitUtils.endVisit(HomeActivity.this,
+//                                        visitUuid,
+//                                        activePatientModel.getPatientuuid(),
+//                                        finalFollowupdate,
+//                                        finalEncounterVitalslocal,
+//                                        finalEncounterAdultIntialslocal,
+//                                        null,
+//                                        String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
+//                                        ""
+//                                );*/
+//
+//
+////                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+////                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+//                        }
+//                    });
+//                    AlertDialog alertDialog = alertDialogBuilder.show();
+//                    //alertDialog.show();
+//                    IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
+//
+//                    /*} else {
+//                        alertDialogBuilder.setMessage(HomeActivity.this.getResources().getString(R.string.error_no_data));
+//                        alertDialogBuilder.setNeutralButton(HomeActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                        AlertDialog alertDialog = alertDialogBuilder.show();
+//                        //alertDialog.show();
+//                        IntelehealthApplication.setAlertDialogCustomTheme(HomeActivity.this, alertDialog);
+//                    }*/
+//                }
+//            });
         }
 
 
@@ -2373,7 +2374,8 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         @Override
         public void onReceive(Context context, Intent intent) {
             // Extract data included in the Intent
-            recreate();
+//            recreate();
+            loadVisits();
         }
     };
 

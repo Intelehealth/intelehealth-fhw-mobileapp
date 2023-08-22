@@ -362,6 +362,7 @@ public class VisitsDAO {
 
     public boolean updateVisitEnddate(String uuid, String enddate) throws DAOException {
         boolean isUpdated = true;
+        if (enddate.length() == 0) return isUpdated;
         Logger.logD("visitdao", "updatesynv visit " + uuid + enddate);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -385,29 +386,29 @@ public class VisitsDAO {
         return isUpdated;
     }
 
-    public boolean updateVisitCreator(String visitUUID, String createUUID) throws DAOException {
-        boolean isUpdated = true;
-        Logger.logD("visitdao", "updateVisitCreator visit -" + visitUUID + " createUUID - " + createUUID);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
-        ContentValues values = new ContentValues();
-        String whereclause = "uuid=?";
-        String[] whereargs = {visitUUID};
-        try {
-            values.put("creator", createUUID);
-            values.put("sync", "0");
-            int i = db.update("tbl_visit", values, whereclause, whereargs);
-            Logger.logD("visit", "updated" + i);
-            db.setTransactionSuccessful();
-        } catch (SQLException sql) {
-            Logger.logD("visit", "updated" + sql.getMessage());
-            throw new DAOException(sql.getMessage());
-        } finally {
-            db.endTransaction();
-        }
-
-        return isUpdated;
-    }
+//    public boolean updateVisitCreator(String visitUUID, String createUUID) throws DAOException {
+//        boolean isUpdated = true;
+//        Logger.logD("visitdao", "updateVisitCreator visit -" + visitUUID + " createUUID - " + createUUID);
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//        db.beginTransaction();
+//        ContentValues values = new ContentValues();
+//        String whereclause = "uuid=?";
+//        String[] whereargs = {visitUUID};
+//        try {
+//            values.put("creator", createUUID);
+//            values.put("sync", "0");
+//            int i = db.update("tbl_visit", values, whereclause, whereargs);
+//            Logger.logD("visit", "updated" + i);
+//            db.setTransactionSuccessful();
+//        } catch (SQLException sql) {
+//            Logger.logD("visit", "updated" + sql.getMessage());
+//            throw new DAOException(sql.getMessage());
+//        } finally {
+//            db.endTransaction();
+//        }
+//
+//        return isUpdated;
+//    }
 
     public String fetchVisitUUIDFromPatientUUID(String patientUUID) {
         String visitUUID = "";
@@ -499,61 +500,61 @@ public class VisitsDAO {
         return isDownloaded;
     }
 
-    public List<VisitDTO> getAllActiveVisits() {
-        List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
-        VisitDTO visitDTO = new VisitDTO();
-        if (idCursor.getCount() != 0) {
-            while (idCursor.moveToNext()) {
-                visitDTO = new VisitDTO();
-                visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
-                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
-                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
-                visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
-                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
-                visitDTOList.add(visitDTO);
-            }
-        }
-        idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        // db.close();
-        return visitDTOList;
-    }
-
-    public List<VisitDTO> getAllActiveVisitsForMe(String creatorID) {
-        List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//    public List<VisitDTO> getAllActiveVisits() {
+//        List<VisitDTO> visitDTOList = new ArrayList<>();
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
 //        db.beginTransaction();
-        //  String query = new QueryBuilder().select("uuid, patientuuid, locationuuid, startdate, enddate, creator, visit_type_uuid").from(" tbl_visit ").where("uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " + "AND voided = '0' AND creator = '" + creatorID + "'").groupBy("uuid").orderBy("startdate").orderIn("DESC").build();
-//        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
-
-        String query = "select * from (select * from  tbl_visit where uuid IN(select  visit_uuid from tbl_visit_attribute where visit_attribute_type_uuid = 'a0378be4-d9c6-4cb2-bbf5-777e27a32efc' and value ='" + creatorID + "' )  and  voided = '0') as T where  uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid='bd1fbfaa-f5fb-4ebd-b75c-564506fc309e') group by uuid order by startdate desc ";
-        Cursor idCursor = db.rawQuery(query, null);
-        VisitDTO visitDTO = new VisitDTO();
-        if (idCursor.getCount() != 0) {
-            while (idCursor.moveToNext()) {
-                visitDTO = new VisitDTO();
-                visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
-                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
-                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
-                visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
-                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
-                visitDTOList.add(visitDTO);
-            }
-        }
-        idCursor.close();
+//        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
+//        VisitDTO visitDTO = new VisitDTO();
+//        if (idCursor.getCount() != 0) {
+//            while (idCursor.moveToNext()) {
+//                visitDTO = new VisitDTO();
+//                visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+//                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+//                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
+//                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+//                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
+//                visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
+//                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+//                visitDTOList.add(visitDTO);
+//            }
+//        }
+//        idCursor.close();
 //        db.setTransactionSuccessful();
 //        db.endTransaction();
-        // db.close();
-        return visitDTOList;
-    }
+//        // db.close();
+//        return visitDTOList;
+//    }
+
+//    public List<VisitDTO> getAllActiveVisitsForMe(String creatorID) {
+//        List<VisitDTO> visitDTOList = new ArrayList<>();
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+////        db.beginTransaction();
+//        //  String query = new QueryBuilder().select("uuid, patientuuid, locationuuid, startdate, enddate, creator, visit_type_uuid").from(" tbl_visit ").where("uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid ='" + ENCOUNTER_VISIT_COMPLETE + "' ) " + "AND voided = '0' AND creator = '" + creatorID + "'").groupBy("uuid").orderBy("startdate").orderIn("DESC").build();
+////        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where creator='" + creatorID + "' and enddate is NULL OR enddate='' GROUP BY uuid ORDER BY startdate DESC", null);
+//
+//        String query = "select * from (select * from  tbl_visit where uuid IN(select  visit_uuid from tbl_visit_attribute where visit_attribute_type_uuid = 'a0378be4-d9c6-4cb2-bbf5-777e27a32efc' and value ='" + creatorID + "' )  and  voided = '0') as T where  uuid NOT IN (Select visituuid FROM tbl_encounter WHERE  encounter_type_uuid='bd1fbfaa-f5fb-4ebd-b75c-564506fc309e') group by uuid order by startdate desc ";
+//        Cursor idCursor = db.rawQuery(query, null);
+//        VisitDTO visitDTO = new VisitDTO();
+//        if (idCursor.getCount() != 0) {
+//            while (idCursor.moveToNext()) {
+//                visitDTO = new VisitDTO();
+//                visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+//                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+//                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
+//                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+//                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
+//                visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
+//                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+//                visitDTOList.add(visitDTO);
+//            }
+//        }
+//        idCursor.close();
+////        db.setTransactionSuccessful();
+////        db.endTransaction();
+//        // db.close();
+//        return visitDTOList;
+//    }
 
     public List<VisitDTO> getAllActiveVisitByProviderId(String providerId) {
         List<VisitDTO> visitDTOList = new ArrayList<>();
@@ -592,18 +593,18 @@ public class VisitsDAO {
         return visitDTOList;
     }
 
-    public String getPatientVisitUuid(String patientUuid) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ?", new String[]{patientUuid});
-        if (idCursor.getCount() != 0) {
-            while (idCursor.moveToNext()) {
-                return idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
-            }
-        }
-        idCursor.close();
-        // db.close();
-        return null;
-    }
+//    public String getPatientVisitUuid(String patientUuid) {
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_visit where patientuuid = ?", new String[]{patientUuid});
+//        if (idCursor.getCount() != 0) {
+//            while (idCursor.moveToNext()) {
+//                return idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+//            }
+//        }
+//        idCursor.close();
+//        // db.close();
+//        return null;
+//    }
 
     public boolean checkLoggedInUserAccessVisit(String visitId, String providerId) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
