@@ -54,7 +54,7 @@ public class VisitCompletionHelper {
             ObsDAO obsDAO = new ObsDAO();
             String encounterUuid = insertVisitCompleteEncounter();
             if (encounterUuid != null && encounterUuid.length() > 0) {
-                isInserted = obsDAO.insertMotherDeceasedFlatObs(encounterUuid, sessionManager.getCreatorID(), String.valueOf(isMotherDeceased));
+                isInserted = obsDAO.insertMotherDeceasedFlatObs(encounterUuid, sessionManager.getCreatorID(), isMotherDeceased ? "YES" : "NO");
                 if (isMotherDeceased) {
                     isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
                 }

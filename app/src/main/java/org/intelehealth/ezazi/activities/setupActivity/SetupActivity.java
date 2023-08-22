@@ -29,6 +29,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -254,7 +255,7 @@ public class SetupActivity extends AppCompatActivity {
             LocationArrayAdapter adapter = new LocationArrayAdapter
                     (SetupActivity.this, new ArrayList<String>());
             mDropdownLocation.setOnItemClickListener((parent, view, position, id) -> {
-                Log.e(TAG, "onCreate: "+view.getId());
+                Log.e(TAG, "onCreate: id=>" + view.getContentDescription());
                 mLocationInputView.setError(null);
                 changeButtonStatus(true);
             });

@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.ui.visit.dialog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ import org.intelehealth.ezazi.databinding.MotherDeceasedDialogBinding;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
+import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.Utils;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -76,7 +79,8 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
         binding.cbMotherDeceased.setOnCheckedChangeListener(this);
         binding.cbMotherDeceased.setTag(UuidDictionary.MOTHER_DECEASED_FLAG);
 
-        binding.etOtherCommentOutcomes.setTag(UuidDictionary.END_2ND_STAGE_OTHER);
+        binding.etOtherCommentOutcomes.setTag(UuidDictionary.REFER_TYPE);
+        binding.etOtherCommentOutcomes.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
         binding.etOtherCommentOutcomes.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 clearSelection();
@@ -146,7 +150,7 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
             String value = binding.etOtherCommentOutcomes.getText().toString();
             String conceptId = (String) binding.etOtherCommentOutcomes.getTag();
             String content = context.getString(R.string.are_you_sure_want_to_complete_visit, value);
-            showConfirmationDialog(content, () -> completeVisitWithOtherReason("Other:" + value, conceptId));
+            showConfirmationDialog(content, () -> completeVisitWithOtherReferType(value, conceptId));
         } else if (selectedView != null) {
             completeVisitWithReferType();
         } else {
@@ -244,6 +248,25 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
             Log.e(TAG, "completeVisitWithOtherReason: encounterId =>" + encounterUuid);
             if (encounterUuid != null && encounterUuid.length() > 0) {
                 boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), value, conceptId);
+                Log.e(TAG, "completeVisitWithOtherReason: isInserted => " + isInserted);
+                if (isInserted) {
+                    listener.onVisitCompleted(false, false);
+                }
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void completeVisitWithOtherReferType(String value, String conceptId) {
+        // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
+        try {
+            ObsDAO obsDAO = new ObsDAO();
+            String encounterUuid = insertVisitCompleteEncounter();
+            Log.e(TAG, "completeVisitWithOtherReason: encounterId =>" + encounterUuid);
+            if (encounterUuid != null && encounterUuid.length() > 0) {
+                obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), CompletedVisitStatus.ReferType.OTHER.value(), conceptId);
+                boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), value, UuidDictionary.END_2ND_STAGE_OTHER);
                 Log.e(TAG, "completeVisitWithOtherReason: isInserted => " + isInserted);
                 if (isInserted) {
                     listener.onVisitCompleted(false, false);

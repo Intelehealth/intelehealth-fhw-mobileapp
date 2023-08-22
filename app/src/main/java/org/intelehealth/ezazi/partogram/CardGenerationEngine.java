@@ -28,6 +28,7 @@ import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
+import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -209,8 +210,8 @@ public class CardGenerationEngine {
             String encounterUuid = new EncounterDAO().insertVisitCompleteEncounterToDb(visitId, sessionManager.getProviderID());
             if (encounterUuid != null && encounterUuid.length() > 0) {
                 boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(),
-                        VisitDTO.CompletedStatus.OUT_OF_TIME.value,
-                        UuidDictionary.OUT_OF_TIME);
+                        CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value(),
+                        CompletedVisitStatus.OutOfTime.OUT_OF_TIME.uuid());
                 if (isInserted) {
                     VisitsDAO visitsDAO = new VisitsDAO();
                     visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());

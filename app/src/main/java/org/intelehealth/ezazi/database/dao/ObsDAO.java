@@ -1,8 +1,14 @@
 package org.intelehealth.ezazi.database.dao;
 
 import static org.intelehealth.ezazi.utilities.UuidDictionary.BIRTH_OUTCOME;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.END_2ND_STAGE_OTHER;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.LABOUR_OTHER;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.MISSED_ENCOUNTER;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_TYPE;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.MOTHER_DECEASED;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.MOTHER_DECEASED_FLAG;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.OUT_OF_TIME;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.REFER_TYPE;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,6 +22,7 @@ import android.util.Log;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +32,8 @@ import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
+import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
+import org.intelehealth.ezazi.ui.visit.model.VisitOutcomeListener;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -639,16 +648,18 @@ public class ObsDAO {
         return type;
     }
 
-    public String getCompletedVisitType(String encounterUuid) {
-        String valueData = "";
+    public VisitOutcome getCompletedVisitType(String encounterUuid) {
+        HashMap<String, String> statusMap = new HashMap<>();
+
         db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        String query = "SELECT value, conceptuuid FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?, ?, ?, ?, ?)";
+        String query = "SELECT value, conceptuuid FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?, ?, ?, ?, ?, ?)";
         final Cursor idCursor = db.rawQuery(query, new String[]{encounterUuid,
                 UuidDictionary.BIRTH_OUTCOME,
                 UuidDictionary.REFER_TYPE,
                 UuidDictionary.MOTHER_DECEASED_FLAG,
                 UuidDictionary.MOTHER_DECEASED,
                 UuidDictionary.END_2ND_STAGE_OTHER,
+                UuidDictionary.LABOUR_OTHER,
                 UuidDictionary.OUT_OF_TIME});
 
         //do some insertions or whatever you need
@@ -657,9 +668,9 @@ public class ObsDAO {
 
         if (idCursor.getCount() > 0) { // birth outcome present. This means that this encounter is filled with obs ie. Birth Outcome is present.
             while (idCursor.moveToNext()) {
-                Context context = IntelehealthApplication.getAppContext();
-                valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-//                String conceptId = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
+                String valueData = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+                String conceptId = idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid"));
+                statusMap.put(conceptId, valueData);
 //                if (valueData.equals(CompletedVisitStatus.ReferType.REFER_TO_OTHER.value())) {
 //                    valueData = CompletedVisitStatus.ReferType.REFER_TO_OTHER.sortValue();
 //                } else if (valueData.equals(CompletedVisitStatus.ReferType.SELF_DISCHARGE.value())) {
@@ -677,8 +688,6 @@ public class ObsDAO {
 //                    valueData = CompletedVisitStatus.OtherComment.OTHER.sortValue();
 //                }
             }
-        } else { // This means against this enc there is no obs. Which means this obs is not filled yet. no birth outcome present.
-            valueData = "";
         }
 
         /*if (idCursor.getCount() <= 0) {
@@ -690,9 +699,47 @@ public class ObsDAO {
             // this means that this encounter is filled with obs ie. Birth Outcome is present.
         }*/
         idCursor.close();
-
-        return valueData;
+        return findOutcome(statusMap);
     }
+
+    private VisitOutcome findOutcome(HashMap<String, String> outcomeMap) {
+        VisitOutcome visitOutcome = new VisitOutcome();
+        if (outcomeMap.containsKey(BIRTH_OUTCOME) && outcomeMap.containsKey(MOTHER_DECEASED_FLAG)) {
+            String birthOutcome = outcomeMap.get(BIRTH_OUTCOME);
+            String motherFlag = outcomeMap.get(MOTHER_DECEASED_FLAG);
+            String outcome = birthOutcome;
+            assert motherFlag != null;
+            if (motherFlag.equals("YES")) {
+                outcome = outcome + "/" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue();
+                visitOutcome.setOutcome(outcome);
+                visitOutcome.setHasMotherDeceased(true);
+                visitOutcome.setMotherDeceasedReason(outcomeMap.get(MOTHER_DECEASED));
+            }
+
+            assert birthOutcome != null;
+            if (birthOutcome.equals(CompletedVisitStatus.Labour.OTHER.value())) {
+                visitOutcome.setOtherComment(outcomeMap.get(LABOUR_OTHER));
+            }
+        } else if (outcomeMap.containsKey(REFER_TYPE)) {
+            String outcome = outcomeMap.get(REFER_TYPE);
+            visitOutcome.setOutcome(outcome);
+            assert outcome != null;
+            if (outcome.equals(CompletedVisitStatus.ReferType.OTHER.value())) {
+                visitOutcome.setOtherComment(outcomeMap.get(END_2ND_STAGE_OTHER));
+            }
+        } else if (outcomeMap.containsKey(MOTHER_DECEASED)) {
+            visitOutcome.setOutcome(CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_FLAG.sortValue());
+            visitOutcome.setHasMotherDeceased(true);
+            visitOutcome.setMotherDeceasedReason(outcomeMap.get(MOTHER_DECEASED));
+        } else if (outcomeMap.containsKey(OUT_OF_TIME)) {
+            visitOutcome.setOutcome(outcomeMap.get(OUT_OF_TIME));
+        } else {
+            visitOutcome.setOutcome("");
+        }
+
+        return visitOutcome;
+    }
+
 
     public boolean checkIsOutOfTimeEncounter(String encounterUuid) {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

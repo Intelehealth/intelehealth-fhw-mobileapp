@@ -54,9 +54,9 @@ public class LabourDialog extends VisitCompletionHelper {
         enableAndDisableAllFields(binding, false);
         setDropdownsData(binding);
         binding.etLayoutDeceasedReason.setVisibility(hasMotherDeceased ? View.VISIBLE : View.GONE);
-
-        binding.bottomSheetAppBar.toolbar.setTitle(context.getString(R.string.complete_visit));
-        binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> bottomSheetDialogVisitComplete.dismiss());
+//
+//        binding.bottomSheetAppBar.toolbar.setTitle(context.getString(R.string.complete_visit));
+//        binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> bottomSheetDialogVisitComplete.dismiss());
         bottomSheetDialogVisitComplete.setOnDismissListener(DialogInterface::dismiss);
         binding.btnSubmit.setOnClickListener(v -> {
             saveVisitCompletionDetails(binding);

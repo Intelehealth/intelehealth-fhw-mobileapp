@@ -28,29 +28,29 @@ public class PatientStageBinder {
         void onCompleted(List<PatientDTO> patients);
     }
 
-    public void bindStage(List<PatientDTO> patients, OnProcessCompleteListener listener) {
-        this.listener = listener;
-        executor.executeTask(new TaskCompleteListener<List<PatientDTO>>() {
-            @Override
-            public List<PatientDTO> call() throws Exception {
-                for (PatientDTO patient : patients) {
-                    String stage = getCompletedVisitStage(patient);
-                    if (stage != null && stage.length() > 0) {
-                        patient.setStage(stage);
-                    } else {
-                        getStage(patient);
-                    }
-                }
-                return patients;
-            }
-
-            @Override
-            public void onComplete(List<PatientDTO> result) {
-                TaskCompleteListener.super.onComplete(result);
-                listener.onCompleted(result);
-            }
-        });
-    }
+//    public void bindStage(List<PatientDTO> patients, OnProcessCompleteListener listener) {
+//        this.listener = listener;
+//        executor.executeTask(new TaskCompleteListener<List<PatientDTO>>() {
+//            @Override
+//            public List<PatientDTO> call() throws Exception {
+//                for (PatientDTO patient : patients) {
+//                    String stage = getCompletedVisitStage(patient);
+//                    if (stage != null && stage.length() > 0) {
+//                        patient.setStage(stage);
+//                    } else {
+//                        getStage(patient);
+//                    }
+//                }
+//                return patients;
+//            }
+//
+//            @Override
+//            public void onComplete(List<PatientDTO> result) {
+//                TaskCompleteListener.super.onComplete(result);
+//                listener.onCompleted(result);
+//            }
+//        });
+//    }
 
 
 //    private void findPatientCurrentState(final List<PatientDTO> patients, int index) {
@@ -88,39 +88,39 @@ public class PatientStageBinder {
 //            }
 //        });
 //    }
-
-    private void getStage(PatientDTO patient) {
-        if (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0) return;
-        String latestEncounterName = new EncounterDAO().findCurrentStage(patient.getVisitUuid());
-        if (latestEncounterName.toLowerCase().contains("stage2")) {
-            patient.setStage("Stage-2");
-        } else if (latestEncounterName.toLowerCase().contains("stage1")) {
-            patient.setStage("Stage-1");
-        } else {
-            patient.setStage("");
-        }
-//        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(patient.getVisitUuid()); // get latest encounter by visit uuid
-//        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getUuid());
-//        if (encounterDTO.getEncounterTypeUuid() != null) {
 //
-//        } else patient.setStage("");
-    }
-
-    private String getCompletedVisitStage(PatientDTO patient) {
-        String visitUuid = new VisitsDAO().getPatientVisitUuid(patient.getUuid());
-        if (visitUuid != null && visitUuid.length() > 0) {
-            patient.setVisitUuid(visitUuid);
-            String completedEncounterId = new EncounterDAO().getCompletedEncounterId(visitUuid);
-            if (!completedEncounterId.equalsIgnoreCase("")) { // birthoutcome
-                String birthoutcome = new ObsDAO().getCompletedVisitType(completedEncounterId);
-                if (!birthoutcome.equalsIgnoreCase("")) {
-                    patient.setStage(birthoutcome);
-                    return birthoutcome;
-
-                }
-            }
-        }
-
-        return null;
-    }
+//    private void getStage(PatientDTO patient) {
+//        if (patient.getVisitUuid() == null || patient.getVisitUuid().length() == 0) return;
+//        String latestEncounterName = new EncounterDAO().findCurrentStage(patient.getVisitUuid());
+//        if (latestEncounterName.toLowerCase().contains("stage2")) {
+//            patient.setStage("Stage-2");
+//        } else if (latestEncounterName.toLowerCase().contains("stage1")) {
+//            patient.setStage("Stage-1");
+//        } else {
+//            patient.setStage("");
+//        }
+////        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(patient.getVisitUuid()); // get latest encounter by visit uuid
+////        Log.e(TAG, "encounterDTO Id =>" + encounterDTO.getUuid());
+////        if (encounterDTO.getEncounterTypeUuid() != null) {
+////
+////        } else patient.setStage("");
+//    }
+//
+//    private String getCompletedVisitStage(PatientDTO patient) {
+//        String visitUuid = new VisitsDAO().getPatientVisitUuid(patient.getUuid());
+//        if (visitUuid != null && visitUuid.length() > 0) {
+//            patient.setVisitUuid(visitUuid);
+//            String completedEncounterId = new EncounterDAO().getCompletedEncounterId(visitUuid);
+//            if (!completedEncounterId.equalsIgnoreCase("")) { // birthoutcome
+//                String birthoutcome = new ObsDAO().getCompletedVisitType(completedEncounterId);
+//                if (!birthoutcome.equalsIgnoreCase("")) {
+//                    patient.setStage(birthoutcome);
+//                    return birthoutcome;
+//
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 }

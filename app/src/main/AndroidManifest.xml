@@ -49,8 +49,8 @@
         tools:replace="allowBackup">
         <activity
             android:name=".activities.addNewPatient.PatientSummaryActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -83,9 +83,9 @@
             android:name=".activities.visitSummaryActivity.TimelineVisitSummaryActivity"
             android:configChanges="screenLayout|uiMode|orientation|keyboard"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -337,11 +337,20 @@
             android:name=".activities.followuppatients.FollowUpPatientActivity"
             android:configChanges="uiMode"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:label="@string/title_follow_up"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
+
+        <activity
+            android:name=".ui.visit.activity.VisitLabourActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="@string/complete_visit"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">

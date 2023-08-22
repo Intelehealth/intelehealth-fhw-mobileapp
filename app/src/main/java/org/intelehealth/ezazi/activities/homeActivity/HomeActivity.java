@@ -1560,7 +1560,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private BroadcastReceiver screenRefreshReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-           sync();
+            sync();
         }
     };
 

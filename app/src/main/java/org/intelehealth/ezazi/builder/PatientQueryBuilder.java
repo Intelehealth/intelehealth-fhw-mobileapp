@@ -153,21 +153,22 @@ public class PatientQueryBuilder extends QueryBuilder {
                 "' THEN '" + CompletedVisitStatus.ReferType.REFER_TO_ICU.sortValue() + "'" +
                 " WHEN O.value = '" + CompletedVisitStatus.ReferType.SHIFT_TO_C_SECTION.value() +
                 "' THEN '" + CompletedVisitStatus.ReferType.SHIFT_TO_C_SECTION.sortValue() + "'" +
+                " WHEN O.value = '" + CompletedVisitStatus.ReferType.OTHER.value() +
+                "' THEN '" + CompletedVisitStatus.ReferType.OTHER.sortValue() + "'" +
                 "ELSE O.value END) " +
                 // end refer type case
                 // start birth outcome case
                 "WHEN O.conceptuuid = '" + CompletedVisitStatus.Labour.conceptUuid() + "' THEN O.value " +
                 // end birth outcome case
                 // start out of time case
-                "WHEN O.conceptuuid = '" + UuidDictionary.OUT_OF_TIME
-                + "' THEN '" + VisitDTO.CompletedStatus.OUT_OF_TIME.value + "' " +
+                "WHEN O.conceptuuid = '" + CompletedVisitStatus.OutOfTime.OUT_OF_TIME.uuid() + "' THEN '" + CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value() + "' " +
                 // end out of time case
                 // start out of time case
-                "WHEN O.conceptuuid = '" + CompletedVisitStatus.OtherComment.OTHER.uuid()
-                + "' THEN '" + CompletedVisitStatus.OtherComment.OTHER.sortValue() + "' " +
+//                "WHEN O.conceptuuid = '" + CompletedVisitStatus.OtherComment.OTHER.uuid()
+//                + "' THEN '" + CompletedVisitStatus.OtherComment.OTHER.sortValue() + "' " +
                 // end out of time case
                 // start out of time case
-                "WHEN O.conceptuuid = '" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_FLAG.uuid() + "' AND O.value = 'true'" +
+                "WHEN O.conceptuuid = '" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_FLAG.uuid() + "'" +
                 " THEN '" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue() + "' " +
                 // end out of time case
                 "ELSE O.value " +

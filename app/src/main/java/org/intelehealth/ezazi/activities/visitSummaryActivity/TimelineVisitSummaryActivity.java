@@ -73,9 +73,12 @@ import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
+import org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity;
 import org.intelehealth.ezazi.ui.visit.dialog.BottomSheetLabourDialog;
 import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEnd2StageDialog;
 import org.intelehealth.ezazi.ui.visit.dialog.LabourDialog;
+import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
+import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
 import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.NetworkConnection;
 import org.intelehealth.ezazi.utilities.NotificationReceiver;
@@ -543,13 +546,13 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             }
 
         } else {
-            String outcome = new ObsDAO().getCompletedVisitType(isVCEPresent);
+            VisitOutcome outcome = new ObsDAO().getCompletedVisitType(isVCEPresent);
             endStageButton.setVisibility(View.INVISIBLE);
-            if (!outcome.equalsIgnoreCase("")) {
+            if (!outcome.getOutcome().equalsIgnoreCase("")) {
                 outcomeTV.setVisibility(View.VISIBLE);
-                setOutcomeText(outcome);
+                setOutcomeText(outcome.getOutcome());
                 outcomeTV.setGravity(Gravity.CENTER);
-                checkForOutOfTime(outcome);
+                checkForOutOfTime(outcome.getOutcome());
             }
             fabc.setVisibility(View.GONE);
             fabv.setVisibility(View.GONE);
@@ -578,9 +581,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
     }
 
     private void showLabourBottomSheetDialog(boolean hasLabour, boolean hasMotherDeceased) {
-        BottomSheetLabourDialog dialog = BottomSheetLabourDialog.getInstance(visitUuid, hasMotherDeceased);
-        dialog.setListener(() -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully)));
-        dialog.show(getSupportFragmentManager(), dialog.getTag());
+        VisitLabourActivity.startLabourCompleteActivity(this, visitUuid, hasLabour);
+//        BottomSheetLabourDialog dialog = BottomSheetLabourDialog.getInstance(visitUuid, hasMotherDeceased);
+//        dialog.setListener(() -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully)));
+//        dialog.show(getSupportFragmentManager(), dialog.getTag());
 //        new LabourDialog(this, hasMotherDeceased, visitUuid, () -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully))).buildDialog();
     }
 
@@ -591,7 +595,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             button.setTag(1);
             button.setVisibility(View.VISIBLE);
             button.setTag(R.id.btnAddOutOfTimeReason, outcome);
-            if (!outcome.equals(VisitDTO.CompletedStatus.OUT_OF_TIME.value)) {
+            if (!outcome.equals(CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value())) {
                 button.setTag(2);
                 button.setText(getString(R.string.view_more));
                 updateOutOfTimeOutcomeText(outcome);
@@ -608,7 +612,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
 
     private void updateOutOfTimeOutcomeText(String reason) {
         outcomeTV.setGravity(Gravity.START);
-        String label = VisitDTO.CompletedStatus.OUT_OF_TIME.value;
+        String label = CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value();
         String mainReason = getString(R.string.outcome_reason, reason);
         setOutcomeText(label + mainReason);
 //        outcomeTV.setText(HtmlCompat.fromHtml(getString(R.string.lbl_outcome, outcome), 0));
