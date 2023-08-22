@@ -28,6 +28,7 @@ import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -56,6 +57,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
         this.patientDTOS = patientDTOS;
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -87,7 +89,15 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
                 holder.fu_item_calendar.setVisibility(View.VISIBLE);
-                holder.search_date_relative.setText(model.getVisit_startdate());
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    String visitStartDateFullMonthName = StringUtils.getFullMonthName(model.getVisit_startdate());
+                    String translatedVisitStartDate = StringUtils.en__ru_dob(visitStartDateFullMonthName);
+                    translatedVisitStartDate = translatedVisitStartDate.replace("at", "на");
+                    holder.search_date_relative.setText(translatedVisitStartDate);
+                } else {
+                    holder.search_date_relative.setText(model.getVisit_startdate());
+                }
             } else {
                 holder.fu_item_calendar.setVisibility(View.GONE);
                 holder.search_date_relative.setText(R.string.no_visit_created);
@@ -193,7 +203,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public void profilePicDownloaded(PatientDTO model, SearchPatientAdapter_New.SearchHolderView holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
         Logger.logD("TAG", "profileimage url" + url);

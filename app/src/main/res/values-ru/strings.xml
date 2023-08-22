@@ -807,7 +807,7 @@
     //----download protocol failed alert dialog-----------
     <string name="protocol_download_failed_alertdialog">Протокол доступен, после чего загружается। Нажмите \'Да\', чтобы подтвердить загрузку протокола। Нажмите \'Нет\' для продолжения работы с демонстрационным протоколом।</string>
     <string name="app_version_string">App Version - %1$s</string>
-    <string name="no_visit_created">No visit created</string>
+    <string name="no_visit_created">Визит не был создан</string>
     <string name="enter_patient_s_body_measurement_details">Enter patient’s body measurement details</string>
     <string name="height_cm">Рост (см)</string>
     <string name="weight_kg">Вес (кг)</string>

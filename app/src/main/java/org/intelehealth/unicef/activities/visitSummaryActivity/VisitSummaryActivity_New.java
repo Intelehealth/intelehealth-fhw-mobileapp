@@ -521,7 +521,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         if (intentTag != null && !intentTag.isEmpty()) {
             // Edit btn visibility based on user coming from Visit Details screen - Start
-            if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
+            if (intentTag.equalsIgnoreCase("VisitDetailsActivity") || intentTag.equalsIgnoreCase("AppointmentDetailsActivity")) {
                 editVitals.setVisibility(View.GONE);
                 editComplaint.setVisibility(View.GONE);
                 cc_details_edit.setVisibility(View.GONE);
