@@ -145,8 +145,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         });
     }
 
-    public List<FollowUpModel> getAllPatientsFromDB() {
+    public List<FollowUpModel> getAllPatientsFromDB() { // Followup to show only todays and past followups in the followup section. Have removed dr. followup data given in presc and showing records for both Diabetes and Diabetes followup as shared by Sawleha.
         String visitType = "General";
+        String visitType1 = "Diabetes";
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String table = "tbl_patient";
         Date cDate = new Date();
@@ -173,11 +174,12 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                 "INNER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid " +
                 "INNER JOIN tbl_encounter E ON E.visituuid = V.uuid " +
                 "INNER JOIN tbl_obs O ON O.encounteruuid = E.uuid AND " +
-                "O.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
+                "O.conceptuuid in ('e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
                 "WHERE V.enddate IS NOT NULL " +
                 "and VA.visit_attribute_type_uuid != '0e798578-96c1-450b-9927-52e45485b151' " + // Note: adding this coz somehow speciality coming as Telemed loca 1.
                 "and instr(O.value, 'Do you want us to follow-up? - No') <= 0 " +    // this will remove all the strings containging No answer for followup.
                 "ORDER BY V.startdate DESC";
+        Log.d(TAG, "getAllPatientsFromDB: " + query);
         // Note: filtering query as much as possible to speed you data fetching.
 /*
         String query = "SELECT * from (SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
@@ -226,7 +228,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
                     int value = followUp.compareTo(currentD);
 
-                    if (visitType.equalsIgnoreCase("Diabetes Follow-up")) {
+                    if (visitType.equalsIgnoreCase("Diabetes Follow-up") || visitType1.equalsIgnoreCase("Diabetes")) {
                         if (value == -1 || value == 0) {
                             modelList.add(new FollowUpModel(
                                     searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
@@ -239,10 +241,13 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                     searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
                                     visitFollowup,
                                     searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),
-                                    "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid"))),
+                                 //   "" + getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid"))),
+                                    searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
                                     "" + searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate")), value));
                         }
-                    } else {
+                    }
+/*
+                    else {
                         String mSeverityValue = getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")));
                         int days = mGetDaysAccording(newStartDate);
                         String mValue = "";
@@ -437,6 +442,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
                         }
                     }
+*/
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -489,6 +495,21 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         searchCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
+
+        // Sorting in desc order of follow up date so that the latest followup to be shown at the top.
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Collections.sort(modelList, new Comparator<FollowUpModel>() {
+                @Override
+                public int compare(FollowUpModel p1, FollowUpModel p2) {
+                    try {
+                        return simpleDateFormat.parse(p2.getFollowup_date()).compareTo(simpleDateFormat.parse(p1.getFollowup_date()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
+                }
+            });
+
         return modelList;
 
     }
@@ -582,7 +603,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String severity = null;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION, patientUid});
+        final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? " +
+                "and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION, patientUid});
         if (obsCursor.moveToFirst()) {
             do {
                 severity = obsCursor.getString(obsCursor.getColumnIndexOrThrow("value"));

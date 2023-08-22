@@ -99,10 +99,11 @@ public class FollowUpNotificationWorker extends Worker {
         scheduled = true;
     }
 
-    public static long getFollowUpCount() {
+    public static long getFollowUpCount() {// Followup to show only todays and past followups in the followup section. Have removed dr. followup data given in presc and showing records for both Diabetes and Diabetes followup as shared by Sawleha.
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         int count = 0;
         String visitType = "General";
+        String visitType1 = "Diabetes";
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String table = "tbl_patient";
         Date cDate = new Date();
@@ -118,7 +119,7 @@ public class FollowUpNotificationWorker extends Worker {
                 "INNER JOIN tbl_visit_attribute VA ON VA.visit_uuid = V.uuid " +
                 "INNER JOIN tbl_encounter E ON E.visituuid = V.uuid " +
                 "INNER JOIN tbl_obs O ON O.encounteruuid = E.uuid AND " +
-                "O.conceptuuid in ('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86', 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
+                "O.conceptuuid in ('e1761e85-9b50-48ae-8c4d-e6b7eeeba084') " +
                 "WHERE V.enddate IS NOT NULL " +
                 "and VA.visit_attribute_type_uuid != '0e798578-96c1-450b-9927-52e45485b151' " + // Note: adding this coz somehow speciality coming as Telemed loca 1.
                 "and instr(O.value, 'Do you want us to follow-up? - No') <= 0 " +    // this will remove all the strings containging No answer for followup.
@@ -150,11 +151,13 @@ public class FollowUpNotificationWorker extends Worker {
                     Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
                     int value = followUp.compareTo(currentD);
 
-                    if (visitType.equalsIgnoreCase("Diabetes Follow-up")) {
+                    if (visitType.equalsIgnoreCase("Diabetes Follow-up") || visitType1.equalsIgnoreCase("Diabetes")) {
                         if (value == -1 || value == 0) {
                             count++;
                         }
-                    } else {
+                    }
+/*
+                    else {
                         String mSeverityValue = getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")), db);
                         int days = mGetDaysAccording(newStartDate);
                         String mValue = "";
@@ -213,6 +216,7 @@ public class FollowUpNotificationWorker extends Worker {
                             count++;
                         }
                     }
+*/
 
                 } catch (Exception e) {
                     e.printStackTrace();
