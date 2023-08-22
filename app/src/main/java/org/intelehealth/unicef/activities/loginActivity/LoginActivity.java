@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -38,6 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.models.loginModel.LoginModel;
@@ -52,6 +53,7 @@ import org.intelehealth.unicef.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.utilities.NetworkConnection;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -59,7 +61,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     TextView txt_cant_login;
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -68,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             "username:password", "admin:nimda"
     };
     private final String TAG = LoginActivity.class.getSimpleName();
-//    protected AccountManager manager;
+    //    protected AccountManager manager;
 //    Account Manager is commented....
 //    ProgressDialog progress;
     Context context;
@@ -85,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
     String encoded = null;
     // UI references.
     private EditText mUsernameView;
-//    private AutoCompleteTextView mUsernameView;
+    //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private ImageView icLogo;
 
@@ -180,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
             icLogo.setImageBitmap(bitmap);
         } else {
-            Log.e("SetLogo","No Logo Found in Mindmap Folder");
+            Log.e("SetLogo", "No Logo Found in Mindmap Folder");
         }
     }
 
@@ -241,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
-      MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
                 .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
                     @Override
@@ -272,8 +274,8 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(R.string.close_button, null);
 
-      AlertDialog alertDialog = builder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        AlertDialog alertDialog = builder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         //prajwal_changes
     }
@@ -307,12 +309,12 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                Log.d("SESSOO","SESSOO_creator: "+loginModel.getUser().getUuid());
+                Log.d("SESSOO", "SESSOO_creator: " + loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
-                Log.d("SESSOO","SESSOO: "+sessionManager.getSessionID());
+                Log.d("SESSOO", "SESSOO: " + sessionManager.getSessionID());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
+                Log.d("SESSOO", "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                Log.d("SESSOO", "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
@@ -337,8 +339,6 @@ public class LoginActivity extends AppCompatActivity {
                                             //offlineLogin.invalidateLoginCredentials();
 
 
-
-
                                         }
                                     }
                                     SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -361,7 +361,8 @@ public class LoginActivity extends AppCompatActivity {
                                     try {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 
@@ -369,7 +370,7 @@ public class LoginActivity extends AppCompatActivity {
                                         values.put("username", mEmail);
                                         values.put("password", hash_password);
                                         values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                        values.put("chwname",loginModel.getUser().getDisplay());
+                                        values.put("chwname", loginModel.getUser().getDisplay());
                                         values.put("provider_uuid_cred", sessionManager.getProviderID());
                                         createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                         sqLiteDatabase.setTransactionSuccessful();
@@ -390,7 +391,7 @@ public class LoginActivity extends AppCompatActivity {
 //                startJobDispatcherService(LoginActivity.this);
                                     startActivity(intent);
                                     finish();
-                                  //  showProgress(false);
+                                    //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
                                     sessionManager.setLogout(false);

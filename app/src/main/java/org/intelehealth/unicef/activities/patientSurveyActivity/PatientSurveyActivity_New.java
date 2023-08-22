@@ -1,7 +1,5 @@
 package org.intelehealth.unicef.activities.patientSurveyActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +18,7 @@ import android.widget.Toast;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
@@ -41,7 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class PatientSurveyActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PatientSurveyActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientSurveyActivity_New.class.getSimpleName();
     String patientUuid;
     String visitUuid;
@@ -196,6 +195,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
 
     /**
      * This function returns a timestamp with -5 minutes interval.
+     *
      * @param timeStamp
      * @return
      * @throws ParseException
@@ -232,8 +232,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
@@ -244,6 +243,7 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     public void onStop() {
         super.onStop();

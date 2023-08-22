@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,18 +12,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
@@ -34,11 +26,17 @@ import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.UuidDictionary;
-
-import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
-public class PatientSurveyActivity extends AppCompatActivity {
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+public class PatientSurveyActivity extends BaseActivity {
     private static final String TAG = PatientSurveyActivity.class.getSimpleName();
     String patientUuid;
     String visitUuid;

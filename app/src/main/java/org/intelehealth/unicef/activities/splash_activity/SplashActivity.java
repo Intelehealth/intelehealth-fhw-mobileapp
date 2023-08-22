@@ -12,7 +12,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -26,6 +25,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.IntroActivity.IntroActivity;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivity;
@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     SessionManager sessionManager = null;
     //    ProgressDialog TempDialog;

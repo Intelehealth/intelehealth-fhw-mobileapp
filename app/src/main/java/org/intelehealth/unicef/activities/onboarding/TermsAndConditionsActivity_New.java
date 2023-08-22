@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.utilities.FileUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class TermsAndConditionsActivity_New extends AppCompatActivity {
+public class TermsAndConditionsActivity_New extends BaseActivity {
     private static final String TAG = "TermsAndConditionsActiv";
     private int mIntentFrom;
 

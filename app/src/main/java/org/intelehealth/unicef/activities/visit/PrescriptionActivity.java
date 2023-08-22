@@ -54,7 +54,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -65,6 +64,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -111,7 +111,7 @@ import java.util.Objects;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class PrescriptionActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag,
             visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header,

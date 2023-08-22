@@ -1,12 +1,9 @@
 package org.intelehealth.unicef.activities.visit;
 
-import static org.intelehealth.unicef.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
 import static org.intelehealth.unicef.database.dao.VisitsDAO.olderNotEndedVisits;
 import static org.intelehealth.unicef.database.dao.VisitsDAO.recentNotEndedVisits;
+import static org.intelehealth.unicef.database.dao.VisitsDAO.thisMonths_NotEndedVisits;
 import static org.intelehealth.unicef.syncModule.SyncUtils.syncNow;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,14 +15,17 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.PrescriptionModel;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 
 import java.util.List;
 
-public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class EndVisitActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     RecyclerView recycler_recent, recycler_older, recycler_month;
     private static SQLiteDatabase db;
     private int total_counts = 0, todays_count = 0, weeks_count = 0, months_count = 0;

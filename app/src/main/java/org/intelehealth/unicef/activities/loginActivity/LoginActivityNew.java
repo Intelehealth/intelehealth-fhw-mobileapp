@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
@@ -28,6 +27,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -57,7 +57,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginActivityNew extends AppCompatActivity {
+public class LoginActivityNew extends BaseActivity {
     private static final String TAG = "LoginActivityNew";
     TextInputEditText etUsername, etPassword;
     SessionManager sessionManager = null;
@@ -378,7 +378,8 @@ public class LoginActivityNew extends AppCompatActivity {
                                     try {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    } catch (NoSuchAlgorithmException |
+                                             UnsupportedEncodingException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 

@@ -37,7 +37,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -48,6 +47,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -81,7 +81,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PrescriptionActivity extends AppCompatActivity {
+public class PrescriptionActivity extends BaseActivity {
 
     private static final String TAG = PrescriptionActivity.class.getSimpleName();
 
@@ -133,6 +133,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
 
     TextView txtDignosisHeading;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         mContext = newBase;
@@ -178,7 +179,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         context = getApplicationContext();
         presContext = PrescriptionActivity.this;
 
-        txtDignosisHeading=findViewById(R.id.txtDignosisHeading);
+        txtDignosisHeading = findViewById(R.id.txtDignosisHeading);
         txtDignosisHeading.setText(getString(R.string.diagnosis));
         initUI();
     }
@@ -565,7 +566,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
         ProviderDAO providerDAO = new ProviderDAO();
-        Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+        Log.v("chwname", "chwnam: " + sessionManager.getChwname() + ", " + sessionManager.getProviderID());
         doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
         doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
         doctorDetails.setSpecialization("Family Doctor");

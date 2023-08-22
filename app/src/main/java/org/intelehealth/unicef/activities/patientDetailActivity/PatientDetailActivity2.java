@@ -72,7 +72,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,6 +82,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.activities.visit.adapter.PastVisitListingAdapter;
@@ -90,7 +90,6 @@ import org.intelehealth.unicef.activities.visit.model.PastVisitData;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
-import org.intelehealth.unicef.ayu.visit.VisitCreationActivity;
 import org.intelehealth.unicef.database.InteleHealthDatabaseHelper;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
@@ -131,7 +130,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class PatientDetailActivity2 extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, /*patientdistrict,*/

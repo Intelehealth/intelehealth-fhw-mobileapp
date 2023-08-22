@@ -16,13 +16,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.unicef.models.ChangePasswordModel_New;
@@ -44,7 +44,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 
-public class ChangePasswordActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class ChangePasswordActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ChangePasswordActivity_";
     TextInputEditText etCurrentPassword, etNewPassword, etNewPasswordConfirm;
     String encoded = null;

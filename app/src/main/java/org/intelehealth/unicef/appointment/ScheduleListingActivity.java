@@ -18,11 +18,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -41,7 +41,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class ScheduleListingActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class ScheduleListingActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
 
     String visitUuid;
     String patientUuid;
@@ -158,6 +158,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         res.updateConfiguration(conf, dm);
         return context;
     }
+
     private String mEngReason = "";
 
     private void askReason(final SlotInfo slotInfo) {

@@ -6,15 +6,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
@@ -25,14 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.notification.AdapterInterface;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
@@ -40,13 +34,17 @@ import org.intelehealth.unicef.models.DocumentObject;
 import org.intelehealth.unicef.models.NotificationModel;
 import org.intelehealth.unicef.utilities.BitmapUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
-import org.intelehealth.unicef.utilities.UuidDictionary;
-
 import org.intelehealth.unicef.utilities.StringUtils;
+import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.ihutils.ui.CameraActivity;
 
-public class AdditionalDocumentsActivity extends AppCompatActivity implements AdapterInterface {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
+public class AdditionalDocumentsActivity extends BaseActivity implements AdapterInterface {
 
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private String patientUuid;
@@ -120,7 +118,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials,
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials,
                     rowListItem, AppConstants.IMAGE_PATH, this, true);
             recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -143,9 +141,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 saveImage(mCurrentPhotoPath);
             }
-        }
-        else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            if(data!=null) {
+        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+            if (data != null) {
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -201,7 +198,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
     }
 
     /**
-     *   Open dialog to Select douments from Image and Camera as Per the Choices
+     * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
@@ -228,10 +225,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
         builder.show();
     }
 
-/**
- * @param filePath Final Image path to compress.
- *
- * */
+    /**
+     * @param filePath Final Image path to compress.
+     */
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
             @Override
@@ -251,6 +247,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity implements Ad
         });
 
     }
+
     private void saveImage(String picturePath) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);

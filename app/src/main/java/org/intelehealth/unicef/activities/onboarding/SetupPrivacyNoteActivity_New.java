@@ -23,17 +23,17 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.chooseLanguageActivity.SplashScreenActivity;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.unicef.app.AppConstants;
 
-public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
+public class SetupPrivacyNoteActivity_New extends BaseActivity {
     private static final String TAG = "SetupPrivacyNoteActivit";
     TextView tvTermsAndPrivacy;
     CustomDialog customDialog;

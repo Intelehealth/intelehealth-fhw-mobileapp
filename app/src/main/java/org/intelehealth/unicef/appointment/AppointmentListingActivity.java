@@ -11,12 +11,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.appointment.adapter.AppointmentListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -33,7 +33,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AppointmentListingActivity extends AppCompatActivity {
+public class AppointmentListingActivity extends BaseActivity {
     RecyclerView rvAppointments;
     private String mSelectedStartDate = "";
     private String mSelectedEndDate = "";

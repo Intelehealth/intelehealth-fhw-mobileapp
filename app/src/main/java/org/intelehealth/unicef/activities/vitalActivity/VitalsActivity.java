@@ -12,7 +12,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.Editable;
@@ -26,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +49,7 @@ import org.intelehealth.unicef.utilities.UuidDictionary;
 
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
-public class VitalsActivity extends AppCompatActivity {
+public class VitalsActivity extends BaseActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     SessionManager sessionManager;
     private String patientName = "";

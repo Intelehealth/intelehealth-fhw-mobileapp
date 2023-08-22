@@ -1,5 +1,50 @@
 package org.intelehealth.unicef.activities.patientDetailActivity;
 
+import static org.intelehealth.unicef.utilities.StringUtils.en__as_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__bn_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__gu_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__kn_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__ml_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__mr_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__ru_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__ta_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_as_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_as_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_as_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_or_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_or_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_or_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_te_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_te_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_te_education_edit;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +58,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
@@ -37,25 +76,21 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
+import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.InteleHealthDatabaseHelper;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
@@ -70,16 +105,22 @@ import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.FileUtils;
 import org.intelehealth.unicef.utilities.Logger;
+import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
-
-import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
-import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -87,53 +128,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-import static org.intelehealth.unicef.utilities.StringUtils.en__gu_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__bn_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__kn_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__ml_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__mr_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__or_dob;
-
-import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_gu_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.en__ru_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_as_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_as_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_as_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_bn_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.en__ta_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_kn_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ml_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_mr_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_or_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_or_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ta_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_ru_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_te_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_te_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_te_education_edit;
-
-public class PatientDetailActivity extends AppCompatActivity {
+public class PatientDetailActivity extends BaseActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
     String mGender;
@@ -686,7 +681,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -696,7 +691,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -706,7 +701,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -716,7 +711,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -728,7 +723,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
@@ -736,7 +731,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -748,7 +743,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
@@ -756,9 +751,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }  else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
@@ -766,7 +761,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -776,7 +771,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                }else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
@@ -788,7 +783,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
                 } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other));
-                }else {
+                } else {
                     genderView.setText(patient_new.getGender());
                 }
             } else {

@@ -44,7 +44,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -57,6 +56,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -101,7 +101,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class MyProfileActivity extends BaseActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
     TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
     TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob;
@@ -165,7 +165,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
         fingerprintSwitch = findViewById(R.id.fingerprint_enable_Switch);
 
-        if(sessionManager.isEnableAppLock())
+        if (sessionManager.isEnableAppLock())
             fingerprintSwitch.setChecked(true);
         else
             fingerprintSwitch.setChecked(false);
@@ -224,14 +224,12 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     boolean isAvailable = checkFingerprintSensor();
-                    if(isAvailable) {
+                    if (isAvailable) {
                         sessionManager.setEnableAppLock(true);
                         Toast.makeText(MyProfileActivity.this, getResources().getString(R.string.fingerprint_lock_enabled), Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
+                    } else {
                         DialogUtils dialogUtils = new DialogUtils();
                         dialogUtils.showCommonDialog(MyProfileActivity.this, R.drawable.ui2_ic_warning_internet, getResources().getString(R.string.no_fingerprint_title), errorMsg, true, getResources().getString(R.string.okay), null, new DialogUtils.CustomDialogListener() {
                             @Override
@@ -242,8 +240,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                         sessionManager.setEnableAppLock(false);
                         fingerprintSwitch.setChecked(false);
                     }
-                }
-                else {
+                } else {
                     sessionManager.setEnableAppLock(false);
                     Toast.makeText(MyProfileActivity.this, getResources().getString(R.string.fingerprint_lock_disabled), Toast.LENGTH_LONG).show();
                 }
@@ -289,7 +286,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         });
 
         btnSave.setOnClickListener(v -> {
-            Log.i("Btn Save",": Clicked");
+            Log.i("Btn Save", ": Clicked");
             hideSoftKeyboard(MyProfileActivity.this, btnSave);
             checkInternetAndUpdateProfile();
         });
@@ -429,11 +426,9 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void checkInternetAndUpdateProfile() {
-        if (NetworkConnection.isOnline(MyProfileActivity.this)){
+        if (NetworkConnection.isOnline(MyProfileActivity.this)) {
             updateDetails();
-        }
-        else
-        {
+        } else {
             MaterialAlertDialogBuilder builder = new DialogUtils().showErrorDialogWithTryAgainButton(this, getDrawable(R.drawable.ui2_icon_logging_in), getString(R.string.network_failure), getString(R.string.profile_update_requires_internet), getString(R.string.try_again));
             AlertDialog networkFailureDialog = builder.show();
 
@@ -457,34 +452,24 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         String updatedPhoneNum = etMobileNo.getText().toString();
         String updatedEmailID = etEmail.getText().toString();
         String updatedCountryCode = countryCodePicker.getSelectedCountryCode();
-        if(!updatedDOB.equalsIgnoreCase(prevDOB))
-        {
-            updateDOB(updatedAge, formattedDOB , gender);
+        if (!updatedDOB.equalsIgnoreCase(prevDOB)) {
+            updateDOB(updatedAge, formattedDOB, gender);
         }
-        if(prevPhoneNum==null && phoneAttributeUuid==null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum))
-        {
+        if (prevPhoneNum == null && phoneAttributeUuid == null && !updatedPhoneNum.trim().equalsIgnoreCase("") && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             createProfileAttribute("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37", updatedPhoneNum);
-        }
-        else if(phoneAttributeUuid!=null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum))
-        {
+        } else if (phoneAttributeUuid != null && !updatedPhoneNum.equalsIgnoreCase(prevPhoneNum)) {
             updateProfileAttribute(phoneAttributeUuid, updatedPhoneNum);
         }
 
-        if(prevEmail==null && emailAttributeUuid==null && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail))
-        {
+        if (prevEmail == null && emailAttributeUuid == null && !updatedEmailID.trim().equalsIgnoreCase("") && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
             createProfileAttribute("226c0494-d67e-47b4-b7ec-b368064844bd", updatedEmailID);
-        }
-        else if(emailAttributeUuid!=null && !updatedEmailID.equalsIgnoreCase(prevEmail))
-        {
+        } else if (emailAttributeUuid != null && !updatedEmailID.equalsIgnoreCase(prevEmail)) {
             updateProfileAttribute(emailAttributeUuid, updatedEmailID);
         }
 
-        if(prevCountryCode==null && countryCodeAttributeUuid==null && !updatedCountryCode.trim().equalsIgnoreCase("") && !updatedCountryCode.equalsIgnoreCase(prevCountryCode))
-        {
+        if (prevCountryCode == null && countryCodeAttributeUuid == null && !updatedCountryCode.trim().equalsIgnoreCase("") && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
             createProfileAttribute("2d4d8e6d-21c4-4710-a3ad-4daf5c0dfbbb", updatedCountryCode);
-        }
-        else if(countryCodeAttributeUuid!=null && !updatedCountryCode.equalsIgnoreCase(prevCountryCode))
-        {
+        } else if (countryCodeAttributeUuid != null && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
             updateProfileAttribute(countryCodeAttributeUuid, updatedCountryCode);
         }
     }
@@ -554,7 +539,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        ProfileUpdateAge inputModel = new ProfileUpdateAge(updatedAge,updatedDOB, gender);
+        ProfileUpdateAge inputModel = new ProfileUpdateAge(updatedAge, updatedDOB, gender);
 
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -990,16 +975,15 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         profileDetailsDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Profile>() {
             @Override
             public void onNext(Profile profile) {
-                if(profile!=null)
-                {
+                if (profile != null) {
                     personUuid = profile.getResults().get(0).getPerson().getUuid();
-                    if(profile.getResults().get(0).getPerson().getPreferredName().getGivenName()!=null)
+                    if (profile.getResults().get(0).getPerson().getPreferredName().getGivenName() != null)
                         etFirstName.setText(profile.getResults().get(0).getPerson().getPreferredName().getGivenName());
-                    if(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName()!=null)
+                    if (profile.getResults().get(0).getPerson().getPreferredName().getMiddleName() != null)
                         etMiddleName.setText(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
-                    if(profile.getResults().get(0).getPerson().getPreferredName().getFamilyName()!=null)
+                    if (profile.getResults().get(0).getPerson().getPreferredName().getFamilyName() != null)
                         etLastName.setText(profile.getResults().get(0).getPerson().getPreferredName().getFamilyName());
-                    if(sessionManager.getChwname()!=null)
+                    if (sessionManager.getChwname() != null)
                         etUsername.setText(sessionManager.getChwname());
                     String dob = profile.getResults().get(0).getPerson().getDateOfBirth();
                     String[] split = dob.split("T");
@@ -1008,7 +992,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     String age = DateAndTimeUtils.getAge_FollowUp(split[0], MyProfileActivity.this);
                     tvAge.setText(age);
                     gender = profile.getResults().get(0).getPerson().getGender();
-                    if ( gender!= null && !gender.isEmpty()) {
+                    if (gender != null && !gender.isEmpty()) {
                         if (gender.equalsIgnoreCase("m")) {
                             rbMale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                             rbFemale.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
@@ -1026,23 +1010,21 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                     }
                     List<PersonAttributes> personAttributes = new ArrayList<>();
                     personAttributes = profile.getResults().get(0).getAttributes();
-                    if(personAttributes!=null && personAttributes.size()>0)
-                    {
-                        for(int i=0;i<personAttributes.size();i++)
-                        {
+                    if (personAttributes != null && personAttributes.size() > 0) {
+                        for (int i = 0; i < personAttributes.size(); i++) {
                             String attributeName = personAttributes.get(i).getAttributeTpe().getDisplay();
-                            if(attributeName.equalsIgnoreCase("phoneNumber") && !personAttributes.get(i).isVoided()) {
+                            if (attributeName.equalsIgnoreCase("phoneNumber") && !personAttributes.get(i).isVoided()) {
                                 etMobileNo.setText(personAttributes.get(i).getValue().toString());
                                 prevPhoneNum = personAttributes.get(i).getValue().toString();
                                 phoneAttributeUuid = personAttributes.get(i).getUuid();
                             }
-                            if(attributeName.equalsIgnoreCase("emailId") && !personAttributes.get(i).isVoided()) {
+                            if (attributeName.equalsIgnoreCase("emailId") && !personAttributes.get(i).isVoided()) {
                                 etEmail.setText(personAttributes.get(i).getValue().toString());
                                 prevEmail = personAttributes.get(i).getValue().toString();
                                 emailAttributeUuid = personAttributes.get(i).getUuid();
                             }
-                            if(attributeName.equalsIgnoreCase("countryCode") && !personAttributes.get(i).isVoided()) {
-                                if(isInteger(personAttributes.get(i).getValue())) {
+                            if (attributeName.equalsIgnoreCase("countryCode") && !personAttributes.get(i).isVoided()) {
+                                if (isInteger(personAttributes.get(i).getValue())) {
                                     countryCodePicker.setCountryForPhoneCode(Integer.parseInt(personAttributes.get(i).getValue()));
                                     prevCountryCode = personAttributes.get(i).getValue().toString();
                                     countryCodeAttributeUuid = personAttributes.get(i).getUuid();
@@ -1069,17 +1051,17 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     public static boolean isInteger(String s) {
-        return isInteger(s,10);
+        return isInteger(s, 10);
     }
 
     public static boolean isInteger(String s, int radix) {
-        if(s.isEmpty()) return false;
-        for(int i = 0; i < s.length(); i++) {
-            if(i == 0 && s.charAt(i) == '-') {
-                if(s.length() == 1) return false;
+        if (s.isEmpty()) return false;
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0 && s.charAt(i) == '-') {
+                if (s.length() == 1) return false;
                 else continue;
             }
-            if(Character.digit(s.charAt(i),radix) < 0) return false;
+            if (Character.digit(s.charAt(i), radix) < 0) return false;
         }
         return true;
     }
@@ -1156,19 +1138,17 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                 tvAge.setText(age);
                 tvDob.setText(dateToshow1 + ", " + splitedDate[2]);
                 myProfilePOJO.setNewDateOfBirth(dateToshow1 + ", " + splitedDate[2]);
-                if(tvErrorDob.getVisibility()==View.VISIBLE)
+                if (tvErrorDob.getVisibility() == View.VISIBLE)
                     tvErrorDob.setVisibility(View.GONE);
                 shouldActivateSaveButton();
                 Log.d(TAG, "getSelectedDate: " + dateToshow1 + ", " + splitedDate[2]);
-            }
-            else if (age != null && !age.isEmpty() && Integer.parseInt(age) < 18) {
+            } else if (age != null && !age.isEmpty() && Integer.parseInt(age) < 18) {
                 tvAge.setText("");
                 tvDob.setText("");
                 tvErrorDob.setVisibility(View.VISIBLE);
                 btnSave.setEnabled(false);
 
-            }
-            else {
+            } else {
                 tvAge.setText("");
                 tvDob.setText("");
 
@@ -1246,9 +1226,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         btnSave.setEnabled(true);
     }
 
-    public static void hideSoftKeyboard (Activity activity, View view)
-    {
-        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+    public static void hideSoftKeyboard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

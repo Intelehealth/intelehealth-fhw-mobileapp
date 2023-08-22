@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -53,7 +53,7 @@ import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
-public class TodayPatientActivity extends AppCompatActivity {
+public class TodayPatientActivity extends BaseActivity {
     private static final String TAG = TodayPatientActivity.class.getSimpleName();
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;

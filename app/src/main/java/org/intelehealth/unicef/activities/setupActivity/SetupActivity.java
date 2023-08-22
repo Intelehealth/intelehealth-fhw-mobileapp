@@ -2,15 +2,15 @@ package org.intelehealth.unicef.activities.setupActivity;
 
 import android.accounts.Account;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -18,12 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.StrictMode;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -44,22 +38,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.models.DownloadMindMapRes;
@@ -80,7 +70,15 @@ import org.intelehealth.unicef.utilities.StringEncryption;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.widget.materialprogressbar.CustomProgressDialog;
 
-import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -89,7 +87,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class SetupActivity extends AppCompatActivity {
+public class SetupActivity extends BaseActivity {
 
     private static final String TAG = SetupActivity.class.getSimpleName();
     private boolean isLocationFetched;
@@ -129,7 +127,7 @@ public class SetupActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
 
-//    private BroadcastReceiver MyReceiver = null;
+    //    private BroadcastReceiver MyReceiver = null;
     CoordinatorLayout coordinatorLayout;
     //    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
 //    boolean value = false;
@@ -232,8 +230,8 @@ public class SetupActivity extends AppCompatActivity {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
-        if(!mUrlField.getText().toString().trim().isEmpty() ||
-        !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
+        if (!mUrlField.getText().toString().trim().isEmpty() ||
+                !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
 
             isLocationFetched = false;
             mEmailView.setError(null);
@@ -254,8 +252,7 @@ public class SetupActivity extends AppCompatActivity {
                 }
             }
 
-        }
-        else {
+        } else {
 
         }
         mUrlField.addTextChangedListener(new TextWatcher() {
@@ -724,16 +721,14 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isOnline () {
+    public boolean isOnline() {
         ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
+        if (netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()) {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
             return false;
-        }
-        else
-        {
+        } else {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
             return true;
@@ -1459,7 +1454,8 @@ public class SetupActivity extends AppCompatActivity {
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                                 hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
-                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                            } catch (NoSuchAlgorithmException |
+                                                     UnsupportedEncodingException e) {
                                                 FirebaseCrashlytics.getInstance().recordException(e);
                                             }
 
@@ -1520,7 +1516,7 @@ public class SetupActivity extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password),  getResources().getString(R.string.ok));
+                dialogUtils.showerrorDialog(SetupActivity.this, getResources().getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getResources().getString(R.string.ok));
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
             }
@@ -1579,7 +1575,7 @@ public class SetupActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog,"setup");
+                                mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
@@ -1653,6 +1649,7 @@ public class SetupActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
     }
+
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
@@ -1679,7 +1676,7 @@ public class SetupActivity extends AppCompatActivity {
         return context;
     }
 
-    public void showMindmapFailedAlert(){
+    public void showMindmapFailedAlert() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //      MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setMessage(getResources().getString(R.string.protocol_download_failed_alertdialog));
@@ -1698,7 +1695,7 @@ public class SetupActivity extends AppCompatActivity {
                 dialog.dismiss();
                 if (NetworkConnection.isOnline(SetupActivity.this)) {
                     getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
-                }else {
+                } else {
                     dialog.dismiss();
                     r1.setChecked(true);
                     r2.setChecked(false);

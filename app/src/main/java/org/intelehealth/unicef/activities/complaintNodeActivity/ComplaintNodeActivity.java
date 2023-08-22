@@ -1,22 +1,12 @@
 package org.intelehealth.unicef.activities.complaintNodeActivity;
 
+import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -36,7 +26,27 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.questionNodeActivity.QuestionNodeActivity;
+import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.database.dao.EncounterDAO;
+import org.intelehealth.unicef.knowledgeEngine.Node;
+import org.intelehealth.unicef.models.dto.EncounterDTO;
+import org.intelehealth.unicef.utilities.FileUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,22 +57,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.questionNodeActivity.QuestionNodeActivity;
-import org.intelehealth.unicef.app.AppConstants;
-import org.intelehealth.unicef.app.IntelehealthApplication;
-import org.intelehealth.unicef.database.dao.EncounterDAO;
-import org.intelehealth.unicef.knowledgeEngine.Node;
-import org.intelehealth.unicef.models.dto.EncounterDTO;
-import org.intelehealth.unicef.utilities.FileUtils;
-import org.intelehealth.unicef.utilities.SessionManager;
-
-import org.intelehealth.unicef.utilities.exception.DAOException;
-
-import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
-import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
-
-public class ComplaintNodeActivity extends AppCompatActivity {
+public class ComplaintNodeActivity extends BaseActivity {
     final String TAG = "Complaint Node Activity";
 
     String patientUuid;

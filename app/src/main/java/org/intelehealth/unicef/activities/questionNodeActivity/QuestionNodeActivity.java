@@ -1,27 +1,15 @@
 package org.intelehealth.unicef.activities.questionNodeActivity;
 
-import android.app.Dialog;
+import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+import static org.intelehealth.unicef.knowledgeEngine.Node.setAlertDialogBackground;
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -33,8 +21,35 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+
+import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.database.dao.EncounterDAO;
+import org.intelehealth.unicef.database.dao.ImagesDAO;
+import org.intelehealth.unicef.database.dao.ObsDAO;
+import org.intelehealth.unicef.knowledgeEngine.Node;
 import org.intelehealth.unicef.models.AnswerResult;
+import org.intelehealth.unicef.models.dto.ObsDTO;
+import org.intelehealth.unicef.utilities.FileUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
+import org.intelehealth.unicef.utilities.UuidDictionary;
+import org.intelehealth.unicef.utilities.exception.DAOException;
+import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,30 +65,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.app.AppConstants;
-import org.intelehealth.unicef.app.IntelehealthApplication;
-import org.intelehealth.unicef.database.dao.EncounterDAO;
-import org.intelehealth.unicef.database.dao.ImagesDAO;
-import org.intelehealth.unicef.database.dao.ObsDAO;
-import org.intelehealth.unicef.models.dto.ObsDTO;
-import org.intelehealth.unicef.utilities.FileUtils;
-import org.intelehealth.unicef.utilities.SessionManager;
-import org.intelehealth.unicef.utilities.UuidDictionary;
 
-import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.unicef.knowledgeEngine.Node;
-import org.intelehealth.unicef.utilities.StringUtils;
-import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
-
-import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
-import static org.intelehealth.unicef.knowledgeEngine.Node.setAlertDialogBackground;
-import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
-
-
-public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
     String patientUuid;
     String visitUuid;

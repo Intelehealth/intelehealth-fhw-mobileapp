@@ -20,13 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.hbb20.CountryCodePicker;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.ForgotPasswordApiResponseModel_New;
 import org.intelehealth.unicef.models.RequestOTPParamsModel_New;
@@ -41,7 +41,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class ForgotPasswordActivity_New extends AppCompatActivity {
+public class ForgotPasswordActivity_New extends BaseActivity {
     private static final String TAG = ForgotPasswordActivity_New.class.getSimpleName();
     TextInputEditText etUsername, etMobileNo;
     CustomProgressDialog cpd;
@@ -138,6 +138,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         etMobileNo.addTextChangedListener(new MyWatcher(etMobileNo));
         setMobileNumberLimit();
     }
+
     private int mSelectedMobileNumberValidationLength = 0;
     private String mSelectedCountryCode = "";
 
@@ -156,6 +157,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         etMobileNo.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(mSelectedMobileNumberValidationLength)});
     }
+
     private class MyWatcher implements TextWatcher {
         EditText editText;
 
@@ -164,10 +166,12 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
         }
 
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         @Override
         public void afterTextChanged(Editable editable) {
@@ -193,6 +197,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             public void onSubscribe(Disposable d) {
 
             }
+
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 cpd.dismiss();
@@ -225,6 +230,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
                 }
                 buttonContinue.setEnabled(true);
             }
+
             @Override
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
@@ -247,7 +253,9 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
@@ -269,9 +277,13 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         etMobileNo.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(etMobileNo.getText().toString())) {
@@ -301,7 +313,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
         } else if (!optionSelected.isEmpty() && optionSelected.equals("mobile")) {
             String code = countryCodePicker.getSelectedCountryCode();
-            mobile = mobile.replace(" ","");
+            mobile = mobile.replace(" ", "");
             Log.v(TAG, code);
             Log.v(TAG, mobile);
             if (TextUtils.isEmpty(mobile)) {

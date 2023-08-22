@@ -1,9 +1,5 @@
 package org.intelehealth.unicef.activities.IntroActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -22,19 +18,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivity;
 import org.intelehealth.unicef.app.AppConstants;
@@ -51,7 +44,13 @@ import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringEncryption;
 import org.intelehealth.unicef.utilities.UrlModifiers;
-import org.intelehealth.apprtc.data.Manager;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -60,7 +59,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class IntroActivity extends AppCompatActivity {
+public class IntroActivity extends BaseActivity {
 
     Context context;
 
@@ -88,6 +87,7 @@ public class IntroActivity extends AppCompatActivity {
 
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
+        setLocale(sessionManager.getAppLanguage());
 
         //BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
         BASE_URL = "https://"+AppConstants.DEMO_URL+"/openmrs/ws/rest/v1/";

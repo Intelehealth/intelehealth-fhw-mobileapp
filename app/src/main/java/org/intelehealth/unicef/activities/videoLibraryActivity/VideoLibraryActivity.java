@@ -4,22 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.File;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.utilities.Logger;
 
+import java.io.File;
 
-public class VideoLibraryActivity extends AppCompatActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
+
+public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
     private static final String TAG = VideoLibraryActivity.class.getSimpleName();
     final String LOG_TAG = VideoLibraryActivity.class.getSimpleName();
     Toolbar mToolbar;
@@ -27,6 +28,7 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
 
     File rootFile;
     FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,7 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
         }
 
     }
+
     private void openFragment(String filepath) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment videoFragment = new VideoLibraryFragment();

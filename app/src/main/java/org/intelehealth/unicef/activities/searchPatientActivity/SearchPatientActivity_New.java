@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -20,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexDirection;
@@ -30,6 +28,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.unicef.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
 import org.intelehealth.unicef.app.AppConstants;
@@ -52,7 +51,7 @@ import java.util.List;
  * Github: prajwalmw
  */
 
-public class SearchPatientActivity_New extends AppCompatActivity {
+public class SearchPatientActivity_New extends BaseActivity {
     RecyclerView search_recycelview;
     SearchPatientAdapter_New adapter;
     EditText mSearchEditText;

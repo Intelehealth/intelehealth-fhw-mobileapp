@@ -6,12 +6,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 
 import java.text.ParseException;
@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class HorizontalCalendarActivity extends AppCompatActivity {
+public class HorizontalCalendarActivity extends BaseActivity {
     private static final String TAG = "HorizontalCalendarActiv";
     RecyclerView rvHorizontalCal;
     int currentMonth;
@@ -79,8 +79,8 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
     private void getAllDatesOfSelectedMonth(Calendar calendar,
                                             boolean isCurrentMonth,
                                             String selectedMonth, String selectedYear, String selectedMonthForDays) {
-        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedMonth : "+selectedMonth);
-        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedYear : "+selectedYear);
+        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedMonth : " + selectedMonth);
+        Log.d(TAG, "getAllDatesOfSelectedMonth: selectedYear : " + selectedYear);
 
         int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentDay;
@@ -106,10 +106,10 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
                     String dayForDateFinal = dayForDate.substring(0, 3);
 
                     if (i == currentDay) {
-                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, true, selectedMonth, selectedYear, false,selectedMonthForDays);
+                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, true, selectedMonth, selectedYear, false, selectedMonthForDays);
 
                     } else {
-                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, false, selectedMonth, selectedYear, false,selectedMonthForDays);
+                        calendarModel = new CalendarModel(dayForDateFinal, i, currentDay, false, selectedMonth, selectedYear, false, selectedMonthForDays);
 
                     }
 
@@ -162,7 +162,7 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
                 } else {
                     enableDisablePreviousButton(true);
 
-                    getAllDatesOfSelectedMonth(calendarInstance, false, monthToCompare, selectedPrevMonthYear,monthToCompare);
+                    getAllDatesOfSelectedMonth(calendarInstance, false, monthToCompare, selectedPrevMonthYear, monthToCompare);
 
                 }
 
@@ -196,9 +196,9 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
 
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 if (selectedNextMonth.equals(String.valueOf(currentMonth)) && selectedMonthYear.equals(String.valueOf(currentYear))) {
-                    getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear,dateSplit[1]);
+                    getAllDatesOfSelectedMonth(calendarInstance, true, selectedNextMonth, selectedMonthYear, dateSplit[1]);
                 } else {
-                    getAllDatesOfSelectedMonth(calendarInstance, false, selectedNextMonth, selectedMonthYear,dateSplit[1]);
+                    getAllDatesOfSelectedMonth(calendarInstance, false, selectedNextMonth, selectedMonthYear, dateSplit[1]);
 
                 }
             }

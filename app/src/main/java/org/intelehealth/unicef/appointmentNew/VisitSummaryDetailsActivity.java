@@ -2,11 +2,10 @@ package org.intelehealth.unicef.appointmentNew;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 
-public class VisitSummaryDetailsActivity extends AppCompatActivity {
+public class VisitSummaryDetailsActivity extends BaseActivity {
     private static final String TAG = "VisitSummaryDetailsActi";
 
     @Override

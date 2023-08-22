@@ -6,17 +6,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.help.adapter.HelpVideosAdapterVerticle_New;
 import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
 
-public class MostSearchedVideosActivity_New extends AppCompatActivity {
+public class MostSearchedVideosActivity_New extends BaseActivity {
     private static final String TAG = "MostSearchedVideosActiv";
 
     @Override

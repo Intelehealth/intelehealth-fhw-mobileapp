@@ -54,7 +54,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -65,17 +64,19 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.aboutus.AboutUsActivity;
 import org.intelehealth.unicef.activities.achievements.fragments.MyAchievementsFragment;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.help.activities.HelpFragment_New;
 import org.intelehealth.unicef.activities.informativeVideos.fragments.InformativeVideosFragment_New;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivityNew;
@@ -85,19 +86,14 @@ import org.intelehealth.unicef.activities.settingsActivity.Language_ProtocolsAct
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointmentNew.UpdateFragmentOnEvent;
-import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.ProviderAttributeDAO;
-import org.intelehealth.unicef.database.dao.ProviderDAO;
 import org.intelehealth.unicef.models.CheckAppUpdateRes;
 import org.intelehealth.unicef.models.dto.ProviderAttributeDTO;
-import org.intelehealth.unicef.models.dto.ProviderDTO;
-import org.intelehealth.unicef.profile.MyProfileActivity;
 import org.intelehealth.unicef.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.unicef.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.DialogUtils;
-import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
@@ -105,12 +101,7 @@ import org.intelehealth.unicef.utilities.OfflineLogin;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.TooltipWindow;
-import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
-import org.intelehealth.apprtc.data.Manager;
-import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -124,16 +115,13 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
-public class HomeScreenActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeScreenActivity";
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
@@ -299,6 +287,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
         }
         sessionManager = new SessionManager(this);
+        setLocale(sessionManager.getAppLanguage());
         initUI();
         //}
         clickListeners();

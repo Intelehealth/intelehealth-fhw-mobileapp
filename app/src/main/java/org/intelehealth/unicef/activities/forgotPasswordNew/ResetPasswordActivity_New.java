@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.unicef.app.AppConstants;
@@ -38,7 +38,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class ResetPasswordActivity_New extends AppCompatActivity {
+public class ResetPasswordActivity_New extends BaseActivity {
     private static final String TAG = "ResetPasswordActivity_N";
     String otp = "";
     String userUuid = "";

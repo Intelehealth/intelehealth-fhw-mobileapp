@@ -1,14 +1,5 @@
 package org.intelehealth.unicef.activities.chatHelp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,19 +23,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.ui2.calendarviewcustom.CalendarViewDemoActivity;
 import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.unicef.utilities.BitmapUtils;
-import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -55,7 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class ChatHelpActivity_New extends AppCompatActivity implements ClickListenerInterface {
+public class ChatHelpActivity_New extends BaseActivity implements ClickListenerInterface {
     private static final String TAG = "ChatHelpActivity_New";
     TextInputEditText etSendMessage;
     TextInputLayout telSendMessage;
@@ -521,7 +521,7 @@ public class ChatHelpActivity_New extends AppCompatActivity implements ClickList
     }
 
     private void openDocument(String mediaPath) {
-        Log.d(TAG, "openDocument: mediaPath : "+mediaPath);
+        Log.d(TAG, "openDocument: mediaPath : " + mediaPath);
      /*   File file = new File(Environment.getExternalStorageDirectory(),
                 mediaPath);
         Uri path = Uri.fromFile(file);

@@ -1,10 +1,5 @@
 package org.intelehealth.unicef.activities.followuppatients;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -15,9 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.FollowUpModel;
 import org.intelehealth.unicef.utilities.Logger;
@@ -37,7 +37,7 @@ import java.util.Locale;
  * Github : @nishitagoyal
  */
 
-public class FollowUpPatientActivity extends AppCompatActivity {
+public class FollowUpPatientActivity extends BaseActivity {
 
     private FollowUpPatientAdapter recycler;
     RecyclerView recyclerView;
@@ -108,7 +108,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String table = "tbl_patient";
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-      //  String oldQuery = "SELECT * FROM " + table +" as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
+        //  String oldQuery = "SELECT * FROM " + table +" as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
 
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, " +
                 "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value " +
@@ -136,8 +136,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
-                    }
-                    else if (value == 0) {
+                    } else if (value == 0) {
                         modelList.add(new FollowUpModel(
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),

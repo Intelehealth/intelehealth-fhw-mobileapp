@@ -16,10 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.PatientsDAO;
 import org.intelehealth.unicef.models.Patient;
@@ -38,7 +38,7 @@ import java.util.Locale;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class IdentificationActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class IdentificationActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     // ActivityIdentificationNewBinding binding;
     Button nxt_btn_main, btn_back_firstscreen, btn_nxt_firstscreen;
     RelativeLayout relativeLayout;
@@ -188,8 +188,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
@@ -200,6 +199,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     public void onStop() {
         super.onStop();

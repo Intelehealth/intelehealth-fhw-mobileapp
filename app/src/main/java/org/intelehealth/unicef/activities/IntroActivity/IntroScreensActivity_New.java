@@ -13,14 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.onboarding.SetupPrivacyNoteActivity_New;
 
-public class IntroScreensActivity_New extends AppCompatActivity {
+public class IntroScreensActivity_New extends BaseActivity {
     private static final String TAG = "IntroScreensActivityNew";
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;

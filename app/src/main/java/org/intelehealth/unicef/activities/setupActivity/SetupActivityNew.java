@@ -30,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -40,6 +39,7 @@ import com.google.gson.Gson;
 import com.parse.Parse;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.forgotPasswordNew.ForgotPasswordActivity_New;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
@@ -78,7 +78,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class SetupActivityNew extends AppCompatActivity {
+public class SetupActivityNew extends BaseActivity {
     private static final String TAG = "SetupActivityNew";
     private List<Location> mLocations = new ArrayList<>();
     private boolean isLocationFetched;

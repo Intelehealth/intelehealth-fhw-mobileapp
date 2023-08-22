@@ -49,6 +49,9 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".activities.base.BaseActivity"
+            android:exported="false" />
+        <activity
             android:name="org.intelehealth.unicef.ayu.visit.VisitCreationActivity"
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew" />

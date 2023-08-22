@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -43,6 +42,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.IntroActivity.IntroScreensActivity_New;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.unicef.activities.onboarding.SetupPrivacyNoteActivity_New;
@@ -59,7 +59,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends BaseActivity {
     private static final String TAG = "SplashScreenActivity";
     RecyclerView rvSelectLanguage;
     View layoutLanguage;

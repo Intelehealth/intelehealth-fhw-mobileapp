@@ -1,13 +1,5 @@
 package org.intelehealth.unicef.activities.settingsActivity;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -35,9 +27,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.adapter.DialogListAdapter;
 import org.intelehealth.unicef.adapter.SimpleItemData;
@@ -60,7 +60,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class Language_ProtocolsActivity extends AppCompatActivity {
+public class Language_ProtocolsActivity extends BaseActivity {
     private Spinner lang_spinner;
     private ImageButton btRefresh;
     private LinearLayoutCompat reset_btn, update_protocols_btn;
@@ -97,13 +97,14 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         String appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            Locale locale = new Locale(appLanguage);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
+//        if (!appLanguage.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(appLanguage);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
+        setLocale(appLanguage);
 
 
         initUI();

@@ -1,13 +1,14 @@
 package org.intelehealth.unicef.activities.activitySync;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.appcompat.widget.Toolbar;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 
 
-public class ActivitySync extends AppCompatActivity {
+public class ActivitySync extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,13 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -52,7 +46,13 @@ import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
-public class ActivePatientActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+
+public class ActivePatientActivity extends BaseActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
@@ -68,7 +68,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     private ActivePatientAdapter mActivePatientAdapter;
 
     public static long getActiveVisitsCount(SQLiteDatabase db) {
-        int count =0;
+        int count = 0;
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
@@ -117,7 +117,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);

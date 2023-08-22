@@ -9,22 +9,8 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,20 +24,22 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.unicef.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
@@ -62,13 +50,18 @@ import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.utilities.FileUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.UuidDictionary;
-
-import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class FamilyHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
+public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     String patientUuid;

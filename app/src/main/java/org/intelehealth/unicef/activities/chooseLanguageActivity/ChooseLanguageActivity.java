@@ -1,8 +1,5 @@
 package org.intelehealth.unicef.activities.chooseLanguageActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -11,8 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.IntroActivity.IntroActivity;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.SessionManager;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-public class ChooseLanguageActivity extends AppCompatActivity {
+public class ChooseLanguageActivity extends BaseActivity {
 
 
     Button SaveButton;

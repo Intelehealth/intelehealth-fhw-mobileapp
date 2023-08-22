@@ -12,16 +12,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -36,16 +26,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.unicef.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.unicef.app.AppConstants;
@@ -55,12 +50,14 @@ import org.intelehealth.unicef.models.dto.PatientDTO;
 import org.intelehealth.unicef.utilities.ConfigUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.SessionManager;
-
-import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
-public class SearchPatientActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class SearchPatientActivity extends BaseActivity {
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;

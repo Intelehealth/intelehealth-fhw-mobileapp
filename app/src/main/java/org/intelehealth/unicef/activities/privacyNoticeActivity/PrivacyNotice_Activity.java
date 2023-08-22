@@ -4,10 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
@@ -15,24 +11,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.utilities.FileUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
 import java.util.Objects;
 
-import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.app.AppConstants;
-import org.intelehealth.unicef.utilities.FileUtils;
-import org.intelehealth.unicef.utilities.SessionManager;
-
-import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity;
-
-public class PrivacyNotice_Activity extends AppCompatActivity implements View.OnClickListener {
+public class PrivacyNotice_Activity extends BaseActivity implements View.OnClickListener {
     TextView privacy_textview;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;

@@ -40,7 +40,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -50,6 +49,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.activities.visit.PrescriptionActivity;
 import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
@@ -81,7 +81,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AppointmentDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class AppointmentDetailsActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "AppointmentDetailsActiv";
     RelativeLayout stateAppointmentPrescription, layoutPrevScheduledOn, layoutPatientHistory, layoutVisitSummary, stateAppointmentStarted;
     LinearLayout layoutPrescButtons, layoutContactAction, layoutEndVisit;

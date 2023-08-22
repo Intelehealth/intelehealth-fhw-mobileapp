@@ -2,7 +2,6 @@ package org.intelehealth.unicef.ui2.calendarviewcustom;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 
@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarViewDemoActivity extends AppCompatActivity implements SendSelectedDateInterface{
+public class CalendarViewDemoActivity extends BaseActivity implements SendSelectedDateInterface {
     private static final String TAG = "CalendarViewDemoActivit";
     RecyclerView rvCalendarView;
     Spinner spinnerMonths, spinnerYear;
@@ -61,9 +61,9 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
         tv_selected_date_demo = findViewById(R.id.tv_selected_date_demo);
 
         CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(CalendarViewDemoActivity.this, this, new SessionManager(this).getAppLanguage());
-      customCalendarViewUI2.showDatePicker(CalendarViewDemoActivity.this, "");
-     //  Log.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
-      //  showDatePicker(this);
+        customCalendarViewUI2.showDatePicker(CalendarViewDemoActivity.this, "");
+        //  Log.d(TAG, "return value onCreate: selectedDate : "+selectedDate);
+        //  showDatePicker(this);
 
     }
 
@@ -88,7 +88,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
                 //tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 Log.d(TAG, "getPreviousMonthDates: tvSelectedMonthYear : " + selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
-                   // enableDisablePreviousButton(false);
+                    // enableDisablePreviousButton(false);
 
                     spinnerSelectedYearModel = new CalendarviewYearModel(Integer.parseInt(yearToCompare), true);
                     spinnerSelectedMonthModel = new CalendarViewMonthModel("", Integer.parseInt(monthToCompare), true);
@@ -178,10 +178,10 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void fillDatesMonthsWise(String tag) {
-        if(spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth){
-           // enableDisablePreviousButton(false);
-        }else {
-          //  enableDisablePreviousButton(true);
+        if (spinnerSelectedYearModel.getYear() == currentYear && spinnerSelectedMonthModel.getMonthNo() == currentMonth) {
+            // enableDisablePreviousButton(false);
+        } else {
+            //  enableDisablePreviousButton(true);
 
         }
         String firstDay = "";
@@ -334,7 +334,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
 
             for (int i = 1; i <= monthTotalDays; i++) {
 
-                if ((selectedMonth == currentMonth && selectedYear == currentYear && i < currentDay) || (selectedYear == currentYear && selectedMonth< currentMonth)) {
+                if ((selectedMonth == currentMonth && selectedYear == currentYear && i < currentDay) || (selectedYear == currentYear && selectedMonth < currentMonth)) {
                     //i.e. selected month is current month and check for date is less than current date i.e. upcoming or completed
                     calendarviewModel = new CalendarviewModel(i, headerDayPosition, headerDayPositionForLastDay, false, false, false, true, spinnerSelectedMonthModel.getMonthNo(), spinnerSelectedYearModel.getYear());
 
@@ -380,9 +380,9 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
 
             rvCalendarView.setHasFixedSize(true);
             rvCalendarView.setLayoutManager(new GridLayoutManager(this, 7));
-            rvCalendarView.setAdapter(new CalendarviewNewAdapter(this, listOfDates,calendarModel1 -> {
+            rvCalendarView.setAdapter(new CalendarviewNewAdapter(this, listOfDates, calendarModel1 -> {
                 int date = calendarModel1.getDate();
-                Log.d(TAG, "selected from adapter fillDatesMonthsWise: date : "+date);
+                Log.d(TAG, "selected from adapter fillDatesMonthsWise: date : " + date);
              /*   String month = calendarModel1.getSelectedMonthForDays();
                 String year = calendarModel1.getSelectedYear();
 
@@ -407,7 +407,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
             monthsList.add(model1);
         }
 
-        MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(CalendarViewDemoActivity.this,R.layout.custom_spinner_text_calview_ui2, monthsList);
+        MonthsSpinnerAdapter adapter = new MonthsSpinnerAdapter(CalendarViewDemoActivity.this, R.layout.custom_spinner_text_calview_ui2, monthsList);
         spinnerMonths.setAdapter(adapter);
         spinnerMonths.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -415,9 +415,9 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedMonthModel = adapter.getItem(position);
-                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
                 spinnerMonths.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
-                ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
+                ((TextView) adapterView.getChildAt(0)).setTypeface(((TextView) adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerMonth");
             }
@@ -432,15 +432,15 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
     public void getSelectedDate(String selectedDate, String whichDate) {
         Log.d(TAG, "getSelectedDate: selectedDate from interface : " + selectedDate);
 
-            String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
-            if (!selectedDate.isEmpty()) {
-                String[] splitedDate = selectedDate.split("/");
-                tv_selected_date_demo.setText(dateToshow1);
-                Log.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
+        String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(selectedDate);
+        if (!selectedDate.isEmpty()) {
+            String[] splitedDate = selectedDate.split("/");
+            tv_selected_date_demo.setText(dateToshow1);
+            Log.d(TAG, "getSelectedDate: splitedDate : " + dateToshow1 + ", " + splitedDate[2]);
 
-            } else {
-                Log.d(TAG, "onClick: date empty");
-            }
+        } else {
+            Log.d(TAG, "onClick: date empty");
+        }
 
     }
 
@@ -499,7 +499,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
             yearsList.add(model1);
         }
 
-        YearSpinnerAdapter adapter = new YearSpinnerAdapter(CalendarViewDemoActivity.this,R.layout.custom_spinner_text_calview_ui2, yearsList);
+        YearSpinnerAdapter adapter = new YearSpinnerAdapter(CalendarViewDemoActivity.this, R.layout.custom_spinner_text_calview_ui2, yearsList);
         spinnerYear.setAdapter(adapter);
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -508,8 +508,8 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 spinnerSelectedYearModel = adapter.getItem(position);
                 //spinnerYear.setBackground(getResources().getDrawable(R.drawable.spinner_cal_view_bg_selected));
-                ((TextView)adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
-                ((TextView)adapterView.getChildAt(0)).setTypeface( ((TextView)adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.parseColor("#2E1E91"));
+                ((TextView) adapterView.getChildAt(0)).setTypeface(((TextView) adapterView.getChildAt(0)).getTypeface(), Typeface.BOLD);
 
                 fillDatesMonthsWise("fromSpinnerYear");
 
@@ -580,7 +580,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void getNextMonthDates() {
-       // enableDisablePreviousButton(true);
+        // enableDisablePreviousButton(true);
 
         calendarInstanceDefault.add(Calendar.MONTH, 1);
         Date monthNameNEw = calendarInstanceDefault.getTime();
@@ -642,7 +642,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
         rvCalendarView = convertView.findViewById(R.id.rv_calendarview_new);
         spinnerMonths = convertView.findViewById(R.id.spinner_months_caleview);
         spinnerYear = convertView.findViewById(R.id.spinner_year_caleview);
-        ivPrevMonth =convertView.findViewById(R.id.iv_prev_month2);
+        ivPrevMonth = convertView.findViewById(R.id.iv_prev_month2);
         ivNextMonth = convertView.findViewById(R.id.iv_next_month2);
 
 
@@ -661,7 +661,6 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
 
         spinnerSelectedYearModel = new CalendarviewYearModel(currentYear, true);
         spinnerSelectedMonthModel = new CalendarViewMonthModel("", currentMonth, true);
-
 
 
         fillMonthsSpinner();

@@ -17,9 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.help.activities.ChatSupportHelpActivity_New;
 import org.intelehealth.unicef.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.unicef.app.AppConstants;
@@ -36,7 +35,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 
-public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity {
+public class ForgotPasswordOtpVerificationActivity_New extends BaseActivity {
     private static final String TAG = "OtpVerificationActivity";
     //temporary OTP is hardcode
     String OTP = "111111";
@@ -84,7 +83,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                 etPin5.setText("");
                 etPin6.setText("");
                 etPin1.requestFocus();
-                if(tvOtpError.getVisibility()==View.VISIBLE)
+                if (tvOtpError.getVisibility() == View.VISIBLE)
                     tvOtpError.setVisibility(View.GONE);
                 apiCallForRequestOTP(ForgotPasswordOtpVerificationActivity_New.this, userName, userPhoneNum);
             }
@@ -142,6 +141,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onSubscribe(Disposable d) {
 
             }
+
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
@@ -158,6 +158,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                     buttonVerifyOtp.setEnabled(true);
                 }
             }
+
             @Override
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
@@ -191,6 +192,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onSubscribe(Disposable d) {
 
             }
+
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
@@ -201,6 +203,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
                 }
                 tvResendOtp.setEnabled(true);
             }
+
             @Override
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());

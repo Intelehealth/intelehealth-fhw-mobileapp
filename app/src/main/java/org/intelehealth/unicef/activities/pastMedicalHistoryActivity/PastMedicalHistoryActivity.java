@@ -1,28 +1,17 @@
 package org.intelehealth.unicef.activities.pastMedicalHistoryActivity;
 
 
+import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,19 +25,21 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
+import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.unicef.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
@@ -60,16 +51,18 @@ import org.intelehealth.unicef.utilities.FileUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UuidDictionary;
-
-import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
-import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 import org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
-import static org.intelehealth.unicef.utilities.StringUtils.getLocaleGender;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
-public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class PastMedicalHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
 
     String patient = "patient";
     String patientUuid;

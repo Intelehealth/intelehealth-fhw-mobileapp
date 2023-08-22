@@ -35,7 +35,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +43,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.unicef.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.unicef.activities.visit.model.PastVisitData;
@@ -62,14 +63,12 @@ import org.intelehealth.unicef.models.dto.RTCConnectionDTO;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
-import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,7 +86,7 @@ import java.util.Locale;
  * Email: prajwalwaingankar@gmail.com
  */
 
-public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private String patientName, patientUuid, gender, age, openmrsID,
             visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;

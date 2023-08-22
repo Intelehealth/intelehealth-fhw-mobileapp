@@ -75,7 +75,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
@@ -93,6 +92,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
@@ -164,7 +164,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends AppCompatActivity {
+public class VisitSummaryActivity extends BaseActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;

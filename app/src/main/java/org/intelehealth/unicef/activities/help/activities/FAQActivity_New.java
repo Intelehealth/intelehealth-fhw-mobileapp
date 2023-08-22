@@ -6,13 +6,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.help.adapter.FAQExpandableAdapter;
 import org.intelehealth.unicef.activities.help.models.QuestionModel;
 import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
@@ -20,7 +20,7 @@ import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FAQActivity_New extends AppCompatActivity {
+public class FAQActivity_New extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +68,9 @@ public class FAQActivity_New extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
     public List<QuestionModel> getQuestionsList() {
-        String[] namesArr = {getResources().getString(R.string.how_intelehealth_work),getResources().getString(R.string.why_intelehealth_exist), getResources().getString(R.string.how_intelehealth_help), getResources().getString(R.string.how_to_register),
+        String[] namesArr = {getResources().getString(R.string.how_intelehealth_work), getResources().getString(R.string.why_intelehealth_exist), getResources().getString(R.string.how_intelehealth_help), getResources().getString(R.string.how_to_register),
                 getResources().getString(R.string.how_to_add_new_visit), getResources().getString(R.string.how_to_book_an_appointment)};
         String[] descArr = {getResources().getString(R.string.how_intelehealth_work_ans), getResources().getString(R.string.why_intelehealth_exist_ans), getResources().getString(R.string.how_intelehealth_help_ans),
                 getResources().getString(R.string.how_to_register_ans), getResources().getString(R.string.how_to_add_new_visit_ans), getResources().getString(R.string.how_to_book_an_appointment_ans)};
