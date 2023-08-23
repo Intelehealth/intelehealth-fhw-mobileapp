@@ -1172,7 +1172,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         if (details.getQualification() != null && !details.getQualification().isEmpty())
             qualification.setText(details.getQualification());
-        dr_speciality.setText(details.getSpecialization());
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            dr_speciality.setText(StringUtils.convertDoctorSpecialty(details.getSpecialization()));
+        } else {
+            dr_speciality.setText(details.getSpecialization());
+        }
     }
     // parse dr details - end
     // parse presc value - start
@@ -1241,7 +1246,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 } else {
                     diagnosisReturned = value;
                 }
-                diagnosis_txt.setText(diagnosisReturned);
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    diagnosis_txt.setText(StringUtils.convertDiagnosisText(diagnosisReturned));
+                } else {
+                    diagnosis_txt.setText(diagnosisReturned);
+                }
                 break;
             }
 

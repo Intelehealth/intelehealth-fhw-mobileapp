@@ -3863,4 +3863,12 @@ public final class StringUtils {
                 return day;
         }
     }
+
+    public static String convertDiagnosisText(String diagnosisReturned) {
+        return diagnosisReturned
+                .replace("Primary", "Начальный")
+                .replace("Secondary", "Среднее")
+                .replace("Provisional", "Предварительный")
+                .replace("Confirmed", "Подтвержденный");
+    }
 }
