@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.chooseLanguageActivity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,6 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
             ChooseLanguageAdapterNew.GenericViewHolder genericViewHolder = (ChooseLanguageAdapterNew.GenericViewHolder) holder;
             genericViewHolder.index = position;
             genericViewHolder.jsonObject = mItemList.get(position);
-
             try {
                 genericViewHolder.rbChooseLanguage.setText(genericViewHolder.jsonObject.getString("name"));
 
@@ -68,26 +68,6 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            /*
-            old code
-            try {
-                genericViewHolder.nameTextView.setText(genericViewHolder.jsonObject.getString("name"));
-
-                if (genericViewHolder.jsonObject.getBoolean("selected")) {
-                    genericViewHolder.statusImageView.setVisibility(View.VISIBLE);
-                    genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_6));
-                    genericViewHolder.nameTextView.setTypeface(genericViewHolder.nameTextView.getTypeface(), Typeface.BOLD);
-                    genericViewHolder.nameTextView.setBackgroundResource(R.drawable.round_corner_gray_light);
-                } else {
-                    genericViewHolder.statusImageView.setVisibility(View.INVISIBLE);
-                    genericViewHolder.nameTextView.setTextColor(mContext.getResources().getColor(R.color.gray_4));
-                    genericViewHolder.nameTextView.setTypeface(genericViewHolder.nameTextView.getTypeface(), Typeface.NORMAL);
-                    genericViewHolder.nameTextView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
@@ -106,8 +86,6 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
             super(itemView);
             rbChooseLanguage = itemView.findViewById(R.id.rb_choose_language);
             layoutRb = itemView.findViewById(R.id.layout_rb_choose_language);
-
-
             rbChooseLanguage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -122,7 +100,8 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
                         }
                        int  selectedPosition = getAdapterPosition();
                         String name = mItemList.get(selectedPosition).getString("name");
-                    //    Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
+                        v.setContentDescription(name);
+                        //    Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
                        mItemSelectionListener.onSelect(jsonObject, index);
                         notifyDataSetChanged();
                     } catch (JSONException e) {

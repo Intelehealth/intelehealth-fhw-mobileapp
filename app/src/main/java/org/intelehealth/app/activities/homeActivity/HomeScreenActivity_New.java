@@ -425,7 +425,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
             networkFailureDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-            Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
+            Button tryAgainButton = networkFailureDialog.findViewById(R.id.btnTryAgainDialog);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
                 networkFailureDialog.dismiss();
                 checkNetworkConnectionAndPerformSync();

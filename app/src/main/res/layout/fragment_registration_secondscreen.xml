@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/rlParentIdentificationSecondScreen"
+    android:contentDescription="Identification Second Screen Parent RelativeLayout"
     android:layout_marginTop="@dimen/margin_16dp"
     android:layout_marginBottom="@dimen/margin_16dp">
 
     <ScrollView
+        android:id="@+id/svParentIdentificationSecondScreen"
+        android:contentDescription="Identification Second Screen Parent ScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/frame_nxtbtn_viewgrp"
@@ -15,6 +19,8 @@
         android:fillViewport="true">
 
         <RelativeLayout
+            android:id="@+id/rlChildIdentificationSecondScreen"
+            android:contentDescription="Identification Second Screen Child RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_24"

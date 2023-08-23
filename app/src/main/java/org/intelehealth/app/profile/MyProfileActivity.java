@@ -171,45 +171,45 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private void initUI() throws DAOException {
         snackbarUtils = new SnackbarUtils();
         sessionManager = new SessionManager(this);
-        View toolbar = findViewById(R.id.toolbar_common);
-        refresh = toolbar.findViewById(R.id.imageview_is_internet_common);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
-        fingerprintSwitch = findViewById(R.id.fingerprint_enable_Switch);
+        View toolbar = findViewById(R.id.toolbarMyProfile);
+        refresh = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
+        TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
+        ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
+        fingerprintSwitch = findViewById(R.id.switchFingerprintLockMyProfile);
 
         if (sessionManager.isEnableAppLock())
             fingerprintSwitch.setChecked(true);
         else
             fingerprintSwitch.setChecked(false);
 
-        ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+        ivBack = toolbar.findViewById(R.id.ivBackArrowCommonToolbar);
         tvTitle.setText(getResources().getString(R.string.my_profile));
 
         //initialize all input fields
-        etUsername = findViewById(R.id.et_username_profile);
-        etFirstName = findViewById(R.id.et_first_name_profile);
-        etMiddleName = findViewById(R.id.et_middle_name_profile);
-        etLastName = findViewById(R.id.et_last_name_profile);
-        etEmail = findViewById(R.id.et_email_profile);
-        etMobileNo = findViewById(R.id.et_mobile_no_profile);
-        tvDob = findViewById(R.id.tv_date_of_birth_profile);
-        tvAge = findViewById(R.id.tv_age_profile);
-        btnSave = findViewById(R.id.btn_save_profile);
-        layoutParent = findViewById(R.id.layout_parent_profile);
-        rbMale = findViewById(R.id.rb_male);
-        rbFemale = findViewById(R.id.rb_female);
-        rbOther = findViewById(R.id.rb_other);
-        countryCodePicker = findViewById(R.id.countrycode_spinner_profile);
+        etUsername = findViewById(R.id.etUsernameMyProfile);
+        etFirstName = findViewById(R.id.etFirstNameMyProfile);
+        etMiddleName = findViewById(R.id.etMiddleNameMyProfile);
+        etLastName = findViewById(R.id.etLastNameMyProfile);
+        etEmail = findViewById(R.id.etEmailMyProfile);
+        etMobileNo = findViewById(R.id.etPhoneNumMyProfile);
+        tvDob = findViewById(R.id.tvDOBMyProfile);
+        tvAge = findViewById(R.id.tvAgeMyProfile);
+        btnSave = findViewById(R.id.btnSaveMyProfile);
+        layoutParent = findViewById(R.id.llChildLayoutMyProfile);
+        rbMale = findViewById(R.id.rbMaleMyProfile);
+        rbFemale = findViewById(R.id.rbFemaleMyProfile);
+        rbOther = findViewById(R.id.rbOtherMyProfile);
+        countryCodePicker = findViewById(R.id.ccpMyProfile);
         countryCodePicker.registerCarrierNumberEditText(etMobileNo); // attaches the ccp spinner with the edittext
         countryCodePicker.setNumberAutoFormattingEnabled(false);
-        ivProfileImage = findViewById(R.id.iv_profilePic);
-        tvChangePhoto = findViewById(R.id.tv_change_photo_profile);
-        tvErrorFirstName = findViewById(R.id.tv_firstname_error);
-        tvErrorLastName = findViewById(R.id.tv_lastname_error);
-        tvErrorMobileNo = findViewById(R.id.tv_mobile_error);
-        layoutChangePassword = findViewById(R.id.view_change_password);
-        rgGroupGender = findViewById(R.id.radioGroup_gender_profile);
-        tvErrorDob = findViewById(R.id.tv_dob_error);
+        ivProfileImage = findViewById(R.id.ivProfileImageMyProfile);
+        tvChangePhoto = findViewById(R.id.tvChangePhotoMyProfile);
+        tvErrorFirstName = findViewById(R.id.tvFirstNameErrorMyProfile);
+        tvErrorLastName = findViewById(R.id.tvLastNameErrorMyProfile);
+        tvErrorMobileNo = findViewById(R.id.tvPhoneNumErrorMyProfile);
+        layoutChangePassword = findViewById(R.id.rlChangePassMyProfile);
+        rgGroupGender = findViewById(R.id.rgGenderMyProfile);
+        tvErrorDob = findViewById(R.id.tvDOBAgeErrorMyProfile);
 
         manageListeners();
         setMobileNumberLimit();
@@ -449,7 +449,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             int width = MyProfileActivity.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
             networkFailureDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-            Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
+            Button tryAgainButton = networkFailureDialog.findViewById(R.id.btnTryAgainDialog);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
                 networkFailureDialog.dismiss();
                 checkInternetAndUpdateProfile();

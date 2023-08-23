@@ -217,10 +217,10 @@ public class DialogUtils {
         View dialogView = inflater.inflate(R.layout.dialog_error_and_button, null);
         builder.setView(dialogView);
 
-        ImageView dialogIcon = dialogView.findViewById(R.id.dialog_icon);
-        TextView tvTitle = dialogView.findViewById(R.id.dialog_title);
-        TextView tvSubtitle = dialogView.findViewById(R.id.dialog_subtitle);
-        Button tryAgainButton = dialogView.findViewById(R.id.positive_btn);
+        ImageView dialogIcon = dialogView.findViewById(R.id.ivIconTryAgainDialog);
+        TextView tvTitle = dialogView.findViewById(R.id.tvTitleTryAgainDialog);
+        TextView tvSubtitle = dialogView.findViewById(R.id.tvSubtitleTryAgainDialog);
+        Button tryAgainButton = dialogView.findViewById(R.id.btnTryAgainDialog);
 
         dialogIcon.setImageDrawable(drawable);
         tvTitle.setText(title);
