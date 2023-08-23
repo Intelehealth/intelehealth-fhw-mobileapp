@@ -470,7 +470,7 @@ public class VisitSummaryActivity extends BaseActivity {
         sessionManager1 = new SessionManager(this);
         appLanguage = sessionManager1.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
+            super.setLocale(appLanguage);
         }
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {

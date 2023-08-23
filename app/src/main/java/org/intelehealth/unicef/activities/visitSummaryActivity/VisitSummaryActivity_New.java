@@ -404,7 +404,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         sessionManager1 = new SessionManager(this);
         appLanguage = sessionManager1.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
+            super.setLocale(appLanguage);
         }
 
         // todo: uncomment this block later for testing it is commented.
