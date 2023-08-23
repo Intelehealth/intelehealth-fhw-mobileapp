@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.unicef.R;
@@ -310,6 +311,26 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
         } else {
             familyHistoryMap.getOption(groupPosition).setUnselected();
         }
+
+        Node rootNode = familyHistoryMap.getOption(groupPosition);
+        if (rootNode.isMultiChoice() && !clickedNode.isExcludedFromMultiChoice()) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                    familyHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+        }
+        if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && clickedNode.isExcludedFromMultiChoice() && clickedNode.isSelected())) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (!childNode.getId().equals(clickedNode.getId())) {
+                    familyHistoryMap.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+
+        }
+
         adapter.notifyDataSetChanged();
 
         if (clickedNode.getInputType() != null) {
