@@ -6,6 +6,8 @@ import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
@@ -22,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -34,12 +37,21 @@ import java.util.Locale;
 
 public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     RecyclerView recycler_recent, recycler_older, recycler_month;
+    NestedScrollView nestedscrollview;
     private static SQLiteDatabase db;
     private int total_counts = 0, todays_count = 0, weeks_count = 0, months_count = 0;
     private ImageButton backArrow, refresh;
     TextView recent_nodata, older_nodata, month_nodata;
     private NetworkUtils networkUtils;
     private ObjectAnimator syncAnimator;
+    private final int recentLimit = 15, olderLimit = 15;
+    private int recentStart = 0, recentEnd = recentStart + recentLimit;
+    private boolean isRecentFullyLoaded = false;
+
+    private int olderStart = 0, olderEnd = olderStart + olderLimit;
+    private boolean isolderFullyLoaded = false;
+    private List<PrescriptionModel> recentCloseVisitsList, olderCloseVisitsList;
+    private EndVisitAdapter recentVisitsAdapter, olderVisitsAdapter;
 
 
     @Override
@@ -88,7 +100,44 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
     private void initViews() {
         recycler_recent = findViewById(R.id.recycler_recent);
+        LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recycler_recent.setLayoutManager(reLayoutManager);
+
         recycler_older = findViewById(R.id.recycler_older);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recycler_older.setLayoutManager(layoutManager);
+
+        nestedscrollview = findViewById(R.id.nestedscrollview);
+        nestedscrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                // Scroll Down
+                if (scrollY > oldScrollY) {
+                    // update recent data as it will not go at very bottom of list.
+                    if (recentCloseVisitsList != null && recentStart > recentCloseVisitsList.size()) {
+                        isRecentFullyLoaded = true;
+                        return;
+                    }
+                    if (!isRecentFullyLoaded)
+                        setRecentMoreDataIntoRecyclerView();
+
+                    // Last Item Scroll Down.
+                    if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        // update older data as it will not go at very bottom of list.
+                        if (olderCloseVisitsList != null && olderStart > olderCloseVisitsList.size()) {
+                            isolderFullyLoaded = true;
+                            return;
+                        }
+                        if (!isolderFullyLoaded) {
+                            Toast.makeText(EndVisitActivity.this, getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
+                            setOlderMoreDataIntoRecyclerView();
+                        }
+                    }
+                }
+            }
+        });
+
+
         recycler_month = findViewById(R.id.recycler_month);
         recent_nodata = findViewById(R.id.recent_nodata);
         older_nodata = findViewById(R.id.older_nodata);
@@ -102,33 +151,76 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     }
 
     private void endVisits_data() {
-        todays_EndVisits(50, 0);    // todo: temporary added.
-        thisWeeks_EndVisits(50, 0);
+        recentCloseVisits();
+        olderCloseVisits();
 //        thisMonths_EndVisits();
     }
 
-    private void todays_EndVisits(int limit, int offset) {
-        List<PrescriptionModel> arrayList = recentNotEndedVisits(limit, offset);
-        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
+    private void recentCloseVisits() {
+        recentCloseVisitsList = recentNotEndedVisits();
+
+        if (recentEnd > recentCloseVisitsList.size()) {
+            recentEnd = recentCloseVisitsList.size();
+            isRecentFullyLoaded = true;
+        }
+
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList.subList(recentStart, recentEnd));
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
-        recycler_recent.setAdapter(adapter_new);
-        todays_count = arrayList.size();
+        recycler_recent.setAdapter(recentVisitsAdapter);
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+
+        todays_count = recentCloseVisitsList.size();
         if (todays_count == 0 || todays_count < 0)
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
     }
 
-    private void thisWeeks_EndVisits(int limit, int offset) {
-        List<PrescriptionModel> arrayList = olderNotEndedVisits(limit, offset);
-        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
+    private void olderCloseVisits() {
+        olderCloseVisitsList = olderNotEndedVisits();
+
+        if (olderEnd > olderCloseVisitsList.size()) {
+            olderEnd = olderCloseVisitsList.size();
+            isolderFullyLoaded = true;
+        }
+
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList.subList(olderStart, olderEnd));
         recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(adapter_new);
-        weeks_count = arrayList.size();
+        recycler_older.setAdapter(olderVisitsAdapter);
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+
+        weeks_count = olderCloseVisitsList.size();
         if (weeks_count == 0 || weeks_count < 0)
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
+    }
+
+    // This method will be accessed every time the person scrolls the recyclerView further.
+    private void setRecentMoreDataIntoRecyclerView() {
+        if (recentEnd > recentCloseVisitsList.size()) {
+            recentEnd = recentCloseVisitsList.size();
+            isRecentFullyLoaded = true;
+        }
+
+        recentVisitsAdapter.arrayList.addAll(recentCloseVisitsList.subList(recentStart, recentEnd));
+        recentVisitsAdapter.notifyDataSetChanged();
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+    }
+
+    private void setOlderMoreDataIntoRecyclerView() {
+        if (olderEnd > olderCloseVisitsList.size()) {
+            olderEnd = olderCloseVisitsList.size();
+            isolderFullyLoaded = true;
+        }
+
+        olderVisitsAdapter.arrayList.addAll(olderCloseVisitsList.subList(olderStart, olderEnd));
+        olderVisitsAdapter.notifyDataSetChanged();
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
     }
 
     private void thisMonths_EndVisits() {
