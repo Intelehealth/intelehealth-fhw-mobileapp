@@ -81,6 +81,7 @@
                 style="@style/Theme.EZazi.Heading2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
                 android:padding="@dimen/screen_container_padding"
                 android:text="Stage-1"
                 app:layout_constraintBottom_toBottomOf="parent"

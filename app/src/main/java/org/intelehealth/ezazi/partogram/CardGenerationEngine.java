@@ -174,7 +174,7 @@ public class CardGenerationEngine {
                 boolean status = encounterDAO.createEncountersToDB(encounterDTO);
                 if (status) {
                     SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-                    new ObsDAO().createEncounterType(encounterDTO.getUuid(), EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID());
+                    new ObsDAO().createEncounterType(encounterDTO.getUuid(), EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID(), TAG);
                     new VisitsDAO().updateVisitSync(encounterDTO.getVisituuid(), "false");
                     Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
                     IntelehealthApplication.getAppContext().sendBroadcast(intent);

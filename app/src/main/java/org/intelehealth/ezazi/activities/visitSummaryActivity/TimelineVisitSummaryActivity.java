@@ -371,7 +371,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             String nextEncounterTypeName = "Stage" + stageNumber + "_" + "Hour" + hourNumber + "_" + cardNumber;
             Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
             String encounterUuid = UUID.randomUUID().toString();
-            new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID());
+            new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.SOS.name(), sessionManager.getCreatorID(), TAG);
             Log.e(TAG, "SOS Encounter uuid " + encounterUuid);
             createNewEncounter(encounterUuid, visitUuid, nextEncounterTypeName);
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
@@ -542,7 +542,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
                 outcomeTV.setVisibility(View.VISIBLE);
                 setOutcomeText(outcome.getOutcome());
                 outcomeTV.setGravity(Gravity.CENTER);
-                checkForOutOfTime(outcome.getOutcome());
+                checkForOutOfTime(outcome);
             }
             fabc.setVisibility(View.GONE);
             fabv.setVisibility(View.GONE);
@@ -571,21 +571,21 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
     }
 
     private void showLabourBottomSheetDialog(boolean hasLabour, boolean hasMotherDeceased) {
-        VisitLabourActivity.startLabourCompleteActivity(this, visitUuid, hasLabour);
+        VisitLabourActivity.startLabourCompleteActivity(this, visitUuid, hasMotherDeceased);
 //        BottomSheetLabourDialog dialog = BottomSheetLabourDialog.getInstance(visitUuid, hasMotherDeceased);
 //        dialog.setListener(() -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully)));
 //        dialog.show(getSupportFragmentManager(), dialog.getTag());
 //        new LabourDialog(this, hasMotherDeceased, visitUuid, () -> showToastAndUploadVisit(true, getString(R.string.data_added_successfully))).buildDialog();
     }
 
-    private void checkForOutOfTime(String outcome) {
+    private void checkForOutOfTime(VisitOutcome outcome) {
         MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
         boolean isOutOfTime = new ObsDAO().checkIsOutOfTimeEncounter(isVCEPresent);
         if (isOutOfTime) {
             button.setTag(1);
             button.setVisibility(View.VISIBLE);
             button.setTag(R.id.btnAddOutOfTimeReason, outcome);
-            if (!outcome.equals(CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value())) {
+            if (!outcome.getOutcome().equals(CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value())) {
                 button.setTag(2);
                 button.setText(getString(R.string.view_more));
                 updateOutOfTimeOutcomeText(outcome);
@@ -596,14 +596,47 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
                 button.setVisibility(View.VISIBLE);
             }
         } else {
+            manageOtherOutcome(outcome);
+        }
+    }
+
+    private void manageOtherOutcome(VisitOutcome visitOutcome) {
+        MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
+        if (visitOutcome.getMotherDeceasedReason() != null || visitOutcome.getOtherComment() != null) {
+            button.setText(getString(R.string.view_more));
+            button.setTag(R.id.btnAddOutOfTimeReason, visitOutcome);
+            updateOutOfTimeOutcomeText(visitOutcome);
+            button.setOnClickListener(viewMoreClickListener);
+        } else {
             button.setVisibility(View.GONE);
         }
     }
 
-    private void updateOutOfTimeOutcomeText(String reason) {
+    private final View.OnClickListener viewMoreClickListener = v -> {
+        VisitOutcome outcome = (VisitOutcome) v.getTag(R.id.btnAddOutOfTimeReason);
+        showContentDialog(outcome);
+    };
+
+    private void showContentDialog(VisitOutcome outcome) {
+        String content = outcome.getOtherComment();
+        if (outcome.isHasMotherDeceased()) {
+            content = content + "\n\n" + outcome.getMotherDeceasedReason();
+        }
+
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .title(outcome.getOutcome())
+                .content(content)
+                .positiveButtonLabel(R.string.okay)
+                .hideNegativeButton(true)
+                .build();
+
+        dialog.show(getSupportFragmentManager(), dialog.getTag());
+    }
+
+    private void updateOutOfTimeOutcomeText(VisitOutcome visitOutcome) {
         outcomeTV.setGravity(Gravity.START);
-        String label = CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value();
-        String mainReason = getString(R.string.outcome_reason, reason);
+        String label = visitOutcome.getOutcome();
+        String mainReason = getString(R.string.outcome_reason, visitOutcome.getOtherComment());
         setOutcomeText(label + mainReason);
 //        outcomeTV.setText(HtmlCompat.fromHtml(getString(R.string.lbl_outcome, outcome), 0));
     }
@@ -616,15 +649,15 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         }
     }
 
-    private View.OnClickListener outOfTimeClickListener = v -> {
+    private final View.OnClickListener outOfTimeClickListener = v -> {
         int isUpdateRequest = (int) v.getTag();
-        String reason = (String) v.getTag(R.id.btnAddOutOfTimeReason);
-        showOutOfTimeReasonInputDialog(isUpdateRequest, reason);
+        VisitOutcome outcome = (VisitOutcome) v.getTag(R.id.btnAddOutOfTimeReason);
+        showOutOfTimeReasonInputDialog(isUpdateRequest, outcome);
     };
 
-    private void showOutOfTimeReasonInputDialog(int isUpdateRequest, String content) {
+    private void showOutOfTimeReasonInputDialog(int isUpdateRequest, VisitOutcome outcome) {
         DialogOutOfTimeEzaziBinding binding = DialogOutOfTimeEzaziBinding.inflate(getLayoutInflater(), null, true);
-        binding.etOutOfTimeReason.setText(content);
+        binding.etOutOfTimeReason.setText(outcome.getOtherComment());
         binding.etOutOfTimeReasonLayout.setMultilineInputEndIconGravity();
         binding.etOutOfTimeReason.setEnabled(hwHasEditAccess);
         int positiveLbl = hwHasEditAccess
@@ -642,13 +675,14 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         if (hwHasEditAccess) {
             dialog.setListener(() -> {
                 String reason = binding.etOutOfTimeReason.getText().toString();
+                outcome.setOtherComment(reason);
                 if (reason.length() > 0) {
                     int updated = new ObsDAO().updateOutOfTimeEncounterReason(reason, isVCEPresent, visitUuid);
                     if (updated > 0) {
                         Toast.makeText(context, context.getString(R.string.time_out_info_submitted_successfully), Toast.LENGTH_SHORT).show();
 //                            outcomeTV.setText(getString(R.string.lbl_outcome, reason));
-                        updateOutOfTimeOutcomeText(reason);
-                        updateButtonText(R.string.view_more, 2, reason);
+                        updateOutOfTimeOutcomeText(outcome);
+                        updateButtonText(R.string.view_more, 2, outcome);
                         SyncUtils syncUtils = new SyncUtils();
                         syncUtils.syncBackground();
                     } else {
@@ -662,10 +696,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void updateButtonText(int label, int tag, String content) {
+    private void updateButtonText(int label, int tag, VisitOutcome outcome) {
         MaterialButton button = findViewById(R.id.btnAddOutOfTimeReason);
         button.setTag(tag);
-        button.setTag(R.id.btnAddOutOfTimeReason, content);
+        button.setTag(R.id.btnAddOutOfTimeReason, outcome);
         button.setText(getString(label));
     }
 
@@ -1482,7 +1516,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             //triggerAlarm_Stage2_every15mins(visitUuid);
             //cancelStage1_Alarm(); // cancel's stage 1 alarm
             String encounterUuid = UUID.randomUUID().toString();
-            new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID());
+            new ObsDAO().createEncounterType(encounterUuid, EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID(), TAG);
             createNewEncounter(encounterUuid, visitUuid, "Stage2_Hour1_1");
             fetchAllEncountersFromVisitForTimelineScreen(visitUuid);
             stageNo = 2;

@@ -283,7 +283,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     private void uncheckAllOptions(DialogIvfluidOptionsBinding binding) {
         binding.tvDextrose.setSelected(false);
-        binding.tvNone.setSelected(false);
+//        binding.tvNone.setSelected(false);
         binding.tvNormalSaline.setSelected(false);
         binding.tvRingerLactate.setSelected(false);
     }

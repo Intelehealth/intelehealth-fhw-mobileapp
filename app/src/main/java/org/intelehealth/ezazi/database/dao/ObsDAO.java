@@ -617,7 +617,8 @@ public class ObsDAO {
 
     }
 
-    public void createEncounterType(String encounterUuid, String value, String creatorId) {
+    public void createEncounterType(String encounterUuid, String value, String creatorId, String from) {
+        Log.e(TAG, "createEncounterType: from screen =>" + from);
         new TaskExecutor<Boolean>().executeTask(() -> {
             ObsDTO obsDTO = new ObsDTO();
             obsDTO.setUuid(UUID.randomUUID().toString());
@@ -732,7 +733,8 @@ public class ObsDAO {
             visitOutcome.setHasMotherDeceased(true);
             visitOutcome.setMotherDeceasedReason(outcomeMap.get(MOTHER_DECEASED));
         } else if (outcomeMap.containsKey(OUT_OF_TIME)) {
-            visitOutcome.setOutcome(outcomeMap.get(OUT_OF_TIME));
+            visitOutcome.setOutcome(CompletedVisitStatus.OutOfTime.OUT_OF_TIME.sortValue());
+            visitOutcome.setOtherComment(outcomeMap.get(OUT_OF_TIME));
         } else {
             visitOutcome.setOutcome("");
         }

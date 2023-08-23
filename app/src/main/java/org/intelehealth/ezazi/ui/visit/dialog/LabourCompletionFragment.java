@@ -253,14 +253,14 @@ public class LabourCompletionFragment extends Fragment {
             if (encounterId != null && encounterId.length() > 0) {
                 if (labourInfo.getBirthOutcome().equalsIgnoreCase(getString(R.string.other))) {
                     birthOutcomeStatus = obsDAO.insert_Obs(encounterId, helper.sessionManager.getCreatorID(),
-                            labourInfo.getBirthOutcome(), UuidDictionary.BIRTH_OUTCOME);
+                            labourInfo.getBirthOutcome().toUpperCase(), UuidDictionary.BIRTH_OUTCOME);
                     obsDAO.insert_Obs(encounterId, helper.sessionManager.getCreatorID(),
                             labourInfo.getOtherComment(), UuidDictionary.LABOUR_OTHER);
                 } else {
                     birthOutcomeStatus = insertStage2AdditionalData(encounterId);
                 }
 
-                motherDeceasedStatus = helper.addMotherDeceasedObs(hasMotherDeceased, labourInfo.getMotherDeceasedReason());
+                motherDeceasedStatus = helper.addMotherDeceasedObs(encounterId, hasMotherDeceased, labourInfo.getMotherDeceasedReason());
 
 //                motherDeceasedStatus = obsDAO.insertMotherDeceasedFlatObs(encounterId, helper.sessionManager.getCreatorID(), String.valueOf(hasMotherDeceased));
 //
@@ -271,6 +271,7 @@ public class LabourCompletionFragment extends Fragment {
 
                 if (birthOutcomeStatus && motherDeceasedStatus) {
                     binding.btnSubmit.setText("Visit Completing...Please wait");
+                    binding.btnSubmit.setEnabled(false);
                     ((VisitLabourActivity) requireActivity()).checkInternetAndUploadVisitEncounter();
 //                    dismiss();
                     Toast.makeText(requireContext(), getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();

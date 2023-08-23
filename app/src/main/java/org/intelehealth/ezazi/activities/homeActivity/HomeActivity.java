@@ -226,10 +226,10 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.v(TAG, "onNewIntent");
+        Log.v(TAG, "HomeActivity => onNewIntent");
         if (intent != null && intent.hasExtra(AppConstants.REFRESH_SCREEN_EVENT)) {
             boolean isRefreshEvent = intent.getBooleanExtra(AppConstants.REFRESH_SCREEN_EVENT, false);
-            if (isRefreshEvent) recreate();
+            if (isRefreshEvent) loadVisits();
         } else {
             catchFCMMessageData();
         }

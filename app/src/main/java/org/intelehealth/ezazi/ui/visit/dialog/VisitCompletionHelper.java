@@ -49,16 +49,15 @@ public class VisitCompletionHelper {
         }
     }
 
-    public boolean addMotherDeceasedObs(boolean isMotherDeceased, String motherDeceasedReason) {
+    public boolean addMotherDeceasedObs(String encounterId, boolean isMotherDeceased, String motherDeceasedReason) {
         boolean isInserted = false;
         try {
             ObsDAO obsDAO = new ObsDAO();
-            String encounterUuid = insertVisitCompleteEncounter();
-            if (encounterUuid != null && encounterUuid.length() > 0) {
-                isInserted = obsDAO.insertMotherDeceasedFlatObs(encounterUuid, sessionManager.getCreatorID(),
+            if (encounterId != null && encounterId.length() > 0) {
+                isInserted = obsDAO.insertMotherDeceasedFlatObs(encounterId, sessionManager.getCreatorID(),
                         isMotherDeceased ? VisitOutcome.MotherDeceased.YES.name() : VisitOutcome.MotherDeceased.NO.name());
                 if (isMotherDeceased) {
-                    isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
+                    isInserted = obsDAO.insert_Obs(encounterId, sessionManager.getCreatorID(), motherDeceasedReason, UuidDictionary.MOTHER_DECEASED);
                 }
             }
 

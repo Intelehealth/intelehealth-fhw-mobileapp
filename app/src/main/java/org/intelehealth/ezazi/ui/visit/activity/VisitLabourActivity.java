@@ -79,17 +79,19 @@ public class VisitLabourActivity extends BaseActivity {
 
     public void checkInternetAndUploadVisitEncounter() {
         if (NetworkConnection.isOnline(getApplication())) {
+            SyncUtils syncUtils = new SyncUtils();
+            syncUtils.syncForeground("timeline");
 //            Toast.makeText(this, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //   Added the 4 sec delay and then push data.For some reason doing immediately does not work
-                    //Do something after 100ms
-                    SyncUtils syncUtils = new SyncUtils();
-                    syncUtils.syncForeground("timeline");
-                }
-            }, 4000);
+//            final Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    //   Added the 4 sec delay and then push data.For some reason doing immediately does not work
+//                    //Do something after 100ms
+//                    SyncUtils syncUtils = new SyncUtils();
+//                    syncUtils.syncForeground("timeline");
+//                }
+//            }, 4000);
         } else {
             Toast.makeText(this, getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
         }

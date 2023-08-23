@@ -363,9 +363,12 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
         dialog.setListener(() -> {
             if (Objects.requireNonNull(binding.etMotherDeceasedReason.getText()).length() > 0) {
                 String value = binding.etMotherDeceasedReason.getText().toString();
-                boolean isInserted = addMotherDeceasedObs(true, value);
-                if (isInserted) listener.onVisitCompleted(false, true);
-                dialog.dismiss();
+                String encounterId = insertVisitCompleteEncounter();
+                if (encounterId != null && encounterId.length() > 0) {
+                    boolean isInserted = addMotherDeceasedObs(encounterId, true, value);
+                    if (isInserted) listener.onVisitCompleted(false, true);
+                    dialog.dismiss();
+                }
             } else {
                 Toast.makeText(context, context.getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
             }

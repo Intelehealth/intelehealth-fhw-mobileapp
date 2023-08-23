@@ -363,7 +363,7 @@ public class VisitsDAO {
     public boolean updateVisitEnddate(String uuid, String enddate) throws DAOException {
         boolean isUpdated = true;
         if (enddate.length() == 0) return isUpdated;
-        Logger.logD("visitdao", "updatesynv visit " + uuid + enddate);
+        Logger.logD("visitdao", "updatesynv visit uuid:" + uuid +" EndDate:"+ enddate);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
