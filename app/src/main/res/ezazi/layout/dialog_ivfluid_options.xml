@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,26 +14,25 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/iv_fluids_option_included"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/list_container_padding">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvNone"
-            style="@style/Theme.EZazi.Text.Dialog.Content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_dialog_list_item"
-            android:onClick="@{clickListener}"
-            android:padding="@dimen/small_btn_horizontal_padding"
-            android:text="@{items[0]}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Yes" />
+        <!--    <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvNone"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_dialog_list_item"
+                android:onClick="@{clickListener}"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@{items[0]}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Yes" />-->
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvRingerLactate"
@@ -42,10 +43,10 @@
             android:background="@drawable/selector_dialog_list_item"
             android:onClick="@{clickListener}"
             android:padding="@dimen/small_btn_horizontal_padding"
-            android:text="@{items[1]}"
+            android:text="@{items[0]}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNone"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Yes" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -57,7 +58,7 @@
             android:background="@drawable/selector_dialog_list_item"
             android:onClick="@{clickListener}"
             android:padding="@dimen/small_btn_horizontal_padding"
-            android:text="@{items[2]}"
+            android:text="@{items[1]}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRingerLactate"
@@ -72,7 +73,7 @@
             android:background="@drawable/selector_dialog_list_item"
             android:onClick="@{clickListener}"
             android:padding="@dimen/small_btn_horizontal_padding"
-            android:text="@{items[3]}"
+            android:text="@{items[2]}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvNormalSaline"
@@ -86,7 +87,7 @@
             android:layout_marginTop="@dimen/list_container_padding"
             android:background="@drawable/selector_dialog_list_item"
             android:gravity="center_vertical"
-            android:hint="@{items[4]}"
+            android:hint="@{items[3]}"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="200"

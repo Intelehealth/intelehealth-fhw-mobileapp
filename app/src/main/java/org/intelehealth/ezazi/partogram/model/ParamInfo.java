@@ -17,6 +17,15 @@ public class ParamInfo implements Serializable {
     private int currentStage;
 
     private String[] radioOptions;
+    private String[] ivInfusionStatus;
+
+    public String[] getIvInfusionStatus() {
+        return ivInfusionStatus;
+    }
+
+    public void setIvInfusionStatus(String[] ivInfusionStatus) {
+        this.ivInfusionStatus = ivInfusionStatus;
+    }
 
     public String getParamSectionName() {
         return paramSectionName;

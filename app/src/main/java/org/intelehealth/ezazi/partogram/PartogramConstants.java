@@ -289,6 +289,7 @@ public class PartogramConstants {
         paramInfo.setParamName(Params.IV_FLUID.value);
         paramInfo.setParamDateType(RADIO_SELECT_TYPE);
         paramInfo.setRadioOptions(new String[]{"Yes", "No"});
+        paramInfo.setIvInfusionStatus(new String[]{"Started", "Continued", "Stopped"});
         paramInfo.setOptions(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", "Other IV Fluid*"});
         paramInfo.setValues(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", AppConstants.OTHER_OPTION});
         paramInfo.setConceptUUID("98c5881f-b214-4597-83d4-509666e9a7c9");
