@@ -123,6 +123,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
     private void initUI() {
         setTitle(R.string.title_activity_login);
         sessionManager = new SessionManager(this);
+        setLocale(sessionManager.getAppLanguage());
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
 

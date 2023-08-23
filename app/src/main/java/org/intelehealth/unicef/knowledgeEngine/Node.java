@@ -941,9 +941,17 @@ public class Node implements Serializable {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
-                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("сопутствующие симптомы") || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("H/o specific illness")) || (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்")) || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("сопутствующие симптомы")
+                            || associatedTest.trim().equals("जुड़े लक्षण")
+                            || (associatedTest.trim().equals("H/o specific illness"))
+                            || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
 
-                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("сопутствующие симптомы") || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) || (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்")) || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                        if ((associatedTest.trim().equals("Associated symptoms"))
+                                || associatedTest.trim().equals("сопутствующие симптомы")
+                                || associatedTest.trim().equals("जुड़े लक्षण")
+                                || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 //raw = raw.substring(6);
@@ -2562,9 +2570,9 @@ public class Node implements Serializable {
         boolean flagPositive = false;
         boolean flagNegative = false;
 //        String mLanguagePositive = associatedSymptomNode.positiveCondition;
-        String mLanguagePositive = "Patient reports -" + next_line;
+        String mLanguagePositive = IntelehealthApplication.getAppContext().getString(R.string.patient_reports) + " -" + next_line;
 //        String mLanguageNegative = associatedSymptomNode.negativeCondition;
-        String mLanguageNegative = "Patient denies -" + next_line;
+        String mLanguageNegative = IntelehealthApplication.getAppContext().getString(R.string.patient_denies) + " -" + next_line;
 
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
@@ -2677,7 +2685,12 @@ public class Node implements Serializable {
                 String question;
                 if (level == 0) {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
-                    if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms")) || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण")) || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்")) || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
+                    if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
@@ -2707,7 +2720,14 @@ public class Node implements Serializable {
                     stringsList.add(question + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
-            } else if (mOptions.get(i).getText() != null && ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms")) || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण")) || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি")) || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்")) || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
+            } else if (mOptions.get(i).getText() != null &&
+                    ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
@@ -2736,7 +2756,7 @@ public class Node implements Serializable {
             if (mOptions.get(i).isNoSelected()) {
                 if (!flag) {
                     flag = true;
-                    stringsListNoSelected.add("Patient denies -" + next_line);
+                    stringsListNoSelected.add(IntelehealthApplication.getAppContext().getString(R.string.patient_denies) + " -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                 Log.e("List", "" + stringsListNoSelected);
@@ -2758,7 +2778,7 @@ public class Node implements Serializable {
         Log.i(TAG, "formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = "Question not answered" + next_line;
+            mLanguage = IntelehealthApplication.getAppContext().getString(R.string.question_not_answered) + next_line;
         }
 
         return mLanguage;

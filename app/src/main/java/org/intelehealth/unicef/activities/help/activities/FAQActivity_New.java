@@ -16,6 +16,7 @@ import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.help.adapter.FAQExpandableAdapter;
 import org.intelehealth.unicef.activities.help.models.QuestionModel;
 import org.intelehealth.unicef.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.unicef.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class FAQActivity_New extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faqactivity_ui2);
-
+        setLocale(new SessionManager(this).getAppLanguage());
         initUI();
 
     }

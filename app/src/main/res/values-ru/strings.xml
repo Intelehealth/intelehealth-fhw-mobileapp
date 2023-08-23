@@ -1528,5 +1528,6 @@
     <string name="older_visits">Старые визиты</string>
     <string name="no_address_added">Адрес не добавлен</string>
     <string name="no_mobile_number_added">Номер телефона не добавлен</string>
+    <string name="type_or_select_reason">Введите или выберите причину</string>
 
 </resources>

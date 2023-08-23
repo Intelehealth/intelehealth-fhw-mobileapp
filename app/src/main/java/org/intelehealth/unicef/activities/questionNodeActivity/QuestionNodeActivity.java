@@ -349,13 +349,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
             // show alert dialog
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             alertDialogBuilder.setMessage(answerResult.requiredStrings);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-
-                }
-            });
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, (dialog, which) -> dialog.dismiss());
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             setAlertDialogBackground(this, alertDialog);
@@ -588,14 +582,8 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
             if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("Associated symptoms"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
-                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))
-                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("সংশ্লিষ্ট লক্ষণ"))
-                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("Сопутствующие симптомы"))) {
+                    .equalsIgnoreCase("сопутствующие симптомы"))) {
+
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
                 assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
@@ -639,34 +627,15 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                 assoSympObj.put("text", "Associated symptoms");
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-ru", "У вас есть следующие симптомы?");
-                assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
-                assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
-                assoSympObj.put("display-gj", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
-                assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣವನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
-                assoSympObj.put("display-te", "మీకు ఈ క్రింది లక్షణం (లు) ఉన్నాయా?");
-                assoSympObj.put("display-mr", "तुम्हाला खालील लक्षणे आहेत का?");
-                assoSympObj.put("display-as", "আপোনাৰ তলত দিয়া লক্ষণ(সমূহ) আছেনে?");
-                assoSympObj.put("display-ml", "നിങ്ങൾക്ക് ഇനിപ്പറയുന്ന രോഗലക്ഷണം ഉണ്ടോ?");
-                assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত লক্ষণগুলি রয়েছে?");
-                assoSympObj.put("display-ta", "பின்வரும் அறிகுறி (கள்) உங்களிடம் உள்ளதா?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
+                assoSympObj.put("multi-choice", true);
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
-                finalAssoSympObj.put("display-kn", "ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು");
-                finalAssoSympObj.put("display-ml", "ബന്ധപ്പെട്ട രോഗലക്ഷണങ്ങൾ");
-                finalAssoSympObj.put("display-as", "সংশ্লিষ্ট লক্ষণ");
-                finalAssoSympObj.put("display-mr", "संबंधित लक्षणे");
-                finalAssoSympObj.put("display-te", "అనుబంధ లక్షణాలు");
-                finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
-                finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
-                finalAssoSympObj.put("display-ta", "தொடர்புடைய அறிகுறிகள்");
-                finalAssoSympObj.put("display-bn", "জড়িত লক্ষণগুলি");
-                finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
+                finalAssoSympObj.put("display-ru", "сопутствующие симптомы");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }

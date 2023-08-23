@@ -79,8 +79,9 @@ public class SearchPatientActivity_New extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_new);
-
         sessionManager = new SessionManager(this);
+        super.setLocale(sessionManager.getAppLanguage());
+
         search_recycelview = findViewById(R.id.search_recycelview);
         mSearchEditText = findViewById(R.id.search_txt_enter);
         search_hint_text = findViewById(R.id.search_hint_text);

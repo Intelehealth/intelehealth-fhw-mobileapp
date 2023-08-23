@@ -27,6 +27,8 @@ public class TermsAndConditionsActivity_New extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms_and_conditions_ui2);
+        setLocale(new SessionManager(this).getAppLanguage());
+
         mIntentFrom = getIntent().getIntExtra("IntentFrom", 0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

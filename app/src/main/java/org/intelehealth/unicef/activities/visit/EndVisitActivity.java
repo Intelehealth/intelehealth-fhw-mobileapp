@@ -22,6 +22,7 @@ import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.PrescriptionModel;
 import org.intelehealth.unicef.utilities.NetworkUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 
 import java.util.List;
 
@@ -33,12 +34,14 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
     TextView recent_nodata, older_nodata, month_nodata;
     private NetworkUtils networkUtils;
     private ObjectAnimator syncAnimator;
-
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_visit);
+        sessionManager = new SessionManager(this);
+        setLocale(sessionManager.getAppLanguage());
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
