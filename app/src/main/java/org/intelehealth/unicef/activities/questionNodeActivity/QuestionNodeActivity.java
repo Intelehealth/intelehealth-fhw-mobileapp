@@ -660,7 +660,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
-            setTitle(patientName + ": " + currentNode.findDisplay());
+            ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(currentNode.getDisplay()));
         }
     }
 
