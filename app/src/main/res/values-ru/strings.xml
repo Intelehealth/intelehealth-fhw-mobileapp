@@ -889,7 +889,7 @@
     <string name="testing">Тестирование</string>
     <string name="location_new">Местоположение</string>
     <string name="password">Пароль</string>
-    <string name="start_typing_location">Начните набирать текст или выберите местоположение</string>
+    <string name="start_typing_location">Выберите местоположение</string>
     <string name="username">Имя пользователя</string>
     <string name="enter_username1">Введите ваше имя пользователя</string>
     <string name="enter_password1">Введите пароль</string>

@@ -926,7 +926,7 @@
 
 
     <string name="setup_new">Setup</string>
-    <string name="one_time_setup">Please complete your one\ntime setup activity</string>
+    <string name="one_time_setup">Please complete your one time setup activity</string>
     <string name="enter_following_details">Please enter the following details</string>
     <string name="location_new">Location</string>
     <string name="please_wait_logging">Please wait a moment, you\'re\nlogging into the app.</string>
