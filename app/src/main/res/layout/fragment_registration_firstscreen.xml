@@ -11,7 +11,7 @@
         android:id="@+id/svParentIdentificationFirstScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/flNextIdentificationFirstScreen"
+        android:layout_above="@+id/flNextIdentificationActivity"
         android:layout_marginBottom="@dimen/margin_24"
         android:contentDescription="Identification First Screen Parent ScrollView"
         android:fillViewport="true"
@@ -517,8 +517,8 @@
 
 
     <FrameLayout
-        android:id="@+id/flNextIdentificationFirstScreen"
-        android:contentDescription="Identification First Screen Next Button FrameLayout"
+        android:id="@+id/flNextIdentificationActivity"
+        android:contentDescription="Identification Activity Buttons FrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -125,31 +125,31 @@ public class Fragment_SecondScreen extends Fragment {
         context = getActivity();
         sessionManager = new SessionManager(getActivity());
         mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(getActivity(), "state_district_tehsil.json").toString(), StateDistMaster.class);
-        personal_icon = getActivity().findViewById(R.id.addpatient_icon);
-        address_icon = getActivity().findViewById(R.id.addresslocation_icon);
-        other_icon = getActivity().findViewById(R.id.other_icon);
-        frag2_btn_back = getActivity().findViewById(R.id.frag2_btn_back);
-        frag2_btn_next = getActivity().findViewById(R.id.frag2_btn_next);
-        mPostalCodeEditText = view.findViewById(R.id.postalcode_edittext);
-        mCountryNameSpinner = view.findViewById(R.id.country_spinner);
-        mStateNameSpinner = view.findViewById(R.id.state_spinner);
-        mStateEditText = view.findViewById(R.id.state_edittext);
+        personal_icon = getActivity().findViewById(R.id.ivPersonalIconIdentificationActivity);
+        address_icon = getActivity().findViewById(R.id.ivAddressIconIdentificationActivity);
+        other_icon = getActivity().findViewById(R.id.ivOtherIconIdentificationActivity);
+        frag2_btn_back = getActivity().findViewById(R.id.btnBackIdentificationSecondScreen);
+        frag2_btn_next = getActivity().findViewById(R.id.btnNextIdentificationSecondScreen);
+        mPostalCodeEditText = view.findViewById(R.id.etPostalCodeIdentificationSecondScreen);
+        mCountryNameSpinner = view.findViewById(R.id.spinnerCountryIdentificationSecondScreen);
+        mStateNameSpinner = view.findViewById(R.id.spinnerStateIdentificationSecondScreen);
+        mStateEditText = view.findViewById(R.id.etStateIdentificationSecondScreen);
         mStateEditText.setVisibility(View.GONE);
-        mDistrictNameSpinner = view.findViewById(R.id.district_spinner);
-        mDistrictET = view.findViewById(R.id.district_edittext);
-        mCityVillageET = view.findViewById(R.id.city_village_edittext);
+        mDistrictNameSpinner = view.findViewById(R.id.spinnerDistrictIdentificationSecondScreen);
+        mDistrictET = view.findViewById(R.id.etDistrictIdentificationSecondScreen);
+        mCityVillageET = view.findViewById(R.id.etVillageIdentificationSecondScreen);
         mCityVillageET.setFilters(new InputFilter[]{new InputFilter.AllCaps()}); //all capital input
-        mAddress1EditText = view.findViewById(R.id.address1_edittext);
+        mAddress1EditText = view.findViewById(R.id.etCorrespondingAddress1IdentificationSecondScreen);
         mAddress1EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
-        mAddress2EditText = view.findViewById(R.id.address2_edittext);
+        mAddress2EditText = view.findViewById(R.id.etCorrespondingAddress2IdentificationSecondScreen);
         mAddress2EditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50)}); //maxlength 50
-        mPostalCodeErrorTextView = view.findViewById(R.id.postalcode_error);
-        mCountryNameErrorTextView = view.findViewById(R.id.country_error);
-        mStateNameErrorTextView = view.findViewById(R.id.state_error);
-        mDistrictNameErrorTextView = view.findViewById(R.id.district_error);
-        mCityNameErrorTextView = view.findViewById(R.id.city_error);
-        mAddress1ErrorTextView = view.findViewById(R.id.address1_error);
-        mAddress2ErrorTextView = view.findViewById(R.id.address2_error);
+        mPostalCodeErrorTextView = view.findViewById(R.id.tvPostalCodeErrorIdentificationSecondScreen);
+        mCountryNameErrorTextView = view.findViewById(R.id.tvCountryErrorIdentificationSecondScreen);
+        mStateNameErrorTextView = view.findViewById(R.id.tvStateErrorIdentificationSecondScreen);
+        mDistrictNameErrorTextView = view.findViewById(R.id.tvDistrictErrorIdentificationSecondScreen);
+        mCityNameErrorTextView = view.findViewById(R.id.tvVillageErrorIdentificationSecondScreen);
+        mAddress1ErrorTextView = view.findViewById(R.id.tvCorrespondingAddress1ErrorIdentificationSecondScreen);
+        mAddress2ErrorTextView = view.findViewById(R.id.tvCorrespondingAddress2ErrorIdentificationSecondScreen);
         mPostalCodeEditText.addTextChangedListener(new MyTextWatcher(mPostalCodeEditText));
         mAddress1EditText.addTextChangedListener(new MyTextWatcher(mAddress1EditText));
         mAddress2EditText.addTextChangedListener(new MyTextWatcher(mAddress2EditText));
@@ -192,7 +192,7 @@ public class Fragment_SecondScreen extends Fragment {
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.postalcode_edittext) {
+            if (this.editText.getId() == R.id.etPostalCodeIdentificationSecondScreen) {
                 if (val.isEmpty()) {
                     /*mPostalCodeErrorTextView.setVisibility(View.VISIBLE);
                     mPostalCodeErrorTextView.setText(getString(R.string.error_field_required));
@@ -206,7 +206,7 @@ public class Fragment_SecondScreen extends Fragment {
                     mPostalCodeErrorTextView.setVisibility(View.GONE);
                     mPostalCodeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } /*else if (this.editText.getId() == R.id.address1_edittext) {
+            } /*else if (this.editText.getId() == R.id.etCorrespondingAddress1IdentificationSecondScreen) {
                 if (val.isEmpty()) {
                     mAddress1ErrorTextView.setVisibility(View.VISIBLE);
                     mAddress1ErrorTextView.setText(getString(R.string.error_field_required));
@@ -216,7 +216,7 @@ public class Fragment_SecondScreen extends Fragment {
                     mAddress1EditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
             } else*/
-            if (this.editText.getId() == R.id.state_edittext) {
+            if (this.editText.getId() == R.id.etStateIdentificationSecondScreen) {
                 if (val.isEmpty()) {
                     mStateNameErrorTextView.setVisibility(View.VISIBLE);
                     mStateNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -225,7 +225,7 @@ public class Fragment_SecondScreen extends Fragment {
                     mStateNameErrorTextView.setVisibility(View.GONE);
                     editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.district_edittext) {
+            } else if (this.editText.getId() == R.id.etDistrictIdentificationSecondScreen) {
                 if (val.isEmpty()) {
                     mDistrictNameErrorTextView.setVisibility(View.VISIBLE);
                     mDistrictNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -234,7 +234,7 @@ public class Fragment_SecondScreen extends Fragment {
                     mDistrictNameErrorTextView.setVisibility(View.GONE);
                     editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.city_village_edittext) {
+            } else if (this.editText.getId() == R.id.etVillageIdentificationSecondScreen) {
                 if (val.isEmpty()) {
                     mCityNameErrorTextView.setVisibility(View.VISIBLE);
                     mCityNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -666,7 +666,7 @@ public class Fragment_SecondScreen extends Fragment {
         firstScreen.setArguments(bundle); // passing data to Fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_firstscreen, firstScreen)
+                .replace(R.id.flMainIdentificationFirstScreen, firstScreen)
                 .commit();
     }
 
@@ -801,7 +801,7 @@ public class Fragment_SecondScreen extends Fragment {
 
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.frame_firstscreen, fragment_thirdScreen)
+                        .replace(R.id.flMainIdentificationFirstScreen, fragment_thirdScreen)
                         .commit();
             }
 

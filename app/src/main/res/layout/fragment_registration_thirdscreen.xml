@@ -19,7 +19,7 @@
         android:fillViewport="true"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_24"
-        android:layout_above="@+id/frame_nxtbtn_viewgrp">
+        android:layout_above="@+id/flNextIdentificationActivity">
 
     <RelativeLayout
         android:id="@+id/rlChildIdentificationThirdScreen"
@@ -30,7 +30,8 @@
         android:layout_marginEnd="@dimen/margin_24">
 
         <LinearLayout
-            android:id="@+id/linear_national_ID"
+            android:id="@+id/llNationalIDIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen National ID LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_relation"
@@ -38,7 +39,8 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/national_ID_title"
+                android:id="@+id/tvNationalIDTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen National ID Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -48,7 +50,8 @@
                 android:textSize="@null" />
 
             <EditText
-                android:id="@+id/national_ID_editText"
+                android:id="@+id/etNationalIDIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen National ID EditText"
                 style="@style/edittext_textcolor"
                 android:background="@drawable/edittext_border"
                 android:layout_width="match_parent"
@@ -65,7 +68,8 @@
                 android:paddingBottom="@dimen/margin_10" />
 
             <TextView
-                android:id="@+id/national_ID_error"
+                android:id="@+id/tvNationalIDErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen National ID Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -81,14 +85,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linear_relation"
+            android:id="@+id/llRelationIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Relation LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/relation_title"
+                android:id="@+id/tvRelationTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Relation Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -98,7 +104,8 @@
                 android:textSize="@null" />
 
             <EditText
-                android:id="@+id/relation_edittext"
+                android:id="@+id/etRelationIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Relation EditText"
                 style="@style/edittext_textcolor"
                 android:background="@drawable/edittext_border"
                 android:layout_width="match_parent"
@@ -113,7 +120,8 @@
                 android:textSize="@dimen/edittext_textsize_16sp" />
 
             <TextView
-                android:id="@+id/relation_error"
+                android:id="@+id/tvRelationErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Relation Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -130,15 +138,17 @@
 
         <!--Occupation-->
         <LinearLayout
-            android:id="@+id/linear_occupation"
+            android:id="@+id/llOccupationIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Occupation LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_national_ID"
+            android:layout_below="@+id/llNationalIDIdentificationThirdScreen"
             android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/occupation_title"
+                android:id="@+id/tvOccupationTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Occupation Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -148,7 +158,8 @@
                 android:textSize="@null" />
 
             <EditText
-                android:id="@+id/occupation_editText"
+                android:id="@+id/etOccupationIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Occupation EditText"
                 style="@style/edittext_textcolor"
                 android:background="@drawable/edittext_border"
                 android:layout_width="match_parent"
@@ -165,7 +176,8 @@
                 />
 
             <TextView
-                android:id="@+id/occupation_error"
+                android:id="@+id/tvOccupationErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Occupation Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -182,15 +194,17 @@
 
         <!--Caste-->
         <LinearLayout
-            android:id="@+id/linear_caste"
+            android:id="@+id/llCasteIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Caste LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_occupation"
+            android:layout_below="@+id/llOccupationIdentificationThirdScreen"
             android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/caste_title"
+                android:id="@+id/tvCasteTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Caste Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -200,7 +214,8 @@
                 android:textSize="@null" />
 
             <Spinner
-                android:id="@+id/caste_spinner"
+                android:id="@+id/spinnerCasteIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Caste Spinner "
                 style="@style/SpinnerTheme"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -217,7 +232,8 @@
                 android:textSize="@dimen/edittext_textsize_16sp" />
 
             <TextView
-                android:id="@+id/caste_error"
+                android:id="@+id/tvCasteErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Caste Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -234,15 +250,17 @@
 
         <!--Education-->
         <LinearLayout
-            android:id="@+id/linear_education"
+            android:id="@+id/llEducationIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Education LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_caste"
+            android:layout_below="@+id/llCasteIdentificationThirdScreen"
             android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/education_title"
+                android:id="@+id/tvEducationTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Education Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -252,7 +270,8 @@
                 android:textSize="@null" />
 
             <Spinner
-                android:id="@+id/education_spinner"
+                android:id="@+id/spinnerEducationIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Education Spinner"
                 style="@style/SpinnerTheme"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -269,7 +288,8 @@
                 android:textSize="@dimen/edittext_textsize_16sp" />
 
             <TextView
-                android:id="@+id/education_error"
+                android:id="@+id/tvEducationErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Education Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -286,15 +306,17 @@
 
         <!--Economic Status-->
         <LinearLayout
-            android:id="@+id/linear_economicstatus"
+            android:id="@+id/llEconomicIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Economic LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_education"
+            android:layout_below="@+id/llEducationIdentificationThirdScreen"
             android:layout_marginTop="@dimen/margin_24"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/economicstatus_title"
+                android:id="@+id/tvEconomicTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Economic Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -304,7 +326,8 @@
                 android:textSize="@null" />
 
             <Spinner
-                android:id="@+id/economicstatus_spinner"
+                android:id="@+id/spinnerEconomicIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Economic Spinner"
                 style="@style/SpinnerTheme"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -322,7 +345,8 @@
                 android:textSize="@dimen/edittext_textsize_16sp" />
 
             <TextView
-                android:id="@+id/economic_error"
+                android:id="@+id/tvEconomicErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Economic Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -341,21 +365,24 @@
 
 
     <FrameLayout
-        android:id="@+id/frame_nxtbtn_viewgrp"
+        android:id="@+id/flNextIdentificationActivity"
+        android:contentDescription="Identification Activity Buttons FrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_24">
 
         <LinearLayout
-            android:id="@+id/linear_secondscreen_nxt_btn"
+            android:id="@+id/llButtonsIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Buttons LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:visibility="visible">
 
             <Button
-                android:id="@+id/frag3_btn_back"
+                android:id="@+id/btnBackIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Back Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"
@@ -366,7 +393,8 @@
                 android:textColor="@color/primary_text" />
 
             <Button
-                android:id="@+id/frag3_btn_next"
+                android:id="@+id/btnNextIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Next Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginEnd="@dimen/margin_24"

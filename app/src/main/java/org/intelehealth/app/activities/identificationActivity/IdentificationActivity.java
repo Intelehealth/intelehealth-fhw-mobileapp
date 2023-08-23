@@ -1089,14 +1089,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
                 mAgePicker.setView(convertView);
-                NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-                NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-                NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
+                NumberPicker yearPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+                NumberPicker monthPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+                NumberPicker dayPicker = convertView.findViewById(R.id.npQty3NumberPickerDialog);
                 dayPicker.setVisibility(View.VISIBLE);
 
-                final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-                final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
-                final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
+                final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+                final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
+                final TextView dayTv = convertView.findViewById(R.id.tvUnit3NumberPickerDialog);
                 dayPicker.setVisibility(View.VISIBLE);
 
                 int totalDays = today.getActualMaximum(Calendar.DAY_OF_MONTH);
