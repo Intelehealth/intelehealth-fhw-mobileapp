@@ -960,11 +960,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
 
             if (valueArray.length > 1) {
-                if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                    String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
+                if (valueArray[1].contains("• " + getString(R.string.patient_reports)) && valueArray[1].contains("• " + getString(R.string.patient_denies))) {
+                    String assoValueBlock[] = valueArray[1].replace("• " + getString(R.string.patient_denies) + " -<br>", "• " + getString(R.string.patient_denies) + " -<br/>").split("• " + getString(R.string.patient_denies) + " -<br/>");
 
                     // index 0 - Reports
-                    String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
+                    String reports[] = assoValueBlock[0].replace("• " + getString(R.string.patient_reports) + " -<br>", "• " + getString(R.string.patient_reports) + " -<br/>").split("• " + getString(R.string.patient_reports) + " -<br/>");
                     patientReports = reports[1];
                     patientDenies = assoValueBlock[1];
                     complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later

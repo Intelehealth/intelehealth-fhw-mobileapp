@@ -384,6 +384,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
             } else {
                 String complaint = currentNode.getDisplay();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
+                    complaint = currentNode.findDisplay();
 //                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                     insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                 }
@@ -660,7 +661,12 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
-            ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(currentNode.getDisplay()));
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(currentNode.getDisplay_russian()));
+            } else {
+                ((TextView) findViewById(R.id.tv_title)).setText(patientName.concat(": ").concat(currentNode.getDisplay()));
+            }
         }
     }
 

@@ -1530,4 +1530,7 @@
     <string name="no_mobile_number_added">Номер телефона не добавлен</string>
     <string name="type_or_select_reason">Введите или выберите причину</string>
 
+    <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>
+
+
 </resources>
