@@ -936,8 +936,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // complaints data
         if (complaint.getValue() != null) {
             String value = complaint.getValue();
-            Log.v(TAG, "complaint: " + value);
-            String valueArray[] = value.split("►<b> Associated symptoms</b>:  <br/>");
+            String valueArray[];
+
+            if (complaint.getValue().contains("►<b> Associated symptoms</b>:  <br/>")) {
+                valueArray = value.split("►<b> Associated symptoms</b>: {2}<br/>");
+            } else {
+                valueArray = value.split("►<b>сопутствующие симптомы</b>: <br/>");
+            }
+
             Log.v(TAG, "complaint: " + valueArray[0]);
             String[] headerchips = valueArray[0].split("►");
             List<String> cc_tempvalues = new ArrayList<>(Arrays.asList(headerchips));
@@ -960,11 +966,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
 
             if (valueArray.length > 1) {
-                if (valueArray[1].contains("• " + getString(R.string.patient_reports)) && valueArray[1].contains("• " + getString(R.string.patient_denies))) {
-                    String assoValueBlock[] = valueArray[1].replace("• " + getString(R.string.patient_denies) + " -<br>", "• " + getString(R.string.patient_denies) + " -<br/>").split("• " + getString(R.string.patient_denies) + " -<br/>");
+                if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+                    String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
 
                     // index 0 - Reports
-                    String reports[] = assoValueBlock[0].replace("• " + getString(R.string.patient_reports) + " -<br>", "• " + getString(R.string.patient_reports) + " -<br/>").split("• " + getString(R.string.patient_reports) + " -<br/>");
+                    String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
                     patientReports = reports[1];
                     patientDenies = assoValueBlock[1];
                     complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later

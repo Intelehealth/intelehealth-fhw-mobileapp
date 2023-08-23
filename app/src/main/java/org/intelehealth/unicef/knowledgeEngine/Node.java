@@ -955,7 +955,7 @@ public class Node implements Serializable {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 //raw = raw.substring(6);
-                                raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 Log.e("FinalText= ", raw);
                             } else {
                                 Log.e("FinalText= ", raw);
