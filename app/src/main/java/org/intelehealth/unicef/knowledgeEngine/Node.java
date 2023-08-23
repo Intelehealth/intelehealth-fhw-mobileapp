@@ -1489,6 +1489,7 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         durationDialog.setView(convertView);
+        convertView.findViewById(R.id.rl_button).setVisibility(View.GONE);
         final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
