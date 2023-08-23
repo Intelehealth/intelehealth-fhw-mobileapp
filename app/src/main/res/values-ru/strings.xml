@@ -1523,5 +1523,10 @@
     <string name="exit_app">Выйти из приложения</string>
     <string name="language_successfully_changed_to">Язык успешно изменен на</string>
     <string name="language_successfully_changed">Язык успешно изменен</string>
+    <string name="thank_you_for_feedback">Спасибо за ваш отзыв!</string>
+    <string name="go_to_website">Перейти на веб-сайт</string>
+    <string name="older_visits">Старые визиты</string>
+    <string name="no_address_added">Адрес не добавлен</string>
+    <string name="no_mobile_number_added">Номер телефона не добавлен</string>
 
 </resources>

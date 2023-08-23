@@ -139,6 +139,7 @@
     <color name="add_patient_button_color">#2E1E91</color>
     <color name="reset_update_button_background_color">#EFE8FF</color>
     <color name="reset_update_button_text_color">#2E1E91</color>
+    <color name="about_us_background">#2E1E91</color>
 
     <!--END-->
 </resources>

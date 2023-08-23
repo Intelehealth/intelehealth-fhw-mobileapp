@@ -1318,7 +1318,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (patientDTO.getOccupation() != null && !patientDTO.getOccupation().equals("")) {
             patientoccupation.setText(patientDTO.getOccupation());
         } else {
-            patientoccupation.setText("");
+            patientoccupation.setText(getString(R.string.not_provided));
         }
     }
 

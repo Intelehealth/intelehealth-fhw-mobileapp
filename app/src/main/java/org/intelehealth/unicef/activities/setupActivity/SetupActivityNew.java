@@ -173,7 +173,6 @@ public class SetupActivityNew extends BaseActivity {
             }
         });
 
-        rbProduction.setChecked(true);
 
         getLocationFromProductionServer();
         getLocationFromTestingServer();
@@ -193,6 +192,8 @@ public class SetupActivityNew extends BaseActivity {
                 autotvLocations.setAdapter(adapter);
             }
         });
+
+        rbProduction.setChecked(true);
 
         autotvLocations.setOnItemClickListener((adapterView, view, i, l) -> {
             List<String> items = new ArrayList<>();
@@ -611,8 +612,6 @@ public class SetupActivityNew extends BaseActivity {
                             productionLocationsList.addAll(items);
                             productionServerLocationList.addAll(mLocations);
                             isLocationFetched = true;
-                            LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivityNew.this, productionLocationsList);
-                            autotvLocations.setAdapter(adapter);
                             autotvLocations.setEnabled(true);
                         } else {
                             isLocationFetched = false;

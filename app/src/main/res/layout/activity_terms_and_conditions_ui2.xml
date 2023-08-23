@@ -51,7 +51,7 @@
                 android:layout_marginHorizontal="@dimen/content_margin_start"
                 android:layout_toEndOf="@+id/iv_back_arrow_terms"
                 android:fontFamily="@font/lato_regular"
-                android:justificationMode="inter_word"
+                android:lineSpacingExtra="-3dp"
                 android:textSize="14sp" />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:layout_marginHorizontal="@dimen/content_margin_start"
                 android:layout_toEndOf="@+id/iv_back_arrow_terms"
                 android:fontFamily="@font/lato_regular"
-                android:justificationMode="inter_word"
+                android:lineSpacingExtra="-3dp"
                 android:textSize="14sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

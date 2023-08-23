@@ -2142,5 +2142,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="priority_uppercase">PRIORITY</string>
     <string name="appointment_denied_message">Please check the Appointments screen this visit\'s appointment.</string>
     <string name="reset">Reset</string>
+    <string name="go_to_website">Go to website</string>
 
 </resources>

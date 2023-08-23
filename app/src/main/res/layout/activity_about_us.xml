@@ -194,7 +194,12 @@
                         android:layout_marginTop="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/margin_24"
                         android:layout_marginBottom="@dimen/margin_24"
-                        android:background="@drawable/aboutus_btn" />
+                        android:background="@drawable/bg_add_patient"
+                        android:drawableEnd="@drawable/ic_website_globe"
+                        android:paddingStart="@dimen/margin_20"
+                        android:paddingEnd="@dimen/margin_15"
+                        android:text="@string/go_to_website"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
             </FrameLayout>
