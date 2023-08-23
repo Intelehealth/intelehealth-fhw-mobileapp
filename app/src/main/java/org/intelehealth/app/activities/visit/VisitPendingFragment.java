@@ -24,11 +24,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -68,6 +71,14 @@ public class VisitPendingFragment extends Fragment {
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
+
+    private final int recentLimit = 15, olderLimit = 15;
+    private int recentStart = 0, recentEnd = recentStart + recentLimit;
+    private boolean isRecentFullyLoaded = false;
+
+    private int olderStart = 0, olderEnd = olderStart + olderLimit;
+    private boolean isolderFullyLoaded = false;
+    NestedScrollView nestedscrollview;
 
     @Nullable
     @Override
@@ -143,7 +154,42 @@ public class VisitPendingFragment extends Fragment {
         month_nodata = view.findViewById(R.id.month_nodata);
 
         recycler_recent = view.findViewById(R.id.recycler_recent);
+        LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recycler_recent.setLayoutManager(reLayoutManager);
+
         recycler_older = view.findViewById(R.id.rv_older);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recycler_older.setLayoutManager(layoutManager);
+
+        nestedscrollview = view.findViewById(R.id.nscPendingPrescription);
+        nestedscrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                // Scroll Down
+                if (scrollY > oldScrollY) {
+                    // update recent data as it will not go at very bottom of list.
+                    if (recentList != null && recentStart > recentList.size()) {
+                        isRecentFullyLoaded = true;
+                        return;
+                    }
+                    if (!isRecentFullyLoaded)
+                        setRecentMoreDataIntoRecyclerView();
+
+                    // Last Item Scroll Down.
+                    if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        // update older data as it will not go at very bottom of list.
+                        if (olderList != null && olderStart > olderList.size()) {
+                            isolderFullyLoaded = true;
+                            return;
+                        }
+                        if (!isolderFullyLoaded) {
+                            Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
+                            setOlderMoreDataIntoRecyclerView();
+                        }
+                    }
+                }
+            }
+        });
+
         //recycler_month = view.findViewById(R.id.rv_thismonth);
         pending_endvisit_no = view.findViewById(R.id.pending_endvisit_no);
 
@@ -157,9 +203,10 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void defaultData() {
-        recentVisits(20, 0);
-        olderVisits(20, 0);
+        recentVisits();
+        olderVisits();
         int totalCount = totalCounts_recent + totalCounts_older;
+        Log.d("rece", "defaultData: pending" + totalCount);
 
         // loaded month data 1st for showing the count in main ui
 //        thisMonths_Visits();
@@ -168,6 +215,31 @@ public class VisitPendingFragment extends Fragment {
 
         totalCounts = totalCounts_recent + totalCounts_older + totalCounts_month;
         progress.setVisibility(View.GONE);
+    }
+
+    // This method will be accessed every time the person scrolls the recyclerView further.
+    private void setRecentMoreDataIntoRecyclerView() {
+        if (recentEnd > olderList.size()) {
+            recentEnd = olderList.size();
+            isRecentFullyLoaded = true;
+        }
+
+        recent_adapter.list.addAll(olderList.subList(recentStart, recentEnd));
+        recent_adapter.notifyDataSetChanged();
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+    }
+
+    private void setOlderMoreDataIntoRecyclerView() {
+        if (olderEnd > olderList.size()) {
+            olderEnd = olderList.size();
+            isolderFullyLoaded = true;
+        }
+
+        older_adapter.list.addAll(olderList.subList(olderStart, olderEnd));
+        older_adapter.notifyDataSetChanged();
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
     }
 
     private void visitData() {
@@ -283,7 +355,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void recentVisits(int limit, int offset) {
+    private void recentVisits() {
         // new
         recentList = new ArrayList<>();
         db.beginTransaction();
@@ -311,8 +383,7 @@ public class VisitPendingFragment extends Fragment {
                       //  " " +
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
 //                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?"
-                , new String[]{String.valueOf(limit), String.valueOf(offset)});
+                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -365,16 +436,23 @@ public class VisitPendingFragment extends Fragment {
         }
         cursor.close();
 
-        totalCounts_recent = recentList.size();
+        // pagination - start
+        if (recentEnd > recentList.size()) {
+            recentEnd = recentList.size();
+            isRecentFullyLoaded = true;
+        }
+        recent_adapter = new VisitAdapter(getActivity(), recentList.subList(recentStart, recentEnd));
+        recycler_recent.setNestedScrollingEnabled(false);
+        recycler_recent.setAdapter(recent_adapter);
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        // pagination - end
 
+        totalCounts_recent = recentList.size();
         if (totalCounts_recent == 0 || totalCounts_recent < 0)
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
-
-        recent_adapter = new VisitAdapter(getActivity(), recentList);
-        recycler_recent.setNestedScrollingEnabled(false);
-        recycler_recent.setAdapter(recent_adapter);
 
 //        thisWeeks_Visits();
 
@@ -474,7 +552,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void olderVisits(int limit, int offset) {
+    private void olderVisits() {
         // VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
         //  recycler_week.setAdapter(adapter_new);
 
@@ -498,9 +576,9 @@ public class VisitPendingFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
                         " and e.encounter_type_uuid = ? " +
-                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC limit ? offset ?"
+                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC"
 
-                , new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});
+                , new String[]{ENCOUNTER_VISIT_NOTE});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -541,24 +619,30 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        totalCounts_older = olderList.size();
+        // pagination - start
+        if (olderEnd > olderList.size()) {
+            olderEnd = olderList.size();
+            isolderFullyLoaded = true;
+        }
 
+        older_adapter = new VisitAdapter(getActivity(), olderList.subList(olderStart, olderEnd));
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+        // pagination - end
+
+        totalCounts_older = olderList.size();
         if (totalCounts_older == 0 || totalCounts_older < 0)
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
-
-        older_adapter = new VisitAdapter(getActivity(), olderList);
-        recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(older_adapter);
 
         //  thisMonths_Visits();
 
         // new
 
         //new
-
-
 
       /*  weeksList = new ArrayList<>();
         Date cDate = new Date();
