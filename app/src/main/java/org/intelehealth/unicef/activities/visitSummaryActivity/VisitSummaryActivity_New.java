@@ -89,6 +89,8 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.ihutils.ui.CameraActivity;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.unicef.activities.base.BaseActivity;
@@ -141,8 +143,6 @@ import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.ihutils.ui.CameraActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -160,6 +160,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -962,8 +964,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             String patientReports = getString(R.string.no_data_added);
             String patientDenies = getString(R.string.no_data_added);
 
-            if (valueArray[0] != null)
-                complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
+            if (valueArray[0] != null) {
+                String translateDates = translateDatesUsingRegex(valueArray[0]);
+                complaintView.setText(Html.fromHtml(translateDates)); // todo: uncomment later
+            }
 
             if (valueArray.length > 1) {
                 if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
@@ -1840,6 +1844,21 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+    }
+
+    private String translateDatesUsingRegex(String complaintString) {
+        String regex = "\\d{2}/[A-Za-z]{3}/\\d{4}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(complaintString);
+
+        while (matcher.find()) {
+            String matchedDate = matcher.group();
+            String translatedDate = StringUtils.getFullMonthName(matchedDate);
+            translatedDate = StringUtils.en__ru_dob(translatedDate);
+            complaintString = complaintString.replace(matchedDate, translatedDate);
+        }
+
+        return complaintString;
     }
 
     // permission code - start
