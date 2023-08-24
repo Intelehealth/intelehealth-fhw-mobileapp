@@ -153,6 +153,7 @@
                 app:boxStrokeWidth="@dimen/input_stroke_size"
                 app:counterEnabled="true"
                 app:counterMaxLength="300"
+                android:maxLength="300"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText

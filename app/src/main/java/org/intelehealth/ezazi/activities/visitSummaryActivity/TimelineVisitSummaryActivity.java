@@ -15,7 +15,6 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
@@ -113,6 +112,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
     public static final String TAG = "TimelineVisitSummary";
     boolean isAdded = false;
 
+    private boolean isVisitCompleted = false;
+
     private boolean hwHasEditAccess = true;
     private MaterialTextView tvReferToOtherHospital, tvSelfDischarge, tvReferToICU, tvShiftToCSection;
 //    private String dialogFor = "";
@@ -147,7 +148,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         @Override
         public void onReceive(Context context, Intent intent) {
             recreate();
-            checkInternetAndUploadVisit_Encounter();
+            checkInternetAndUploadVisitEncounter(false);
         }
     };
 
@@ -156,6 +157,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         super.onPause();
         unregisterReceiver(mMessageReceiver);
         unregisterReceiver(visitTimeOutReceiver);
+        unregisterReceiver(syncBroadcastReceiver);
     }
 
     @Override
@@ -163,7 +165,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         super.onResume();
         registerReceiver(visitTimeOutReceiver, new IntentFilter(AppConstants.VISIT_OUT_OF_TIME_ACTION));
         registerReceiver(mMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
-
+        registerReceiver(syncBroadcastReceiver, new IntentFilter(AppConstants.SYNC_INTENT_ACTION));
     }
 
     @Override
@@ -538,7 +540,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         } else {
             VisitOutcome outcome = new ObsDAO().getCompletedVisitType(isVCEPresent);
             endStageButton.setVisibility(View.INVISIBLE);
-            if (!outcome.getOutcome().equalsIgnoreCase("")) {
+            if (outcome != null && outcome.getOutcome() != null
+                    && !outcome.getOutcome().equalsIgnoreCase("")) {
                 outcomeTV.setVisibility(View.VISIBLE);
                 setOutcomeText(outcome.getOutcome());
                 outcomeTV.setGravity(Gravity.CENTER);
@@ -607,6 +610,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             button.setTag(R.id.btnAddOutOfTimeReason, visitOutcome);
             updateOutOfTimeOutcomeText(visitOutcome);
             button.setOnClickListener(viewMoreClickListener);
+            button.setVisibility(View.VISIBLE);
         } else {
             button.setVisibility(View.GONE);
         }
@@ -620,7 +624,8 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
     private void showContentDialog(VisitOutcome outcome) {
         String content = outcome.getOtherComment();
         if (outcome.isHasMotherDeceased()) {
-            content = content + "\n\n" + outcome.getMotherDeceasedReason();
+            content = content != null ? "Other Comment:\n" + content + "\n\n" + "Mother Deceased Reason:\n" + outcome.getMotherDeceasedReason()
+                    : "Mother Deceased Reason:\n" + outcome.getMotherDeceasedReason();
         }
 
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
@@ -636,7 +641,10 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
     private void updateOutOfTimeOutcomeText(VisitOutcome visitOutcome) {
         outcomeTV.setGravity(Gravity.START);
         String label = visitOutcome.getOutcome();
-        String mainReason = getString(R.string.outcome_reason, visitOutcome.getOtherComment());
+        String content = visitOutcome.getOtherComment() != null
+                ? visitOutcome.getOtherComment() + (visitOutcome.getMotherDeceasedReason() != null ?
+                "/" + visitOutcome.getMotherDeceasedReason() : "") : visitOutcome.getMotherDeceasedReason();
+        String mainReason = getString(R.string.outcome_reason, content);
         setOutcomeText(label + mainReason);
 //        outcomeTV.setText(HtmlCompat.fromHtml(getString(R.string.lbl_outcome, outcome), 0));
     }
@@ -814,7 +822,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
             Toast.makeText(context, context.getString(R.string.self_discharge_successful), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, HomeActivity.class);
             startActivity(intent);
-            checkInternetAndUploadVisit_Encounter();
+            checkInternetAndUploadVisitEncounter(true);
         } else {
             Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
         }
@@ -867,7 +875,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
                 Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, HomeActivity.class);
                 startActivity(intent);
-                checkInternetAndUploadVisit_Encounter();
+                checkInternetAndUploadVisitEncounter(true);
             } else {
                 Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
@@ -1489,21 +1497,12 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         return isInserted;
     }
 
-    public void checkInternetAndUploadVisit_Encounter() {
+    public void checkInternetAndUploadVisitEncounter(boolean isCompleteVisitCall) {
+        isVisitCompleted = isCompleteVisitCall;
         if (NetworkConnection.isOnline(getApplication())) {
             Toast.makeText(context, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
-            SyncDAO syncDAO = new SyncDAO();
-
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //   Added the 4 sec delay and then push data.For some reason doing immediately does not work
-                    //Do something after 100ms
-                    SyncUtils syncUtils = new SyncUtils();
-                    boolean isSynced = syncUtils.syncForeground("timeline");
-                }
-            }, 4000);
+            SyncUtils syncUtils = new SyncUtils();
+            syncUtils.syncForeground("timeline");
         } else {
             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
         }
@@ -1871,13 +1870,24 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity implemen
         if (isInserted) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             cancelStage2_Alarm(); // cancel stage 2 alarm so that again 15mins interval doesnt starts.
-            Intent intent = new Intent(context, HomeActivity.class);
-            startActivity(intent);
-            checkInternetAndUploadVisit_Encounter();
+            checkInternetAndUploadVisitEncounter(true);
         } else {
             Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    private final BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent);
+
+            if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY) && isVisitCompleted) {
+                isVisitCompleted = false;
+                onBackPressed();
+            }
+        }
+    };
 
 //    private void setDropdownsData(LabourCompleteAndMotherDeceasedDialogBinding binding) {
 //        //for labour completed dropdown

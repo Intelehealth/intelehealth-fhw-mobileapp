@@ -59,7 +59,7 @@ public class VisitLabourActivity extends BaseActivity {
         unregisterReceiver(syncBroadcastReceiver);
     }
 
-    private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Logger.logD("syncBroadcastReceiver", "onReceive! " + intent);

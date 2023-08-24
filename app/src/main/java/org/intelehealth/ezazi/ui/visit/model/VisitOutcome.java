@@ -1,5 +1,9 @@
 package org.intelehealth.ezazi.ui.visit.model;
 
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+
 /**
  * Created by Vaghela Mithun R. on 21-08-2023 - 19:59.
  * Email : mithun@intelehealth.org
@@ -54,5 +58,11 @@ public class VisitOutcome {
 
     public String getConceptId() {
         return conceptId;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

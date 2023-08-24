@@ -965,7 +965,7 @@ public class SearchPatientActivity extends BaseActionBarActivity implements Sear
         return false;
     }
 
-    private BroadcastReceiver screenRefreshReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver screenRefreshReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e(TAG, "onReceive: " + intent.getAction());

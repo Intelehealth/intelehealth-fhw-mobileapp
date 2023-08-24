@@ -132,6 +132,7 @@ public class AppConstants {
 
     public static final String OTHER_OPTION = "Other";
 
+    public static final int INPUT_MAX_LENGTH = 300;
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }
@@ -147,7 +148,6 @@ public class AppConstants {
 
     public static String getFirebaseRTDBRootRefForDeviceInfo() {
         return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
-
     }
 }
 

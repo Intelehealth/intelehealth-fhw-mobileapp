@@ -15,7 +15,6 @@ import static org.intelehealth.ezazi.utilities.StringUtils.getFullMonthName;
 import static org.intelehealth.ezazi.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -23,7 +22,6 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -61,7 +59,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -94,7 +91,6 @@ import org.intelehealth.ezazi.models.FamilyMemberRes;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.ProviderDTO;
-import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.networkApiCalls.ApiClient;
 import org.intelehealth.ezazi.networkApiCalls.ApiInterface;
@@ -121,11 +117,9 @@ import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringUtils;
-import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.klivekit.model.RtcArgs;
-import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
@@ -138,7 +132,6 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -147,7 +140,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -1558,10 +1550,13 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         dialog.show(getSupportFragmentManager(), ConfirmationDialogFragment.class.getCanonicalName());
     }
 
-    private BroadcastReceiver screenRefreshReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver visitOutOfTimeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            sync();
+            if (intent != null && intent.getAction().equalsIgnoreCase(AppConstants.VISIT_OUT_OF_TIME_ACTION)) {
+                loadVisits();
+                sync();
+            }
         }
     };
 
@@ -1663,7 +1658,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             mActivePatientAdapter.notifyDataSetChanged();
 
         registerReceiver(mCardMessageReceiver, new IntentFilter(AppConstants.NEW_CARD_INTENT_ACTION));
-        registerReceiver(screenRefreshReceiver, new IntentFilter(AppConstants.getScreenRefreshEventReceiver()));
+        registerReceiver(visitOutOfTimeReceiver, new IntentFilter(AppConstants.VISIT_OUT_OF_TIME_ACTION));
         loadVisits();
         //        sync();
 //        recreate();
@@ -2383,7 +2378,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mCardMessageReceiver);
-        unregisterReceiver(screenRefreshReceiver);
+        unregisterReceiver(visitOutOfTimeReceiver);
     }
 
 

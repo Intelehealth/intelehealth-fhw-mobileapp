@@ -28,6 +28,7 @@ import java.util.UUID;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.prescription.PrescDataModel;
+import org.intelehealth.ezazi.builder.QueryBuilder;
 import org.intelehealth.ezazi.executor.TaskExecutor;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
@@ -649,11 +650,43 @@ public class ObsDAO {
         return type;
     }
 
+    private String getCompletedStatusIds() {
+        return "conceptuuid IN ('" + UuidDictionary.BIRTH_OUTCOME + "', " +
+                "'" + UuidDictionary.REFER_TYPE + "', " +
+                "'" + UuidDictionary.MOTHER_DECEASED_FLAG + "', " +
+                "'" + UuidDictionary.MOTHER_DECEASED + "', " +
+                "'" + UuidDictionary.END_2ND_STAGE_OTHER + "', " +
+                "'" + UuidDictionary.LABOUR_OTHER + "', " +
+                "'" + UuidDictionary.OUT_OF_TIME + "')";
+
+//        IN (
+//                '23601d71-50e6-483f-968d-aeef3031346d',
+//                '9414cc17-1f97-4a27-8066-17591c11e513',
+//                '0a3d26ec-bdb8-4a27-badb-937f730bf89d',
+//                '91c94e0b-b967-4dd0-9eec-75d770af7f5b ',
+//                'd319ebbc-5260-4eff-aa3f-2af11b177ec4',
+//                'ac99754c-d3a9-4736-a8b8-276c78953315',
+//                '893b3d20-171b-4023-a6f5-3d3bdf81a094')
+    }
+
     public VisitOutcome getCompletedVisitType(String encounterUuid) {
         HashMap<String, String> statusMap = new HashMap<>();
-
+        Log.e(TAG, "getCompletedVisitType: encounterId => " + encounterUuid);
         db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        String query = "SELECT value, conceptuuid FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?, ?, ?, ?, ?, ?)";
+//        String query = new QueryBuilder().select("value, conceptuuid").from("tbl_obs")
+//                .where("encounteruuid = '" + encounterUuid + "' AND " + getCompletedStatusIds())
+//                .build();
+//        findOutcome: {ac99754c-d3a9-4736-a8b8-276c78953315=Visit close with other comment,
+//        23601d71-50e6-483f-968d-aeef3031346d=OTHER,
+//        91c94e0b-b967-4dd0-9eec-75d770af7f5b=Mother is no more alive,
+//        0a3d26ec-bdb8-4a27-badb-937f730bf89d=YES}
+//        10:17:50.239  E  initUI: {"hasMotherDeceased":true,"outcome":"OTHER/Mother Deceased"}
+//        String query = new QueryBuilder().select("O.value, O.conceptuuid").from("tbl_obs O")
+//                .join("LEFT JOIN tbl_encounter E ON E.uuid =O.encounteruuid")
+//                .where("E.uuid = '" + encounterUuid + "' AND E.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_VISIT_COMPLETE + "'")
+//                .build();
+//        Log.e(TAG, "getCompletedVisitType: " + query);
+        String query = "SELECT value, conceptuuid FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?,?,?,?,?,?,?)";
         final Cursor idCursor = db.rawQuery(query, new String[]{encounterUuid,
                 UuidDictionary.BIRTH_OUTCOME,
                 UuidDictionary.REFER_TYPE,
@@ -662,6 +695,7 @@ public class ObsDAO {
                 UuidDictionary.END_2ND_STAGE_OTHER,
                 UuidDictionary.LABOUR_OTHER,
                 UuidDictionary.OUT_OF_TIME});
+
 
         //do some insertions or whatever you need
 //        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where encounteruuid = ? AND voided='0' AND conceptuuid = ?",
@@ -704,13 +738,15 @@ public class ObsDAO {
     }
 
     private VisitOutcome findOutcome(HashMap<String, String> outcomeMap) {
+        Log.e(TAG, "findOutcome: " + outcomeMap.toString());
+
         VisitOutcome visitOutcome = new VisitOutcome();
         if (outcomeMap.containsKey(BIRTH_OUTCOME) && outcomeMap.containsKey(MOTHER_DECEASED_FLAG)) {
             String birthOutcome = outcomeMap.get(BIRTH_OUTCOME);
             String motherFlag = outcomeMap.get(MOTHER_DECEASED_FLAG);
             String outcome = birthOutcome;
             assert motherFlag != null;
-            if (motherFlag.equals("YES")) {
+            if (motherFlag.equalsIgnoreCase("YES")) {
                 outcome = outcome + "/" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue();
                 visitOutcome.setOutcome(outcome);
                 visitOutcome.setHasMotherDeceased(true);
@@ -718,14 +754,14 @@ public class ObsDAO {
             }
 
             assert birthOutcome != null;
-            if (birthOutcome.equals(CompletedVisitStatus.Labour.OTHER.value())) {
+            if (birthOutcome.equalsIgnoreCase(CompletedVisitStatus.Labour.OTHER.value())) {
                 visitOutcome.setOtherComment(outcomeMap.get(LABOUR_OTHER));
             }
         } else if (outcomeMap.containsKey(REFER_TYPE)) {
             String outcome = outcomeMap.get(REFER_TYPE);
             visitOutcome.setOutcome(outcome);
             assert outcome != null;
-            if (outcome.equals(CompletedVisitStatus.ReferType.OTHER.value())) {
+            if (outcome.equalsIgnoreCase(CompletedVisitStatus.ReferType.OTHER.value())) {
                 visitOutcome.setOtherComment(outcomeMap.get(END_2ND_STAGE_OTHER));
             }
         } else if (outcomeMap.containsKey(MOTHER_DECEASED)) {

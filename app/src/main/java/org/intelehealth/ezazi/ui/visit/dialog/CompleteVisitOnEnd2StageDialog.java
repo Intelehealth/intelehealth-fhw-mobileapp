@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.ui.visit.dialog;
 
+import static org.intelehealth.ezazi.app.AppConstants.INPUT_MAX_LENGTH;
+
 import android.content.Context;
 import android.content.Intent;
 import android.text.InputFilter;
@@ -80,7 +82,7 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
         binding.cbMotherDeceased.setTag(UuidDictionary.MOTHER_DECEASED_FLAG);
 
         binding.etOtherCommentOutcomes.setTag(UuidDictionary.REFER_TYPE);
-        binding.etOtherCommentOutcomes.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        binding.etOtherCommentOutcomes.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
         binding.etOtherCommentOutcomes.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 clearSelection();
@@ -351,7 +353,7 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
     private void showMotherDeceasedDialog() {
         MotherDeceasedDialogBinding binding = MotherDeceasedDialogBinding.inflate(inflater, null, false);
         binding.etLayoutMotherDeceased.setMultilineInputEndIconGravity();
-
+        binding.etMotherDeceasedReason.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
         CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(context)
                 .title(R.string.mother_deceased)
                 .positiveButtonLabel(R.string.yes)

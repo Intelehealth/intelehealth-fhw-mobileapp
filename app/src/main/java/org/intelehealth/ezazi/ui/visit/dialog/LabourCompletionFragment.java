@@ -1,5 +1,6 @@
 package org.intelehealth.ezazi.ui.visit.dialog;
 
+import static org.intelehealth.ezazi.app.AppConstants.INPUT_MAX_LENGTH;
 import static org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity.ARG_HAS_MOTHER_DECEASED;
 import static org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity.ARG_VISIT_ID;
 
@@ -128,10 +129,10 @@ public class LabourCompletionFragment extends Fragment {
     }
 
     private void applyFirstLatterCapitalCase() {
-        binding.etDeceasedReason.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
-        binding.etBabyStatus.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
-        binding.etMotherStatus.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
-        binding.etOtherComment.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+        binding.etDeceasedReason.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
+        binding.etBabyStatus.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
+        binding.etMotherStatus.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
+        binding.etOtherComment.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
     }
 
     private void enableAndDisableAllFields(LabourCompleteAndMotherDeceasedDialogBinding binding, boolean flag) {
@@ -262,18 +263,10 @@ public class LabourCompletionFragment extends Fragment {
 
                 motherDeceasedStatus = helper.addMotherDeceasedObs(encounterId, hasMotherDeceased, labourInfo.getMotherDeceasedReason());
 
-//                motherDeceasedStatus = obsDAO.insertMotherDeceasedFlatObs(encounterId, helper.sessionManager.getCreatorID(), String.valueOf(hasMotherDeceased));
-//
-//                if (hasMotherDeceased) {
-//                    obsDAO.insert_Obs(encounterId, helper.sessionManager.getCreatorID(),
-//                            labourInfo.getMotherDeceasedReason(), UuidDictionary.MOTHER_DECEASED);
-//                }
-
                 if (birthOutcomeStatus && motherDeceasedStatus) {
-                    binding.btnSubmit.setText("Visit Completing...Please wait");
+                    binding.btnSubmit.setText("Visit Completing Please wait...");
                     binding.btnSubmit.setEnabled(false);
                     ((VisitLabourActivity) requireActivity()).checkInternetAndUploadVisitEncounter();
-//                    dismiss();
                     Toast.makeText(requireContext(), getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
