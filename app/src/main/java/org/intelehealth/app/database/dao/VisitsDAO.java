@@ -489,6 +489,41 @@ public class VisitsDAO {
     /**
      * Todays Visits that are not Ended.
      */
+    public static List<PrescriptionModel> recentNotEndedVisits(int limit, int offset) {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+//                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
+                " v.startdate > DATETIME('now', '-4 day') " +
+                " AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return arrayList;
+    }
     public static List<PrescriptionModel> recentNotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -541,6 +576,42 @@ public class VisitsDAO {
                 " v.startdate < DATETIME('now', '-4 day') AND " +
                 "v.enddate IS NULL ORDER BY v.startdate DESC",
                 new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return arrayList;
+    }
+    public static List<PrescriptionModel> olderNotEndedVisits(int limit, int offset) {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+//                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
+//                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
+                " v.startdate < DATETIME('now', '-4 day') AND " +
+                "v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {

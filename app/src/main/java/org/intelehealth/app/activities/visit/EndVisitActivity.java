@@ -114,9 +114,8 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
                 // Scroll Down
                 if (scrollY > oldScrollY) {
                     // update recent data as it will not go at very bottom of list.
-                    if (recentCloseVisitsList != null && recentStart > recentCloseVisitsList.size()) {
+                    if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
                         isRecentFullyLoaded = true;
-                        return;
                     }
                     if (!isRecentFullyLoaded)
                         setRecentMoreDataIntoRecyclerView();
@@ -124,7 +123,7 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
                     // Last Item Scroll Down.
                     if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
                         // update older data as it will not go at very bottom of list.
-                        if (olderCloseVisitsList != null && olderStart > olderCloseVisitsList.size()) {
+                        if (olderCloseVisitsList != null && olderCloseVisitsList.size() == 0) {
                             isolderFullyLoaded = true;
                             return;
                         }
@@ -157,16 +156,11 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     }
 
     private void recentCloseVisits() {
-        recentCloseVisitsList = recentNotEndedVisits();
-
-        if (recentEnd > recentCloseVisitsList.size()) {
-            recentEnd = recentCloseVisitsList.size();
-            isRecentFullyLoaded = true;
-        }
-
-        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList.subList(recentStart, recentEnd));
+        recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
+        recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
+
         recentStart = recentEnd;
         recentEnd += recentLimit;
 
@@ -178,16 +172,11 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     }
 
     private void olderCloseVisits() {
-        olderCloseVisitsList = olderNotEndedVisits();
-
-        if (olderEnd > olderCloseVisitsList.size()) {
-            olderEnd = olderCloseVisitsList.size();
-            isolderFullyLoaded = true;
-        }
-
-        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList.subList(olderStart, olderEnd));
+        olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart);
+        olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(olderVisitsAdapter);
+
         olderStart = olderEnd;
         olderEnd += olderLimit;
 
@@ -200,24 +189,28 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
-        if (recentEnd > recentCloseVisitsList.size()) {
-            recentEnd = recentCloseVisitsList.size();
+        if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
             isRecentFullyLoaded = true;
+            return;
         }
 
-        recentVisitsAdapter.arrayList.addAll(recentCloseVisitsList.subList(recentStart, recentEnd));
+        recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentCloseVisitsList.size());
+        recentVisitsAdapter.arrayList.addAll(recentCloseVisitsList);
         recentVisitsAdapter.notifyDataSetChanged();
         recentStart = recentEnd;
         recentEnd += recentLimit;
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
-        if (olderEnd > olderCloseVisitsList.size()) {
-            olderEnd = olderCloseVisitsList.size();
+        if (olderCloseVisitsList != null && olderCloseVisitsList.size() == 0) {
             isolderFullyLoaded = true;
+            return;
         }
 
-        olderVisitsAdapter.arrayList.addAll(olderCloseVisitsList.subList(olderStart, olderEnd));
+        olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderCloseVisitsList.size());
+        olderVisitsAdapter.arrayList.addAll(olderCloseVisitsList);
         olderVisitsAdapter.notifyDataSetChanged();
         olderStart = olderEnd;
         olderEnd += olderLimit;
