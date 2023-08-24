@@ -2130,6 +2130,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            diagnosis_web = StringUtils.convertDiagnosisText(diagnosis_web);
+        }
 
 //        String comments_web = stringToWeb(additionalReturned);
 
