@@ -167,9 +167,8 @@ public class VisitPendingFragment extends Fragment {
                 // Scroll Down
                 if (scrollY > oldScrollY) {
                     // update recent data as it will not go at very bottom of list.
-                    if (recentList != null && recentStart > recentList.size()) {
+                    if (recentList != null && recentList.size() == 0) {
                         isRecentFullyLoaded = true;
-                        return;
                     }
                     if (!isRecentFullyLoaded)
                         setRecentMoreDataIntoRecyclerView();
@@ -177,7 +176,7 @@ public class VisitPendingFragment extends Fragment {
                     // Last Item Scroll Down.
                     if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
                         // update older data as it will not go at very bottom of list.
-                        if (olderList != null && olderStart > olderList.size()) {
+                        if (olderList != null && olderList.size() == 0) {
                             isolderFullyLoaded = true;
                             return;
                         }
@@ -203,8 +202,9 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void defaultData() {
-        recentVisits();
-        olderVisits();
+        fetchRecentData();
+        fetchOlderData();
+
         int totalCount = totalCounts_recent + totalCounts_older;
         Log.d("rece", "defaultData: pending" + totalCount);
 
@@ -217,26 +217,73 @@ public class VisitPendingFragment extends Fragment {
         progress.setVisibility(View.GONE);
     }
 
-    // This method will be accessed every time the person scrolls the recyclerView further.
-    private void setRecentMoreDataIntoRecyclerView() {
-        if (recentEnd > olderList.size()) {
-            recentEnd = olderList.size();
-            isRecentFullyLoaded = true;
+    private void fetchOlderData() {
+        // pagination - start
+        olderList = olderVisits(olderLimit, olderStart);
+        if (olderEnd > olderList.size()) {
+            olderEnd = olderList.size();
+            isolderFullyLoaded = true;
         }
 
-        recent_adapter.list.addAll(olderList.subList(recentStart, recentEnd));
+        older_adapter = new VisitAdapter(getActivity(), olderList.subList(olderStart, olderEnd));
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+        // pagination - end
+
+        totalCounts_older = olderList.size();
+        if (totalCounts_older == 0 || totalCounts_older < 0)
+            older_nodata.setVisibility(View.VISIBLE);
+        else
+            older_nodata.setVisibility(View.GONE);
+    }
+
+    private void fetchRecentData() {
+        recentList = recentVisits(recentLimit, recentStart);
+        // pagination - start
+        if (recentEnd > recentList.size()) {
+            recentEnd = recentList.size();
+            isRecentFullyLoaded = true;
+        }
+        recent_adapter = new VisitAdapter(getActivity(), recentList.subList(recentStart, recentEnd));
+        recycler_recent.setNestedScrollingEnabled(false);
+        recycler_recent.setAdapter(recent_adapter);
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        // pagination - end
+
+        totalCounts_recent = recentList.size();
+        if (totalCounts_recent == 0 || totalCounts_recent < 0)
+            recent_nodata.setVisibility(View.VISIBLE);
+        else
+            recent_nodata.setVisibility(View.GONE);
+    }
+
+    // This method will be accessed every time the person scrolls the recyclerView further.
+    private void setRecentMoreDataIntoRecyclerView() {
+        if (recentList != null && recentList.size() == 0) {
+            isRecentFullyLoaded = true;
+            return;
+        }
+
+        recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentList.size());
+        recent_adapter.list.addAll(recentList);
         recent_adapter.notifyDataSetChanged();
         recentStart = recentEnd;
         recentEnd += recentLimit;
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
-        if (olderEnd > olderList.size()) {
-            olderEnd = olderList.size();
+        if (olderList != null && olderList.size() == 0) {
             isolderFullyLoaded = true;
+            return;
         }
 
-        older_adapter.list.addAll(olderList.subList(olderStart, olderEnd));
+        olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderList.size());
+        older_adapter.list.addAll(olderList);
         older_adapter.notifyDataSetChanged();
         olderStart = olderEnd;
         olderEnd += olderLimit;
@@ -355,7 +402,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void recentVisits() {
+    private List<PrescriptionModel> recentVisits(int limit, int offset) {
         // new
         recentList = new ArrayList<>();
         db.beginTransaction();
@@ -383,7 +430,8 @@ public class VisitPendingFragment extends Fragment {
                       //  " " +
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
 //                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
+                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -436,23 +484,8 @@ public class VisitPendingFragment extends Fragment {
         }
         cursor.close();
 
-        // pagination - start
-        if (recentEnd > recentList.size()) {
-            recentEnd = recentList.size();
-            isRecentFullyLoaded = true;
-        }
-        recent_adapter = new VisitAdapter(getActivity(), recentList.subList(recentStart, recentEnd));
-        recycler_recent.setNestedScrollingEnabled(false);
-        recycler_recent.setAdapter(recent_adapter);
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
-        // pagination - end
+        return recentList;
 
-        totalCounts_recent = recentList.size();
-        if (totalCounts_recent == 0 || totalCounts_recent < 0)
-            recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
 
 //        thisWeeks_Visits();
 
@@ -552,7 +585,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void olderVisits() {
+    private List<PrescriptionModel> olderVisits(int limit, int offset) {
         // VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
         //  recycler_week.setAdapter(adapter_new);
 
@@ -576,9 +609,8 @@ public class VisitPendingFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
                         " and e.encounter_type_uuid = ? " +
-                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC"
-
-                , new String[]{ENCOUNTER_VISIT_NOTE});
+                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC limit ? offset ?"
+                , new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -619,24 +651,8 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        // pagination - start
-        if (olderEnd > olderList.size()) {
-            olderEnd = olderList.size();
-            isolderFullyLoaded = true;
-        }
+        return olderList;
 
-        older_adapter = new VisitAdapter(getActivity(), olderList.subList(olderStart, olderEnd));
-        recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(older_adapter);
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
-        // pagination - end
-
-        totalCounts_older = olderList.size();
-        if (totalCounts_older == 0 || totalCounts_older < 0)
-            older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
 
         //  thisMonths_Visits();
 
