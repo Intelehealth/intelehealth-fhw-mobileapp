@@ -951,18 +951,16 @@ public class Node implements Serializable {
                                 || associatedTest.trim().equals("сопутствующие симптомы")
                                 || associatedTest.trim().equals("जुड़े लक्षण")
                                 || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
-
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
-                                //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                                //raw = raw.substring(6);
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                raw = raw.substring(6);
                                 Log.e("FinalText= ", raw);
                             } else {
                                 Log.e("FinalText= ", raw);
 
                             }
                         } else {
-                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                         }
 
                     } else {
@@ -977,27 +975,24 @@ public class Node implements Serializable {
                         }
                     }
                     //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
-
                 } else {
                     String associatedTest = node_opt.getText();
-                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे")) || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) || (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்")) || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
-                            //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                            //raw = raw.substring(6);
-                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw.substring(6);
                             Log.e("FinalText= ", raw);
                         } else {
                             Log.e("FinalText= ", raw);
                         }
                     }
                 }
-                Log.v("node", raw);
             }
         }
 
         String formatted;
         if (!raw.isEmpty()) {
-            Log.i(TAG, "generateLanguage: " + raw);
             if (Character.toString(raw.charAt(0)).equals(",")) {
                 formatted = raw.substring(2);
             } else {
@@ -2757,7 +2752,7 @@ public class Node implements Serializable {
             if (mOptions.get(i).isNoSelected()) {
                 if (!flag) {
                     flag = true;
-                    stringsListNoSelected.add(IntelehealthApplication.getAppContext().getString(R.string.patient_denies) + " -" + next_line);
+                    stringsListNoSelected.add("Patient denies" + " -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                 Log.e("List", "" + stringsListNoSelected);

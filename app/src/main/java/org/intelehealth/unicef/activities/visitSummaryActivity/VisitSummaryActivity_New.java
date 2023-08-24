@@ -975,17 +975,34 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
             if (valueArray.length > 1) {
-                if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
-                    String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
-
-                    // index 0 - Reports
-                    String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
-                    patientReports = reports[1];
-                    patientDenies = assoValueBlock[1];
-                    complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-                } else if (valueArray[0].contains("• Patient reports")) {
-                    // todo: handle later -> comment added on 14 nov 2022
+                String[] initialValueArray = new String[]{};
+                if (valueArray[1].contains("• Patient denies")) {
+                    initialValueArray = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
+                    patientDenies = initialValueArray[1];
                 }
+
+                if (valueArray[1].contains("• Patient reports")) {
+                    String[] reportsArray = new String[]{};
+                    if (initialValueArray.length == 0) {
+                        reportsArray = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
+                    } else {
+                        reportsArray = initialValueArray[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
+                    }
+                    patientReports = reportsArray[1];
+                }
+
+                complaintView.setText(Html.fromHtml(valueArray[0]));
+
+//                if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
+//                    String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
+//
+//                    // index 0 - Reports
+//                    String reports[] = assoValueBlock[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
+//                    patientReports = reports[1];
+//                    patientDenies = assoValueBlock[1];
+//                } else if (valueArray[0].contains("• Patient reports")) {
+//                    // todo: handle later -> comment added on 14 nov 2022
+//                }
             }
 
             // todo: testing:
