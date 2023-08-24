@@ -991,7 +991,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     patientReports = reportsArray[1];
                 }
 
-                complaintView.setText(Html.fromHtml(valueArray[0]));
+                String translateDates = "";
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    translateDates = StringUtils.translateDatesUsingRegex(valueArray[0]);
+                } else {
+                    translateDates = valueArray[0];
+                }
+
+                complaintView.setText(Html.fromHtml(translateDates));
 
 //                if (valueArray[1].contains("• Patient reports") && valueArray[1].contains("• Patient denies")) {
 //                    String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
@@ -1308,8 +1315,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                    String translateDates = "";
+                                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                                        translateDates = StringUtils.translateDatesUsingRegex(complaint.getValue());
+                                    } else {
+                                        translateDates = complaint.getValue();
+                                    }
+
+                                    complaintText.setText(Html.fromHtml(translateDates));
+                                    complaintView.setText(Html.fromHtml(translateDates));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -2995,6 +3009,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 } else {
                     diagnosisReturned = value;
                 }
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    diagnosisReturned = StringUtils.convertDiagnosisText(diagnosisReturned);
+                }
+
               /*  if (diagnosisCard.getVisibility() != View.VISIBLE) {
                     diagnosisCard.setVisibility(View.VISIBLE);
                 }
