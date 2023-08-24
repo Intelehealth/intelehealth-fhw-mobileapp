@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingVertical="@dimen/list_container_padding">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/white_child_container_bg"
-        android:padding="@dimen/screen_container_padding"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingVertical="@dimen/list_container_padding">
 
-        <TextView
-            android:id="@+id/tvParamName"
-            style="@style/LabelStyle"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Param name"
-            android:textSize="@dimen/caption"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/etvData"
-            style="@style/Theme.EZazi.EditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:hint="Enter Value"
-            app:drawableEndCompat="@drawable/ic_space"
-            android:inputType="numberDecimal"
+            android:background="@drawable/white_child_container_bg"
+            android:padding="@dimen/screen_container_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/tvParamName"
+                style="@style/LabelStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Param name"
+                android:textSize="@dimen/caption"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/etvData"
+                style="@style/Theme.EZazi.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="Enter Value"
+                app:drawableEndCompat="@drawable/ic_space"
+                android:inputType="numberDecimal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

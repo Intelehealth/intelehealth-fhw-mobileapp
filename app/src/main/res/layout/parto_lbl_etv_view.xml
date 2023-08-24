@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_child_container_bg"
+    android:gravity="center_vertical"
+    android:padding="@dimen/common_padding"
+    android:weightSum="5">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvParamName"
+        style="@style/Theme.EZazi.Text.Dialog.Title"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:background="@drawable/white_child_container_bg"
-        android:gravity="center_vertical"
+        android:layout_weight="2"
         android:padding="@dimen/common_padding"
-        android:weightSum="5">
+        android:text="Param name"
+        android:textColor="@color/gray_6"
+        android:textSize="@dimen/content_text_size" />
 
-        <TextView
-            android:id="@+id/tvParamName"
-            style="@style/Theme.EZazi.Text.Dialog.Title"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:padding="@dimen/common_padding"
-            android:text="Param name"
-            android:textColor="@color/gray_6"
-            android:textSize="@dimen/content_text_size" />
+    <EditText
+        android:id="@+id/etvData"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:background="@drawable/round_corner_gray_stroke_light"
+        android:gravity="center_vertical"
+        android:hint="Enter Value"
+        android:inputType="numberDecimal"
+        android:padding="@dimen/common_padding"
+        android:textColor="@color/gray_4"
+        android:textSize="@dimen/content_text_size" />
 
-        <EditText
-            android:id="@+id/etvData"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:background="@drawable/round_corner_gray_stroke_light"
-            android:gravity="center_vertical"
-            android:hint="Enter Value"
-            android:inputType="numberDecimal"
-            android:padding="@dimen/common_padding"
-            android:textColor="@color/gray_4"
-            android:textSize="@dimen/content_text_size" />
-
-    </LinearLayout>
-</layout>
+</LinearLayout>

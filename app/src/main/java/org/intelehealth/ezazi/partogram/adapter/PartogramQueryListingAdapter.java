@@ -278,6 +278,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             binding.ivFluidOptions.getRoot().setVisibility(View.VISIBLE);
             setIvFluidDetails(info.getCapturedValue(), binding);
+
+            showIVFluidOptionsDetails(title, info, tempView, binding);
+
         } else {
             radioGroup.check(R.id.radioNo);
             info.setCapturedValue("No");
@@ -525,7 +528,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         });
         binding.ivFluidOptions.viewInfusionStatus.getRoot().setOnClickListener(v -> {
             //show infusion status
-            showIVFluidInfusionStatusDialog(title, info, view);
+           // showIVFluidInfusionStatusDialog(title, info, view);
+            showSingleSelectionDialog(title, info, view);
+
         });
         binding.ivFluidOptions.viewInfusionRate.etvData.addTextChangedListener(new TextWatcher() {
             @Override
@@ -560,7 +565,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment
                 .Builder(mContext)
                 .title(R.string.iv_infusion_status)
-                .positiveButtonLabel(R.string.save_button)
                 .content(infusionStatusList).build();
         dialog.setListener(item -> {
             ivInfusionStatus.setText(item.getItem());
@@ -601,6 +605,33 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showSingleSelectionDialog(String title, ParamInfo info, View view){
+        final String[] items =  info.getIvInfusionStatus();
+
+        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+        for (int i = 0; i < items.length; i++) {
+            SingChoiceItem item = new SingChoiceItem();
+            item.setItemIndex(i);
+            item.setItem(items[i]);
+            choiceItems.add(item);
+        }
+
+        String titleDialog = "Select for " + title;
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
+                .title(titleDialog)
+                .content(choiceItems)
+                .build();
+
+        dialog.setListener(item -> {
+            ivInfusionStatus.setText(item.getItem());
+            saveIvFluidDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());
+           // dropdownTextView.setText(paramInfo.getOptions()[item.getItemIndex()]);
+
+        });
+        dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+
     }
 
     private class IvFluidData {
