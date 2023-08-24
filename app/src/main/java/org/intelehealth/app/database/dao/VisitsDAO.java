@@ -512,7 +512,8 @@ public class VisitsDAO {
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+            //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
@@ -547,7 +548,8 @@ public class VisitsDAO {
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
@@ -587,7 +589,8 @@ public class VisitsDAO {
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
@@ -623,7 +626,8 @@ public class VisitsDAO {
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
