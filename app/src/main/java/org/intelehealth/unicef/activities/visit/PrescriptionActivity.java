@@ -2346,9 +2346,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }
-            prescription1 = obj.getString("presciptionHeader1");
 
-            prescription2 = obj.getString("presciptionHeader2");
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                prescription1 = obj.getString("presciptionHeader1_ru");
+                prescription2 = obj.getString("presciptionHeader2_ru");
+            } else {
+                prescription1 = obj.getString("presciptionHeader1");
+                prescription2 = obj.getString("presciptionHeader2");
+            }
 
             //For AFI we are not using Respiratory Value
             if (obj.getBoolean("mResp")) {
