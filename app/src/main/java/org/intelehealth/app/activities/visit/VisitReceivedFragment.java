@@ -40,6 +40,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
@@ -162,9 +163,8 @@ public class VisitReceivedFragment extends Fragment {
                 // Scroll Down
                 if (scrollY > oldScrollY) {
                     // update recent data as it will not go at very bottom of list.
-                    if (recentList != null && recentStart > recentList.size()) {
+                    if (recentList != null && recentList.size() == 0) {
                         isRecentFullyLoaded = true;
-                        return;
                     }
                     if (!isRecentFullyLoaded)
                         setRecentMoreDataIntoRecyclerView();
@@ -172,7 +172,7 @@ public class VisitReceivedFragment extends Fragment {
                     // Last Item Scroll Down.
                     if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
                         // update older data as it will not go at very bottom of list.
-                        if (olderList != null && olderStart > olderList.size()) {
+                        if (olderList != null && olderList.size() == 0) {
                             isolderFullyLoaded = true;
                             return;
                         }
@@ -205,8 +205,9 @@ public class VisitReceivedFragment extends Fragment {
     }
 
     private void defaultData() {
-        recentVisits();
-        olderVisits();
+        fetchRecentData();
+        fetchOlderData();
+
         int totalCounts = totalCounts_recent + totalCounts_older;
         Log.d("rece", "defaultData: received" + totalCounts);
 
@@ -214,6 +215,43 @@ public class VisitReceivedFragment extends Fragment {
         if (mlistener != null)
             mlistener.receivedCount(totalCounts);
         progress.setVisibility(View.GONE);
+    }
+
+    private void fetchOlderData() {
+        // Older vistis
+        // pagination - start
+        olderList = olderVisits(olderLimit, olderStart);
+        older_adapter = new VisitAdapter(getActivity(), olderList);
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
+
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+        // pagination - end
+
+        totalCounts_older = olderList.size();
+        if (totalCounts_older == 0 || totalCounts_older < 0)
+            older_nodata.setVisibility(View.VISIBLE);
+        else
+            older_nodata.setVisibility(View.GONE);
+    }
+
+    private void fetchRecentData() {
+        recentList = recentVisits(recentLimit, recentStart);
+        // pagination - start
+        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recycler_recent.setNestedScrollingEnabled(false);
+        recycler_recent.setAdapter(recent_adapter);
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        // pagination - end
+
+        totalCounts_recent = recentList.size();
+        if (totalCounts_recent == 0 || totalCounts_recent < 0)
+            recent_nodata.setVisibility(View.VISIBLE);
+        else
+            recent_nodata.setVisibility(View.GONE);
+
     }
 
     private void visitData() {
@@ -434,30 +472,34 @@ public class VisitReceivedFragment extends Fragment {
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
-        if (recentEnd > olderList.size()) {
-            recentEnd = olderList.size();
+        if (recentList != null && recentList.size() == 0) {
             isRecentFullyLoaded = true;
+            return;
         }
 
-        recent_adapter.list.addAll(olderList.subList(recentStart, recentEnd));
+        recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentList.size());
+        recent_adapter.list.addAll(recentList);
         recent_adapter.notifyDataSetChanged();
         recentStart = recentEnd;
         recentEnd += recentLimit;
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
-        if (olderEnd > olderList.size()) {
-            olderEnd = olderList.size();
+        if (olderList != null && olderList.size() == 0) {
             isolderFullyLoaded = true;
+            return;
         }
 
-        older_adapter.list.addAll(olderList.subList(olderStart, olderEnd));
+        olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderList.size());
+        older_adapter.list.addAll(olderList);
         older_adapter.notifyDataSetChanged();
         olderStart = olderEnd;
         olderEnd += olderLimit;
     }
 
-    private void recentVisits() {
+    private List<PrescriptionModel> recentVisits(int limit, int offset) {
         recentList = new ArrayList<>();
         db.beginTransaction();
 
@@ -470,8 +512,9 @@ public class VisitReceivedFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
 //                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
                         " v.startdate > DATETIME('now', '-4 day') " +
-                        " group by e.visituuid ORDER BY v.startdate DESC"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        " group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?"
+                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df",
+                        String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -531,28 +574,7 @@ public class VisitReceivedFragment extends Fragment {
         }
         cursor.close();
 
-        // pagination - start
-        if (recentEnd > recentList.size()) {
-            recentEnd = recentList.size();
-            isRecentFullyLoaded = true;
-        }
-
-        //recentList.addAll(priorityRecentList);
-        //recentList.addAll(nonPriorityRecentList);
-        
-        recent_adapter = new VisitAdapter(getActivity(), recentList.subList(recentStart, recentEnd));
-        recycler_recent.setNestedScrollingEnabled(false);
-        recycler_recent.setAdapter(recent_adapter);
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
-        // pagination - end
-        
-        totalCounts_recent = recentList.size();
-        if (totalCounts_recent == 0 || totalCounts_recent < 0)
-            recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
-
+        return recentList;
         
         //  thisWeeks_Visits();
         //new
@@ -657,10 +679,11 @@ public class VisitReceivedFragment extends Fragment {
         });
 */
 
+
     }
 
 
-    private void olderVisits() {
+    private List<PrescriptionModel> olderVisits(int limit, int offset) {
         // new
         List<PrescriptionModel> priorityRecentList = new ArrayList<>();
         List<PrescriptionModel> nonPriorityRecentList = new ArrayList<>();
@@ -677,8 +700,9 @@ public class VisitReceivedFragment extends Fragment {
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
                         " v.startdate < DATETIME('now', '-4 day') " +
-                        "group by p.openmrs_id ORDER BY v.startdate DESC"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?"
+                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df",
+                        String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -730,25 +754,9 @@ public class VisitReceivedFragment extends Fragment {
         olderList.addAll(priorityRecentList);
         olderList.addAll(nonPriorityRecentList);
 
-        // pagination - start
-        if (olderEnd > olderList.size()) {
-            olderEnd = olderList.size();
-            isolderFullyLoaded = true;
-        }
-        
-        older_adapter = new VisitAdapter(getActivity(), olderList.subList(olderStart, olderEnd));
-        recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(older_adapter);
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
-        // pagination - end
-        
-        totalCounts_older = olderList.size();
-        if (totalCounts_older == 0 || totalCounts_older < 0)
-            older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
-        
+        return olderList;
+
+
         //  thisWeeks_Visits();
         //new
 
