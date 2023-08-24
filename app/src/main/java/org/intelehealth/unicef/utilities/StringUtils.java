@@ -25,6 +25,8 @@ import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -3870,5 +3872,20 @@ public final class StringUtils {
                 .replace("Secondary", "Среднее")
                 .replace("Provisional", "Предварительный")
                 .replace("Confirmed", "Подтвержденный");
+    }
+
+    public static String translateDatesUsingRegex(String complaintString) {
+        String regex = "\\d{2}/[A-Za-z]{3}/\\d{4}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(complaintString);
+
+        while (matcher.find()) {
+            String matchedDate = matcher.group();
+            String translatedDate = StringUtils.getFullMonthName(matchedDate);
+            translatedDate = StringUtils.en__ru_dob(translatedDate);
+            complaintString = complaintString.replace(matchedDate, translatedDate);
+        }
+
+        return complaintString;
     }
 }

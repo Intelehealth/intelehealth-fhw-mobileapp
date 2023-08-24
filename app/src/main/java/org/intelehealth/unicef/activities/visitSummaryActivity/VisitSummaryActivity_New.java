@@ -965,7 +965,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             String patientDenies = getString(R.string.no_data_added);
 
             if (valueArray[0] != null) {
-                String translateDates = translateDatesUsingRegex(valueArray[0]);
+                String translateDates = "";
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    translateDates = StringUtils.translateDatesUsingRegex(valueArray[0]);
+                } else {
+                    translateDates = valueArray[0];
+                }
                 complaintView.setText(Html.fromHtml(translateDates)); // todo: uncomment later
             }
 
@@ -1844,21 +1849,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
-    }
-
-    private String translateDatesUsingRegex(String complaintString) {
-        String regex = "\\d{2}/[A-Za-z]{3}/\\d{4}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(complaintString);
-
-        while (matcher.find()) {
-            String matchedDate = matcher.group();
-            String translatedDate = StringUtils.getFullMonthName(matchedDate);
-            translatedDate = StringUtils.en__ru_dob(translatedDate);
-            complaintString = complaintString.replace(matchedDate, translatedDate);
-        }
-
-        return complaintString;
     }
 
     // permission code - start

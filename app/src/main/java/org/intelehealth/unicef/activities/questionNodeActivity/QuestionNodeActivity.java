@@ -814,19 +814,20 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                     .replace("times per month", "மாதம் முறை")
                     .replace("times per year", "வருடத்திற்கு முறை")));
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-            alertDialogBuilder.setMessage(Html.fromHtml(
-                    currentNode.formQuestionAnswer(0)
-                            .replace("Question not answered", getString(R.string.question_not_answered))
-                            .replace("Patient reports", getString(R.string.patient_reports))
-                            .replace("Patient denies", getString(R.string.patient_denies))
-                            .replace("Hours", getString(R.string.hour)).replace("Days", getString(R.string.days))
-                            .replace("Weeks", "Недели").replace("Months", getString(R.string.months))
-                            .replace("Years", getString(R.string.years))
-                            .replace("times per hour", getString(R.string.per_Hour))
-                            .replace("time per day", getString(R.string.per_Day))
-                            .replace("times per week", getString(R.string.per_Hour))
-                            .replace("times per month", getString(R.string.per_Month))
-                            .replace("times per year", getString(R.string.per_Year))));
+            String issues = StringUtils.translateDatesUsingRegex(currentNode.formQuestionAnswer(0));
+
+            alertDialogBuilder.setMessage(Html.fromHtml(issues
+                    .replace("Question not answered", getString(R.string.question_not_answered))
+                    .replace("Patient reports", getString(R.string.patient_reports))
+                    .replace("Patient denies", getString(R.string.patient_denies))
+                    .replace("Hours", getString(R.string.hour)).replace("Days", getString(R.string.days))
+                    .replace("Weeks", "Недели").replace("Months", getString(R.string.months))
+                    .replace("Years", getString(R.string.years))
+                    .replace("times per hour", getString(R.string.per_Hour))
+                    .replace("time per day", getString(R.string.per_Day))
+                    .replace("times per week", getString(R.string.per_Hour))
+                    .replace("times per month", getString(R.string.per_Month))
+                    .replace("times per year", getString(R.string.per_Year))));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
