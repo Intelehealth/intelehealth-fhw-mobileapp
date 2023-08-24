@@ -113,6 +113,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(this);
+        super.setLocale(sessionManager.getAppLanguage());
         setContentView(R.layout.activity_visit_details);
 
         // changing status bar color
