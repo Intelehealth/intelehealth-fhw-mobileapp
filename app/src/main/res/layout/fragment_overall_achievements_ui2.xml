@@ -2,15 +2,21 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/svParentOverallAchievements"
+    android:contentDescription="Overall Achievements Parent ScrollView"
     android:fillViewport="true">
 
     <LinearLayout
+        android:id="@+id/llParentOverallAchievements"
+        android:contentDescription="Overall Achievements Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/layout_parent_achi_margin_top"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llChild1OverallAchievements"
+            android:contentDescription="Overall Achievements Child 1 LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card1_common_achieve_margin_start"
@@ -20,6 +26,8 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/llPatientAddedOverallAchievements"
+                android:contentDescription="Overall Achievements Patient Added LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card1_achieve_margin_end"
@@ -29,11 +37,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivPatientAddedIconOverallAchievements"
+                    android:contentDescription="Overall Achievements Patient Added Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_icon_user_add" />
 
                 <TextView
+                    android:id="@+id/tvPatientAddedDescOverallAchievements"
+                    android:contentDescription="Overall Achievements Patient Added Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -41,7 +53,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_overall_patients_added"
+                    android:id="@+id/tvPatientAddedValueOverallAchievements"
+                    android:contentDescription="Overall Achievements Patient Added Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -55,6 +68,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llVisitCompletedOverallAchievements"
+                android:contentDescription="Overall Achievements Visit Completed LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
@@ -64,11 +79,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivVisitCompletedIconOverallAchievements"
+                    android:contentDescription="Overall Achievements Visit Completed Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_icon_visits_completed" />
 
                 <TextView
+                    android:id="@+id/tvVisitCompletedDescOverallAchievements"
+                    android:contentDescription="Overall Achievements Visit Completed Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -76,7 +95,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_overall_visits_ended"
+                    android:id="@+id/tvVisitCompletedValueOverallAchievements"
+                    android:contentDescription="Overall Achievements Visit Completed Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -92,6 +112,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llChild2OverallAchievements"
+            android:contentDescription="Overall Achievements Child 2 LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card2_common_achieve_margin_start"
@@ -100,6 +122,8 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/llSatisfactionScoreOverallAchievements"
+                android:contentDescription="Overall Achievements Satisfaction Score LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card1_achieve_margin_end"
@@ -109,11 +133,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivSatisfactionScoreIconOverallAchievements"
+                    android:contentDescription="Overall Achievements Satisfaction Score Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_star_score" />
 
                 <TextView
+                    android:id="@+id/tvSatisfactionScoreDescOverallAchievements"
+                    android:contentDescription="Overall Achievements Satisfaction Score Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -121,7 +149,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_overall_patient_satisfaction_score"
+                    android:id="@+id/tvSatisfactionScoreValueOverallAchievements"
+                    android:contentDescription="Overall Achievements Satisfaction Score Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -136,6 +165,8 @@
 
 
             <LinearLayout
+                android:id="@+id/llTimeSpentOverallAchievements"
+                android:contentDescription="Overall Achievements Time Spent LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
@@ -145,11 +176,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivTimeSpentIconOverallAchievements"
+                    android:contentDescription="Overall Achievements Time Spent Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_time_spent" />
 
                 <TextView
+                    android:id="@+id/tvTimeSpentDescOverallAchievements"
+                    android:contentDescription="Overall Achievements Time Spent Desc TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -157,7 +192,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_overall_time_spent"
+                    android:id="@+id/tvTimeSpentValueOverallAchievements"
+                    android:contentDescription="Overall Achievements Time Spent Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"

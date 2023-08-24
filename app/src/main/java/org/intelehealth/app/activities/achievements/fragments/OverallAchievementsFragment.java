@@ -83,10 +83,10 @@ public class OverallAchievementsFragment extends Fragment {
     }
 
     private void initUI(View view) {
-        tvOverallPatientsAdded = view.findViewById(R.id.tv_overall_patients_added);
-        tvOverallVisitsEnded = view.findViewById(R.id.tv_overall_visits_ended);
-        tvOverallPatientSatisfactionScore = view.findViewById(R.id.tv_overall_patient_satisfaction_score);
-        tvOverallTimeSpent = view.findViewById(R.id.tv_overall_time_spent);
+        tvOverallPatientsAdded = view.findViewById(R.id.tvPatientAddedValueOverallAchievements);
+        tvOverallVisitsEnded = view.findViewById(R.id.tvVisitCompletedValueOverallAchievements);
+        tvOverallPatientSatisfactionScore = view.findViewById(R.id.tvSatisfactionScoreValueOverallAchievements);
+        tvOverallTimeSpent = view.findViewById(R.id.tvTimeSpentValueOverallAchievements);
     }
 
     private void fetchAndSetUIData() {

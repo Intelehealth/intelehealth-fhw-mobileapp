@@ -69,10 +69,10 @@ public class ExpendableRecyclerViewAdapter extends RecyclerView.Adapter<Expendab
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvQuestion = itemView.findViewById(R.id.tv_question);
-            ivViewMore = itemView.findViewById(R.id.iv_view_more);
-            layoutExpand = itemView.findViewById(R.id.layout_expand);
-            tvDesc = itemView.findViewById(R.id.tv_desc);
+            tvQuestion = itemView.findViewById(R.id.tvQuestionFAQRowItem);
+            ivViewMore = itemView.findViewById(R.id.ivExpandViewFAQRowItem);
+            layoutExpand = itemView.findViewById(R.id.llExpandedViewFAQRowItem);
+            tvDesc = itemView.findViewById(R.id.tvAnswerFAQRowItem);
         }
     }
 

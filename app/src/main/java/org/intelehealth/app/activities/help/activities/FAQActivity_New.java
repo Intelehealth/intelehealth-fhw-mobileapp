@@ -34,9 +34,7 @@ public class FAQActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faqactivity_ui2);
-
         initUI();
-
     }
 
     @Override
@@ -64,9 +62,9 @@ public class FAQActivity_New extends AppCompatActivity {
     }
 
     private void initUI() {
-        View toolbar = findViewById(R.id.toolbar_faq);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        View toolbar = findViewById(R.id.toolbarFAQScreen);
+        TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
+        ImageView ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
 
         tvTitle.setText(getResources().getString(R.string.faq));
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -76,13 +74,13 @@ public class FAQActivity_New extends AppCompatActivity {
 
         }
 
-        RecyclerView rvFaq = findViewById(R.id.rv_faq1);
+        RecyclerView rvFaq = findViewById(R.id.rvFAQScreen);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvFaq.setLayoutManager(linearLayoutManager);
         FAQExpandableAdapter faqExpandableAdapter = new FAQExpandableAdapter(this, getQuestionsList());
         rvFaq.setAdapter(faqExpandableAdapter);
 
-        FloatingActionButton fabHelp = findViewById(R.id.fab_help_faq);
+        FloatingActionButton fabHelp = findViewById(R.id.fabChatFAQScreen);
         fabHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

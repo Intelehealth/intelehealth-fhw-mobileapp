@@ -12,7 +12,8 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_video1"
+            android:id="@+id/cvHealthInfoMostSearchedVideosListItem"
+            android:contentDescription="Health Info Most Searched Videos List Item CardView"
             android:layout_width="@dimen/info_item_searched_video_card_width"
             android:layout_height="@dimen/info_item_searched_video_card_height"
             android:layout_weight="1"
@@ -22,6 +23,8 @@
             app:cardElevation="0dp" />
 
         <TextView
+            android:id="@+id/tvDescHealthInfoMostSearchedVideosListItem"
+            android:contentDescription="Health Info Most Searched Videos List Item Description TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_searched_video_desc_margin_top"

@@ -205,11 +205,11 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         public Myholder(View itemView) {
             super(itemView);
 
-            cardView = itemView.findViewById(R.id.fu_cardview_item);
-            fu_patname_txtview = itemView.findViewById(R.id.tvPatientNameRowItem);
-            fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
-            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
-            profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
+            cardView = itemView.findViewById(R.id.cvParentFollowUpListItem);
+            fu_patname_txtview = itemView.findViewById(R.id.tvPatientNameFollowUpListItem);
+            fu_date_txtview = itemView.findViewById(R.id.tvDateTimeFollowUpListItem);
+            fu_priority_tag = itemView.findViewById(R.id.ivPriorityTagFollowUpListItem);
+            profile_image = itemView.findViewById(R.id.ivPatientImageFollowUpListItem);
             rootView = itemView;
 
             fu_date_txtview.setText("22 June"); // todo: testing.

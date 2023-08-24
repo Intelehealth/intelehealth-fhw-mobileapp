@@ -8,10 +8,13 @@
     app:cardElevation="0dp"
     android:elevation="0dp"
     android:background="@color/textColorGray"
+    android:id="@+id/cvImageAboutUsListItem"
+    android:contentDescription="About Us List Item Image CardView"
     android:backgroundTint="@color/iconTintGrayBottomNav" >
 
     <ImageView
-        android:id="@+id/imgview_aboutus"
+        android:id="@+id/ivImageAboutUsListItem"
+        android:contentDescription="About Us List Item Image ImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/demo_imgview"

@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/follow_up_v"
+    android:id="@+id/rlParentFollowUpScreen"
+    android:contentDescription="Follow Up Screen Parent RelativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/follow_up_v">
 
-    <!-- Frame 100217 -->
     <RelativeLayout
-        android:id="@+id/frame_10021"
+        android:id="@+id/rlChildFollowUpScreen"
+        android:contentDescription="Follow Up Screen Child RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentStart="true"
@@ -18,22 +19,23 @@
         android:layout_marginHorizontal="@dimen/margin_24">
 
         <ImageButton
-            android:id="@+id/vector"
+            android:id="@+id/ivBackArrowFollowUpScreen"
+            android:contentDescription="Follow Up Screen Back Arrow ImageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@null"
-
             android:src="@drawable/ic_arrow_right" />
 
         <!-- Label -->
         <TextView
-            android:id="@+id/toolbar_title"
+            android:id="@+id/tvTitleFollowUpScreen"
+            android:contentDescription="Follow Up Screen Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/margin_10"
-            android:layout_toEndOf="@+id/vector"
+            android:layout_toEndOf="@+id/ivBackArrowFollowUpScreen"
             android:lineSpacingExtra="1sp"
             android:text="@string/label"
             android:textAppearance="@style/label"
@@ -44,6 +46,8 @@
 
 
         <LinearLayout
+            android:id="@+id/llRefreshFilterFollowUpScreen"
+            android:contentDescription="Follow Up Screen Refresh Filter LinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -51,7 +55,8 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/ivRefreshFollowUpScreen"
+                android:contentDescription="Follow Up Screen Refresh ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_10"
@@ -60,7 +65,8 @@
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageButton
-                android:id="@+id/filter"
+                android:id="@+id/ivFilterFollowUpScreen"
+                android:contentDescription="Follow Up Screen Filter ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -73,15 +79,16 @@
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedscrollview"
+        android:id="@+id/nsvFollowUpScreen"
+        android:contentDescription="Follow Up Screen NestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frame_10021"
+        android:layout_below="@+id/rlChildFollowUpScreen"
         android:fillViewport="true">
 
-        <!-- Frame 2608676 -->
         <LinearLayout
-            android:id="@+id/frame_26086"
+            android:id="@+id/llCompleteListFollowUpScreen"
+            android:contentDescription="Follow Up Screen Complete List LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -93,12 +100,14 @@
 
             <!-- You can add all acco -->
             <RelativeLayout
-                android:id="@+id/rl_today"
+                android:id="@+id/rlTodayListFollowUpScreen"
+                android:contentDescription="Follow Up Screen Today List RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/you_can_add"
+                    android:id="@+id/tvTodayHeadingFollowUpScreen"
+                    android:contentDescription="Follow Up Screen Today List Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/fu_margin_start"
@@ -109,12 +118,12 @@
                     android:textSize="@dimen/fu_male_textsize"
                     android:textStyle="bold" />
 
-                <!-- Frame 100314 -->
                 <TextView
-                    android:id="@+id/today_nodata"
+                    android:id="@+id/tvTodayNoDataHeading1FollowUpScreen"
+                    android:contentDescription="Follow Up Screen Today No Data Heading TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/you_can_add"
+                    android:layout_below="@+id/tvTodayHeadingFollowUpScreen"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_follow_up_data"
@@ -124,10 +133,11 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_today"
+                    android:id="@+id/rvTodayListFollowUpScreen"
+                    android:contentDescription="Follow Up Screen Today List RecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/you_can_add"
+                    android:layout_below="@+id/tvTodayHeadingFollowUpScreen"
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingTop="@dimen/card_padding"
@@ -139,12 +149,14 @@
 
             <!--            This week-->
             <RelativeLayout
-                android:id="@+id/rl_week"
+                android:id="@+id/rlWeekListFollowUpScreen"
+                android:contentDescription="Follow Up Screen Week List RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/this_week"
+                    android:id="@+id/tvThisWeekHeadingFollowUpScreen"
+                    android:contentDescription="Follow Up Screen This Week List Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
@@ -155,10 +167,11 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/week_nodata"
+                    android:id="@+id/tvWeekNoDataHeadingFollowUpScreen"
+                    android:contentDescription="Follow Up Screen Week No Data Heading TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_week"
+                    android:layout_below="@+id/tvThisWeekHeadingFollowUpScreen"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_follow_up_data"
@@ -168,10 +181,11 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_thisweek"
+                    android:id="@+id/rvWeekListFollowUpScreen"
+                    android:contentDescription="Follow Up Screen Week List RecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_week"
+                    android:layout_below="@+id/tvThisWeekHeadingFollowUpScreen"
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingVertical="@dimen/margin_5"
@@ -182,12 +196,14 @@
 
             <!-- This month -->
             <RelativeLayout
-                android:id="@+id/rl_month"
+                android:id="@+id/rlMonthListFollowUpScreen"
+                android:contentDescription="Follow Up Screen Month List RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/this_month"
+                    android:id="@+id/tvThisMonthHeadingFollowUpScreen"
+                    android:contentDescription="Follow Up Screen This Month List Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/text_margin"
@@ -199,10 +215,11 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/month_nodata"
+                    android:id="@+id/tvMonthNoDataHeadingFollowUpScreen"
+                    android:contentDescription="Follow Up Screen Month No Data Heading TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_month"
+                    android:layout_below="@+id/tvThisMonthHeadingFollowUpScreen"
                     android:gravity="center"
                     android:padding="@dimen/card_padding"
                     android:text="@string/no_follow_up_data"
@@ -212,10 +229,11 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_thismonth"
+                    android:id="@+id/rvMonthListFollowUpScreen"
+                    android:contentDescription="Follow Up Screen Month List RecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/this_month"
+                    android:layout_below="@+id/tvThisMonthHeadingFollowUpScreen"
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingVertical="@dimen/margin_5"
@@ -228,7 +246,8 @@
     </androidx.core.widget.NestedScrollView>
 
     <TextView
-        android:id="@+id/empty_view_tv"
+        android:id="@+id/tvNoVisitsFollowUpScreen"
+        android:contentDescription="Follow Up Screen No Visits TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

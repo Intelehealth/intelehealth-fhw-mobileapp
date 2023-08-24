@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/bottom_nav_home_menu"
+        android:id="@+id/bottomNavHome"
         android:icon="@drawable/ui2_selector_home_nav"
         android:title="@string/title_home_screen" />
 
     <item
-        android:id="@+id/bottom_nav_achievements"
+        android:id="@+id/bottomNavAchievements"
         android:icon="@drawable/ui2_selector_acievements_nav"
         android:title="@string/achievements" />
 
     <item
-        android:id="@+id/bottom_nav_help"
+        android:id="@+id/bottomNavHelp"
         android:icon="@drawable/ui2_selector_help_nav"
         android:title="@string/help_footer" />
 
     <item
-        android:id="@+id/bottom_nav_add_patient"
+        android:id="@+id/bottomNavAddPatient"
         android:icon="@drawable/ui2_selector_nav_add_patient"
         android:title="@string/add_patient" />
 

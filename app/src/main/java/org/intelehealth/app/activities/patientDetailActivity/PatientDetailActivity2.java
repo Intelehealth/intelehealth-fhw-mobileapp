@@ -146,7 +146,6 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             postalcode, patientcountry, patientstate, patientdistrict, village, address1,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
     SessionManager sessionManager = null;
-    //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
     private boolean hasLicense = false;
     SQLiteDatabase db = null;
@@ -164,10 +163,6 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     Button startVisitBtn;
     EncounterDTO encounterDTO;
     ImageView cancelBtn;
-    //private boolean returning;
-    //private String encounterAdultIntials = "";
-    //String phistory = "";
-
     String privacy_value_selected;
     String phistory = "";
     String fhistory = "";
@@ -290,14 +285,14 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                     "ssss", "swwwww", "yes", "no");*/ // todo: added jsut for testing purposes...
         });
 
-        mPersonalHeaderRelativeLayout = findViewById(R.id.relative_personal_header);
-        mAddressHeaderRelativeLayout = findViewById(R.id.relative_address_header);
-        mOthersHeaderRelativeLayout = findViewById(R.id.relative_others_header);
+        mPersonalHeaderRelativeLayout = findViewById(R.id.rlHeaderPersonalDetails);
+        mAddressHeaderRelativeLayout = findViewById(R.id.rlHeaderAddressDetails);
+        mOthersHeaderRelativeLayout = findViewById(R.id.rlHeaderOtherDetails);
         mPersonalHeaderRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RelativeLayout extraRelativeLayout = findViewById(R.id.ll_personal_extra);
-                ImageView imageView = findViewById(R.id.iv_personal_drop);
+                RelativeLayout extraRelativeLayout = findViewById(R.id.rlDetailsChildPersonalDetails);
+                ImageView imageView = findViewById(R.id.ivCollapseCardPersonalDetails);
                 if (extraRelativeLayout.getVisibility() == View.VISIBLE) {
                     extraRelativeLayout.setVisibility(View.GONE);
                     imageView.setRotation(180);
@@ -310,8 +305,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         mAddressHeaderRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RelativeLayout extraRelativeLayout = findViewById(R.id.ll_address_extra);
-                ImageView imageView = findViewById(R.id.iv_address_drop);
+                RelativeLayout extraRelativeLayout = findViewById(R.id.rlDetailsChildAddressDetails);
+                ImageView imageView = findViewById(R.id.ivCollapseCardAddressDetails);
                 if (extraRelativeLayout.getVisibility() == View.VISIBLE) {
                     extraRelativeLayout.setVisibility(View.GONE);
                     imageView.setRotation(180);
@@ -324,8 +319,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         mOthersHeaderRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RelativeLayout extraRelativeLayout = findViewById(R.id.ll_others_extra);
-                ImageView imageView = findViewById(R.id.iv_others_drop);
+                RelativeLayout extraRelativeLayout = findViewById(R.id.rlDetailsChildOtherDetails);
+                ImageView imageView = findViewById(R.id.ivCollapseCardOtherDetails);
                 if (extraRelativeLayout.getVisibility() == View.VISIBLE) {
                     extraRelativeLayout.setVisibility(View.GONE);
                     imageView.setRotation(180);
@@ -492,44 +487,43 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
 
     private void initUI() {
-        refresh = findViewById(R.id.refresh);
-        cancelbtn = findViewById(R.id.cancelbtn);
+        refresh = findViewById(R.id.ivRefreshPatientDetails);
+        cancelbtn = findViewById(R.id.ivCancelPatientDetails);
 
-        profile_image = findViewById(R.id.ivPatientImageRowItem);
-        name_txtview = findViewById(R.id.name_txtview);
-        openmrsID_txt = findViewById(R.id.openmrsID_txt);
+        profile_image = findViewById(R.id.ivProfileImagePatientDetails);
+        name_txtview = findViewById(R.id.tvPatientNamePatientDetails);
+        openmrsID_txt = findViewById(R.id.tvPatientOpenMRSIDPatientDetails);
 
-        patientname = findViewById(R.id.name);
-        gender = findViewById(R.id.gender);
-        patientdob = findViewById(R.id.dob);
-        patientage = findViewById(R.id.age);
-        phone = findViewById(R.id.phone);
+        patientname = findViewById(R.id.tvNameValuePersonalDetails);
+        gender = findViewById(R.id.tvGenderValuePersonalDetails);
+        patientdob = findViewById(R.id.tvDOBValuePersonalDetails);
+        patientage = findViewById(R.id.tvAgeValuePersonalDetails);
+        phone = findViewById(R.id.tvPhoneNumValuePersonalDetails);
 
-        postalcode = findViewById(R.id.postalcode);
-        patientcountry = findViewById(R.id.country);
-        patientstate = findViewById(R.id.state);
-        patientdistrict = findViewById(R.id.district);
-        village = findViewById(R.id.village);
-        address1 = findViewById(R.id.address1);
+        postalcode = findViewById(R.id.tvPostalCodeValueAddressDetails);
+        patientcountry = findViewById(R.id.tvCountryValueAddressDetails);
+        patientstate = findViewById(R.id.tvStateValueAddressDetails);
+        patientdistrict = findViewById(R.id.tvDistrictValueAddressDetails);
+        village = findViewById(R.id.tvVillageValueAddressDetails);
+        address1 = findViewById(R.id.tvCorrAddress1ValueAddressDetails);
 
-        son_daughter_wife = findViewById(R.id.son_daughter_wife);
-        patientNationalID = findViewById(R.id.national_ID);
-        patientoccupation = findViewById(R.id.occupation);
-        patientcaste = findViewById(R.id.caste);
-        patienteducation = findViewById(R.id.education);
-        patienteconomicstatus = findViewById(R.id.economicstatus);
+        son_daughter_wife = findViewById(R.id.tvRelationValueOtherDetails);
+        patientNationalID = findViewById(R.id.tvNationalIDValueOtherDetails);
+        patientoccupation = findViewById(R.id.tvOccupationValueOtherDetails);
+        patientcaste = findViewById(R.id.tvCasteValueOtherDetails);
+        patienteducation = findViewById(R.id.tvEducationValueOtherDetails);
+        patienteconomicstatus = findViewById(R.id.tvEconomicValueOtherDetails);
 
-        personal_edit = findViewById(R.id.personal_edit);
-        address_edit = findViewById(R.id.address_edit);
-        others_edit = findViewById(R.id.others_edit);
-        cancelbtn = findViewById(R.id.cancelbtn);
+        personal_edit = findViewById(R.id.llEditPersonalDetails);
+        address_edit = findViewById(R.id.llEditAddressDetails);
+        others_edit = findViewById(R.id.llEditOtherDetails);
 
-        startVisitBtn = findViewById(R.id.startVisitBtn);
+        startVisitBtn = findViewById(R.id.btnStartVisitPatientDetails);
 
-        mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
+        mCurrentVisitsRecyclerView = findViewById(R.id.rvOpenVisitsPatientDetails);
         mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-        mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
+        mPastVisitsRecyclerView = findViewById(R.id.rvPastVisitsPatientDetails);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         initForOpenVisit();
@@ -717,10 +711,10 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         }
 
         if (mCurrentVisitDataList.isEmpty()) {
-            findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
+            findViewById(R.id.cvOpenVisitsPatientDetails).setVisibility(View.GONE);
             startVisitBtn.setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
+            findViewById(R.id.cvOpenVisitsPatientDetails).setVisibility(View.VISIBLE);
             startVisitBtn.setVisibility(View.GONE);
         }
         // }
@@ -1703,9 +1697,9 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         String visitOrderBy = "startdate";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         if (visitCursor == null || visitCursor.getCount() <= 0) {
-            findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
+            findViewById(R.id.cvPastVisitsPatientDetails).setVisibility(View.GONE);
         } else {
-            findViewById(R.id.cv_past_visits).setVisibility(View.VISIBLE);
+            findViewById(R.id.cvPastVisitsPatientDetails).setVisibility(View.VISIBLE);
             if (visitCursor.moveToLast()) {
                 do {
                     EncounterDAO encounterDAO = new EncounterDAO();
@@ -1855,7 +1849,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             }
 
             if (!mPastVisitDataList.isEmpty()) {
-                findViewById(R.id.cv_past_visits).setVisibility(View.VISIBLE);
+                findViewById(R.id.cvPastVisitsPatientDetails).setVisibility(View.VISIBLE);
                 PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mPastVisitsRecyclerView, PatientDetailActivity2.this, mPastVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
                     @Override
                     public void onItemSelected(PastVisitData pastVisitData) {
@@ -1864,7 +1858,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
                 });
                 mPastVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
             } else {
-                findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
+                findViewById(R.id.cvPastVisitsPatientDetails).setVisibility(View.GONE);
             }
         }
     }

@@ -38,18 +38,8 @@ public class MostSearchedVideosAdapter_New extends RecyclerView.Adapter<MostSear
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-
         holder.webView.loadData(videosList.get(position).getUrl(), "text/html" , "utf-8");
         holder.description.setText(videosList.get(position).getDescription());
-//        holder.videoCV.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                Uri uri = Uri.parse(videosList.get(position).getUrl());
-//                intent.setData(uri);
-//                context.startActivity(intent);
-//            }
-//        });
     }
 
     @Override
@@ -66,9 +56,9 @@ public class MostSearchedVideosAdapter_New extends RecyclerView.Adapter<MostSear
         TextView description;
         public MyViewHolder(View itemView) {
             super(itemView);
-            videoCV = itemView.findViewById(R.id.videoCV);
-            webView = itemView.findViewById(R.id.youtubeVideo_WV);
-            description = itemView.findViewById(R.id.videoDesc);
+            videoCV = itemView.findViewById(R.id.cvMostSearchedVideosItem);
+            webView = itemView.findViewById(R.id.wvMostSearchedVideosItem);
+            description = itemView.findViewById(R.id.tvDescMostSearchedVideosItem);
             webView.getSettings().setJavaScriptEnabled(true);
             webView.setWebChromeClient(new WebChromeClient()
             {

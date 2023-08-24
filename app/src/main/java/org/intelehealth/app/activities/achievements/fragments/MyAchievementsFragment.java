@@ -95,26 +95,26 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     private void initUI() {
         //View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         //layoutToolbar.setVisibility(View.GONE);
-        TextView tvTitle = view.findViewById(R.id.tv_achievements_title);
+        TextView tvTitle = view.findViewById(R.id.tvTitleMyAchievements);
         tvTitle.setText(getResources().getString(R.string.my_achievements));
-        ivInternet = view.findViewById(R.id.iv_achievements_internet);
+        ivInternet = view.findViewById(R.id.ivRefreshMyAchievements);
 
         ivInternet.setOnClickListener(v -> SyncUtils.syncNow(requireActivity(), ivInternet, syncAnimator));
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+        bottomNav.getMenu().findItem(R.id.bottomNavAchievements).setChecked(true);
         configureTabLayout();
 
     }
 
     public void configureTabLayout() {
-        TabLayout tabLayout = view.findViewById(R.id.tablayout_achievements);
+        TabLayout tabLayout = view.findViewById(R.id.tlMyAchievements);
         tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.overall)));
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.daily)));
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.date_range)));
 
-        ViewPager viewPager = view.findViewById(R.id.pager_achievements);
+        ViewPager viewPager = view.findViewById(R.id.vpMyAchievements);
         PagerAdapter adapter = new MyAchievementsPagerAdapter(getChildFragmentManager(), tabLayout.getTabCount(), getActivity());
         viewPager.setAdapter(adapter);
         int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);
@@ -210,7 +210,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
 
             dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-            Button btnOkay = customLayout.findViewById(R.id.btn_okay);
+            Button btnOkay = customLayout.findViewById(R.id.btnOkayPermissionRequiredDialog);
             btnOkay.setOnClickListener(v -> {
                 dialog.dismiss();
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);

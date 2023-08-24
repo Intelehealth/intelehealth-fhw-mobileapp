@@ -84,8 +84,8 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            rbChooseLanguage = itemView.findViewById(R.id.rb_choose_language);
-            layoutRb = itemView.findViewById(R.id.layout_rb_choose_language);
+            rbChooseLanguage = itemView.findViewById(R.id.rbChooseLanguageItem);
+            layoutRb = itemView.findViewById(R.id.llChooseLanguageItem);
             rbChooseLanguage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

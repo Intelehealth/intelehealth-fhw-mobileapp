@@ -7,7 +7,8 @@
     android:layout_marginBottom="@dimen/info_item_searched_margin_bottom">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_video1"
+        android:id="@+id/cvHealthInfoMoreVideosListItem"
+        android:contentDescription="Health Info More Videos List Item CardView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/info_item_more_videos_card_height"
         android:layout_weight="1"
@@ -17,6 +18,8 @@
         app:cardElevation="0dp" />
 
     <TextView
+        android:id="@+id/tvDescHealthInfoMoreVideosListItem"
+        android:contentDescription="Health Info More Videos List Item Description TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/tv_searched_video_desc_margin_top"

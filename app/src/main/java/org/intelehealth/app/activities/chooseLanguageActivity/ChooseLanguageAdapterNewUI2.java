@@ -92,7 +92,7 @@ public class ChooseLanguageAdapterNewUI2 extends RecyclerView.Adapter<RecyclerVi
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            rbChooseLanguage = itemView.findViewById(R.id.rb_choose_language);
+            rbChooseLanguage = itemView.findViewById(R.id.rbChooseLanguageItem);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

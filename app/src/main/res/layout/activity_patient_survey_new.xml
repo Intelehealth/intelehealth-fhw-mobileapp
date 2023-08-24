@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/white"
+    android:id="@+id/rlParentPatientSurvey"
+    android:contentDescription="Patient Survey Screen Parent RelativeLayout"
     tools:context=".activities.patientSurveyActivity.PatientSurveyActivity_New">
 
         <!--Toolbar - start-->
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarPatientSurvey"
+            android:contentDescription="Patient Survey Screen Toolbar RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/fu_toolbat_txt_height"
             android:layout_alignParentLeft="true"
@@ -23,7 +26,8 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/feedback_txtview"
+                    android:id="@+id/tvTitlePatientSurvey"
+                    android:contentDescription="Patient Survey Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:lineSpacingExtra="1sp"
@@ -36,16 +40,18 @@
 
 
                 <ImageButton
-                    android:id="@+id/refresh"
+                    android:id="@+id/ibRefreshPatientSurvey"
+                    android:contentDescription="Patient Survey Refresh ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:layout_marginEnd="@dimen/fu_margin_start"
-                    android:layout_toStartOf="@+id/cancelbtn"
+                    android:layout_toStartOf="@+id/ibCancelPatientSurvey"
                     android:src="@drawable/ic_refreshbtn" />
 
                 <ImageButton
-                    android:id="@+id/cancelbtn"
+                    android:id="@+id/ibCancelPatientSurvey"
+                    android:contentDescription="Patient Survey Cancel ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@null"
@@ -56,16 +62,18 @@
 
         <!--Main block - start-->
         <RelativeLayout
-            android:id="@+id/head_relative"
+            android:id="@+id/rlChildPatientSurvey"
+            android:contentDescription="Patient Survey Screen Child RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
-            android:layout_below="@id/toolbar"
+            android:layout_below="@id/toolbarPatientSurvey"
             android:layout_marginStart="@dimen/toolbar_margin_left"
             android:layout_marginEnd="@dimen/toolbar_margin_right">
 
             <ImageView
-                android:id="@+id/icon"
+                android:id="@+id/ivIconPatientSurvey"
+                android:contentDescription="Patient Survey Screen Icon ImageView"
                 android:layout_width="@dimen/icon_size_100dp"
                 android:layout_height="@dimen/icon_size_100dp"
                 android:src="@drawable/review_icon"
@@ -73,10 +81,11 @@
                 android:layout_centerHorizontal="true" />
 
             <TextView
-                android:id="@+id/head_txt"
+                android:id="@+id/tvHeadingPatientSurvey"
+                android:contentDescription="Patient Survey Screen Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/icon"
+                android:layout_below="@id/ivIconPatientSurvey"
                 android:textStyle="bold"
                 android:textColor = "#1B163A"
                 android:paddingHorizontal="@dimen/margin_20"
@@ -87,23 +96,25 @@
                 android:layout_marginTop="@dimen/margin_24" />
 
             <TextView
-                android:id="@+id/subhead_txt"
+                android:id="@+id/tvSubHeadingPatientSurvey"
+                android:contentDescription="Patient Survey Screen SubHeading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/head_txt"
+                android:layout_below="@+id/tvHeadingPatientSurvey"
                 android:text="@string/how_we_can_improve_experience"
                 android:textColor="@color/hint_text_color"
                 android:textSize="@dimen/edittext_textsize_16sp"
-                android:layout_alignStart="@id/head_txt"
-                android:layout_alignEnd="@id/head_txt"
+                android:layout_alignStart="@id/tvHeadingPatientSurvey"
+                android:layout_alignEnd="@id/tvHeadingPatientSurvey"
                 android:layout_marginTop="@dimen/margin_8"
                 android:gravity="center" />
 
             <RatingBar
-                android:id="@+id/ratingbar"
+                android:id="@+id/rbPatientSurvey"
+                android:contentDescription="Patient Survey Screen Rating Bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/subhead_txt"
+                android:layout_below="@id/tvSubHeadingPatientSurvey"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/margin_24"
                 android:isIndicator="false"
@@ -120,10 +131,11 @@
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_40dp"
-            android:layout_below="@+id/head_relative">
+            android:layout_below="@+id/rlChildPatientSurvey">
 
             <TextView
-                android:id="@+id/give_feedback_txtview"
+                android:id="@+id/tvGiveFeedbackPatientSurvey"
+                android:contentDescription="Patient Survey Screen Give Feedback TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/give_feedback"
@@ -133,10 +145,11 @@
                 android:textSize="@dimen/txtsize_patdetail_14sp" />
 
             <EditText
-                android:id="@+id/editText_exit_survey"
+                android:id="@+id/etFeedbackPatientSurvey"
+                android:contentDescription="Patient Survey Screen Give Feedback EditText"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/icon_size_100dp"
-                android:layout_below="@+id/give_feedback_txtview"
+                android:layout_below="@+id/tvGiveFeedbackPatientSurvey"
                 android:layout_marginTop="@dimen/margin_8"
                 android:hint="@string/type_here_patient_survey"
                 android:textColorHint="@color/edittext_hint_color"
@@ -149,7 +162,8 @@
         <!--Comments  - end -->
 
         <Button
-            android:id="@+id/btn_submit"
+            android:id="@+id/btnSubmitPatientSurvey"
+            android:contentDescription="Patient Survey Screen Submit Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

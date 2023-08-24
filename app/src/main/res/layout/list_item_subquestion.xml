@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/subquestion_image_view"
+        android:id="@+id/ivSubQuestion"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal"
@@ -22,6 +22,6 @@
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingTop="@dimen/padding_complaint_select"
         android:textSize="@dimen/card_content_text_size"
-        android:id="@+id/subquestion_text_view"/>
+        android:id="@+id/tvSubQuestion"/>
 
 </LinearLayout>

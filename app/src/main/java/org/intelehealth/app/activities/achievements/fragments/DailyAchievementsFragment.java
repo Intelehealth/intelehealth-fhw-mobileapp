@@ -109,13 +109,13 @@ public class DailyAchievementsFragment extends Fragment {
         todaysDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy");
         todaysDateInYYYYMMDD = DateAndTimeUtils.getTodaysDateInRequiredFormat("yyyy-MM-dd");
 
-        TextView tvTodaysDate = view.findViewById(R.id.tv_todays_date);
+        TextView tvTodaysDate = view.findViewById(R.id.tvTodayDateDailyAchievements);
         tvTodaysDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy", sessionManager.getAppLanguage()));
 
-        tvPatientsCreatedToday = view.findViewById(R.id.tv_patients_created_today);
-        tvVisitsEndedToday = view.findViewById(R.id.tv_visits_ended_today);
-        tvAvgSatisfactionScore = view.findViewById(R.id.tv_avg_satisfaction_score);
-        tvDailyTimeSpent = view.findViewById(R.id.tv_daily_time_spent);
+        tvPatientsCreatedToday = view.findViewById(R.id.tvPatientAddedValueDailyAchievements);
+        tvVisitsEndedToday = view.findViewById(R.id.tvVisitCompletedValueDailyAchievements);
+        tvAvgSatisfactionScore = view.findViewById(R.id.tvSatisfactionScoreValueDailyAchievements);
+        tvDailyTimeSpent = view.findViewById(R.id.tvTimeSpentValueDailyAchievements);
     }
 
     private void fetchAndSetUIData() {
