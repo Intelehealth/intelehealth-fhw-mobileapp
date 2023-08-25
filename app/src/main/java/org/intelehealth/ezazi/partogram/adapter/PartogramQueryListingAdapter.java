@@ -38,6 +38,7 @@ import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
+import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -114,14 +115,22 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     showAutoComplete_EditText(tempView, position, i, paramInfo.getParamDateType());
                     genericViewHolder.containerLinearLayout.addView(tempView);
                 } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.RADIO_SELECT_TYPE)) {
-                    View tempView = View.inflate(mContext, R.layout.parto_lbl_radio_view_ezazi, null);
-                    showRadioOptionBox(tempView, position, i, paramInfo.getParamDateType());
-                    genericViewHolder.containerLinearLayout.addView(tempView);
-                } else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.RADIO_SELECT_TYPE_OXYTOCIN)) {
+                    View tempView = null;
+                    if (!paramInfo.getConceptUUID().isEmpty() && paramInfo.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
+                        tempView = View.inflate(mContext, R.layout.parto_lbl_radio_view_ezazi, null);
+                    } else if (!paramInfo.getConceptUUID().isEmpty() && paramInfo.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                        tempView = View.inflate(mContext, R.layout.parto_lbl_radio_view_oxytocin, null);
+                    }
+                    if (tempView != null) {
+                        showRadioOptionBox(tempView, position, i, paramInfo.getParamDateType());
+                        genericViewHolder.containerLinearLayout.addView(tempView);
+                    }
+
+                } /*else if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.RADIO_SELECT_TYPE_OXYTOCIN)) {
                     View tempView = View.inflate(mContext, R.layout.parto_lbl_radio_view_oxytocin, null);
                     showRadioOptionBoxForOxytocin(tempView, position, i, paramInfo.getParamDateType());
                     genericViewHolder.containerLinearLayout.addView(tempView);
-                }
+                }*/
             }
 
         }
@@ -265,9 +274,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void showRadioOptionBox(final View tempView, final int position, final int positionChild, final String paramDateType) {
-        PartoLblRadioViewEzaziBinding binding = PartoLblRadioViewEzaziBinding.bind(tempView);
-        View ivFluidDetails = binding.ivFluidOptions.getRoot();
-
         ParamInfo info = mItemList.get(position).getParamInfoList().get(positionChild);
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         String title = info.getParamName();
@@ -275,8 +281,18 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView selected = tempView.findViewById(R.id.tvSelectedValue);
         selected.setTag(info.getCapturedValue());
         selected.setText(info.getCapturedValue());
+
+        if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
+            showRadioOptionBoxForIVFluid(tempView, position, positionChild, info, selected, title);
+        } else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+            showRadioOptionBoxForOxytocin(tempView, position, positionChild, info, selected, title);
+        }
+    }
+
+    private void showRadioOptionBoxForIVFluid(View tempView, int position, int positionChild, ParamInfo info, TextView selected, String title) {
+        PartoLblRadioViewEzaziBinding binding = PartoLblRadioViewEzaziBinding.bind(tempView);
+        View ivFluidDetails = binding.ivFluidOptions.getRoot();
         RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
-        Log.d(TAG, "showRadioOptionBox: captured value  :: " + info.getCapturedValue());
 
         if (info.getCapturedValue() != null &&
                 !TextUtils.isEmpty(info.getCapturedValue())
@@ -561,6 +577,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             }
         });
     }
+
     private void saveIvFluidDataInJson(ParamInfo info, String value, String type) {
         try {
             ivFluidsJsonObject.put(type, value);
@@ -607,9 +624,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void showSingleSelectionDialog(String title, ParamInfo info, View view) {
-        Log.d(TAG, "showSingleSelectionDialog: title : " + title);
         final String[] items = info.getStatus();
-
         ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
             SingChoiceItem item = new SingChoiceItem();
@@ -625,29 +640,17 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 .build();
 
         dialog.setListener(item -> {
-          /*  ivInfusionStatus.setText(item.getItem());
-            saveIvFluidDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());*/
-            // dropdownTextView.setText(paramInfo.getOptions()[item.getItemIndex()]);
-
             manageSelectionSingleChoiceSelection(info, item);
         });
         dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
     }
 
-    private void showRadioOptionBoxForOxytocin(final View tempView, final int position, final int positionChild, final String paramDateType) {
+    private void showRadioOptionBoxForOxytocin(final View tempView, final int position, final int positionChild, final ParamInfo info, TextView selected, String title) {
+        RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
+
         PartoLblRadioViewOxytocinBinding binding = PartoLblRadioViewOxytocinBinding.bind(tempView);
         View oxytocinDetails = binding.includeLayoutPartoOxytocin.getRoot();
-
-        ParamInfo info = mItemList.get(position).getParamInfoList().get(positionChild);
-        TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
-        String title = info.getParamName();
-        paramNameTextView.setText(title);
-        TextView selected = tempView.findViewById(R.id.tvSelectedValue);
-        selected.setTag(info.getCapturedValue());
-        selected.setText(info.getCapturedValue());
-        RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
-        Log.d(TAG, "showRadioOptionBoxForOxytocin: captured value  :: " + info.getCapturedValue());
 
         if (info.getCapturedValue() != null &&
                 !TextUtils.isEmpty(info.getCapturedValue())
@@ -759,10 +762,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void manageSelectionSingleChoiceSelection(ParamInfo info, SingChoiceItem item) {
-        if (info.getParamDateType().equals(PartogramConstants.RADIO_SELECT_TYPE)) { //for infusion status -iv fluid
+        if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) { //for infusion status -iv fluid
             ivInfusionStatus.setText(item.getItem());
             saveIvFluidDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());
-        } else if (info.getParamDateType().equals(PartogramConstants.RADIO_SELECT_TYPE_OXYTOCIN)) { //for oxytocin
+        } else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) { //for oxytocin
             ivInfusionStatusOxytocin.setText(item.getItem());
             saveOxytocinDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());
         }

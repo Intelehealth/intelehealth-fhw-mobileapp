@@ -25,7 +25,6 @@ public class PartogramConstants {
     public static String INPUT_DOUBLE_4_DIG_TYPE = "H";
 
     public static String RADIO_SELECT_TYPE = "I";
-    public static String RADIO_SELECT_TYPE_OXYTOCIN = "J";
 
     private static SessionManager sessionManager = null;
 
@@ -270,7 +269,7 @@ public class PartogramConstants {
 //        else
         paramInfo.setParamName("Oxytocin (U/L, drops/min)");
        // paramInfo.setParamDateType(INPUT_TXT_TYPE);
-        paramInfo.setParamDateType(RADIO_SELECT_TYPE_OXYTOCIN);
+        paramInfo.setParamDateType(RADIO_SELECT_TYPE);
         paramInfo.setStatus(new String[]{"Started", "Continued", "Stopped"});
         paramInfo.setConceptUUID("9d316d82-538f-11e6-9cfe-86f436325720");
         paramInfo.setOnlyOneHourField(true);
