@@ -122,7 +122,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         tempView = View.inflate(mContext, R.layout.parto_lbl_radio_view_oxytocin, null);
                     }
                     if (tempView != null) {
-                        showRadioOptionBox(tempView, position, i, paramInfo.getParamDateType());
+                        showRadioOptionBox(tempView, position, i);
                         genericViewHolder.containerLinearLayout.addView(tempView);
                     }
 
@@ -273,7 +273,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         });
     }
 
-    private void showRadioOptionBox(final View tempView, final int position, final int positionChild, final String paramDateType) {
+    private void showRadioOptionBox(final View tempView, final int position, final int positionChild) {
         ParamInfo info = mItemList.get(position).getParamInfoList().get(positionChild);
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         String title = info.getParamName();
@@ -283,13 +283,13 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         selected.setText(info.getCapturedValue());
 
         if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
-            showRadioOptionBoxForIVFluid(tempView, position, positionChild, info, selected, title);
+            showRadioOptionBoxForIVFluid(tempView, info, selected, title);
         } else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
-            showRadioOptionBoxForOxytocin(tempView, position, positionChild, info, selected, title);
+            showRadioOptionBoxForOxytocin(tempView, info, selected, title);
         }
     }
 
-    private void showRadioOptionBoxForIVFluid(View tempView, int position, int positionChild, ParamInfo info, TextView selected, String title) {
+    private void showRadioOptionBoxForIVFluid(View tempView, ParamInfo info, TextView selected, String title) {
         PartoLblRadioViewEzaziBinding binding = PartoLblRadioViewEzaziBinding.bind(tempView);
         View ivFluidDetails = binding.ivFluidOptions.getRoot();
         RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
@@ -646,7 +646,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     }
 
-    private void showRadioOptionBoxForOxytocin(final View tempView, final int position, final int positionChild, final ParamInfo info, TextView selected, String title) {
+    private void showRadioOptionBoxForOxytocin(final View tempView, final ParamInfo info, TextView selected, String title) {
         RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
 
         PartoLblRadioViewOxytocinBinding binding = PartoLblRadioViewOxytocinBinding.bind(tempView);
