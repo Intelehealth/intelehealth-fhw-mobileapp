@@ -16,7 +16,7 @@
             android:layout_marginBottom="@dimen/screen_padding"
             android:background="@drawable/container_bg_rounded"
             android:padding="@dimen/screen_container_padding"
-            app:layout_constraintBottom_toTopOf="@id/btnSubmit"
+            app:layout_constraintBottom_toTopOf="@id/btnLabourSubmit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -352,7 +352,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmit"
+            android:id="@+id/btnLabourSubmit"
             style="@style/Theme.EZazi.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

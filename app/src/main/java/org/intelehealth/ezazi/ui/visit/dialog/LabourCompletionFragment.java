@@ -106,7 +106,7 @@ public class LabourCompletionFragment extends Fragment {
         binding.etLayoutOtherComment.setMultilineInputEndIconGravity();
 //        binding.bottomSheetAppBar.toolbar.setTitle(getString(R.string.complete_visit));
 //        binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> dismiss());
-        binding.btnSubmit.setOnClickListener(v -> {
+        binding.btnLabourSubmit.setOnClickListener(v -> {
             saveVisitCompletionDetails(binding);
         });
 
@@ -264,8 +264,8 @@ public class LabourCompletionFragment extends Fragment {
                 motherDeceasedStatus = helper.addMotherDeceasedObs(encounterId, hasMotherDeceased, labourInfo.getMotherDeceasedReason());
 
                 if (birthOutcomeStatus && motherDeceasedStatus) {
-                    binding.btnSubmit.setText("Visit Completing Please wait...");
-                    binding.btnSubmit.setEnabled(false);
+                    binding.btnLabourSubmit.setText("Visit Completing Please wait...");
+                    binding.btnLabourSubmit.setEnabled(false);
                     ((VisitLabourActivity) requireActivity()).checkInternetAndUploadVisitEncounter();
                     Toast.makeText(requireContext(), getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show();
                 } else {
@@ -328,7 +328,7 @@ public class LabourCompletionFragment extends Fragment {
     }
 
     private void validatedInput() {
-        binding.btnSubmit.setEnabled(validBirthOutcome() && validMotherDeceased());
+        binding.btnLabourSubmit.setEnabled(validBirthOutcome() && validMotherDeceased());
     }
 
     private boolean validBirthOutcome() {

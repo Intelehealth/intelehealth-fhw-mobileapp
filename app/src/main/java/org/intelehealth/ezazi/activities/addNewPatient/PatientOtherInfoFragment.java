@@ -1324,19 +1324,19 @@ public class PatientOtherInfoFragment extends Fragment {
             tvErrorPrimaryDoctor.setVisibility(View.GONE);
             cardPrimaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
         }
-//        if (TextUtils.isEmpty(mSecondaryDoctorTextView.getText().toString())) {
-//            setFocus(mSecondaryDoctorTextView);
-//         /*   mSecondaryDoctorTextView.requestFocus();
-//
-//            tvErrorSecondaryDoctor.setVisibility(View.VISIBLE);
-//            tvErrorSecondaryDoctor.setText(getString(R.string.select_secondary_doctor));
-//            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
-//            errorDetailsList.add(new ErrorManagerModel(mSecondaryDoctorTextView, tvErrorSecondaryDoctor, getString(R.string.select_secondary_doctor), cardSecondaryDoctor));
-//
-//        } else {
-//            tvErrorSecondaryDoctor.setVisibility(View.GONE);
-//            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
-//        }
+        if (TextUtils.isEmpty(mSecondaryDoctorTextView.getText().toString())) {
+            setFocus(mSecondaryDoctorTextView);
+         /*   mSecondaryDoctorTextView.requestFocus();
+
+            tvErrorSecondaryDoctor.setVisibility(View.VISIBLE);
+            tvErrorSecondaryDoctor.setText(getString(R.string.select_secondary_doctor));
+            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.error_red));*/
+            errorDetailsList.add(new ErrorManagerModel(mSecondaryDoctorTextView, tvErrorSecondaryDoctor, getString(R.string.select_secondary_doctor), cardSecondaryDoctor));
+
+        } else {
+            tvErrorSecondaryDoctor.setVisibility(View.GONE);
+            cardSecondaryDoctor.setStrokeColor(ContextCompat.getColor(mContext, R.color.colorScrollbar));
+        }
 //        if (TextUtils.isEmpty(etBedNumber.getText().toString())) {
 //            setFocus(etBedNumber);
 //          /*  etBedNumber.requestFocus();

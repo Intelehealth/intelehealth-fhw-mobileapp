@@ -939,7 +939,7 @@
     <string name="risk_factors">Risk Factors*</string>
     <string name="hospital_maternity">Hospital/Maternity?*</string>
     <string name="primary_doctor">Primary Doctor*</string>
-    <string name="secondary_doctor">Secondary Doctor</string>
+    <string name="secondary_doctor">Secondary Doctor*</string>
     <string name="bed_number">Bed Number</string>
     <string name="hospital">Hospital</string>
     <string name="maternity">Maternity</string>
