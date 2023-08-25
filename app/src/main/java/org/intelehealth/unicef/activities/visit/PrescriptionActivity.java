@@ -2,6 +2,7 @@ package org.intelehealth.unicef.activities.visit;
 
 import static org.intelehealth.unicef.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.unicef.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
+import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parseYYYYMMDDDateToddMMyyyy;
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.unicef.utilities.UuidDictionary.PRESCRIPTION_LINK;
@@ -2145,7 +2146,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
                     remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
                 }
-                followUpDateStr = parse_DateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+                followUpDateStr = parseYYYYMMDDDateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    followUpDateStr = StringUtils.getFullMonthName(followUpDateStr);
+                    followUpDateStr = StringUtils.en__ru_dob(followUpDateStr);
+                }
             } else {
                 followUpDateStr = followUpDate;
             }

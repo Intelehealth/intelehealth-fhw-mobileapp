@@ -435,7 +435,13 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
-            followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + StringUtils.en__ru_dob(followupDate));
+            } else {
+                followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + StringUtils.en__ru_dob(followupDate));
+            }
+
             followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
 
             if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {

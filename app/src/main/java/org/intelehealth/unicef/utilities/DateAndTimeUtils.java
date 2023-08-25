@@ -143,8 +143,7 @@ public class DateAndTimeUtils {
             tyears = String.valueOf(period.getValue(0));
             age = tyears;
             Log.d("TAG", "getAge_FollowUp: s : " + age);
-        }
-        else {
+        } else {
             age = "0";
         }
 
@@ -448,6 +447,24 @@ public class DateAndTimeUtils {
             date = inputFormat.parse(time);
             str = outputFormat.format(date);
         } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public static String parseYYYYMMDDDateToddMMyyyy(String time) {
+        String inputPattern = "yyyy-MM-dd";
+        String outputPattern = "dd MMM yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException | NullPointerException e) {
             e.printStackTrace();
         }
         return str;

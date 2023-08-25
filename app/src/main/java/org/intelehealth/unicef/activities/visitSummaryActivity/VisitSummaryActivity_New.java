@@ -2,6 +2,7 @@ package org.intelehealth.unicef.activities.visitSummaryActivity;
 
 import static org.intelehealth.unicef.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.unicef.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
+import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parseYYYYMMDDDateToddMMyyyy;
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.unicef.utilities.UuidDictionary.HOSPITAL_TYPE;
@@ -3977,7 +3978,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
                     remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
                 }
-                followUpDateStr = parse_DateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+                followUpDateStr = parseYYYYMMDDDateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    followUpDateStr = StringUtils.getFullMonthName(followUpDateStr);
+                    followUpDateStr = StringUtils.en__ru_dob(followUpDateStr);
+                }
             } else {
                 followUpDateStr = followUpDate;
             }
