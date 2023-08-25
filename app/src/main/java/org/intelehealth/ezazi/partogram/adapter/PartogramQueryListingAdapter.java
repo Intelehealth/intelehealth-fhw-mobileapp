@@ -561,12 +561,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             }
         });
     }
-
-    private void printJson() {
-        String ivFluidString = ivFluidsJsonObject.toString();
-        Log.d(TAG, "printJson: ivFluidString : " + ivFluidString);
-    }
-
     private void saveIvFluidDataInJson(ParamInfo info, String value, String type) {
         try {
             ivFluidsJsonObject.put(type, value);
@@ -574,7 +568,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             throw new RuntimeException(e);
         }
         info.setCapturedValue(ivFluidsJsonObject.toString());
-        printJson();
     }
 
     private void saveOxytocinDataInJson(ParamInfo info, String value, String type) {
