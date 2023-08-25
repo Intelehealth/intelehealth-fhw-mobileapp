@@ -185,7 +185,7 @@
     <string name="visit_summary_complaint" translatable="false">Причина визита</string>
     <string name="visit_summary_vitals" translatable="false">Жизненные показатели</string>
     <string name="visit_summary_doctor_details" translatable="false">Информация о враче</string>
-    <string name="visit_summary_rx" translatable="false">Выписанные лекарства</string>
+    <string name="visit_summary_rx" translatable="false">Медикаментозное лечение</string>
     <string name="visit_summary_diagnosis" translatable="false">Диагноз</string>
     <string name="visit_summary_advice" translatable="false">Медицинские рекомендации</string>
     <string name="visit_summary_tests_prescribed" translatable="false">Анализы/направления</string>
@@ -734,11 +734,11 @@
     <string name="units_eg_days_weeks_etc">Единицы (например: дни / недели и т. Д.)</string>
     <string name="additional_instruction">Дополнительная инструкция</string>
     <string name="recommended_tests">Рекомендуемые тесты</string>
-    <string name="test">Контрольная работа</string>
+    <string name="test">Тест</string>
     <string name="advice_or_refer_patient">Посоветуйте или направьте пациента</string>
     <string name="notes">Примечания</string>
     <string name="notes_not_shared_with_the_patient">Примечания (не передаются пациенту)</string>
-    <string name="follow_up">Следовать за</string>
+    <string name="follow_up">Последующий визит</string>
     <string name="sign_and_submit">Войти и отправить</string>
     <string name="add_test">Добавить тест</string>
     <string name="add_advice">Добавить совет</string>
@@ -979,7 +979,7 @@
     <string name="name">Имя</string>
     <string name="qualification">Квалификация</string>
     <string name="speciality">Специальность</string>
-    <string name="advice">Консультация</string>
+    <string name="advice">Советы</string>
     <string name="referred_specialist">Направлен к специалисту</string>
     <string name="no_follow_up_suggested">\u2022 Не предложено никаких последующих действий</string>
     <string name="end_visit">Завершить визит</string>
