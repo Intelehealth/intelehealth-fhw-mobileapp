@@ -88,10 +88,10 @@ public class PastVisitListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            separator = itemView.findViewById(R.id.separator);
-            chiefComplaintTextView = itemView.findViewById(R.id.chief_complaint_txt);
-            visitUUIDTextView = itemView.findViewById(R.id.visitID_tv);
-            visitDateTextView = itemView.findViewById(R.id.visit_date_tv);
+            separator = itemView.findViewById(R.id.viewSeparatorPastVisitListItem);
+            chiefComplaintTextView = itemView.findViewById(R.id.tvChiefComplaintPastVisitListItem);
+            visitUUIDTextView = itemView.findViewById(R.id.tvVisitIDPastVisitListItem);
+            visitDateTextView = itemView.findViewById(R.id.tvVisitDatePastVisitListItem);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

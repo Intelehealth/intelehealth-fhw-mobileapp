@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentAppointmentDetails"
+    android:contentDescription="Appointment Details Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
@@ -11,7 +13,8 @@
     tools:context=".appointmentNew.AppointmentDetailsActivity">
 
     <include
-        android:id="@+id/toolbar_common"
+        android:id="@+id/toolbarAppointmentDetails"
+        android:contentDescription="Appointment Details Toolbar"
         layout="@layout/toolbar_common_new2_ui2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,10 +22,11 @@
         android:layout_marginEnd="@dimen/apps_details_toolbar_margin_end" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_head"
+        android:id="@+id/cvPatientInfoAppointmentDetails"
+        android:contentDescription="Appointment Details Patient Info CardView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/apps_details_profile_card_height"
-        android:layout_below="@+id/toolbar_common"
+        android:layout_below="@+id/toolbarAppointmentDetails"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_marginStart="@dimen/apps_details_profile_card_margin_start_end"
@@ -33,7 +37,8 @@
         app:cardElevation="@dimen/apps_details_profile_card_corner_elevation">
 
         <LinearLayout
-            android:id="@+id/frame_10034"
+            android:id="@+id/llPatientInfoAppointmentDetails"
+            android:contentDescription="Appointment Details Patient Info LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/apps_details_profile_margin"
@@ -46,7 +51,8 @@
                 android:layout_weight="1">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/profile"
+                    android:id="@+id/cvPatientProfileImageAppointmentDetails"
+                    android:contentDescription="Appointment Details Patient Profile Image CardView"
                     android:layout_width="@dimen/apps_details_profile_iv_height"
                     android:layout_height="@dimen/apps_details_profile_iv_width"
                     android:layout_alignParentTop="true"
@@ -54,42 +60,50 @@
                     app:cardCornerRadius="@dimen/apps_details_profile_iv_radius">
 
                     <ImageView
-                        android:id="@+id/profile_image_app_details"
+                        android:id="@+id/ivPatientProfileImageAppointmentDetails"
+                        android:contentDescription="Appointment Details Patient Profile Image ImageView"
                         android:layout_width="@dimen/apps_details_profile_iv_height"
                         android:layout_height="@dimen/apps_details_profile_iv_width"
                         android:src="@drawable/avatar1" />
+
                 </androidx.cardview.widget.CardView>
 
                 <LinearLayout
+                    android:id="@+id/llPatientProfileDetailsAppointmentDetails"
+                    android:contentDescription="Appointment Details Patient Profile Details LinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/card_profile_details_margin_start"
-                    android:layout_toStartOf="@+id/call_chat_action_ll"
-                    android:layout_toEndOf="@+id/profile"
+                    android:layout_toStartOf="@+id/llChatCallAppointmentDetails"
+                    android:layout_toEndOf="@+id/cvPatientProfileImageAppointmentDetails"
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/frame_10033"
+                        android:id="@+id/llPatientNameAgeAppointmentDetails"
+                        android:contentDescription="Appointment Details Patient Name Age Gender LinearLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/patname_txt"
+                            android:id="@+id/tvPatientNameAppointmentDetails"
+                            android:contentDescription="Appointment Details Patient Name TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center_horizontal|center_vertical"
                             android:lineSpacingExtra="-3sp"
-                            android:maxLines="1" android:maxLength="15"
+                            android:maxLength="15"
+                            android:maxLines="1"
                             android:text="@string/fu_visit_name"
                             android:textAppearance="@style/label_16sp"
                             android:textColor="@null"
                             android:textSize="@dimen/card_profile_name_text_size" />
 
                         <TextView
-                            android:id="@+id/gender_age_txt"
+                            android:id="@+id/tvPatientGenderAgeAppointmentDetails"
+                            android:contentDescription="Appointment Details Patient Gender Age TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -102,7 +116,8 @@
                             android:textSize="@dimen/card_profile_name_text_size" />
 
                         <ImageView
-                            android:id="@+id/icons8_edit"
+                            android:id="@+id/ivEditPatientProfileIconAppointmentDetails"
+                            android:contentDescription="Appointment Details Patient Profile Edit Icon ImageView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -115,7 +130,8 @@
 
                     <!-- Caption -->
                     <TextView
-                        android:id="@+id/openmrsID_txt"
+                        android:id="@+id/tvPatientOpenMRSIDAppointmentDetails"
+                        android:contentDescription="Appointment Details Patient OpenMRS ID TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginTop="@dimen/cp_openmrsid_margin_top"
@@ -129,7 +145,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/call_chat_action_ll"
+                    android:id="@+id/llChatCallAppointmentDetails"
+                    android:contentDescription="Appointment Details Chat Call LinearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
@@ -138,7 +155,8 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/iv_call_patient_app"
+                        android:id="@+id/ivCallAppointmentDetails"
+                        android:contentDescription="Appointment Details Call ImageView"
                         android:layout_width="36dip"
                         android:layout_height="36dip"
                         android:background="@drawable/ui2_ic_bg_contact_icons"
@@ -146,7 +164,8 @@
                         android:src="@drawable/ui2_ic_call_green" />
 
                     <ImageView
-                        android:id="@+id/iv_whatsapp_patient_app"
+                        android:id="@+id/ivChatAppointmentDetails"
+                        android:contentDescription="Appointment Details Chat ImageView"
                         android:layout_width="36dip"
                         android:layout_height="36dip"
                         android:layout_marginStart="@dimen/cp_option_margin_start"
@@ -166,9 +185,11 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvVisitInfoAppointmentDetails"
+        android:contentDescription="Appointment Details Visit Info CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cardview_head"
+        android:layout_below="@+id/cvPatientInfoAppointmentDetails"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_marginStart="@dimen/cp_vs_margin_start"
@@ -179,10 +200,11 @@
         app:cardElevation="@dimen/margin_5">
 
         <LinearLayout
-            android:id="@+id/frame_10004"
+            android:id="@+id/llVisitInfoAppointmentDetails"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/cp_card_margin_updown"
+            android:contentDescription="Appointment Details Visit Info LinearLayout"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -190,19 +212,21 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/priority_tag_app_details"
+                    android:id="@+id/ivPriorityTagAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/cp_margin_start"
+                    android:contentDescription="Appointment Details Priority Tag ImageView"
                     android:src="@drawable/ui2_frame_priority"
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/chief_complaint_txt"
+                    android:id="@+id/tvChiefComplaintAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/cp_margin_start"
+                    android:contentDescription="Appointment Details Chief Complaint TextView"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
                     android:text="Headache and body pain"
@@ -211,11 +235,12 @@
                     android:textSize="@dimen/cp_name_txt_size" />
 
                 <TextView
-                    android:id="@+id/visitID_appointment"
+                    android:id="@+id/tvVisitIDAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/chief_complaint_txt"
+                    android:layout_below="@+id/tvChiefComplaintAppointmentDetails"
                     android:layout_marginStart="@dimen/cp_margin_start"
+                    android:contentDescription="Appointment Details Visit ID TextView"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
                     android:text="Visit ID : 987654jK"
@@ -224,30 +249,34 @@
                     android:textSize="@dimen/cp_male_textsize" />
 
                 <ImageButton
-                    android:id="@+id/fu_progress_indicator"
+                    android:id="@+id/ibProgressIndicatorAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/visitID_appointment"
+                    android:layout_below="@id/tvVisitIDAppointmentDetails"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/cp_card_margin_updown"
                     android:background="@null"
+                    android:contentDescription="Appointment Details Progress Indicator ImageButton"
                     android:src="@drawable/details_progressindic" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/state_prev_scheduled_on"
+                android:id="@+id/rlPreviousAppointmentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fu_progress_indicator"
+                android:layout_below="@+id/ibProgressIndicatorAppointmentDetails"
                 android:layout_marginTop="@dimen/cp_card_margin_updown"
-                android:visibility="gone">
+                android:contentDescription="Appointment Details Previous Appointment RelativeLayout"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
-                    android:id="@+id/tv_appointment_time1"
+                    android:id="@+id/tvPreviousScheduledAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/ps_app_time_margin_start"
                     android:layout_toEndOf="@+id/fu_details_calendar"
+                    android:contentDescription="Appointment Details 'Previous Scheduled On' TextView"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
                     android:text="@string/previously_scheduled_on"
@@ -256,20 +285,22 @@
                     android:textSize="@dimen/cp_male_textsize" />
 
                 <LinearLayout
-                    android:id="@+id/ll_11"
+                    android:id="@+id/llPreviousTimeDateAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_appointment_time1"
+                    android:layout_below="@+id/tvPreviousScheduledAppointmentDetails"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/tv_reschedule_time_margin_top"
+                    android:contentDescription="Appointment Details Previous Appointment Date and Time LinearLayout"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_prev_app_date"
+                        android:id="@+id/tvPreviousDateAppointmentDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/tv_reschedule1_time_margin_start"
                         android:layout_toEndOf="@+id/fu_details_calendar"
+                        android:contentDescription="Appointment Details Previous Appointment Date TextView"
                         android:drawableStart="@drawable/ui2_ic_icons8_calendar_1"
                         android:drawablePadding="@dimen/tv_reschedule1_time_drawable_padding"
                         android:drawableTint="@color/textColorBlack"
@@ -282,11 +313,12 @@
                         android:textSize="@dimen/cp_male_textsize" />
 
                     <TextView
-                        android:id="@+id/tv_prev_app_time"
+                        android:id="@+id/tvPreviousTimeAppointmentDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="60dp"
                         android:layout_toEndOf="@+id/fu_details_calendar"
+                        android:contentDescription="Appointment Details Previous Appointment Time TextView"
                         android:drawableStart="@drawable/ui2_ic_icons8_time_1"
                         android:drawablePadding="@dimen/tv_reschedule1_time_drawable_padding"
                         android:drawableTint="@color/textColorBlack"
@@ -304,19 +336,22 @@
 
             <!-- ui for state appointment started-->
             <RelativeLayout
-                android:id="@+id/state_appointment_started"
+                android:id="@+id/rlCurrentAppointmentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fu_progress_indicator"
                 android:layout_marginTop="@dimen/rt_card_margin_updown"
-                android:visibility="gone">
+                android:contentDescription="Appointment Details Current Appointment RelativeLayout"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
-                    android:id="@+id/tv_reschedule_on"
+                    android:id="@+id/tvRescheduledOnAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/tv_reschedule_time_margin_start"
                     android:layout_toEndOf="@+id/fu_details_calendar"
+                    android:contentDescription="Appointment Details 'Rescheduled On' TextView"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
                     android:text="@string/rescheduled_on"
@@ -327,20 +362,22 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ll_1"
+                    android:id="@+id/llCurrentTimeDateAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_reschedule_on"
+                    android:layout_below="@+id/tvRescheduledOnAppointmentDetails"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/tv_reschedule_time_margin_top"
+                    android:contentDescription="Appointment Details Current Appointment Date and Time LinearLayout"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/visit_startDate_appointment"
+                        android:id="@+id/tvCurrentDateAppointmentDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/tv_reschedule1_time_margin_start"
                         android:layout_toEndOf="@+id/fu_details_calendar"
+                        android:contentDescription="Appointment Details Current Appointment Date TextView"
                         android:drawableStart="@drawable/ui2_ic_icons8_calendar_1"
                         android:drawablePadding="@dimen/tv_reschedule1_time_drawable_padding"
                         android:drawableTint="@color/textColorBlack"
@@ -353,11 +390,12 @@
                         android:textSize="@dimen/cp_male_textsize" />
 
                     <TextView
-                        android:id="@+id/tv_starttime_appointment"
+                        android:id="@+id/tvCurrentTimeAppointmentDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="60dp"
                         android:layout_toEndOf="@+id/fu_details_calendar"
+                        android:contentDescription="Appointment Details Current Appointment Time TextView"
                         android:drawableStart="@drawable/ui2_ic_icons8_time_1"
                         android:drawablePadding="@dimen/tv_reschedule1_time_drawable_padding"
                         android:drawableTint="@color/textColorBlack"
@@ -371,13 +409,12 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_appointment_time_details"
+                    android:id="@+id/tvStartedInAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ll_1"
                     android:layout_marginStart="@dimen/tv_reschedule_time_margin_start"
-                    android:layout_marginTop="@dimen/tv_reschedule_time_margin_top"
-                    android:layout_toEndOf="@+id/fu_details_calendar"
+                    android:layout_marginTop="-346dp"
+                    android:contentDescription="Appointment Details 'Starting in' TextView"
                     android:drawableStart="@drawable/ui2_ic_time"
                     android:drawablePadding="@dimen/tv_reschedule1_time_drawable_padding"
                     android:drawableTint="@color/colorPrimary1"
@@ -391,7 +428,7 @@
 
 
             <View
-                android:id="@+id/divider"
+                android:id="@+id/viewDivider1AppointmentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/state_appointment_started"
@@ -399,35 +436,40 @@
                 android:layout_marginTop="@dimen/cp_card_margin_updown"
                 android:layout_marginEnd="@dimen/cp_margin_start"
                 android:layout_marginBottom="@dimen/cp_card_margin_updown"
-                android:background="@color/notifi_divider_color" />
+                android:background="@color/notifi_divider_color"
+                android:contentDescription="Appointment Details Divider 1 View" />
 
 
             <RelativeLayout
-                android:id="@+id/layout_patient_history"
+                android:id="@+id/rlPatientHistoryAppointmentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider_2"
                 android:layout_marginStart="@dimen/cp_margin_start"
                 android:layout_marginEnd="@dimen/cp_margin_start"
                 android:layout_marginBottom="@dimen/cp_card_margin_updown"
-                android:visibility="gone">
+                android:contentDescription="Appointment Details Patient History RelativeLayout"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <ImageView
-                    android:id="@+id/icon_visit_details"
+                    android:id="@+id/ivPatientHistoryIconAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
+                    android:contentDescription="Appointment Details Patient History Icon ImageView"
                     android:src="@drawable/ui2_ic_patient_history" />
 
                 <!-- label-text -->
                 <TextView
-                    android:id="@+id/visitDetails_textq"
+                    android:id="@+id/tvPatientHistoryTitleAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/cp_margin_start"
-                    android:layout_toEndOf="@+id/icon_visit_details"
+                    android:layout_toEndOf="@+id/ivPatientHistoryIconAppointmentDetails"
+                    android:contentDescription="Appointment Details Patient History Title TextView"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
                     android:text="@string/view_patient_history"
@@ -436,33 +478,36 @@
                     android:textSize="@dimen/cp_name_txt_size" />
 
                 <ImageButton
-                    android:id="@+id/icon_arrowRight"
+                    android:id="@+id/ibPatientHistoryForwardArrowAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="@null"
+                    android:contentDescription="Appointment Details Patient History Forward Arrow ImageButton"
                     android:src="@drawable/arrow_right_icon8" />
 
                 <View
-                    android:id="@+id/dividerqq"
+                    android:id="@+id/viewDivider2AppointmentDetails"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@+id/visitDetails_textq"
+                    android:layout_below="@+id/tvPatientHistoryTitleAppointmentDetails"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/dividerqq_margin_top"
                     android:layout_marginEnd="@dimen/cp_margin_start"
-                    android:background="@color/notifi_divider_color" />
+                    android:background="@color/notifi_divider_color"
+                    android:contentDescription="Appointment Details Divider 2 View" />
             </RelativeLayout>
 
 
             <LinearLayout
-                android:id="@+id/ll_2"
+                android:id="@+id/llSpecialityAppointmentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider"
                 android:layout_marginStart="@dimen/cp_margin_start"
                 android:layout_marginEnd="@dimen/cp_margin_start"
+                android:contentDescription="Appointment Details Speciality LinearLayout"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -472,25 +517,27 @@
                     android:layout_weight="2">
 
                     <ImageView
-                        android:id="@+id/profile"
+                        android:id="@+id/ivSpecialityIconAppointmentDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/icons_appoint_height"
                         android:layout_centerVertical="true"
                         android:background="@null"
+                        android:contentDescription="Appointment Details Speciality Icon ImageView"
                         android:src="@drawable/ic_grp_general_phys" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/cp_margin_start"
-                        android:layout_toEndOf="@+id/profile"
+                        android:layout_toEndOf="@+id/ivSpecialityIconAppointmentDetails"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/dr_speciality_appointment"
+                            android:id="@+id/tvSpecialityTitleAppointmentDetails"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/ad_male_margin_start"
+                            android:contentDescription="Appointment Details Speciality Title TextView"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
                             android:text="@string/speciality"
@@ -499,10 +546,11 @@
                             android:textSize="@dimen/ad_title_text_size" />
                         <!-- Caption -->
                         <TextView
-                            android:id="@+id/dr_speciality"
+                            android:id="@+id/tvSpecialityValueAppointmentDetails"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/ad_male_margin_start"
+                            android:contentDescription="Appointment Details Speciality Value TextView"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="0sp"
                             android:text="@string/dr_speciality"
@@ -514,28 +562,31 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout_contact_action"
+                    android:id="@+id/llChatCallDocAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/ad_icons_margin_top"
+                    android:contentDescription="Appointment Details Chat Call Doctor LinearLayout"
                     android:orientation="horizontal"
                     tools:ignore="ExtraText">
 
                     <ImageView
-                        android:id="@+id/iv_call_doctor_app"
+                        android:id="@+id/ivCallDocAppointmentDetails"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
                         android:layout_marginStart="@dimen/cp_option_margin_start"
                         android:background="@drawable/ui2_ic_bg_contact_icons"
+                        android:contentDescription="Appointment Details Call Doctor ImageView"
                         android:padding="@dimen/cp_option_icon_padding_whts"
                         android:src="@drawable/ui2_ic_call_green" />
 
                     <ImageView
-                        android:id="@+id/iv_whatsapp_doctor_app"
+                        android:id="@+id/ivChatDocAppointmentDetails"
                         android:layout_width="@dimen/cp_option_icon_width"
                         android:layout_height="@dimen/cp_option_icon_height"
                         android:layout_marginStart="@dimen/cp_option_margin_start"
                         android:background="@drawable/ui2_ic_bg_contact_icons"
+                        android:contentDescription="Appointment Details Chat Doctor ImageView"
                         android:padding="@dimen/cp_option_icon_padding_whts"
                         android:src="@drawable/ui2_ic_whatsapp_green" />
 
@@ -544,7 +595,7 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/divider_2"
+                android:id="@+id/viewDivider3AppointmentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/ll_2"
@@ -552,33 +603,37 @@
                 android:layout_marginTop="@dimen/cp_card_margin_updown"
                 android:layout_marginEnd="@dimen/cp_margin_start"
                 android:layout_marginBottom="@dimen/cp_card_margin_updown"
-                android:background="@color/notifi_divider_color" />
+                android:background="@color/notifi_divider_color"
+                android:contentDescription="Appointment Details Divider 3 View" />
 
             <!-- Frame 2608662 -->
             <RelativeLayout
-                android:id="@+id/layout_visit_summary"
+                android:id="@+id/rlVisitSummaryAppointmentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/icons_appoint_height"
                 android:layout_below="@+id/divider_2"
                 android:layout_marginStart="@dimen/cp_margin_start"
-                android:layout_marginEnd="@dimen/cp_margin_start">
+                android:layout_marginEnd="@dimen/cp_margin_start"
+                android:contentDescription="Appointment Details Visit Summary RelativeLayout">
 
                 <ImageView
-                    android:id="@+id/icon_visit_details"
+                    android:id="@+id/ivVisitSummaryIconAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/icons_appoint_height"
                     android:layout_centerVertical="true"
                     android:background="@null"
+                    android:contentDescription="Appointment Details Visit Summary Icon ImageView"
                     android:src="@drawable/ic_visit_details_icon8" />
 
                 <!-- label-text -->
                 <TextView
-                    android:id="@+id/visitDetails_text"
+                    android:id="@+id/ivVisitSummaryTitleAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/cp_margin_start"
-                    android:layout_toEndOf="@+id/icon_visit_details"
+                    android:layout_toEndOf="@+id/ivVisitSummaryIconAppointmentDetails"
+                    android:contentDescription="Appointment Details Visit Summary Title TextView"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/reschedule_time_line_spacing"
                     android:text="@string/visitDetails_text"
@@ -587,17 +642,19 @@
                     android:textSize="@dimen/ad_title_text_size" />
 
                 <ImageView
-                    android:id="@+id/iv_drawer_visit_summary"
+                    android:id="@+id/ivVisitSummaryForwardArrowAppointmentDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="@null"
+                    android:contentDescription="Appointment Details Visit Summary Forward Arrow ImageView"
                     android:src="@drawable/arrow_right_icon8" />
             </RelativeLayout>
 
             <View
-                android:id="@+id/divider_3"
+                android:id="@+id/viewDivider4AppointmentDetails"
+                android:contentDescription="Appointment Details Divider 4 View"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/ll_3"
@@ -609,7 +666,8 @@
                 android:visibility="visible" />
 
             <LinearLayout
-                android:id="@+id/layout_visit_summary_buttons"
+                android:id="@+id/llButtons1AppointmentDetails"
+                android:contentDescription="Appointment Details Buttons 1 LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider_3"
@@ -618,10 +676,12 @@
                 android:layout_marginBottom="@dimen/cp_card_margin_updown"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                android:weightSum="1">
+                android:weightSum="1"
+                tools:visibility="visible">
 
                 <Button
-                    android:id="@+id/btn_schedule_appointment"
+                    android:id="@+id/btnScheduleAppointmentDetails"
+                    android:contentDescription="Appointment Details Schedule Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/btn_visit_margin_bottom"
@@ -633,7 +693,8 @@
                     android:visibility="gone" />
 
                 <Button
-                    android:id="@+id/btn_cancel_appointment"
+                    android:id="@+id/btnCancelAppointmentDetails"
+                    android:contentDescription="Appointment Details Cancel Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_privacy_notice_link"
@@ -651,7 +712,8 @@
                     android:textSize="@dimen/btn_visit_text_size" />
 
                 <Button
-                    android:id="@+id/btn_reschedule_appointment"
+                    android:id="@+id/btnRescheduleAppointmentDetails"
+                    android:contentDescription="Appointment Details Reschedule Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_privacy_notice_link"
@@ -669,17 +731,20 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/state_prescription_appointment"
+                android:id="@+id/rlPrescAppointmentDetails"
+                android:contentDescription="Appointment Details Prescription RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider_3"
                 android:layout_marginStart="@dimen/cp_margin_start"
                 android:layout_marginEnd="@dimen/cp_margin_start"
                 android:layout_marginBottom="@dimen/state_presc_margin_bottom"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <ImageView
-                    android:id="@+id/iv_prescription111"
+                    android:id="@+id/ivPrescIconAppointmentDetails"
+                    android:contentDescription="Appointment Details Prescription Icon ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -688,32 +753,23 @@
 
                 <!-- label-text -->
                 <TextView
-                    android:id="@+id/visitDetails_text1111"
+                    android:id="@+id/tvPrescTitleAppointmentDetails"
+                    android:contentDescription="Appointment Details Prescription Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/fu_male_margin_start"
-                    android:layout_toEndOf="@+id/iv_prescription111"
+                    android:layout_toEndOf="@+id/ivPrescIconAppointmentDetails"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/prescription"
                     android:textAppearance="@style/details_head2"
                     android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/ad_title_text_size" />
-                <!--   <TextView
-                       android:id="@+id/visitDetails_text1111"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginStart="@dimen/fu_margin_start"
-                       android:layout_toEndOf="@+id/iv_prescription111"
-                       android:lineSpacingExtra="3sp"
-                       android:textAppearance="@style/details_head1"
-                       android:textColor="@null"
-                       android:textSize="@dimen/fu_name_txt_size"
-                       tools:text="@string/prescription" />
-   -->
+
                 <ImageView
-                    android:id="@+id/iv_drawer_prescription"
+                    android:id="@+id/ivPrescForwardArrowAppointmentDetails"
+                    android:contentDescription="Appointment Details Prescription Forward Arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -722,13 +778,14 @@
                     android:src="@drawable/arrow_right_icon8" />
 
                 <TextView
-                    android:id="@+id/tv_presc_status_new"
+                    android:id="@+id/tvPrescPendingSinceAppointmentDetails"
+                    android:contentDescription="Appointment Details Prescription Pending Since TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/visitDetails_text1111"
+                    android:layout_below="@+id/tvPrescTitleAppointmentDetails"
                     android:layout_marginStart="@dimen/cp_margin_start"
                     android:layout_marginTop="@dimen/ad_card_margin_top"
-                    android:layout_toEndOf="@+id/iv_prescription111"
+                    android:layout_toEndOf="@+id/ivPrescIconAppointmentDetails"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="0sp"
                     android:text="Pending since 40 hours"
@@ -738,15 +795,17 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/layout_end_visit"
+                android:id="@+id/llEndVisitAppointmentDetails"
+                android:contentDescription="Appointment Details End Visit LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <View
-                    android:id="@+id/divider_end_visit"
-                    android:layout_width="match_parent"
+                    android:id="@+id/viewDivider5AppointmentDetails"
+                    android:contentDescription="Appointment Details Divider 5 View"                android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/state_prescription_appointment"
                     android:layout_marginStart="@dimen/cp_margin_start"
@@ -756,7 +815,8 @@
                     android:visibility="visible" />
 
                 <Button
-                    android:id="@+id/btn_end_visit_appointment"
+                    android:id="@+id/btnEndVisitAppointmentDetails"
+                    android:contentDescription="Appointment Details End Visit Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider_4"
@@ -776,7 +836,8 @@
 
 
             <LinearLayout
-                android:id="@+id/layout_presc_buttons"
+                android:id="@+id/llButtons2AppointmentDetails"
+                android:contentDescription="Appointment Details Buttons 2 LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider_4"
@@ -785,7 +846,8 @@
                 android:layout_marginBottom="@dimen/cp_card_margin_updown"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                android:weightSum="1">
+                android:weightSum="1"
+                tools:visibility="visible">
 
                 <Button
                     android:layout_width="0dp"
@@ -824,7 +886,7 @@
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_help_appointment"
+        android:id="@+id/fabHelpAppointmentDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -834,7 +896,7 @@
         android:layout_marginBottom="@dimen/ad_fab_help_margin_bottom"
         android:background="@color/colorPrimary"
         android:backgroundTint="@color/colorPrimary"
-        android:contentDescription="@string/app_name"
+        android:contentDescription="Appointment Details Help FloatingActionButton"
         android:elevation="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ui2_ic_question_mark"
@@ -842,4 +904,5 @@
         app:elevation="0dp"
         app:fabCustomSize="@dimen/fab_help_chat_custom_size"
         app:maxImageSize="@dimen/ad_fab_max_image_size" />
+
 </RelativeLayout>
