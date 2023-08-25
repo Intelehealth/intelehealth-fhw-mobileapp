@@ -503,36 +503,23 @@ public class VisitReceivedFragment extends Fragment {
         recentList = new ArrayList<>();
         db.beginTransaction();
 
+        // ie. visit is active and presc is given.
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        " e.encounter_type_uuid = ? and" +
+                        " v.enddate is null and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " o.conceptuuid = ? and" +
-//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
-//                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
                         " v.startdate > DATETIME('now', '-4 day') " +
-                        " group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df",
-                        String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        " group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
+                new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 // emergency - start
                 String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                boolean isCompletedExitedSurvey = false;
-                boolean isPrescriptionReceived = false;
-                try {
-                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
-                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
-                //TODO: need more improvement in main query, this condition can be done by join query
-                if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+
                     String emergencyUuid = "";
                     EncounterDAO encounterDAO = new EncounterDAO();
                     try {
@@ -563,16 +550,13 @@ public class VisitReceivedFragment extends Fragment {
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
                     recentList.add(model);
-                /*if (model.isEmergency()) {
-                    priorityRecentList.add(model);
-                } else {
-                    nonPriorityRecentList.add(model);
-                }*/
-                }
+
             }
             while (cursor.moveToNext());
         }
         cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
 
         return recentList;
         
@@ -685,74 +669,66 @@ public class VisitReceivedFragment extends Fragment {
 
     private List<PrescriptionModel> olderVisits(int limit, int offset) {
         // new
-        List<PrescriptionModel> priorityRecentList = new ArrayList<>();
-        List<PrescriptionModel> nonPriorityRecentList = new ArrayList<>();
+//        List<PrescriptionModel> priorityRecentList = new ArrayList<>();
+//        List<PrescriptionModel> nonPriorityRecentList = new ArrayList<>();
 
         olderList = new ArrayList<>();
         db.beginTransaction();
 
+        // ie. visit is active and presc is given.
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        "  e.encounter_type_uuid = ? and" +
+                        " v.enddate is null and e.encounter_type_uuid = ? and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " o.conceptuuid = ? and" +
-//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
-//                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
                         " v.startdate < DATETIME('now', '-4 day') " +
-                        "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df",
-                        String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
+
+                new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+
                 // emergency - start
                 String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                String emergencyUuid = "";
-                EncounterDAO encounterDAO = new EncounterDAO();
-                try {
-                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                    emergencyUuid = "";
-                }
 
-                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
-                    model.setEmergency(true);
-                else
-                    model.setEmergency(false);
-                // emergency - end
+                    String emergencyUuid = "";
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    try {
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
+                    }
 
-                model.setHasPrescription(true);
-                model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("euid")));
-                model.setVisitUuid(visitID);
-                model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("osync")));
-                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
-                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
-                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
-                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
-                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
-                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                    if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                        model.setEmergency(true);
+                    else
+                        model.setEmergency(false);
+                    // emergency - end
 
-                if (model.isEmergency()) {
-                    priorityRecentList.add(model);
-                } else {
-                    nonPriorityRecentList.add(model);
-                }
+                    model.setHasPrescription(true);
+                    model.setEncounterUuid(cursor.getString(cursor.getColumnIndexOrThrow("euid")));
+                    model.setVisitUuid(visitID);
+                    model.setSync(cursor.getString(cursor.getColumnIndexOrThrow("osync")));
+                    model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                    model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                    model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                    olderList.add(model);
             }
             while (cursor.moveToNext());
         }
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-
-        olderList.addAll(priorityRecentList);
-        olderList.addAll(nonPriorityRecentList);
 
         return olderList;
 

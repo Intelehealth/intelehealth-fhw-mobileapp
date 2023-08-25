@@ -178,6 +178,7 @@ public class VisitPendingFragment extends Fragment {
                         // update older data as it will not go at very bottom of list.
                         if (olderList != null && olderList.size() == 0) {
                             isolderFullyLoaded = true;
+                            Log.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
                             return;
                         }
                         if (!isolderFullyLoaded) {
@@ -422,6 +423,7 @@ public class VisitPendingFragment extends Fragment {
                         "  " +
                         " ORDER BY v.startdate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE});*/
+
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
@@ -451,7 +453,7 @@ public class VisitPendingFragment extends Fragment {
                     e.printStackTrace();
                 }
                 //TODO: need more improvement in main query, this condition can be done by join query
-                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
                     String emergencyUuid = "";
                     EncounterDAO encounterDAO = new EncounterDAO();
                     try {
