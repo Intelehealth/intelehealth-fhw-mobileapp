@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -291,9 +292,19 @@ public class VisitPendingFragment extends Fragment {
 //        });
 
         // Total of End visits.
-        int total = getTotalCounts_EndVisit();
-        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
-        pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int total = getPendingPrescCount();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
+                        pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
+                    }
+                });
+            }
+        }).start();
 
         // Filter - start
         filter_icon.setOnClickListener(v -> {
