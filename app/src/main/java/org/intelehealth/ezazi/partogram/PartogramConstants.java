@@ -25,6 +25,7 @@ public class PartogramConstants {
     public static String INPUT_DOUBLE_4_DIG_TYPE = "H";
 
     public static String RADIO_SELECT_TYPE = "I";
+    public static String RADIO_SELECT_TYPE_OXYTOCIN = "J";
 
     private static SessionManager sessionManager = null;
 
@@ -268,7 +269,9 @@ public class PartogramConstants {
 //            paramInfo.setParamName("Oxytocin (" + sessionManager.getOxytocinValue() + ")");
 //        else
         paramInfo.setParamName("Oxytocin (U/L, drops/min)");
-        paramInfo.setParamDateType(INPUT_TXT_TYPE);
+       // paramInfo.setParamDateType(INPUT_TXT_TYPE);
+        paramInfo.setParamDateType(RADIO_SELECT_TYPE_OXYTOCIN);
+        paramInfo.setStatus(new String[]{"Started", "Continued", "Stopped"});
         paramInfo.setConceptUUID("9d316d82-538f-11e6-9cfe-86f436325720");
         paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);
@@ -289,9 +292,9 @@ public class PartogramConstants {
         paramInfo.setParamName(Params.IV_FLUID.value);
         paramInfo.setParamDateType(RADIO_SELECT_TYPE);
         paramInfo.setRadioOptions(new String[]{"Yes", "No"});
-        paramInfo.setIvInfusionStatus(new String[]{"Started", "Continued", "Stopped"});
         paramInfo.setOptions(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", "Other IV Fluid*"});
         paramInfo.setValues(new String[]{"Ringer Lactate", "Normal Saline", "Dextrose 5% (D5)", AppConstants.OTHER_OPTION});
+        paramInfo.setStatus(new String[]{"Started", "Continued", "Stopped"});
         paramInfo.setConceptUUID("98c5881f-b214-4597-83d4-509666e9a7c9");
         paramInfo.setOnlyOneHourField(true);
         stringList.add(paramInfo);

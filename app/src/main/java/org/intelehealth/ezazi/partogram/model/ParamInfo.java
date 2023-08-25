@@ -17,15 +17,8 @@ public class ParamInfo implements Serializable {
     private int currentStage;
 
     private String[] radioOptions;
-    private String[] ivInfusionStatus;
+    private String[] status;
 
-    public String[] getIvInfusionStatus() {
-        return ivInfusionStatus;
-    }
-
-    public void setIvInfusionStatus(String[] ivInfusionStatus) {
-        this.ivInfusionStatus = ivInfusionStatus;
-    }
 
     public String getParamSectionName() {
         return paramSectionName;
@@ -97,6 +90,14 @@ public class ParamInfo implements Serializable {
 
     public void setConceptUUID(String conceptUUID) {
         this.conceptUUID = conceptUUID;
+    }
+
+    public String[] getStatus() {
+        return status;
+    }
+
+    public void setStatus(String[] status) {
+        this.status = status;
     }
 
     public boolean isOnlyOneHourField() {

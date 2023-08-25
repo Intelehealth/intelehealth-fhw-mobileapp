@@ -71,12 +71,13 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <include
-            android:id="@+id/ivFluidOptions"
-            layout="@layout/ivfluid_details"
+            android:id="@+id/includeLayoutPartoOxytocin"
+            layout="@layout/oxytocin_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/list_container_padding"
             android:visibility="gone"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:paddingVertical="@dimen/list_container_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_radio_options" />
