@@ -197,7 +197,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
         obsDTOList.add(obsDTO);
         try {
-            obsDAO.insertObsToDb(obsDTOList);
+            obsDAO.insertObsToDb(obsDTOList, TAG);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

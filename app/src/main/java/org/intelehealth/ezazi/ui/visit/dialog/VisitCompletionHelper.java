@@ -3,12 +3,17 @@ package org.intelehealth.ezazi.ui.visit.dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -50,6 +55,7 @@ public class VisitCompletionHelper {
     }
 
     public boolean addMotherDeceasedObs(String encounterId, boolean isMotherDeceased, String motherDeceasedReason) {
+        Log.e(TAG, "addMotherDeceasedObs: " + encounterId);
         boolean isInserted = false;
         try {
             ObsDAO obsDAO = new ObsDAO();
@@ -75,5 +81,22 @@ public class VisitCompletionHelper {
         obsDTO.setValue(value);
         obsDTO.setConceptuuid(conceptId);
         return obsDTO;
+    }
+
+    public void showCustomViewDialog(@StringRes int title,
+                                     @StringRes int positiveLbl,
+                                     @StringRes int negLbl,
+                                     View view,
+                                     CustomViewDialogFragment.OnConfirmationActionListener listener) {
+        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(context)
+                .title(title)
+                .positiveButtonLabel(positiveLbl)
+                .negativeButtonLabel(negLbl)
+                .view(view)
+                .build();
+
+        dialog.setListener(listener);
+
+        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 }

@@ -1520,20 +1520,19 @@ public class PatientOtherInfoFragment extends Fragment {
             }
         }
         ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+        SingChoiceItem itemNA = new SingChoiceItem();
+        itemNA.setItem(AppConstants.NOT_APPLICABLE_FULL_TEXT);
+        itemNA.setItemId(AppConstants.NOT_APPLICABLE);
+        itemNA.setItemIndex(0);
+        choiceItems.add(itemNA);
         for (int i = 0; i < providerDoctorList.size(); i++) {
             SingChoiceItem item = new SingChoiceItem();
             item.setItem(providerDoctorList.get(i).getGivenName() + " " + providerDoctorList.get(i).getFamilyName());
             item.setItemId(providerDoctorList.get(i).getUserUuid());
-            item.setItemIndex(i);
+            item.setItemIndex(i + 1);
             item.setSelected(mSecondaryDoctorUUIDString.equals(providerDoctorList.get(i).getUserUuid()));
             choiceItems.add(item);
         }
-
-        SingChoiceItem itemNA = new SingChoiceItem();
-        itemNA.setItem(AppConstants.NOT_APPLICABLE_FULL_TEXT);
-        itemNA.setItemId(AppConstants.NOT_APPLICABLE);
-        itemNA.setItemIndex(choiceItems.size());
-        choiceItems.add(itemNA);
 
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment
                 .Builder(mContext)

@@ -1,0 +1,17 @@
+- Stillbirth / livebirth options status is not reflected properly on the
+search patient & the timeline screen does not show the comment & outcome status, it shows duplications.- Done.
+- Enter other comment & mother deceased reason clear(x) option icon is not working.- Done.
+- If we change the livebirth to stillbirth options, other fields are not erased automatically.- Done.
+- The self-discharged status is not reflected properly on the search patient & timeline screen not show the status,
+it shows duplications.- Done.
+- Labour completed and Mother deceased together- status is not reflected properly on the search patient & timeline
+screen does not show the comment & outcome status, it shows duplications.- Done.
+- Other comments- status is not reflected properly on the search patient & timeline screen does not show the comment with reason
+& outcome status, it shows duplications.- Done.
+- Add radius to other comment box- Not show properly. Video is attached to the ticket.
+https://intelehealthwiki.atlassian.net/browse/EZ-336 - Done
+- With the creator - we can add the reason & update the reason properly but at the time of adding the reason by
+default shows the “out of time” sentence & Then we erase this & then show enter the reason in the background.- Done
+- If we click on the view more button message shows but we can update the reason directly need to add an edit functionality icon
+& then we can able to edit & update the reason.- Done
+- With another nurse- the timeline Screen only shows the outcome, not showing the view reason option- Done

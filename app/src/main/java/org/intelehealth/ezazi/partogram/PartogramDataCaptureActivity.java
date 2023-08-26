@@ -357,12 +357,12 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         }
                     }
                 } else {
-                    obsDAO.insertObsToDb(obsDTOList);
+                    obsDAO.insertObsToDb(obsDTOList, TAG);
                 }
                 new EncounterDAO().updateEncounterSync("false", mEncounterUUID);
 
 
-                new VisitsDAO().updateVisitSync(mVisitUUID, "false");
+//                new VisitsDAO().updateVisitSync(mVisitUUID, "false");
 
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("visitSummary");

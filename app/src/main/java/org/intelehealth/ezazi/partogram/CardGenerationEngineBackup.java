@@ -25,19 +25,16 @@ import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
-import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
-import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,15 +44,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class CardGenerationEngine {
-    private static final String TAG = CardGenerationEngine.class.getName();
-    private static ArrayList<EncounterDTO> encounters;
-    private static ArrayList<ObsDTO> observations;
+public class CardGenerationEngineBackup {
+    private static final String TAG = CardGenerationEngineBackup.class.getName();
 
     public static void scanForNewCardEligibility() {
         try {
-            encounters = new ArrayList<>();
-            observations = new ArrayList<>();
+
             // all active visit list
             VisitsDAO visitsDAO = new VisitsDAO();
             EncounterDAO encounterDAO = new EncounterDAO();
@@ -118,16 +112,16 @@ public class CardGenerationEngine {
                             }
                         } else if (latestEncounterName.toLowerCase().contains("stage2")) {
                             if (minutes >= 15) {
-                                if (checkVisitEncounterReachToLimit(latestEncounterName)) {
-                                    closeReachToLimitVisit(visitUid);
-                                } else {
+//                                if (checkVisitEncounterReachToLimit(latestEncounterName)) {
+//                                    closeReachToLimitVisit(visitUid);
+//                                } else {
                                     // get next encounter name
                                     String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
                                     if (nextEncounterTypeName != null) {
                                         Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
                                         createNewEncounter(visitUid, nextEncounterTypeName);
                                     }
-                                }
+//                                }
                             } else if (minutes == 14) {
                                 SyncUtils syncUtils = new SyncUtils();
                                 syncUtils.syncBackground();
@@ -137,27 +131,9 @@ public class CardGenerationEngine {
                 }
             }
 
-            boolean isInserted = insertEncounters();
-            if (isInserted) {
-//                SyncUtils syncUtils = new SyncUtils();
-//                syncUtils.syncBackground();
-                alertToCollectHistoryData();
-            }
-
-        } catch (ParseException | DAOException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
-    }
-
-    private static boolean insertEncounters() throws DAOException {
-        Log.e(TAG, "New Encounters => " + encounters.size());
-        Log.e(TAG, "New Obs => " + observations.size());
-        if (encounters.size() > 0) {
-            EncounterDAO encounterDAO = new EncounterDAO();
-            encounterDAO.createBulkEncountersToDB(encounters);
-            ObsDAO obsDAO = new ObsDAO();
-            return obsDAO.insertObsToDb(observations, TAG);
-        } else return false;
     }
 
     private static void playSound() {
@@ -192,38 +168,25 @@ public class CardGenerationEngine {
             log.put("value", new Gson().toJson(encounterDAO));
             log.put("nextEncounterTypeName", nextEncounterTypeName);
             FirebaseRealTimeDBUtils.logData(log);
-            SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-            encounters.add(encounterDTO);
-            observations.add(new ObsDAO().createObs(encounterDTO.getUuid(), EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID(), TAG));
-//            try {
-//                boolean status = encounterDAO.createEncountersToDB(encounterDTO);
-//                if (status) {
-//                    SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-//
-//                    new ObsDAO().createEncounterType(encounterDTO.getUuid(), EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID(), TAG);
-////                    new VisitsDAO().updateVisitSync(encounterDTO.getVisituuid(), "false");
-//                    Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
-//                    IntelehealthApplication.getAppContext().sendBroadcast(intent);
-//                    sendNotification("Alert!", "Time to collect the History data!", null);
-//                    int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-//                    if (callState == TelephonyManager.CALL_STATE_IDLE) {
-//                        playSound();
-//                    }
-//
-//                }
-//            } catch (DAOException e) {
-//                e.printStackTrace();
-//            }
-        }
-    }
 
-    private static void alertToCollectHistoryData() {
-        Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
-        IntelehealthApplication.getAppContext().sendBroadcast(intent);
-        sendNotification("Alert!", "Time to collect the History data!", null);
-        int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-        if (callState == TelephonyManager.CALL_STATE_IDLE) {
-            playSound();
+            try {
+                boolean status = encounterDAO.createEncountersToDB(encounterDTO);
+                if (status) {
+                    SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+                    new ObsDAO().createEncounterType(encounterDTO.getUuid(), EncounterDTO.Type.NORMAL.name(), sessionManager.getCreatorID(), TAG);
+//                    new VisitsDAO().updateVisitSync(encounterDTO.getVisituuid(), "false");
+                    Intent intent = new Intent(AppConstants.NEW_CARD_INTENT_ACTION);
+                    IntelehealthApplication.getAppContext().sendBroadcast(intent);
+                    sendNotification("Alert!", "Time to collect the History data!", null);
+                    int callState = ((TelephonyManager) IntelehealthApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                    if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                        playSound();
+                    }
+
+                }
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

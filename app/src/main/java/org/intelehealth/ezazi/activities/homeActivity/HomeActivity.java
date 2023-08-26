@@ -156,7 +156,6 @@ import io.reactivex.schedulers.Schedulers;
 public class HomeActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
     private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
@@ -1003,7 +1002,6 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
                     if (!encounterUUID.equalsIgnoreCase("")) { // blinking part
                         int issubmitted = obsDAO.checkObsExistsOrNot(encounterUUID);
-                        Log.e(TAG, "loadVisits: blinking" + issubmitted);
                         if (issubmitted == 1) { // not yet filled
                             activePatientModels.get(j).setObsExistsFlag(true);
                             activePatientModels.get(j).setVisibilityOrder(4);
@@ -1555,7 +1553,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction().equalsIgnoreCase(AppConstants.VISIT_OUT_OF_TIME_ACTION)) {
                 loadVisits();
-                sync();
+//                sync();
             }
         }
     };

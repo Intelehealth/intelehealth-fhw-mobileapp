@@ -45,7 +45,7 @@ import java.util.UUID;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implements View.OnClickListener,
+public class CompleteVisitOnEnd2StageDialog extends ReferTypeHelper implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener {
 
     private BirthOutcomeDialogBinding binding;
@@ -96,23 +96,6 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
                 R.string.cancel, binding.getRoot(), this::manageBirthOutcomeSelection);
     }
 
-    private void showCustomViewDialog(@StringRes int title,
-                                      @StringRes int positiveLbl,
-                                      @StringRes int negLbl,
-                                      View view,
-                                      CustomViewDialogFragment.OnConfirmationActionListener listener) {
-        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(context)
-                .title(title)
-                .positiveButtonLabel(positiveLbl)
-                .negativeButtonLabel(negLbl)
-                .view(view)
-                .build();
-
-        dialog.setListener(listener);
-
-        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-    }
-
     @Override
     public void onClick(View v) {
         v.setSelected(true);
@@ -158,107 +141,32 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
         } else {
             Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
         }
-//        isLabourCompletedChecked = cbLabourCompleted.isChecked();
-//        isMotherDeceasedChecked = cbMotherDeceased.isChecked();
-//
-//        if (!isLabourCompletedChecked && !isMotherDeceasedChecked && selectedTextview == null && etOtherCommentOutcome.getText().toString().isEmpty()) {
-//            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
-//        } else {
-//            if (isLabourCompletedChecked && isMotherDeceasedChecked) {
-//                // show ui for both labour completed and mother deceased
-//                selectedBirthOutcome = LABOUR_AND_MOTHER;
-//                showBottomSheetDialog(selectedBirthOutcome);
-//
-//            } else if (isLabourCompletedChecked) {
-//
-//                // show ui for labour completed only
-//                selectedBirthOutcome = LABOUR_COMPLETED;
-//                showBottomSheetDialog(selectedBirthOutcome);
-//            } else if (isMotherDeceasedChecked) {
-//                // show ui for mother deceased only
-//                selectedBirthOutcome = MOTHER_DECEASED;
-//                //  showBottomSheetDialog(selectedBirthOutcome);
-//                showMotherDeceasedDialog();
-//
-//            } else if (selectedTextview.getId() == R.id.tvReferToOtherHospital) {
-//                // refer other hospital // call visit complete enc.
-//                referOtherHospitalDialog(value);
-//
-//            } else if (selectedTextview.getId() == R.id.tvSelfDischarge) {
-//                // self discharge // call visit complete enc.
-//                try {
-//                    boolean isInserted = insertVisitCompleteObs(visitUuid, context.getString(R.string.self_discharge_medical_advice), UuidDictionary.REFER_TYPE);
-//                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
-//
-//                } catch (DAOException e) {
-//                    e.printStackTrace();
-//                }
-//            } else if (selectedTextview.getId() == R.id.tvShiftToSection) {
-//                // Shift to C-Section // call visit complete enc.
-//                try {
-//                    boolean isInserted = insertVisitCompleteObs(visitUuid, context.getString(R.string.shift_to_c_section), UuidDictionary.REFER_TYPE);
-//                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
-//
-//                } catch (DAOException e) {
-//                    e.printStackTrace();
-//                }
-//            } else if (selectedTextview.getId() == R.id.tvReferToICU) {
-//                //Refer to high dependency unit / ICU// call visit complete enc.
-//                try {
-//                    boolean isInserted = insertVisitCompleteObs(visitUuid, context.getString(R.string.refer_to_icu), UuidDictionary.REFER_TYPE);
-//                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
-//
-//                } catch (DAOException e) {
-//                    e.printStackTrace();
-//                }
-//            } else if (!etOtherCommentOutcome.getText().toString().isEmpty()) {
-//                //for other comments - REFER_TYPE
-//                try {
-//                    boolean isInserted = insertVisitCompleteObs(visitUuid, etOtherCommentOutcome.getText().toString(), UuidDictionary.REFER_TYPE);
-//                    showToastAndUploadVisit(isInserted, getResources().getString(R.string.data_added_successfully));
-//
-//                } catch (DAOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }
     }
 
     private void completeVisitWithReferType() {
         if (selectedView == null) return;
         String value = selectedView.getText().toString();
         String conceptId = (String) selectedView.getTag();
-        Log.e(TAG, "completeVisitWithReferType: value =>" + value);
-        Log.e(TAG, "completeVisitWithReferType: conceptId =>" + conceptId);
-        if (value.equals(context.getString(R.string.refer_to_other_hospital))) {
-            showConfirmationDialog(R.string.are_you_sure_want_to_refer_other, this::referOtherHospitalDialog);
-        } else if (value.equals(context.getString(R.string.self_discharge_medical_advice))) {
-            showConfirmationDialog(R.string.are_you_sure_want_to_self_discharge, () -> completeVisitWithOtherReason(value, conceptId));
-        } else if (value.equals(context.getString(R.string.shift_to_c_section))) {
-            showConfirmationDialog(R.string.are_you_sure_want_to_shift_to_c_section, () -> completeVisitWithOtherReason(value, conceptId));
-        } else if (value.equals(context.getString(R.string.refer_to_icu))) {
-            showConfirmationDialog(R.string.are_you_sure_want_to_refer_to_icu, () -> completeVisitWithOtherReason(value, conceptId));
-        }
+        completeVisitWithReferType(value, conceptId, () -> listener.onVisitCompleted(false, false));
     }
 
-    private void completeVisitWithOtherReason(String value, String conceptId) {
-        // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
-        try {
-            ObsDAO obsDAO = new ObsDAO();
-            String encounterUuid = insertVisitCompleteEncounter();
-            Log.e(TAG, "completeVisitWithOtherReason: encounterId =>" + encounterUuid);
-            if (encounterUuid != null && encounterUuid.length() > 0) {
-                boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), value, conceptId);
-                Log.e(TAG, "completeVisitWithOtherReason: isInserted => " + isInserted);
-                if (isInserted) {
-                    listener.onVisitCompleted(false, false);
-                }
-            }
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private void completeVisitWithOtherReason(String value, String conceptId) {
+//        // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
+//        try {
+//            ObsDAO obsDAO = new ObsDAO();
+//            String encounterUuid = insertVisitCompleteEncounter();
+//            Log.e(TAG, "completeVisitWithOtherReason: encounterId =>" + encounterUuid);
+//            if (encounterUuid != null && encounterUuid.length() > 0) {
+//                boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), value, conceptId);
+//                Log.e(TAG, "completeVisitWithOtherReason: isInserted => " + isInserted);
+//                if (isInserted) {
+//                    listener.onVisitCompleted(false, false);
+//                }
+//            }
+//        } catch (DAOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     private void completeVisitWithOtherReferType(String value, String conceptId) {
         // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
@@ -279,76 +187,76 @@ public class CompleteVisitOnEnd2StageDialog extends VisitCompletionHelper implem
         }
     }
 
-    private void showConfirmationDialog(@StringRes int content, ConfirmationDialogFragment.OnConfirmationActionListener listener) {
-        showConfirmationDialog(context.getString(content), listener);
-    }
+//    private void showConfirmationDialog(@StringRes int content, ConfirmationDialogFragment.OnConfirmationActionListener listener) {
+//        showConfirmationDialog(context.getString(content), listener);
+//    }
+//
+//    private void showConfirmationDialog(String content, ConfirmationDialogFragment.OnConfirmationActionListener listener) {
+//        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(context)
+//                .content(content)
+//                .positiveButtonLabel(R.string.yes)
+//                .build();
+//
+//        dialog.setListener(listener);
+//
+//        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//    }
 
-    private void showConfirmationDialog(String content, ConfirmationDialogFragment.OnConfirmationActionListener listener) {
-        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(context)
-                .content(content)
-                .positiveButtonLabel(R.string.yes)
-                .build();
+//    private void referOtherHospitalDialog() {
+//        DialogReferHospitalEzaziBinding binding = DialogReferHospitalEzaziBinding.inflate(inflater, null, false);
+//
+//        showCustomViewDialog(R.string.refer_section, R.string.yes, R.string.no, binding.getRoot(), () -> {
+//            boolean isInserted = false;
+//            String hospitalName = binding.referHospitalName.getText().toString();
+//            String doctorName = binding.referDoctorName.getText().toString();
+//            String note = binding.referNote.getText().toString();
+//
+//            // call visitcompleteenc and add obs for refer type and referal values entered...
+//            try {
+//                isInserted = referToOtherHospital(hospitalName, doctorName, note);
+//                if (isInserted) listener.onVisitCompleted(false, false);
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//    }
 
-        dialog.setListener(listener);
-
-        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-    }
-
-    private void referOtherHospitalDialog() {
-        DialogReferHospitalEzaziBinding binding = DialogReferHospitalEzaziBinding.inflate(inflater, null, false);
-
-        showCustomViewDialog(R.string.refer_section, R.string.yes, R.string.no, binding.getRoot(), () -> {
-            boolean isInserted = false;
-            String hospitalName = binding.referHospitalName.getText().toString();
-            String doctorName = binding.referDoctorName.getText().toString();
-            String note = binding.referNote.getText().toString();
-
-            // call visitcompleteenc and add obs for refer type and referal values entered...
-            try {
-                isInserted = referToOtherHospital(hospitalName, doctorName, note);
-                if (isInserted) listener.onVisitCompleted(false, false);
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private boolean referToOtherHospital(String hospitalName, String doctorName, String note) throws DAOException {
-
-        boolean isInserted = true;
-        String encounterUuid = insertVisitCompleteEncounter();
-        String conceptId = (String) selectedView.getTag();
-        String value = selectedView.getText().toString();
-
-        // Now get this encounteruuid and create refer obs table.
-        if (!encounterUuid.isEmpty()) {
-            ObsDAO obsDAO = new ObsDAO();
-            ObsDTO obsDTO;
-            List<ObsDTO> obsDTOList = new ArrayList<>();
-
-            // 1. Refer Type
-            obsDTOList.add(createObs(encounterUuid, conceptId, value));
-
-            // 2. Refer Hospital Name
-            if (hospitalName != null && hospitalName.length() > 0) {
-                obsDTOList.add(createObs(encounterUuid, UuidDictionary.REFER_HOSPITAL, hospitalName));
-            }
-
-            // 3. Refer Doctor Name
-            if (doctorName != null && doctorName.length() > 0) {
-                obsDTOList.add(createObs(encounterUuid, UuidDictionary.REFER_DR_NAME, doctorName));
-            }
-
-            // 4. Refer Note
-            if (note != null && note.length() > 0) {
-                obsDTOList.add(createObs(encounterUuid, UuidDictionary.REFER_NOTE, note));
-            }
-
-            isInserted = obsDAO.insertObsToDb(obsDTOList);
-        }
-
-        return isInserted;
-    }
+//    private boolean referToOtherHospital(String hospitalName, String doctorName, String note) throws DAOException {
+//
+//        boolean isInserted = true;
+//        String encounterUuid = insertVisitCompleteEncounter();
+//        String conceptId = (String) selectedView.getTag();
+//        String value = selectedView.getText().toString();
+//
+//        // Now get this encounteruuid and create refer obs table.
+//        if (!encounterUuid.isEmpty()) {
+//            ObsDAO obsDAO = new ObsDAO();
+//            ObsDTO obsDTO;
+//            List<ObsDTO> obsDTOList = new ArrayList<>();
+//
+//            // 1. Refer Type
+//            obsDTOList.add(createObs(encounterUuid, conceptId, value));
+//
+//            // 2. Refer Hospital Name
+//            if (hospitalName != null && hospitalName.length() > 0) {
+//                obsDTOList.add(createObs(encounterUuid, UuidDictionary.REFER_HOSPITAL, hospitalName));
+//            }
+//
+//            // 3. Refer Doctor Name
+//            if (doctorName != null && doctorName.length() > 0) {
+//                obsDTOList.add(createObs(encounterUuid, UuidDictionary.REFER_DR_NAME, doctorName));
+//            }
+//
+//            // 4. Refer Note
+//            if (note != null && note.length() > 0) {
+//                obsDTOList.add(createObs(encounterUuid, UuidDictionary.REFER_NOTE, note));
+//            }
+//
+//            isInserted = obsDAO.insertObsToDb(obsDTOList);
+//        }
+//
+//        return isInserted;
+//    }
 
     private void showMotherDeceasedDialog() {
         MotherDeceasedDialogBinding binding = MotherDeceasedDialogBinding.inflate(inflater, null, false);

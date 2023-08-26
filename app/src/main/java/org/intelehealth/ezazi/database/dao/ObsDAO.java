@@ -20,6 +20,7 @@ import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,6 +124,7 @@ public class ObsDAO {
 
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
+            Log.e(TAG, "insertObs: : total record" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
@@ -157,6 +159,7 @@ public class ObsDAO {
 
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
+            Log.e(TAG, "insertObsNew: : total record" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
@@ -218,10 +221,11 @@ public class ObsDAO {
         return true;
     }
 
-    public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
+    public boolean insertObsToDb(List<ObsDTO> obsDTO, String TAG) throws DAOException {
        /* ##remove##kz if (obsDTO.size() > 0) {
             return false;
         }*/
+        Log.e(TAG, "insertObsToDb: " + new Gson().toJson(obsDTO));
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -243,6 +247,7 @@ public class ObsDAO {
             }
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
+            Log.e(TAG, "insertObsToDb: FROM " + TAG + ": total record" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -281,20 +286,24 @@ public class ObsDAO {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false' OR sync = '0'",
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync IN ('0', 'FALSE', 'false')",
                 new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
+
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 obsDTO = new ObsDTO();
-                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
-                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
-                obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
-                obsDTOList.add(obsDTO);
+                String encounterId = idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid"));
+                if (encounterId.equals(encounteruuid)) {
+                    obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                    obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                    obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                    obsDTOList.add(obsDTO);
+                }
             }
         }
+
         idCursor.close();
 
         return obsDTOList;
@@ -415,6 +424,7 @@ public class ObsDAO {
 
             //       db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
+            Log.e(TAG, "insertPrescObs: total record" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e);
@@ -619,17 +629,40 @@ public class ObsDAO {
     }
 
     public void createEncounterType(String encounterUuid, String value, String creatorId, String from) {
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(encounterUuid);
+        obsDTO.setValue(value);
+        obsDTO.setCreator(creatorId);
+        obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
+        try {
+            new ObsDAO().insertObs(obsDTO);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         Log.e(TAG, "createEncounterType: from screen =>" + from);
-        new TaskExecutor<Boolean>().executeTask(() -> {
-            ObsDTO obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(value);
-            obsDTO.setCreator(creatorId);
-            obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
-            return new ObsDAO().insertObs(obsDTO);
-        });
+//        new TaskExecutor<Boolean>().executeTask(() -> {
+//            ObsDTO obsDTO = new ObsDTO();
+//            obsDTO.setUuid(UUID.randomUUID().toString());
+//            obsDTO.setEncounteruuid(encounterUuid);
+//            obsDTO.setValue(value);
+//            obsDTO.setCreator(creatorId);
+//            obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
+//            return new ObsDAO().insertObs(obsDTO);
+//        });
     }
+
+    public ObsDTO createObs(String encounterUuid, String value, String creatorId, String from) {
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(encounterUuid);
+        obsDTO.setValue(value);
+        obsDTO.setCreator(creatorId);
+        obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_TYPE);
+        Log.e(TAG, "createEncounterType: from screen =>" + from);
+        return obsDTO;
+    }
+
 
     public EncounterDTO.Type getEncounterType(String encounterUuid, String creatorID) {
         EncounterDTO.Type type = EncounterDTO.Type.NORMAL;

@@ -148,6 +148,44 @@ public class EncounterDAO {
         return isCreated;
     }
 
+    public boolean createBulkEncountersToDB(ArrayList<EncounterDTO> encounters) throws DAOException {
+        boolean isCreated = false;
+        for (EncounterDTO encounter : encounters) {
+            Log.d(TAG, "createEncountersToDB:length: " + encounters.size());
+            Log.d(TAG, "createEncountersToDB: getEncounterTypeUuid : " + encounter.getEncounterTypeUuid());
+            if (encounter.getEncounterTypeUuid() != null && encounter.getEncounterTypeUuid().length() > 0) {
+                SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                db.beginTransaction();
+
+                ContentValues values = new ContentValues();
+                values.put("uuid", encounter.getUuid());
+                values.put("visituuid", encounter.getVisituuid());
+                values.put("encounter_time", encounter.getEncounterTime());
+                values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
+                values.put("provider_uuid", encounter.getProvideruuid());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("sync", encounter.getSyncd());
+                values.put("voided", encounter.getVoided());
+                values.put("privacynotice_value", encounter.getPrivacynotice_value());
+
+                try {
+                    createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                    if (createdRecordsCount != 0)
+                        isCreated = true;
+                    db.setTransactionSuccessful();
+
+                } catch (SQLException e) {
+                    isCreated = false;
+                    throw new DAOException(e.getMessage(), e);
+
+                } finally {
+                    db.endTransaction();
+                }
+            }
+        }
+        return isCreated;
+    }
+
     public String getEncounterTypeUuid(String attr) {
         String encounterTypeUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

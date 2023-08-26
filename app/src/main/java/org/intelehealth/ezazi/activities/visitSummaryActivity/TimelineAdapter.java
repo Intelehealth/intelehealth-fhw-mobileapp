@@ -421,7 +421,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     }
 
     private void updateEditIconVisibility(MaterialButton editButton) {
-        Log.e(TAG, "updateEditIconVisibility: isVCEPresent=>" + isVCEPresent);
         if (!nurseHasEditAccess) {
             editButton.setVisibility(View.GONE);
         } else if (!isVCEPresent.equalsIgnoreCase("")) {

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
@@ -45,6 +48,7 @@ public class LabourCompletionFragment extends Fragment {
     private String visitId;
     private boolean hasMotherDeceased;
     private VisitCompletionHelper helper;
+    private static final String TAG = LabourCompletionFragment.class.getSimpleName();
 
 //    public interface OnLabourCompleteListener {
 //        void onLabourCompleted();
@@ -98,7 +102,8 @@ public class LabourCompletionFragment extends Fragment {
 
     private void initView() {
         helper = new VisitCompletionHelper(requireContext(), visitId);
-        enableAndDisableAllFields(binding, false);
+        enableAndDisableAllFields(false);
+        changeOtherInputEnableStatus(false);
         setDropdownsData(binding);
         applyFirstLatterCapitalCase();
         binding.etLayoutDeceasedReason.setVisibility(hasMotherDeceased ? View.VISIBLE : View.GONE);
@@ -135,14 +140,29 @@ public class LabourCompletionFragment extends Fragment {
         binding.etOtherComment.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
     }
 
-    private void enableAndDisableAllFields(LabourCompleteAndMotherDeceasedDialogBinding binding, boolean flag) {
+    private void enableAndDisableAllFields(boolean flag) {
         binding.etLayoutBirthWeight.setEnabled(flag);
         binding.etLayoutApgar1.setEnabled(flag);
         binding.etLayoutApgar5.setEnabled(flag);
         binding.etLayoutBabyGender.setEnabled(flag);
         binding.etLayoutBabyStatus.setEnabled(flag);
         binding.etLayoutMotherStatus.setEnabled(flag);
-        binding.etLayoutOtherComment.setEnabled(flag);
+    }
+
+    private void changeOtherInputEnableStatus(boolean enable) {
+        binding.etLayoutOtherComment.setEnabled(enable);
+        binding.etLayoutOtherComment.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+        binding.etLayoutOtherComment.setEndIconCheckable(true);
+    }
+
+    private void clearAllInputs() {
+        binding.etMotherStatus.setText("");
+        binding.etOtherComment.setText("");
+        binding.etBabyStatus.setText("");
+        binding.autotvApgar1min.setText("");
+        binding.autotvBirthWeight.setText("");
+        binding.autotvApgar5min.setText("");
+        binding.autotvBabyGender.setText("");
     }
 
 //    private void disableDropDownEditMode(){
@@ -165,22 +185,20 @@ public class LabourCompletionFragment extends Fragment {
             validatedInput();
             String otherString = getString(R.string.other).toLowerCase();
             if (!labourInfo.getBirthOutcome().isEmpty() && labourInfo.getBirthOutcome().equalsIgnoreCase(otherString)) {
-                binding.etOtherComment.setEnabled(true);
-                binding.etLayoutBirthWeight.setEnabled(false);
-                binding.etLayoutApgar1.setEnabled(false);
-                binding.etLayoutApgar5.setEnabled(false);
-                binding.etLayoutBabyGender.setEnabled(false);
-                binding.etLayoutBabyStatus.setEnabled(false);
-                binding.etLayoutMotherStatus.setEnabled(false);
+                enableAndDisableAllFields(false);
+                changeOtherInputEnableStatus(true);
             } else {
-                binding.etOtherComment.setEnabled(true);
-                binding.etLayoutBirthWeight.setEnabled(true);
-                binding.etLayoutApgar1.setEnabled(true);
-                binding.etLayoutApgar5.setEnabled(true);
-                binding.etLayoutBabyGender.setEnabled(true);
-                binding.etLayoutBabyStatus.setEnabled(true);
-                binding.etLayoutMotherStatus.setEnabled(true);
+                enableAndDisableAllFields(true);
+                changeOtherInputEnableStatus(true);
             }
+
+            if (binding.autotvLabourCompleted.getTag() == null) clearAllInputs();
+            else {
+                String previousOutcome = (String) binding.autotvLabourCompleted.getTag();
+                if (!previousOutcome.equals(labourInfo.getBirthOutcome())) clearAllInputs();
+            }
+
+            binding.autotvLabourCompleted.setTag(labourInfo.getBirthOutcome());
         });
 
         List<Integer> itemsList = new ArrayList<>();
@@ -321,7 +339,7 @@ public class LabourCompletionFragment extends Fragment {
                 obsDTOList.add(helper.createObs(encounterId, UuidDictionary.LABOUR_OTHER, labourInfo.getOtherComment()));
             }
 
-            isInserted = new ObsDAO().insertObsToDb(obsDTOList);
+            isInserted = new ObsDAO().insertObsToDb(obsDTOList, TAG);
         }
 
         return isInserted;
