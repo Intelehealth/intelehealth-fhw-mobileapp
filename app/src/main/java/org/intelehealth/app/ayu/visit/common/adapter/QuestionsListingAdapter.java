@@ -980,7 +980,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 } else if (holder.selectedNestedOptionIndex > 0) {
                     for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                        if (options.size() < i) {
+                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                        }
                     }
                 } else {
                     holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));

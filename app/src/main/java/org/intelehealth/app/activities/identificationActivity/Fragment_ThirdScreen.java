@@ -736,7 +736,7 @@ public class Fragment_ThirdScreen extends Fragment {
                 getActivity().startActivity(intent);
                 //   }
                 //startActivity(intent);
-                //  getActivity().finish();
+                  getActivity().finish();
             }/* else {
                 Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
             }*/

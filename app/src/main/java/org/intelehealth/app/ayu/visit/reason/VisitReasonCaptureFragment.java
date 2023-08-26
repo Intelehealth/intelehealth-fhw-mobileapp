@@ -184,7 +184,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                         }
                     }
                     if (!isExist) {
-                        mSelectedComplains.clear(); //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                        //mSelectedComplains.clear(); //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
                         mSelectedComplains.add(data);
                     } else
                         Toast.makeText(getActivity(), getString(R.string.already_selected_lbl), Toast.LENGTH_SHORT).show();
@@ -196,10 +196,10 @@ public class VisitReasonCaptureFragment extends Fragment {
                             ReasonData reasonData = reasonDataList.get(j);
                             if (reasonData.getReasonName().equalsIgnoreCase(name)) {
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(true);
-                                //break; //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
-                            }else{ //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                                break; //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                            }/*else{ //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(false);
-                            }
+                            }*/
                         }
                     }
                     mReasonListingAdapter.refresh(mVisitReasonItemList);
@@ -228,23 +228,23 @@ public class VisitReasonCaptureFragment extends Fragment {
             @Override
             public void onSelect(ReasonData data) {
                 if (!mSelectedComplains.contains(data)) {
-                    mSelectedComplains.clear(); //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                    //mSelectedComplains.clear(); //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
                     mSelectedComplains.add(data);
                     showSelectedComplains();
                     //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
-                    for (int i = 0; i < mVisitReasonItemList.size(); i++) {
+                    /*for (int i = 0; i < mVisitReasonItemList.size(); i++) {
                         List<ReasonData> reasonDataList = mVisitReasonItemList.get(i).getReasons();
                         for (int j = 0; j < reasonDataList.size(); j++) {
                             ReasonData reasonData = reasonDataList.get(j);
                             if (reasonData.getReasonName().equalsIgnoreCase(data.getReasonName())) {
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(true);
-                                //break; //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
+                                break; //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
                             }else{ //TODO: Need to remove this line in next release after fixing the multiple MMs crash issue
                                 mVisitReasonItemList.get(i).getReasons().get(j).setSelected(false);
                             }
                         }
                     }
-                    mReasonListingAdapter.refresh(mVisitReasonItemList);
+                    mReasonListingAdapter.refresh(mVisitReasonItemList);*/
                     //TODO: EDN
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.already_selected_lbl), Toast.LENGTH_SHORT).show();
