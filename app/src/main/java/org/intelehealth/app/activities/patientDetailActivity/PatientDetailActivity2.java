@@ -71,6 +71,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -143,7 +144,7 @@ import okhttp3.ResponseBody;
 public class PatientDetailActivity2 extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
-            postalcode, patientcountry, patientstate, patientdistrict, village, address1,
+            postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -179,6 +180,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
     String tag = "";
+    private TableRow trAddress2;
 
     @Override
     public void onBackPressed() {
@@ -511,6 +513,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         patientdistrict = findViewById(R.id.district);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
+        trAddress2 = findViewById(R.id.tr_address_2);
+        addr2View = findViewById(R.id.addr2View);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
@@ -1084,11 +1088,12 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             address1.setText(patientDTO.getAddress1());
         }
-       /* if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { // todo: as per figma not needed.
-            addr2Row.setVisibility(View.GONE);
+
+        if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { //
+            trAddress2.setVisibility(View.GONE);
         } else {
             addr2View.setText(patientDTO.getAddress2());
-        }*/
+        }
 
         // setting country
         String country;
