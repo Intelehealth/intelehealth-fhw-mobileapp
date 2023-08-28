@@ -778,6 +778,7 @@ public class ObsDAO {
             String birthOutcome = outcomeMap.get(BIRTH_OUTCOME);
             String motherFlag = outcomeMap.get(MOTHER_DECEASED_FLAG);
             String outcome = birthOutcome;
+            visitOutcome.setOutcome(outcome);
             assert motherFlag != null;
             if (motherFlag.equalsIgnoreCase("YES")) {
                 outcome = outcome + "/" + CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.sortValue();
@@ -790,6 +791,9 @@ public class ObsDAO {
             if (birthOutcome.equalsIgnoreCase(CompletedVisitStatus.Labour.OTHER.value())) {
                 visitOutcome.setOtherComment(outcomeMap.get(LABOUR_OTHER));
             }
+        } else if (outcomeMap.containsKey(BIRTH_OUTCOME)) {
+            String outcome = outcomeMap.get(BIRTH_OUTCOME);
+            visitOutcome.setOutcome(outcome);
         } else if (outcomeMap.containsKey(REFER_TYPE)) {
             String outcome = outcomeMap.get(REFER_TYPE);
             visitOutcome.setOutcome(outcome);
