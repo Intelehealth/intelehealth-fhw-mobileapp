@@ -20,7 +20,7 @@
     <string name="submitted_interval"><u>Submitted</u></string>
     <string name="add_patient_txt">Add Patient</string>
     <string name="live_birth">Live Birth</string>
-    <string name="still_birth">Still Birth</string>
+    <string name="still_birth">Stillbirth</string>
     <string name="action_birthoutcome">Birth Outcome</string>
     <string name="primary_doct_val_txt">Please select primary Doctor</string>
     <string name="seconday_doct_val_txt">Please select seconday Doctor</string>

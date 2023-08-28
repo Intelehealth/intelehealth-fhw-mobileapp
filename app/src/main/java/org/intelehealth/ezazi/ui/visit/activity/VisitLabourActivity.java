@@ -42,7 +42,7 @@ public class VisitLabourActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityVisitLabourEzaziBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.bottomSheetAppBar.toolbar.setTitle("Labour Complete");
+        binding.bottomSheetAppBar.toolbar.setTitle(R.string.stage_2_labour_complete);
         binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> finish());
     }
 

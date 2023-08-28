@@ -94,5 +94,6 @@
     <string name="please_enter_reason">Please enter reason</string>
     <string name="add_details_for_labour_completed">Please add details for labour completed</string>
     <string name="please_enter_reason_deceased">Please enter deceased reason</string>
+    <string name="stage_2_labour_complete">Stage 2 Labour Complete</string>
 
 </resources>

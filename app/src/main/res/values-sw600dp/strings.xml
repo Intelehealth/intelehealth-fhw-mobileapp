@@ -6,8 +6,8 @@
     <string name="notificationTitle_Timeline">Patient: %1s</string>
     <string name="notificationTimeline_Description">You can start entering the data now</string>
     <string name="daughter_wife_of">Daughter/Wife of</string>
-<!--    <string name="total_birth_count_val_txt">Please enter the total birth count</string>-->
-<!--    <string name="total_miscarriage_count_val_txt">Please enter the total miscarriage count</string>-->
+    <!--    <string name="total_birth_count_val_txt">Please enter the total birth count</string>-->
+    <!--    <string name="total_miscarriage_count_val_txt">Please enter the total miscarriage count</string>-->
     <string name="labor_onset_val_txt">"Please select labor onset "</string>
     <string name="active_labor_diagnosed_date_val_txt">Select the active labor diagnosed date</string>
     <string name="active_labor_diagnosed_time_val_txt">Select the active labor diagnosed time</string>
@@ -20,7 +20,7 @@
     <string name="submitted_interval"><u>Submitted</u></string>
     <string name="add_patient_txt">Add Patient</string>
     <string name="live_birth">Live Birth</string>
-    <string name="still_birth">Still Birth</string>
+    <string name="still_birth">Stillbirth</string>
     <string name="action_birthoutcome">Birth Outcome</string>
     <string name="this_option_available_tablet_device">Please use 8inch or more tablet for viewing the epartogram</string>
     <string name="move_to_stage2">Move to Stage 2</string>

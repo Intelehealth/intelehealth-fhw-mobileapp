@@ -51,7 +51,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/labour_completed" />
+                    tools:text="@string/stage_2_labour_complete" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--            <RelativeLayout-->
@@ -149,11 +149,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:maxLength="300"
                 app:boxStrokeColor="@color/colorLoginInputStroke"
                 app:boxStrokeWidth="@dimen/input_stroke_size"
                 app:counterEnabled="true"
                 app:counterMaxLength="300"
-                android:maxLength="300"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText

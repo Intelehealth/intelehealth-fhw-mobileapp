@@ -40,7 +40,7 @@ public class PartogramAlertEngine {
                 int val = Integer.parseInt(paramInfo.getCapturedValue());
                 if (val >= 160) {
                     alert = "Y";
-                } else if (val <= 110) {
+                } else if (val < 110) {
                     alert = "R";
                 } else {
                     alert = "G";
@@ -86,7 +86,7 @@ public class PartogramAlertEngine {
         } else if (paramInfo.getParamSectionName().equalsIgnoreCase("Woman")) {
             if (paramInfo.getParamName().equalsIgnoreCase("Pulse")) {
                 int val = Integer.parseInt(paramInfo.getCapturedValue());
-                if (val <= 60) {
+                if (val < 60) {
                     alert = "Y";
                 } else if (val >= 120) {
                     alert = "R";
@@ -95,7 +95,7 @@ public class PartogramAlertEngine {
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Systolic BP")) {
                 int val = Integer.parseInt(paramInfo.getCapturedValue());
-                if (val <= 80 || val >= 140) {
+                if (val < 80 || val >= 140) {
                     alert = "R";
                 } else {
                     alert = "G";
@@ -109,7 +109,7 @@ public class PartogramAlertEngine {
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Temperature(C)")) {
                 double val = Double.parseDouble(paramInfo.getCapturedValue());
-                if (val <= 35) {
+                if (val < 35) {
                     alert = "Y";
                 } else if (val >= 37.5) {
                     alert = "R";
@@ -117,30 +117,28 @@ public class PartogramAlertEngine {
                     alert = "G";
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Urine protein")) {
-                if (paramInfo.getCapturedValue().equalsIgnoreCase("P-")) {
-                    alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P")
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("P-") || paramInfo.getCapturedValue().equalsIgnoreCase("P")
                         || paramInfo.getCapturedValue().equalsIgnoreCase("P1")) {
                     alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2")
-                        || paramInfo.getCapturedValue().equalsIgnoreCase("P3")) {
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P2")) {
+                    alert = "Y";
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("P3")) {
                     alert = "R";
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Urine Acetone")) {
-                if (paramInfo.getCapturedValue().equalsIgnoreCase("A-")) {
-                    alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A")
+                if (paramInfo.getCapturedValue().equalsIgnoreCase("A-") || paramInfo.getCapturedValue().equalsIgnoreCase("A")
                         || paramInfo.getCapturedValue().equalsIgnoreCase("A1")) {
                     alert = "G";
-                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A2")
-                        || paramInfo.getCapturedValue().equalsIgnoreCase("A3")) {
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A2")) {
+                    alert = "Y";
+                } else if (paramInfo.getCapturedValue().equalsIgnoreCase("A3")) {
                     alert = "R";
                 }
             }
         } else if (paramInfo.getParamSectionName().equalsIgnoreCase("Labour Progress")) {
             if (paramInfo.getParamName().equalsIgnoreCase("Contractions per 10 min")) {
                 int val = Integer.parseInt(paramInfo.getCapturedValue());
-                if (val >= 5) {
+                if (val > 5) {
                     alert = "R";
                 } else if (val == 1 || val == 2) {
                     alert = "Y";
@@ -149,9 +147,9 @@ public class PartogramAlertEngine {
                 }
             } else if (paramInfo.getParamName().equalsIgnoreCase("Duration of contractions")) {
                 int val = Integer.parseInt(paramInfo.getCapturedValue());
-                if (val >= 60) {
+                if (val > 60) {
                     alert = "R";
-                } else if (val <= 20) {
+                } else if (val < 20) {
                     alert = "Y";
                 } else {
                     alert = "G";

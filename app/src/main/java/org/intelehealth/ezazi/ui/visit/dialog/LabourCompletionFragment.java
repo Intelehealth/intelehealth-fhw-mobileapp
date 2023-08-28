@@ -150,7 +150,7 @@ public class LabourCompletionFragment extends Fragment {
     }
 
     private void changeOtherInputEnableStatus(boolean enable) {
-        binding.etLayoutOtherComment.setEnabled(enable);
+        binding.etLayoutOtherComment.setVisibility(enable ? View.VISIBLE : View.GONE);
         binding.etLayoutOtherComment.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
         binding.etLayoutOtherComment.setEndIconCheckable(true);
     }
@@ -189,7 +189,7 @@ public class LabourCompletionFragment extends Fragment {
                 changeOtherInputEnableStatus(true);
             } else {
                 enableAndDisableAllFields(true);
-                changeOtherInputEnableStatus(true);
+                changeOtherInputEnableStatus(false);
             }
 
             if (binding.autotvLabourCompleted.getTag() == null) clearAllInputs();
@@ -335,9 +335,9 @@ public class LabourCompletionFragment extends Fragment {
                 obsDTOList.add(helper.createObs(encounterId, UuidDictionary.MOTHER_STATUS, labourInfo.getMotherStatus()));
             }
 
-            if (labourInfo.getOtherComment() != null && !labourInfo.getOtherComment().isEmpty()) {
-                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.LABOUR_OTHER, labourInfo.getOtherComment()));
-            }
+//            if (labourInfo.getOtherComment() != null && !labourInfo.getOtherComment().isEmpty()) {
+//                obsDTOList.add(helper.createObs(encounterId, UuidDictionary.LABOUR_OTHER, labourInfo.getOtherComment()));
+//            }
 
             isInserted = new ObsDAO().insertObsToDb(obsDTOList, TAG);
         }
