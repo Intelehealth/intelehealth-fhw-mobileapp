@@ -32,8 +32,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexDirection;
@@ -83,6 +86,11 @@ public class SearchPatientActivity_New extends AppCompatActivity {
 
     private RecyclerView mSearchHistoryRecyclerView;
 
+    private final int limit = 50;
+    private int start = 0, end = start + limit;
+    private boolean isFullyLoaded = false;
+    List<PatientDTO> patientDTOList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +98,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
+        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
+        search_recycelview.setLayoutManager(lm);
+        initializeRecyclerView(lm);
+
         mSearchEditText = findViewById(R.id.search_txt_enter);
         mSearchEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_SearchBar}); //maxlength 25
 
@@ -235,17 +247,20 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void queryAllPatients() {
-        List<PatientDTO> patientDTOList = PatientsDAO.getAllPatientsFromDB(500, 0);
+        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
+        Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
+
         if (patientDTOList.size() > 0) { // ie. the entered text is present in db
             patientDTOList = fetchDataforTags(patientDTOList);
             Log.v(TAG, "size: " + patientDTOList.size());
             searchData_Available();
             try {
                 adapter = new SearchPatientAdapter_New(this, patientDTOList);
-                fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
-
-            } catch (Exception e) {
+                start = end;
+                end += limit;
+            }
+            catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 Logger.logE("doquery", "doquery", e);
             }
@@ -279,7 +294,6 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void previous_SearchResults() {
-
         String previousSearchText = sessionManager.getPreviousSearchQuery();
         List<String> raWPreviousSearchList = new ArrayList<>();
         List<String> retrievedPreviousSearchList = new ArrayList<>();
@@ -318,7 +332,6 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
         });
         mSearchHistoryRecyclerView.setAdapter(searchChipsPreviewGridAdapter);
-
 
     }
 
@@ -424,6 +437,41 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     public void clearSearch(View view) {
         mSearchEditText.setText("");
         view.setVisibility(View.GONE);
+    }
+
+    private void initializeRecyclerView(LinearLayoutManager linearLayoutManager) {
+        search_recycelview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (patientDTOList != null && patientDTOList.size() == 0){
+                    isFullyLoaded = true;
+                    return;
+                }
+                if (!isFullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        linearLayoutManager.findLastVisibleItemPosition() == adapter.getItemCount() - 1) {
+                    Toast.makeText(SearchPatientActivity_New.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                    setMoreDataIntoRecyclerView();
+                }
+            }
+        });
+    }
+
+    // This method will be accessed every time the person scrolls the recyclerView further.
+    private void setMoreDataIntoRecyclerView() {
+
+        if (patientDTOList != null && patientDTOList.size() == 0) {
+            isFullyLoaded = true;
+            return;
+        }
+
+        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
+        adapter.patientDTOS.addAll(patientDTOList);
+        adapter.notifyDataSetChanged();
+        start = end;
+        end += limit;
     }
 
     }

@@ -166,7 +166,7 @@ public class EncounterDAO {
 
     public List<EncounterDTO> getAllEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter", null);
         EncounterDTO encounterDTO = new EncounterDTO();
@@ -193,7 +193,7 @@ public class EncounterDAO {
 
     public EncounterDTO getEncounterByVisitUUID(String visitUUID) {
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? limit 1", new String[]{visitUUID});
         EncounterDTO encounterDTO = new EncounterDTO();
@@ -351,7 +351,7 @@ public class EncounterDAO {
 
     public static List<NotificationModel> check_visit_is_VISIT_COMPLETE_ENC(String currentDate) {
         List<NotificationModel> patientDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT p.first_name, p.last_name, p.uuid as patientuuid, " +
                         "v.uuid as visitUUID, p.patient_photo, v.startdate, p.gender, p.openmrs_id, p.date_of_birth, " +
                         "substr(o.obsservermodifieddate, 1, 10) as obs_server_modified_date from " +
@@ -398,7 +398,7 @@ public class EncounterDAO {
 
     public static String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
         String encounterUuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND " +
@@ -437,7 +437,7 @@ public class EncounterDAO {
     }
 
     public boolean isCompletedOrExited(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -464,7 +464,7 @@ public class EncounterDAO {
     }
 
     public boolean isCompletedExitedSurvey(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -472,11 +472,11 @@ public class EncounterDAO {
             //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
 
             Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " +
-                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",
-                    new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",  // ENCOUNTER_PATIENT_EXIT_SURVEY
+                    new String[]{visitUUID});
             EncounterDTO encounterDTO = new EncounterDTO();
             Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
-            if (idCursor.getCount() != 0) {
+            if (idCursor.getCount() > 0) {
                 return true;
             }
             idCursor.close();
@@ -492,7 +492,7 @@ public class EncounterDAO {
     }
 
     public boolean isPrescriptionReceived(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -503,7 +503,7 @@ public class EncounterDAO {
                             "encounter_type_uuid = ?",
                     new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_NOTE}); // ENCOUNTER_PATIENT_EXIT_SURVEY
             EncounterDTO encounterDTO = new EncounterDTO();
-            if (idCursor.getCount() != 0) {
+            if (idCursor.getCount() > 0) {
                 return true;
             }
             idCursor.close();
@@ -524,7 +524,7 @@ public class EncounterDAO {
     public static String getChiefComplaint(String visitUUID) {
         String complaintValue = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
             if(visitUUID != null) {
@@ -579,7 +579,7 @@ public class EncounterDAO {
     public static String fetchEncounterModifiedDateForPrescGiven(String visitUUID) {
         String modifiedDate = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if(visitUUID != null) {
@@ -614,7 +614,7 @@ public class EncounterDAO {
     public static String fetchEncounterUuidForEncounterVitals(String visitUUID) {
         String uuid = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if(visitUUID != null) {
@@ -649,7 +649,7 @@ public class EncounterDAO {
     public static String fetchEncounterUuidForEncounterAdultInitials(String visitUUID) {
         String uuid = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if(visitUUID != null) {
@@ -678,7 +678,7 @@ public class EncounterDAO {
 
 
     public boolean isVisitCompletedOrExited(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -706,7 +706,7 @@ public class EncounterDAO {
 
     public static String getEncounterIdForCompletedVisit(String visitUUID) throws DAOException {
         String encounterUuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -737,7 +737,7 @@ public class EncounterDAO {
 
     public static String getPrescriptionReceivedTime(String visitUUID) {
         String modifiedTime = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (sync = '1' OR sync = 'true' OR sync = 'TRUE') COLLATE NOCASE",
                 new String[]{visitUUID});
@@ -758,7 +758,7 @@ public class EncounterDAO {
 
     public EncounterDTO getEncounterByVisitUUIDLimit1(String visitUUID) {
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         // db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and voided = '0' AND encounter_type_uuid != ? ORDER BY encounter_time DESC limit 1",
                 new String[]{visitUUID, ENCOUNTER_VISIT_COMPLETE});

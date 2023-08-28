@@ -37,6 +37,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -46,6 +47,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -61,7 +63,7 @@ import okhttp3.ResponseBody;
  */
 public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myholder> {
     private Context context;
-    private List<PrescriptionModel> arrayList;
+    List<PrescriptionModel> arrayList = new ArrayList<>();
     ImagesDAO imagesDAO = new ImagesDAO();
     String profileImage = "";
     String profileImage1 = "";
@@ -69,7 +71,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
     public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.arrayList.addAll(arrayList);
     }
 
     @NonNull
@@ -130,7 +132,15 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             // photo - end
 
             // start date show
-            holder.fu_date_txtview.setText(model.getVisit_start_date());
+            if (!model.getVisit_start_date().equalsIgnoreCase("null") || !model.getVisit_start_date().isEmpty()) {
+                String startDate = model.getVisit_start_date();
+                startDate = DateAndTimeUtils.date_formatter(startDate,
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
+                Log.v("startdate", "startDAte: " + startDate);
+                holder.fu_date_txtview.setText(startDate);
+            }
+
+        //    holder.fu_date_txtview.setText(model.getVisit_start_date());
 
             holder.end_visit_btn.setOnClickListener(v -> {
                 showConfirmDialog(model);

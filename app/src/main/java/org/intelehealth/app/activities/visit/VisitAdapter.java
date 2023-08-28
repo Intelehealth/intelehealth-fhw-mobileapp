@@ -44,6 +44,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -60,7 +61,7 @@ import okhttp3.ResponseBody;
  */
 public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     private Context context;
-    private List<PrescriptionModel> list;
+    List<PrescriptionModel> list = new ArrayList<>();
     ImagesDAO imagesDAO = new ImagesDAO();
     String profileImage = "";
     String profileImage1 = "";
@@ -68,7 +69,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
     public VisitAdapter(Context context, List<PrescriptionModel> list) {
         this.context = context;
-        this.list = list;
+        this.list.addAll(list);
     }
 
     @NonNull

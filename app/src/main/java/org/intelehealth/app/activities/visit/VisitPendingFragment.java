@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -24,11 +25,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -68,6 +72,14 @@ public class VisitPendingFragment extends Fragment {
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
+
+    private final int recentLimit = 15, olderLimit = 15;
+    private int recentStart = 0, recentEnd = recentStart + recentLimit;
+    private boolean isRecentFullyLoaded = false;
+
+    private int olderStart = 0, olderEnd = olderStart + olderLimit;
+    private boolean isolderFullyLoaded = false;
+    NestedScrollView nestedscrollview;
 
     @Nullable
     @Override
@@ -143,7 +155,42 @@ public class VisitPendingFragment extends Fragment {
         month_nodata = view.findViewById(R.id.month_nodata);
 
         recycler_recent = view.findViewById(R.id.recycler_recent);
+        LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recycler_recent.setLayoutManager(reLayoutManager);
+
         recycler_older = view.findViewById(R.id.rv_older);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recycler_older.setLayoutManager(layoutManager);
+
+        nestedscrollview = view.findViewById(R.id.nscPendingPrescription);
+        nestedscrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                // Scroll Down
+                if (scrollY > oldScrollY) {
+                    // update recent data as it will not go at very bottom of list.
+                    if (recentList != null && recentList.size() == 0) {
+                        isRecentFullyLoaded = true;
+                    }
+                    if (!isRecentFullyLoaded)
+                        setRecentMoreDataIntoRecyclerView();
+
+                    // Last Item Scroll Down.
+                    if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) {
+                        // update older data as it will not go at very bottom of list.
+                        if (olderList != null && olderList.size() == 0) {
+                            isolderFullyLoaded = true;
+                            Log.d("TAG", "pending: recent: " + recentList.size() + ", older: " + olderList.size());
+                            return;
+                        }
+                        if (!isolderFullyLoaded) {
+                            Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
+                            setOlderMoreDataIntoRecyclerView();
+                        }
+                    }
+                }
+            }
+        });
+
         //recycler_month = view.findViewById(R.id.rv_thismonth);
         pending_endvisit_no = view.findViewById(R.id.pending_endvisit_no);
 
@@ -157,9 +204,11 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void defaultData() {
-        recentVisits(20, 0);
-        olderVisits(20, 0);
+        fetchRecentData();
+        fetchOlderData();
+
         int totalCount = totalCounts_recent + totalCounts_older;
+        Log.d("rece", "defaultData: pending" + totalCount);
 
         // loaded month data 1st for showing the count in main ui
 //        thisMonths_Visits();
@@ -170,6 +219,72 @@ public class VisitPendingFragment extends Fragment {
         progress.setVisibility(View.GONE);
     }
 
+    private void fetchOlderData() {
+        // pagination - start
+        olderList = olderVisits(olderLimit, olderStart);
+        Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+        older_adapter = new VisitAdapter(getActivity(), olderList);
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
+
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+        // pagination - end
+
+        totalCounts_older = olderList.size();
+        if (totalCounts_older == 0 || totalCounts_older < 0)
+            older_nodata.setVisibility(View.VISIBLE);
+        else
+            older_nodata.setVisibility(View.GONE);
+    }
+
+    private void fetchRecentData() {
+        recentList = recentVisits(recentLimit, recentStart);
+        // pagination - start
+        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recycler_recent.setNestedScrollingEnabled(false);
+        recycler_recent.setAdapter(recent_adapter);
+
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        // pagination - end
+
+        totalCounts_recent = recentList.size();
+        if (totalCounts_recent == 0 || totalCounts_recent < 0)
+            recent_nodata.setVisibility(View.VISIBLE);
+        else
+            recent_nodata.setVisibility(View.GONE);
+    }
+
+    // This method will be accessed every time the person scrolls the recyclerView further.
+    private void setRecentMoreDataIntoRecyclerView() {
+        if (recentList != null && recentList.size() == 0) {
+            isRecentFullyLoaded = true;
+            return;
+        }
+
+        recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
+        recent_adapter.list.addAll(recentList);
+        recent_adapter.notifyDataSetChanged();
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+    }
+
+    private void setOlderMoreDataIntoRecyclerView() {
+        if (olderList != null && olderList.size() == 0) {
+            isolderFullyLoaded = true;
+            return;
+        }
+
+        olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+        older_adapter.list.addAll(olderList);
+        older_adapter.notifyDataSetChanged();
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+    }
+
     private void visitData() {
 //        visit_pending_card_header.setOnClickListener(v -> {
 //            Intent intent = new Intent(getActivity(), EndVisitActivity.class);
@@ -177,9 +292,19 @@ public class VisitPendingFragment extends Fragment {
 //        });
 
         // Total of End visits.
-        int total = getTotalCounts_EndVisit();
-        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
-        pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int total = getPendingPrescCount();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
+                        pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
+                    }
+                });
+            }
+        }).start();
 
         // Filter - start
         filter_icon.setOnClickListener(v -> {
@@ -283,7 +408,7 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void recentVisits(int limit, int offset) {
+    private List<PrescriptionModel> recentVisits(int limit, int offset) {
         // new
         recentList = new ArrayList<>();
         db.beginTransaction();
@@ -303,16 +428,15 @@ public class VisitPendingFragment extends Fragment {
                         "  " +
                         " ORDER BY v.startdate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE});*/
+
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        //" e.encounter_type_uuid != ?  and " +
+                        " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                      //  " " +
-//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
-//                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?"
-                , new String[]{String.valueOf(limit), String.valueOf(offset)});
+                        " v.startdate > DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
+
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -331,8 +455,9 @@ public class VisitPendingFragment extends Fragment {
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-                //TODO: need more improvement in main query, this condition can be done by join query
-                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
+
                     String emergencyUuid = "";
                     EncounterDAO encounterDAO = new EncounterDAO();
                     try {
@@ -365,23 +490,12 @@ public class VisitPendingFragment extends Fragment {
         }
         cursor.close();
 
-        totalCounts_recent = recentList.size();
+        return recentList;
 
-        if (totalCounts_recent == 0 || totalCounts_recent < 0)
-            recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
-
-        recent_adapter = new VisitAdapter(getActivity(), recentList);
-        recycler_recent.setNestedScrollingEnabled(false);
-        recycler_recent.setAdapter(recent_adapter);
 
 //        thisWeeks_Visits();
 
         // new
-
-
-
 
       /*  todayList = new ArrayList<>();
 
@@ -474,66 +588,64 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private void olderVisits(int limit, int offset) {
-        // VisitAdapter adapter_new = new VisitAdapter(getActivity(), model);
-        //  recycler_week.setAdapter(adapter_new);
-
-        //new
-        // new
+    private List<PrescriptionModel> olderVisits(int limit, int offset) {
         olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid," +
-                        " o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and" +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                        " v.enddate is null and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
-//                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))  " +
-                        " v.startdate < DATETIME('now', '-4 day') " +
-                        "group by p.openmrs_id except" +
-                        " select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid," +
-                        " o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +
-//                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
-//                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
-                        " and e.encounter_type_uuid = ? " +
-                        " AND v.startdate < DATETIME('now', '-4 day') ORDER BY v.startdate DESC limit ? offset ?"
+                        " v.startdate < DATETIME('now', '-4 day') group by e.visituuid ORDER BY v.startdate DESC limit ? offset ?",
 
-                , new String[]{ENCOUNTER_VISIT_NOTE, String.valueOf(limit), String.valueOf(offset)});
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);
-                // emergency - start
                 String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
-                String emergencyUuid = "";
-                EncounterDAO encounterDAO = new EncounterDAO();
+
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
                 try {
-                    emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                    emergencyUuid = "";
+                    e.printStackTrace();
                 }
 
-                if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
-                    model.setEmergency(true);
-                else
-                    model.setEmergency(false);
-                // emergency - end
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending.
 
-                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
-                model.setVisitUuid(visitID);
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
-                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
-                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
-                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
-                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
-                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                olderList.add(model);
+                    // emergency - start
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String emergencyUuid = "";
+                    try {
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
+                    }
+
+                    if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                        model.setEmergency(true);
+                    else
+                        model.setEmergency(false);
+                    // emergency - end
+
+                    model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                    model.setVisitUuid(visitID);
+                    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                    model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                    model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    olderList.add(model);
+                }
             }
             while (cursor.moveToNext());
         }
@@ -541,24 +653,14 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        totalCounts_older = olderList.size();
+        return olderList;
 
-        if (totalCounts_older == 0 || totalCounts_older < 0)
-            older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
-
-        older_adapter = new VisitAdapter(getActivity(), olderList);
-        recycler_older.setNestedScrollingEnabled(false);
-        recycler_older.setAdapter(older_adapter);
 
         //  thisMonths_Visits();
 
         // new
 
         //new
-
-
 
       /*  weeksList = new ArrayList<>();
         Date cDate = new Date();

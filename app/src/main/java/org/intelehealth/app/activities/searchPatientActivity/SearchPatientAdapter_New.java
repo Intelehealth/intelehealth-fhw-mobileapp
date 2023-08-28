@@ -32,6 +32,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -47,7 +48,7 @@ import okhttp3.ResponseBody;
  */
 public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatientAdapter_New.SearchHolderView> {
     private Context context;
-    private List<PatientDTO> patientDTOS;
+    List<PatientDTO> patientDTOS = new ArrayList<>();
     private String profileImage = "";
     String profileImage1 = "";
     private ImagesDAO imagesDAO = new ImagesDAO();
@@ -55,7 +56,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
-        this.patientDTOS = patientDTOS;
+        this.patientDTOS.addAll(patientDTOS);
     }
 
     @NonNull
