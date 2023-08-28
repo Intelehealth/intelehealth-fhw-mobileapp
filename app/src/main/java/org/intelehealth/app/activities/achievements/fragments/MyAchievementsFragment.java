@@ -100,7 +100,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         ivInternet = view.findViewById(R.id.ivRefreshMyAchievements);
 
         ivInternet.setOnClickListener(v -> SyncUtils.syncNow(requireActivity(), ivInternet, syncAnimator));
-        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bnvHomeScreen);
         bottomNav.setVisibility(View.VISIBLE);
         bottomNav.getMenu().findItem(R.id.bottomNavAchievements).setChecked(true);
         configureTabLayout();

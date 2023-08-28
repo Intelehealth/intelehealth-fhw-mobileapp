@@ -8,7 +8,7 @@
     android:layout_marginRight="10dp">
 
     <ImageView
-        android:id="@+id/imageView_medical"
+        android:id="@+id/ivContentImageCarousel"
         android:layout_height="match_parent"
         android:layout_width="150dp"
         android:contentDescription="TODO"

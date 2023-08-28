@@ -142,15 +142,15 @@ public class PhysicalExamSummaryFragment extends Fragment {
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                 complainLabelTextView.setText(_complain);
-                view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, null);
                     }
                 });
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 String k1 = "";

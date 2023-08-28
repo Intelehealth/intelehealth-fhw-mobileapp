@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlParentNavHeaderHome"
+    android:contentDescription="Navigation Header Home Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/iv_close_drawer"
+        android:id="@+id/ivCloseNavHeaderHome"
+        android:contentDescription="Navigation Header Home Close ImageView"
         android:layout_width="@dimen/iv_close_drawer_width"
         android:layout_height="@dimen/iv_close_drawer_height"
         android:layout_alignParentEnd="true"
@@ -16,40 +19,34 @@
         android:src="@drawable/ui2_ic_close_drawer" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/img_profile_header"
+        android:id="@+id/cvProfileNavHeaderHome"
+        android:contentDescription="Navigation Header Home User Profile CardView"
         android:layout_width="@dimen/iv_profile_drawer_height_width"
         android:layout_height="@dimen/iv_profile_drawer_height_width"
-        android:layout_below="@+id/iv_close_drawer"
+        android:layout_below="@+id/ivCloseNavHeaderHome"
         android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
         android:layout_marginTop="@dimen/iv_profile_drawer_margin_top"
         android:elevation="0dp"
         app:cardCornerRadius="45dp">
 
         <ImageView
-            android:id="@+id/iv_profile_icon"
+            android:id="@+id/ivProfileIconNavHeaderHome"
+            android:contentDescription="Navigation Header Home User Profile ImageView"
             android:layout_width="@dimen/iv_profile_drawer_height_width"
             android:layout_height="@dimen/iv_profile_drawer_height_width"
             android:src="@drawable/avatar1" />
 
     </androidx.cardview.widget.CardView>
 
-    <!--  <ImageView
-          android:id="@+id/iv_profile_icon"
-          android:layout_width="@dimen/iv_profile_drawer_width"
-          android:layout_height="@dimen/iv_profile_drawer_height"
-          android:layout_below="@+id/iv_close_drawer"
-          android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
-          android:layout_marginTop="@dimen/iv_profile_drawer_margin_top"
-          android:src="@drawable/avatar1" />
-  -->
     <TextView
-        android:id="@+id/tv_loggedin_username"
+        android:id="@+id/tvUsernameNavHeaderHome"
+        android:contentDescription="Navigation Header Home User Username TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_close_drawer"
+        android:layout_below="@+id/ivCloseNavHeaderHome"
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
         android:layout_marginTop="@dimen/tv_login_user_margin_top"
-        android:layout_toEndOf="@+id/img_profile_header"
+        android:layout_toEndOf="@+id/cvProfileNavHeaderHome"
         android:fontFamily="@font/lato_regular"
         android:hint="User name"
         android:textColor="@color/textColorBlack"
@@ -57,13 +54,14 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_userid"
+        android:id="@+id/tvUserIDNavHeaderHome"
+        android:contentDescription="Navigation Header Home User ID TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_loggedin_username"
+        android:layout_below="@+id/tvUsernameNavHeaderHome"
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
         android:layout_marginTop="@dimen/tv_login_userid_margin_top"
-        android:layout_toEndOf="@+id/img_profile_header"
+        android:layout_toEndOf="@+id/cvProfileNavHeaderHome"
         android:fontFamily="@font/lato_regular"
         android:lineSpacingExtra="@dimen/tv_reset_app_line_spacing"
         android:text="@string/chw_id"
@@ -72,13 +70,14 @@
         android:visibility="visible" />
 
     <TextView
-        android:id="@+id/tv_edit_profile"
+        android:id="@+id/tvEditProfileNavHeaderHome"
+        android:contentDescription="Navigation Header Home 'Edit Profile' TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_userid"
+        android:layout_below="@+id/tvUserIDNavHeaderHome"
         android:layout_marginStart="@dimen/tv_login_user_margin_start"
         android:layout_marginTop="@dimen/tv_login_edit_margin_top"
-        android:layout_toEndOf="@+id/img_profile_header"
+        android:layout_toEndOf="@+id/cvProfileNavHeaderHome"
         android:drawableEnd="@drawable/ui2_ic_arrow_right"
         android:drawablePadding="@dimen/common_tv_icon_padding"
         android:fontFamily="@font/lato_regular"
@@ -88,10 +87,10 @@
         android:textSize="@dimen/nav_header_edit_profile" />
 
     <View
-        android:id="@+id/view_gray"
+        android:id="@+id/viewNavHeaderHome"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_header_height"
-        android:layout_below="@+id/tv_edit_profile"
+        android:layout_below="@+id/tvEditProfileNavHeaderHome"
         android:layout_marginStart="@dimen/iv_profile_drawer_margin_start"
         android:layout_marginTop="@dimen/view_header_margin_top"
         android:layout_marginEnd="@dimen/view_header_margin_end"

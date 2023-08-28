@@ -210,16 +210,16 @@ public class VisitReasonSummaryFragment extends Fragment {
 
                 if (!complainName.isEmpty() && !visitSummaryDataList.isEmpty()) {
                     View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
-                    TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                    TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                     complainLabelTextView.setText(complainName);
-                    view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                    view.findViewById(R.id.tvComplaintEditMainRowItem).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
                         }
                     });
 
-                    RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                    RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                     SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
                         @Override
@@ -255,9 +255,9 @@ public class VisitReasonSummaryFragment extends Fragment {
                     patientReports = patientReports.substring(1);
                     patientReports = patientReports.replace("•", ", ");
                     View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
-                    TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                    TextView keyTextView = view.findViewById(R.id.tvQuestionLabelAssSymptomRowItem);
                     keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
-                    TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+                    TextView valueTextView = view.findViewById(R.id.tvAnswerValueAssSymptomRowItem);
                     valueTextView.setText(patientReports);
                /* if (patientReportsDenies.isEmpty()) {
                     view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
@@ -346,16 +346,16 @@ public class VisitReasonSummaryFragment extends Fragment {
                 }
                 if (!complainName.isEmpty() && !visitSummaryDataList.isEmpty()) {
                     View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
-                    TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                    TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                     complainLabelTextView.setText(complainName);
-                    view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                    view.findViewById(R.id.tvComplaintEditMainRowItem).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
                         }
                     });
 
-                    RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                    RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                     SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, getActivity(), visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
                         @Override
@@ -377,14 +377,14 @@ public class VisitReasonSummaryFragment extends Fragment {
                     String k = value.substring(0, value.indexOf(" - ")).trim();
                     String v = value.substring(value.indexOf(" - ") + 2).trim();
                     View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
-                    TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                    TextView keyTextView = view.findViewById(R.id.tvQuestionLabelAssSymptomRowItem);
                     keyTextView.setText(k);
-                    TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+                    TextView valueTextView = view.findViewById(R.id.tvAnswerValueAssSymptomRowItem);
                     valueTextView.setText(v);
                     if (v.isEmpty()) {
-                        view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
+                        view.findViewById(R.id.ivBulletAssSymptomRowItem).setVisibility(View.GONE);
                     } else {
-                        view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.ivBulletAssSymptomRowItem).setVisibility(View.VISIBLE);
                     }
                     mAssociateSymptomsLinearLayout.addView(view);
                 } else if (value.contains(":")) {

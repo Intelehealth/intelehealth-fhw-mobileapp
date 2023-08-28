@@ -197,52 +197,8 @@
                             </RelativeLayout>
                         </androidx.cardview.widget.CardView>
 
-                        <!--
-                                        <androidx.cardview.widget.CardView
-                                            android:id="@+id/filter_allvisits_relative"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            app:contentPaddingLeft="@dimen/margin_6"
-                                            app:contentPaddingRight="@dimen/margin_6"
-                                            app:contentPaddingTop="@dimen/margin_6"
-                                            app:contentPaddingBottom="@dimen/margin_6"
-                                            app:cardCornerRadius="@dimen/corner_radius_8dp"
-                                            android:layout_marginEnd="@dimen/margin_10"
-                                            android:layout_toEndOf="@+id/filter_priority_relative"
-                                            android:backgroundTint="@color/grey_button_bg">
-
-                                            <RelativeLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                >
-
-                                                <TextView
-                                                    android:id="@+id/filter_allvisits"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:textSize="12sp"
-                                                    android:layout_marginEnd="@dimen/margin_4"
-                                                    android:textColor="@color/colorPrimary"
-                                                    android:text="All visit's" />
-
-                                                <ImageButton
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_toEndOf="@id/filter_allvisits"
-                                                    android:background="@null"
-                                                    android:layout_marginTop="2dp"
-                                                    android:tint="@color/colorPrimary"
-                                                    android:src="@drawable/cancel_small_crossbtn" />
-                                            </RelativeLayout>
-                                        </androidx.cardview.widget.CardView>
-                        -->
-
-
                 </RelativeLayout>
 
-                <!--Filter View - end -->
-
-                <!-- You can add all acco -->
                 <TextView
                     android:id="@+id/you_can_add"
                     android:layout_width="match_parent"

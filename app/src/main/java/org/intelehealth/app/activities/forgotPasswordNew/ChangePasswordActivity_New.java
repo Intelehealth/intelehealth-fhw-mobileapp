@@ -88,10 +88,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         networkUtils = new NetworkUtils(ChangePasswordActivity_New.this, this);
 
         View toolbar = findViewById(R.id.toolbar_common);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
+        ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
 
-        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+        ImageView ivBack = toolbar.findViewById(R.id.ivBackArrowCommonToolbar);
         ivBack.setOnClickListener(v -> {
             Intent intent = new Intent(ChangePasswordActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);

@@ -98,7 +98,7 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         layoutCancelled = view.findViewById(R.id.layout_cancelled);
         layoutCompleted = view.findViewById(R.id.layout_completed);
         layoutParentAll = view.findViewById(R.id.layout_parent_all);
-        ivRefresh = requireActivity().findViewById(R.id.imageview_is_internet_common);
+        ivRefresh = requireActivity().findViewById(R.id.ivRefreshCommonToolbar);
 
         tvUpcomingAppointments = view.findViewById(R.id.tv_upcoming_appointments_todays);
         tvUpcomingAppointmentsTitle = view.findViewById(R.id.tv_upcoming_apps_count_todays);

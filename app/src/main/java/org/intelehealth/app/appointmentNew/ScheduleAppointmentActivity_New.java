@@ -116,8 +116,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         mSelectedEndDate = simpleDateFormat.format(new Date());
 
         View toolbar = findViewById(R.id.toolbar_schedule_appointments);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
+        ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
 
         tvTitle.setText(getResources().getString(R.string.schedule_appointment));
 

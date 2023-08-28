@@ -62,8 +62,8 @@ public class TrainingInfoVideosFragment extends Fragment {
     }
 
     private void initUI() {
-        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
-        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
+        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbarNewAppBar);
+        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.ivBackArrowCustomToolbar);
         ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override

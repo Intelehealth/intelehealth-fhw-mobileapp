@@ -18,7 +18,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     public MyViewHolder(View view)
     {
         super(view);
-        imageView = view.findViewById(R.id.imageView_medical);
+        imageView = view.findViewById(R.id.ivContentImageCarousel);
     }
 
     public ImageView getImageView() {

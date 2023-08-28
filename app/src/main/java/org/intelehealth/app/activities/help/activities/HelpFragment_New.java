@@ -79,7 +79,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     }
 
     private void initUI() {
-        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bnvHomeScreen);
         bottomNav.getMenu().findItem(R.id.bottomNavHelp).setChecked(true);
         bottomNav.setVisibility(View.VISIBLE);
         View optionsView = view.findViewById(R.id.categoriesButtonsLayoutHelpScreen);
@@ -89,7 +89,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
         TextView tvMoreVideos = view.findViewById(R.id.tvMostSearchedMoreHelpScreen);
         TextView tvMoreFaq = view.findViewById(R.id.tvFAQMoreHelpScreen);
         FloatingActionButton fabHelp = view.findViewById(R.id.fabChatHelpScreen);
-        ivInternet = view.findViewById(R.id.ivRefreshCommonToolbar);
+        ivInternet = view.findViewById(R.id.ivInternetHelpScreen);
         ivInternet.setOnClickListener(v -> SyncUtils.syncNow(requireActivity(), ivInternet, syncAnimator));
 
         fabHelp.setOnClickListener(v -> {

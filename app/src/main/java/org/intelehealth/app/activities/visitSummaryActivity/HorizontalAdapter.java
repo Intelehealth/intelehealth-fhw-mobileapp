@@ -105,8 +105,8 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface d) {
-                final ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
-                final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
+                final ImageView imageView = dialog.findViewById(R.id.ivImageConfirmDialog);
+                final ProgressBar progressBar = dialog.findViewById(R.id.pbImageConfirmDialog);
                 Glide.with(context)
                         .load(file)
                         .skipMemoryCache(true)

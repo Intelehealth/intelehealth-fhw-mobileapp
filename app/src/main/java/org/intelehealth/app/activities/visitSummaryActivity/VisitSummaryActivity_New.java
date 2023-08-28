@@ -883,7 +883,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             idView.setText(getString(R.string.patient_not_registered));
         }
 
-        mCHWname = findViewById(R.id.chw_details);
+        mCHWname = findViewById(R.id.tvCHWNameValueVisitSummary);
         mCHWname.setText(sessionManager.getChwname()); //session manager provider
         // header title set - end
 
@@ -1186,7 +1186,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 complaintDialog.setView(convertView);
 
-                final TextView complaintText = convertView.findViewById(R.id.textView_entry);
+                final TextView complaintText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (complaint.getValue() != null) {
                     complaintText.setText(Html.fromHtml(complaintLocalString));
                 }
@@ -1330,7 +1330,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 physicalDialog.setView(convertView);
 
-                final TextView physicalText = convertView.findViewById(R.id.textView_entry);
+                final TextView physicalText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (phyExam.getValue() != null)
                     physicalText.setText(Html.fromHtml(physicalExamLocaleString));
                 physicalText.setEnabled(false);
@@ -1470,7 +1470,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 historyDialog.setView(convertView);
 
-                final TextView historyText = convertView.findViewById(R.id.textView_entry);
+                final TextView historyText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (patHistory.getValue() != null)
                     historyText.setText(Html.fromHtml(patientHistoryLocaleString));
                 historyText.setEnabled(false);
@@ -1603,7 +1603,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
 
-                final TextView famHistText = convertView.findViewById(R.id.textView_entry);
+                final TextView famHistText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (famHistory.getValue() != null)
                     famHistText.setText(Html.fromHtml(familyHistoryLocaleString));
                 famHistText.setEnabled(false);
@@ -2052,8 +2052,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void initUI() {
         // textview - start
-        filter_framelayout = findViewById(R.id.filter_framelayout);
-        filter = findViewById(R.id.filter);
+        filter_framelayout = findViewById(R.id.flFilterVisitSummary);
+        filter = findViewById(R.id.ibFilterVisitSummary);
 
         reminder = findViewById(R.id.tvReminderNotificationsFilter);
         reminder.setText(getResources().getString(R.string.action_home));
@@ -2066,58 +2066,58 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         hl_2 = findViewById(R.id.viewDivider2NotificationFilter);
         hl_2.setVisibility(View.GONE);
 
-        backArrow = findViewById(R.id.backArrow);
-        refresh = findViewById(R.id.refresh);
-        profile_image = findViewById(R.id.ivPatientImageRowItem);
-        downloadbtn = findViewById(R.id.downloadbtn);
-        nameView = findViewById(R.id.textView_name_value);
-        genderView = findViewById(R.id.textView_gender_value);
+        backArrow = findViewById(R.id.ibBackArrowVisitSummary);
+        refresh = findViewById(R.id.ibRefreshVisitSummary);
+        profile_image = findViewById(R.id.ivPatientImageVisitSummary);
+        downloadbtn = findViewById(R.id.ibDownloadVisitSummary);
+        nameView = findViewById(R.id.tvPatientNameVisitSummary);
+        genderView = findViewById(R.id.tvPatientGenderAgeVisitSummary);
         //OpenMRS Id
-        idView = findViewById(R.id.textView_id_value);
-        visitView = findViewById(R.id.textView_visit_value);
-        additional_notes_edittext = findViewById(R.id.additional_notes_edittext);
+        idView = findViewById(R.id.tvPatientIDVisitSummary);
+        visitView = findViewById(R.id.tvVisitIDVisitSummary);
+        additional_notes_edittext = findViewById(R.id.etAddNotesValueVisitSummary);
         // textview - end
 
         // up-down btn - start
-        btn_up_header = findViewById(R.id.btn_up_header);
-        openall_btn = findViewById(R.id.openall_btn);
-        btn_up_vitals_header = findViewById(R.id.btn_up_vitals_header);
-        vitals_header_relative = findViewById(R.id.vitals_header_relative);
-        parentLayout = findViewById(R.id.parentLayout);
-        btn_up_visitreason_header = findViewById(R.id.btn_up_visitreason_header);
-        chiefcomplaint_header_relative = findViewById(R.id.chiefcomplaint_header_relative);
-        btn_up_phyexam_header = findViewById(R.id.btn_up_phyexam_header);
-        physExam_header_relative = findViewById(R.id.physExam_header_relative);
-        btn_up_medhist_header = findViewById(R.id.btn_up_medhist_header);
-        pathistory_header_relative = findViewById(R.id.pathistory_header_relative);
-        btn_up_special_vd_header = findViewById(R.id.btn_up_special_vd_header);
-        special_vd_header_relative = findViewById(R.id.special_vd_header_relative);
-        btn_up_addnotes_vd_header = findViewById(R.id.btn_up_addnotes_vd_header);
-        addnotes_vd_header_relative = findViewById(R.id.addnotes_vd_header_relative);
+        btn_up_header = findViewById(R.id.ibPatientDetailsCardExpandVisitSummary);
+        openall_btn = findViewById(R.id.btnOpenAllVisitSummary);
+        btn_up_vitals_header = findViewById(R.id.ibVitalsCollapseVisitSummaryItemCard);
+        vitals_header_relative = findViewById(R.id.rlVitalsHeaderVisitSummaryItemCard);
+        parentLayout = findViewById(R.id.rlParentVisitSummary);
+        btn_up_visitreason_header = findViewById(R.id.ibVisitReasonCollapseVisitSummaryItemCard);
+        chiefcomplaint_header_relative = findViewById(R.id.rlVisitReasonHeaderVisitSummaryItemCard);
+        btn_up_phyexam_header = findViewById(R.id.ibPhysExamCollapseVisitSummaryItemCard);
+        physExam_header_relative = findViewById(R.id.rlPhysExamHeaderVisitSummaryItemCard);
+        btn_up_medhist_header = findViewById(R.id.ibMedHistCollapseVisitSummaryItemCard);
+        pathistory_header_relative = findViewById(R.id.rlMedHistHeaderVisitSummaryItemCard);
+        btn_up_special_vd_header = findViewById(R.id.ibSpecialityCollapseVisitSummary);
+        special_vd_header_relative = findViewById(R.id.rlSpecialityHeaderVisitSummary);
+        btn_up_addnotes_vd_header = findViewById(R.id.ibAddNotesCardCollapseVisitSummaryItemCard);
+        addnotes_vd_header_relative = findViewById(R.id.rlAddNotesHeaderVisitSummary);
 
-        vs_header_expandview = findViewById(R.id.vs_header_expandview);
-        vs_vitals_header_expandview = findViewById(R.id.vs_vitals_header_expandview);
-        vs_visitreason_header_expandview = findViewById(R.id.vs_visitreason_header_expandview);
-        vs_phyexam_header_expandview = findViewById(R.id.vs_phyexam_header_expandview);
-        vs_medhist_header_expandview = findViewById(R.id.vs_medhist_header_expandview);
-        vd_special_header_expandview = findViewById(R.id.vd_special_header_expandview);
-        vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
-        vs_add_notes = findViewById(R.id.vs_add_notes);
-        vd_addnotes_value = findViewById(R.id.vd_addnotes_value);
+        vs_header_expandview = findViewById(R.id.rlPatientDetailsExpandedCardVisitSummary);
+        vs_vitals_header_expandview = findViewById(R.id.rlVitalsDetailsVisitSummaryItemCard);
+        vs_visitreason_header_expandview = findViewById(R.id.rlVisitReasonDetailsVisitSummaryItemCard);
+        vs_phyexam_header_expandview = findViewById(R.id.rlPhysExamDetailsVisitSummaryItemCard);
+        vs_medhist_header_expandview = findViewById(R.id.rlMedHistDetailsVisitSummaryItemCard);
+        vd_special_header_expandview = findViewById(R.id.rlSpecialityExpandedVisitSummary);
+        vd_addnotes_header_expandview = findViewById(R.id.rlAddNotesDetailsVisitSummary);
+        vs_add_notes = findViewById(R.id.rlAddNotesChildVisitSummary);
+        vd_addnotes_value = findViewById(R.id.tvAddNotesValueVisitSummary);
         // up-down btn - end
 
         // vitals ids
-        heightView = findViewById(R.id.textView_height_value);
-        weightView = findViewById(R.id.textView_weight_value);
-        pulseView = findViewById(R.id.textView_pulse_value);
-        bpView = findViewById(R.id.textView_bp_value);
-        tempView = findViewById(R.id.textView_temp_value);
+        heightView = findViewById(R.id.tvHeightValueVisitSummaryItemCard);
+        weightView = findViewById(R.id.tvWeightValueVisitSummaryItemCard);
+        pulseView = findViewById(R.id.tvPulseValueVisitSummaryItemCard);
+        bpView = findViewById(R.id.tvBPValueVisitSummaryItemCard);
+        tempView = findViewById(R.id.tvTempValueVisitSummaryItemCard);
 
-        vd_special_value = findViewById(R.id.vd_special_value);
-        doc_speciality_card = findViewById(R.id.doc_speciality_card);
-        addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
-        special_vd_card = findViewById(R.id.special_vd_card);
-        priority_hint = findViewById(R.id.priority_hint);
+        vd_special_value = findViewById(R.id.tvSpecialityValueVisitSummary);
+        doc_speciality_card = findViewById(R.id.cvSelectedSpecialityVisitSummary);
+        addnotes_vd_card = findViewById(R.id.cvAddNotesVisitSummary);
+        special_vd_card = findViewById(R.id.cvSpecialityVisitSummary);
+        priority_hint = findViewById(R.id.ibPriorityHintVisitSummary);
 
         priority_hint.setOnClickListener(v -> {
             Toast.makeText(context, R.string.priority_hint, Toast.LENGTH_SHORT).show();
@@ -2134,67 +2134,67 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         });
 
 
-        tempfaren = findViewById(R.id.textView_temp_faren);
-        tempcel = findViewById(R.id.textView_temp);
+        tempfaren = findViewById(R.id.tvTempFVisitSummaryItemCard);
+        tempcel = findViewById(R.id.tvTempCVisitSummaryItemCard);
 
-        spO2View = findViewById(R.id.textView_pulseox_value);
-        respiratory = findViewById(R.id.textView_respiratory_value);
-        respiratoryText = findViewById(R.id.textView_respiratory);
-        bmiView = findViewById(R.id.textView_bmi_value);
+        spO2View = findViewById(R.id.tvPulseValueVisitSummaryItemCard);
+        respiratory = findViewById(R.id.tvRRValueVisitSummaryItemCard);
+        respiratoryText = findViewById(R.id.tvRRVisitSummaryItemCard);
+        bmiView = findViewById(R.id.tvBMIValueVisitSummaryItemCard);
         // vitals ids - end
 
         // complaint ids
-        cc_recyclerview = findViewById(R.id.cc_recyclerview);
+        cc_recyclerview = findViewById(R.id.rvVisitReasonVisitSummaryItemCard);
 
 
-        complaintView = findViewById(R.id.textView_content_complaint);
-        patientReports_txtview = findViewById(R.id.patientReports_txtview);
-        patientDenies_txtview = findViewById(R.id.patientDenies_txtview);
+        complaintView = findViewById(R.id.tvVisitReasonDetailsVisitSummaryItemCard);
+        patientReports_txtview = findViewById(R.id.tvPatientReportsValueVisitSummaryItemCard);
+        patientDenies_txtview = findViewById(R.id.tvPatientDeniesValueVisitSummaryItemCard);
         // complaint ids - end
 
         // Phys exam ids
-        physFindingsView = findViewById(R.id.physFindingsView);
-        mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
-        physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
+        physFindingsView = findViewById(R.id.viewPhysExamVisitSummaryItemsCard);
+        mPhysicalExamsRecyclerView = findViewById(R.id.rvPhysExamVisitSummaryItemCard);
+        physcialExaminationDownloadText = findViewById(R.id.tvPhysExamDownloadVisitSummaryItemCard);
         // Phys exam ids - end
 
         // medical history
-        famHistView = findViewById(R.id.textView_content_famhist);
-        patHistView = findViewById(R.id.textView_content_pathist);
+        famHistView = findViewById(R.id.tvFamHistDetailsVisitSummaryItemCard);
+        patHistView = findViewById(R.id.tvPatHistDetailsVisitSummaryItemCard);
         // medical history - end
 
         // additonal doc
-        add_docs_title = findViewById(R.id.add_docs_title);
-        mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
-        editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
+        add_docs_title = findViewById(R.id.tvAddDocTitleVisitSummary);
+        mAdditionalDocsRecyclerView = findViewById(R.id.rvAddDocVisitSummary);
+        editAddDocs = findViewById(R.id.ibAddDocEditVisitSummary);
         // additonal doc - end
 
         // speciality ids
-        speciality_spinner = findViewById(R.id.speciality_spinner);
+        speciality_spinner = findViewById(R.id.spinnerSpecialityVisitSummary);
         // speciality ids - end
 
         // priority id
-        flag = findViewById(R.id.flaggedcheckbox);
+        flag = findViewById(R.id.smPriorityCheckboxVisitSummary);
         // priority id - end
 
         // edit - start
-        editVitals = findViewById(R.id.imagebutton_edit_vitals);
-        editComplaint = findViewById(R.id.imagebutton_edit_complaint);
-        cc_details_edit = findViewById(R.id.cc_details_edit);
-        ass_symp_edit = findViewById(R.id.ass_symp_edit);
-        editPhysical = findViewById(R.id.imagebutton_edit_physexam);
-        editFamHist = findViewById(R.id.imagebutton_edit_famhist);
-        editMedHist = findViewById(R.id.imagebutton_edit_pathist);
-        editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
+        editVitals = findViewById(R.id.llVitalsEditVisitSummaryItemCard);
+        editComplaint = findViewById(R.id.llVisitReasonEditVisitSummaryItemCard);
+        cc_details_edit = findViewById(R.id.llVisitReasonDetailsEditVisitSummaryItemCard);
+        ass_symp_edit = findViewById(R.id.llAssSymptomsEditVisitSummaryItemCard);
+        editPhysical = findViewById(R.id.llPhysExamEditVisitSummaryItemCard);
+        editFamHist = findViewById(R.id.llFamHistEditVisitSummaryItemCard);
+        editMedHist = findViewById(R.id.llPatHistEditVisitSummaryItemCard);
+        editAddDocs = findViewById(R.id.ibAddDocEditVisitSummary);
         // edit - end
 
         // Bottom Buttons - start
-        btn_bottom_printshare = findViewById(R.id.btn_bottom_printshare);   // linear: print - share
-        btn_vs_print = findViewById(R.id.btn_vs_print);   // print
-        btn_vs_share = findViewById(R.id.btn_vs_share);   // share
+        btn_bottom_printshare = findViewById(R.id.llPrintShareButtonsVisitSummary);   // linear: print - share
+        btn_vs_print = findViewById(R.id.btnPrintVisitSummary);   // print
+        btn_vs_share = findViewById(R.id.btnShareVisitSummary);   // share
 
-        btn_bottom_vs = findViewById(R.id.btn_bottom_vs);   // appointment - upload
-        uploadButton = findViewById(R.id.btn_vs_sendvisit);
+        btn_bottom_vs = findViewById(R.id.llAppSendVisitButtonsVisitSummary);   // appointment - upload
+        uploadButton = findViewById(R.id.btnSendVisitSummary);
 
         btn_vs_print.setOnClickListener(v -> {
             try {
@@ -2216,10 +2216,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         obsImgdir = new File(AppConstants.IMAGE_PATH);
 
-        add_additional_doc = findViewById(R.id.add_additional_doc);
+        add_additional_doc = findViewById(R.id.rlAddNewDocVisitSummary);
 
         // navigation for book appointmnet
-        btnAppointment = findViewById(R.id.btn_vs_appointment);
+        btnAppointment = findViewById(R.id.btnAppointmentVisitSummary);
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2265,8 +2265,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
             alertdialogBuilder.setView(convertView);
 
-            EditText editText = convertView.findViewById(R.id.editText_mobileno);
-            Button sharebtn = convertView.findViewById(R.id.sharebtn);
+            EditText editText = convertView.findViewById(R.id.etMobileNumSharePrescDialog);
+            Button sharebtn = convertView.findViewById(R.id.btnSharePrescDialog);
 
            /* AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             EditText editText = new EditText(this);
@@ -4923,13 +4923,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private TextView mAssociateSymptomsLabelTextView;
 
     private void setQAData() {
-        mFamilyHistorySummaryLinearLayout = findViewById(R.id.ll_family_history_summary);
-        mPastMedicalHistorySummaryLinearLayout = findViewById(R.id.ll_patient_history_summary);
+        mFamilyHistorySummaryLinearLayout = findViewById(R.id.llFamHistDetailsVisitSummaryItemCard);
+        mPastMedicalHistorySummaryLinearLayout = findViewById(R.id.llPatHistDetailsVisitSummaryItemCard);
 
-        mPhysicalExamSummamryLinearLayout = findViewById(R.id.ll_physical_exam_summary);
+        mPhysicalExamSummamryLinearLayout = findViewById(R.id.llPhysExamDetailsEditVisitSummaryItemCard);
 
-        mComplainSummaryLinearLayout = findViewById(R.id.ll_complain_summary);
-        mAssociateSymptomsLinearLayout = findViewById(R.id.ll_associated_sympt);
+        mComplainSummaryLinearLayout = findViewById(R.id.llVisitReasonDetailsVisitSummaryItemCard);
+        mAssociateSymptomsLinearLayout = findViewById(R.id.llAssSymptomsDetailsVisitSummaryItemCard);
         //mAssociateSymptomsLabelTextView = findViewById(R.id.tv_ass_complain_label);
 
 
@@ -4960,8 +4960,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             boolean isAssociateSymptomFound = false;
             if (isInOldFormat) {
                 complaintView.setVisibility(View.VISIBLE);
-                findViewById(R.id.reports_relative).setVisibility(View.VISIBLE);
-                findViewById(R.id.denies_relative).setVisibility(View.VISIBLE);
+                findViewById(R.id.rlPatientReportsVisitSummaryItemCard).setVisibility(View.VISIBLE);
+                findViewById(R.id.rlPatientDeniesVisitSummaryItemCard).setVisibility(View.VISIBLE);
 
                 valueArray = value.split("►<b> Associated symptoms</b>:  <br/>");
                 isAssociateSymptomFound = valueArray.length >= 2;
@@ -5210,11 +5210,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!complainName.isEmpty() && !visitSummaryDataList.isEmpty()) {
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                 complainLabelTextView.setText(complainName);
-                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
-                view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setVisibility(View.GONE);
+                view.findViewById(R.id.viewMainRowItem).setVisibility(View.GONE);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 SummaryViewAdapter summaryViewAdapter = new SummaryViewAdapter(recyclerView, this, visitSummaryDataList, new SummaryViewAdapter.OnItemSelection() {
                     @Override
@@ -5256,9 +5256,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 patientReports = patientReports.substring(1);
                 patientReports = patientReports.replace("•", ", ");
                 View view = View.inflate(this, R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
-                TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                TextView keyTextView = view.findViewById(R.id.tvQuestionLabelAssSymptomRowItem);
                 keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
-                TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+                TextView valueTextView = view.findViewById(R.id.tvAnswerValueAssSymptomRowItem);
                 valueTextView.setText(patientReports);
            /* if (patientReportsDenies.isEmpty()) {
                 view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
@@ -5312,15 +5312,15 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                 complainLabelTextView.setText(_complain);
                 Log.v("PH0_complain", _complain);
                 if(_complain.trim().equalsIgnoreCase(VisitUtils.getTranslatedGeneralExamString(sessionManager.getAppLanguage()))){
                     complainLabelTextView.setVisibility(View.GONE);
                 }
-                view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
-                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                view.findViewById(R.id.viewMainRowItem).setVisibility(View.GONE);
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setVisibility(View.GONE);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 String k1 = "";
@@ -5419,13 +5419,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
-                View vv = view.findViewById(R.id.height_adjust_view);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
+                View vv = view.findViewById(R.id.viewMainRowItem);
                 complainLabelTextView.setText(_complain);
                 complainLabelTextView.setVisibility(View.GONE);
                 vv.setVisibility(View.GONE);
-                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setVisibility(View.INVISIBLE);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
@@ -5556,13 +5556,13 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(this, R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
-                View vv = view.findViewById(R.id.height_adjust_view);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
+                View vv = view.findViewById(R.id.viewMainRowItem);
                 complainLabelTextView.setText(_complain);
                 complainLabelTextView.setVisibility(View.GONE);
                 vv.setVisibility(View.GONE);
-                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setVisibility(View.GONE);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {

@@ -138,9 +138,9 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
     private void initUI() {
         View toolbar = findViewById(R.id.toolbar_my_appointments);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
-        ImageView ivBackArrow = toolbar.findViewById(R.id.iv_back_arrow_common);
+        TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
+        ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
+        ImageView ivBackArrow = toolbar.findViewById(R.id.ivBackArrowCommonToolbar);
 
         tvTitle.setText(getResources().getString(R.string.my_appointments));
 
@@ -162,7 +162,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
         bottomNav = findViewById(R.id.bottom_nav_my_appointments);
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(false);
+        bottomNav.getMenu().findItem(R.id.bottomNavHome).setChecked(false);
 
     }
 
@@ -227,25 +227,25 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
                     Fragment fragment;
 
                     switch (item.getItemId()) {
-                        case R.id.bottom_nav_home_menu:
+                        case R.id.bottomNavHome:
                            /* Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                             fragment = new HomeFragment_New();
                             loadFragment(fragment);*/
                             return true;
-                        case R.id.bottom_nav_achievements:
+                        case R.id.bottomNavAchievements:
                          /*   tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
                             fragment = new MyAchievementsFragment();
                             loadFragmentForBottomNav(fragment);*/
 
                             return true;
-                        case R.id.bottom_nav_help:
+                        case R.id.bottomNavHelp:
                        /*     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
                             fragment = new HelpFragment_New();
                             loadFragmentForBottomNav(fragment);*/
 
                             return true;
-                        case R.id.bottom_nav_add_patient:
+                        case R.id.bottomNavAddPatient:
 
                             return true;
                     }

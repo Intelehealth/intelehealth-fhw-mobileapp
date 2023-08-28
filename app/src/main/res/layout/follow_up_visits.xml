@@ -107,10 +107,10 @@
 
                 <TextView
                     android:id="@+id/tvTodayHeadingFollowUpScreen"
-                    android:contentDescription="Follow Up Screen Today List Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/fu_margin_start"
+                    android:contentDescription="Follow Up Screen Today List Title TextView"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/you_can_add"

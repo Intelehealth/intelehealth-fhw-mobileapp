@@ -19,7 +19,8 @@
         android:layout_marginRight="@dimen/fu_margin_start">
 
     <TextView
-        android:id="@+id/textView_entry"
+        android:id="@+id/tvEditEntryDialog"
+        android:contentDescription="Edit Entry Dialog TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_5"

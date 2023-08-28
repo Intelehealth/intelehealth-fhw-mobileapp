@@ -2314,7 +2314,7 @@ public class Node implements Serializable {
                 int screen_height = displayMetrics.heightPixels;
                 int screen_width = displayMetrics.widthPixels;
 
-                ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
+                ImageView imageView = dialog.findViewById(R.id.ivImageConfirmDialog);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
                 Glide.with(context)
                         .load(new File(imagePath))

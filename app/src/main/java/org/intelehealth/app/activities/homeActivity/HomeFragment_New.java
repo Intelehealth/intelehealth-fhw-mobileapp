@@ -204,7 +204,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
     private void initUI() {
         sessionManager = new SessionManager(getActivity());
-        View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
+        View layoutToolbar = requireActivity().findViewById(R.id.toolbarNewAppBar);
         layoutToolbar.setVisibility(View.VISIBLE);
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -217,32 +217,21 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
+        ImageView viewHamburger = requireActivity().findViewById(R.id.ivBackArrowCustomToolbar);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
-        DrawerLayout mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
+        DrawerLayout mDrawerLayout = requireActivity().findViewById(R.id.dlHomeScreen);
 
-        /*if (viewHamburger != null) {
-            viewHamburger.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
-
-                }
-            });
-        } else {
-            Log.d(TAG, "clickListeners: iv_hamburger null");
-        }*/
         mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
-        TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
+        TextView tvLocation = requireActivity().findViewById(R.id.tvLocationNameCustomToolbar);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getLocationName(), sessionManager.getAppLanguage()));
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ui2_ic_location_home, 0);
-        TextView tvLastSyncApp = requireActivity().findViewById(R.id.tv_app_sync_time);
-        ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
+        TextView tvLastSyncApp = requireActivity().findViewById(R.id.tvAppSyncTimeCustomToolbar);
+        ImageView ivNotification = requireActivity().findViewById(R.id.ivNotificationCustomToolbar);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
-        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bnvHomeScreen);
         bottomNav.setVisibility(View.VISIBLE);
-        ivInternet = requireActivity().findViewById(R.id.imageview_is_internet);
+        ivInternet = requireActivity().findViewById(R.id.ivInternetCustomToolbar);
 
 
         CardView cardAppointment = view.findViewById(R.id.cardView4_appointment);

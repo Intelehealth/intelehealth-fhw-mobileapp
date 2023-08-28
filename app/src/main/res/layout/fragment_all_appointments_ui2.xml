@@ -407,7 +407,8 @@
             android:layout_below="@+id/toolbar_relative"
             android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
             android:layout_marginTop="@dimen/search_empty_margin_top"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"

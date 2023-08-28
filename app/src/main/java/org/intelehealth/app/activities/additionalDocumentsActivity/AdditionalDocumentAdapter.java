@@ -168,7 +168,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface d) {
-                ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
+                ImageView imageView = dialog.findViewById(R.id.ivImageConfirmDialog);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
                 if (imageView != null) {
                     Glide.with(context)
