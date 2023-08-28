@@ -2,6 +2,8 @@ package org.intelehealth.app.appointmentNew;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -96,6 +99,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
 
+    private ObjectAnimator syncAnimator;
+
     private SessionManager sessionManager;
     String patientAge, patientGender, patientPic;
     String hwName, hwAge, hwGender;
@@ -118,6 +123,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         View toolbar = findViewById(R.id.toolbar_schedule_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+
+        syncAnimator = ObjectAnimator.ofFloat(ivIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
+        syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        syncAnimator.setInterpolator(new LinearInterpolator());
 
         tvTitle.setText(getResources().getString(R.string.schedule_appointment));
 
@@ -183,6 +192,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                     Log.v(TAG, "Sync Done!");
                     recreate();
                 }
+
+                ivIsInternet.clearAnimation();
+                syncAnimator.cancel();
             }
         };
         IntentFilter filterSend = new IntentFilter();
@@ -820,6 +832,15 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
 
+    }
+
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            ivIsInternet.clearAnimation();
+            syncAnimator.start();
+        }
     }
 
 }
