@@ -97,7 +97,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     String app_start_date, app_start_time, app_start_day;
     String rescheduleReason;
     NetworkUtils networkUtils;
-    ImageView ivIsInternet;
+    ImageView ivIsInternet, ivBackArrow;
 
     private ObjectAnimator syncAnimator;
 
@@ -268,6 +268,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
             }
         });
+
+        ivBackArrow = findViewById(R.id.iv_back_arrow_common);
+        ivBackArrow.setOnClickListener(v -> finish());
 
         //rvMorningSlots.setHasFixedSize(true);
         rvMorningSlots.setLayoutManager(new GridLayoutManager(this, 3));
