@@ -2143,5 +2143,6 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="appointment_denied_message">Please check the Appointments screen this visit\'s appointment.</string>
     <string name="reset">Reset</string>
     <string name="go_to_website">Go to website</string>
+    <string name="agree_to_terms_and_conditions_and_privacy_policy">Agree to <font color='#2F1E91'><u>Terms &amp; Conditions</u></font> and <font color='#2F1E91'><u>Privacy Policy</u></font></string>
 
 </resources>

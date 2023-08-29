@@ -73,40 +73,48 @@
             android:layout_toEndOf="@+id/checkbox_privacy_policy">
 
             <TextView
-                android:id="@+id/tv_privacy_notice_link_1"
+                android:id="@+id/tvPrivacyNoticeLinkSetupScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="@string/agree_to"
+                android:text="@string/agree_to_terms_and_conditions_and_privacy_policy"
+                android:textAlignment="textStart"
                 android:textSize="@dimen/terms_link_text_size" />
 
-            <TextView
-                android:id="@+id/tv_privacy_notice_link_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:onClick="openTermsConditions"
-                android:text="@string/terms_conditions"
-                android:textColor="@color/ui2_link"
-                android:textSize="@dimen/terms_link_text_size" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/tv_privacy_notice_link_1"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:maxLines="2"-->
+            <!--                android:text="@string/agree_to"-->
+            <!--                android:textSize="@dimen/terms_link_text_size" />-->
 
-            <TextView
-                android:id="@+id/tv_privacy_notice_link_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:text="@string/and_setup"
-                android:textSize="@dimen/terms_link_text_size" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/tv_privacy_notice_link_2"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:maxLines="2"-->
+            <!--                android:onClick="openTermsConditions"-->
+            <!--                android:text="@string/terms_conditions"-->
+            <!--                android:textColor="@color/ui2_link"-->
+            <!--                android:textSize="@dimen/terms_link_text_size" />-->
 
-            <TextView
-                android:id="@+id/tv_privacy_notice_link_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:onClick="openPrivacyPolicy"
-                android:text="@string/privacy_policy_setup"
-                android:textColor="@color/ui2_link"
-                android:textSize="@dimen/terms_link_text_size" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/tv_privacy_notice_link_3"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:maxLines="2"-->
+            <!--                android:text="@string/and_setup"-->
+            <!--                android:textSize="@dimen/terms_link_text_size" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/tv_privacy_notice_link_4"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:maxLines="2"-->
+            <!--                android:text="@string/privacy_policy_setup"-->
+            <!--                android:textColor="@color/ui2_link"-->
+            <!--                android:textSize="@dimen/terms_link_text_size" />-->
 
         </LinearLayout>
 
