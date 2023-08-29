@@ -337,6 +337,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 }
                 // intent.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent);
+                finish();
             } else {
                 boolean obsId = insertDb(physicalString);
                 Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
@@ -353,6 +354,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
                 intent1.putExtra("hasPrescription", "false");
                 // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent1);
+                finish();
             }
 
         } else {

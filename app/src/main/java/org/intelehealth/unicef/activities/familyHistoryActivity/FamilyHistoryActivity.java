@@ -197,7 +197,7 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
                     intent.putExtra("tag", intentTag);
 
                     startActivity(intent);
-
+                    finish();
                 }
             });
 
@@ -403,6 +403,7 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
             startActivity(intent);
+            finish();
         } else {
 
             if (flag == true) {
@@ -432,6 +433,7 @@ public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdap
             intent.putExtra("tag", intentTag);
             //   intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
+            finish();
         }
 
 

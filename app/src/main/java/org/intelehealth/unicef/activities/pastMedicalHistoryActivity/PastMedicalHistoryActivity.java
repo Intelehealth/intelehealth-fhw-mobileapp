@@ -210,7 +210,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
                     intent.putExtra("tag", intentTag);
                     //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
-
+                    finish();
                 }
             });
             AlertDialog alertDialog = alertdialog.create();
@@ -380,6 +380,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
             startActivity(intent);
+            finish();
         } else {
 
             //  if(patientHistoryMap.anySubSelected()){
@@ -411,7 +412,7 @@ public class PastMedicalHistoryActivity extends BaseActivity implements Question
             intent.putExtra("tag", intentTag);
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
-
+            finish();
         }
     }
 

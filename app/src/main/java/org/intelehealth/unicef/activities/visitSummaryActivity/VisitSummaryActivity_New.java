@@ -1271,6 +1271,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 intent1.putExtra("tag", "edit");
                 intent1.putExtra("edit_for", VisitCreationActivity.STEP_1_VITAL);
                 startActivity(intent1);
+                finish();
             }
         });
 
@@ -1390,6 +1391,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_2_VISIT_REASON);
                         startActivity(intent1);
                         dialogInterface.dismiss();
+                        finish();
                     }
                 });
 
@@ -1529,6 +1531,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         intent1.putExtra("edit_for", VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION);
                         startActivity(intent1);
                         dialogInterface.dismiss();
+                        finish();
                     }
                 });
 
@@ -1658,6 +1661,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        intent1.putExtra("edit_for", VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
                         startActivity(intent1);
                         dialogInterface.dismiss();
+                        finish();
                     }
                 });
 
@@ -1799,6 +1803,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //                        intent1.putExtra("edit_FamHist", VisitCreationActivity.STEP_5_FAMILY_HISTORY);
                         startActivity(intent1);
                         dialogInterface.dismiss();
+                        finish();
                     }
                 });
 
@@ -2244,14 +2249,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //            Snackbar.make(parentLayout, R.string.priority_hint, Snackbar.LENGTH_SHORT).show();
         });
 
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                /*Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-                startActivity(intent);*/
-            }
-        });
+        backArrow.setOnClickListener(v -> finish());
 
         tvCloseAll = findViewById(R.id.tv_close_all);
 

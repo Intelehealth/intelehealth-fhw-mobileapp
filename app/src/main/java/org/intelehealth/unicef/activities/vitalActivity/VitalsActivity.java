@@ -905,6 +905,7 @@ public class VitalsActivity extends BaseActivity {
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
                 startActivity(intent);
+                finish();
             } catch (DAOException dao) {
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }
@@ -1024,6 +1025,7 @@ public class VitalsActivity extends BaseActivity {
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
+            finish();
         }
     }
 

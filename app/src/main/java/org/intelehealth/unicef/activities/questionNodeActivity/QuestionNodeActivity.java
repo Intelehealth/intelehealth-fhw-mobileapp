@@ -437,6 +437,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
                     startActivity(intent);
+                    finish();
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
@@ -456,6 +457,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
                     startActivity(intent);
+                    finish();
                 }
             }
         }

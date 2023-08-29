@@ -412,6 +412,7 @@ public class ComplaintNodeActivity extends BaseActivity {
                         intent.putStringArrayListExtra("complaints", selection);
 
                         startActivity(intent);
+                        finish();
                     }
                 });
                 alertDialogBuilder.setNegativeButton(getResources().getString(R.string.complaint_change_selected), new DialogInterface.OnClickListener() {
