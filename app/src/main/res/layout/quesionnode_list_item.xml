@@ -17,13 +17,16 @@
         android:gravity="top"
         android:orientation="vertical">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/physical_exam_image_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/physical_exam_img_max_height"
             android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/margin_20"
             android:contentDescription="TODO"
-            android:visibility="visible" />
+            android:scaleType="centerCrop"
+            android:visibility="visible"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
         <LinearLayout
             android:layout_width="match_parent"

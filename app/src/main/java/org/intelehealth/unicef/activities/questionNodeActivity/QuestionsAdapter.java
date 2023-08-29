@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
@@ -220,7 +221,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     public class ChipsAdapterViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvQuestion, physical_exam_text_view;
-        ImageView ivAyu, physical_exam_image_view;
+        ImageView ivAyu;
+        ShapeableImageView physical_exam_image_view;
         RecyclerView rvChips;
         FloatingActionButton fab;
         ComplaintNodeListAdapter chipsAdapter;
