@@ -733,6 +733,17 @@ public class PatientsDAO {
                 do {
                     visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                     visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                    String isSynced = idCursor.getString(idCursor.getColumnIndexOrThrow("sync"));
+                    boolean sync = false;
+                    if (isSynced != null) {
+                        if (isSynced.equalsIgnoreCase("0"))
+                            sync = false;
+                        else if (isSynced.equalsIgnoreCase("1"))
+                            sync = true;
+                    }
+                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
+                    visitDTO.setSyncd(sync);
+                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
                 }
                 while (idCursor.moveToNext());
             }

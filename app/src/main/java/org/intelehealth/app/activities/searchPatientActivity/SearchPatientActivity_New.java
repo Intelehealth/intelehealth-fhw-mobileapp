@@ -400,6 +400,11 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 } else {
                     patientDTOList.get(i).setPrescription_exists(false);
                 }
+
+                // checking if visit is uploaded or not - start
+                patientDTOList.get(i).setVisitDTO(visitDTO);
+                // checking if visit is uploaded or not - end
+
             } else {
                 /**
                  * no visit for this patient.
