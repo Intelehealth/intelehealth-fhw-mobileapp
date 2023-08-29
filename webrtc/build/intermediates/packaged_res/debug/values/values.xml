@@ -211,7 +211,7 @@
     <string name="you">You</string>
     <string name="you_have_no_messages_start_sending_messages_now">You have no messages! Start sending messages now.</string>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

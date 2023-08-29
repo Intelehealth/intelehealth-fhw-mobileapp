@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.intelehealth.ekalarogya.builder.QueryBuilder;
 import org.intelehealth.ekalarogya.models.FamilyMemberRes;
 import org.intelehealth.ekalarogya.services.MyIntentService;
 import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
@@ -594,5 +595,38 @@ public class PatientsDAO {
         }
 
         return isCreated;
+    }
+
+    public FamilyMemberRes getPatientNameInfo(String patientuuid) throws DAOException {
+
+        FamilyMemberRes familyMemberRes = new FamilyMemberRes();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = new QueryBuilder().select("openmrs_id,first_name,middle_name,last_name")
+                    .from("tbl_patient")
+                    .where("uuid = '" + patientuuid + "'")
+                    .build();
+//            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name " +
+//                    "FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+//                    familyMemberRes.setBedNo(cursor.getString(cursor.getColumnIndexOrThrow("bedNo")));
+//                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+        }
+        return familyMemberRes;
     }
 }

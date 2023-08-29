@@ -52,4 +52,26 @@ public class PatientAttributesDTO {
         this.patientuuid = patientuuid;
     }
 
+    public enum Columns {
+        BED_NUMBER("Bed Number"),
+        ADMISSION_DATE("Admission_Date"),
+        ADMISSION_TIME("Admission_Time"),
+        PARITY("Parity"),
+        LABOR_ONSET("Labor Onset"),
+        ACTIVE_LABOR_DIAGNOSED("Active Labor Diagnosed"),
+        MEMBRANE_RUPTURED_TIMESTAMP("Membrane Ruptured Timestamp"),
+        RISK_FACTORS("Risk factors"),
+        HOSPITAL_MATERNITY("Hospital_Maternity"),
+        PRIMARY_DOCTOR("PrimaryDoctor"),
+        SECONDARY_DOCTOR("SecondaryDoctor"),
+        REGISTRATION_NUMBER("Ezazi Registration Number"),
+        PROFILE_IMG_TIMESTAMP("ProfileImageTimestamp"),
+        ALTERNATE_NO("AlternateNo");
+        public String value;
+
+        Columns(String value) {
+            this.value = value;
+        }
+    }
+
 }

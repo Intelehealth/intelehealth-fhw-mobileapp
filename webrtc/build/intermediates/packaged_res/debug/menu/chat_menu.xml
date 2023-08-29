@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/video_call_menu"
-        android:icon="@drawable/ic_baseline_videocam_24"
+        android:icon="@drawable/ic_rtc_video_call"
         android:orderInCategory="200"
         android:title="@string/video_call"
         android:visible="true"

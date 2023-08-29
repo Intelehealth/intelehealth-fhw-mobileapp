@@ -4,18 +4,19 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.widget.Toast;
-
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,32 +24,27 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.IntroActivity.IntroActivity;
 import org.intelehealth.ekalarogya.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
-import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.activities.loginActivity.LoginActivity;
 import org.intelehealth.ekalarogya.dataMigration.SmoothUpgrade;
 import org.intelehealth.ekalarogya.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 
-import org.intelehealth.ekalarogya.activities.loginActivity.LoginActivity;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
-//    ProgressDialog TempDialog;
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
+    //    ProgressDialog TempDialog;
     int i = 5;
 
     @Override
@@ -58,7 +54,7 @@ public class SplashActivity extends AppCompatActivity {
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
 
-      //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
 
         if (!appLanguage.equalsIgnoreCase("")) {
@@ -109,8 +105,7 @@ public class SplashActivity extends AppCompatActivity {
                     } else {
                         checkPerm();
                     }
-                }
-                else {
+                } else {
                     checkPerm();
                 }
             }
@@ -118,70 +113,102 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkPerm() {
-        PermissionListener permissionlistener = new PermissionListener() {
-
-            @Override
-            public void onPermissionGranted() {
-//                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-//                Timer t = new Timer();
-//                t.schedule(new splash(), 2000);
-
-//                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
-//                TempDialog.setMessage("Data migrating...");
-//                TempDialog.setCancelable(false);
-//                TempDialog.setProgress(i);
-//                TempDialog.show();
-
-                if (sessionManager.isMigration()) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Do something after 100ms
-                            SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
-                            boolean smoothupgrade = smoothUpgrade.checkingDatabase();
-                                nextActivity();
-                        }
-                    }, 2000);
-                } else {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Do something after 100ms
-                            SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
-                            boolean smoothupgrade = smoothUpgrade.checkingDatabase();
-                            if (smoothupgrade) {
+        if (checkAndRequestPermissions()) {
+            if (sessionManager.isMigration()) {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+                        boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+                        nextActivity();
+                    }
+                }, 2000);
+            } else {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+                        boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+                        if (smoothupgrade) {
 //                                TempDialog.dismiss();
-                                nextActivity();
-                            } else {
+                            nextActivity();
+                        } else {
 //                                TempDialog.dismiss();
-                                nextActivity();
-                            }
-
+                            nextActivity();
                         }
-                    }, 2000);
-                }
 
+                    }
+                }, 2000);
             }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(SplashActivity.this, getString(R.string.permission_denied) + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-        };
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage(R.string.reject_permission_results)
-                .setPermissions(Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.GET_ACCOUNTS,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.RECORD_AUDIO)
-                .check();
+        }
+//        PermissionListener permissionlistener = new PermissionListener() {
+//
+//            @Override
+//            public void onPermissionGranted() {
+////                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+////                Timer t = new Timer();
+////                t.schedule(new splash(), 2000);
+//
+////                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
+////                TempDialog.setMessage("Data migrating...");
+////                TempDialog.setCancelable(false);
+////                TempDialog.setProgress(i);
+////                TempDialog.show();
+//
+//                if (sessionManager.isMigration()) {
+//                    final Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            //Do something after 100ms
+//                            SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+//                            boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+//                            nextActivity();
+//                        }
+//                    }, 2000);
+//                } else {
+//                    final Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            //Do something after 100ms
+//                            SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+//                            boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+//                            if (smoothupgrade) {
+////                                TempDialog.dismiss();
+//                                nextActivity();
+//                            } else {
+////                                TempDialog.dismiss();
+//                                nextActivity();
+//                            }
+//
+//                        }
+//                    }, 2000);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onPermissionDenied(List<String> deniedPermissions) {
+//                Toast.makeText(SplashActivity.this, getString(R.string.permission_denied) + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//        };
+//        TedPermission.with(this)
+//                .setPermissionListener(permissionlistener)
+//                .setDeniedMessage(R.string.reject_permission_results)
+//                .setPermissions(Manifest.permission.INTERNET,
+//                        Manifest.permission.ACCESS_NETWORK_STATE,
+//                        Manifest.permission.GET_ACCOUNTS,
+//                        Manifest.permission.CAMERA,
+//                        Manifest.permission.READ_EXTERNAL_STORAGE,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                        Manifest.permission.RECORD_AUDIO)
+//                .check();
     }
 
     private void nextActivity() {
@@ -233,5 +260,55 @@ public class SplashActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    private boolean checkAndRequestPermissions() {
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        int accessNetworkState = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
+        int recordAudio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
+        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+            int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+
+        if (accessNetworkState != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        }
+
+        if (recordAudio != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
+        }
+
+        int phoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+
+
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+       /* if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
+        }*/
+        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+            } else {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+        }
+        if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
     }
 }

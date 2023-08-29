@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.visitSummaryActivity;
 
 import static org.intelehealth.ekalarogya.utilities.StringUtils.fetchObsValue_REG;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -89,7 +90,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -133,6 +133,8 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 import org.intelehealth.ekalarogya.utilities.UuidDictionary;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
+import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -601,24 +603,32 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
-                chatIntent.putExtra("patientName", patientName);
-                chatIntent.putExtra("visitUuid", visitUuid);
-                chatIntent.putExtra("patientUuid", patientUuid);
-                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+
+//                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
+//                chatIntent.putExtra("patientName", patientName);
+//                chatIntent.putExtra("visitUuid", visitUuid);
+//                chatIntent.putExtra("patientUuid", patientUuid);
+//                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
 
                 if (rtcConnectionDTO != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+//                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                        RtcArgs args = new RtcArgs();
+                        args.setDoctorUuid(jsonObject.getString("toUUID"));
+                        args.setPatientId(patientUuid);
+                        args.setPatientName(patientName);
+                        args.setVisitId(visitUUID);
+                        args.setNurseId(encounterDTO.getProvideruuid());
+                        EkalChatActivity.startChatActivity(VisitSummaryActivity.this, new RtcArgs());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 } else {
-                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+//                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
                 }
-                startActivity(chatIntent);
+//                startActivity(chatIntent);
             }
         });
 
@@ -963,6 +973,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 */
         uploadButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("Range")
             @Override
             public void onClick(View view) {
 
@@ -3260,6 +3271,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * @return void
      */
 
+    @SuppressLint("Range")
     public void queryData(String dataString) {
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};

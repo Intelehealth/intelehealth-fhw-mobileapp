@@ -18,8 +18,8 @@ public class ActivitySamplePeerConnectionBindingImpl extends ActivitySamplePeerC
         sViewsWithIds.put(R.id.incoming_surface_view, 2);
         sViewsWithIds.put(R.id.self_surface_view_frame, 3);
         sViewsWithIds.put(R.id.self_surface_view, 4);
-        sViewsWithIds.put(R.id.audio_imv, 5);
-        sViewsWithIds.put(R.id.call_end_imv, 6);
+        sViewsWithIds.put(R.id.call_end_imv, 5);
+        sViewsWithIds.put(R.id.audio_imv, 6);
         sViewsWithIds.put(R.id.video_imv, 7);
         sViewsWithIds.put(R.id.flip_imv, 8);
         sViewsWithIds.put(R.id.status_tv, 9);
@@ -44,8 +44,8 @@ public class ActivitySamplePeerConnectionBindingImpl extends ActivitySamplePeerC
     }
     private ActivitySamplePeerConnectionBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0
-            , (android.widget.ImageView) bindings[5]
             , (android.widget.ImageView) bindings[6]
+            , (android.widget.ImageView) bindings[5]
             , (android.widget.TextView) bindings[11]
             , (android.widget.TextView) bindings[12]
             , (android.widget.RelativeLayout) bindings[10]

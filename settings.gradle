@@ -1,2 +1,8 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
 include ':app'
 include ':webrtc'
+include ':klivekit'

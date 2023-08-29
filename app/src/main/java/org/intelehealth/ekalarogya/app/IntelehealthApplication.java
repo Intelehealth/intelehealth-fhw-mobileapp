@@ -27,7 +27,9 @@ import com.parse.Parse;
 import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
+import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.klivekit.socket.SocketManager;
 
 
 import io.reactivex.plugins.RxJavaPlugins;
@@ -58,6 +60,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
+
+    private RealTimeDataChangedObserver dataChangedObserver;
+
+    private SocketManager socketManager = SocketManager.getInstance();
 
 
     @Override
@@ -109,6 +115,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         registerActivityLifecycleCallbacks(this);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+        startRealTimeObserverAndSocket();
     }
 
     private void configureCrashReporting() {
@@ -189,5 +196,42 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public void onMoveToBackground() {
         // app moved to background
         isInBackground = true;
+    }
+
+    public void startRealTimeObserverAndSocket() {
+        startRealTimeObserver();
+        initSocketConnection();
+    }
+
+    private void startRealTimeObserver() {
+        if (sessionManager.getProviderID() != null && !sessionManager.getProviderID().isEmpty()) {
+            dataChangedObserver = new RealTimeDataChangedObserver(this);
+            dataChangedObserver.startObserver();
+        }
+    }
+
+    /**
+     * Socket should be open and close app level,
+     * so when app create open it and close on app terminate
+     */
+    private void initSocketConnection() {
+        Log.d(TAG, "initSocketConnection: ");
+        if (sessionManager.getCreatorID() != null && !sessionManager.getCreatorID().isEmpty()) {
+            String socketUrl = BuildConfig.SOCKET_URL + "?userId="
+                    + sessionManager.getProviderID()
+                    + "&name=" + sessionManager.getChwname();
+            if (!socketManager.isConnected()) socketManager.connect(socketUrl);
+        }
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        stopRealTimeObserverAndSocket();
+    }
+
+    public void stopRealTimeObserverAndSocket() {
+        if (dataChangedObserver != null) dataChangedObserver.stopObserver();
+        if (socketManager.isConnected()) socketManager.disconnect();
     }
 }

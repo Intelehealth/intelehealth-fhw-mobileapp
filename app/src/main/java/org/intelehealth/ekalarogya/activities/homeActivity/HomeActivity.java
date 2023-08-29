@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +11,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -22,6 +19,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,50 +33,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
-import org.intelehealth.apprtc.data.Manager;
-import org.intelehealth.apprtc.utils.FirebaseUtils;
-import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivity;
-import org.intelehealth.ekalarogya.appointment.AppointmentListingActivity;
-import org.intelehealth.ekalarogya.database.dao.SyncDAO;
-import org.intelehealth.ekalarogya.models.dto.PatientDTO;
-import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
-import org.intelehealth.ekalarogya.services.firebase_services.CallListenerBackgroundService;
-import org.intelehealth.ekalarogya.services.firebase_services.DeviceInfoUtils;
-import org.intelehealth.ekalarogya.utilities.StringUtils;
-import org.intelehealth.ekalarogya.utilities.exception.DAOException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivity;
 import org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalarogya.activities.loginActivity.LoginActivity;
 import org.intelehealth.ekalarogya.activities.privacyNoticeActivity.PrivacyNotice_Activity;
@@ -87,10 +55,15 @@ import org.intelehealth.ekalarogya.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.ekalarogya.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.appointment.AppointmentListingActivity;
+import org.intelehealth.ekalarogya.database.dao.SyncDAO;
 import org.intelehealth.ekalarogya.models.CheckAppUpdateRes;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiClient;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiInterface;
+import org.intelehealth.ekalarogya.services.firebase_services.CallListenerBackgroundService;
+import org.intelehealth.ekalarogya.services.firebase_services.DeviceInfoUtils;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.syncModule.SyncUtils;
 import org.intelehealth.ekalarogya.utilities.ConfigUtils;
 import org.intelehealth.ekalarogya.utilities.DownloadMindMaps;
@@ -99,7 +72,28 @@ import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.OfflineLogin;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.klivekit.utils.RtcUtilsKt;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -113,7 +107,7 @@ import io.reactivex.schedulers.Schedulers;
  * Home Screen
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
@@ -635,16 +629,17 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 */
-        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-
         SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setUserProfileDetail("");
         sessionManager.setLogout(true);
+        IntelehealthApplication.getInstance().stopRealTimeObserverAndSocket();
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
     }
 
 
@@ -799,34 +794,34 @@ public class HomeActivity extends AppCompatActivity {
             resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<DownloadMindMapRes>() {
 
-                @Override
-                public void onNext(DownloadMindMapRes res) {
-                    customProgressDialog.dismiss();
-                    if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+                        @Override
+                        public void onNext(DownloadMindMapRes res) {
+                            customProgressDialog.dismiss();
+                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-                        Log.e("MindMapURL", "Successfully get MindMap URL");
-                        mTask = new DownloadMindMaps(context, mProgressDialog);
-                        mindmapURL = res.getMindmap().trim();
-                        sessionManager.setLicenseKey(key);
-                        checkExistingMindMaps();
+                                Log.e("MindMapURL", "Successfully get MindMap URL");
+                                mTask = new DownloadMindMaps(context, mProgressDialog);
+                                mindmapURL = res.getMindmap().trim();
+                                sessionManager.setLicenseKey(key);
+                                checkExistingMindMaps();
 
-                    } else {
-                        Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
-                    }
-                }
+                            } else {
+                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-                @Override
-                public void onError(Throwable e) {
-                    customProgressDialog.dismiss();
-                    Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
-                    Log.v(TAG, "jwt_response: " + e.toString());
-                }
+                        @Override
+                        public void onError(Throwable e) {
+                            customProgressDialog.dismiss();
+                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                            Log.v(TAG, "jwt_response: " + e.toString());
+                        }
 
-                @Override
-                public void onComplete() {
+                        @Override
+                        public void onComplete() {
 
-                }
-            });
+                        }
+                    });
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
@@ -941,10 +936,69 @@ public class HomeActivity extends AppCompatActivity {
         catchFCMMessageData();
     }
 
+//    private void catchFCMMessageData() {
+//        // get the chat notification click info
+//        if (getIntent().getExtras() != null) {
+//            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+//            Bundle remoteMessage = getIntent().getExtras();
+//            try {
+//                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
+//                    //Log.d(TAG, "actionType : TEXT_CHAT");
+//                    String fromUUId = remoteMessage.getString("toUser");
+//                    String toUUId = remoteMessage.getString("fromUser");
+//                    String patientUUid = remoteMessage.getString("patientId");
+//                    String visitUUID = remoteMessage.getString("visitId");
+//                    String patientName = remoteMessage.getString("patientName");
+//                    JSONObject connectionInfoObject = new JSONObject();
+//                    connectionInfoObject.put("fromUUID", fromUUId);
+//                    connectionInfoObject.put("toUUID", toUUId);
+//                    connectionInfoObject.put("patientUUID", patientUUid);
+//
+//                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+//                    String packageName = pInfo.packageName;
+//
+//                    Intent intent = new Intent(ACTION_NAME);
+//                    intent.putExtra("visit_uuid", visitUUID);
+//                    intent.putExtra("connection_info", connectionInfoObject.toString());
+//                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
+//                    getApplicationContext().sendBroadcast(intent);
+//
+//                    Intent chatIntent = new Intent(this, ChatActivity.class);
+//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    chatIntent.putExtra("patientName", patientName);
+//                    chatIntent.putExtra("visitUuid", visitUUID);
+//                    chatIntent.putExtra("patientUuid", patientUUid);
+//                    chatIntent.putExtra("fromUuid", fromUUId);
+//                    chatIntent.putExtra("toUuid", toUUId);
+//                    startActivity(chatIntent);
+//
+//                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+//                    //Log.d(TAG, "actionType : VIDEO_CALL");
+//                    Intent in = new Intent(this, CompleteActivity.class);
+//                    String roomId = remoteMessage.getString("roomId");
+//                    String doctorName = remoteMessage.getString("doctorName");
+//                    String nurseId = remoteMessage.getString("nurseId");
+//                    boolean isCallEnded = remoteMessage.getBoolean("callEnded");
+//
+//                    in.putExtra("roomId", roomId);
+//                    in.putExtra("isInComingRequest", true);
+//                    in.putExtra("doctorname", doctorName);
+//                    in.putExtra("nurseId", nurseId);
+//                    in.putExtra("callEnded", isCallEnded);
+//                    startActivity(in);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            } catch (PackageManager.NameNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
     private void catchFCMMessageData() {
         // get the chat notification click info
         if (getIntent().getExtras() != null) {
-            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+            Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
             Bundle remoteMessage = getIntent().getExtras();
             try {
                 if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
@@ -954,47 +1008,65 @@ public class HomeActivity extends AppCompatActivity {
                     String patientUUid = remoteMessage.getString("patientId");
                     String visitUUID = remoteMessage.getString("visitId");
                     String patientName = remoteMessage.getString("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
 
-                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    String packageName = pInfo.packageName;
-
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
-
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-                    startActivity(chatIntent);
+                    RtcArgs args = new RtcArgs();
+                    args.setPatientName(patientName);
+                    args.setPatientId(patientUUid);
+                    args.setVisitId(visitUUID);
+                    args.setNurseId(fromUUId);
+                    args.setDoctorUuid(toUUId);
+                    EkalChatActivity.startChatActivity(this, args);
 
                 } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
                     //Log.d(TAG, "actionType : VIDEO_CALL");
-                    Intent in = new Intent(this, CompleteActivity.class);
+                    Intent in = new Intent(this, EkalVideoActivity.class);
                     String roomId = remoteMessage.getString("roomId");
                     String doctorName = remoteMessage.getString("doctorName");
                     String nurseId = remoteMessage.getString("nurseId");
-                    boolean isCallEnded = remoteMessage.getBoolean("callEnded");
+                    boolean isOldNotification = false;
+                    if (remoteMessage.containsKey("timestamp")) {
+                        String timestamp = remoteMessage.getString("timestamp");
+
+                        Date date = new Date();
+                        if (timestamp != null) {
+                            date.setTime(Long.parseLong(timestamp));
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+                            dateFormatter.setTimeZone(TimeZone.getDefault());
+
+                            try {
+                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
+                                long seconds = 0;
+                                if (ourDate != null) {
+                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+                                }
+                                Log.v(TAG, "Current time - " + new Date());
+                                Log.v(TAG, "Notification time - " + ourDate);
+                                Log.v(TAG, "seconds - " + seconds);
+                                if (seconds >= 30) {
+                                    isOldNotification = true;
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
 
                     in.putExtra("roomId", roomId);
                     in.putExtra("isInComingRequest", true);
                     in.putExtra("doctorname", doctorName);
                     in.putExtra("nurseId", nurseId);
-                    in.putExtra("callEnded", isCallEnded);
-                    startActivity(in);
+
+                    RtcArgs args = remoteMessage.getParcelable(RtcUtilsKt.RTC_ARGS);
+                    args.setIncomingCall(true);
+                    in.putExtra(RtcUtilsKt.RTC_ARGS, args);
+
+                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                    if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
+                        startActivity(in);
+                    }
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (PackageManager.NameNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

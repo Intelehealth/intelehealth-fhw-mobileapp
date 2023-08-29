@@ -3,10 +3,8 @@ package org.intelehealth.ekalarogya.services.firebase_services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
-import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 
 public class CallRTCNotifyReceiver extends BroadcastReceiver {

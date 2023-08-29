@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.intelehealth.apprtc" >
 
-    <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="30" />
+    <uses-sdk android:minSdkVersion="21" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />

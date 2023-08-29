@@ -3,11 +3,8 @@ package org.intelehealth.ekalarogya.services.firebase_services;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,14 +17,18 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
+import org.intelehealth.ekalarogya.database.dao.ProviderDAO;
 import org.intelehealth.ekalarogya.utilities.OfflineLogin;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalVideoActivity;
+import org.intelehealth.ekalarogya.webrtc.notification.AppNotification;
+import org.intelehealth.klivekit.model.ChatMessage;
+import org.intelehealth.klivekit.model.RtcArgs;
 
 /**
  * Created by Dexter Barretto on 5/25/17.
@@ -57,7 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().containsKey("actionType")) {
             if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
                 Log.d(TAG, "actionType : VIDEO_CALL");
-                Intent in = new Intent(this, CompleteActivity.class);
+                Intent in = new Intent(this, EkalVideoActivity.class);
                 String roomId = remoteMessage.getData().get("roomId");
                 String doctorName = remoteMessage.getData().get("doctorName");
                 String nurseId = remoteMessage.getData().get("nurseId");
@@ -79,47 +80,58 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
                 try {
                     Log.d(TAG, "actionType : TEXT_CHAT");
-                    String fromUUId = remoteMessage.getData().get("toUser");
-                    String toUUId = remoteMessage.getData().get("fromUser");
-                    String patientUUid = remoteMessage.getData().get("patientId");
-                    String visitUUID = remoteMessage.getData().get("visitId");
-                    String patientName = remoteMessage.getData().get("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
+                    Gson gson = new Gson();
+                    ChatMessage chatMessage = gson.fromJson(gson.toJson(remoteMessage.getData()), ChatMessage.class);
+                    RtcArgs args = new RtcArgs();
+                    args.setPatientName(chatMessage.getPatientName());
+                    args.setPatientId(chatMessage.getPatientId());
+                    args.setVisitId(chatMessage.getVisitId());
+                    args.setNurseId(chatMessage.getToUser());
+                    args.setDoctorUuid(chatMessage.getFromUser());
 
-
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-                    PendingIntent pendingIntent = null;  // after s+ version it is needed to set IMMUTABLE.
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                    } else {
-                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    try {
+                        String title = new ProviderDAO().getProviderName(args.getDoctorUuid());
+                        new AppNotification.Builder(this)
+                                .title(title)
+                                .body(chatMessage.getMessage())
+                                .pendingIntent(EkalChatActivity.getPendingIntent(this, args))
+                                .send();
+                    } catch (DAOException e) {
+                        throw new RuntimeException(e);
                     }
 
-                    sendNotification(remoteMessage, pendingIntent);
 
-                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    String packageName = pInfo.packageName;
+//                    String fromUUId = remoteMessage.getData().get("toUser");
+//                    String toUUId = remoteMessage.getData().get("fromUser");
+//                    String patientUUid = remoteMessage.getData().get("patientId");
+//                    String visitUUID = remoteMessage.getData().get("visitId");
+//                    String patientName = remoteMessage.getData().get("patientName");
+//                    JSONObject connectionInfoObject = new JSONObject();
+//                    connectionInfoObject.put("fromUUID", fromUUId);
+//                    connectionInfoObject.put("toUUID", toUUId);
+//                    connectionInfoObject.put("patientUUID", patientUUid);
+//
+//
+//                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
+//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    chatIntent.putExtra("patientName", patientName);
+//                    chatIntent.putExtra("visitUuid", visitUUID);
+//                    chatIntent.putExtra("patientUuid", patientUUid);
+//                    chatIntent.putExtra("fromUuid", fromUUId);
+//                    chatIntent.putExtra("toUuid", toUUId);
+//                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
+//                            NotificationUtils.getPendingIntentFlag());
+//                    sendNotification(remoteMessage, pendingIntent);
+//
+//
+//                    Intent intent = new Intent(ACTION_NAME);
+//                    intent.putExtra("visit_uuid", visitUUID);
+//                    intent.putExtra("connection_info", connectionInfoObject.toString());
+//                    intent.setComponent(new ComponentName("org.intelehealth.ezazi", "org.intelehealth.ezazi.utilities.RTCMessageReceiver"));
+//                    getApplicationContext().sendBroadcast(intent);
 
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
 
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (PackageManager.NameNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -127,6 +139,79 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } else {
             parseMessage(remoteMessage);
         }
+//        if (remoteMessage.getData().containsKey("actionType")) {
+//            if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
+//                Log.d(TAG, "actionType : VIDEO_CALL");
+//                Intent in = new Intent(this, CompleteActivity.class);
+//                String roomId = remoteMessage.getData().get("roomId");
+//                String doctorName = remoteMessage.getData().get("doctorName");
+//                String nurseId = remoteMessage.getData().get("nurseId");
+//                in.putExtra("roomId", roomId);
+//                in.putExtra("isInComingRequest", true);
+//                in.putExtra("doctorname", doctorName);
+//                in.putExtra("nurseId", nurseId);
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                }
+//                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+//                    startActivity(in);
+//                } else {
+//                    sendNotification(remoteMessage, null);
+//                }
+//
+//            } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
+//                try {
+//                    Log.d(TAG, "actionType : TEXT_CHAT");
+//                    String fromUUId = remoteMessage.getData().get("toUser");
+//                    String toUUId = remoteMessage.getData().get("fromUser");
+//                    String patientUUid = remoteMessage.getData().get("patientId");
+//                    String visitUUID = remoteMessage.getData().get("visitId");
+//                    String patientName = remoteMessage.getData().get("patientName");
+//                    JSONObject connectionInfoObject = new JSONObject();
+//                    connectionInfoObject.put("fromUUID", fromUUId);
+//                    connectionInfoObject.put("toUUID", toUUId);
+//                    connectionInfoObject.put("patientUUID", patientUUid);
+//
+//
+//                    Intent chatIntent = new Intent(this, ChatActivity.class);
+//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    chatIntent.putExtra("patientName", patientName);
+//                    chatIntent.putExtra("visitUuid", visitUUID);
+//                    chatIntent.putExtra("patientUuid", patientUUid);
+//                    chatIntent.putExtra("fromUuid", fromUUId);
+//                    chatIntent.putExtra("toUuid", toUUId);
+//                    PendingIntent pendingIntent = null;  // after s+ version it is needed to set IMMUTABLE.
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//                    } else {
+//                        pendingIntent = PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    }
+//
+//                    sendNotification(remoteMessage, pendingIntent);
+//
+//                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+//                    String packageName = pInfo.packageName;
+//
+//                    Intent intent = new Intent(ACTION_NAME);
+//                    intent.putExtra("visit_uuid", visitUUID);
+//                    intent.putExtra("connection_info", connectionInfoObject.toString());
+//                    intent.setComponent(new ComponentName(packageName, "org.intelehealth.ekalarogya.services.firebase_services.RTCMessageReceiver"));
+//                    getApplicationContext().sendBroadcast(intent);
+//
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                } catch (PackageManager.NameNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        } else {
+//            parseMessage(remoteMessage);
+//        }
     }
 
 

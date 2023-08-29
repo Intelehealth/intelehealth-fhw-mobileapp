@@ -87,6 +87,8 @@ import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -1402,6 +1404,10 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setSanchName(selectedSanch);
                                             sessionManager.setVillageName(selectedVillage);
 
+                                            saveToken();
+
+                                            IntelehealthApplication.getInstance().startRealTimeObserverAndSocket();
+
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
@@ -1714,5 +1720,11 @@ public class SetupActivity extends AppCompatActivity {
         );
 
         sessionManager.setJalJeevanYojanaScheme(jalJeevanYojana);
+    }
+
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
 }
