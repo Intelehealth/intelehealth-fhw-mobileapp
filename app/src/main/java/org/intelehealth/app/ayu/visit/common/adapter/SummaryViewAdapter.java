@@ -95,9 +95,9 @@ public class SummaryViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            bulletImageView = itemView.findViewById(R.id.blt_view);
-            questionTextView = itemView.findViewById(R.id.tv_question_label);
-            answerTextView = itemView.findViewById(R.id.tv_answer_value);
+            bulletImageView = itemView.findViewById(R.id.ivBulletQaRowItemView2);
+            questionTextView = itemView.findViewById(R.id.tvQuestionQaRowItemView2);
+            answerTextView = itemView.findViewById(R.id.tvAnswerQaRowItemView2);
         }
     }
 }

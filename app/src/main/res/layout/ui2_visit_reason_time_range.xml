@@ -7,6 +7,7 @@
 
     <LinearLayout
         android:id="@+id/llSpinnersVisitReasonTimeRange"
+        android:contentDescription="Visit Reason Time Range Spinnners LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -21,6 +22,7 @@
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/acsNumberPickerVisitReasonTimeRange"
+                android:contentDescription="Visit Reason Time Range Number Picker AppCompatSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:background="@drawable/edittext_border"
@@ -48,6 +50,7 @@
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/acsDurationTypeVisitReasonTimeRange"
+                android:contentDescription="Visit Reason Time Range Duration Type AppCompatSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:background="@drawable/edittext_border"
@@ -71,6 +74,7 @@
 
     <Button
         android:id="@+id/btnSubmitVisitReasonTimeRange"
+        android:contentDescription="Visit Reason Time Range Submit Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llSpinnersVisitReasonTimeRange"
@@ -86,6 +90,7 @@
 
     <Button
         android:id="@+id/btnSkipVisitReasonTimeRange"
+        android:contentDescription="Visit Reason Time Range Skip Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llSpinnersVisitReasonTimeRange"

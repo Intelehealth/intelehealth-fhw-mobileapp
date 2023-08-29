@@ -72,8 +72,8 @@ public class PhysicalExamSummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_physical_exam_summary, container, false);
-        mSummaryLinearLayout = view.findViewById(R.id.ll_summary);
-        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+        mSummaryLinearLayout = view.findViewById(R.id.llSummaryPhyExamSummaryFragment);
+        view.findViewById(R.id.btnSubmitPhyExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode) {
@@ -84,19 +84,19 @@ public class PhysicalExamSummaryFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnCancelPhyExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, null);
             }
         });
-        view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibCancelPhysExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, null);
             }
         });
-        view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibRefreshPhysExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getActivity())) {

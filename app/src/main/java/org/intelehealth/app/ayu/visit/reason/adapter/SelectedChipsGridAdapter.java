@@ -80,8 +80,8 @@ public class SelectedChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
-            removeImageView = itemView.findViewById(R.id.im_remove);
+            tvName = itemView.findViewById(R.id.tvNameSelectedChipItemView);
+            removeImageView = itemView.findViewById(R.id.ivRemoveSelectedChipItemView);
             removeImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

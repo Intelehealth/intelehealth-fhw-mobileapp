@@ -79,7 +79,7 @@ public class SearchChipsPreviewGridAdapter extends RecyclerView.Adapter<Recycler
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
+            tvName = itemView.findViewById(R.id.tvNameSelectedChipPreviewItemView);
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

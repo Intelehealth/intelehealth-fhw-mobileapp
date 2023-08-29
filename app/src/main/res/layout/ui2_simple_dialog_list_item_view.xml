@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/title_tv"
+        android:id="@+id/tvTitleSimpleDialogListItem"
+        android:contentDescription="Simple Dialog ListItem Title TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
@@ -20,7 +20,8 @@
         android:textStyle="normal" />
 
     <ImageView
-        android:id="@+id/tv_check_status"
+        android:id="@+id/ivCheckSimpleDialogListItem"
+        android:contentDescription="Simple Dialog ListItem Title TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -29,10 +30,11 @@
         android:src="@drawable/ic_baseline_check_18_green" />
 
     <View
-        android:id="@+id/line_view"
+        android:id="@+id/viewDividerSimpleDialogListItem"
+        android:contentDescription="Simple Dialog ListItem Title TextView"
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:layout_below="@+id/title_tv"
+        android:layout_below="@+id/tvTitleSimpleDialogListItem"
         android:background="@color/gray_1" />
 </RelativeLayout>
 

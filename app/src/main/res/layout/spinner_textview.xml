@@ -6,6 +6,7 @@
 
     <TextView
         android:id="@+id/tvLocationNameSetupSpinner"
+        android:contentDescription="Setup Spinner Location Name TextView"
         android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
 
     <View
         android:id="@+id/dividerViewLocationNameSetupSpinner"
+        android:contentDescription="Setup Spinner Location Name Divider View"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_1"

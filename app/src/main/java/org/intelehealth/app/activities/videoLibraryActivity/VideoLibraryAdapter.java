@@ -86,8 +86,8 @@ public class VideoLibraryAdapter extends RecyclerView.Adapter<VideoLibraryAdapte
         public VideoLibraryHolder(View itemView) {
             super(itemView);
             rootView = itemView;
-            image = itemView.findViewById(R.id.video_thumbnail_ImageView);
-            text = itemView.findViewById(R.id.video_name_TextView);
+            image = itemView.findViewById(R.id.ivVideoThumbnailVideoLibListItem);
+            text = itemView.findViewById(R.id.tvVideoNameVideoLibListItem);
         }
 
         public ImageView getImage() {

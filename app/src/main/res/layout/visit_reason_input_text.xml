@@ -7,6 +7,7 @@
 
     <EditText
         android:id="@+id/etEnterValueVisitReasonInputText"
+        android:contentDescription="Visit Reason Input Text Enter Value EditText"
         style="@style/edittext_textcolor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
 
     <Button
         android:id="@+id/btnSubmitVisitReasonInputText"
+        android:contentDescription="Visit Reason Input Text Submit Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etEnterValueVisitReasonInputText"
@@ -40,6 +42,7 @@
 
     <Button
         android:id="@+id/btnSkipVisitReasonInputText"
+        android:contentDescription="Visit Reason Input Text Skip Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etEnterValueVisitReasonInputText"

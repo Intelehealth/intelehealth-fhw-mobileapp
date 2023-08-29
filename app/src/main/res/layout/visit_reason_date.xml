@@ -7,6 +7,7 @@
 
     <CalendarView
         android:id="@+id/cvVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker CalendarView"
         style="@style/edittext_textcolor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
 
     <LinearLayout
         android:id="@+id/llSelectedDateVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker Selected Date LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cvVisitReasonDatePicker"
@@ -38,6 +40,7 @@
 
         <TextView
             android:id="@+id/tvSelectedDateVisitReasonDatePicker"
+            android:contentDescription="Visit Reason Date Picker Selected Date TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border_blue"
@@ -55,6 +58,7 @@
 
     <Button
         android:id="@+id/btnSubmitVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker Submit Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llSelectedDateVisitReasonDatePicker"
@@ -70,6 +74,7 @@
 
     <Button
         android:id="@+id/btnSkipVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker Skip Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llSelectedDateVisitReasonDatePicker"

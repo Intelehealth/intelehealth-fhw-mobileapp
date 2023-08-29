@@ -80,7 +80,7 @@ public class SelectedChipsPreviewGridAdapter extends RecyclerView.Adapter<Recycl
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
+            tvName = itemView.findViewById(R.id.tvNameSelectedChipPreviewItemView);
 
 
         }
