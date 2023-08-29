@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/viewListOfMedicines"
+            layout="@layout/parto_lbl_dropdown_view_ezazi" />
+
+        <include
+            android:id="@+id/viewStrength"
+            layout="@layout/parto_lbl_etv_view_ezazi" />
+
+        <include
+            android:id="@+id/viewDosage"
+            layout="@layout/parto_lbl_etv_view_ezazi" />
+
+        <include
+            android:id="@+id/viewRoute"
+            layout="@layout/parto_lbl_dropdown_view_ezazi" />
+
+        <include
+            android:id="@+id/viewFrequency"
+            layout="@layout/parto_lbl_dropdown_view_ezazi" />
+
+    </LinearLayout>
+</layout>

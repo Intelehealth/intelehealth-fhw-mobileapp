@@ -1064,4 +1064,14 @@
     <string name="power_from">from</string>
     <string name="lbl_outcome"><![CDATA[ <b>Outcome</b>: %1$s ]]></string>
     <string name="outcome_reason"><![CDATA[ <br/><b>Reason</b>: %1$s ]]></string>
+
+    <string name="type_of_iv_fluid">Type of IV Fluid</string>
+    <string name="enter_iv_infusion_rate">Enter IV Infusion Rate (drops/minute)</string>
+    <string name="iv_infusion_status">IV Infusion Status</string>
+    <string name="iv_infusion_rate">IV Infusion Rate\n(drops/minute)</string>
+    <string name="strength_unit">Strength (U/L)</string>
+    <string name="list_of_medicines">List of medicines</string>
+    <string name="dosage">Dosage</string>
+    <string name="route">Route</string>
+
 </resources>

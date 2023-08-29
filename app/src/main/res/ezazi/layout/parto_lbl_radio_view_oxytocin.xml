@@ -14,8 +14,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/white_child_container_bg"
             android:paddingStart="@dimen/screen_container_padding"
-            android:paddingEnd="@dimen/screen_container_padding"
             android:paddingTop="@dimen/list_container_padding"
+            android:paddingEnd="@dimen/screen_container_padding"
             android:paddingBottom="@dimen/list_container_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,14 +70,15 @@
                 app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <include
-            android:id="@+id/ivFluidOptions"
-            layout="@layout/ivfluid_details"
+            android:id="@+id/includeLayoutPartoOxytocin"
+            layout="@layout/oxytocin_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/list_container_padding"
+            android:paddingVertical="@dimen/list_container_padding"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
