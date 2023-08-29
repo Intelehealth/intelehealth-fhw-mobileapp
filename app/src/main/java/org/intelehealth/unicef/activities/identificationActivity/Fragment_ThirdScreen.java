@@ -127,6 +127,7 @@ public class Fragment_ThirdScreen extends Fragment {
 
         mRelationNameEditText = view.findViewById(R.id.relation_edittext);
         mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
+        mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         mOccupationEditText = view.findViewById(R.id.occupation_editText);
         mCasteSpinner = view.findViewById(R.id.caste_spinner);
         mEducationSpinner = view.findViewById(R.id.education_spinner);

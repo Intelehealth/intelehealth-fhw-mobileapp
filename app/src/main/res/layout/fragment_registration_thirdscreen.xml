@@ -1,335 +1,338 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:tag="thirdsc"
     android:layout_marginTop="@dimen/margin_16dp"
     android:layout_marginBottom="@dimen/margin_16dp"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:tag="thirdsc">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
+        android:layout_above="@+id/frame_nxtbtn_viewgrp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_24"
-        android:layout_above="@+id/frame_nxtbtn_viewgrp">
+        android:fillViewport="true">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_24"
-        android:layout_marginEnd="@dimen/margin_24">
-
-        <LinearLayout
-            android:id="@+id/linear_national_ID"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_relation"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
 
-            <TextView
-                android:id="@+id/national_ID_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/citizen_id"
-                android:textAppearance="@style/blur_txtview"
-                android:textColor="@null"
-                android:textSize="@null" />
-
-            <EditText
-                android:id="@+id/national_ID_editText"
-                style="@style/edittext_textcolor"
-                android:background="@drawable/edittext_border"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/edittext_textsize_16sp"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:hint="@string/enter_national_ID"
-                android:maxLength="18"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10" />
-
-            <TextView
-                android:id="@+id/national_ID_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="@string/this_field_is_mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_relation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/relation_title"
+            <LinearLayout
+                android:id="@+id/linear_national_ID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/son_daughter_wife_of"
-                android:textAppearance="@style/blur_txtview"
-                android:textColor="@null"
-                android:textSize="@null" />
+                android:layout_below="@+id/linear_relation"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/relation_edittext"
-                style="@style/edittext_textcolor"
-                android:background="@drawable/edittext_border"
+                <TextView
+                    android:id="@+id/national_ID_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/citizen_id"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
+
+                <EditText
+                    android:id="@+id/national_ID_editText"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:background="@drawable/edittext_border"
+                    android:gravity="center_vertical"
+                    android:hint="@string/enter_national_ID"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textSize="@dimen/edittext_textsize_16sp"
+                    app:textAllCaps="true" />
+
+                <TextView
+                    android:id="@+id/national_ID_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_relation"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:hint="@string/enter_your_relation_with_patient"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:inputType="textCapWords"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <TextView
-                android:id="@+id/relation_error"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="@string/this_field_is_mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/relation_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/son_daughter_wife_of"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
 
-        <!--Occupation-->
-        <LinearLayout
-            android:id="@+id/linear_occupation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_national_ID"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
+                <EditText
+                    android:id="@+id/relation_edittext"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:background="@drawable/edittext_border"
+                    android:hint="@string/enter_your_relation_with_patient"
+                    android:inputType="textCapWords"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
 
-            <TextView
-                android:id="@+id/occupation_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/occupation"
-                android:textAppearance="@style/blur_txtview"
-                android:textColor="@null"
-                android:textSize="@null" />
+                <TextView
+                    android:id="@+id/relation_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
-            <EditText
-                android:id="@+id/occupation_editText"
-                style="@style/edittext_textcolor"
-                android:background="@drawable/edittext_border"
+            </LinearLayout>
+
+            <!--Occupation-->
+            <LinearLayout
+                android:id="@+id/linear_occupation"
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/edittext_textsize_16sp"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:hint="@string/enter_occupation_txt"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:inputType="textCapWords"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                />
-
-            <TextView
-                android:id="@+id/occupation_error"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="@string/this_field_is_mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
+                android:layout_below="@+id/linear_national_ID"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/occupation_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/occupation"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
 
-        <!--Caste-->
-        <LinearLayout
-            android:id="@+id/linear_caste"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_occupation"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
+                <EditText
+                    android:id="@+id/occupation_editText"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:background="@drawable/edittext_border"
+                    android:gravity="center_vertical"
+                    android:hint="@string/enter_occupation_txt"
+                    android:inputType="textCapWords"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
 
-            <TextView
-                android:id="@+id/caste_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/social_category"
-                android:textAppearance="@style/blur_txtview"
-                android:textColor="@null"
-                android:textSize="@null" />
+                <TextView
+                    android:id="@+id/occupation_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
-            <Spinner
-                android:id="@+id/caste_spinner"
-                style="@style/SpinnerTheme"
+            </LinearLayout>
+
+            <!--Caste-->
+            <LinearLayout
+                android:id="@+id/linear_caste"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:hint="@string/select_social_category"
-                android:popupBackground="@drawable/spinner_popup"
-                android:spinnerMode="dropdown"
-                android:dropDownVerticalOffset="50dp"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <TextView
-                android:id="@+id/caste_error"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="@string/this_field_is_mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
+                android:layout_below="@+id/linear_occupation"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/caste_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/social_category"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
 
-        <!--Education-->
-        <LinearLayout
-            android:id="@+id/linear_education"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_caste"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
+                <Spinner
+                    android:id="@+id/caste_spinner"
+                    style="@style/SpinnerTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:dropDownVerticalOffset="50dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_social_category"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:popupBackground="@drawable/spinner_popup"
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
 
-            <TextView
-                android:id="@+id/education_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/education"
-                android:textAppearance="@style/blur_txtview"
-                android:textColor="@null"
-                android:textSize="@null" />
+                <TextView
+                    android:id="@+id/caste_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
-            <Spinner
-                android:id="@+id/education_spinner"
-                style="@style/SpinnerTheme"
+            </LinearLayout>
+
+            <!--Education-->
+            <LinearLayout
+                android:id="@+id/linear_education"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:gravity="center_vertical"
-                android:hint="@string/select_education"
-                android:spinnerMode="dropdown"
-                android:popupBackground="@drawable/spinner_popup"
-                android:dropDownVerticalOffset="50dp"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <TextView
-                android:id="@+id/education_error"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="@string/this_field_is_mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
+                android:layout_below="@+id/linear_caste"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/education_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/education"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
 
-        <!--Economic Status-->
-        <LinearLayout
-            android:id="@+id/linear_economicstatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_education"
-            android:layout_marginTop="@dimen/margin_24"
-            android:orientation="vertical">
+                <Spinner
+                    android:id="@+id/education_spinner"
+                    style="@style/SpinnerTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:dropDownVerticalOffset="50dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_education"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:popupBackground="@drawable/spinner_popup"
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
 
-            <TextView
-                android:id="@+id/economicstatus_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/economic_category"
-                android:textAppearance="@style/blur_txtview"
-                android:textColor="@null"
-                android:textSize="@null" />
+                <TextView
+                    android:id="@+id/education_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
-            <Spinner
-                android:id="@+id/economicstatus_spinner"
-                style="@style/SpinnerTheme"
+            </LinearLayout>
+
+            <!--Economic Status-->
+            <LinearLayout
+                android:id="@+id/linear_economicstatus"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edittext_height_44dp"
-                android:layout_marginTop="@dimen/common_edittext_margin_top"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:gravity="center_vertical"
-                android:spinnerMode="dropdown"
-                android:popupBackground="@drawable/spinner_popup"
-                android:dropDownVerticalOffset="50dp"
-                android:hint="@string/select_economic_category"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <TextView
-                android:id="@+id/economic_error"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="@dimen/hamburger_margin_start"
-                android:lineSpacingExtra="0sp"
-                android:textColor="@color/red"
-                android:text="@string/this_field_is_mandatory"
-                android:textAppearance="@style/registr_error_msg"
-                android:textSize="@null" />
+                android:layout_below="@+id/linear_education"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/economicstatus_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/economic_category"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
+
+                <Spinner
+                    android:id="@+id/economicstatus_spinner"
+                    style="@style/SpinnerTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:dropDownVerticalOffset="50dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_economic_category"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:popupBackground="@drawable/spinner_popup"
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
+
+                <TextView
+                    android:id="@+id/economic_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
 
