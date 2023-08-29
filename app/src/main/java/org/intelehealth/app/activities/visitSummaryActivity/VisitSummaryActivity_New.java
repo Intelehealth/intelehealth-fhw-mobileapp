@@ -9,6 +9,7 @@ import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
@@ -3921,7 +3922,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
                     remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
                 }
-                followUpDateStr = parse_DateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+                followUpDateStr = parse_DateToddMMyyyy_new(spiltFollowDate[0]) + ", " + remainingStr;
             } else {
                 followUpDateStr = followUpDate;
             }
@@ -5043,8 +5044,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         patientReports = reports[1];
                         patientDenies = assoValueBlock[1];
                         complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-                    } else if (valueArray[0].contains("• Patient reports")) {
+                    } else if (valueArray[1].contains("• Patient reports")) {
                         // todo: handle later -> comment added on 14 nov 2022
+                        String reports[] = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>")
+                                .split("• Patient reports -<br/>");
+                        patientReports = reports[1];
+                    }else if (valueArray[1].contains("• Patient denies")) {
+                        // todo: handle later -> comment added on 14 nov 2022
+                        String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+                                .split("• Patient denies -<br/>");
+                        patientDenies = assoValueBlock[1];
                     }
 
                 }
@@ -5471,7 +5480,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 complainLabelTextView.setText(_complain);
                 complainLabelTextView.setVisibility(View.GONE);
                 vv.setVisibility(View.GONE);
-                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
