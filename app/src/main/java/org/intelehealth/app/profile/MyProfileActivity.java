@@ -508,6 +508,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         } else if (countryCodeAttributeUuid != null && !updatedCountryCode.equalsIgnoreCase(prevCountryCode)) {
             updateProfileAttribute(countryCodeAttributeUuid, updatedCountryCode);
         }
+
+        snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
     }
 
     private void createProfileAttribute(String attributeTypeUuid, String newValue) {
