@@ -106,23 +106,23 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
             binding.incomingCallView.callingHintsTv.setText(callType.getValue());
             binding.incomingCallView.callerNameTv.setText(doctorName);
             binding.incomingCallView.tvCallerIdentity.setText(String.valueOf(args.getDoctorName().toCharArray()[0]));
-//            binding.videoCallView.tvRemoteUsername.setText(doctorName);
-//            binding.videoCallView.remoteUserTextIcon.setText(String.valueOf(args.getDoctorName().toUpperCase().toCharArray()[0]));
-//            binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
+            binding.videoCallView.tvVideoCallDoctorName.setText(doctorName);
+            binding.videoCallView.remoteUserTextIcon.setText(String.valueOf(args.getDoctorName().toUpperCase().toCharArray()[0]));
+            binding.videoCallView.localUserTextIcon.setText(String.valueOf(args.getNurseName().toUpperCase().toCharArray()[0]));
         }
     }
 
     private void showPatientName() {
-        if (args.getPatientName() != null) {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(args.getPatientName());
-        } else {
-            try {
-                FamilyMemberRes patient = new PatientsDAO().getPatientNameInfo(args.getRoomId());
-                Objects.requireNonNull(getSupportActionBar()).setTitle(patient.getName());
-            } catch (DAOException e) {
-                Timber.tag(TAG).e(e);
-            }
-        }
+//        if (args.getPatientName() != null) {
+//            binding.videoCallView.tvVideoCallDoctorName.setText(args.getPatientName());
+//        } else {
+//            try {
+//                FamilyMemberRes patient = new PatientsDAO().getPatientNameInfo(args.getRoomId());
+//                binding.videoCallView.tvVideoCallPatientName.setText(patient.getName());
+//            } catch (DAOException e) {
+//                Timber.tag(TAG).e(e);
+//            }
+//        }
     }
 
     @Override
@@ -201,7 +201,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
     @Override
     public void onCallCountDownStart(@NonNull String duration) {
         super.onCallCountDownStart(duration);
-//        binding.videoCallView.tvCallDuration.setText(duration);
+        binding.videoCallView.tvCallDuration.setText(duration);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
         super.onCameraStatusChanged(enabled);
         binding.videoCallView.callActionView.btnVideoOnOff.setActivated(!enabled);
         binding.videoCallView.selfSurfaceView.setVisibility(enabled ? View.VISIBLE : View.GONE);
-//        binding.videoCallView.frameLocalVideoOverlay.setVisibility(!enabled ? View.VISIBLE : View.GONE);
+        binding.videoCallView.frameLocalVideoOverlay.setVisibility(!enabled ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -222,7 +222,7 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
     @Override
     public void onLocalParticipantSpeaking(boolean isSpeaking) {
         super.onLocalParticipantSpeaking(isSpeaking);
-//        binding.videoCallView.ivLocalSpeakerStatus.setActivated(isSpeaking);
+        binding.videoCallView.ivLocalSpeakerStatus.setActivated(isSpeaking);
     }
 
     @Override
@@ -230,33 +230,33 @@ public class EkalVideoActivity extends CoreVideoCallActivity {
         super.onMicrophoneStatusChanged(status);
         binding.videoCallView.callActionView.btnMicOnOff.setActivated(!status);
         Drawable drawable = getCurrentMicStatusIcon(!status);
-//        binding.videoCallView.ivLocalSpeakerStatus.setImageDrawable(drawable);
+        binding.videoCallView.ivLocalSpeakerStatus.setImageDrawable(drawable);
     }
 
     @Override
     public void onConnectivityChanged(@Nullable ConnectionQuality it) {
         super.onConnectivityChanged(it);
-//        binding.videoCallView.statusTv.setVisibility(it == ConnectionQuality.POOR ? View.VISIBLE : View.GONE);
+        binding.videoCallView.statusTv.setVisibility(it == ConnectionQuality.POOR ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onRemoteParticipantCameraChange(boolean isHide) {
         super.onRemoteParticipantCameraChange(isHide);
         binding.videoCallView.incomingSurfaceView.setVisibility(isHide ? View.GONE : View.VISIBLE);
-//        binding.videoCallView.frameRemoteVideoOverlay.setVisibility(isHide ? View.VISIBLE : View.GONE);
+        binding.videoCallView.frameRemoteVideoOverlay.setVisibility(isHide ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onRemoteParticipantMicChange(boolean isMuted) {
         super.onRemoteParticipantMicChange(isMuted);
         Drawable drawable = getCurrentMicStatusIcon(isMuted);
-//        binding.videoCallView.ivRemoteSpeakerStatus.setImageDrawable(drawable);
+        binding.videoCallView.ivRemoteSpeakerStatus.setImageDrawable(drawable);
     }
 
     @Override
     public void onRemoteParticipantSpeaking(boolean isSpeaking) {
         super.onRemoteParticipantSpeaking(isSpeaking);
-//        binding.videoCallView.ivRemoteSpeakerStatus.setActivated(isSpeaking);
+        binding.videoCallView.ivRemoteSpeakerStatus.setActivated(isSpeaking);
     }
 
     private Drawable getCurrentMicStatusIcon(boolean isMuted) {

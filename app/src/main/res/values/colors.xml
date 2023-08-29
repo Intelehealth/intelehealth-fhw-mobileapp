@@ -63,5 +63,5 @@
     <color name="transparent_tab">#75000000</color>
     <color name="button_background_color">#2F1E91</color>
 
-
+    <color name="colorIncomingCallBg">#B0ADBE</color>
 </resources>

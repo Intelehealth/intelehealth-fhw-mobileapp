@@ -11,15 +11,6 @@
             android:id="@+id/videoCallView"
             layout="@layout/content_video_call" />
 
-        <TextView
-            android:id="@+id/status_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/connecting"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
-
         <include
             android:id="@+id/incomingCallView"
             layout="@layout/view_incoming_call_ringing"
