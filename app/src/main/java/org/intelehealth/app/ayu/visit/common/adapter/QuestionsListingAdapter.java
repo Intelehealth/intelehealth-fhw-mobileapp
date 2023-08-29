@@ -88,12 +88,20 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700);
     }
 
-    public void removeImageInLastNode(int index, String image) {
-        Log.v("showCameraView", "removeImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
-        Log.v("showCameraView", "removeImageInLastNode - " + new Gson().toJson(mItemList.get(mLastImageCaptureSelectedNodeIndex)));
-        if (mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList() != null && mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().size() > 0)
-            mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().remove(index);
-        notifyItemChanged(mLastImageCaptureSelectedNodeIndex);
+    public void removeImageInLastNode(int nodeIndex, int imageIndex, String imageName) {
+        Log.v("showCameraView", "removeImageInLastNode nodeIndex - " + nodeIndex);
+        Log.v("showCameraView", "removeImageInLastNode imageIndex - " + imageIndex);
+        Log.v("showCameraView", "removeImageInLastNode imageName - " + imageName);
+        Log.v("showCameraView", "removeImageInLastNode - " + new Gson().toJson(mItemList.get(nodeIndex)));
+        if (mItemList.get(nodeIndex).getImagePathList() != null && mItemList.get(nodeIndex).getImagePathList().size() > 0)
+            mItemList.get(nodeIndex).getImagePathList().remove(imageIndex);
+        for (int i = 0; i < mItemList.get(nodeIndex).getOptionsList().size(); i++) {
+            if (mItemList.get(nodeIndex).getOptionsList().get(i).getInputType().equalsIgnoreCase("camera")) {
+                if (mItemList.get(nodeIndex).getOptionsList().get(i).getImagePathList() != null && mItemList.get(nodeIndex).getOptionsList().get(i).getImagePathList().size() > 0)
+                    mItemList.get(nodeIndex).getOptionsList().get(i).getImagePathList().remove(imageIndex);
+            }
+        }
+        notifyItemChanged(nodeIndex);
         VisitUtils.scrollNow(mRecyclerView, 1000, 0, 700);
     }
 
@@ -961,7 +969,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
 
                 @Override
-                public void onImageRemoved(int index, String image) {
+                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
                 }
             });
@@ -1275,10 +1283,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (!node.getImagePathList().isEmpty()) {
             ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
                 @Override
-                public void onImageRemoved(int index, String image) {
+                public void onImageRemoved(int imageIndex, String image) {
                     node.setImageUploaded(false);
                     node.setDataCaptured(false);
-                    mOnItemSelection.onImageRemoved(index, image);
+                    mOnItemSelection.onImageRemoved(index, imageIndex, image);
                 }
 
                 @Override

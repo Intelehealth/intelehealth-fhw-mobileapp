@@ -265,7 +265,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
                 break;
             case "date":
-                addDateView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                addDateView(genericViewHolder, parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
                 break;
             case "location":
                 //askLocation(questionNode, context, adapter);
@@ -726,7 +726,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 }
 
                 @Override
-                public void onImageRemoved(int index, String image) {
+                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
 
                 }
             });
@@ -883,10 +883,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         if (!node.getImagePathList().isEmpty()) {
             ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
                 @Override
-                public void onImageRemoved(int index, String image) {
+                public void onImageRemoved(int imageIndex, String image) {
                     node.setImageUploaded(false);
                     node.setDataCaptured(false);
-                    mOnItemSelection.onImageRemoved(index, image);
+                    mOnItemSelection.onImageRemoved(index, imageIndex, image);
                 }
 
                 @Override
@@ -1208,7 +1208,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else{
+                        } else {
                             node.addLanguage(editText.getText().toString());
                         }
                         node.setSelected(true);
@@ -1339,7 +1339,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else{
+                        } else {
                             node.addLanguage(editText.getText().toString());
                         }
                         node.setSelected(true);
@@ -1401,7 +1401,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         containerLayout.addView(view);
     }
 
-    private void addDateView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+    private void addDateView(GenericViewHolder genericViewHolder, Node parentNode, Node node, LinearLayout containerLayout, int index) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
@@ -1413,6 +1413,29 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v(TAG, "addDateView - " + node.getLanguage());
         String langVal = node.getLanguage();
         Button skipButton = view.findViewById(R.id.btn_skip);
+
+        boolean isToDate = genericViewHolder.node.getText().equalsIgnoreCase("To");
+        String fromDate = "";
+        if (isToDate) {
+            if (mParentNode.getOptionsList() != null && mParentNode.getOptionsList().size() >= 1) {
+                fromDate = mParentNode.getOption(1).getOption(0).getLanguage();
+            }
+        }
+        Log.v("DataSubmit", "fromDate - " + fromDate);
+
+        Date fromDateFormat = null;
+        if (!fromDate.isEmpty() && !fromDate.equalsIgnoreCase("%")) {
+            //22/Aug/2023
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+            try {
+                fromDateFormat = simpleDateFormat.parse(fromDate);
+                calendarView.setMinDate(fromDateFormat.getTime() - 1000);
+                calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
 
         if (langVal != null && !langVal.isEmpty() && !langVal.equals("%") && node.isDataCaptured()) {
 
@@ -1480,13 +1503,52 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             }
         });
 
+        final Date finalFromDateFormat = fromDateFormat;
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // get from data
+                Log.v("DataSubmit", "genericViewHolder.index - " + genericViewHolder.index);
+                Log.v("DataSubmit", "genericViewHolder.index - " + new Gson().toJson(genericViewHolder.node));
+                Log.v("DataSubmit", "mParentNode - " + new Gson().toJson(mParentNode.getOption(1)));
+                Log.v("DataSubmit", "index - " + index);
+                Log.v("DataSubmit", new Gson().toJson(parentNode));
+
+
+                String fromDate = "";
+                if (isToDate) {
+                    if (mParentNode.getOptionsList() != null && mParentNode.getOptionsList().size() >= 1) {
+                        fromDate = mParentNode.getOption(1).getOption(0).getLanguage();
+                    }
+                }
+                Log.v("DataSubmit", "fromDate - " + fromDate);
+
+
                 String d = (String) displayDateButton.getTag();
                 if (d == null || d.equalsIgnoreCase("null") || !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
+                    Date fromDateFormat = null;
+                    Date toDateFormat = null;
+                    Date currentDateFormat = new Date();
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                    try {
+                        Log.v("DataSubmit", "d - " + d);
+                        if (!fromDate.isEmpty() && !fromDate.equalsIgnoreCase("%"))
+                            fromDateFormat = simpleDateFormat.parse(fromDate);
+                        toDateFormat = simpleDateFormat.parse(d);
+
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Log.v("DataSubmit", "finalFromDateFormat - " + finalFromDateFormat);
+                    Log.v("DataSubmit", "toDateFormat - " + toDateFormat);
+                    if (fromDateFormat != null && fromDateFormat.after(toDateFormat)) {
+                        Toast.makeText(mContext, mContext.getString(R.string.to_date_validation), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     /*Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(0);
                     cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
@@ -1535,7 +1597,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     private class GenericViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestion, tvQuestionDesc, knowMoreTextView;
-        Node node;
+        Node node, parentNode;
         int index, rootIndex;
         RecyclerView optionRecyclerView, superNestedRecyclerView;
         // this will contain independent view like, edittext, date, time, range, etc

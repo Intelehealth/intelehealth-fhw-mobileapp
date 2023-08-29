@@ -34,6 +34,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeMap;
 
 /**
@@ -88,7 +89,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mIsEditMode) {
+                if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else

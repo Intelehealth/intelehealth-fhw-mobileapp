@@ -165,7 +165,7 @@ public class FamilyHistoryFragment extends Fragment {
                 }
 
                 @Override
-                public void onImageRemoved(int index, String image) {
+                public void onImageRemoved(int nodeIndex,int imageIndex, String image) {
 
                 }
             });

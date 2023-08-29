@@ -196,7 +196,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             }
 
                             @Override
-                            public void onImageRemoved(int index, String image) {
+                            public void onImageRemoved(int nodeIndex,int imageIndex, String imagee) {
 
                             }
                         });

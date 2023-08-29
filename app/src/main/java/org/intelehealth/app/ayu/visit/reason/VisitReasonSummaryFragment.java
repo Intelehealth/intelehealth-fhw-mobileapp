@@ -96,7 +96,7 @@ public class VisitReasonSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mIsEditMode) {
+                if (mIsEditMode&& ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()){
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else

@@ -60,8 +60,8 @@ public class PhysicalExaminationFragment extends Fragment {
             }
 
             @Override
-            public void onImageReadyForDelete(int index, String image) {
-                mQuestionsListingAdapter.removeImageInLastNode(index, image);
+            public void onImageReadyForDelete(int nodeIndex,int imageIndex, String imageName) {
+                mQuestionsListingAdapter.removeImageInLastNode(nodeIndex, imageIndex, imageName);
             }
         });
     }
@@ -185,8 +185,8 @@ public class PhysicalExaminationFragment extends Fragment {
                 }
 
                 @Override
-                public void onImageRemoved(int index, String image) {
-                    mActionListener.onImageRemoved(index, image);
+                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+                    mActionListener.onImageRemoved(nodeIndex,imageIndex, image);
                 }
             });
 

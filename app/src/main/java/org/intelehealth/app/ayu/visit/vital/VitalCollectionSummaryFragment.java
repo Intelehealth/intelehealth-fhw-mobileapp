@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,6 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
-
-import java.text.DecimalFormat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -120,7 +117,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mIsEditMode) {
+                if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else {

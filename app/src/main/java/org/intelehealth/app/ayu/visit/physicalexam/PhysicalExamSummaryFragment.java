@@ -76,7 +76,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mIsEditMode) {
+                if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else
@@ -172,15 +172,15 @@ public class PhysicalExamSummaryFragment extends Fragment {
                         }
                         VisitSummaryData summaryData = new VisitSummaryData();
                         summaryData.setQuestion(k1);
-                        while (v.endsWith("-")){
-                            v = v.substring(0, v.length()-1);
+                        while (v.endsWith("-")) {
+                            v = v.substring(0, v.length() - 1);
                         }
                         summaryData.setDisplayValue(v);
                         visitSummaryDataList.add(summaryData);
 
                     } else {
                         k1 = val.trim();
-                        if(k1.contains("-●")){
+                        if (k1.contains("-●")) {
                             String[] temp = k1.split("-●");
                             VisitSummaryData summaryData = new VisitSummaryData();
                             summaryData.setQuestion(temp[0]);
