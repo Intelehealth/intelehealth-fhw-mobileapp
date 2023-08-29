@@ -587,9 +587,14 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 tvAddNotesValueVS.setVisibility(View.VISIBLE);
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
-                    tvAddNotesValueVS.setText(addnotes_value);
+                    if (addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            tvAddNotesValueVS.setText(getString(R.string.no_notes_added_for_doctor));
+                    }
+                    else
+                        tvAddNotesValueVS.setText(addnotes_value);
                 } else {
-                    addnotes_value = "No notes added for Doctor.";
+                    addnotes_value = getString(R.string.no_notes_added_for_doctor);  // "No notes added for Doctor."
                     tvAddNotesValueVS.setText(addnotes_value);
                 }
             } else {
