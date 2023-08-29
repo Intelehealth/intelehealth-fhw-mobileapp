@@ -765,5 +765,7 @@
     <string name="already_selected_lbl">Already selected!</string>
     <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
     <string name="to_date_validation">To date should be greater than from date</string>
+    <string name="no_additional_data">No Data</string>
+    <string name="no_notes_added_for_doctor">No notes added for Doctor.</string>
 
 </resources>

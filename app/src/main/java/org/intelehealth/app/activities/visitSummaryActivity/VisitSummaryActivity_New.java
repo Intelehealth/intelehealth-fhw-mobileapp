@@ -91,6 +91,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -187,7 +189,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
             vs_add_notes, parentLayout;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
-    private EditText additional_notes_edittext;
+    private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
             medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -267,8 +269,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    TextView add_docs_title, vd_addnotes_value, reminder, incomplete_act, archieved_notifi;
+    TextView add_docs_title, tvAddNotesValueVS, reminder, incomplete_act, archieved_notifi;
     String addnotes_value = "";
+    private TextInputLayout tilAdditionalNotesVS;
 
     TextView respiratory;
     TextView respiratoryText;
@@ -578,14 +581,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
                 // vs_add_notes.setVisibility(View.GONE);
-                //addnotes_vd_card.setVisibility(View.VISIBLE);
 
+                addnotes_vd_card.setVisibility(View.VISIBLE);
+                tilAdditionalNotesVS.setVisibility(View.GONE);
+                tvAddNotesValueVS.setVisibility(View.VISIBLE);
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
-                    vd_addnotes_value.setText(addnotes_value);
+                    tvAddNotesValueVS.setText(addnotes_value);
                 } else {
                     addnotes_value = "No notes added for Doctor.";
-                    vd_addnotes_value.setText(addnotes_value);
+                    tvAddNotesValueVS.setText(addnotes_value);
                 }
             } else {
                 //TODO : Hide for beta release
@@ -614,7 +619,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
                 // vs_add_notes.setVisibility(View.VISIBLE);
-                addnotes_vd_card.setVisibility(View.GONE);
+
+                addnotes_vd_card.setVisibility(View.VISIBLE);
+                tilAdditionalNotesVS.setVisibility(View.VISIBLE);
+                tvAddNotesValueVS.setVisibility(View.GONE);
+
             }
             // Edit btn visibility based on user coming from Visit Details screen - End
 
@@ -2098,7 +2107,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
-        additional_notes_edittext = findViewById(R.id.additional_notes_edittext);
+
+        tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
+        etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
         // textview - end
 
         // up-down btn - start
@@ -2126,7 +2137,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         vd_special_header_expandview = findViewById(R.id.vd_special_header_expandview);
         vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
         vs_add_notes = findViewById(R.id.vs_add_notes);
-        vd_addnotes_value = findViewById(R.id.vd_addnotes_value);
+        tvAddNotesValueVS = findViewById(R.id.tvAddNotesValueVS);
         // up-down btn - end
 
         // vitals ids
@@ -2541,15 +2552,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             // Additional Notes - Start
             try {
-                String addnotes = additional_notes_edittext.getText().toString();
+                String addnotes = etAdditionalNotesVS.getText().toString().trim();
                 Log.v("addnotes", "addnotes: " + addnotes);
                 if (!addnotes.equalsIgnoreCase("") && addnotes != null)
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
                 else
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No Data", ADDITIONAL_NOTES);
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
+                // keeping raw string as we dont want regional lang data to be stored in DB.
             } catch (DAOException e) {
                 e.printStackTrace();
-                Log.v("hospitalType", "hospitalType: " + e.getMessage());
+                Log.v("addnotes", "addnotes - error: " + e.getMessage());
             }
             // Additional Notes - End
 
