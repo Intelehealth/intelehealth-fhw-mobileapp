@@ -46,7 +46,7 @@ public class PartogramConstants {
         SYSTOLIC_BP("Systolic BP"),
         DIASTOLIC_BP("Diastolic BP"),
         IV_FLUID("IV Fluids");
-        public String value;
+        public final String value;
 
         Params(String value) {
             this.value = value;

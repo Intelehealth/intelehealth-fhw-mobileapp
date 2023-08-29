@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -100,14 +101,11 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             prepareDataForFifteenMins();
         }
 
-        mSaveTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    saveObs();
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
-                }
+        mSaveTextView.setOnClickListener(v -> {
+            try {
+                saveObs();
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
             }
         });
 
@@ -299,18 +297,30 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         int count = 0;
         Log.v("PartogramData", new Gson().toJson(mItemList));
         List<ObsDTO> obsDTOList = new ArrayList<>();
+        String systolicBp = null;
+        String diastolicBp = null;
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
+                ParamInfo info = mItemList.get(i).getParamInfoList().get(j);
 
-                if (!mItemList.get(i).getParamInfoList().get(j).getParamName().equalsIgnoreCase("Initial")) {
+                if (!info.getParamName().equalsIgnoreCase("Initial")) {
+
+                    if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.SYSTOLIC_BP.value)) {
+                        systolicBp = info.getCapturedValue();
+                    }
+
+                    if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.DIASTOLIC_BP.value)) {
+                        diastolicBp = info.getCapturedValue();
+                    }
+
                     ObsDTO obsDTOData = new ObsDTO();
                     obsDTOData.setCreator(new SessionManager(this).getCreatorID());
                     obsDTOData.setEncounteruuid(mEncounterUUID);
-                    obsDTOData.setConceptuuid(mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
-                    obsDTOData.setValue(mItemList.get(i).getParamInfoList().get(j).getCapturedValue());
-                    obsDTOData.setComment(PartogramAlertEngine.getAlertName(mItemList.get(i).getParamInfoList().get(j)));
+                    obsDTOData.setConceptuuid(info.getConceptUUID());
+                    obsDTOData.setValue(info.getCapturedValue());
+                    obsDTOData.setComment(PartogramAlertEngine.getAlertName(info));
 
-                    String uuid = obsDAO.getObsuuid(mEncounterUUID, mItemList.get(i).getParamInfoList().get(j).getConceptUUID());
+                    String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
                     obsDTOData.setUuid(uuid);
 
                     if (uuid != null && !uuid.isEmpty()) {
@@ -319,7 +329,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
                     } else {
                         //insert
-                        if (mItemList.get(i).getParamInfoList().get(j).getCapturedValue() != null && !mItemList.get(i).getParamInfoList().get(j).getCapturedValue().isEmpty()) {
+                        if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
                             obsDTOList.add(obsDTOData);
                         }
                     }
@@ -328,10 +338,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             }
         }
 
-        if (obsDTOList.isEmpty()) {
-            ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this).content(getString(R.string.please_enter_field_value)).positiveButtonLabel(R.string.ok).build();
-            dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
+        if (obsDTOList.isEmpty()) {
+            showErrorDialog(R.string.please_enter_field_value);
 //            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //            alertDialogBuilder.setMessage("Please enter/select at least one field value!");
 //            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -341,6 +350,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 //                }
 //            });
 //            alertDialogBuilder.show();
+        } else if (systolicBp != null && systolicBp.length() > 0
+                && (diastolicBp == null || diastolicBp.length() == 0)) {
+            showErrorDialog(R.string.error_diastolic_require);
         } else {
 
             try {
@@ -399,6 +411,13 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             }
             Log.v("partogram", new Gson().toJson(mItemList));
         }
+    }
+
+    private void showErrorDialog(@StringRes int errorRes) {
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .content(getString(errorRes))
+                .positiveButtonLabel(R.string.ok).build();
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
     private void prepareDataForHourly() {

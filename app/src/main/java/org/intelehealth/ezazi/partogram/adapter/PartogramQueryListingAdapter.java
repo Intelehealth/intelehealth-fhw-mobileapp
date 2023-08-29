@@ -241,7 +241,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             } else {
                 dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(3)});
                 dataEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-
             }
         }
         dataEditText.addTextChangedListener(new TextWatcher() {
