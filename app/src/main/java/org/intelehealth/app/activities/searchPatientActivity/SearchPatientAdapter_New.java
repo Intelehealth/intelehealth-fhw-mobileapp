@@ -91,7 +91,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                     holder.presc_receivingCV.setVisibility(View.VISIBLE);
                     holder.presc_pendingCV.setVisibility(View.GONE);
                 }
-                else {
+                else if (!model.isPrescription_exists()){
                     holder.presc_pendingCV.setVisibility(View.VISIBLE);
                     holder.presc_receivingCV.setVisibility(View.GONE);
                 }

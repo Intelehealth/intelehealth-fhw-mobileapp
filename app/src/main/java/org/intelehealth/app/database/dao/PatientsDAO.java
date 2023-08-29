@@ -736,9 +736,9 @@ public class PatientsDAO {
                     String isSynced = idCursor.getString(idCursor.getColumnIndexOrThrow("sync"));
                     boolean sync = false;
                     if (isSynced != null) {
-                        if (isSynced.equalsIgnoreCase("0"))
+                        if (isSynced.equalsIgnoreCase("0") || isSynced.toLowerCase().equalsIgnoreCase("false"))
                             sync = false;
-                        else if (isSynced.equalsIgnoreCase("1"))
+                        else if (isSynced.equalsIgnoreCase("1") || isSynced.toLowerCase().equalsIgnoreCase("true"))
                             sync = true;
                     }
                     Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
