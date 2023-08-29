@@ -633,7 +633,6 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
     private boolean checkAndRequestPermissions() {
         int cameraPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -641,14 +640,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
 
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-
         if (!listPermissionsNeeded.isEmpty()) {
-            requestPermissions(listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
             return false;
         }
         return true;
