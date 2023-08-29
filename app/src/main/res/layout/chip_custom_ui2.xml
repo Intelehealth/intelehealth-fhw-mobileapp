@@ -2,6 +2,8 @@
 <com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.MaterialComponents.Chip.Entry"
+    android:id="@+id/chipCustom"
+    android:contentDescription="Custom Chip Layout"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/chip_apps_height"
     android:paddingEnd="@dimen/chip_apps_padding_start"

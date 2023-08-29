@@ -266,7 +266,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             String[] imgs = genericViewHolder.node.getJobAidFile().split(",");
             for (int i = 0; i < imgs.length; i++) {
                 View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
-                ImageView imageView = v2.findViewById(R.id.image);
+                ImageView imageView = v2.findViewById(R.id.ivRefImageView);
                 if (genericViewHolder.node.getJobAidFile() != null || !genericViewHolder.node.getJobAidFile().isEmpty()) {
                     String drawableName = "physicalExamAssets/" + genericViewHolder.node.getJobAidFile() + ".jpg";
                     try {
@@ -375,12 +375,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addRangeView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
-        RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
+        RangeSlider rangeSlider = view.findViewById(R.id.rsVisitNumberRange);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
-        TextView rangeTextView = view.findViewById(R.id.btn_values);
-        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        TextView rangeTextView = view.findViewById(R.id.tvSelectedValueVisitNumberRange);
+        TextView submitTextView = view.findViewById(R.id.btnSubmitVisitNumberRange);
 
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitNumberRange);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -454,12 +454,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addFrequencyView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
         final View view = View.inflate(mContext, R.layout.ui2_visit_number_slider_with_icon, null);
-        Slider rangeSlider = view.findViewById(R.id.number_slider);
+        Slider rangeSlider = view.findViewById(R.id.sliderVisitNumberSliderIcon);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
-        TextView rangeTextView = view.findViewById(R.id.btn_values);
-        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        TextView rangeTextView = view.findViewById(R.id.tvSelectedValueVisitNumberSliderIcon);
+        TextView submitTextView = view.findViewById(R.id.tvSubmitVisitNumberSliderIcon);
 
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitNumberSliderIcon);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -525,29 +525,29 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void updateCustomEmojiSliderUI(View view, int range) {
-        TextView tv0 = view.findViewById(R.id.n0_tv);
-        TextView tv1 = view.findViewById(R.id.n1_tv);
-        TextView tv2 = view.findViewById(R.id.n2_tv);
-        TextView tv3 = view.findViewById(R.id.n3_tv);
-        TextView tv4 = view.findViewById(R.id.n4_tv);
-        TextView tv5 = view.findViewById(R.id.n5_tv);
-        TextView tv6 = view.findViewById(R.id.n6_tv);
-        TextView tv7 = view.findViewById(R.id.n7_tv);
-        TextView tv8 = view.findViewById(R.id.n8_tv);
-        TextView tv9 = view.findViewById(R.id.n9_tv);
-        TextView tv10 = view.findViewById(R.id.n10_tv);
+        TextView tv0 = view.findViewById(R.id.tvNum0VisitNumberSliderIcon);
+        TextView tv1 = view.findViewById(R.id.tvNum1VisitNumberSliderIcon);
+        TextView tv2 = view.findViewById(R.id.tvNum2VisitNumberSliderIcon);
+        TextView tv3 = view.findViewById(R.id.tvNum3VisitNumberSliderIcon);
+        TextView tv4 = view.findViewById(R.id.tvNum4VisitNumberSliderIcon);
+        TextView tv5 = view.findViewById(R.id.tvNum5VisitNumberSliderIcon);
+        TextView tv6 = view.findViewById(R.id.tvNum6VisitNumberSliderIcon);
+        TextView tv7 = view.findViewById(R.id.tvNum7VisitNumberSliderIcon);
+        TextView tv8 = view.findViewById(R.id.tvNum8VisitNumberSliderIcon);
+        TextView tv9 = view.findViewById(R.id.tvNum9VisitNumberSliderIcon);
+        TextView tv10 = view.findViewById(R.id.tvNum10VisitNumberSliderIcon);
 
-        ImageView i0 = view.findViewById(R.id.n0_imv);
-        ImageView i1 = view.findViewById(R.id.n1_imv);
-        ImageView i2 = view.findViewById(R.id.n2_imv);
-        ImageView i3 = view.findViewById(R.id.n3_imv);
-        ImageView i4 = view.findViewById(R.id.n4_imv);
-        ImageView i5 = view.findViewById(R.id.n5_imv);
-        ImageView i6 = view.findViewById(R.id.n6_imv);
-        ImageView i7 = view.findViewById(R.id.n7_imv);
-        ImageView i8 = view.findViewById(R.id.n8_imv);
-        ImageView i9 = view.findViewById(R.id.n9_imv);
-        ImageView i10 = view.findViewById(R.id.n10_imv);
+        ImageView i0 = view.findViewById(R.id.ivNum0VisitNumberSliderIcon);
+        ImageView i1 = view.findViewById(R.id.ivNum1VisitNumberSliderIcon);
+        ImageView i2 = view.findViewById(R.id.ivNum2VisitNumberSliderIcon);
+        ImageView i3 = view.findViewById(R.id.ivNum3VisitNumberSliderIcon);
+        ImageView i4 = view.findViewById(R.id.ivNum4VisitNumberSliderIcon);
+        ImageView i5 = view.findViewById(R.id.ivNum5VisitNumberSliderIcon);
+        ImageView i6 = view.findViewById(R.id.ivNum6VisitNumberSliderIcon);
+        ImageView i7 = view.findViewById(R.id.ivNum7VisitNumberSliderIcon);
+        ImageView i8 = view.findViewById(R.id.ivNum8VisitNumberSliderIcon);
+        ImageView i9 = view.findViewById(R.id.ivNum9VisitNumberSliderIcon);
+        ImageView i10 = view.findViewById(R.id.ivNum10VisitNumberSliderIcon);
 
         // set default values
         tv0.setTextColor(mContext.getResources().getColor(R.color.gray_3));
@@ -689,7 +689,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.tvQuestionDesc.setText(mContext.getString(R.string.select_yes_or_no));
 
         View view = View.inflate(mContext, R.layout.associate_symptoms_questionar_main_view, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitASQMainView);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
 
@@ -706,7 +706,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             }
         });
-        RecyclerView recyclerView = view.findViewById(R.id.rcv_container);
+        RecyclerView recyclerView = view.findViewById(R.id.rvASQMainView);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         AssociateSymptomsQueryAdapter associateSymptomsQueryAdapter = new AssociateSymptomsQueryAdapter(mContext, mRecyclerView, recyclerView, node.getOptionsList(), mIsEditMode, new AssociateSymptomsQueryAdapter.AssociateSymptomsOnItemSelection() {
             @Override
@@ -842,49 +842,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //if (isSuperNested) {
             boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
             Log.v(TAG, "showOptionsData havingNestedQuestion - " + havingNestedQuestion);
-
-                /*//holder.superNestedContainerLinearLayout.removeAllViews();
-                View v1 = View.inflate(mContext, R.layout.nested_recycle_view, null);
-                v1.setTag(selectedNode.getId());
-                for (int i = 0; i < holder.superNestedContainerLinearLayout.getChildCount(); i++) {
-                    if (String.valueOf(holder.superNestedContainerLinearLayout.getChildAt(i).getTag()).equalsIgnoreCase(selectedNode.getId())) {
-                        return;
-                    }
-                }
-
-                RecyclerView recyclerView = v1.findViewById(R.id.rcv_nested_container);
-                TextView questionTextView = v1.findViewById(R.id.tv_question);
-                LinearLayout singleComponentContainerLinearLayout = v1.findViewById(R.id.ll_single_component_container);
-                LinearLayout othersContainerLinearLayout = v1.findViewById(R.id.ll_others_container);
-                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
-                layoutManager.setFlexDirection(FlexDirection.ROW);
-                layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-                recyclerView.setLayoutManager(layoutManager);
-                TextView tvQuestionDesc = v1.findViewById(R.id.tv_question_desc);
-
-                if (selectedNode.isMultiChoice()) {
-                    tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                    holder.submitButton.setVisibility(View.VISIBLE);
-                } else {
-                    tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                    holder.submitButton.setVisibility(View.GONE);
-
-                }*/
-
-                /*if (mItemList.get(index).isRequired()) {
-                    skipButton.setVisibility(View.GONE);
-                } else {
-                    skipButton.setVisibility(View.VISIBLE);
-                }*/
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             linearLayoutManager.setStackFromEnd(false);
             linearLayoutManager.setSmoothScrollbarEnabled(true);
             holder.nestedRecyclerView.setLayoutManager(linearLayoutManager);
-
-
-            //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
-            //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
-            //}else {
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
@@ -893,22 +854,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
-                   /* if(parentNode.isHavingNestedQuestion()) {
-                        boolean isMoreNestedLevel = true;
-                        for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
-                            if (selectedNode.getOptionsList().get(i).getId().equalsIgnoreCase(node.getId())) {
-                                isMoreNestedLevel = false;
-                            }else{
-
-                            }
-                        }
-                        if (isMoreNestedLevel) {
-                            holder.isParallelMultiNestedNode = true;
-                            holder.nextRelativeLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.nextRelativeLayout.setVisibility(View.GONE);
-                        }
-                    }*/
                     if (parentNode != null && parentNode.isHavingNestedQuestion()) {
                         holder.isParallelMultiNestedNode = true;
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
@@ -1212,11 +1157,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         holder.otherContainerLinearLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitImageCaptureView);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
-        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
+        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.llCaptureVisitImageCaptureView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
         newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1228,7 +1173,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 mOnItemSelection.onCameraRequest();
             }
         });
-        view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnCaptureVisitImageCaptureView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //openCamera(getImagePath(), "");
@@ -1252,7 +1197,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
+        RecyclerView imagesRcv = view.findViewById(R.id.rvVisitImageCaptureView);
         imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
 
         if (node.getImagePathList().isEmpty()) {
@@ -1312,12 +1257,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
-        final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
-        final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        final Spinner numberRangeSpinner = view.findViewById(R.id.acsNumberPickerVisitReasonTimeRange);
+        final Spinner durationTypeSpinner = view.findViewById(R.id.acsDurationTypeVisitReasonTimeRange);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonTimeRange);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonTimeRange);
         if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
         } else {
@@ -1512,12 +1457,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addNumberView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonInputText);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
 
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             //  editText.setText(node.getLanguage());
@@ -1635,15 +1580,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v(TAG, "addTextEnterView");
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonInputText);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             editText.setText(node.getLanguage());
         }
         String oldValue = editText.getText().toString().trim();
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1753,13 +1698,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void addDateView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
-        final Button submitButton = view.findViewById(R.id.btn_submit);
+        final Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonDatePicker);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
-        final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        final TextView displayDateButton = view.findViewById(R.id.tvSelectedDateVisitReasonDatePicker);
+        final CalendarView calendarView = view.findViewById(R.id.cvVisitReasonDatePicker);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonDatePicker);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
@@ -1877,33 +1822,29 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            nextRelativeLayout = itemView.findViewById(R.id.rl_next_action);
-            nextButton = itemView.findViewById(R.id.btn_next);
+            nextRelativeLayout = itemView.findViewById(R.id.rlNextQuestionNode);
+            nextButton = itemView.findViewById(R.id.btnNextQuestionNode);
 
-            knowMoreTextView = itemView.findViewById(R.id.tv_know_more);
+            knowMoreTextView = itemView.findViewById(R.id.tvKnowMoreQuestionNode);
             knowMoreTextView.setPaintFlags(knowMoreTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             knowMoreTextView.setVisibility(View.GONE);
 
-            skipButton = itemView.findViewById(R.id.btn_skip);
-            submitButton = itemView.findViewById(R.id.btn_submit);
-            recyclerView = itemView.findViewById(R.id.rcv_container);
-            nestedRecyclerView = itemView.findViewById(R.id.rcv_nested_container);
-            singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
-            referenceContainerLinearLayout = itemView.findViewById(R.id.ll_reference_container);
-            otherContainerLinearLayout = itemView.findViewById(R.id.ll_others_container);
-
-            //superNestedContainerLinearLayout = itemView.findViewById(R.id.ll_super_nested_container);
-            //superNestedContainerLinearLayout.setVisibility(View.GONE);
-
-            tvReferenceDesc = itemView.findViewById(R.id.tv_reference_desc);
-            spinKitView = itemView.findViewById(R.id.spin_kit);
-            bodyLayout = itemView.findViewById(R.id.rl_body);
+            skipButton = itemView.findViewById(R.id.btnSkipQuestionNode);
+            submitButton = itemView.findViewById(R.id.btnSubmitQuestionNode);
+            recyclerView = itemView.findViewById(R.id.rvQuestionNode);
+            nestedRecyclerView = itemView.findViewById(R.id.rvNestedQuestionNode);
+            singleComponentContainer = itemView.findViewById(R.id.llSingleComponentContainerQuestionNode);
+            referenceContainerLinearLayout = itemView.findViewById(R.id.llReferenceContainerQuestionNode);
+            otherContainerLinearLayout = itemView.findViewById(R.id.llOtherContainerQuestionNode);
+            tvReferenceDesc = itemView.findViewById(R.id.tvRefDescQuestionNode);
+            spinKitView = itemView.findViewById(R.id.skvQuestionNode);
+            bodyLayout = itemView.findViewById(R.id.llBodyQuestionNode);
             spinKitView.setVisibility(View.VISIBLE);
             bodyLayout.setVisibility(View.GONE);
 
-            tvQuestion = itemView.findViewById(R.id.tv_question);
-            tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
-            tvQuestionCounter = itemView.findViewById(R.id.tv_question_counter);
+            tvQuestion = itemView.findViewById(R.id.tvQuestionQuestionNode);
+            tvQuestionDesc = itemView.findViewById(R.id.tvQuestionDescQuestionNode);
+            tvQuestionCounter = itemView.findViewById(R.id.tvQuestionCountQuestionNode);
 
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -137,7 +137,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
 
 
     private void initUI() {
-        View toolbar = findViewById(R.id.toolbar_my_appointments);
+        View toolbar = findViewById(R.id.layoutToolbarMyAppointment);
         TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
         ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
         ImageView ivBackArrow = toolbar.findViewById(R.id.ivBackArrowCommonToolbar);
@@ -159,7 +159,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
-        bottomNav = findViewById(R.id.bottom_nav_my_appointments);
+        bottomNav = findViewById(R.id.bnvMyAppointment);
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottomNavHome).setChecked(false);
@@ -167,12 +167,12 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     }
 
     public void configureTabLayout() {
-        tabLayout = findViewById(R.id.tablayout_appointments);
+        tabLayout = findViewById(R.id.tlMyAppointment);
 
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.todays)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.all_appointments)));
 
-        viewPager = findViewById(R.id.pager_appointments);
+        viewPager = findViewById(R.id.vpMyAppointment);
         PagerAdapter adapter = new MyAppointmentsPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount(), MyAppointmentActivity.this);
         viewPager.setAdapter(adapter);

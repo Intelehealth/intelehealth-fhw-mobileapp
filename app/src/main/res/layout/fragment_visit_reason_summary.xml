@@ -113,7 +113,7 @@
                 android:src="@drawable/ui2_visit_reason_summary_icon" />
 
             <TextView
-                android:id="@+id/tv_sub_title"
+                android:id="@+id/tvSubTitleVisitReasonSummaryFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbar"

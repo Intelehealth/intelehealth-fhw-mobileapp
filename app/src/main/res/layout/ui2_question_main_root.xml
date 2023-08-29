@@ -23,7 +23,7 @@
                 android:src="@drawable/ui2_ic_ayu_image_blue" />
 
             <TextView
-                android:id="@+id/tv_question_counter"
+                android:id="@+id/tvQuestionCountQuestionNode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_16"
@@ -43,14 +43,13 @@
             android:src="@drawable/chat_bubble_top" />
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ui2_chat_bubble_square_round"
             android:orientation="vertical">
 
             <com.github.ybq.android.spinkit.SpinKitView
-                android:id="@+id/spin_kit"
+                android:id="@+id/skvQuestionNode"
                 style="@style/SpinKitView.ThreeBounce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,14 +58,14 @@
                 app:SpinKit_Color="@color/ui2_green" />
 
             <LinearLayout
-                android:id="@+id/rl_body"
+                android:id="@+id/llBodyQuestionNode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_15">
 
                 <TextView
-                    android:id="@+id/tv_question"
+                    android:id="@+id/tvQuestionQuestionNode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -76,7 +75,7 @@
                     android:textSize="@dimen/text_18sp" />
 
                 <TextView
-                    android:id="@+id/tv_reference_desc"
+                    android:id="@+id/tvRefDescQuestionNode"
                     style="@style/label_misc_txt_14sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,7 +85,7 @@
                     android:visibility="gone" />
 
                 <LinearLayout
-                    android:id="@+id/ll_reference_container"
+                    android:id="@+id/llReferenceContainerQuestionNode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_question_desc"
@@ -101,7 +100,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_question_desc"
+                        android:id="@+id/tvQuestionDescQuestionNode"
                         style="@style/label_misc_txt_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -110,7 +109,7 @@
                         android:text="@string/select_any_one" />
 
                     <TextView
-                        android:id="@+id/tv_know_more"
+                        android:id="@+id/tvKnowMoreQuestionNode"
                         style="@style/label_misc_txt_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -127,33 +126,27 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_container"
+                    android:id="@+id/rvQuestionNode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_question_desc"
                     android:layout_marginTop="@dimen/margin_16" />
 
-                <!--<LinearLayout
-                    android:id="@+id/ll_super_nested_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:orientation="vertical" />-->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_nested_container"
+                    android:id="@+id/rvNestedQuestionNode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8" />
 
                 <LinearLayout
-                    android:id="@+id/ll_single_component_container"
+                    android:id="@+id/llSingleComponentContainerQuestionNode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
                     android:orientation="vertical" />
 
                 <LinearLayout
-                    android:id="@+id/ll_others_container"
+                    android:id="@+id/llOtherContainerQuestionNode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
@@ -166,7 +159,7 @@
                     android:gravity="end">
 
                     <Button
-                        android:id="@+id/btn_skip"
+                        android:id="@+id/btnSkipQuestionNode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ui2_common_button_bg_submit"
@@ -179,7 +172,7 @@
                         android:visibility="gone" />
 
                     <Button
-                        android:id="@+id/btn_submit"
+                        android:id="@+id/btnSubmitQuestionNode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_24"
@@ -197,7 +190,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/rl_next_action"
+                android:id="@+id/rlNextQuestionNode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone">
@@ -208,7 +201,7 @@
                     android:background="@color/colorPrimary1" />
 
                 <Button
-                    android:id="@+id/btn_next"
+                    android:id="@+id/btnNextQuestionNode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"

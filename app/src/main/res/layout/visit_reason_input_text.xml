@@ -6,7 +6,7 @@
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <EditText
-        android:id="@+id/actv_reasons"
+        android:id="@+id/etEnterValueVisitReasonInputText"
         style="@style/edittext_textcolor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,10 +22,10 @@
         android:textSize="@dimen/common_label_text_size" />
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btnSubmitVisitReasonInputText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/actv_reasons"
+        android:layout_below="@+id/etEnterValueVisitReasonInputText"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
@@ -39,13 +39,13 @@
         android:textSize="@dimen/common_button_text_size" />
 
     <Button
-        android:id="@+id/btn_skip"
+        android:id="@+id/btnSkipVisitReasonInputText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/actv_reasons"
+        android:layout_below="@+id/etEnterValueVisitReasonInputText"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_24"
-        android:layout_toStartOf="@+id/btn_submit"
+        android:layout_toStartOf="@+id/btnSubmitVisitReasonInputText"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:drawablePadding="8dip"
         android:text="@string/skip_new"

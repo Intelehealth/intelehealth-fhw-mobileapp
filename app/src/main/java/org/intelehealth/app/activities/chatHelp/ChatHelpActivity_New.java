@@ -85,23 +85,23 @@ public class ChatHelpActivity_New extends AppCompatActivity implements ClickList
         chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
 
 
-        ImageView ivIsInternet = findViewById(R.id.iv_is_internet);
-        etSendMessage = findViewById(R.id.et_send_msg_chat);
-        telSendMessage = findViewById(R.id.tel_send_msg_chat);
-        ivSendAttachment = findViewById(R.id.iv_attachment_chat);
-        layoutChooseOptions = findViewById(R.id.layout_options_choose_media);
-        ivSendMessage = findViewById(R.id.iv_send_message_chat);
-        layoutMediaOptions = findViewById(R.id.layout_media_options);
+        ImageView ivIsInternet = findViewById(R.id.ivInternetDocChat);
+        etSendMessage = findViewById(R.id.etTypeHereDocChat);
+        telSendMessage = findViewById(R.id.tilTypeHereDocChat);
+        ivSendAttachment = findViewById(R.id.ivAttachmentDocChat);
+        layoutChooseOptions = findViewById(R.id.layoutOptionChooseMediaDocChat);
+        ivSendMessage = findViewById(R.id.ivSendMsgDocChat);
+        layoutMediaOptions = findViewById(R.id.flMediaOptionsDocChat);
 
 
-        layoutCamera = layoutChooseOptions.findViewById(R.id.card_camera_option);
-        layoutGallery = layoutChooseOptions.findViewById(R.id.card_gallery_option);
-        layoutDocument = layoutChooseOptions.findViewById(R.id.card_document_option);
-        rvChatSupport = findViewById(R.id.rv_chatting11);
+        layoutCamera = layoutChooseOptions.findViewById(R.id.llCameraSelectMedia);
+        layoutGallery = layoutChooseOptions.findViewById(R.id.llGallerySelectMedia);
+        layoutDocument = layoutChooseOptions.findViewById(R.id.llDocumentSelectMedia);
+        rvChatSupport = findViewById(R.id.rvDocChat);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvChatSupport.setLayoutManager(layoutManager);
 
-        ImageView ivCallSupport = findViewById(R.id.iv_call_support);
+        ImageView ivCallSupport = findViewById(R.id.ivCallSupportDocChat);
 
         ivCallSupport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -546,7 +546,7 @@ public class ChatHelpActivity_New extends AppCompatActivity implements ClickList
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_layout_full_screen_image_ui2, null);
         alertdialogBuilder.setView(convertView);
-        ImageView ivFullImage = convertView.findViewById(R.id.iv_full_image);
+        ImageView ivFullImage = convertView.findViewById(R.id.ivFullScreenImageDialog);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         Glide.with(ChatHelpActivity_New.this)

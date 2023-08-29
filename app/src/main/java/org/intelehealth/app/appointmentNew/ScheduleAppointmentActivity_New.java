@@ -115,7 +115,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         mSelectedStartDate = simpleDateFormat.format(new Date());
         mSelectedEndDate = simpleDateFormat.format(new Date());
 
-        View toolbar = findViewById(R.id.toolbar_schedule_appointments);
+        View toolbar = findViewById(R.id.layoutToolbarScheduleAppointment);
         TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
         ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
 
@@ -241,10 +241,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     private void initUI() {
 
-        rvMorningSlots = findViewById(R.id.rv_morning_time_slots);
-        rvAfternoonSlots = findViewById(R.id.rv_afternoon_time_slots);
-        rvEveningSlots = findViewById(R.id.rv_evening_time_slots);
-        btnBookAppointment = findViewById(R.id.btn_book_appointment);
+        rvMorningSlots = findViewById(R.id.rvMorningSlotsScheduleAppointment);
+        rvAfternoonSlots = findViewById(R.id.rvAfternoonSlotsScheduleAppointment);
+        rvEveningSlots = findViewById(R.id.rvEveningSlotsScheduleAppointment);
+        btnBookAppointment = findViewById(R.id.btnBookAppointmentScheduleAppointment);
         btnBookAppointment.setOnClickListener(v -> {
             Log.d(TAG, "initUI: selectedDateTime : " + selectedDateTime);
             if (!selectedDateTime.isEmpty()) {
@@ -266,14 +266,14 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         //rvEveningSlots.setHasFixedSize(true);
         rvEveningSlots.setLayoutManager(new GridLayoutManager(this, 3));
 
-        rvHorizontalCal = findViewById(R.id.rv_horizontal_cal);
+        rvHorizontalCal = findViewById(R.id.rvHorizontalCalScheduleAppointment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         rvHorizontalCal.setLayoutManager(linearLayoutManager);
-        ivPrevMonth = findViewById(R.id.iv_prev_month1);
-        ivNextMonth = findViewById(R.id.iv_next_month1);
-        tvSelectedMonthYear = findViewById(R.id.tv_selected_month_year);
-        tvPrevSelectedAppDetails = findViewById(R.id.tv_prev_scheduled_details);
-        tvTitleReschedule = findViewById(R.id.tv_title_reschedule);
+        ivPrevMonth = findViewById(R.id.ivPrevArrowScheduleAppointment);
+        ivNextMonth = findViewById(R.id.ivNextArrowScheduleAppointment);
+        tvSelectedMonthYear = findViewById(R.id.tvSelectedMonthYearScheduleAppointment);
+        tvPrevSelectedAppDetails = findViewById(R.id.tvPrevAppoDetails2ScheduleAppointment);
+        tvTitleReschedule = findViewById(R.id.tvPrevAppoDetails1ScheduleAppointment);
 
 
         calendarInstance = Calendar.getInstance();
@@ -311,18 +311,17 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
     private void getSlots() {
 
-        findViewById(R.id.tv_morning_label).setVisibility(View.GONE);
-        findViewById(R.id.rv_morning_time_slots).setVisibility(View.GONE);
+        findViewById(R.id.tvMorningLabelScheduleAppointment).setVisibility(View.GONE);
+        findViewById(R.id.rvMorningSlotsScheduleAppointment).setVisibility(View.GONE);
 
-        findViewById(R.id.tv_afternoon_label).setVisibility(View.GONE);
-        findViewById(R.id.rv_afternoon_time_slots).setVisibility(View.GONE);
+        findViewById(R.id.tvAfternoonLabelScheduleAppointment).setVisibility(View.GONE);
+        findViewById(R.id.rvAfternoonSlotsScheduleAppointment).setVisibility(View.GONE);
 
-        findViewById(R.id.tv_evening_label).setVisibility(View.GONE);
-        findViewById(R.id.rv_evening_time_slots).setVisibility(View.GONE);
+        findViewById(R.id.tvEveningLabelScheduleAppointment).setVisibility(View.GONE);
+        findViewById(R.id.rvEveningSlotsScheduleAppointment).setVisibility(View.GONE);
 
-        //findViewById(R.id.empty_tv).setVisibility(View.GONE);
-        findViewById(R.id.tv_time_slot_title).setVisibility(View.GONE);
-        ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.loading_slots));
+        findViewById(R.id.tvPickTimeSlotScheduleAppointment).setVisibility(View.GONE);
+        ((TextView) findViewById(R.id.tvNoSlotAvailableScheduleAppointment)).setText(getString(R.string.loading_slots));
         //api for get appointment slots for selected date and doctor speciality
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
@@ -383,26 +382,26 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
                 boolean isSlotNotAvailable = true;
 
-                findViewById(R.id.tv_morning_label).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
-                findViewById(R.id.rv_morning_time_slots).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.tvMorningLabelScheduleAppointment).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.rvMorningSlotsScheduleAppointment).setVisibility(slotInfoMorningList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForMorningAppointments(slotInfoMorningList);
                 isSlotNotAvailable = slotInfoMorningList.isEmpty();
 
-                findViewById(R.id.tv_afternoon_label).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
-                findViewById(R.id.rv_afternoon_time_slots).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.tvAfternoonLabelScheduleAppointment).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.rvAfternoonSlotsScheduleAppointment).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 if (isSlotNotAvailable)
                     isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
 
-                findViewById(R.id.tv_evening_label).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
-                findViewById(R.id.rv_evening_time_slots).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.tvEveningLabelScheduleAppointment).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
+                findViewById(R.id.rvEveningSlotsScheduleAppointment).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForEveningAppointments(slotInfoEveningList);
                 if (isSlotNotAvailable)
                     isSlotNotAvailable = slotInfoEveningList.isEmpty();
 
-                ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
-                findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
-                findViewById(R.id.tv_time_slot_title).setVisibility(isSlotNotAvailable ? View.GONE : View.VISIBLE);
+                ((TextView) findViewById(R.id.tvNoSlotAvailableScheduleAppointment)).setText(getString(R.string.slot_empty_message));
+                findViewById(R.id.tvNoSlotAvailableScheduleAppointment).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
+                findViewById(R.id.tvPickTimeSlotScheduleAppointment).setVisibility(isSlotNotAvailable ? View.GONE : View.VISIBLE);
 
             }
 

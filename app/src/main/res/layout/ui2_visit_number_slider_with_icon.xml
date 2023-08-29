@@ -2,12 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentVisitNumberSliderIcon"
+    android:contentDescription="Visit Number Slider Icon Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <TextView
-        android:id="@+id/tv_desc"
+        android:id="@+id/tvDescVisitNumberSliderIcon"
+        android:contentDescription="Visit Number Slider Icon Description TextView"
         style="@style/label_misc_txt_14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,10 +18,11 @@
         android:text="@string/drag_anywhere_from_0_to_10" />
 
     <LinearLayout
-        android:id="@+id/ll_range"
+        android:id="@+id/llSliderVisitNumberSliderIcon"
+        android:contentDescription="Visit Number Slider Icon Slider LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_desc"
+        android:layout_below="@+id/tvDescVisitNumberSliderIcon"
         android:layout_marginTop="@dimen/padding_12"
         android:background="@drawable/ui2_common_gray_round_stroke_bg"
         android:orientation="vertical"
@@ -33,7 +37,8 @@
             android:weightSum="10">
 
             <TextView
-                android:id="@+id/n0_tv"
+                android:id="@+id/tvNum0VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 0 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -44,7 +49,8 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/n1_tv"
+                android:id="@+id/tvNum1VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 1 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -54,7 +60,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n2_tv"
+                android:id="@+id/tvNum2VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 2 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -64,7 +71,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n3_tv"
+                android:id="@+id/tvNum3VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 3 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -74,7 +82,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n4_tv"
+                android:id="@+id/tvNum4VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 4 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -84,7 +93,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n5_tv"
+                android:id="@+id/tvNum5VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 5 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -94,7 +104,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n6_tv"
+                android:id="@+id/tvNum6VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 6 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -104,7 +115,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n7_tv"
+                android:id="@+id/tvNum7VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 7 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -114,7 +126,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n8_tv"
+                android:id="@+id/tvNum8VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 8 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -124,7 +137,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n9_tv"
+                android:id="@+id/tvNum9VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 9 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -134,7 +148,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/n10_tv"
+                android:id="@+id/tvNum10VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 10 TextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -145,11 +160,11 @@
         </LinearLayout>
 
         <com.google.android.material.slider.Slider
-            android:id="@+id/number_slider"
+            android:id="@+id/sliderVisitNumberSliderIcon"
+            android:contentDescription="Visit Number Slider Icon Slider"
             style="@style/slider_scrollbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/slider_desc"
             android:value="1"
             android:valueFrom="1"
             android:valueTo="10"
@@ -167,7 +182,8 @@
             android:weightSum="10">
 
             <ImageView
-                android:id="@+id/n0_imv"
+                android:id="@+id/ivNum0VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 0 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -176,7 +192,8 @@
                 android:visibility="gone" />
 
             <ImageView
-                android:id="@+id/n1_imv"
+                android:id="@+id/ivNum1VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 1 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -184,7 +201,8 @@
                 android:src="@drawable/n1_icon" />
 
             <ImageView
-                android:id="@+id/n2_imv"
+                android:id="@+id/ivNum2VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 2 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -192,7 +210,8 @@
                 android:src="@drawable/n2_icon" />
 
             <ImageView
-                android:id="@+id/n3_imv"
+                android:id="@+id/ivNum3VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 3 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -200,7 +219,8 @@
                 android:src="@drawable/n3_icon" />
 
             <ImageView
-                android:id="@+id/n4_imv"
+                android:id="@+id/ivNum4VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 4 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -208,7 +228,8 @@
                 android:src="@drawable/n4_icon" />
 
             <ImageView
-                android:id="@+id/n5_imv"
+                android:id="@+id/ivNum5VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 5 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -216,7 +237,8 @@
                 android:src="@drawable/n5_icon" />
 
             <ImageView
-                android:id="@+id/n6_imv"
+                android:id="@+id/ivNum6VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 6 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -224,7 +246,8 @@
                 android:src="@drawable/n6_icon" />
 
             <ImageView
-                android:id="@+id/n7_imv"
+                android:id="@+id/ivNum7VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 7 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -232,7 +255,8 @@
                 android:src="@drawable/n7_icon" />
 
             <ImageView
-                android:id="@+id/n8_imv"
+                android:id="@+id/ivNum8VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 8 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -240,7 +264,8 @@
                 android:src="@drawable/n8_icon" />
 
             <ImageView
-                android:id="@+id/n9_imv"
+                android:id="@+id/ivNum9VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 9 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -248,7 +273,8 @@
                 android:src="@drawable/n9_icon" />
 
             <ImageView
-                android:id="@+id/n10_imv"
+                android:id="@+id/ivNum10VisitNumberSliderIcon"
+                android:contentDescription="Visit Number Slider Icon Number 10 ImageView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -258,10 +284,11 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/btn_values"
+        android:id="@+id/tvSelectedValueVisitNumberSliderIcon"
+        android:contentDescription="Visit Number Slider Icon Selected Value TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_range"
+        android:layout_below="@+id/llSliderVisitNumberSliderIcon"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/edittext_border_blue"
         android:gravity="center"
@@ -275,10 +302,10 @@
         tools:ignore="TextContrastCheck" />
 
     <TextView
-        android:id="@+id/btn_submit"
+        android:id="@+id/tvSubmitVisitNumberSliderIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_range"
+        android:layout_below="@+id/llSliderVisitNumberSliderIcon"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
@@ -292,13 +319,13 @@
         android:textStyle="bold"
         tools:ignore="TextContrastCheck" />
     <Button
-        android:id="@+id/btn_skip"
+        android:id="@+id/btnSkipVisitNumberSliderIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_range"
+        android:layout_below="@+id/llSliderVisitNumberSliderIcon"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_24"
-        android:layout_toStartOf="@+id/btn_submit"
+        android:layout_toStartOf="@+id/tvSubmitVisitNumberSliderIcon"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:minWidth="100dip"
         android:paddingHorizontal="@dimen/padding_7"

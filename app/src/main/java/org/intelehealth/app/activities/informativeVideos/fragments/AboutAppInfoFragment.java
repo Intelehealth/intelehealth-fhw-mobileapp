@@ -76,8 +76,8 @@ public class AboutAppInfoFragment extends Fragment {
             }
         });
 
-        RecyclerView rvSearchedVideos = view.findViewById(R.id.rv_most_searched_info_health);
-        RecyclerView rvMoreVideos = view.findViewById(R.id.rv_more_videos_info_health);
+        RecyclerView rvSearchedVideos = view.findViewById(R.id.rvMostSearchAppInfoFragment);
+        RecyclerView rvMoreVideos = view.findViewById(R.id.rvMoreVideosAppInfoFragment);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);

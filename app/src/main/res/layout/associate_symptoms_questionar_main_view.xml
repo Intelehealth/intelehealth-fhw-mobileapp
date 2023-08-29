@@ -3,20 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rlParentASQMainView"
+    android:contentDescription="Associated Symptoms Questionnaire Main View Parent RelativeLayout"
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_container"
+        android:id="@+id/rvASQMainView"
+        android:contentDescription="Associated Symptoms Questionnaire Main View RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"
         ></androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btnSubmitASQMainView"
+        android:contentDescription="Associated Symptoms Questionnaire Main View Submit Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rcv_container"
+        android:layout_below="@+id/rvASQMainView"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"

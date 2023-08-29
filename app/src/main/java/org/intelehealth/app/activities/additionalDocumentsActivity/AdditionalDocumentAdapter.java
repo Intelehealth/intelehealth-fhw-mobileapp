@@ -169,7 +169,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             @Override
             public void onShow(DialogInterface d) {
                 ImageView imageView = dialog.findViewById(R.id.ivImageConfirmDialog);
-                final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
+                final ProgressBar progressBar = dialog.findViewById(R.id.pbImageConfirmDialog);
                 if (imageView != null) {
                     Glide.with(context)
                             .load(file)

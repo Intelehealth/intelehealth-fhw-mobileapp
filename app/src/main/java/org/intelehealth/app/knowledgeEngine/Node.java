@@ -430,7 +430,7 @@ public class Node implements Serializable {
 
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
-        ImageView imageView = convertView.findViewById(R.id.dialog_subquestion_image_view);
+        ImageView imageView = convertView.findViewById(R.id.ivSubQuestionDialog);
         if (node.isAidAvailable()) {
             if (node.getJobAidType().equals("image")) {
                 String drawableName = node.getJobAidFile();
@@ -443,7 +443,7 @@ public class Node implements Serializable {
 
 
         subQuestion.setTitle(node.findDisplay());
-        ListView listView = convertView.findViewById(R.id.dialog_subquestion_list_view);
+        ListView listView = convertView.findViewById(R.id.lvSubQuestionDialog);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setClickable(true);
         listView.setAdapter(adapter);
@@ -1300,7 +1300,7 @@ public class Node implements Serializable {
        /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
-        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        EditText et_enter_value = convertView.findViewById(R.id.etEnterValueNumberPickerDialog1);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -1884,7 +1884,7 @@ public class Node implements Serializable {
       /*  final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
-        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        EditText et_enter_value = convertView.findViewById(R.id.etEnterValueNumberPickerDialog1);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
