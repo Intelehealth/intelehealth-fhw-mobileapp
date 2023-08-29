@@ -23,13 +23,14 @@
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/white"
             app:tint="@null" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnMicOnOff"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:backgroundTint="@color/color_activated_deactived_action"
+            android:backgroundTint="@color/colorRtcBtn"
             android:contentDescription="@string/toggle_mic"
             android:minWidth="@dimen/video_call_action_btn_min_size"
             android:src="@drawable/selector_mic"
@@ -39,13 +40,14 @@
             app:layout_constraintEnd_toStartOf="@id/btnVideoOnOff"
             app:layout_constraintStart_toEndOf="@id/btnCallEnd"
             app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/darkGray"
             app:tint="@null" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnFlipCamera"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:backgroundTint="@color/color_activated_deactived_action"
+            android:backgroundTint="@color/colorRtcBtn"
             android:contentDescription="@string/flip_camera"
             android:minWidth="@dimen/video_call_action_btn_min_size"
             android:src="@drawable/ic_flip_camera"
@@ -55,13 +57,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnVideoOnOff"
             app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/darkGray"
             app:tint="@null" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnVideoOnOff"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:backgroundTint="@color/color_activated_deactived_action"
+            android:backgroundTint="@color/colorRtcBtn"
             android:contentDescription="@string/video_call"
             android:minWidth="@dimen/video_call_action_btn_min_size"
             android:src="@drawable/selector_video_call"
@@ -71,6 +74,7 @@
             app:layout_constraintEnd_toStartOf="@id/btnFlipCamera"
             app:layout_constraintStart_toEndOf="@id/btnMicOnOff"
             app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/darkGray"
             app:tint="@null" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

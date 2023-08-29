@@ -120,7 +120,7 @@ public class SetupActivity extends AppCompatActivity {
     public String[] FILES;
     //        private TestSetup mAuthTask = null;
     private List<Location> mLocations = new ArrayList<>();
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private EditText mAdminPasswordView;
     private EditText mUrlField;

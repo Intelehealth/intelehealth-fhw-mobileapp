@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.gson.Gson;
 
 import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
@@ -42,6 +44,7 @@ import java.util.Locale;
 
 
 public class SplashActivity extends AppCompatActivity {
+    private static final String TAG = "SplashActivity";
     SessionManager sessionManager = null;
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     //    ProgressDialog TempDialog;
@@ -325,10 +328,9 @@ public class SplashActivity extends AppCompatActivity {
             }
             if (allGranted) {
                 checkPerm();
+            } else {
+                Log.e(TAG, "onRequestPermissionsResult: " + new Gson().toJson(permissions));
             }
-//            else {
-//                showPermissionDeniedAlert(permissions);
-//            }
 
         }
     }
