@@ -195,6 +195,7 @@ public class SetupActivityNew extends BaseActivity {
 
         rbProduction.setChecked(true);
 
+        autotvLocations.setThreshold(Integer.MAX_VALUE);
         autotvLocations.setOnItemClickListener((adapterView, view, i, l) -> {
             List<String> items = new ArrayList<>();
             String selectedValue = (String) adapterView.getItemAtPosition(i);
