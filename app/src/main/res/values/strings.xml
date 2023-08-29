@@ -1069,5 +1069,8 @@
     <string name="iv_infusion_status">IV Infusion Status</string>
     <string name="iv_infusion_rate">IV Infusion Rate\n(drops/minute)</string>
     <string name="strength_unit">Strength (U/L)</string>
+    <string name="list_of_medicines">List of medicines</string>
+    <string name="dosage">Dosage</string>
+    <string name="route">Route</string>
 
 </resources>
