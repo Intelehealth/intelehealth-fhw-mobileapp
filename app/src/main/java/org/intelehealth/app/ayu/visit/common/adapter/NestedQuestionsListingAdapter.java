@@ -932,10 +932,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
         final Spinner numberRangeSpinner = view.findViewById(R.id.acsNumberPickerVisitReasonTimeRange);
         final Spinner durationTypeSpinner = view.findViewById(R.id.acsDurationTypeVisitReasonTimeRange);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonTimeRange);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonTimeRange);
         String oldDataNumber = "", oldDataType = "";
         String finalOldDataNumber = oldDataNumber;
         String finalOldDataType = oldDataType;
@@ -1137,12 +1137,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonInputText);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
 
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
@@ -1268,11 +1268,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v(TAG, "addTextEnterView");
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonInputText);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
@@ -1412,7 +1412,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Log.v(TAG, "addDateView - " + node.getLanguage());
         String langVal = node.getLanguage();
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonDatePicker);
 
         if (langVal != null && !langVal.isEmpty() && !langVal.equals("%") && node.isDataCaptured()) {
 

@@ -87,7 +87,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
         networkUtils = new NetworkUtils(ChangePasswordActivity_New.this, this);
 
-        View toolbar = findViewById(R.id.toolbar_common);
+        View toolbar = findViewById(R.id.toolbarChangePassword);
         TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
         ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
 
@@ -101,20 +101,20 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         cpd = new CustomProgressDialog(context);
         sessionManager = new SessionManager(context);
 
-        customSnackBar = findViewById(R.id.snackbar_cv);
-        customSnackBarText = findViewById(R.id.snackbar_text);
-        etCurrentPassword = findViewById(R.id.et_current_password);
-        etNewPassword = findViewById(R.id.et_new_password_change);
-        etNewPasswordConfirm = findViewById(R.id.et_new_password_confirm);
-        layoutParent = findViewById(R.id.layout_parent);
+        customSnackBar = findViewById(R.id.snackbarChangePassword);
+        customSnackBarText = findViewById(R.id.tvSnackbarContent);
+        etCurrentPassword = findViewById(R.id.etCurrentPassChangePassword);
+        etNewPassword = findViewById(R.id.etNewPassChangePassword);
+        etNewPasswordConfirm = findViewById(R.id.etNewPassConfirmChangePassword);
+        layoutParent = findViewById(R.id.rlParentChangePassword);
 
 
         //error fields
-        tvErrorCurrentPassword = findViewById(R.id.tv_error_current_password);
-        tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
-        tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
+        tvErrorCurrentPassword = findViewById(R.id.tvErrorCurrentPassChangePassword);
+        tvErrorNewPassword = findViewById(R.id.tvErrorNewPassChangePassword);
+        tvErrorConfirmPassword = findViewById(R.id.tvNewPassConfirmErrorChangePassword);
 
-        btnSave = findViewById(R.id.btn_save_change);
+        btnSave = findViewById(R.id.btnSaveChangePassword);
 
         ivIsInternet.setOnClickListener(v -> {
             SyncUtils.syncNow(ChangePasswordActivity_New.this, ivIsInternet, syncAnimator);
