@@ -151,16 +151,16 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         }
 
         // end visit - start
-        endvisit_relative_block = findViewById(R.id.endvisit_relative_block);
-        btn_end_visit = findViewById(R.id.btn_end_visit);
-        backArrow = findViewById(R.id.backArrow);
-        refresh = findViewById(R.id.refresh);
+        endvisit_relative_block = findViewById(R.id.rlEndVisitBlockVisitDetails);
+        btn_end_visit = findViewById(R.id.btnEndVisitVisitDetails);
+        backArrow = findViewById(R.id.ibBackArrowVisitDetails);
+        refresh = findViewById(R.id.ibRefreshVisitDetails);
         // end visit - end
 
-        pat_call_btn = findViewById(R.id.pat_call_btn);
-        pat_whatsapp_btn = findViewById(R.id.pat_whatsapp_btn);
-        dr_call_btn = findViewById(R.id.dr_call_btn);
-        dr_whatsapp_btn = findViewById(R.id.dr_whatsapp_btn);
+        pat_call_btn = findViewById(R.id.ibPatientCallVisitDetails);
+        pat_whatsapp_btn = findViewById(R.id.ibPatientChatVisitDetails);
+        dr_call_btn = findViewById(R.id.ivDoctorCallVisitDetails);
+        dr_whatsapp_btn = findViewById(R.id.ivDoctorChatVisitDetails);
 
         try {
             pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
@@ -206,7 +206,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         });
 
         // Patient Photo
-        profile_image = findViewById(R.id.ivPatientImageRowItem);
+        profile_image = findViewById(R.id.ivProfileImageVisitDetails);
         if (patient_photo_path != null) {
             Glide.with(this)
                     .load(patient_photo_path)
@@ -220,9 +220,9 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         }
 
         // visit summary - start
-        vs_arrowRight = findViewById(R.id.vs_arrowRight);
-        vs_card = findViewById(R.id.vs_card);
-        presc_relative = findViewById(R.id.presc_relative);
+        vs_arrowRight = findViewById(R.id.ibVisitSummArrowVisitDetails);
+        vs_card = findViewById(R.id.rlVisitSummCardVisitDetails);
+        presc_relative = findViewById(R.id.rlPrescChildVisitDetails);
         vitalsUUID = fetchEncounterUuidForEncounterVitals(visitID);
         adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitID);
 
@@ -255,11 +255,11 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         // visit summary - end
 
         // presc block - start
-        prescription_block = findViewById(R.id.prescription_block);
-        presc_time = findViewById(R.id.presc_time);
-        presc_arrowRight = findViewById(R.id.presc_arrowRight);
-        presc_remind_block = findViewById(R.id.presc_remind_block);
-        icon_presc_details = findViewById(R.id.icon_presc_details);
+        prescription_block = findViewById(R.id.rlPrescParentVisitDetails);
+        presc_time = findViewById(R.id.tvPrescTimeVisitDetails);
+        presc_arrowRight = findViewById(R.id.ibPrescArrowVisitDetails);
+        presc_remind_block = findViewById(R.id.rlPrescButtonVisitDetails);
+        icon_presc_details = findViewById(R.id.ivPrescIconVisitDetails);
 
         if (hasPrescription) {
             presc_arrowRight.setVisibility(View.VISIBLE);
@@ -336,24 +336,24 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         }
         // presc block - end
 
-        patName_txt = findViewById(R.id.patname_txt);
+        patName_txt = findViewById(R.id.tvPatientNameVisitDetails);
         patName_txt.setText(patientName);
 
-        gender_age_txt = findViewById(R.id.gender_age_txt);
+        gender_age_txt = findViewById(R.id.tvPatientGenderAgeVisitDetails);
         gender_age_txt.setText(gender + " " + age);
 
-        openmrsID_txt = findViewById(R.id.openmrsID_txt);
+        openmrsID_txt = findViewById(R.id.tvPatientIDVisitDetails);
         openmrsID_txt.setText(openmrsID);
 
         // priority - start
-        priorityTag = findViewById(R.id.priority_tag);
+        priorityTag = findViewById(R.id.ivPriorityTagVisitDetails);
         if (isEmergency)
             priorityTag.setVisibility(View.VISIBLE);
         else
             priorityTag.setVisibility(View.GONE);
         // priority - end
 
-        chief_complaint_txt = findViewById(R.id.chief_complaint_txt);
+        chief_complaint_txt = findViewById(R.id.tvChiefComplaintVisitDetails);
         if (chief_complaint_value != null) {
             int first = chief_complaint_value.indexOf("<b>");
             int last = chief_complaint_value.indexOf("</b>");
@@ -373,14 +373,14 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         chief_complaint_txt.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fu_name_txt_size));
         chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 
-        visitID_txt = findViewById(R.id.visitID);
+        visitID_txt = findViewById(R.id.tvVisitIDVisitDetails);
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
         visitID_txt.setText(getResources().getString(R.string.visitID) + " XXXX" + hideVisitUUID);
 
         // Start Date and Time - start
-        visit_startDate_txt = findViewById(R.id.visit_startDate);
-        visit_startTime = findViewById(R.id.visit_startTime);
+        visit_startDate_txt = findViewById(R.id.tvStartDateVisitDetails);
+        visit_startTime = findViewById(R.id.tvStartTimeVisitDetails);
 
         if (visit_startDate != null) {
             Log.v("Followup", "actual date: " + visit_startDate);
@@ -401,7 +401,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         // Start Date and Time - end
 
         // speciality - start
-        visit_speciality_txt = findViewById(R.id.visit_speciality);
+        visit_speciality_txt = findViewById(R.id.tvDocSpecialityValueVisitDetails);
         visit_speciality = fetchSpecialityValue(visitID);
         visit_speciality_txt.setText(visit_speciality);
 
@@ -414,13 +414,13 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         // speciality - end
 
         // follow up - start
-        followup_relative_block = findViewById(R.id.followup_relative_block);   // entire block of follow up section.
-        followup_start_card = findViewById(R.id.followup_start_card);   // Block that shows to Start Follow up.
-        yes_no_followup_relative = findViewById(R.id.yes_no_followup_relative);   // yes no button for follow up.
-        followupDate_txt = findViewById(R.id.followup_date_txtv);
-        followup_info = findViewById(R.id.followup_info);
-        yes_followup_btn = findViewById(R.id.yes_followup_btn);
-        followup_accept_text = findViewById(R.id.followup_accept_text);
+        followup_relative_block = findViewById(R.id.rlFollowUpParentVisitDetails);   // entire block of follow up section.
+        followup_start_card = findViewById(R.id.rlStartFollowUpVisitDetails);   // Block that shows to Start Follow up.
+        yes_no_followup_relative = findViewById(R.id.rlAcceptRejectFollowUpVisitDetails);   // yes no button for follow up.
+        followupDate_txt = findViewById(R.id.tvFollowUpDateVisitDetails);
+        followup_info = findViewById(R.id.tvFollowUpInfoVisitDetails);
+        yes_followup_btn = findViewById(R.id.btnAcceptFollowUpVisitDetails);
+        followup_accept_text = findViewById(R.id.tvAcceptFollowUpInfoVisitDetails);
 
         if (followupDate != null) {
             followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM,yyyy");
@@ -458,7 +458,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         }
         // end visit - end
 
-        mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
+        mPastVisitsRecyclerView = findViewById(R.id.rvPastVisitsVisitDetails);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         initForPastVisit();
 
@@ -521,9 +521,9 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         String visitOrderBy = "startdate";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         if (visitCursor == null || visitCursor.getCount() <= 0) {
-            findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
+            findViewById(R.id.cvPastVisitsVisitDetails).setVisibility(View.GONE);
         } else {
-            findViewById(R.id.cv_past_visits).setVisibility(View.VISIBLE);
+            findViewById(R.id.cvPastVisitsVisitDetails).setVisibility(View.VISIBLE);
             if (visitCursor.moveToLast()) {
                 do {
                     EncounterDAO encounterDAO = new EncounterDAO();
