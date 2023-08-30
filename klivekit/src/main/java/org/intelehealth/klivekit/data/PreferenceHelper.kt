@@ -1,10 +1,11 @@
-package com.codeglo.coyamore.data
+package org.intelehealth.klivekit.data
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import javax.inject.Inject
 
-class PreferenceHelper constructor(val context: Context) {
+class PreferenceHelper @Inject constructor(val context: Context) {
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     companion object {

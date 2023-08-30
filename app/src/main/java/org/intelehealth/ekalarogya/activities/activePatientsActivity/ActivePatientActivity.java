@@ -46,6 +46,7 @@ import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
 import org.intelehealth.ekalarogya.models.ActivePatientModel;
 import org.intelehealth.ekalarogya.models.dto.EncounterDTO;
 import org.intelehealth.ekalarogya.models.dto.VisitDTO;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 
@@ -55,7 +56,7 @@ import org.intelehealth.ekalarogya.utilities.UuidDictionary;
 import org.intelehealth.ekalarogya.utilities.VisitUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
-public class ActivePatientActivity extends AppCompatActivity {
+public class ActivePatientActivity extends BaseActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
     SessionManager sessionManager = null;

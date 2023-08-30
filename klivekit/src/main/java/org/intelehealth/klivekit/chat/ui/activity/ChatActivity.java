@@ -733,11 +733,11 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.chat_menu, menu);
-        menu.findItem(R.id.video_call_menu).getActionView().setOnClickListener(view -> {
-            onOptionsItemSelected(menu.findItem(R.id.video_call_menu));
-        });
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.chat_menu, menu);
+//        menu.findItem(R.id.video_call_menu).getActionView().setOnClickListener(view -> {
+//            onOptionsItemSelected(menu.findItem(R.id.video_call_menu));
+//        });
         return super.onCreateOptionsMenu(menu);
     }
 

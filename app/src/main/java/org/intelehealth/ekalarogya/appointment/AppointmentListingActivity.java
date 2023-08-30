@@ -22,6 +22,7 @@ import org.intelehealth.ekalarogya.appointment.api.ApiClientAppointment;
 import org.intelehealth.ekalarogya.appointment.dao.AppointmentDAO;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentInfo;
 import org.intelehealth.ekalarogya.appointment.model.AppointmentListingResponse;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
@@ -33,7 +34,7 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AppointmentListingActivity extends AppCompatActivity {
+public class AppointmentListingActivity extends BaseActivity {
     RecyclerView rvAppointments;
     private String mSelectedStartDate = "";
     private String mSelectedEndDate = "";

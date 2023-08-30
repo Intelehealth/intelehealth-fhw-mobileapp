@@ -19,13 +19,14 @@ import org.intelehealth.klivekit.socket.SocketManager.Companion.EVENT_MESSAGE_SE
 import org.intelehealth.klivekit.socket.SocketManager.Companion.EVENT_MSG_DELIVERED
 import org.intelehealth.klivekit.socket.SocketManager.Companion.EVENT_UPDATE_MESSAGE
 import org.json.JSONArray
+import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class ChatSocket(private val socketManager: SocketManager) {
+class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
     var messageListener: MessageListener? = null
     var conversationListener: ConversationListener? = null
     var connectionListener: ConnectionListener? = null

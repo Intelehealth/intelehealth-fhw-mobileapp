@@ -43,13 +43,14 @@ import org.intelehealth.ekalarogya.database.dao.VisitsDAO;
 import org.intelehealth.ekalarogya.models.TodayPatientModel;
 import org.intelehealth.ekalarogya.models.dto.EncounterDTO;
 import org.intelehealth.ekalarogya.models.dto.VisitDTO;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
-public class TodayPatientActivity extends AppCompatActivity {
+public class TodayPatientActivity extends BaseActivity {
     private static final String TAG = TodayPatientActivity.class.getSimpleName();
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;

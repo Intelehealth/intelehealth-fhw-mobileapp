@@ -123,6 +123,7 @@ import org.intelehealth.ekalarogya.models.dto.EncounterDTO;
 import org.intelehealth.ekalarogya.models.dto.ObsDTO;
 import org.intelehealth.ekalarogya.models.dto.RTCConnectionDTO;
 import org.intelehealth.ekalarogya.services.DownloadService;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.syncModule.SyncUtils;
 import org.intelehealth.ekalarogya.utilities.DateAndTimeUtils;
 import org.intelehealth.ekalarogya.utilities.DialogUtils;
@@ -155,7 +156,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VisitSummaryActivity extends AppCompatActivity {
+public class VisitSummaryActivity extends BaseActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private static final int SCHEDULE_LISTING_INTENT = 2001;
@@ -620,7 +621,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         args.setPatientName(patientName);
                         args.setVisitId(visitUUID);
                         args.setNurseId(encounterDTO.getProvideruuid());
-                        EkalChatActivity.startChatActivity(VisitSummaryActivity.this, new RtcArgs());
+                        EkalChatActivity.startChatActivity(VisitSummaryActivity.this, args);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -753,8 +754,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-                }
-                else
+                } else
                     showOkDismissDialog(null, getString(R.string.download_prescription_first_before_sharing), getString(R.string.ok));
 
             }
@@ -1034,8 +1034,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         if (!comp.isEmpty() && !comp.trim().isEmpty()) {
                             try {   // AEAT-510
                                 mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -1298,7 +1297,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mBMI = "";
         }
         patHistory.setValue(medHistory);
-     //   patHistory_REG.setValue(medHistory_REG.replace("?<b>", Node.bullet_arrow));
+        //   patHistory_REG.setValue(medHistory_REG.replace("?<b>", Node.bullet_arrow));
 
         bmiView.setText(mBMI);
 
@@ -1411,8 +1410,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     intent1.putExtra("advicefrom", "");
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                     startActivity(intent1);
-                }
-                else {
+                } else {
                     Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -1877,7 +1875,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    
+
                     doQuery();  // this updates isSyncedFlag here...
                     if (isSynedFlag.equalsIgnoreCase("0")) {
                         // ie. if visit is not uploaded itself than no need to move any further.
@@ -2322,8 +2320,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (!comp.isEmpty() && !comp.trim().isEmpty()) {
                     try {   // AEAT-510
                         mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -3352,8 +3349,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (famConceptID.equalsIgnoreCase(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)) {
                         String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
                         famHistory.setValue(famHistText);
-                    }
-                    else if (famConceptID.equalsIgnoreCase(UuidDictionary.FAMHIST_REG_LANG_VALUE)) {
+                    } else if (famConceptID.equalsIgnoreCase(UuidDictionary.FAMHIST_REG_LANG_VALUE)) {
                         String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
                         famHistory_REG.setValue(famHistText);
                     }
@@ -4007,8 +4003,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
 
                     downloadDoctorDetails();
-                additionalDocumentImagesDownload();
-                physcialExaminationImagesDownload();
+                    additionalDocumentImagesDownload();
+                    physcialExaminationImagesDownload();
                 }
             }
 
@@ -4032,12 +4028,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
 
-                    // visit complete
-                    if (UuidDictionary.ENCOUNTER_VISIT_COMPLETE
-                            .equalsIgnoreCase(encounterCursor.getString
-                                    (encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                        visitComplete = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                    }
+                // visit complete
+                if (UuidDictionary.ENCOUNTER_VISIT_COMPLETE
+                        .equalsIgnoreCase(encounterCursor.getString
+                                (encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitComplete = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
             } while (encounterCursor.moveToNext());
 
         }
@@ -4449,8 +4445,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void showOkDismissDialog(String title, String message, String okBtn) {
         try {
             DialogUtils.showOkDialog(VisitSummaryActivity.this, title, message, okBtn);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
         }
     }

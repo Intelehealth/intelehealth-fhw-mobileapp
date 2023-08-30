@@ -5,8 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.utilities.NotificationUtils;
+import org.intelehealth.klivekit.chat.ui.activity.ChatActivity;
 import org.intelehealth.klivekit.model.RtcArgs;
 
 /**
@@ -14,7 +18,7 @@ import org.intelehealth.klivekit.model.RtcArgs;
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-public class EkalChatActivity extends AppCompatActivity {
+public class EkalChatActivity extends ChatActivity {
     public static void startChatActivity(Context context, RtcArgs args) {
         Intent chatIntent = new Intent(context, EkalChatActivity.class);
         context.startActivity(buildExtra(chatIntent, args));
@@ -35,5 +39,29 @@ public class EkalChatActivity extends AppCompatActivity {
         chatIntent.putExtra("isForVideo", false);
         chatIntent.putExtra("toUuid", args.getDoctorUuid());
         return chatIntent;
+    }
+
+    @Override
+    protected int getContentResourceId() {
+        return R.layout.activity_chat_ekal;
+    }
+
+    @Override
+    protected void setupActionBar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        super.setupActionBar();
+        toolbar.setNavigationOnClickListener(v -> finishAfterTransition());
+    }
+
+    @Override
+    protected void initiateView() {
+        mEmptyTextView = findViewById(R.id.empty_tv);
+        mMessageEditText = findViewById(R.id.etMessageInput);
+        mLoadingLinearLayout = findViewById(R.id.loading_layout);
+        mEmptyLinearLayout = findViewById(R.id.empty_view);
+        mRecyclerView = findViewById(R.id.rvConversation);
+        mLayoutManager = new LinearLayoutManager(EkalChatActivity.this, LinearLayoutManager.VERTICAL, true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 }

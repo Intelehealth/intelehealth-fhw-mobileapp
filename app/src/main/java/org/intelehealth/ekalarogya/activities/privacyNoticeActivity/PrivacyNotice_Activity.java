@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +33,7 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 
 import org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity;
 
-public class PrivacyNotice_Activity extends AppCompatActivity implements View.OnClickListener {
+public class PrivacyNotice_Activity extends BaseActivity implements View.OnClickListener {
     TextView privacy_textview;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;

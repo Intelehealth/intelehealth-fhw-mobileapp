@@ -44,6 +44,7 @@ import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.dao.ProviderDAO;
 import org.intelehealth.ekalarogya.models.dto.PatientDTO;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 
@@ -51,7 +52,7 @@ import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
-public class SearchPatientActivity extends AppCompatActivity {
+public class SearchPatientActivity extends BaseActivity {
     SearchView searchView;
     String query;
     private SearchPatientAdapter recycler;

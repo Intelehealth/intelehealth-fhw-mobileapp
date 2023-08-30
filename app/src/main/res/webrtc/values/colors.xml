@@ -4,4 +4,5 @@
     <color name="colorDeactivated">#B0ADBE</color>
     <color name="colorIconButtonBg">#302E1E91</color>
     <color name="colorRtcBtn">#EFE8FF</color>
+    <color name="colorContainer">#F7F7FA</color>
 </resources>

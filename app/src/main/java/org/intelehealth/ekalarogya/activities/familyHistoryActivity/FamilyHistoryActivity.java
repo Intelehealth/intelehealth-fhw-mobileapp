@@ -42,6 +42,7 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.ekalarogya.models.AnswerResult;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,7 +70,7 @@ import org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryA
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicator;
 
-public class FamilyHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class FamilyHistoryActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     String patientUuid;

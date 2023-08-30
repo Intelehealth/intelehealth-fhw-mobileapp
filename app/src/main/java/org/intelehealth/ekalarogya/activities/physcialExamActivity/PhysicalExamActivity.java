@@ -43,6 +43,7 @@ import android.widget.TextView;
 
 import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.ekalarogya.models.AnswerResult;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,7 +78,7 @@ import org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicat
 
 import org.intelehealth.ekalarogya.database.dao.PatientsDAO;
 
-public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
     // private SectionsPagerAdapter mSectionsPagerAdapter;
 

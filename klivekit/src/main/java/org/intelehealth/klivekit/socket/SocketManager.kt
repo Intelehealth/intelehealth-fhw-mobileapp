@@ -1,7 +1,5 @@
 package org.intelehealth.klivekit.socket
 
-import android.content.Intent
-import com.codeglo.coyamore.data.PreferenceHelper
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.client.IO
@@ -12,15 +10,15 @@ import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
-import org.json.JSONObject
 import java.util.Calendar
+import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-open class SocketManager {
+open class SocketManager @Inject constructor(){
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
     var activeUsers = HashMap<String, ActiveUser>()

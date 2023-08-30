@@ -8,8 +8,8 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
-import com.codeglo.coyamore.data.PreferenceHelper
-import com.codeglo.coyamore.data.PreferenceHelper.Companion.RTC_DATA
+import org.intelehealth.klivekit.data.PreferenceHelper
+import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_DATA
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.events.DisconnectReason

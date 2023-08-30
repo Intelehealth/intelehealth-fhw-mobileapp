@@ -50,6 +50,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.intelehealth.ekalarogya.activities.surveyActivity.SurveyActivity;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -97,7 +98,7 @@ import okhttp3.ResponseBody;
 
 import static org.intelehealth.ekalarogya.utilities.StringUtils.*;
 
-public class PatientDetailActivity extends AppCompatActivity {
+public class PatientDetailActivity extends BaseActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
     String visitUuid = null;

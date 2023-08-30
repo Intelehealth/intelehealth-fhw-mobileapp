@@ -3,13 +3,17 @@ package org.intelehealth.klivekit.chat.data
 import com.codeglo.billingclient.room.dao.ChatDao
 import org.intelehealth.klivekit.chat.model.ChatMessage
 import org.intelehealth.klivekit.chat.model.MessageStatus
+import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 03-07-2023 - 16:22.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class ChatRepository(private val chatDao: ChatDao) {
+class ChatRepository @Inject constructor(
+    private val chatDao: ChatDao,
+    private val dataSource: ChatDataSource
+) {
 
     suspend fun addMessage(message: ChatMessage) = chatDao.addMessage(message)
 
@@ -22,4 +26,6 @@ class ChatRepository(private val chatDao: ChatDao) {
 
     suspend fun changeMessageStatus(messageIds: List<Int>, messageStatus: MessageStatus) =
         chatDao.changeMessageStatus(messageIds, messageStatus.name)
+
+    suspend fun sendMessage(message: ChatMessage) = dataSource.sendMessage(message)
 }

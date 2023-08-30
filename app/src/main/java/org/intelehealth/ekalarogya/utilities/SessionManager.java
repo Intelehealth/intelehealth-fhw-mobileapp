@@ -1,6 +1,6 @@
 package org.intelehealth.ekalarogya.utilities;
 
-import static com.codeglo.coyamore.data.PreferenceHelper.RTC_DATA;
+import static org.intelehealth.klivekit.data.PreferenceHelper.RTC_DATA;
 
 import android.content.Context;
 import android.content.SharedPreferences;
