@@ -38,7 +38,7 @@
     <dimen name="edit_icon_width">28dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
-    <dimen name="physical_exam_img_max_height">125dp</dimen>
+    <dimen name="physical_exam_img_max_height">500dp</dimen>
 
     <dimen name="text_18sp">18sp</dimen>
     <dimen name="toolbar_text_size">18sp</dimen>
