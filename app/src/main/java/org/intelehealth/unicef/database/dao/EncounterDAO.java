@@ -457,7 +457,7 @@ public class EncounterDAO {
     }
 
     public boolean isCompletedExitedSurvey(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -484,7 +484,7 @@ public class EncounterDAO {
     }
 
     public boolean isPrescriptionReceived(String visitUUID) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {

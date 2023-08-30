@@ -1,5 +1,6 @@
 package org.intelehealth.unicef.activities.visit;
 
+import static org.intelehealth.unicef.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.unicef.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
@@ -144,9 +145,19 @@ public class VisitReceivedFragment extends Fragment {
     private void visitData() {
 
         // Total no. of End visits.
-        int total = getTotalCounts_EndVisit();
-        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription);
-        received_endvisit_no.setText(Html.fromHtml(htmlvalue));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int total = getPendingPrescCount();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription);
+                        received_endvisit_no.setText(Html.fromHtml(htmlvalue));
+                    }
+                });
+            }
+        }).start();
 
         // Filter - start
         filter_icon.setOnClickListener(v -> {
