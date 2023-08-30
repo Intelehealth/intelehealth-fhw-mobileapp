@@ -153,7 +153,7 @@ public class AllAppointmentsFragment extends Fragment {
             tvResultsFor.setVisibility(View.VISIBLE);
             scrollChips.setVisibility(View.VISIBLE);
         }
-        final ChipGroup chipGroup = parentView.findViewById(R.id.chipgroup_filter);
+        final ChipGroup chipGroup = parentView.findViewById(R.id.cgFilterAppointments);
         isChipInit = true;
         chipGroup.removeAllViews();
 
@@ -216,43 +216,43 @@ public class AllAppointmentsFragment extends Fragment {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        rvUpcomingApp = parentView.findViewById(R.id.rv_all_upcoming_appointments);
-        rvCancelledApp = parentView.findViewById(R.id.rv_all_cancelled_appointments);
-        rvCompletedApp = parentView.findViewById(R.id.rv_all_completed_appointments);
-        cardUpcomingAppointments = parentView.findViewById(R.id.card_upcoming_appointments1);
-        cardCancelledAppointments = parentView.findViewById(R.id.card_cancelled_appointments1);
-        cardCompletedAppointments = parentView.findViewById(R.id.card_completed_appointments1);
+        rvUpcomingApp = parentView.findViewById(R.id.rvUpcomingAppointments);
+        rvCancelledApp = parentView.findViewById(R.id.rvCancelledAppointments);
+        rvCompletedApp = parentView.findViewById(R.id.rvCompletedAppointments);
+        cardUpcomingAppointments = parentView.findViewById(R.id.llUpcomingAppointment);
+        cardCancelledAppointments = parentView.findViewById(R.id.llCancelledAppointments);
+        cardCompletedAppointments = parentView.findViewById(R.id.llCompletedAppointments);
         layoutMainAppOptions = parentView.findViewById(R.id.layout_main_app_options1);
         layoutParent = parentView.findViewById(R.id.layout_parent_all_appointments);
 
         frameLayoutFilter = parentView.findViewById(R.id.filter_frame_all_appointments);
-        ivFilterAllApp = parentView.findViewById(R.id.iv_filter_all_app);
+        ivFilterAllApp = parentView.findViewById(R.id.ivFilterAppointment);
         frameLayoutDateFilter = parentView.findViewById(R.id.filter_frame_date_appointments);
         tvFromDate = frameLayoutDateFilter.findViewById(R.id.tv_from_date_all_app);
         tvToDate = frameLayoutDateFilter.findViewById(R.id.tv_to_date_all_app);
 
 
-        ivDateFilter = parentView.findViewById(R.id.iv_calendar_all_app);
+        ivDateFilter = parentView.findViewById(R.id.ivCalendarAppointment);
         rgFilterAppointments = frameLayoutFilter.findViewById(R.id.rg_filter_appointments);
         rbUpcoming = frameLayoutFilter.findViewById(R.id.rb_upcoming_appointments);
         rbCancelled = frameLayoutFilter.findViewById(R.id.rb_cancelled_appointments);
         rbCompleted = frameLayoutFilter.findViewById(R.id.rb_completed_appointments);
         tvResultsFor = parentView.findViewById(R.id.tv_results_for);
-        scrollChips = parentView.findViewById(R.id.scroll_chips);
+        scrollChips = parentView.findViewById(R.id.hsvAppointments);
 
         layoutUpcoming = parentView.findViewById(R.id.layout_upcoming1);
         layoutCancelled = parentView.findViewById(R.id.layout_cancelled1);
         layoutCompleted = parentView.findViewById(R.id.layout_completed1);
         layoutParentAll = parentView.findViewById(R.id.layout_parent_all1);
 
-        tvUpcomingAppsCount = parentView.findViewById(R.id.tv_upcoming_appointments_all);
-        tvCompletedAppsCount = parentView.findViewById(R.id.tv_completed_appointments_all);
-        tvUpcomingAppsCountTitle = parentView.findViewById(R.id.tv_upcoming_apps_title_all);
-        tvCompletedAppsCountTitle = parentView.findViewById(R.id.tv_completed_apps_title_all);
-        tvCancelledAppsCount = parentView.findViewById(R.id.tv_cancelled_appointments_all);
-        tvCancelledAppsCountTitle = parentView.findViewById(R.id.tv_cancelled_apps_title_all);
+        tvUpcomingAppsCount = parentView.findViewById(R.id.tvUpcomingCountAppointments);
+        tvCompletedAppsCount = parentView.findViewById(R.id.tvCompletedCountAppointments);
+        tvUpcomingAppsCountTitle = parentView.findViewById(R.id.tvUpcomingTitleAppointments);
+        tvCompletedAppsCountTitle = parentView.findViewById(R.id.tvCompletedTitleAppointments);
+        tvCancelledAppsCount = parentView.findViewById(R.id.tvCancelledCountAppointments);
+        tvCancelledAppsCountTitle = parentView.findViewById(R.id.tvCancelledTitleAppointments);
 
-        autotvSearch = parentView.findViewById(R.id.et_search_all);
+        autotvSearch = parentView.findViewById(R.id.etSearchAllAppointments);
         ivClearText = parentView.findViewById(R.id.iv_clear_all);
         ivClearText.setOnClickListener(v -> {
             autotvSearch.setText("");
@@ -260,9 +260,9 @@ public class AllAppointmentsFragment extends Fragment {
             getAppointments();
         });
         //no data found
-        noDataFoundForUpcoming = parentView.findViewById(R.id.layout_no_data_found_upcoming);
-        noDataFoundForCompleted = parentView.findViewById(R.id.layout_no_data_found_completed);
-        noDataFoundForCancelled = parentView.findViewById(R.id.layout_no_data_found_cancelled);
+        noDataFoundForUpcoming = parentView.findViewById(R.id.layoutNoUpcomingAppointments);
+        noDataFoundForCompleted = parentView.findViewById(R.id.layoutNoCompletedAppointments);
+        noDataFoundForCancelled = parentView.findViewById(R.id.layoutNoCancelledAppointments);
 
 
         //make hide and visible results for textview and chips layout

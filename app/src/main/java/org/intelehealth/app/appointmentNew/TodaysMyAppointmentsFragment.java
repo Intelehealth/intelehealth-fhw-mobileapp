@@ -119,9 +119,9 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         //initialize all the views
-        rvUpcomingApp = view.findViewById(R.id.rv_upcoming_appointments);
-        rvCancelledApp = view.findViewById(R.id.rv_cancelled_appointments);
-        rvCompletedApp = view.findViewById(R.id.rv_completed_appointments);
+        rvUpcomingApp = view.findViewById(R.id.rvUpcomingTodaysAppointments);
+        rvCancelledApp = view.findViewById(R.id.rvCancelledTodaysAppointments);
+        rvCompletedApp = view.findViewById(R.id.rvCompletedTodaysAppointments);
         cardUpcomingAppointments = view.findViewById(R.id.card_upcoming_appointments);
         cardCancelledAppointments = view.findViewById(R.id.card_cancelled_appointments);
         cardCompletedAppointments = view.findViewById(R.id.card_completed_appointments);
@@ -132,19 +132,19 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         layoutParentAll = view.findViewById(R.id.layout_parent_all);
         ivRefresh = requireActivity().findViewById(R.id.ivRefreshCommonToolbar);
 
-        tvUpcomingAppointments = view.findViewById(R.id.tv_upcoming_appointments_todays);
-        tvUpcomingAppointmentsTitle = view.findViewById(R.id.tv_upcoming_apps_count_todays);
-        tvCompletedAppointments = view.findViewById(R.id.tv_completed_appointments_todays);
-        tvCompletedAppointmentsTitle = view.findViewById(R.id.tv_completed_apps_count_todays);
-        tvCancelledAppsCount = view.findViewById(R.id.tv_cancelled_appointments_todays);
-        tvCancelledAppsCountTitle = view.findViewById(R.id.tv_cancelled_apps_count_todays);
+        tvUpcomingAppointments = view.findViewById(R.id.tvUpcomingTodaysAppointments);
+        tvUpcomingAppointmentsTitle = view.findViewById(R.id.tvUpcomingTitleTodaysAppointments);
+        tvCompletedAppointments = view.findViewById(R.id.tvCompletedTodaysAppointments);
+        tvCompletedAppointmentsTitle = view.findViewById(R.id.tvCompletedTitleTodaysAppointments);
+        tvCancelledAppsCount = view.findViewById(R.id.tvCancelledTodaysAppointments);
+        tvCancelledAppsCountTitle = view.findViewById(R.id.tvCancelledTitleTodaysAppointments);
 
         //no data found
         noDataFoundForUpcoming = view.findViewById(R.id.layout_no_data_found_upcoming);
         noDataFoundForCompleted = view.findViewById(R.id.layout_no_data_found_completed);
         noDataFoundForCancelled = view.findViewById(R.id.layout_no_data_found_cancelled);
 
-        autotvSearch = view.findViewById(R.id.et_search_today);
+        autotvSearch = view.findViewById(R.id.etSearchTodaysAppointments);
         ivClearText = view.findViewById(R.id.iv_clear_today);
         ivClearText.setOnClickListener(v -> {
             autotvSearch.setText("");

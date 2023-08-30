@@ -1140,7 +1140,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
         Button skipButton = view.findViewById(R.id.btn_skip);
 
@@ -1271,7 +1271,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
         Button skipButton = view.findViewById(R.id.btn_skip);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))

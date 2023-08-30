@@ -21,11 +21,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/et_search_patient_height"
                 android:layout_marginTop="@dimen/ma_icon_margin_top"
-                android:layout_toStartOf="@+id/iv_calendar_all_app"
+                android:layout_toStartOf="@+id/ivCalendarAppointment"
                 android:background="@drawable/ui2_background_input_field_new">
 
                 <EditText
-                    android:id="@+id/et_search_all"
+                    android:id="@+id/etSearchAllAppointments"
+                    android:contentDescription="search edittext in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/iv_clear_all"
@@ -59,20 +60,22 @@
             </RelativeLayout>
 
             <ImageView
-                android:id="@+id/iv_calendar_all_app"
+                android:id="@+id/ivCalendarAppointment"
+                android:contentDescription="calendar icon imageview in Appointments Fragment"
                 android:layout_width="@dimen/icon_filters_width"
                 android:layout_height="@dimen/icon_filters_height"
                 android:layout_marginStart="@dimen/ma_icon_margin_start"
                 android:layout_marginTop="@dimen/ma_icon_margin_top"
                 android:layout_marginEnd="@dimen/ma_icon_margin_end"
                 android:layout_marginBottom="5dp"
-                android:layout_toStartOf="@+id/iv_filter_all_app"
+                android:layout_toStartOf="@+id/ivFilterAppointment"
                 android:background="@drawable/ui2_ic_filter_bg"
                 android:padding="@dimen/my_appointment_padding"
                 android:src="@drawable/ui2_ic_calendar" />
 
             <ImageView
-                android:id="@+id/iv_filter_all_app"
+                android:id="@+id/ivFilterAppointment"
+                android:contentDescription="filter imageview in Appointments Fragment"
                 android:layout_width="@dimen/icon_filters_width"
                 android:layout_height="@dimen/icon_filters_height"
                 android:layout_alignParentEnd="true"
@@ -112,7 +115,8 @@
                         android:layout_weight="1">
 
                         <LinearLayout
-                            android:id="@+id/card_upcoming_appointments1"
+                            android:id="@+id/llUpcomingAppointment"
+                            android:contentDescription="upcoming appointment linearlayout in Appointments Fragment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -121,7 +125,8 @@
                             android:padding="@dimen/card_apps_options_padding">
 
                             <TextView
-                                android:id="@+id/tv_upcoming_appointments_all"
+                                android:id="@+id/tvUpcomingCountAppointments"
+                                android:contentDescription="upcoming appointments count textview in Appointments Fragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -152,7 +157,8 @@
                         android:layout_weight="1">
 
                         <LinearLayout
-                            android:id="@+id/card_cancelled_appointments1"
+                            android:id="@+id/llCancelledAppointments"
+                            android:contentDescription="cancelled appointments linearlayout in Appointments Fragment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -161,7 +167,8 @@
                             android:padding="@dimen/card_apps_options_padding">
 
                             <TextView
-                                android:id="@+id/tv_cancelled_appointments_all"
+                                android:id="@+id/tvCancelledCountAppointments"
+                                android:contentDescription="cancelled appointment count textview in Appointments Fragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -192,7 +199,8 @@
                         android:layout_weight="1">
 
                         <LinearLayout
-                            android:id="@+id/card_completed_appointments1"
+                            android:id="@+id/llCompletedAppointments"
+                            android:contentDescription="completed appointments linearlayout in Appointments Fragment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -201,7 +209,8 @@
                             android:padding="@dimen/card_apps_options_padding">
 
                             <TextView
-                                android:id="@+id/tv_completed_appointments_all"
+                                android:id="@+id/tvCompletedCountAppointments"
+                                android:contentDescription="completed appointments count textview in Appointments Fragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -243,12 +252,14 @@
                 android:textStyle="bold" />
 
             <HorizontalScrollView
-                android:id="@+id/scroll_chips"
+                android:id="@+id/hsvAppointments"
+                android:contentDescription="horizontal scrollview in Appointments Fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipgroup_filter"
+                    android:id="@+id/cgFilterAppointments"
+                    android:contentDescription="chip group filter in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/chip_group_apps_height"
                     android:layout_marginTop="@dimen/chip_group_apps_margin_top" />
@@ -261,7 +272,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_upcoming_apps_title_all"
+                    android:id="@+id/tvUpcomingTitleAppointments"
+                    android:contentDescription="upcoming appointments title with count in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
@@ -274,7 +286,8 @@
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_all_upcoming_appointments"
+                    android:id="@+id/rvUpcomingAppointments"
+                    android:contentDescription="upcoming appointments recyclerview in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lists_apps_margin_top"
@@ -283,7 +296,7 @@
                     tools:listitem="@layout/item_all_appointments_ui2_new" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_upcoming"
+                    android:id="@+id/layoutNoUpcomingAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -299,7 +312,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_cancelled_apps_title_all"
+                    android:id="@+id/tvCancelledTitleAppointments"
+                    android:contentDescription="cancelled appointments title with count textview in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
@@ -311,7 +325,7 @@
                     android:textSize="@dimen/title_lists_apps_text_size"
                     android:textStyle="bold" />
                 <include
-                    android:id="@+id/layout_no_data_found_cancelled"
+                    android:id="@+id/layoutNoCancelledAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -320,7 +334,8 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_all_cancelled_appointments"
+                    android:id="@+id/rvCancelledAppointments"
+                    android:contentDescription="cancelled appointments recyclerview in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lists_apps_margin_top"
@@ -336,7 +351,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_completed_apps_title_all"
+                    android:id="@+id/tvCompletedTitleAppointments"
+                    android:contentDescription="completed appointments title with count textview in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
@@ -349,7 +365,7 @@
                     android:textStyle="bold" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_completed"
+                    android:id="@+id/layoutNoCompletedAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -359,7 +375,8 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_all_completed_appointments"
+                    android:id="@+id/rvCompletedAppointments"
+                    android:contentDescription="completed appointments recyclerview in Appointments Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lists_apps_margin_top"
@@ -401,7 +418,8 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/view_nopatientfound_appointment"
+            android:id="@+id/flNoDataFoundAppointments"
+            android:contentDescription="no data found framelayout in Appointments Fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_relative"
@@ -416,7 +434,8 @@
                 android:layout_gravity="center_horizontal">
 
                 <ImageView
-                    android:id="@+id/search_bg_icon"
+                    android:id="@+id/ivSearchIconAppointments"
+                    android:contentDescription="search icon imageview in Appointments Fragment"
                     android:layout_width="@dimen/search_icon_bg_dimens"
                     android:layout_height="@dimen/search_icon_bg_dimens"
                     android:layout_centerHorizontal="true"
@@ -426,7 +445,7 @@
                     android:id="@+id/search_pat_not_found_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/search_bg_icon"
+                    android:layout_below="@+id/ivSearchIconAppointments"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="24dp"
                     android:lineSpacingExtra="4sp"
@@ -453,7 +472,8 @@
                     android:translationY="-1.58sp" />
 
                 <TextView
-                    android:id="@+id/frame_10007"
+                    android:id="@+id/tvAddPatientAppointments"
+                    android:contentDescription="add patient textview in Appointments Fragment"
                     android:layout_width="@dimen/search_addbtn_width"
                     android:layout_height="@dimen/search_add_btn_height"
                     android:layout_below="@id/search_pat_hint_txt"

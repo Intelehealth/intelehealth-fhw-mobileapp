@@ -114,7 +114,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
         else
             ((TextView) view.findViewById(R.id.tvRRValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
 
-        view.findViewById(R.id.btnNextVitalCollection).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode) {
