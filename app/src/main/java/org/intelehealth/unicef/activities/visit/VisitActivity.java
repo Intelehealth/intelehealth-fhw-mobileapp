@@ -21,18 +21,20 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.VisitCountInterface;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
  * Github: prajwalmw
  */
-public class VisitActivity extends FragmentActivity implements
+public class VisitActivity extends BaseActivity implements
         NetworkUtils.InternetCheckUpdateInterface, VisitCountInterface {
     private static final String TAG = VisitActivity.class.getName();
     private ImageButton ibBack, refresh;
@@ -42,10 +44,13 @@ public class VisitActivity extends FragmentActivity implements
 
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(this);
+        super.setLocale(sessionManager.getAppLanguage());
         setContentView(R.layout.activity_visit);
 
         networkUtils = new NetworkUtils(this, this);
