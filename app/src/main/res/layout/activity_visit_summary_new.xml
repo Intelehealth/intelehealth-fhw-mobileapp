@@ -93,7 +93,8 @@
                     android:layout_marginStart="@dimen/margin_5"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:src="@drawable/download_icon_toolbar" />
+                    android:src="@drawable/download_icon_toolbar"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/filter"
