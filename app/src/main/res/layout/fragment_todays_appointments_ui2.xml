@@ -98,7 +98,8 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/card_upcoming_appointments"
+                    android:id="@+id/llUpcomingTodaysAppointments"
+                    android:contentDescription="upcoming todays appointments linearlayout in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -139,7 +140,8 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/card_cancelled_appointments"
+                    android:id="@+id/llCancelledTodaysAppointments"
+                    android:contentDescription="cancelled todays appointments linearlayout in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -180,7 +182,8 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/card_completed_appointments"
+                    android:id="@+id/llCompletedTodaysAppointments"
+                    android:contentDescription="completed todays appointments linearlayout in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -245,7 +248,7 @@
                     android:textStyle="bold" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_upcoming"
+                    android:id="@+id/layoutNoUpcomingTodaysAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -287,7 +290,7 @@
                     android:textStyle="bold" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_cancelled"
+                    android:id="@+id/layoutNoCancelledTodaysAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -329,7 +332,7 @@
                     android:textStyle="bold" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_completed"
+                    android:id="@+id/layoutNoCompletedTodaysAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

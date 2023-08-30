@@ -83,9 +83,9 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         rvUpcomingApp = view.findViewById(R.id.rvUpcomingTodaysAppointments);
         rvCancelledApp = view.findViewById(R.id.rvCancelledTodaysAppointments);
         rvCompletedApp = view.findViewById(R.id.rvCompletedTodaysAppointments);
-        cardUpcomingAppointments = view.findViewById(R.id.card_upcoming_appointments);
-        cardCancelledAppointments = view.findViewById(R.id.card_cancelled_appointments);
-        cardCompletedAppointments = view.findViewById(R.id.card_completed_appointments);
+        cardUpcomingAppointments = view.findViewById(R.id.llUpcomingTodaysAppointments);
+        cardCancelledAppointments = view.findViewById(R.id.llCancelledTodaysAppointments);
+        cardCompletedAppointments = view.findViewById(R.id.llCompletedTodaysAppointments);
         layoutMainAppOptions = view.findViewById(R.id.layout_main_app_options);
         layoutUpcoming = view.findViewById(R.id.layout_upcoming);
         layoutCancelled = view.findViewById(R.id.layout_cancelled);
@@ -101,9 +101,9 @@ public class TodaysMyAppointmentsFragmentNew extends Fragment {
         tvCancelledAppsCountTitle = view.findViewById(R.id.tvCancelledTitleTodaysAppointments);
 
         //no data found
-        noDataFoundForUpcoming = view.findViewById(R.id.layout_no_data_found_upcoming);
-        noDataFoundForCompleted = view.findViewById(R.id.layout_no_data_found_completed);
-        noDataFoundForCancelled = view.findViewById(R.id.layout_no_data_found_cancelled);
+        noDataFoundForUpcoming = view.findViewById(R.id.layoutNoUpcomingTodaysAppointments);
+        noDataFoundForCompleted = view.findViewById(R.id.layoutNoCompletedTodaysAppointments);
+        noDataFoundForCancelled = view.findViewById(R.id.layoutNoCancelledTodaysAppointments);
 
         autotvSearch = view.findViewById(R.id.etSearchTodaysAppointments);
         ivClearText = view.findViewById(R.id.iv_clear_today);
