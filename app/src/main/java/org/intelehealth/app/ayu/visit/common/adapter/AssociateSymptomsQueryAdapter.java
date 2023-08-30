@@ -312,7 +312,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
         if (node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);

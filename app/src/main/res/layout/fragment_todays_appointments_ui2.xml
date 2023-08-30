@@ -19,7 +19,8 @@
             android:background="@drawable/ui2_background_input_field_new">
 
             <EditText
-                android:id="@+id/et_search_today"
+                android:id="@+id/etSearchTodaysAppointments"
+                android:contentDescription="search query input edittext in Todays Appointments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/iv_clear_all"
@@ -97,7 +98,8 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/card_upcoming_appointments"
+                    android:id="@+id/llUpcomingTodaysAppointments"
+                    android:contentDescription="upcoming todays appointments linearlayout in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -106,7 +108,8 @@
                     android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
-                        android:id="@+id/tv_upcoming_appointments_todays"
+                        android:id="@+id/tvUpcomingTodaysAppointments"
+                        android:contentDescription="upcoming count textview in Todays Appointments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -137,7 +140,8 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/card_cancelled_appointments"
+                    android:id="@+id/llCancelledTodaysAppointments"
+                    android:contentDescription="cancelled todays appointments linearlayout in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -146,7 +150,8 @@
                     android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
-                        android:id="@+id/tv_cancelled_appointments_todays"
+                        android:id="@+id/tvCancelledTodaysAppointments"
+                        android:contentDescription="cancelled count textview in Todays Appointments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -177,7 +182,8 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/card_completed_appointments"
+                    android:id="@+id/llCompletedTodaysAppointments"
+                    android:contentDescription="completed todays appointments linearlayout in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ui2_ic_bg_options_appointment"
@@ -186,7 +192,8 @@
                     android:padding="@dimen/card_apps_options_padding">
 
                     <TextView
-                        android:id="@+id/tv_completed_appointments_todays"
+                        android:id="@+id/tvCompletedTodaysAppointments"
+                        android:contentDescription="completed count textview in Todays Appointments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -227,7 +234,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_upcoming_apps_count_todays"
+                    android:id="@+id/tvUpcomingTitleTodaysAppointments"
+                    android:contentDescription="upcoming title textview in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
@@ -240,7 +248,7 @@
                     android:textStyle="bold" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_upcoming"
+                    android:id="@+id/layoutNoUpcomingTodaysAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -249,7 +257,8 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_upcoming_appointments"
+                    android:id="@+id/rvUpcomingTodaysAppointments"
+                    android:contentDescription="upcoming appointments recyclerview in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lists_apps_margin_top"
@@ -267,7 +276,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_cancelled_apps_count_todays"
+                    android:id="@+id/tvCancelledTitleTodaysAppointments"
+                    android:contentDescription="cancelled title textview in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
@@ -280,7 +290,7 @@
                     android:textStyle="bold" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_cancelled"
+                    android:id="@+id/layoutNoCancelledTodaysAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -290,7 +300,8 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_cancelled_appointments"
+                    android:id="@+id/rvCancelledTodaysAppointments"
+                    android:contentDescription="cancelled appointments recyclerview in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lists_apps_margin_top"
@@ -307,7 +318,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_completed_apps_count_todays"
+                    android:id="@+id/tvCompletedTitleTodaysAppointments"
+                    android:contentDescription="completed title textview in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/title_lists_apps_margin_start"
@@ -320,7 +332,7 @@
                     android:textStyle="bold" />
 
                 <include
-                    android:id="@+id/layout_no_data_found_completed"
+                    android:id="@+id/layoutNoCompletedTodaysAppointments"
                     layout="@layout/layout_no_data_found_ui2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -330,7 +342,8 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_completed_appointments"
+                    android:id="@+id/rvCompletedTodaysAppointments"
+                    android:contentDescription="completed appointments recyclerview in Todays Appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/lists_apps_margin_top"
