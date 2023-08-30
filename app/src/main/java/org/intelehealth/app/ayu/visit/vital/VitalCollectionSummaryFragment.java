@@ -131,7 +131,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
             }
         });
-        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnCancelVitalsSummary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);

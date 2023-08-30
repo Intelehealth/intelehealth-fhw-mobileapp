@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/cvPersonalDetails"
     android:contentDescription="Patient Details Screen Personal Details CardView"
-    android:layout_below="@+id/card_name_openmrsid"
+    android:layout_below="@+id/cvNameIDPatientDetails"
     android:layout_marginStart="@dimen/toolbar_margin_left"
     android:layout_marginTop="@dimen/margin_40dp"
     android:layout_marginEnd="@dimen/toolbar_margin_left"

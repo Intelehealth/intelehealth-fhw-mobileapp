@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/cvAddressDetails"
     android:contentDescription="Patient Details Screen Address Details CardView"
-    android:layout_below="@+id/cvPersonalDetails"
+    android:layout_below="@+id/personalCardPatientDetails"
     android:layout_marginStart="@dimen/toolbar_margin_left"
     android:layout_marginTop="@dimen/margin_20dp"
     android:layout_marginEnd="@dimen/toolbar_margin_left"

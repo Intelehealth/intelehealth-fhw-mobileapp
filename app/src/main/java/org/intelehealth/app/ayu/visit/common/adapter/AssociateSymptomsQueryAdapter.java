@@ -297,12 +297,12 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
 
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonInputText);
         //submitButton.setVisibility(View.GONE);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
 
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
 
         if(node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);

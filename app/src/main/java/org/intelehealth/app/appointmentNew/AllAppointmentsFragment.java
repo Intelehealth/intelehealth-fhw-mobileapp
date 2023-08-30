@@ -233,10 +233,10 @@ public class AllAppointmentsFragment extends Fragment {
 
 
         ivDateFilter = parentView.findViewById(R.id.ivCalendarAppointment);
-        rgFilterAppointments = frameLayoutFilter.findViewById(R.id.rg_filter_appointments);
-        rbUpcoming = frameLayoutFilter.findViewById(R.id.rb_upcoming_appointments);
-        rbCancelled = frameLayoutFilter.findViewById(R.id.rb_cancelled_appointments);
-        rbCompleted = frameLayoutFilter.findViewById(R.id.rb_completed_appointments);
+        rgFilterAppointments = frameLayoutFilter.findViewById(R.id.rgAllAppFilter);
+        rbUpcoming = frameLayoutFilter.findViewById(R.id.rbUpcomingAllAppFilter);
+        rbCancelled = frameLayoutFilter.findViewById(R.id.rbCancelledAllAppFilter);
+        rbCompleted = frameLayoutFilter.findViewById(R.id.rbCompletedAllAppFilter);
         tvResultsFor = parentView.findViewById(R.id.tv_results_for);
         scrollChips = parentView.findViewById(R.id.hsvAppointments);
 

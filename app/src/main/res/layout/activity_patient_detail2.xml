@@ -13,7 +13,6 @@
 
     <RelativeLayout
         android:id="@+id/rlToolbarPatientDetails"
-        android:contentDescription="Patient Details Toolbar RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentLeft="true"
@@ -21,12 +20,12 @@
         android:layout_alignParentRight="true"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginEnd="@dimen/toolbar_margin_right"
+        android:contentDescription="Patient Details Toolbar RelativeLayout"
         android:orientation="horizontal"
         android:weightSum="1">
 
         <ImageView
             android:id="@+id/ivBackArrowPatientDetails"
-            android:contentDescription="Patient Details Back Arrow ImageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -34,6 +33,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:background="@null"
+            android:contentDescription="Patient Details Back Arrow ImageView"
             android:padding="@dimen/margin_5"
             android:src="@drawable/ic_arrow_right"
             android:visibility="gone" />
@@ -41,10 +41,10 @@
         <!-- Label -->
         <TextView
             android:id="@+id/tvTitlePatientDetails"
-            android:contentDescription="Patient Details Title TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:contentDescription="Patient Details Title TextView"
             android:lineSpacingExtra="1sp"
             android:text="@string/title_activity_patient_detail"
             android:textAppearance="@style/label"
@@ -64,21 +64,21 @@
 
             <ImageView
                 android:id="@+id/ivRefreshPatientDetails"
-                android:contentDescription="Patient Details Refresh ImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_20dp"
                 android:background="@null"
+                android:contentDescription="Patient Details Refresh ImageView"
                 android:elevation="8dip"
                 android:onClick="syncNow"
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageView
                 android:id="@+id/ivCancelPatientDetails"
-                android:contentDescription="Patient Details Cancel ImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:contentDescription="Patient Details Cancel ImageView"
                 android:elevation="8dip"
                 android:src="@drawable/cancel_btn_cross" />
 
@@ -89,14 +89,14 @@
         android:id="@+id/svParentPatientDetails"
         android:contentDescription="Patient Details Parent ScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/rlStartVisitButtonPatientDetails"
         android:layout_below="@+id/rlToolbarPatientDetails"
         android:layout_marginBottom="@dimen/margin_16">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvNameIDPatientDetails"
