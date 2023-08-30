@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout_toolbar_home"
+    android:id="@+id/rvParentLayoutCommonToolbar"
+    android:contentDescription="Common Toolbar Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_back_arrow_common"
+        android:id="@+id/ivBackArrowCommonToolbar"
+        android:contentDescription="Common Toolbar Back Arrow ImageView"
         android:layout_width="@dimen/hamburger_width"
         android:layout_height="@dimen/hamburger_height"
         android:layout_marginTop="@dimen/hamburger_margin_top"
@@ -16,11 +18,12 @@
         app:srcCompat="@drawable/ui2_ic_arrow_back_new" />
 
     <TextView
-        android:id="@+id/tv_screen_title_common"
+        android:id="@+id/tvTitleCommonToolbar"
+        android:contentDescription="Common Toolbar Title TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/custom_tool_title_margin_top"
-        android:layout_toEndOf="@+id/iv_back_arrow_common"
+        android:layout_toEndOf="@+id/ivBackArrowCommonToolbar"
         android:text="@string/title"
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/common_header_text_size"
@@ -28,7 +31,8 @@
 
 
     <ImageView
-        android:id="@+id/imageview_is_internet_common"
+        android:id="@+id/ivRefreshCommonToolbar"
+        android:contentDescription="Common Toolbar Refresh ImageView"
         android:layout_width="@dimen/image_home_toolbar_icon_width"
         android:layout_height="@dimen/image_home_toolbar_icon_height"
         android:layout_alignParentEnd="true"

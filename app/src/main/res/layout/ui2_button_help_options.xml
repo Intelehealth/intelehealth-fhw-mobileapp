@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hsvCategoryButtonsFAQHelp"
+    android:contentDescription="FAQ and Help Screen Category Buttons HorizontalScrollView"
     android:layout_width="match_parent"
     android:scrollbars="none"
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/llCategoryButtonsFAQHelp"
+        android:contentDescription="FAQ and Help Screen Category Buttons LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/help_options_margin_top"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/btn_all_help"
+            android:id="@+id/tvAllCategoryFAQHelp"
+            android:contentDescription="FAQ and Help Screen All Category TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -28,7 +32,8 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_help"
+            android:id="@+id/tvCheckUpCategoryFAQHelp"
+            android:contentDescription="FAQ and Help Screen Check-Up Category TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -45,7 +50,8 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_appointment"
+            android:id="@+id/tvAppointmentCategoryFAQHelp"
+            android:contentDescription="FAQ and Help Screen Appointment Category TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -62,7 +68,8 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_registration"
+            android:id="@+id/tvRegistrationCategoryFAQHelp"
+            android:contentDescription="FAQ and Help Screen Registration Category TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -79,7 +86,8 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_visit"
+            android:id="@+id/tvVisitCategoryFAQHelp"
+            android:contentDescription="FAQ and Help Screen Visit Category TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

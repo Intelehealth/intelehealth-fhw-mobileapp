@@ -68,7 +68,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String intentTag;
     SearchView searchView;
     List<Node> complaints;
-    // CustomArrayAdapter listAdapter;
     ComplaintNodeListAdapter listAdapter;
     String encounterVitals;
     String encounterAdultIntials, EncounterAdultInitial_LatestVisit;

@@ -94,9 +94,9 @@ public class DialogListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            titleView = itemView.findViewById(R.id.title_tv);
-            statusImageView = itemView.findViewById(R.id.tv_check_status);
-            lineView = itemView.findViewById(R.id.line_view);
+            titleView = itemView.findViewById(R.id.tvTitleSimpleDialogListItem);
+            statusImageView = itemView.findViewById(R.id.ivCheckSimpleDialogListItem);
+            lineView = itemView.findViewById(R.id.viewDividerSimpleDialogListItem);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

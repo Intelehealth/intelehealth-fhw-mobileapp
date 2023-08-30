@@ -264,8 +264,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
         alertdialogBuilder.setView(convertView);
-        EditText editText = convertView.findViewById(R.id.editText_mobileno);
-        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+        EditText editText = convertView.findViewById(R.id.etMobileNumSharePrescDialog);
+        Button sharebtn = convertView.findViewById(R.id.btnSharePrescDialog);
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
         if(model.getPhone_number()!=null)

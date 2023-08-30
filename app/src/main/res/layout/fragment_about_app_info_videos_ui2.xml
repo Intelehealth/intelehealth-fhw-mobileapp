@@ -2,17 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llAppInfoFragment"
+    android:contentDescription="App Info Fragment LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLocation"
+        android:id="@+id/tilAppInfoFragment"
+        android:contentDescription="App Info Fragment TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <AutoCompleteTextView
-            android:id="@+id/autotv_select_location"
+            android:id="@+id/actvSearchAppInfoFragment"
+            android:contentDescription="App Info Fragment Search AutoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_input_fieldnew"
@@ -35,6 +39,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        android:id="@+id/tvMostSearchAppInfoFragment"
+        android:contentDescription="App Info Fragment Search 'Most Searched' TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/video_tv_most_searched_margin_top"
@@ -45,12 +51,15 @@
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_most_searched_info_health"
+        android:id="@+id/rvMostSearchAppInfoFragment"
+        android:contentDescription="App Info Fragment Search 'Most Searched' RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/videos_rv_videos_margin_top" />
 
     <TextView
+        android:id="@+id/tvMoreVideosAppInfoFragment"
+        android:contentDescription="App Info Fragment Search 'More Videos' TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/tv_more_videos_margin_top"
@@ -61,7 +70,8 @@
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_more_videos_info_health"
+        android:id="@+id/rvMoreVideosAppInfoFragment"
+        android:contentDescription="App Info Fragment Search 'More Videos' RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/rv_more_videos_margin_top" />

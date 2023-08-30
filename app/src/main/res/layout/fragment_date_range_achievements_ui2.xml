@@ -3,15 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/svParentDRAchievements"
+    android:contentDescription="Date Range Achievements Parent ScrollView"
     android:fillViewport="true">
 
     <LinearLayout
+        android:id="@+id/llParentDRAchievements"
+        android:contentDescription="Date Range Achievements Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/date_frag_parent_margin_top"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llDateDRAchievements"
+            android:contentDescription="Date Range Achievements Date LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/date_frag_layout_margin_start"
@@ -20,7 +26,8 @@
             android:weightSum="2">
 
             <LinearLayout
-                android:id="@+id/layout_start_date"
+                android:id="@+id/llStartDateDRAchievements"
+                android:contentDescription="Date Range Achievements Start Date LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -28,6 +35,8 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvFromDRAchievements"
+                    android:contentDescription="Date Range Achievements 'From' TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.02"
@@ -36,7 +45,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_start_date"
+                    android:id="@+id/tvStartDateDRAchievements"
+                    android:contentDescription="Date Range Achievements 'Start Date' TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/date_frag_date_margin_top"
@@ -53,7 +63,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_end_date"
+                android:id="@+id/llEndDateDRAchievements"
+                android:contentDescription="Date Range Achievements End Date LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/date_frag_layout2_margin_start"
@@ -61,6 +72,8 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvToDRAchievements"
+                    android:contentDescription="Date Range Achievements 'To' TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.02"
@@ -69,7 +82,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_end_date"
+                    android:id="@+id/tvEndDateDRAchievements"
+                    android:contentDescription="Date Range Achievements 'End Date' TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -89,6 +103,8 @@
 
 
         <LinearLayout
+            android:id="@+id/llChild1DRAchievements"
+            android:contentDescription="Date Range Achievements Child 1 LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card1_common_achieve_margin_start"
@@ -99,6 +115,8 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/llPatientAddedDRAchievements"
+                android:contentDescription="Date Range Achievements Patient Added LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card1_achieve_margin_end"
@@ -108,11 +126,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivPatientAddedIconDRAchievements"
+                    android:contentDescription="Date Range Achievements Patient Added Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_icon_user_add" />
 
                 <TextView
+                    android:id="@+id/tvPatientAddedDescDRAchievements"
+                    android:contentDescription="Date Range Achievements Patient Added Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -120,7 +142,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_range_patients_created"
+                    android:id="@+id/tvPatientAddedValueDRAchievements"
+                    android:contentDescription="Date Range Achievements Patient Added Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -135,6 +158,8 @@
 
 
             <LinearLayout
+                android:id="@+id/llVisitCompletedDRAchievements"
+                android:contentDescription="Date Range Achievements Visit Completed LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
@@ -144,11 +169,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivVisitCompletedIconDRAchievements"
+                    android:contentDescription="Date Range Achievements Visit Completed Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_icon_visits_completed" />
 
                 <TextView
+                    android:id="@+id/tvVisitCompletedDescDRAchievements"
+                    android:contentDescription="Date Range Achievements Visit Completed Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -156,7 +185,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_range_visits_ended"
+                    android:id="@+id/tvVisitCompletedValueDRAchievements"
+                    android:contentDescription="Date Range Achievements Visit Completed Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -173,6 +203,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llChild2DRAchievements"
+            android:contentDescription="Daily Achievements Child 2 LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card2_common_achieve_margin_start"
@@ -182,6 +214,8 @@
 
 
             <LinearLayout
+                android:id="@+id/llSatisfactionScoreDRAchievements"
+                android:contentDescription="Date Range Achievements Satisfaction Score LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card1_achieve_margin_end"
@@ -191,11 +225,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivSatisfactionScoreIconDRAchievements"
+                    android:contentDescription="Date Range Achievements Satisfaction Score Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_star_score" />
 
                 <TextView
+                    android:id="@+id/tvSatisfactionScoreDescDRAchievements"
+                    android:contentDescription="Date Range Achievements Satisfaction Score Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -203,7 +241,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_average_patient_satisfaction_score"
+                    android:id="@+id/tvSatisfactionScoreValueDRAchievements"
+                    android:contentDescription="Date Range Achievements Satisfaction Score Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -217,6 +256,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llTimeSpentDRAchievements"
+                android:contentDescription="Date Range Achievements Time Spent LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
@@ -226,11 +267,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivTimeSpentIconDRAchievements"
+                    android:contentDescription="Date Range Achievements Time Spent Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_time_spent" />
 
                 <TextView
+                    android:id="@+id/tvTimeSpentDescDRAchievements"
+                    android:contentDescription="Date Range Achievements Time Spent Desc TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -238,7 +283,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_time_spent_in_range"
+                    android:id="@+id/tvTimeSpentValueDRAchievements"
+                    android:contentDescription="Date Range Achievements Time Spent Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"

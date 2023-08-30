@@ -7,10 +7,14 @@
     android:layout_marginTop="@dimen/margin_10"
     android:layout_marginEnd="@dimen/margin_30"
     android:layout_marginBottom="@dimen/margin_10"
+    android:id="@+id/cvParentAskReasonDialog"
+    android:contentDescription="Ask Reason Dialog Parent CardView"
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp">
 
     <LinearLayout
+        android:id="@+id/llParentAskReasonDialog"
+        android:contentDescription="Ask Reason Dialog Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_15"
@@ -21,14 +25,16 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/iv_dialog_image"
+            android:id="@+id/ivIconAskReasonDialog"
+            android:contentDescription="Ask Reason Dialog Icon ImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/iv_icon_height"
             android:layout_marginTop="24dp"
             android:src="@drawable/ui2_ic_book_app_red" />
 
         <TextView
-            android:id="@+id/titleTv_new"
+            android:id="@+id/tvTitleAskReasonDialog"
+            android:contentDescription="Ask Reason Dialog Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_title_margin_top"
@@ -38,14 +44,16 @@
             android:textSize="16sp" />
 
         <RadioGroup
-            android:id="@+id/rg_ask_reason"
+            android:id="@+id/rgAskReasonDialog"
+            android:contentDescription="Ask Reason Dialog RadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <RadioButton
-                android:id="@+id/rb_no_doctor"
+                android:id="@+id/rbNoDocAskReasonDialog"
+                android:contentDescription="Ask Reason Dialog No Doctor RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/radio_gender_margin_end"
@@ -66,7 +74,8 @@
                 android:background="@color/notifi_divider_color" />
 
             <RadioButton
-                android:id="@+id/rb_no_patient"
+                android:id="@+id/rbNoPatientAskReasonDialog"
+                android:contentDescription="Ask Reason Dialog No Patient RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_12"
@@ -89,7 +98,8 @@
                 android:background="@color/notifi_divider_color" />
 
             <RadioButton
-                android:id="@+id/rb_other_ask"
+                android:id="@+id/rbOthersAskReasonDialog"
+                android:contentDescription="Ask Reason Dialog Others RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_12"
@@ -106,7 +116,8 @@
         </RadioGroup>
 
         <EditText
-            android:id="@+id/reasonEtv_new"
+            android:id="@+id/etOtherAskReasonDialog"
+            android:contentDescription="Ask Reason Dialog Other EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -123,9 +134,10 @@
 
 
         <RelativeLayout
+            android:id="@+id/rlButtonsAskReasonDialog"
+            android:contentDescription="Ask Reason Dialog Buttons RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_subtitle"
             android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="24dp"
@@ -133,7 +145,8 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_cancel_ask"
+                android:id="@+id/btnCancelAskReasonDialog"
+                android:contentDescription="Ask Reason Dialog Cancel Button"
                 android:layout_width="74dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -148,10 +161,11 @@
                 android:textSize="14sp" />
 
             <Button
-                android:id="@+id/btn_save_ask"
+                android:id="@+id/btnSaveAskReasonDialog"
+                android:contentDescription="Ask Reason Dialog Save Button"
                 android:layout_width="74dp"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/btn_cancel_ask"
+                android:layout_toEndOf="@id/btnCancelAskReasonDialog"
                 android:background="@drawable/darkblue_bg_button"
                 android:gravity="center"
                 android:paddingLeft="10dp"

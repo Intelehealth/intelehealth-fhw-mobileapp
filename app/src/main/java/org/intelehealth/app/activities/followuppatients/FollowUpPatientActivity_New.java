@@ -122,21 +122,21 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     private TextView mEmptyTextView;
 
     private void initViews() {
-        mTodayRelativeLayout = findViewById(R.id.rl_today);
-        mWeekRelativeLayout = findViewById(R.id.rl_week);
-        mMonthRelativeLayout = findViewById(R.id.rl_month);
-        mBodyNestedScrollView = findViewById(R.id.nestedscrollview);
-        mEmptyTextView = findViewById(R.id.empty_view_tv);
+        mTodayRelativeLayout = findViewById(R.id.rlTodayListFollowUpScreen);
+        mWeekRelativeLayout = findViewById(R.id.rlWeekListFollowUpScreen);
+        mMonthRelativeLayout = findViewById(R.id.rlMonthListFollowUpScreen);
+        mBodyNestedScrollView = findViewById(R.id.nsvFollowUpScreen);
+        mEmptyTextView = findViewById(R.id.tvNoVisitsFollowUpScreen);
 
-        toolbar_title = findViewById(R.id.toolbar_title);
-        today_nodata = findViewById(R.id.today_nodata);
-        week_nodata = findViewById(R.id.week_nodata);
-        month_nodata = findViewById(R.id.month_nodata);
-        rv_today = findViewById(R.id.recycler_today);
-        rv_week = findViewById(R.id.rv_thisweek);
-        rv_month = findViewById(R.id.rv_thismonth);
-        refresh = findViewById(R.id.refresh);
-        ImageButton ibButtonBack = findViewById(R.id.vector);
+        toolbar_title = findViewById(R.id.tvTitleFollowUpScreen);
+        today_nodata = findViewById(R.id.tvTodayNoDataHeading1FollowUpScreen);
+        week_nodata = findViewById(R.id.tvWeekNoDataHeadingFollowUpScreen);
+        month_nodata = findViewById(R.id.tvMonthNoDataHeadingFollowUpScreen);
+        rv_today = findViewById(R.id.rvTodayListFollowUpScreen);
+        rv_week = findViewById(R.id.rvWeekListFollowUpScreen);
+        rv_month = findViewById(R.id.rvMonthListFollowUpScreen);
+        refresh = findViewById(R.id.ivRefreshFollowUpScreen);
+        ImageButton ibButtonBack = findViewById(R.id.ivBackArrowFollowUpScreen);
         ibButtonBack.setOnClickListener(v -> {
             Intent intent = new Intent(FollowUpPatientActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);

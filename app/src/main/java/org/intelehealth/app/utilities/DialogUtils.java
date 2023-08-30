@@ -125,11 +125,11 @@ public class DialogUtils {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_message, null);
         alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+        ImageView icon = convertView.findViewById(R.id.ivIconCommonMessageDialog);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitleCommonMessageDialog);
+        TextView dialog_subtitle = convertView.findViewById(R.id.tvSubtitleCommonMessageDialog);
+        Button positive_btn = convertView.findViewById(R.id.btnPositiveCommonMessageDialog);
+        Button negative_btn = convertView.findViewById(R.id.btnNegativeCommonMessageDialog);
 
         if (iconResource == 0) icon.setVisibility(View.GONE);
         if(message== null || message.equalsIgnoreCase("")) dialog_subtitle.setVisibility(View.GONE);
@@ -167,12 +167,12 @@ public class DialogUtils {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_message_with_chips_grid, null);
         alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
-        RecyclerView recyclerView = convertView.findViewById(R.id.rcv_selected_container);
+        ImageView icon = convertView.findViewById(R.id.ivIconCommonMessageDialogWithChips);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitleCommonMessageDialogWithChips);
+        TextView dialog_subtitle = convertView.findViewById(R.id.tvSubtitleCommonMessageDialogWithChips);
+        Button positive_btn = convertView.findViewById(R.id.btnPositiveCommonMessageDialogWithChips);
+        Button negative_btn = convertView.findViewById(R.id.btnNegativeCommonMessageDialogWithChips);
+        RecyclerView recyclerView = convertView.findViewById(R.id.rvCommonMessageDialogWithChips);
 
         icon.setImageResource(iconResource);
         dialog_title.setText(title);
@@ -217,10 +217,10 @@ public class DialogUtils {
         View dialogView = inflater.inflate(R.layout.dialog_error_and_button, null);
         builder.setView(dialogView);
 
-        ImageView dialogIcon = dialogView.findViewById(R.id.dialog_icon);
-        TextView tvTitle = dialogView.findViewById(R.id.dialog_title);
-        TextView tvSubtitle = dialogView.findViewById(R.id.dialog_subtitle);
-        Button tryAgainButton = dialogView.findViewById(R.id.positive_btn);
+        ImageView dialogIcon = dialogView.findViewById(R.id.ivIconTryAgainDialog);
+        TextView tvTitle = dialogView.findViewById(R.id.tvTitleTryAgainDialog);
+        TextView tvSubtitle = dialogView.findViewById(R.id.tvSubtitleTryAgainDialog);
+        Button tryAgainButton = dialogView.findViewById(R.id.btnTryAgainDialog);
 
         dialogIcon.setImageDrawable(drawable);
         tvTitle.setText(title);
@@ -235,8 +235,8 @@ public class DialogUtils {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_loading_message, null);
         alertdialogBuilder.setView(convertView);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitleCommonLoadingDialog);
+        TextView dialog_subtitle = convertView.findViewById(R.id.tvSubtitleCommonLoadingDialog);
         dialog_title.setText(title);
         dialog_subtitle.setText(message);
         AlertDialog alertDialog = alertdialogBuilder.create();

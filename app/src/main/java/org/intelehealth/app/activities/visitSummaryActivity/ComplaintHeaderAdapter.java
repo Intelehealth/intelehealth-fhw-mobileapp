@@ -53,7 +53,7 @@ public class ComplaintHeaderAdapter extends RecyclerView.Adapter<ComplaintHeader
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.cc_textview);
+            textView = itemView.findViewById(R.id.tvChiefComplaintHeader);
         }
     }
 }

@@ -425,7 +425,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
             networkFailureDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-            Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
+            Button tryAgainButton = networkFailureDialog.findViewById(R.id.btnTryAgainDialog);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
                 networkFailureDialog.dismiss();
                 checkNetworkConnectionAndPerformSync();
@@ -511,9 +511,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void updateSimpleDialog(Dialog dialog, String title, String subtitle, Drawable dialogIcon) {
-        ImageView icon = dialog.findViewById(R.id.dialog_icon);
-        TextView dialogTitle = dialog.findViewById(R.id.dialog_title);
-        TextView dialogSubtitle = dialog.findViewById(R.id.dialog_subtitle);
+        ImageView icon = dialog.findViewById(R.id.ivIconPatientRegisteredDialog);
+        TextView dialogTitle = dialog.findViewById(R.id.tvTitlePatientRegisteredDialog);
+        TextView dialogSubtitle = dialog.findViewById(R.id.tvSubtitlePatientRegisteredDialog);
 
         icon.setImageDrawable(dialogIcon);
         dialogTitle.setText(title);
@@ -523,17 +523,17 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void initUI() {
         tipWindow = new TooltipWindow(HomeScreenActivity_New.this);
         resetAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
-        survey_snackbar_cv = findViewById(R.id.survey_snackbar_cv);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        tvAppVersion = findViewById(R.id.tv_app_version);
-        menuResetApp = findViewById(R.id.layout_reset_app);
-        imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
-        toolbarHome = findViewById(R.id.toolbar_home);
-        tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
-        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
-        imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
-        imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
-        ivHamburger = toolbarHome.findViewById(R.id.iv_hamburger);
+        survey_snackbar_cv = findViewById(R.id.snackbarSurveyHomeScreen);
+        mDrawerLayout = findViewById(R.id.dlHomeScreen);
+        tvAppVersion = findViewById(R.id.tvAppVersionHomeScreen);
+        menuResetApp = findViewById(R.id.llResetAppHomeScreen);
+        imageview_notifications_home = findViewById(R.id.ivNotificationCustomToolbar);
+        toolbarHome = findViewById(R.id.toolbarNewAppBar);
+        tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tvLocationNameCustomToolbar);
+        tvAppLastSync = toolbarHome.findViewById(R.id.tvAppSyncTimeCustomToolbar);
+        imageViewIsInternet = toolbarHome.findViewById(R.id.ivInternetCustomToolbar);
+        imageViewIsNotification = toolbarHome.findViewById(R.id.ivNotificationCustomToolbar);
+        ivHamburger = toolbarHome.findViewById(R.id.ivBackArrowCustomToolbar);
         ivHamburger.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_hamburger));
 
         ivHamburger.setOnClickListener(new View.OnClickListener() {
@@ -548,13 +548,13 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         //isNetworkAvailable(this);
 
         //nav header
-        mNavigationView = findViewById(R.id.navigationview);
+        mNavigationView = findViewById(R.id.nvHomeScreen);
         View headerView = mNavigationView.getHeaderView(0);
-        ivCloseDrawer = headerView.findViewById(R.id.iv_close_drawer);
-        ivProfileIcon = headerView.findViewById(R.id.iv_profile_icon);
-        tvUsername = headerView.findViewById(R.id.tv_loggedin_username);
-        tvUserId = headerView.findViewById(R.id.tv_userid);
-        tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
+        ivCloseDrawer = headerView.findViewById(R.id.ivCloseNavHeaderHome);
+        ivProfileIcon = headerView.findViewById(R.id.ivProfileIconNavHeaderHome);
+        tvUsername = headerView.findViewById(R.id.tvUsernameNavHeaderHome);
+        tvUserId = headerView.findViewById(R.id.tvUserIDNavHeaderHome);
+        tvEditProfile = headerView.findViewById(R.id.tvEditProfileNavHeaderHome);
 
         setupDrawerContent(mNavigationView);
 
@@ -601,10 +601,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }*/
 
         //bottom nav
-        bottomNav = findViewById(R.id.bottom_nav_home);
+        bottomNav = findViewById(R.id.bnvHomeScreen);
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        bottomNav.getMenu().findItem(R.id.bottomNavHome).setChecked(true);
 
 
        /* String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -836,7 +836,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 getSupportFragmentManager().popBackStackImmediate(tag, 0);
             }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment, tag);
+            transaction.replace(R.id.flContainerNewAppBar, fragment, tag);
             transaction.addToBackStack(tag);
             transaction.commit();
             mLastTag = tag;
@@ -896,7 +896,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         Class fragmentClass = null;
         String tag = "";
         switch (menuItem.getItemId()) {
-            case R.id.menu_my_achievements:
+            case R.id.myAchievementDrawerMenuHomeScreen:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
                 tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 tvAppLastSync.setVisibility(View.GONE);
@@ -906,20 +906,20 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                 fragment = new MyAchievementsFragment();
                 tag = TAG_ACHIEVEMENT;
                 break;
-            case R.id.menu_video_lib:
+            case R.id.videoLibDrawerMenuHomeScreen:
                 tvTitleHomeScreenCommon.setText(getResources().getString(R.string.videos));
                 fragment = new InformativeVideosFragment_New();
                 break;
-            case R.id.menu_change_language:
+            case R.id.changeLangDrawerMenuHomeScreen:
                 Intent intent = new Intent(HomeScreenActivity_New.this, Language_ProtocolsActivity.class);
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.menu_about_us:
+            case R.id.aboutUsDrawerMenuHomeScreen:
                 Intent i = new Intent(HomeScreenActivity_New.this, AboutUsActivity.class);
                 startActivity(i);
                 break;
-            case R.id.menu_logout:
+            case R.id.logoutDrawerMenuHomeScreen:
                 wantToLogoutFromApp(this, getResources().getString(R.string.menu_option_logout), getResources().getString(R.string.sure_to_logout), getResources().getString(R.string.yes), getResources().getString(R.string.no));
                 break;
             default:
@@ -968,7 +968,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
         }
         checkAppVer();  //auto-update feature.
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        bottomNav.getMenu().findItem(R.id.bottomNavHome).setChecked(true);
         setLocale("onResume");
         super.onResume();
     }
@@ -1214,14 +1214,14 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             Fragment fragment;
 
             switch (item.getItemId()) {
-                case R.id.bottom_nav_home_menu:
+                case R.id.bottomNavHome:
                     Log.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                     fragment = new HomeFragment_New();
                     ivHamburger.setVisibility(View.VISIBLE);
                     loadFragment(fragment, TAG_HOME);
                     return true;
-                case R.id.bottom_nav_achievements:
+                case R.id.bottomNavAchievements:
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
@@ -1232,7 +1232,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     //loadFragmentForBottomNav(fragment);
                     loadFragment(fragment, TAG_ACHIEVEMENT);
                     return true;
-                case R.id.bottom_nav_help:
+                case R.id.bottomNavHelp:
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
@@ -1243,7 +1243,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
                     //loadFragmentForBottomNav(fragment);
                     loadFragment(fragment, TAG_HELP);
                     return true;
-                case R.id.bottom_nav_add_patient:
+                case R.id.bottomNavAddPatient:
                     Intent intent = new Intent(HomeScreenActivity_New.this, PrivacyPolicyActivity_New.class);
                     intent.putExtra("intentType", "navigateFurther");
                     intent.putExtra("add_patient", "add_patient");
@@ -1410,7 +1410,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         // put string value
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.flContainerNewAppBar);
         assert currentFragment != null;
         outState.putString("currentFragment", currentFragment.getTag());
         super.onSaveInstanceState(outState);
@@ -1430,17 +1430,17 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (tag.equalsIgnoreCase(TAG_HOME)) {
             fragment = new HomeFragment_New();
             ivHamburger.setVisibility(View.VISIBLE);
-            bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+            bottomNav.getMenu().findItem(R.id.bottomNavHome).setChecked(true);
         } else if (tag.equalsIgnoreCase(TAG_HELP)) {
             fragment = new HelpFragment_New();
-            bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
+            bottomNav.getMenu().findItem(R.id.bottomNavHelp).setChecked(true);
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
             ivHamburger.setVisibility(View.GONE);
             imageview_notifications_home.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
         } else if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
             fragment = new MyAchievementsFragment();
-            bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
+            bottomNav.getMenu().findItem(R.id.bottomNavAchievements).setChecked(true);
             ivHamburger.setVisibility(View.GONE);
             imageview_notifications_home.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);

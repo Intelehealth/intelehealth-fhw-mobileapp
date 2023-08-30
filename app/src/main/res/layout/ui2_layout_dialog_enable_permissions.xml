@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvParentPermissionRequiredDialog"
+    android:contentDescription="Permission Required Dialog Parent CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardElevation="6dp">
 
     <LinearLayout
+        android:id="@+id/llParentPermissionRequiredDialog"
+        android:contentDescription="Permission Required Dialog Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/ivIconPermissionRequiredDialog"
+            android:contentDescription="Permission Required Dialog Icon ImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/iv_icon_height"
             android:layout_marginTop="@dimen/iv_icon_margin_top"
             android:src="@drawable/ui2_ic_warning_internet" />
 
         <TextView
+            android:id="@+id/tvTitlePermissionRequiredDialog"
+            android:contentDescription="Permission Required Dialog Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_title_margin_top"
@@ -26,6 +34,8 @@
             android:textSize="@dimen/internet_warning_title" />
 
         <TextView
+            android:id="@+id/tvSubtitlePermissionRequiredDialog"
+            android:contentDescription="Permission Required Dialog Subtitle TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/tv_internet_desc_margin_top"
@@ -37,7 +47,8 @@
             android:textSize="@dimen/internet_warning_note" />
 
         <Button
-            android:id="@+id/btn_okay"
+            android:id="@+id/btnOkayPermissionRequiredDialog"
+            android:contentDescription="Permission Required Dialog Okay Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

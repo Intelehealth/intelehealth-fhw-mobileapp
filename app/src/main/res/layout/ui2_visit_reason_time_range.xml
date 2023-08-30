@@ -6,7 +6,8 @@
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <LinearLayout
-        android:id="@+id/ll_top"
+        android:id="@+id/llSpinnersVisitReasonTimeRange"
+        android:contentDescription="Visit Reason Time Range Spinnners LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -20,7 +21,8 @@
             android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/sp_number_range"
+                android:id="@+id/acsNumberPickerVisitReasonTimeRange"
+                android:contentDescription="Visit Reason Time Range Number Picker AppCompatSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:background="@drawable/edittext_border"
@@ -47,7 +49,8 @@
             android:layout_weight="1">
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/sp_duration_type"
+                android:id="@+id/acsDurationTypeVisitReasonTimeRange"
+                android:contentDescription="Visit Reason Time Range Duration Type AppCompatSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:background="@drawable/edittext_border"
@@ -70,10 +73,11 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btnSubmitVisitReasonTimeRange"
+        android:contentDescription="Visit Reason Time Range Submit Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_top"
+        android:layout_below="@+id/llSpinnersVisitReasonTimeRange"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
@@ -85,13 +89,14 @@
         android:textSize="@dimen/card_content_normal_text_size" />
 
     <Button
-        android:id="@+id/btn_skip"
+        android:id="@+id/btnSkipVisitReasonTimeRange"
+        android:contentDescription="Visit Reason Time Range Skip Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_top"
+        android:layout_below="@+id/llSpinnersVisitReasonTimeRange"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_24"
-        android:layout_toStartOf="@+id/btn_submit"
+        android:layout_toStartOf="@+id/btnSubmitVisitReasonTimeRange"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:drawablePadding="8dip"
         android:paddingHorizontal="@dimen/margin_16"

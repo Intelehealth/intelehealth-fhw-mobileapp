@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
+    android:id="@+id/rlParentNoPatientFound"
+    android:contentDescription="No Patient Found Placeholder Parent RelativeLayout"
     android:visibility="gone"
     tools:visibility="visible">
 
@@ -12,22 +14,26 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:id="@+id/rlChildNoPatientFound"
+            android:contentDescription="No Patient Found Placeholder Child RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal">
 
             <ImageView
-                android:id="@+id/search_bg_icon"
+                android:id="@+id/ivIconNoPatientFound"
+                android:contentDescription="No Patient Found Placeholder Icon ImageView"
                 android:layout_width="@dimen/search_icon_bg_dimens"
                 android:layout_height="@dimen/search_icon_bg_dimens"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/ic_search_icon_background" />
 
             <TextView
-                android:id="@+id/search_pat_not_found_txt"
+                android:id="@+id/tvTitleNoPatientFound"
+                android:contentDescription="No Patient Found Placeholder Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/search_bg_icon"
+                android:layout_below="@+id/ivIconNoPatientFound"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="24dp"
                 android:lineSpacingExtra="4sp"
@@ -38,10 +44,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/search_pat_hint_txt"
+                android:id="@+id/tvSubtitleNoPatientFound"
+                android:contentDescription="No Patient Found Placeholder Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/search_pat_not_found_txt"
+                android:layout_below="@+id/tvTitleNoPatientFound"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="@dimen/fu_margin_start"
@@ -54,11 +61,12 @@
                 android:translationY="-1.58sp" />
 
             <LinearLayout
-                android:id="@+id/add_new_patientTV"
+                android:id="@+id/llAddNewPatientNoPatientFound"
+                android:contentDescription="No Patient Found Placeholder 'Add New Patient' LinearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_end_visit"
-                android:layout_below="@id/search_pat_hint_txt"
+                android:layout_below="@id/tvSubtitleNoPatientFound"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/toolbar_margin_right"
                 android:layout_marginBottom="@dimen/margin_20dp"
@@ -67,12 +75,16 @@
                 android:paddingVertical="10dp">
 
                 <ImageView
+                    android:id="@+id/ivIconAddNewPatientNoPatientFound"
+                    android:contentDescription="No Patient Found Placeholder 'Add New Patient' Icon ImageView"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/user_plus"
                     android:layout_gravity="center"/>
 
                 <TextView
+                    android:id="@+id/tvAddNewPatientTextNoPatientFound"
+                    android:contentDescription="No Patient Found Placeholder 'Add New Patient' Text TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_activity_identification"

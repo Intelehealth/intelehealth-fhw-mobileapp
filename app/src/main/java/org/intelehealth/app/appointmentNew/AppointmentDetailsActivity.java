@@ -135,14 +135,14 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     private ObjectAnimator syncAnimator;
 
     private void initUI() {
-        View toolbar = findViewById(R.id.toolbar_common);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        View toolbar = findViewById(R.id.toolbarAppointmentDetails);
+        TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
+        ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
         ivIsInternet.setOnClickListener(v -> {
             SyncUtils.syncNow(AppointmentDetailsActivity.this, ivIsInternet, syncAnimator);
         });
         tvTitle.setText(getResources().getString(R.string.appointment_details));
-        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
+        ImageView ivBack = toolbar.findViewById(R.id.ivBackArrowCommonToolbar);
         ivBack.setOnClickListener(v -> {
             Intent intent = new Intent(AppointmentDetailsActivity.this, MyAppointmentActivity.class);
             startActivity(intent);
@@ -167,44 +167,44 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
         //ibEdit = findViewById(R.id.edit_patient_appointment);
 
-        mScheduleAppointmentTextView = findViewById(R.id.btn_schedule_appointment);
+        mScheduleAppointmentTextView = findViewById(R.id.btnScheduleAppointmentDetails);
 
-        stateAppointmentStarted = findViewById(R.id.state_appointment_started);
-        stateAppointmentPrescription = findViewById(R.id.state_prescription_appointment);
+        stateAppointmentStarted = findViewById(R.id.rlCurrentAppointmentDetails);
+        stateAppointmentPrescription = findViewById(R.id.rlPrescAppointmentDetails);
         //this is for remind doctor functionality
-        layoutPrescButtons = findViewById(R.id.layout_presc_buttons);
-        layoutContactAction = findViewById(R.id.layout_contact_action);
-        tvPrescStatus = findViewById(R.id.tv_presc_status_new);
-        ivPrescription = findViewById(R.id.iv_prescription111);
-        btnEndVisit = findViewById(R.id.btn_end_visit_appointment);
-        layoutSummaryBtns = findViewById(R.id.layout_visit_summary_buttons);
-        layoutPrevScheduledOn = findViewById(R.id.state_prev_scheduled_on);
-        layoutPatientHistory = findViewById(R.id.layout_patient_history);
-        tvRescheduleOnTitle = findViewById(R.id.tv_reschedule_on);
-        tvAppointmentTime = findViewById(R.id.tv_appointment_time_details);
-        ivDrawerPrescription = findViewById(R.id.iv_drawer_prescription);
-        fabHelp = findViewById(R.id.fab_help_appointment);
-        layoutEndVisit = findViewById(R.id.layout_end_visit);
-        layoutVisitSummary = findViewById(R.id.layout_visit_summary);
-        ivProfileImage = findViewById(R.id.profile_image_app_details);
-        priorityTag = findViewById(R.id.priority_tag_app_details);
-        tvPatientName = findViewById(R.id.patname_txt);
-        tvOpenMrsID = findViewById(R.id.openmrsID_txt);
-        tvGenderAgeText = findViewById(R.id.gender_age_txt);
-        tvChiefComplaintTxt = findViewById(R.id.chief_complaint_txt);
-        tvVisitId = findViewById(R.id.visitID_appointment);
-        tvVisitStartDate = findViewById(R.id.visit_startDate_appointment);
-        tvVisitStartTime = findViewById(R.id.tv_starttime_appointment);
-        tvDrSpeciality = findViewById(R.id.dr_speciality_appointment);
-        ivDrawerVisitSummary = findViewById(R.id.iv_drawer_visit_summary);
-        btnRescheduleAppointment = findViewById(R.id.btn_reschedule_appointment);
-        btnCancelAppointment = findViewById(R.id.btn_cancel_appointment);
-        ivCallPatient = findViewById(R.id.iv_call_patient_app);
-        ivWhatsappPatient = findViewById(R.id.iv_whatsapp_patient_app);
-        tvPrevAppDate = findViewById(R.id.tv_prev_app_date);
-        tvPrevAppTime = findViewById(R.id.tv_prev_app_time);
-        ivWhatsappDoctor = findViewById(R.id.iv_whatsapp_doctor_app);
-        ivCallDoctor = findViewById(R.id.iv_call_doctor_app);
+        layoutPrescButtons = findViewById(R.id.llButtons2AppointmentDetails);
+        layoutContactAction = findViewById(R.id.llChatCallDocAppointmentDetails);
+        tvPrescStatus = findViewById(R.id.tvPrescPendingFindPatientListItem);
+        ivPrescription = findViewById(R.id.ivPrescIconAppointmentDetails);
+        btnEndVisit = findViewById(R.id.btnEndVisitAppointmentDetails);
+        layoutSummaryBtns = findViewById(R.id.llButtons1AppointmentDetails);
+        layoutPrevScheduledOn = findViewById(R.id.rlPreviousAppointmentDetails);
+        layoutPatientHistory = findViewById(R.id.rlPatientHistoryAppointmentDetails);
+        tvRescheduleOnTitle = findViewById(R.id.tvRescheduledOnAppointmentDetails);
+        tvAppointmentTime = findViewById(R.id.tvStartedInAppointmentDetails);
+        ivDrawerPrescription = findViewById(R.id.ivPrescForwardArrowAppointmentDetails);
+        fabHelp = findViewById(R.id.fabHelpAppointmentDetails);
+        layoutEndVisit = findViewById(R.id.llEndVisitAppointmentDetails);
+        layoutVisitSummary = findViewById(R.id.rlVisitSummaryAppointmentDetails);
+        ivProfileImage = findViewById(R.id.ivPatientProfileImageAppointmentDetails);
+        priorityTag = findViewById(R.id.ivPriorityTagAppointmentDetails);
+        tvPatientName = findViewById(R.id.tvPatientNameAppointmentDetails);
+        tvOpenMrsID = findViewById(R.id.tvPatientOpenMRSIDAppointmentDetails);
+        tvGenderAgeText = findViewById(R.id.tvPatientGenderAgeAppointmentDetails);
+        tvChiefComplaintTxt = findViewById(R.id.tvChiefComplaintAppointmentDetails);
+        tvVisitId = findViewById(R.id.tvVisitIDAppointmentDetails);
+        tvVisitStartDate = findViewById(R.id.tvCurrentDateAppointmentDetails);
+        tvVisitStartTime = findViewById(R.id.tvCurrentTimeAppointmentDetails);
+        tvDrSpeciality = findViewById(R.id.tvSpecialityTitleAppointmentDetails);
+        ivDrawerVisitSummary = findViewById(R.id.ivVisitSummaryForwardArrowAppointmentDetails);
+        btnRescheduleAppointment = findViewById(R.id.btnRescheduleAppointmentDetails);
+        btnCancelAppointment = findViewById(R.id.btnCancelAppointmentDetails);
+        ivCallPatient = findViewById(R.id.ivCallAppointmentDetails);
+        ivWhatsappPatient = findViewById(R.id.ivChatAppointmentDetails);
+        tvPrevAppDate = findViewById(R.id.tvPreviousDateAppointmentDetails);
+        tvPrevAppTime = findViewById(R.id.tvPreviousTimeAppointmentDetails);
+        ivWhatsappDoctor = findViewById(R.id.ivChatDocAppointmentDetails);
+        ivCallDoctor = findViewById(R.id.ivCallDocAppointmentDetails);
 
 
         Intent intent = this.getIntent(); // The intent was passed to the activity from adapter
@@ -825,13 +825,13 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         View convertView = inflater.inflate(R.layout.dialog_ask_reason_new_ui2, null);
         alertdialogBuilder.setView(convertView);
 
-        final TextView titleTextView = convertView.findViewById(R.id.titleTv_new);
+        final TextView titleTextView = convertView.findViewById(R.id.tvTitleAskReasonDialog);
         titleTextView.setText(getString(R.string.please_select_your_reschedule_reason));
-        final EditText reasonEtv = convertView.findViewById(R.id.reasonEtv_new);
+        final EditText reasonEtv = convertView.findViewById(R.id.etOtherAskReasonDialog);
         reasonEtv.setVisibility(View.GONE);
-        final RadioButton rb1 = convertView.findViewById(R.id.rb_no_doctor);
-        final RadioButton rb2 = convertView.findViewById(R.id.rb_no_patient);
-        final RadioButton rb3 = convertView.findViewById(R.id.rb_other_ask);
+        final RadioButton rb1 = convertView.findViewById(R.id.rbNoDocAskReasonDialog);
+        final RadioButton rb2 = convertView.findViewById(R.id.rbNoPatientAskReasonDialog);
+        final RadioButton rb3 = convertView.findViewById(R.id.rbOthersAskReasonDialog);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
@@ -839,26 +839,26 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-        final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rg_ask_reason);
+        final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rgAskReasonDialog);
         optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_no_doctor) {
+                if (checkedId == R.id.rbNoDocAskReasonDialog) {
                     rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                     rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
                     mEngReason = "Doctor is not available";
-                } else if (checkedId == R.id.rb_no_patient) {
+                } else if (checkedId == R.id.rbNoPatientAskReasonDialog) {
                     rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                     rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
                     mEngReason = "Patient is not available";
-                } else if (checkedId == R.id.rb_other_ask) {
+                } else if (checkedId == R.id.rbOthersAskReasonDialog) {
                     rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                     rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
@@ -868,8 +868,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             }
         });
 
-        final Button textView = convertView.findViewById(R.id.btn_save_ask);
-        final Button btnCancel = convertView.findViewById(R.id.btn_cancel_ask);
+        final Button textView = convertView.findViewById(R.id.btnSaveAskReasonDialog);
+        final Button btnCancel = convertView.findViewById(R.id.btnCancelAskReasonDialog);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -930,13 +930,13 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         View convertView = inflater.inflate(R.layout.dialog_ask_reason_new_ui2, null);
         alertdialogBuilder.setView(convertView);
 
-        final TextView titleTextView = convertView.findViewById(R.id.titleTv_new);
+        final TextView titleTextView = convertView.findViewById(R.id.tvTitleAskReasonDialog);
         titleTextView.setText(getString(R.string.please_select_your_cancel_reason));
-        final EditText reasonEtv = convertView.findViewById(R.id.reasonEtv_new);
+        final EditText reasonEtv = convertView.findViewById(R.id.etOtherAskReasonDialog);
         reasonEtv.setVisibility(View.GONE);
-        final RadioButton rb1 = convertView.findViewById(R.id.rb_no_doctor);
-        final RadioButton rb2 = convertView.findViewById(R.id.rb_no_patient);
-        final RadioButton rb3 = convertView.findViewById(R.id.rb_other_ask);
+        final RadioButton rb1 = convertView.findViewById(R.id.rbNoDocAskReasonDialog);
+        final RadioButton rb2 = convertView.findViewById(R.id.rbNoPatientAskReasonDialog);
+        final RadioButton rb3 = convertView.findViewById(R.id.rbOthersAskReasonDialog);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
@@ -944,26 +944,26 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-        final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rg_ask_reason);
+        final RadioGroup optionsRadioGroup = convertView.findViewById(R.id.rgAskReasonDialog);
         optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_no_doctor) {
+                if (checkedId == R.id.rbNoDocAskReasonDialog) {
                     rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                     rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.doctor_is_not_available));
                     mEngReason = "Doctor is not available";
-                } else if (checkedId == R.id.rb_no_patient) {
+                } else if (checkedId == R.id.rbNoPatientAskReasonDialog) {
                     rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                     rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     reasonEtv.setVisibility(View.GONE);
                     reasonEtv.setText(getString(R.string.patient_is_not_available));
                     mEngReason = "Patient is not available";
-                } else if (checkedId == R.id.rb_other_ask) {
+                } else if (checkedId == R.id.rbOthersAskReasonDialog) {
                     rb3.setButtonDrawable(getDrawable(R.drawable.ui2_ic_selected_green));
                     rb2.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
                     rb1.setButtonDrawable(getDrawable(R.drawable.ui2_ic_circle));
@@ -973,8 +973,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             }
         });
 
-        final Button textView = convertView.findViewById(R.id.btn_save_ask);
-        final Button btnCancel = convertView.findViewById(R.id.btn_cancel_ask);
+        final Button textView = convertView.findViewById(R.id.btnSaveAskReasonDialog);
+        final Button btnCancel = convertView.findViewById(R.id.btnCancelAskReasonDialog);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override

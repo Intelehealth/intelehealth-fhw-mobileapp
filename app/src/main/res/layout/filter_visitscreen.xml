@@ -25,7 +25,8 @@
         android:layout_marginVertical="@dimen/margin_15">
 
         <TextView
-            android:id="@+id/allvisits_txt"
+            android:id="@+id/tvAllVisitsVisitScreenFilter"
+            android:contentDescription="Visit Screen Filter All Visits TextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/all_visits"
@@ -41,7 +42,8 @@
             android:background="@color/notifi_divider_color" />
 
         <TextView
-            android:id="@+id/priority_visits_txt"
+            android:id="@+id/tvPriorityVisitsVisitScreenFilter"
+            android:contentDescription="Visit Screen Filter Priority Visits TextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/priority_visits"

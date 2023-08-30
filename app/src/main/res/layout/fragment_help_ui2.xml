@@ -2,11 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentHelpScreen"
+    android:contentDescription="Help Screen Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/layout_toolbar_achievements"
+        android:id="@+id/rlToolbarHelpScreen"
+        android:contentDescription="Help Screen Toolbar RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/achievements_badge_margin_start"
@@ -15,7 +18,8 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/tv_help_title"
+            android:id="@+id/tvTitleHelpScreen"
+            android:contentDescription="Help Screen Title TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_center"
@@ -23,9 +27,9 @@
             android:textSize="@dimen/common_header_text_size"
             android:textStyle="bold" />
 
-
         <ImageView
-            android:id="@+id/iv_help_internet"
+            android:id="@+id/ivInternetHelpScreen"
+            android:contentDescription="Help Screen Internet ImageView"
             android:layout_width="@dimen/image_home_toolbar_icon_width"
             android:layout_height="@dimen/image_home_toolbar_icon_height"
             android:layout_alignParentEnd="true"
@@ -39,6 +43,8 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/llChildHelpScreen"
+            android:contentDescription="Help Screen Child LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_help_margin_top"
@@ -48,14 +54,16 @@
             android:paddingBottom="@dimen/layout_help_padding_bottom">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutLocation"
+                android:id="@+id/tilSearchBarHelpScreen"
+                android:contentDescription="Help Screen Search Bar TextInputLayout"
                 android:layout_width="match_parent"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autotv_select_location"
+                    android:id="@+id/actvSearchBarHelpScreen"
+                    android:contentDescription="Help Screen Search Bar AutoCompleteTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -78,16 +86,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <include
-                android:id="@+id/layout_buttons_options_help"
+                android:id="@+id/categoriesButtonsLayoutHelpScreen"
+                android:contentDescription="Help Screen Categories Button Layout"
                 layout="@layout/ui2_button_help_options"
                 android:visibility="gone" />
 
             <RelativeLayout
+                android:id="@+id/rlMostSearchedHelpScreen"
+                android:contentDescription="Help Screen Most Searched RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/tv_most_searched_margin_top">
 
                 <TextView
+                    android:id="@+id/tvMostSearchedTitleHelpScreen"
+                    android:contentDescription="Help Screen Most Searched Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
@@ -97,7 +110,8 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_more_videos"
+                    android:id="@+id/tvMostSearchedMoreHelpScreen"
+                    android:contentDescription="Help Screen Most Searched 'More' TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -115,17 +129,22 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_most_searched_videos"
+                android:id="@+id/rvMostSearchedHelpScreen"
+                android:contentDescription="Help Screen Most Searched RecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/rv_help_videos_margin_top" />
 
             <RelativeLayout
+                android:id="@+id/rlFAQHelpScreen"
+                android:contentDescription="Help Screen FAQ RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/tv_faq_margin_top">
 
                 <TextView
+                    android:id="@+id/tvFAQTitleHelpScreen"
+                    android:contentDescription="Help Screen FAQ Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="@dimen/tv_common_line_spacing1"
@@ -135,7 +154,8 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_faq_more"
+                    android:id="@+id/tvFAQMoreHelpScreen"
+                    android:contentDescription="Help Screen FAQ 'More' TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -153,7 +173,8 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_faq1"
+                android:id="@+id/rvFAQHelpScreen"
+                android:contentDescription="Help Screen FAQ RecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/rv_help_faq_margin_top" />
@@ -167,7 +188,8 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_chat_help"
+        android:id="@+id/fabChatHelpScreen"
+        android:contentDescription="Help Screen Chat FloatingActionButton"
         android:layout_width="375dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -179,7 +201,6 @@
         android:layout_marginBottom="60dp"
         android:background="@color/colorPrimary1"
         android:backgroundTint="@color/colorPrimary1"
-        android:contentDescription="@string/app_name"
         android:elevation="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ui2_ic_help_chat_support"

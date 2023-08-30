@@ -249,14 +249,14 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cardParent = itemView.findViewById(R.id.card_all_appointments_all);
-            tvPatientName = itemView.findViewById(R.id.tv_patient_name_all);
-            ivProfileImage = itemView.findViewById(R.id.profile_image_all);
-            tvDate = itemView.findViewById(R.id.tv_date_appointment_all);
-            IvPriorityTag = itemView.findViewById(R.id.iv_priority_tag1_all);
+            cardParent = itemView.findViewById(R.id.cvParentAllAppointmentItem);
+            tvPatientName = itemView.findViewById(R.id.tvPatientNameAllAppointmentItem);
+            ivProfileImage = itemView.findViewById(R.id.ivProfileImageAllAppointmentItem);
+            tvDate = itemView.findViewById(R.id.tvAppDateAllAppointmentItem);
+            IvPriorityTag = itemView.findViewById(R.id.ivPriorityTagAllAppointmentItem);
             //ivTime = itemView.findViewById(R.id.iv_time_all);
-            tvPrescRecStatus = itemView.findViewById(R.id.tv_prescription_states_all);
-            doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
+            tvPrescRecStatus = itemView.findViewById(R.id.tvPrescStateAllAppointmentItem);
+            doctNameTextView = itemView.findViewById(R.id.tvDoctorNameAllAppointmentItem);
 
         }
     }

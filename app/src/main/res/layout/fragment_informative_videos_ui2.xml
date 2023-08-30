@@ -7,7 +7,8 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout_videos"
+        android:id="@+id/tlInformativeVideosFragment"
+        android:contentDescription="Informative Videos Fragment TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -19,10 +20,11 @@
         app:tabTextAppearance="@style/CustomTabText" />
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager_videos"
+        android:id="@+id/vpInformativeVideosFragment"
+        android:contentDescription="Informative Videos Fragment ViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tablayout_videos"
+        android:layout_below="@+id/tlInformativeVideosFragment"
         android:layout_marginTop="@dimen/info_pager_common_margin_top"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

@@ -239,15 +239,15 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cardParent = itemView.findViewById(R.id.card_todays_appointments1);
-            tvPatientName = itemView.findViewById(R.id.tv_patient_name_todays);
-            ivProfileImage = itemView.findViewById(R.id.profile_image_todays);
-            tvDate = itemView.findViewById(R.id.tv_date_appointment_todays);
-            ivTime = itemView.findViewById(R.id.iv_time_todays);
-            IvPriorityTag = itemView.findViewById(R.id.iv_priority_tag1_todays);
-            tvPatientId = itemView.findViewById(R.id.tv_patient_id_todays);
-            tvPrescRecStatus = itemView.findViewById(R.id.tv_presc_rec_status);
-            doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
+            cardParent = itemView.findViewById(R.id.cvParentTodayAppointmentItem);
+            tvPatientName = itemView.findViewById(R.id.tvPatientNameTodayAppointmentItem);
+            ivProfileImage = itemView.findViewById(R.id.ivProfileImageTodayAppointmentItem);
+            tvDate = itemView.findViewById(R.id.tvAppDateTodayAppointmentItem);
+            ivTime = itemView.findViewById(R.id.ivTimeTodayAppointmentItem);
+            IvPriorityTag = itemView.findViewById(R.id.ivPriorityTagTodayAppointmentItem);
+            tvPatientId = itemView.findViewById(R.id.tvPatientIDTodayAppointmentItem);
+            tvPrescRecStatus = itemView.findViewById(R.id.tvPrescStateTodayAppointmentItem);
+            doctNameTextView = itemView.findViewById(R.id.tvDoctorNameTodayAppointmentItem);
 
 
         }

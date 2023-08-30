@@ -319,12 +319,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private void addRangeView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
-        RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
+        RangeSlider rangeSlider = view.findViewById(R.id.rsVisitNumberRange);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
-        TextView rangeTextView = view.findViewById(R.id.btn_values);
-        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        TextView rangeTextView = view.findViewById(R.id.tvSelectedValueVisitNumberRange);
+        TextView submitTextView = view.findViewById(R.id.tvSubmitVisitNumberRange);
 
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitNumberRange);
         /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -401,12 +401,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private void addFrequencyView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
         containerLayout.removeAllViews();
         final View view = View.inflate(mContext, R.layout.ui2_visit_number_slider_with_icon, null);
-        Slider rangeSlider = view.findViewById(R.id.number_slider);
+        Slider rangeSlider = view.findViewById(R.id.sliderVisitNumberSliderIcon);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
-        TextView rangeTextView = view.findViewById(R.id.btn_values);
-        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        TextView rangeTextView = view.findViewById(R.id.tvSelectedValueVisitNumberSliderIcon);
+        TextView submitTextView = view.findViewById(R.id.tvSubmitVisitNumberSliderIcon);
 
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitNumberSliderIcon);
        /* if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);*/
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -477,29 +477,29 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private void updateCustomEmojiSliderUI(View view, int range) {
-        TextView tv0 = view.findViewById(R.id.n0_tv);
-        TextView tv1 = view.findViewById(R.id.n1_tv);
-        TextView tv2 = view.findViewById(R.id.n2_tv);
-        TextView tv3 = view.findViewById(R.id.n3_tv);
-        TextView tv4 = view.findViewById(R.id.n4_tv);
-        TextView tv5 = view.findViewById(R.id.n5_tv);
-        TextView tv6 = view.findViewById(R.id.n6_tv);
-        TextView tv7 = view.findViewById(R.id.n7_tv);
-        TextView tv8 = view.findViewById(R.id.n8_tv);
-        TextView tv9 = view.findViewById(R.id.n9_tv);
-        TextView tv10 = view.findViewById(R.id.n10_tv);
+        TextView tv0 = view.findViewById(R.id.tvNum0VisitNumberSliderIcon);
+        TextView tv1 = view.findViewById(R.id.tvNum1VisitNumberSliderIcon);
+        TextView tv2 = view.findViewById(R.id.tvNum2VisitNumberSliderIcon);
+        TextView tv3 = view.findViewById(R.id.tvNum3VisitNumberSliderIcon);
+        TextView tv4 = view.findViewById(R.id.tvNum4VisitNumberSliderIcon);
+        TextView tv5 = view.findViewById(R.id.tvNum5VisitNumberSliderIcon);
+        TextView tv6 = view.findViewById(R.id.tvNum6VisitNumberSliderIcon);
+        TextView tv7 = view.findViewById(R.id.tvNum7VisitNumberSliderIcon);
+        TextView tv8 = view.findViewById(R.id.tvNum8VisitNumberSliderIcon);
+        TextView tv9 = view.findViewById(R.id.tvNum9VisitNumberSliderIcon);
+        TextView tv10 = view.findViewById(R.id.tvNum10VisitNumberSliderIcon);
 
-        ImageView i0 = view.findViewById(R.id.n0_imv);
-        ImageView i1 = view.findViewById(R.id.n1_imv);
-        ImageView i2 = view.findViewById(R.id.n2_imv);
-        ImageView i3 = view.findViewById(R.id.n3_imv);
-        ImageView i4 = view.findViewById(R.id.n4_imv);
-        ImageView i5 = view.findViewById(R.id.n5_imv);
-        ImageView i6 = view.findViewById(R.id.n6_imv);
-        ImageView i7 = view.findViewById(R.id.n7_imv);
-        ImageView i8 = view.findViewById(R.id.n8_imv);
-        ImageView i9 = view.findViewById(R.id.n9_imv);
-        ImageView i10 = view.findViewById(R.id.n10_imv);
+        ImageView i0 = view.findViewById(R.id.ivNum0VisitNumberSliderIcon);
+        ImageView i1 = view.findViewById(R.id.ivNum1VisitNumberSliderIcon);
+        ImageView i2 = view.findViewById(R.id.ivNum2VisitNumberSliderIcon);
+        ImageView i3 = view.findViewById(R.id.ivNum3VisitNumberSliderIcon);
+        ImageView i4 = view.findViewById(R.id.ivNum4VisitNumberSliderIcon);
+        ImageView i5 = view.findViewById(R.id.ivNum5VisitNumberSliderIcon);
+        ImageView i6 = view.findViewById(R.id.ivNum6VisitNumberSliderIcon);
+        ImageView i7 = view.findViewById(R.id.ivNum7VisitNumberSliderIcon);
+        ImageView i8 = view.findViewById(R.id.ivNum8VisitNumberSliderIcon);
+        ImageView i9 = view.findViewById(R.id.ivNum9VisitNumberSliderIcon);
+        ImageView i10 = view.findViewById(R.id.ivNum10VisitNumberSliderIcon);
 
         // set default values
         tv0.setTextColor(mContext.getResources().getColor(R.color.gray_3));
@@ -838,11 +838,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitImageCaptureView);
         submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
+        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.llCaptureVisitImageCaptureView);
         //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
         newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -852,7 +852,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 mOnItemSelection.onCameraRequest();
             }
         });
-        view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnCaptureVisitImageCaptureView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 node.setImageUploaded(false);
@@ -877,7 +877,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             }
         });
 
-        RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
+        RecyclerView imagesRcv = view.findViewById(R.id.rvVisitImageCaptureView);
         imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
 
         if (!node.getImagePathList().isEmpty()) {
@@ -930,12 +930,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v("addDurationView", new Gson().toJson(node));
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
-        final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
-        final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        final Spinner numberRangeSpinner = view.findViewById(R.id.acsNumberPickerVisitReasonTimeRange);
+        final Spinner durationTypeSpinner = view.findViewById(R.id.acsDurationTypeVisitReasonTimeRange);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonTimeRange);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonTimeRange);
         String oldDataNumber = "", oldDataType = "";
         String finalOldDataNumber = oldDataNumber;
         String finalOldDataType = oldDataType;
@@ -1137,12 +1137,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonInputText);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
 
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
@@ -1268,11 +1268,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v(TAG, "addTextEnterView");
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonInputText);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final EditText editText = view.findViewById(R.id.actv_reasons);
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        final EditText editText = view.findViewById(R.id.etEnterValueVisitReasonInputText);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonInputText);
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
@@ -1404,15 +1404,15 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private void addDateView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
         containerLayout.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
-        final Button submitButton = view.findViewById(R.id.btn_submit);
+        final Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonDatePicker);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
-        final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        final TextView displayDateButton = view.findViewById(R.id.tvSelectedDateVisitReasonDatePicker);
+        final CalendarView calendarView = view.findViewById(R.id.cvVisitReasonDatePicker);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Log.v(TAG, "addDateView - " + node.getLanguage());
         String langVal = node.getLanguage();
-        Button skipButton = view.findViewById(R.id.btn_skip);
+        Button skipButton = view.findViewById(R.id.btnSkipVisitReasonDatePicker);
 
         if (langVal != null && !langVal.isEmpty() && !langVal.equals("%") && node.isDataCaptured()) {
 
@@ -1548,18 +1548,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            knowMoreTextView = itemView.findViewById(R.id.tv_know_more);
+            knowMoreTextView = itemView.findViewById(R.id.tvKnowMoreNestedQuesItemView);
             knowMoreTextView.setPaintFlags(knowMoreTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             knowMoreTextView.setVisibility(View.GONE);
 
-            skipButton = itemView.findViewById(R.id.btn_skip);
-            submitButton = itemView.findViewById(R.id.btn_submit);
-            optionRecyclerView = itemView.findViewById(R.id.rcv_nested_container);
-            superNestedRecyclerView = itemView.findViewById(R.id.rcv_super_nested_container);
-            singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
+            skipButton = itemView.findViewById(R.id.btnSkipNestedQuesItemView);
+            submitButton = itemView.findViewById(R.id.btnSubmitNestedQuesItemView);
+            optionRecyclerView = itemView.findViewById(R.id.rvNestedQuesItemView);
+            superNestedRecyclerView = itemView.findViewById(R.id.rvSuperNestedQuesItemView);
+            singleComponentContainer = itemView.findViewById(R.id.llSingleComponentContainerNestedQuestionItemView);
 
-            tvQuestion = itemView.findViewById(R.id.tv_question);
-            tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
+            tvQuestion = itemView.findViewById(R.id.tvQuestionNestedQuesItemView);
+            tvQuestionDesc = itemView.findViewById(R.id.tvQuestionDescNestedQuesItemView);
 
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override

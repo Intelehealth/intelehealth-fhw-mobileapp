@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cardview_home"
+    android:id="@+id/cvParentVideoLibListItem"
+    android:contentDescription="Video Library List Item Parent CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="2dp"
@@ -11,6 +12,8 @@
     android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
+        android:id="@+id/llParentVideoLibListItem"
+        android:contentDescription="Video Library List Item Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -18,14 +21,16 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/video_thumbnail_ImageView"
+            android:id="@+id/ivVideoThumbnailVideoLibListItem"
+            android:contentDescription="Video Library List Item Video Thumbnail ImageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/ic_action_folder_open"
             android:layout_marginEnd="16dp" />
 
         <TextView
-            android:id="@+id/video_name_TextView"
+            android:id="@+id/tvVideoNameVideoLibListItem"
+            android:contentDescription="Video Library List Item Video Name TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/planet_name"

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlParentAddDocsListItem"
+    android:contentDescription="Additional Docs List Item Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/fu_margin_start"
     android:background="@drawable/visit_summary_add_doc_cardbg">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/add_doc_addBtn"
+        android:id="@+id/cvDocPhotoAddDocsListItem"
+        android:contentDescription="Additional Docs List Item Document Photo CardView"
         android:layout_width="@dimen/edittext_height_44dp"
         android:layout_height="@dimen/edittext_height_44dp"
         android:layout_marginTop="@dimen/fu_margin_start"
@@ -16,20 +19,21 @@
         app:cardCornerRadius="@dimen/margin_5">
 
         <ImageView
-            android:id="@+id/document_photo_ImageView"
+            android:id="@+id/ivDocPhotoAddDocsListItem"
+            android:contentDescription="Additional Docs List Item Document Photo ImageView"
             android:layout_width="@dimen/edittext_height_44dp"
             android:layout_height="@dimen/edittext_height_44dp"
             android:scaleType="fitXY"
-            android:src="@drawable/avatar1"
-            />
+            android:src="@drawable/avatar1" />
 
     </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/document_name_TextView"
+            android:id="@+id/tvDocNameAddDocsListItem"
+            android:contentDescription="Additional Docs List Item Document Name TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/add_doc_addBtn"
+            android:layout_toEndOf="@+id/cvDocPhotoAddDocsListItem"
             style = "@style/text_title_style"
             android:background="@null"
             android:layout_centerVertical="true"
@@ -37,7 +41,8 @@
             android:text="Red eye" />
 
     <ImageButton
-        android:id="@+id/document_delete_button_ImageView"
+        android:id="@+id/ibDocDeletedAddDocsListItem"
+        android:contentDescription="Additional Docs List Item Document Delete ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

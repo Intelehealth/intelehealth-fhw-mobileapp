@@ -2,13 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentVisitReasonSummaryFragment"
+    android:contentDescription="Visit Reason Summary Fragment Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ayu.visit.reason.VisitReasonSummaryFragment">
 
     <RelativeLayout
-        android:id="@+id/toolbar"
+        android:id="@+id/rlToolbarVisitReasonSummaryFragment"
+        android:contentDescription="Visit Reason Summary Fragment Toolbar RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -16,25 +19,25 @@
         android:paddingHorizontal="@dimen/toolbar_margin_left">
 
         <ImageButton
-            android:id="@+id/img_btn_cancel"
+            android:id="@+id/ibCancelVisitReasonSummaryFragment"
+            android:contentDescription="Visit Reason Summary Fragment Cancel ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center"
             android:background="@null"
-            android:contentDescription="img_btn_cancel"
             app:srcCompat="@drawable/cancel_btn_cross" />
 
 
         <ImageButton
-            android:id="@+id/imb_btn_refresh"
+            android:id="@+id/ibRefreshVisitReasonSummaryFragment"
+            android:contentDescription="Visit Reason Summary Fragment Refresh ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/common_title_margin_top"
-            android:layout_toStartOf="@+id/img_btn_cancel"
+            android:layout_toStartOf="@+id/ibCancelVisitReasonSummaryFragment"
             android:background="@null"
-            android:contentDescription="imb_btn_refresh"
             app:srcCompat="@drawable/ic_refreshbtn" />
 
 
@@ -42,7 +45,8 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_footer"
+        android:id="@+id/llButtonsVisitReasonSummaryFragment"
+        android:contentDescription="Visit Reason Summary Fragment Buttons LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -52,11 +56,11 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_cancel"
+            android:id="@+id/btnCancelVisitReasonSummaryFragment"
+            android:contentDescription="Visit Reason Summary Fragment Cancel Button"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-
             android:layout_weight="1"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableTint="@color/iconTintWhite"
@@ -72,7 +76,8 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_submit"
+            android:id="@+id/btnSubmitVisitReasonSummaryFragment"
+            android:contentDescription="Visit Reason Summary Fragment Submit Button"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -93,11 +98,12 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_summary_body"
+        android:id="@+id/nsvVisitReasonSummaryFragment"
+        android:contentDescription="Visit Reason Summary Fragment NestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll_footer"
-        android:layout_below="@id/toolbar">
+        android:layout_above="@+id/llButtonsVisitReasonSummaryFragment"
+        android:layout_below="@id/rlToolbarVisitReasonSummaryFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,17 +112,19 @@
             android:paddingHorizontal="@dimen/toolbar_margin_left">
 
             <ImageView
-                android:id="@+id/iv_vital_image"
+                android:id="@+id/ivIconVisitReasonSummaryFragment"
+                android:contentDescription="Visit Reason Summary Fragment Icon ImageView"
                 android:layout_width="64dip"
                 android:layout_height="64dip"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ui2_visit_reason_summary_icon" />
 
             <TextView
-                android:id="@+id/tv_sub_title"
+                android:id="@+id/tvSubtitleVisitReasonSummaryFragment"
+                android:contentDescription="Visit Reason Summary Fragment Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
+                android:layout_below="@+id/rlToolbarVisitReasonSummaryFragment"
                 android:layout_marginTop="@dimen/margin_16"
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
@@ -127,7 +135,8 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/ll_complain_summary"
+                android:id="@+id/llSummaryVisitReasonSummaryFragment"
+                android:contentDescription="Visit Reason Summary Fragment Summary LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
@@ -141,7 +150,8 @@
                 android:layout_marginTop="@dimen/margin_24">
 
                 <TextView
-                    android:id="@+id/tv_ass_complain_label"
+                    android:id="@+id/tvAssSympTitleVisitReasonSummaryFragment"
+                    android:contentDescription="Visit Reason Summary Fragment Associated Symptoms Title TextView"
                     style="@style/label_misc_txt_14sp_dark_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,7 +161,8 @@
                     android:text="Associated symptoms:" />
 
                 <TextView
-                    android:id="@+id/tv_change_associate_sympt"
+                    android:id="@+id/tvAssSympEditVisitReasonSummaryFragment"
+                    android:contentDescription="Visit Reason Summary Fragment Associated Symptoms Edit TextView"
                     style="@style/label_misc_txt_12sp_primary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -166,7 +177,8 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/ll_associated_sympt"
+                android:id="@+id/llAssSympVisitReasonSummaryFragment"
+                android:contentDescription="Visit Reason Summary Fragment Associated Symptoms LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"

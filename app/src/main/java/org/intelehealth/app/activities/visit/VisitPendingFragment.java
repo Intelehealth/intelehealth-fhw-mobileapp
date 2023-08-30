@@ -117,7 +117,7 @@ public class VisitPendingFragment extends Fragment {
         progress.setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
 
-        LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
+        LinearLayout addPatientTV = view.findViewById(R.id.llAddNewPatientNoPatientFound);
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,8 +149,8 @@ public class VisitPendingFragment extends Fragment {
 
         filter_icon = view.findViewById(R.id.filter_icon);
         filter_menu = view.findViewById(R.id.filter_menu);
-        allvisits_txt = view.findViewById(R.id.allvisits_txt);
-        priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
+        allvisits_txt = view.findViewById(R.id.tvAllVisitsVisitScreenFilter);
+        priority_visits_txt = view.findViewById(R.id.tvPriorityVisitsVisitScreenFilter);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
       //  olderList = new ArrayList<>();  // IDA-1347 ticket.

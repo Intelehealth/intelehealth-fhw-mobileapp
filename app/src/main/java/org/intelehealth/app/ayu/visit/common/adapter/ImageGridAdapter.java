@@ -101,9 +101,9 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            mainImageView = itemView.findViewById(R.id.iv_image);
-            addImageView = itemView.findViewById(R.id.iv_add_items);
-            crossImageView = itemView.findViewById(R.id.iv_image_delete);
+            mainImageView = itemView.findViewById(R.id.rivImageItemWiredUI);
+            addImageView = itemView.findViewById(R.id.ivAddImageItemWiredUI);
+            crossImageView = itemView.findViewById(R.id.ivDeleteImageItemWiredUI);
             addImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

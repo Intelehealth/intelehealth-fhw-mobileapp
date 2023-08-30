@@ -72,52 +72,52 @@ public class VitalCollectionSummaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vital_collection_summary, container, false);
         if (mVitalsObject.getHeight() != null && !mVitalsObject.getHeight().isEmpty() && !mVitalsObject.getHeight().equalsIgnoreCase("0"))
-            ((TextView) view.findViewById(R.id.tv_height)).setText(mVitalsObject.getHeight() + " " + getResources().getString(R.string.cm));
+            ((TextView) view.findViewById(R.id.tvHeightValueVitalsSummary)).setText(mVitalsObject.getHeight() + " " + getResources().getString(R.string.cm));
         else
-            ((TextView) view.findViewById(R.id.tv_height)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvHeightValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getWeight() != null && !mVitalsObject.getWeight().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_weight)).setText(mVitalsObject.getWeight() + " " + getResources().getString(R.string.kg));
+            ((TextView) view.findViewById(R.id.tvWeightValueVitalsSummary)).setText(mVitalsObject.getWeight() + " " + getResources().getString(R.string.kg));
         else
-            ((TextView) view.findViewById(R.id.tv_weight)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvWeightValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getBmi() != null && !mVitalsObject.getBmi().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_bmi)).setText(mVitalsObject.getBmi() + " " + getResources().getString(R.string.kg_m));
+            ((TextView) view.findViewById(R.id.tvBMIValueVitalsSummary)).setText(mVitalsObject.getBmi() + " " + getResources().getString(R.string.kg_m));
         else
-            ((TextView) view.findViewById(R.id.tv_bmi)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvBMIValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
 
 
         if (mVitalsObject.getBpsys() != null && !mVitalsObject.getBpsys().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
+            ((TextView) view.findViewById(R.id.tvBPValueVitalsSummary)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
         else
-            ((TextView) view.findViewById(R.id.tv_bp)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvBPValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
         if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " " + getResources().getString(R.string.bpm));
+            ((TextView) view.findViewById(R.id.tvPulseValueVitalsSummary)).setText(mVitalsObject.getPulse() + " " + getResources().getString(R.string.bpm));
         else
-            ((TextView) view.findViewById(R.id.tv_pulse)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvPulseValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getTemperature() != null && !mVitalsObject.getTemperature().isEmpty()) {
             if (new ConfigUtils(getActivity()).fahrenheit()) {
-                ((TextView) view.findViewById(R.id.tv_temperature)).setText(convertCtoF(TAG, mVitalsObject.getTemperature()));
+                ((TextView) view.findViewById(R.id.tvTempValueVitalsSummary)).setText(convertCtoF(TAG, mVitalsObject.getTemperature()));
             } else {
-                ((TextView) view.findViewById(R.id.tv_temperature)).setText(mVitalsObject.getTemperature());
+                ((TextView) view.findViewById(R.id.tvTempValueVitalsSummary)).setText(mVitalsObject.getTemperature());
             }
         } else {
 
-            ((TextView) view.findViewById(R.id.tv_temperature)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvTempValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
         }
 
         if (mVitalsObject.getSpo2() != null && !mVitalsObject.getSpo2().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_spo2)).setText(mVitalsObject.getSpo2() + " %");
+            ((TextView) view.findViewById(R.id.tvSpO2ValueVitalsSummary)).setText(mVitalsObject.getSpo2() + " %");
         else
-            ((TextView) view.findViewById(R.id.tv_spo2)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvSpO2ValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
 
         if (mVitalsObject.getResp() != null && !mVitalsObject.getResp().isEmpty())
-            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(mVitalsObject.getResp() + " " + getResources().getString(R.string.breaths_min));
+            ((TextView) view.findViewById(R.id.tvRRValueVitalsSummary)).setText(mVitalsObject.getResp() + " " + getResources().getString(R.string.breaths_min));
         else
-            ((TextView) view.findViewById(R.id.tv_respiratory_rate)).setText(getString(R.string.ui2_no_information));
+            ((TextView) view.findViewById(R.id.tvRRValueVitalsSummary)).setText(getString(R.string.ui2_no_information));
 
-        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnSubmitVitalsSummary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode) {
@@ -128,7 +128,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 }
             }
         });
-        view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.tvEditVitalsSummary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
@@ -140,13 +140,13 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
             }
         });
-        view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibCancelVitalsSummary).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL, mIsEditMode, mVitalsObject);
             }
         });
-        ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
+        ImageButton refresh = view.findViewById(R.id.ibRefreshVitalsSummary);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

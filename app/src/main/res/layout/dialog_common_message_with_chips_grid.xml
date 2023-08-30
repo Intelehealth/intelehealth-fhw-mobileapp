@@ -12,7 +12,8 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/dialog_icon"
+            android:id="@+id/ivIconCommonMessageDialogWithChips"
+            android:contentDescription="Common Message Dialog With Chips Icon ImageView"
             android:layout_width="@dimen/patregist_profileimg_icon"
             android:layout_height="@dimen/patregist_profileimg_icon"
             android:layout_centerHorizontal="true"
@@ -22,14 +23,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_icon"
+            android:layout_below="@+id/ivIconCommonMessageDialogWithChips"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24">
 
             <TextView
-                android:id="@+id/dialog_title"
+                android:id="@+id/tvTitleCommonMessageDialogWithChips"
+                android:contentDescription="Common Message Dialog With Chips Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
@@ -41,10 +43,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/dialog_subtitle"
+                android:id="@+id/tvSubtitleCommonMessageDialogWithChips"
+                android:contentDescription="Common Message Dialog With Chips Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dialog_title"
+                android:layout_below="@id/tvTitleCommonMessageDialogWithChips"
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
@@ -54,24 +57,26 @@
                 android:textSize="@null" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_selected_container"
+                android:id="@+id/rvCommonMessageDialogWithChips"
+                android:contentDescription="Common Message Dialog With Chips RecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dialog_subtitle"
+                android:layout_below="@id/tvSubtitleCommonMessageDialogWithChips"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_16" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rcv_selected_container"
+                android:layout_below="@+id/rvCommonMessageDialogWithChips"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_32dp"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/negative_btn"
+                    android:id="@+id/btnNegativeCommonMessageDialogWithChips"
+                    android:contentDescription="Common Message Dialog With Chips Negative Button"
                     style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,7 +89,8 @@
                     android:textSize="@dimen/txtsize_patdetail_16sp" />
 
                 <Button
-                    android:id="@+id/positive_btn"
+                    android:id="@+id/btnPositiveCommonMessageDialogWithChips"
+                    android:contentDescription="Common Message Dialog With Chips Positive Button"
                     style="@style/negative_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

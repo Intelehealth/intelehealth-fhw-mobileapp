@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="40dp"
-    android:id="@+id/parent_calview"
+    android:id="@+id/rlParentCalendarViewItem"
+    android:contentDescription="Calendar View Item Parent RelativeLayout"
     android:layout_height="40dp"
     android:layout_marginBottom="20dp">
 
     <TextView
-        android:id="@+id/tv_date_newview"
+        android:id="@+id/tvDateCalendarViewItem"
+        android:contentDescription="Calendar View Item Date TextView"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_centerInParent="true"

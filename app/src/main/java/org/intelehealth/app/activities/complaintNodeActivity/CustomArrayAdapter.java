@@ -64,10 +64,10 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
 
         final Node thisNode = mNodesFilter.get(position);
 
-        TextView textViewItem = convertView.findViewById(R.id.subquestion_text_view);
+        TextView textViewItem = convertView.findViewById(R.id.tvSubQuestion);
         textViewItem.setText(thisNode.findDisplay());
 
-        ImageView imageView = convertView.findViewById(R.id.subquestion_image_view);
+        ImageView imageView = convertView.findViewById(R.id.ivSubQuestion);
 
         if (thisNode.isSelected()) {
             imageView.setImageResource(R.drawable.checkbox);

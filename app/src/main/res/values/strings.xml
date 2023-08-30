@@ -935,7 +935,7 @@
     <string name="please_wait_refresh">Please wait a moment,\nthe app is refreshing.</string>
     <string name="login_success">Login successful</string>
     <string name="login_success_note">Hurry! You have successfully logged in</string>
-    <string name="start_typing_location">Start typing or select location</string>
+    <string name="start_typing_location">Select location</string>
     <string name="patients_added">Patients added by\nyou</string>
     <string name="visits_completed_by_you">Visits completed\nby you</string>
     <string name="your_patient_score">Your patient\nsatisfactions score</string>

@@ -1,8 +1,9 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/video_library_RecyclerView"
+    android:id="@+id/rvVideoLibraryFragment"
+    android:contentDescription="Video Library Fragment RecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.video_library_activity.VideoLibraryActivity">
+    tools:context=".activities.videoLibraryActivity.VideoLibraryActivity">
 
 </androidx.recyclerview.widget.RecyclerView>

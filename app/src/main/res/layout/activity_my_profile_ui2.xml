@@ -2,23 +2,28 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/svParentMyProfile"
+    android:contentDescription="My Profile Screen Parent Layout Scroll View"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".profile.MyProfileActivity">
 
     <LinearLayout
+        android:id="@+id/llParentLayoutMyProfile"
+        android:contentDescription="My Profile Screen Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingEnd="@dimen/layout_profile_padding">
 
         <include
-            android:id="@+id/toolbar_common"
+            android:id="@+id/toolbarMyProfile"
             layout="@layout/toolbar_common_ui2" />
 
         <LinearLayout
-            android:id="@+id/layout_parent_profile"
+            android:id="@+id/llChildLayoutMyProfile"
+            android:contentDescription="My Profile Screen Child LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -28,7 +33,8 @@
             android:paddingBottom="@dimen/layout_profile_padding">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/img_profile"
+                android:id="@+id/cvProfileImageMyProfile"
+                android:contentDescription="My Profile Screen Profile Image CardView"
                 android:layout_width="@dimen/iv_profile_drawer_width"
                 android:layout_height="@dimen/iv_profile_drawer_height"
                 android:layout_gravity="center"
@@ -37,7 +43,8 @@
                 app:cardCornerRadius="@dimen/iv_profile_photo_corner_radius">
 
                 <ImageView
-                    android:id="@+id/iv_profilePic"
+                    android:id="@+id/ivProfileImageMyProfile"
+                    android:contentDescription="My Profile Screen Profile Image ImageView"
                     android:layout_width="@dimen/iv_profile_drawer_width"
                     android:layout_height="@dimen/iv_profile_drawer_height"
                     android:src="@drawable/avatar1" />
@@ -45,7 +52,8 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/tv_change_photo_profile"
+                android:id="@+id/tvChangePhotoMyProfile"
+                android:contentDescription="My Profile Screen Change Photo TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/achievements_user_score_margin_top"
@@ -56,7 +64,8 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <RelativeLayout
-                android:id="@+id/view_change_password"
+                android:id="@+id/rlChangePassMyProfile"
+                android:contentDescription="My Profile Screen Change Password RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/tv_pass_margin_start"
@@ -64,18 +73,20 @@
                 android:layout_marginEnd="@dimen/tv_pass_margin_end">
 
                 <ImageView
-                    android:id="@+id/iv_icon1"
+                    android:id="@+id/ivChangePassIconMyProfile"
+                    android:contentDescription="My Profile Screen Change Password Icon ImageView"
                     android:layout_width="@dimen/iv_camera_width"
                     android:layout_height="@dimen/iv_camera_height"
                     android:src="@drawable/ui2_ic_icons8_forgot_password" />
 
                 <TextView
-                    android:id="@+id/tv_user_points"
+                    android:id="@+id/tvChangePassTitleMyProfile"
+                    android:contentDescription="My Profile Screen Change Password Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/tv_change_pass_margin_start"
                     android:layout_marginTop="@dimen/tv_change_pass_margin_top"
-                    android:layout_toEndOf="@+id/iv_icon1"
+                    android:layout_toEndOf="@+id/ivChangePassIconMyProfile"
                     android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
                     android:text="@string/change_password"
                     android:textColor="@color/colorPrimary"
@@ -83,7 +94,8 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/iv_icon2"
+                    android:id="@+id/ivChangePassArrowMyProfile"
+                    android:contentDescription="My Profile Screen Change Password Arrow ImageView"
                     android:layout_width="@dimen/iv_camera_width"
                     android:layout_height="@dimen/iv_camera_height"
                     android:layout_alignParentEnd="true"
@@ -93,26 +105,28 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/view_fingerprint_enable"
-                android:layout_width="match_parent"
+                android:id="@+id/rlFingerprintLockMyProfile"
+                android:contentDescription="My Profile Screen FingerPrint Lock RelativeLayout"                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/tv_pass_margin_start"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="@dimen/tv_pass_margin_end">
 
                 <ImageView
-                    android:id="@+id/iv_icon3"
+                    android:id="@+id/ivFingerprintLockIconMyProfile"
+                    android:contentDescription="My Profile Screen FingerPrint Lock Icon ImageView"
                     android:layout_width="@dimen/iv_camera_width"
                     android:layout_height="@dimen/iv_camera_height"
                     android:src="@drawable/ic_baseline_fingerprint_24" />
 
                 <TextView
-                    android:id="@+id/tv_fingerprint_lock"
+                    android:id="@+id/tvFingerprintLockTitleMyProfile"
+                    android:contentDescription="My Profile Screen FingerPrint Lock Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/tv_change_pass_margin_start"
                     android:layout_marginTop="@dimen/tv_change_pass_margin_top"
-                    android:layout_toEndOf="@+id/iv_icon3"
+                    android:layout_toEndOf="@+id/ivFingerprintLockIconMyProfile"
                     android:lineSpacingExtra="@dimen/achievements_user_score_line_Spacing"
                     android:text="@string/fingerprint_lock"
                     android:textColor="@color/colorPrimary"
@@ -120,7 +134,8 @@
                     android:textStyle="bold" />
 
                 <Switch
-                    android:id="@+id/fingerprint_enable_Switch"
+                    android:id="@+id/switchFingerprintLockMyProfile"
+                    android:contentDescription="My Profile Screen FingerPrint Lock Switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -130,6 +145,8 @@
 
 
             <TextView
+                android:id="@+id/tvUsernameHeadingMyProfile"
+                android:contentDescription="My Profile Screen Username Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_username_margin_top"
@@ -140,13 +157,16 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilUsernameMyProfile"
+                android:contentDescription="My Profile Screen Username TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/et_new_pass_margin_top"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_username_profile"
+                    android:id="@+id/etUsernameMyProfile"
+                    android:contentDescription="My Profile Screen Username EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -164,6 +184,8 @@
 
 
             <TextView
+                android:id="@+id/tvFirstNameHeadingMyProfile"
+                android:contentDescription="My Profile Screen First Name Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -174,13 +196,16 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilFirstNameMyProfile"
+                android:contentDescription="My Profile Screen First Name TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/et_new_pass_margin_top"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_first_name_profile"
+                    android:id="@+id/etFirstNameMyProfile"
+                    android:contentDescription="My Profile Screen First Name EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -196,7 +221,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/tv_firstname_error"
+                android:id="@+id/tvFirstNameErrorMyProfile"
+                android:contentDescription="My Profile Screen First Name Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -209,6 +235,8 @@
                 android:visibility="gone" />
 
             <TextView
+                android:id="@+id/tvMiddleNameHeadingMyProfile"
+                android:contentDescription="My Profile Screen Middle Name Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -219,13 +247,16 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMiddleNameMyProfile"
+                android:contentDescription="My Profile Screen Middle Name TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/et_new_pass_margin_top"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_middle_name_profile"
+                    android:id="@+id/etMiddleNameMyProfile"
+                    android:contentDescription="My Profile Screen Middle Name Edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -241,6 +272,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tvLastNameHeadingMyProfile"
+                android:contentDescription="My Profile Screen Last Name Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -251,13 +284,16 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilLastNameMyProfile"
+                android:contentDescription="My Profile Screen Last Name TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/et_new_pass_margin_top"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_last_name_profile"
+                    android:id="@+id/etLastNameMyProfile"
+                    android:contentDescription="My Profile Screen Last Name Edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -273,8 +309,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/tv_lastname_error"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvLastNameErrorMyProfile"
+                android:contentDescription="My Profile Screen Last Name Error TextView"                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/hamburger_margin_start"
@@ -287,6 +323,8 @@
                 tools:visibility="visible"/>
 
             <TextView
+                android:id="@+id/tvGenderHeadingMyProfile"
+                android:contentDescription="My Profile Screen Gender Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -297,7 +335,8 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <RadioGroup
-                android:id="@+id/radioGroup_gender_profile"
+                android:id="@+id/rgGenderMyProfile"
+                android:contentDescription="My Profile Screen Gender RadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/et_new_pass_margin_top"
@@ -305,8 +344,8 @@
                 android:weightSum="3">
 
                 <RadioButton
-                    android:id="@+id/rb_male"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/rbMaleMyProfile"
+                    android:contentDescription="My Profile Screen Male RadioButton"                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
                     android:paddingStart="@dimen/space_5dp"
@@ -319,7 +358,8 @@
                     android:theme="@style/RadioButtonStyleSelection" />
 
                 <RadioButton
-                    android:id="@+id/rb_female"
+                    android:id="@+id/rbFemaleMyProfile"
+                    android:contentDescription="My Profile Screen Female RadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
@@ -335,7 +375,8 @@
                     android:theme="@style/RadioButtonStyleSelection" />
 
                 <RadioButton
-                    android:id="@+id/rb_other"
+                    android:id="@+id/rbOtherMyProfile"
+                    android:contentDescription="My Profile Screen Other RadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
@@ -350,6 +391,8 @@
             </RadioGroup>
 
             <LinearLayout
+                android:id="@+id/llDOBAgeHeadingLayoutMyProfile"
+                android:contentDescription="My Profile Screen DOB Age Heading LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -357,6 +400,8 @@
                 android:weightSum="1">
 
                 <TextView
+                    android:id="@+id/tvDOBHeadingMyProfile"
+                    android:contentDescription="My Profile Screen DOB Heading TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
@@ -367,6 +412,8 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <TextView
+                    android:id="@+id/tvAgeHeadingMyProfile"
+                    android:contentDescription="My Profile Screen Age Heading TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dob_age_margin_start"
@@ -379,6 +426,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llDOBAgeLayoutMyProfile"
+                android:contentDescription="My Profile Screen DOB Age LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/et_new_pass_margin_top"
@@ -386,7 +435,8 @@
                 android:weightSum="1">
 
                 <TextView
-                    android:id="@+id/tv_date_of_birth_profile"
+                    android:id="@+id/tvDOBMyProfile"
+                    android:contentDescription="My Profile Screen DOB TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
@@ -403,7 +453,8 @@
                     android:textSize="@dimen/common_info_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_age_profile"
+                    android:id="@+id/tvAgeMyProfile"
+                    android:contentDescription="My Profile Screen Age TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dob_age_margin_start"
@@ -422,7 +473,8 @@
             </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_dob_error"
+                    android:id="@+id/tvDOBAgeErrorMyProfile"
+                    android:contentDescription="My Profile Screen DOB Age Error TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.02"
@@ -438,6 +490,8 @@
                     tools:visibility="visible"/>
 
             <TextView
+                android:id="@+id/tvPhoneNumHeadingProfile"
+                android:contentDescription="My Profile Screen Phone Num Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -448,14 +502,17 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <RelativeLayout
+                android:id="@+id/rlPhoneNumLayoutProfile"
+                android:contentDescription="My Profile Screen Phone Num Layout RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.hbb20.CountryCodePicker
-                    android:id="@+id/countrycode_spinner_profile"
+                    android:id="@+id/ccpMyProfile"
+                    android:contentDescription="My Profile Screen Country Code Picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_mobile_no_note"
+                    android:layout_below="@+id/tvPhoneNumHeadingProfile"
                     android:layout_marginTop="@dimen/et_new_pass_margin_top"
                     android:layout_marginEnd="@dimen/spinner_countries_margin_end"
                     android:layout_weight="1"
@@ -468,35 +525,18 @@
                     app:ccp_countryPreference="us,in"
                     app:ccp_textSize="@dimen/country_code_picker_text_size" />
 
-                <!--
-                                <LinearLayout
-                                    android:id="@+id/layout_spinner_bg"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-
-                                    android:layout_below="@+id/textview_mobile_no_note"
-                                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                                    android:layout_marginEnd="@dimen/spinner_countries_margin_end"
-                                    android:background="@drawable/ui2_spinner_background">
-
-                                    <Spinner
-                                        android:id="@+id/spinner_countries_profile"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_margin="@dimen/spinner_countries_margin" />
-
-                                </LinearLayout>
-                -->
-
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPhoneNumMyProfile"
+                    android:contentDescription="My Profile Screen Phone Num TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                    android:layout_toEndOf="@+id/countrycode_spinner_profile"
+                    android:layout_toEndOf="@+id/ccpMyProfile"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_mobile_no_profile"
+                        android:id="@+id/etPhoneNumMyProfile"
+                        android:contentDescription="My Profile Screen Phone Num EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_input_fieldnew"
@@ -514,7 +554,8 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_mobile_error"
+                android:id="@+id/tvPhoneNumErrorMyProfile"
+                android:contentDescription="My Profile Screen Phone Num Error TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -527,6 +568,8 @@
                 android:visibility="gone" />
 
             <TextView
+                android:id="@+id/tvEmailHeadingMyProfile"
+                android:contentDescription="My Profile Screen Email Heading TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -537,13 +580,16 @@
                 android:textSize="@dimen/common_label_text_size" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmailMyProfile"
+                android:contentDescription="My Profile Screen Email TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/et_new_pass_margin_top"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_email_profile"
+                    android:id="@+id/etEmailMyProfile"
+                    android:contentDescription="My Profile Screen Email EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -558,7 +604,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/btn_save_profile"
+                android:id="@+id/btnSaveMyProfile"
+                android:contentDescription="My Profile Screen Save Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_privacy_notice_link"

@@ -18,7 +18,8 @@
         android:weightSum="4">
 
         <ImageView
-            android:id="@+id/iv_prev_month2"
+            android:id="@+id/ivPrevArrowCustomCVDialog"
+            android:contentDescription="Custom CalendarView Dialog Prev Arrow ImageView"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentStart="true"
@@ -30,12 +31,13 @@
             app:tint="@color/colorPrimary" />
 
         <Spinner
-            android:id="@+id/spinner_months_caleview"
+            android:id="@+id/spinnerMonthCustomCVDialog"
+            android:contentDescription="Custom CalendarView Dialog Month Spinner"
             style="@style/CalendarSpinnerTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:layout_toEndOf="@+id/iv_prev_month2"
+            android:layout_toEndOf="@+id/ivPrevArrowCustomCVDialog"
             android:layout_weight="1.7"
             android:dropDownVerticalOffset="56dp"
             android:gravity="center_vertical"
@@ -48,13 +50,14 @@
             android:textSize="@dimen/edittext_textsize_16sp" />
 
         <Spinner
-            android:id="@+id/spinner_year_caleview"
+            android:id="@+id/spinnerYearCustomCVDialog"
+            android:contentDescription="Custom CalendarView Dialog Year Spinner"
             style="@style/CalendarSpinnerTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="-10dp"
             android:layout_toStartOf="@+id/iv_next_month2"
-            android:layout_toEndOf="@+id/spinner_months_caleview"
+            android:layout_toEndOf="@+id/spinnerMonthCustomCVDialog"
             android:layout_weight="1.7"
             android:dropDownVerticalOffset="56dp"
             android:gravity="center_vertical"
@@ -67,7 +70,8 @@
             android:textSize="@dimen/edittext_textsize_16sp" />
 
         <ImageView
-            android:id="@+id/iv_next_month2"
+            android:id="@+id/ivNextArrowCustomCVDialog"
+            android:contentDescription="Custom CalendarView Dialog Next Arrow ImageView"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentEnd="true"
@@ -78,67 +82,6 @@
             android:src="@drawable/ui2_ic_calendar_next"
             app:tint="@color/colorPrimary" />
     </RelativeLayout>
-
-    <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:weightSum="4">
-
-            <ImageView
-                android:id="@+id/iv_prev_month2"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.3"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ui2_ic_calendar_previous"
-                app:tint="@color/colorPrimary" />
-
-            <Spinner
-                android:id="@+id/spinner_months_caleview"
-                style="@style/CalendarSpinnerTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:textAlignment="center"
-                android:layout_weight="1.7"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                android:spinnerMode="dropdown"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <Spinner
-                android:id="@+id/spinner_year_caleview"
-                style="@style/CalendarSpinnerTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.7"
-                android:textAlignment="center"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/fu_margin_start"
-                android:paddingTop="@dimen/margin_10"
-                android:paddingEnd="@dimen/margin_16dp"
-                android:paddingBottom="@dimen/margin_10"
-                android:spinnerMode="dropdown"
-                android:textSize="@dimen/edittext_textsize_16sp" />
-
-            <ImageView
-                android:id="@+id/iv_next_month2"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.3"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ui2_ic_calendar_next"
-                app:tint="@color/colorPrimary" />
-        </LinearLayout>
-    -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -220,7 +163,8 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_calendarview_new"
+        android:id="@+id/rvCustomCVDialog"
+        android:contentDescription="Custom CalendarView Dialog RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
@@ -238,7 +182,8 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_cancel_calendar"
+            android:id="@+id/btnCancelCustomCVDialog"
+            android:contentDescription="Custom CalendarView Dialog Cancel Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_privacy_notice_link"
@@ -255,7 +200,8 @@
             android:textSize="@dimen/common_button_text_size" />
 
         <Button
-            android:id="@+id/btn_okay_calendar"
+            android:id="@+id/btnOkayCustomCVDialog"
+            android:contentDescription="Custom CalendarView Dialog Okay Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_privacy_notice_link"

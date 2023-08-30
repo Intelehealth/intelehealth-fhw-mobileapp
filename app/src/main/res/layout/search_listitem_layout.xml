@@ -2,7 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fu_cardview_item"
+    android:id="@+id/cvParentFindPatientListItem"
+    android:contentDescription="Find Patient List Item Parent CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/margin_10"
@@ -13,7 +14,8 @@
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/frame_10014"
+        android:id="@+id/rlParentFindPatientListItem"
+        android:contentDescription="Find Patient List Item Parent RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -30,7 +32,8 @@
                 android:layout_weight="2.4">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/profile"
+                    android:id="@+id/cvPatientImageFindPatientListItem"
+                    android:contentDescription="Find Patient List Item Patient Image CardView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentTop="true"
@@ -39,28 +42,33 @@
                     app:cardCornerRadius="20dp">
 
                     <ImageView
-                        android:id="@+id/profile_imgview"
+                        android:id="@+id/ivPatientImageFindPatientListItem"
+                        android:contentDescription="Find Patient List Item Patient Image ImageView"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/avatar1" />
                 </androidx.cardview.widget.CardView>
 
                 <RelativeLayout
+                    android:id="@+id/rlNameAgeDateFindPatientListItem"
+                    android:contentDescription="Find Patient List Item Name Age Date RelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
-                    android:layout_toEndOf="@+id/profile">
+                    android:layout_toEndOf="@+id/cvPatientImageFindPatientListItem">
 
                     <!-- Label -->
                     <LinearLayout
-                        android:id="@+id/lll"
+                        android:id="@+id/llNameAgeFindPatientListItem"
+                        android:contentDescription="Find Patient List Item Name Age Date RelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
-                            android:id="@+id/search_name"
+                            android:id="@+id/tvNameFindPatientListItem"
+                            android:contentDescription="Find Patient List Item Name TextView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.5"
@@ -75,11 +83,12 @@
                             android:textSize="@dimen/fu_name_txt_size" />
 
                         <TextView
-                            android:id="@+id/tvGenderAgeRowItem"
+                            android:id="@+id/tvGenderAgeFindPatientListItem"
+                            android:contentDescription="Find Patient List Item Gender Age TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/cal_margnin_start"
-                            android:layout_toEndOf="@+id/search_name"
+                            android:layout_toEndOf="@+id/tvNameFindPatientListItem"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:text="@string/search_gender"
@@ -89,21 +98,23 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/fu_item_calendar"
+                        android:id="@+id/ivCalendarFindPatientListItem"
+                        android:contentDescription="Find Patient List Item Calendar ImageView"
                         android:layout_width="@dimen/cal_size"
                         android:layout_height="@dimen/cal_size"
-                        android:layout_below="@+id/lll"
+                        android:layout_below="@+id/llNameAgeFindPatientListItem"
                         android:layout_marginTop="@dimen/cal_margin_top"
                         android:src="@drawable/followup_item_calendar" />
 
                     <TextView
-                        android:id="@+id/search_date_relative"
+                        android:id="@+id/tvDateTimeFindPatientListItem"
+                        android:contentDescription="Find Patient List Item Date Time TextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/lll"
+                        android:layout_below="@+id/llNameAgeFindPatientListItem"
                         android:layout_marginStart="@dimen/cal_margnin_start"
                         android:layout_marginTop="@dimen/cal_margnin_start"
-                        android:layout_toEndOf="@+id/fu_item_calendar"
+                        android:layout_toEndOf="@+id/ivCalendarFindPatientListItem"
                         android:gravity="center_vertical"
                         android:lineSpacingExtra="3sp"
                         android:text="@string/search_date_txt"
@@ -111,10 +122,11 @@
                         android:textSize="@dimen/fu_male_textsize" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/presc_received_CV"
+                        android:id="@+id/cvPrescReceivedFindPatientListItem"
+                        android:contentDescription="Find Patient List Item Prescription Received CardView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/search_date_relative"
+                        android:layout_below="@+id/tvDateTimeFindPatientListItem"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="4dp"
                         android:visibility="gone"
@@ -122,6 +134,8 @@
                         app:cardCornerRadius="3dp">
 
                         <LinearLayout
+                            android:id="@+id/llPrescReceivedFindPatientListItem"
+                            android:contentDescription="Find Patient List Item Prescription Received LinearLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/cardTintLightGreen"
@@ -129,11 +143,15 @@
                             android:paddingHorizontal="3dp">
 
                             <ImageView
+                                android:id="@+id/ivPrescReceivedRecFindPatientListItem"
+                                android:contentDescription="Find Patient List Item Prescription Received ImageView"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/prescription_icon_blue" />
 
                             <TextView
+                                android:id="@+id/tvPrescReceivedFindPatientListItem"
+                                android:contentDescription="Find Patient List Item Prescription Received TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -146,10 +164,11 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/presc_pending_CV"
+                        android:id="@+id/cvPrescPendingFindPatientListItem"
+                        android:contentDescription="Find Patient List Item Prescription Pending CardView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/search_date_relative"
+                        android:layout_below="@+id/tvDateTimeFindPatientListItem"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="4dp"
                         android:visibility="gone"
@@ -157,6 +176,8 @@
                         app:cardCornerRadius="3dp">
 
                         <LinearLayout
+                            android:id="@+id/llPrescPendingFindPatientListItem"
+                            android:contentDescription="Find Patient List Item Prescription Pending LinearLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/cardTintLightOrange"
@@ -164,11 +185,15 @@
                             android:paddingHorizontal="3dp">
 
                             <ImageView
+                                android:id="@+id/ivPrescPendingFindPatientListItem"
+                                android:contentDescription="Find Patient List Item Prescription Pending ImageView"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/prescription_icon_blue" />
 
                             <TextView
+                                android:id="@+id/tvPrescPendingFindPatientListItem"
+                                android:contentDescription="Find Patient List Item Prescription Pending TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -186,7 +211,8 @@
             </RelativeLayout>
 
             <ImageView
-                android:id="@+id/priority_tag_imgview"
+                android:id="@+id/ivPriorityTagFindPatientListItem"
+                android:contentDescription="Find Patient List Item Priority Tag ImageView"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/search_priority_tag"
                 android:layout_gravity="top|end|center"

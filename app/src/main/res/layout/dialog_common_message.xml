@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/cvParentCommonMessageDialog"
+    android:contentDescription="Common Message Dialog Parent CardView"
     android:layout_margin="@dimen/margin_5"
     app:cardCornerRadius="@dimen/margin_16dp"
     app:cardElevation="@dimen/hamburger_margin_start">
@@ -12,7 +14,8 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/dialog_icon"
+            android:id="@+id/ivIconCommonMessageDialog"
+            android:contentDescription="Common Message Dialog Icon ImageView"
             android:layout_width="@dimen/patregist_profileimg_icon"
             android:layout_height="@dimen/patregist_profileimg_icon"
             android:layout_centerHorizontal="true"
@@ -22,14 +25,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_icon"
+            android:layout_below="@+id/ivIconCommonMessageDialog"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24">
 
             <TextView
-                android:id="@+id/dialog_title"
+                android:id="@+id/tvTitleCommonMessageDialog"
+                android:contentDescription="Common Message Dialog Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
@@ -41,10 +45,11 @@
                 android:textSize="@null" />
 
             <TextView
-                android:id="@+id/dialog_subtitle"
+                android:id="@+id/tvSubtitleCommonMessageDialog"
+                android:contentDescription="Common Message Dialog Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dialog_title"
+                android:layout_below="@id/tvTitleCommonMessageDialog"
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
@@ -57,14 +62,15 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/dialog_subtitle"
+                android:layout_below="@+id/tvSubtitleCommonMessageDialog"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_32dp"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/negative_btn"
+                    android:id="@+id/btnNegativeCommonMessageDialog"
+                    android:contentDescription="Common Message Dialog Negative Button"
                     style="@style/negative_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,12 +82,12 @@
                     android:text="@string/yes" />
 
                 <Button
-                    android:id="@+id/positive_btn"
-                    style="@style/positive_btn"
+                    android:id="@+id/btnPositiveCommonMessageDialog"
+                    android:contentDescription="Common Message Dialog Positive Button"                    style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_toEndOf="@id/negative_btn"
+                    android:layout_toEndOf="@id/btnNegativeCommonMessageDialog"
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:paddingHorizontal="@dimen/padding_15"
                     android:paddingVertical="@dimen/padding_12"

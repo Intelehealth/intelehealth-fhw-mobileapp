@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvParentTryAgainDialog"
+    android:contentDescription="Try Again Dialog Parent CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_5"
@@ -8,11 +10,14 @@
     app:cardElevation="@dimen/hamburger_margin_start">
 
     <RelativeLayout
+        android:id="@+id/rlParentTryAgainDialog"
+        android:contentDescription="Try Again Dialog Parent RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/dialog_icon"
+            android:id="@+id/ivIconTryAgainDialog"
+            android:contentDescription="Try Again Dialog Icon ImageView"
             android:layout_width="@dimen/patregist_profileimg_icon"
             android:layout_height="@dimen/patregist_profileimg_icon"
             android:layout_centerHorizontal="true"
@@ -22,14 +27,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_icon"
+            android:layout_below="@+id/ivIconTryAgainDialog"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24">
 
             <TextView
-                android:id="@+id/dialog_title"
+                android:id="@+id/tvTitleTryAgainDialog"
+                android:contentDescription="Try Again Dialog Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
@@ -41,10 +47,11 @@
                 android:textSize="@null" />
 
             <TextView
-                android:id="@+id/dialog_subtitle"
+                android:id="@+id/tvSubtitleTryAgainDialog"
+                android:contentDescription="Try Again Dialog Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dialog_title"
+                android:layout_below="@id/tvTitleTryAgainDialog"
                 android:layout_marginTop="@dimen/fu_margin_start"
                 android:gravity="center"
                 android:lineSpacingExtra="3sp"
@@ -57,14 +64,15 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/dialog_subtitle"
+                android:layout_below="@+id/tvSubtitleTryAgainDialog"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_32dp"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/positive_btn"
+                    android:id="@+id/btnTryAgainDialog"
+                    android:contentDescription="Try Again Dialog Button"
                     style="@style/positive_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

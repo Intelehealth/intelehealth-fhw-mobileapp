@@ -4,11 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rlParentVisitCreation"
+    android:contentDescription="Visit Creation Parent RelativeLayout"
     android:background="@color/white"
     tools:context=".ayu.visit.VisitCreationActivity">
 
     <RelativeLayout
-        android:id="@+id/toolbar"
+        android:id="@+id/rlToolbarVisitCreation"
+        android:contentDescription="Visit Creation Toolbar RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -16,22 +19,23 @@
         android:paddingHorizontal="@dimen/toolbar_margin_left">
 
         <ImageButton
-            android:id="@+id/img_btn_cancel"
+            android:id="@+id/ibCancelVisitCreation"
+            android:contentDescription="Visit Creation Cancel ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:background="@null"
-            android:contentDescription="img_btn_cancel"
             android:onClick="backPress"
             app:srcCompat="@drawable/cancel_btn_cross" />
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tvTitleVisitCreation"
+            android:contentDescription="Visit Creation Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/imb_btn_refresh"
+            android:layout_toStartOf="@+id/ibRefreshVisitCreation"
             android:gravity="center_vertical"
             android:lineSpacingExtra="1sp"
             android:text="Lincon Testing"
@@ -41,11 +45,12 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_title_desc"
+            android:id="@+id/tvTitleDescVisitCreation"
+            android:contentDescription="Visit Creation Title Description TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title"
-            android:layout_toStartOf="@+id/imb_btn_refresh"
+            android:layout_below="@+id/tvTitleVisitCreation"
+            android:layout_toStartOf="@+id/ibRefreshVisitCreation"
             android:gravity="center_vertical"
             android:lineSpacingExtra="1sp"
             android:text="Lincon Testing"
@@ -55,15 +60,15 @@
             android:textStyle="normal" />
 
         <ImageButton
-            android:id="@+id/imb_btn_refresh"
+            android:id="@+id/ibRefreshVisitCreation"
+            android:contentDescription="Visit Creation Refresh ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/common_title_margin_top"
-            android:layout_toStartOf="@+id/img_btn_cancel"
+            android:layout_toStartOf="@+id/ibCancelVisitCreation"
             android:background="@null"
-            android:contentDescription="imb_btn_refresh"
             android:onClick="syncNow"
             app:srcCompat="@drawable/ic_refreshbtn" />
 
@@ -71,10 +76,11 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_sub_title"
+        android:id="@+id/tvSubtitleVisitCreation"
+        android:contentDescription="Visit Creation Subtitle TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/rlToolbarVisitCreation"
         android:layout_marginTop="@dimen/margin_8"
         android:lineSpacingExtra="1sp"
         android:paddingHorizontal="@dimen/toolbar_margin_left"
@@ -84,16 +90,18 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/ll_progress_steps"
+        android:id="@+id/llProgressStepsVisitCreation"
+        android:contentDescription="Visit Creation Progress Steps LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_sub_title"
+        android:layout_below="@+id/tvSubtitleVisitCreation"
         android:layout_marginTop="@dimen/margin_14"
         android:orientation="horizontal"
         android:weightSum="4">
 
         <ProgressBar
-            android:id="@+id/prog_bar_step1"
+            android:id="@+id/pbStep1VisitCreation"
+            android:contentDescription="Visit Creation Step 1 ProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dip"
             android:layout_height="4dip"
@@ -102,7 +110,8 @@
             android:progressTint="@color/colorPrimary" />
 
         <ProgressBar
-            android:id="@+id/prog_bar_step2"
+            android:id="@+id/pbStep2VisitCreation"
+            android:contentDescription="Visit Creation Step 2 ProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dip"
             android:layout_height="4dip"
@@ -112,7 +121,8 @@
             android:progressTint="@color/colorPrimary" />
 
         <ProgressBar
-            android:id="@+id/prog_bar_step3"
+            android:id="@+id/pbStep3VisitCreation"
+            android:contentDescription="Visit Creation Step 3 ProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dip"
             android:layout_height="4dip"
@@ -122,7 +132,8 @@
             android:progressTint="@color/colorPrimary" />
 
         <ProgressBar
-            android:id="@+id/prog_bar_step4"
+            android:id="@+id/pbStep4VisitCreation"
+            android:contentDescription="Visit Creation Step 4 ProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dip"
             android:layout_height="4dip"
@@ -133,13 +144,15 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/fl_steps_body"
+        android:id="@+id/flProgressStepsBodyVisitCreation"
+        android:contentDescription="Visit Creation Progress Steps Body FrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ll_progress_steps" />
+        android:layout_below="@+id/llProgressStepsVisitCreation" />
 
     <FrameLayout
-        android:id="@+id/fl_steps_summary"
+        android:id="@+id/flProgressStepsSummaryVisitCreation"
+        android:contentDescription="Visit Creation Progress Steps Summary FrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"

@@ -62,8 +62,8 @@ public class HealthInfoVideosFragment extends Fragment {
     }
 
     private void initUI() {
-        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
-        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
+        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbarNewAppBar);
+        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.ivBackArrowCustomToolbar);
         ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,8 +76,8 @@ public class HealthInfoVideosFragment extends Fragment {
             }
         });
 
-        RecyclerView rvSearchedVideos = view.findViewById(R.id.rv_most_searched_info_health);
-        RecyclerView rvMoreVideos = view.findViewById(R.id.rv_more_videos_info_health);
+        RecyclerView rvSearchedVideos = view.findViewById(R.id.rvMostSearchHealthInfoFragment);
+        RecyclerView rvMoreVideos = view.findViewById(R.id.rvMoreVideosHealthInfoVideosFragment);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);

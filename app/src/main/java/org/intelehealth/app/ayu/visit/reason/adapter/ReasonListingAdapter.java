@@ -90,13 +90,13 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            recyclerView = itemView.findViewById(R.id.rcv_container);
+            recyclerView = itemView.findViewById(R.id.rvAllReasonListItem);
 
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
             recyclerView.setLayoutManager(layoutManager);
-            tvAlphabets = itemView.findViewById(R.id.tv_alphabets);
+            tvAlphabets = itemView.findViewById(R.id.tvAllReasonListItem);
 
 
         }

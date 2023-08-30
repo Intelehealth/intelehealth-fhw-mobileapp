@@ -2,28 +2,36 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/svParentDailyAchievements"
+    android:contentDescription="Daily Achievements Parent ScrollView"
     android:fillViewport="true">
 
-
     <LinearLayout
+        android:id="@+id/llParentDailyAchievements"
+        android:contentDescription="Daily Achievements Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/date_frag_daily_parent_margin_top"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llDateDailyAchievements"
+            android:contentDescription="Daily Achievements Date LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/date_frag_text_margin_start"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/ivDateIconDailyAchievements"
+                android:contentDescription="Daily Achievements Date Icon ImageView"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ui2_ic_calendar" />
 
             <TextView
-                android:id="@+id/tv_todays_date"
+                android:id="@+id/tvTodayDateDailyAchievements"
+                android:contentDescription="Daily Achievements Today's Date TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -37,6 +45,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llChild1DailyAchievements"
+            android:contentDescription="Daily Achievements Child 1 LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card1_common_achieve_margin_start"
@@ -48,6 +58,8 @@
 
 
             <LinearLayout
+                android:id="@+id/llPatientAddedDailyAchievements"
+                android:contentDescription="Daily Achievements Patient Added LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card1_achieve_margin_end"
@@ -57,11 +69,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivPatientAddedIconDailyAchievements"
+                    android:contentDescription="Daily Achievements Patient Added Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_icon_user_add" />
 
                 <TextView
+                    android:id="@+id/tvPatientAddedDescDailyAchievements"
+                    android:contentDescription="Daily Achievements Patient Added Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -69,7 +85,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_patients_created_today"
+                    android:id="@+id/tvPatientAddedValueDailyAchievements"
+                    android:contentDescription="Daily Achievements Patient Added Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -84,6 +101,8 @@
 
 
             <LinearLayout
+                android:id="@+id/llVisitCompletedDailyAchievements"
+                android:contentDescription="Daily Achievements Visit Completed LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
@@ -93,11 +112,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivVisitCompletedIconDailyAchievements"
+                    android:contentDescription="Daily Achievements Visit Completed Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_icon_visits_completed" />
 
                 <TextView
+                    android:id="@+id/tvVisitCompletedDescDailyAchievements"
+                    android:contentDescription="Daily Achievements Visit Completed Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -105,7 +128,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_visits_ended_today"
+                    android:id="@+id/tvVisitCompletedValueDailyAchievements"
+                    android:contentDescription="Daily Achievements Visit Completed Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -121,6 +145,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llChild2DailyAchievements"
+            android:contentDescription="Daily Achievements Child 2 LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card2_common_achieve_margin_start"
@@ -129,6 +155,8 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/llSatisfactionScoreDailyAchievements"
+                android:contentDescription="Daily Achievements Satisfaction Score LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/card1_achieve_margin_end"
@@ -138,11 +166,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivSatisfactionScoreIconDailyAchievements"
+                    android:contentDescription="Daily Achievements Satisfaction Score Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_star_score" />
 
                 <TextView
+                    android:id="@+id/tvSatisfactionScoreDescDailyAchievements"
+                    android:contentDescription="Daily Achievements Satisfaction Score Description TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -150,7 +182,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_avg_satisfaction_score"
+                    android:id="@+id/tvSatisfactionScoreValueDailyAchievements"
+                    android:contentDescription="Daily Achievements Satisfaction Score Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"
@@ -165,6 +198,8 @@
 
 
             <LinearLayout
+                android:id="@+id/llTimeSpentDailyAchievements"
+                android:contentDescription="Daily Achievements Time Spent LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/card1_achieve_margin_start"
@@ -174,11 +209,15 @@
                 android:padding="@dimen/card_common_achieve_padding">
 
                 <ImageView
+                    android:id="@+id/ivTimeSpentIconDailyAchievements"
+                    android:contentDescription="Daily Achievements Time Spent Icon ImageView"
                     android:layout_width="@dimen/card_achieve_icon_width"
                     android:layout_height="@dimen/card_achieve_icon_height"
                     android:src="@drawable/ui2_ic_time_spent" />
 
                 <TextView
+                    android:id="@+id/tvTimeSpentDescDailyAchievements"
+                    android:contentDescription="Daily Achievements Time Spent Desc TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_title_margin_top"
@@ -186,7 +225,8 @@
                     android:textSize="@dimen/date_frag_layout_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_daily_time_spent"
+                    android:id="@+id/tvTimeSpentValueDailyAchievements"
+                    android:contentDescription="Daily Achievements Time Spent Value TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/card_achieve_value_margin_top"

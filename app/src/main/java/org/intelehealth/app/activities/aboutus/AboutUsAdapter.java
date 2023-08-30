@@ -45,7 +45,7 @@ public class AboutUsAdapter extends RecyclerView.Adapter<AboutUsAdapter.MyViewHo
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imgview_aboutus);
+            imageView = itemView.findViewById(R.id.ivImageAboutUsListItem);
         }
     }
 }

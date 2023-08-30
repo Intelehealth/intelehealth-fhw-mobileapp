@@ -2,13 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentVisitDetails"
+    android:contentDescription="Visit Details Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
     tools:context=".activities.visit.VisitDetailsActivity">
 
     <RelativeLayout
-        android:id="@+id/frame_10021"
+        android:id="@+id/rlToolbarVisitDetails"
+        android:contentDescription="Visit Details Toolbar RelativeLayout"
         android:layout_width="0dp"
         android:layout_height="@dimen/followup_toolbar"
         android:layout_alignParentLeft="true"
@@ -19,7 +22,8 @@
 
         <!-- Frame 100167 -->
         <LinearLayout
-            android:id="@+id/frame_10016"
+            android:id="@+id/llToolbarVisitDetails"
+            android:contentDescription="Visit Details Toolbar LinearLayout"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_toolbat_txt_height"
             android:layout_alignParentLeft="true"
@@ -33,7 +37,8 @@
 
             <!-- Frame 100116 -->
             <LinearLayout
-                android:id="@+id/frame_10011"
+                android:id="@+id/llArrowTitleVisitDetails"
+                android:contentDescription="Visit Details Arrow Title LinearLayout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.8"
@@ -41,7 +46,8 @@
 
                 <!-- arrow-right -->
                 <ImageButton
-                    android:id="@+id/backArrow"
+                    android:id="@+id/ibBackArrowVisitDetails"
+                    android:contentDescription="Visit Details Back Arrow ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
@@ -54,7 +60,8 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/label"
+                    android:id="@+id/tvTitleVisitDetails"
+                    android:contentDescription="Visit Details Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/margin_10"
@@ -69,7 +76,8 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/ibRefreshVisitDetails"
+                android:contentDescription="Visit Details Refresh ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
@@ -80,9 +88,11 @@
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvVisitDetails"
+        android:contentDescription="Visit Details NestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frame_10021"
+        android:layout_below="@+id/rlToolbarVisitDetails"
         android:fillViewport="true">
 
         <LinearLayout
@@ -91,7 +101,8 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_head"
+                android:id="@+id/cvPatientDetailsVisitDetails"
+                android:contentDescription="Visit Details Patient Details CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -105,7 +116,8 @@
 
                 <!-- Frame 100340 -->
                 <LinearLayout
-                    android:id="@+id/frame_10034"
+                    android:id="@+id/llPatientDetailsVisitDetails"
+                    android:contentDescription="Visit Details Patient Details LinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/fu_margin_start"
@@ -119,7 +131,8 @@
                         android:layout_weight="1">
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/profile"
+                            android:id="@+id/cvProfileImageVisitDetails"
+                            android:contentDescription="Visit Details Profile Image CardView"
                             android:layout_width="@dimen/patdetail_profile_imgview_14sp"
                             android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                             android:layout_centerVertical="true"
@@ -128,7 +141,8 @@
                             app:cardCornerRadius="@dimen/cardcornerradius_imagev">
 
                             <ImageView
-                                android:id="@+id/ivPatientImageRowItem"
+                                android:id="@+id/ivProfileImageVisitDetails"
+                                android:contentDescription="Visit Details Profile Image ImageView"
                                 android:layout_width="@dimen/patdetail_profile_imgview_14sp"
                                 android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                                 android:src="@drawable/avatar1" />
@@ -138,18 +152,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/fu_margin_start"
-                            android:layout_toEndOf="@+id/profile"
+                            android:layout_toEndOf="@+id/cvProfileImageVisitDetails"
                             android:orientation="vertical">
 
                             <LinearLayout
-                                android:id="@+id/frame_10033"
+                                android:id="@+id/llPatientNameAgeVisitDetails"
+                                android:contentDescription="Visit Details Patient Name Age LinearLayout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/patname_txt"
+                                    android:id="@+id/tvPatientNameVisitDetails"
+                                    android:contentDescription="Visit Details Patient Name TextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -162,7 +178,8 @@
                                     android:textSize="@dimen/fu_name_txt_size" />
 
                                 <TextView
-                                    android:id="@+id/gender_age_txt"
+                                    android:id="@+id/tvPatientGenderAgeVisitDetails"
+                                    android:contentDescription="Visit Details Patient Gender Age TextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
@@ -174,7 +191,8 @@
                                     android:textSize="@dimen/fu_name_txt_size" />
 
                                 <ImageView
-                                    android:id="@+id/icons8_edit"
+                                    android:id="@+id/ivPatientDetailEditVisitDetails"
+                                    android:contentDescription="Visit Details Patient Details Edit Icon ImageView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
@@ -187,7 +205,8 @@
 
                             <!-- Caption -->
                             <TextView
-                                android:id="@+id/openmrsID_txt"
+                                android:id="@+id/tvPatientIDVisitDetails"
+                                android:contentDescription="Visit Details Patient OpenMRS ID TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_marginTop="@dimen/margin_4"
@@ -203,13 +222,16 @@
 
                     <!--2nd-->
                     <LinearLayout
+                        android:id="@+id/llPatientCallChatVisitDetails"
+                        android:contentDescription="Visit Details Patient Call Chat LinearLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:orientation="horizontal">
 
                         <ImageButton
-                            android:id="@+id/pat_call_btn"
+                            android:id="@+id/ibPatientCallVisitDetails"
+                            android:contentDescription="Visit Details Patient Call ImageButton"
                             android:layout_width="42dip"
                             android:layout_height="42dip"
                             android:background="@null"
@@ -217,7 +239,8 @@
                             android:src="@drawable/ic_icon8_phone" />
 
                         <ImageButton
-                            android:id="@+id/pat_whatsapp_btn"
+                            android:id="@+id/ibPatientChatVisitDetails"
+                            android:contentDescription="Visit Details Patient Chat ImageButton"
                             android:layout_width="42dip"
                             android:layout_height="42dip"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -232,6 +255,8 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvVisitDetails"
+                android:contentDescription="Visit Details CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cardview_head"
@@ -252,7 +277,8 @@
                     android:layout_marginTop="@dimen/fu_card_margin_updown">
 
                     <ImageView
-                        android:id="@+id/priority_tag"
+                        android:id="@+id/ivPriorityTagVisitDetails"
+                        android:contentDescription="Visit Details Priority Tag ImageView"
                         android:layout_width="@dimen/btn_prioirty_w_60dp"
                         android:layout_height="@dimen/btn_prioirty_h_20dp"
                         android:layout_alignParentEnd="true"
@@ -260,7 +286,8 @@
                         android:src="@drawable/ui2_frame_priority" />
 
                     <TextView
-                        android:id="@+id/chief_complaint_txt"
+                        android:id="@+id/tvChiefComplaintVisitDetails"
+                        android:contentDescription="Visit Details Chief Complaint TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -272,10 +299,11 @@
                         android:textSize="@dimen/fu_name_txt_size" />
 
                     <TextView
-                        android:id="@+id/visitID"
+                        android:id="@+id/tvVisitIDVisitDetails"
+                        android:contentDescription="Visit Details Visit ID TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/chief_complaint_txt"
+                        android:layout_below="@+id/tvChiefComplaintVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:gravity="center_vertical"
                         android:lineSpacingExtra="3sp"
@@ -285,37 +313,41 @@
                         android:textSize="@dimen/fu_male_textsize" />
 
                     <ImageButton
-                        android:id="@+id/fu_progress_indicator"
+                        android:id="@+id/ibProgressIndicatorVisitDetails"
+                        android:contentDescription="Visit Details Progress Indicator ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/visitID"
+                        android:layout_below="@id/tvVisitIDVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/fu_card_margin_updown"
                         android:background="@null"
                         android:src="@drawable/details_progressindic" />
 
                     <LinearLayout
-                        android:id="@+id/ll_1"
+                        android:id="@+id/llStartDateVisitDetails"
+                        android:contentDescription="Visit Details Date Time LinearLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/fu_progress_indicator"
+                        android:layout_below="@+id/ibProgressIndicatorVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/fu_card_margin_updown"
                         android:layout_marginEnd="@dimen/margin_40dp"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/fu_details_calendar"
+                            android:id="@+id/ivDateCalendarIconVisitDetails"
+                            android:contentDescription="Visit Details Date Calendar Icon ImageView"
                             android:layout_width="@dimen/cal_size"
                             android:layout_height="match_parent"
                             android:src="@drawable/followup_item_calendar" />
 
                         <TextView
-                            android:id="@+id/visit_startDate"
+                            android:id="@+id/tvStartDateVisitDetails"
+                            android:contentDescription="Visit Details Start Date TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/margin_6"
-                            android:layout_toEndOf="@+id/fu_details_calendar"
+                            android:layout_toEndOf="@+id/ivCalendarVisitDetails"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:text="@string/fu_detiails_date"
@@ -328,27 +360,30 @@
 
                     <!--Timer-->
                     <LinearLayout
-                        android:id="@+id/ll_2"
+                        android:id="@+id/llStartTimeVisitDetails"
+                        android:contentDescription="Visit Details Date Time LinearLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/fu_progress_indicator"
+                        android:layout_below="@+id/ibProgressIndicatorVisitDetails"
                         android:layout_marginTop="@dimen/fu_card_margin_updown"
-                        android:layout_toEndOf="@+id/ll_1"
+                        android:layout_toEndOf="@+id/llStartDateVisitDetails"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/fu_details_calendar"
+                            android:id="@+id/ivTimeCalendarIconVisitDetails"
+                            android:contentDescription="Visit Details Time Calendar Icon ImageView"
                             android:layout_width="@dimen/cal_size"
                             android:layout_height="match_parent"
                             android:src="@drawable/ui2_ic_time"
                             android:tint="@color/textview_color" />
 
                         <TextView
-                            android:id="@+id/visit_startTime"
+                            android:id="@+id/tvStartTimeVisitDetails"
+                            android:contentDescription="Visit Details Start Time TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/margin_6"
-                            android:layout_toEndOf="@+id/fu_details_calendar"
+                            android:layout_toEndOf="@+id/ivTimeCalendarIconVisitDetails"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:text="00:00 am"
@@ -361,10 +396,11 @@
 
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/viewDivider1VisitDetails"
+                        android:contentDescription="Visit Details Divider 1 View"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/ll_1"
+                        android:layout_below="@+id/llStartDateVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/fu_card_margin_updown"
                         android:layout_marginEnd="@dimen/fu_margin_start"
@@ -373,10 +409,11 @@
 
                     <!--general physician-->
                     <LinearLayout
-                        android:id="@+id/ll_2"
+                        android:id="@+id/llSpecialityVisitDetails"
+                        android:contentDescription="Visit Details Speciality LinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/divider"
+                        android:layout_below="@+id/viewDivider1VisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:orientation="horizontal"
@@ -389,7 +426,8 @@
                             android:layout_weight="2">
 
                             <ImageView
-                                android:id="@+id/profile"
+                                android:id="@+id/ivSpecialityIconVisitDetails"
+                                android:contentDescription="Visit Details Speciality Icon ImageView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
@@ -400,11 +438,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_toEndOf="@+id/profile"
+                                android:layout_toEndOf="@+id/ivSpecialityIconVisitDetails"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/visit_speciality"
+                                    android:id="@+id/tvDocSpecialityValueVisitDetails"
+                                    android:contentDescription="Visit Details Doctor Speciality Value TextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:lineSpacingExtra="-3sp"
@@ -413,10 +452,9 @@
                                     android:textSize="@dimen/fu_name_txt_size"
                                     tools:text="@string/gp_txt" />
 
-
-                                <!-- Caption -->
                                 <TextView
-                                    android:id="@+id/dr_speciality"
+                                    android:id="@+id/tvDocSpecialityTextVisitDetails"
+                                    android:contentDescription="Visit Details Doctor Speciality TextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/fu_male_margin_start"
@@ -432,12 +470,15 @@
 
                         <!--2nd-->
                         <LinearLayout
+                            android:id="@+id/llDoctorCallChatVisitDetails"
+                            android:contentDescription="Visit Details Doctor Call Chat LinearLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:id="@+id/dr_call_btn"
+                                android:id="@+id/ivDoctorCallVisitDetails"
+                                android:contentDescription="Visit Details Doctor Call ImageView"
                                 android:layout_width="48dip"
                                 android:layout_height="48dip"
                                 android:layout_gravity="center"
@@ -445,10 +486,11 @@
                                 android:onClick="startVideoChat"
                                 android:padding="12dip"
                                 android:src="@drawable/ic_baseline_videocam_24"
-                                android:visibility="invisible" />
+                                android:visibility="gone" />
 
                             <ImageView
-                                android:id="@+id/dr_whatsapp_btn"
+                                android:id="@+id/ivDoctorChatVisitDetails"
+                                android:contentDescription="Visit Details Doctor Chat ImageView"
                                 android:layout_width="48dip"
                                 android:layout_height="48dip"
                                 android:layout_gravity="center"
@@ -463,10 +505,11 @@
                     </LinearLayout>
 
                     <View
-                        android:id="@+id/divider_2"
+                        android:id="@+id/viewDivider2VisitDetails"
+                        android:contentDescription="Visit Details Divider 2 View"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/ll_2"
+                        android:layout_below="@+id/llSpecialityVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginTop="@dimen/fu_card_margin_updown"
                         android:layout_marginEnd="@dimen/fu_margin_start"
@@ -475,16 +518,18 @@
 
                     <!-- Frame 2608662 -->
                     <RelativeLayout
-                        android:id="@+id/vs_card"
+                        android:id="@+id/rlVisitSummCardVisitDetails"
+                        android:contentDescription="Visit Details Visit Summary Card RelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/notifi_header_icon"
-                        android:layout_below="@+id/divider_2"
+                        android:layout_below="@+id/viewDivider2VisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/fu_card_margin_updown">
 
                         <ImageView
-                            android:id="@+id/icon_visit_details"
+                            android:id="@+id/ivVisitSummIconVisitDetails"
+                            android:contentDescription="Visit Details Visit Summary Icon ImageView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -493,12 +538,13 @@
 
                         <!-- label-text -->
                         <TextView
-                            android:id="@+id/visitDetails_summary_text"
+                            android:id="@+id/tvVisitSummTextVisitDetails"
+                            android:contentDescription="Visit Details Visit Summary Details TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/fu_margin_start"
-                            android:layout_toEndOf="@+id/icon_visit_details"
+                            android:layout_toEndOf="@+id/ivVisitSummIconVisitDetails"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:text="@string/visitDetails_text"
@@ -507,7 +553,8 @@
                             android:textSize="@dimen/fu_name_txt_size" />
 
                         <ImageButton
-                            android:id="@+id/vs_arrowRight"
+                            android:id="@+id/ibVisitSummArrowVisitDetails"
+                            android:contentDescription="Visit Details Visit Summary Right Arrow ImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignParentEnd="true"
@@ -518,13 +565,12 @@
                     </RelativeLayout>
 
 
-                    <!--View based on visibility and condition - start-->
-                    <!--Presc block - Start-->
                     <RelativeLayout
-                        android:id="@+id/prescription_block"
+                        android:id="@+id/rlPrescParentVisitDetails"
+                        android:contentDescription="Visit Details Prescription Parent RelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/vs_card"
+                        android:layout_below="@+id/rlVisitSummCardVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/margin_16dp"
@@ -532,7 +578,8 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider_3"
+                            android:id="@+id/viewDivider3VisitDetails"
+                            android:contentDescription="Visit Details Divider 3 View"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginBottom="@dimen/fu_card_margin_updown"
@@ -540,13 +587,15 @@
 
 
                         <RelativeLayout
-                            android:id="@+id/presc_relative"
+                            android:id="@+id/rlPrescChildVisitDetails"
+                            android:contentDescription="Visit Details Prescription Child RelativeLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider_3">
+                            android:layout_below="@+id/viewDivider3VisitDetails">
 
                             <ImageView
-                                android:id="@+id/icon_presc_details"
+                                android:id="@+id/ivPrescIconVisitDetails"
+                                android:contentDescription="Visit Details Prescription Icon ImageView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
@@ -558,11 +607,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_toEndOf="@+id/icon_presc_details"
+                                android:layout_toEndOf="@+id/ivPrescIconVisitDetails"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/visitDetails_text"
+                                    android:id="@+id/tvPrescTitleVisitDetails"
+                                    android:contentDescription="Visit Details Prescription Title TextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
@@ -574,7 +624,8 @@
                                     android:textSize="@dimen/fu_name_txt_size" />
 
                                 <TextView
-                                    android:id="@+id/presc_time"
+                                    android:id="@+id/tvPrescTimeVisitDetails"
+                                    android:contentDescription="Visit Details Prescription Time TextView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/visitDetails_text"
@@ -588,7 +639,8 @@
                             </LinearLayout>
 
                             <ImageButton
-                                android:id="@+id/presc_arrowRight"
+                                android:id="@+id/ibPrescArrowVisitDetails"
+                                android:contentDescription="Visit Details Prescription Right Arrow ImageButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
@@ -603,15 +655,16 @@
 
                         <!--Remind button - start -->
                         <RelativeLayout
-                            android:id="@+id/presc_remind_block"
+                            android:id="@+id/rlPrescButtonVisitDetails"
+                            android:contentDescription="Visit Details Presc Button RelativeLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/presc_relative"
+                            android:layout_below="@+id/rlPrescChildVisitDetails"
                             android:visibility="gone"
                             tools:visibility="visible">
 
                             <View
-                                android:id="@+id/divider_4"
+                                android:id="@+id/viewDivider4VisitDetails"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -620,16 +673,18 @@
                                 android:background="@color/notifi_divider_color" />
 
                             <LinearLayout
-                                android:id="@+id/btn_bottom"
+                                android:id="@+id/llPrescButtonVisitDetails"
+                                android:contentDescription="Visit Details Presc Button LinearLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/divider_4"
+                                android:layout_below="@+id/viewDivider4VisitDetails"
                                 android:orientation="horizontal"
                                 android:paddingTop="@dimen/margin_16dp"
                                 android:weightSum="2">
 
                                 <Button
-                                    android:id="@+id/btn_vs_appointment"
+                                    android:id="@+id/btnCancelPrescVisitDetails"
+                                    android:contentDescription="Visit Details Presc 'Cancel' Button"
                                     android:layout_width="0dp"
                                     android:layout_height="@dimen/small_btn_h_48dp"
                                     android:layout_marginEnd="@dimen/margin_8"
@@ -644,7 +699,8 @@
                                     android:textStyle="bold" />
 
                                 <Button
-                                    android:id="@+id/btn_vs_sendvisit"
+                                    android:id="@+id/btnRemindPrescVisitDetails"
+                                    android:contentDescription="Visit Details Presc 'Remind Doctor' Button"
                                     android:layout_width="0dp"
                                     android:layout_height="@dimen/small_btn_h_48dp"
                                     android:layout_alignParentBottom="true"
@@ -667,17 +723,19 @@
 
                     <!--Followup Section - start-->
                     <RelativeLayout
-                        android:id="@+id/followup_relative_block"
+                        android:id="@+id/rlFollowUpParentVisitDetails"
+                        android:contentDescription="Visit Details Follow Up Parent RelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/prescription_block"
+                        android:layout_below="@+id/rlPrescParentVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:visibility="gone"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider_54"
+                            android:id="@+id/viewDivider5VisitDetails"
+                            android:contentDescription="Visit Details Divider 5 View"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginBottom="@dimen/fu_card_margin_updown"
@@ -685,10 +743,11 @@
 
 
                         <TextView
-                            android:id="@+id/followup_date_txtv"
+                            android:id="@+id/tvFollowUpDateVisitDetails"
+                            android:contentDescription="Visit Details Follow Up Date TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider_54"
+                            android:layout_below="@+id/viewDivider5VisitDetails"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="4sp"
                             android:text="@string/followup_date_txtv"
@@ -699,15 +758,17 @@
 
                         <!--Start Follow up - Start-->
                         <RelativeLayout
-                            android:id="@+id/followup_start_card"
+                            android:id="@+id/rlStartFollowUpVisitDetails"
+                            android:contentDescription="Visit Details Start Follow Up RelativeLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/followup_date_txtv"
                             android:visibility="gone"
-                            tools:visibility="gone">
+                            tools:visibility="visible">
 
                             <TextView
-                                android:id="@+id/followup_info"
+                                android:id="@+id/tvFollowUpInfoVisitDetails"
+                                android:contentDescription="Visit Details Follow Up Info TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/fu_male_margin_start"
@@ -718,9 +779,11 @@
                                 android:textColor="@null" />
 
                             <Button
+                                android:id="@+id/btnStartFollowUpVisitDetails"
+                                android:contentDescription="Visit Details Start Follow Up Button"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/followup_info"
+                                android:layout_below="@+id/tvFollowUpInfoVisitDetails"
                                 android:layout_marginTop="@dimen/fu_margin_start"
                                 android:layout_marginBottom="@dimen/fu_card_margin_updown"
                                 android:background="@drawable/icon_followup_enabled" />
@@ -731,15 +794,17 @@
 
                         <!--Do you want to Accept this Follow up - start-->
                         <RelativeLayout
-                            android:id="@+id/yes_no_followup_relative"
+                            android:id="@+id/rlAcceptRejectFollowUpVisitDetails"
+                            android:contentDescription="Visit Details Accept Reject Follow Up RelativeLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/followup_date_txtv"
+                            android:layout_below="@+id/tvFollowUpDateVisitDetails"
                             android:visibility="gone"
                             tools:visibility="visible">
 
                             <TextView
-                                android:id="@+id/followup_accept_text"
+                                android:id="@+id/tvAcceptFollowUpInfoVisitDetails"
+                                android:contentDescription="Visit Details Accept Follow Up Info TextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/fu_male_margin_start"
@@ -752,18 +817,20 @@
 
                             <!--Button - start -->
                             <LinearLayout
-                                android:id="@+id/btn_bottom_1"
+                                android:id="@+id/llAcceptRejectFollowUpButtonsVisitDetails"
+                                android:contentDescription="Visit Details Accept Reject Follow Up Buttons LinearLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/followup_accept_text"
+                                android:layout_below="@+id/tvAcceptFollowUpInfoVisitDetails"
                                 android:layout_marginBottom="@dimen/fu_margin_start"
                                 android:orientation="horizontal"
                                 android:paddingTop="@dimen/fu_margin_start"
                                 android:visibility="gone"
+                                tools:visibility="visible"
                                 android:weightSum="2">
 
                                 <Button
-                                    android:id="@+id/btn_vs_appointment_followup_no"
+                                    android:id="@+id/btnRejectFollowUpVisitDetails"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/margin_8"
@@ -778,7 +845,7 @@
                                     android:textStyle="bold" />
 
                                 <Button
-                                    android:id="@+id/yes_followup_btn"
+                                    android:id="@+id/btnAcceptFollowUpVisitDetails"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/common_edittext_margin_top"
@@ -803,10 +870,11 @@
 
                     <!-- End Visit Button - Start -->
                     <RelativeLayout
-                        android:id="@+id/endvisit_relative_block"
+                        android:id="@+id/rlEndVisitBlockVisitDetails"
+                        android:contentDescription="Visit Details End Visit Block RelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/followup_relative_block"
+                        android:layout_below="@+id/rlFollowUpParentVisitDetails"
                         android:layout_marginStart="@dimen/fu_margin_start"
                         android:layout_marginEnd="@dimen/fu_margin_start"
                         android:layout_marginBottom="@dimen/margin_16dp"
@@ -814,17 +882,19 @@
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider_5"
+                            android:id="@+id/viewDivider6VisitDetails"
+                            android:contentDescription="Visit Details Divider 6 View"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginBottom="@dimen/fu_card_margin_updown"
                             android:background="@color/notifi_divider_color" />
 
                         <Button
-                            android:id="@+id/btn_end_visit"
+                            android:id="@+id/btnEndVisitVisitDetails"
+                            android:contentDescription="Visit Details 'End Visit' Button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider_5"
+                            android:layout_below="@+id/viewDivider6VisitDetails"
                             android:layout_marginBottom="@dimen/margin_5"
                             android:layout_weight="1"
                             android:background="@drawable/ui2_common_primary_bg"
@@ -844,10 +914,10 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cv_past_visits"
+                android:id="@+id/cvPastVisitsVisitDetails"
+                android:contentDescription="Visit Details Past Visits CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="@dimen/fu_card_margin_sides"
                 android:layout_marginTop="@dimen/fu_card_margin_sides"
                 android:layout_marginRight="@dimen/fu_card_margin_sides"
@@ -872,6 +942,8 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/ivPastVisitsIconVisitDetails"
+                            android:contentDescription="Visit Details Past Visits Icon ImageView"
                             android:layout_width="48dip"
                             android:layout_height="48dip"
                             android:layout_centerVertical="true"
@@ -880,6 +952,8 @@
                             android:src="@drawable/icons8_activity_history_24" />
 
                         <TextView
+                            android:id="@+id/tvPastVisitsTitleVisitDetails"
+                            android:contentDescription="Visit Details Past Visits Title TextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -899,7 +973,8 @@
                         android:background="@color/gray_1" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rcv_past_visits"
+                        android:id="@+id/rvPastVisitsVisitDetails"
+                        android:contentDescription="Visit Details Past Visits RecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/padding_12" />
@@ -912,27 +987,27 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_video"
+        android:id="@+id/fabDocCallVisitDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/chat_fab"
+        android:contentDescription="Visit Details Doctor Call FloatingActionButton"
         android:onClick="startVideoChat"
         android:src="@drawable/icons8_video_call"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_chat"
+        android:id="@+id/fabDocChatVisitDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dip"
-        android:contentDescription="@string/chat_fab"
+        android:contentDescription="Visit Details Doctor Chat FloatingActionButton"
         android:onClick="startTextChat"
         android:src="@drawable/icons8_chat_new" />
 </RelativeLayout>

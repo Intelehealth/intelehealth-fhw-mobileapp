@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlParentImageItemWiredUI"
+    android:contentDescription="Image Item Wired UI Parent RelativeLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="16dip">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/iv_image"
+        android:id="@+id/rivImageItemWiredUI"
+        android:contentDescription="Image Item Wired UI RoundedImageView"
         android:layout_width="52dip"
         android:layout_height="72dip"
         android:background="@drawable/edittext_border_blue_dotted"
@@ -17,7 +20,8 @@
         app:riv_tile_mode="clamp" />
 
     <ImageView
-        android:id="@+id/iv_add_items"
+        android:id="@+id/ivAddImageItemWiredUI"
+        android:contentDescription="Image Item Wired UI Add ImageView"
         android:layout_width="42dip"
         android:layout_height="42dip"
         android:layout_centerInParent="true"
@@ -25,12 +29,13 @@
         android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/iv_image_delete"
+        android:id="@+id/ivDeleteImageItemWiredUI"
+        android:contentDescription="Image Item Wired UI Delete ImageView"
         android:layout_width="24dip"
         android:layout_height="24dip"
         android:layout_marginStart="-22dip"
         android:layout_marginTop="-1dip"
-        android:layout_toEndOf="@+id/iv_image"
+        android:layout_toEndOf="@+id/rivImageItemWiredUI"
         android:src="@drawable/x_circle_blue"
         android:visibility="visible" />
 

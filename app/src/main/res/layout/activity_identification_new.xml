@@ -2,12 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentIdentificationActivity"
+    android:contentDescription="Identification Activity Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.identificationActivity.IdentificationActivity_New">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar"
+        android:id="@+id/llParentToolbarIdentificationActivity"
+        android:contentDescription="Identification Activity Parent Toolbar LinearLayout"
         android:layout_width="0dp"
         android:layout_height="@dimen/fu_toolbat_txt_height"
         android:layout_alignParentLeft="true"
@@ -21,7 +24,8 @@
 
         <!-- Frame 100116 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10011"
+            android:id="@+id/llChildToolbarIdentificationActivity"
+            android:contentDescription="Identification Activity Child Toolbar LinearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
@@ -30,7 +34,8 @@
 
             <!-- arrow-right -->
             <ImageButton
-                android:id="@+id/backbtn"
+                android:id="@+id/ibBackArrowIdentificationActivity"
+                android:contentDescription="Identification Activity Back Arrow ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -45,7 +50,8 @@
 
             <!-- Label -->
             <TextView
-                android:id="@+id/label"
+                android:id="@+id/tvTitleIdentificationActivity"
+                android:contentDescription="Identification Activity Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_10"
@@ -66,7 +72,8 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/ibRefreshIdentificationActivity"
+                android:contentDescription="Identification Activity Refresh ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/common_title_margin_top"
@@ -77,7 +84,8 @@
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageButton
-                android:id="@+id/cancelbtn"
+                android:id="@+id/ibCancelIdentificationActivity"
+                android:contentDescription="Identification Activity Cancel ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -91,16 +99,18 @@
 
     <!--Icons Group-->
     <RelativeLayout
-        android:id="@+id/icons_grp"
+        android:id="@+id/rlIconsGroupIdentificationActivity"
+        android:contentDescription="Identification Activity Icons Group RelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/llParentToolbarIdentificationActivity"
         android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/margin_24"
         android:background="#00000000">
 
         <ImageView
-            android:id="@+id/addpatient_icon"
+            android:id="@+id/ivPersonalIconIdentificationActivity"
+            android:contentDescription="Identification Activity Personal Icon ImageView"
             android:layout_width="@dimen/icon_36dp"
             android:layout_height="@dimen/icon_36dp"
             android:layout_alignParentStart="true"
@@ -111,57 +121,63 @@
             android:src="@drawable/addpatient_icon" />
 
         <ImageView
-            android:id="@+id/line_1"
+            android:id="@+id/ivLineView1IdentificationActivity"
+            android:contentDescription="Identification Activity Line View 1 ImageView"
             android:layout_width="@dimen/line_66dp"
             android:layout_height="5dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/addpatient_icon"
+            android:layout_toEndOf="@+id/ivPersonalIconIdentificationActivity"
             android:src="@drawable/line_11" />
 
 
         <ImageView
-            android:id="@+id/addresslocation_icon"
+            android:id="@+id/ivAddressIconIdentificationActivity"
+            android:contentDescription="Identification Activity Address Icon ImageView"
             android:layout_width="@dimen/icon_36dp"
             android:layout_height="@dimen/icon_36dp"
             android:layout_marginStart="@dimen/common_edittext_margin_top"
             android:layout_marginTop="@dimen/card_appointment_card_elevation"
             android:layout_marginEnd="@dimen/common_edittext_margin_top"
             android:layout_marginBottom="@dimen/card_appointment_card_elevation"
-            android:layout_toEndOf="@+id/line_1"
+            android:layout_toEndOf="@+id/ivLineView1IdentificationActivity"
             android:src="@drawable/addresslocation_icon_unselected" />
 
         <ImageView
-            android:id="@+id/line_2"
+            android:id="@+id/ivLineView2IdentificationActivity"
+            android:contentDescription="Identification Activity Line View 2 ImageView"
             android:layout_width="@dimen/line_66dp"
             android:layout_height="5dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/addresslocation_icon"
+            android:layout_toEndOf="@+id/ivAddressIconIdentificationActivity"
             android:src="@drawable/line_11" />
 
         <ImageView
-            android:id="@+id/other_icon"
+            android:id="@+id/ivOtherIconIdentificationActivity"
+            android:contentDescription="Identification Activity Other Icon ImageView"
             android:layout_width="@dimen/icon_36dp"
             android:layout_height="@dimen/icon_36dp"
             android:layout_marginStart="@dimen/common_edittext_margin_top"
             android:layout_marginTop="@dimen/card_appointment_card_elevation"
             android:layout_marginEnd="@dimen/margin_10"
             android:layout_marginBottom="@dimen/card_appointment_card_elevation"
-            android:layout_toEndOf="@+id/line_2"
+            android:layout_toEndOf="@+id/ivLineView2IdentificationActivity"
             android:src="@drawable/other_icon_unselected" />
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/title_text"
+        android:id="@+id/rlTitlesGroupIdentificationActivity"
+        android:contentDescription="Identification Activity Titles Group RelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icons_grp"
-        android:layout_alignStart="@+id/icons_grp"
-        android:layout_alignEnd="@+id/icons_grp"
+        android:layout_below="@+id/rlIconsGroupIdentificationActivity"
+        android:layout_alignStart="@+id/rlIconsGroupIdentificationActivity"
+        android:layout_alignEnd="@+id/rlIconsGroupIdentificationActivity"
         android:layout_marginBottom="@dimen/card_close_visits_margin_top"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/personal_txtview"
+            android:id="@+id/tvPersonalTitleIdentificationActivity"
+            android:contentDescription="Identification Activity Personal Title TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/image_intelehealth_margin_bottom"
@@ -176,7 +192,8 @@
             android:translationY="-1.19sp" />
 
         <TextView
-            android:id="@+id/address_icon_txtview"
+            android:id="@+id/tvAddressTitleIdentificationActivity"
+            android:contentDescription="Identification Activity Address Title TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -191,7 +208,8 @@
             android:translationY="-1.19sp" />
 
         <TextView
-            android:id="@+id/other_icon_txtview"
+            android:id="@+id/tvOtherTitleIdentificationActivity"
+            android:contentDescription="Identification Activity Other Title TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -208,67 +226,13 @@
 
     <!--Fragment start-->
     <FrameLayout
-        android:id="@+id/frame_firstscreen"
+        android:id="@+id/flMainIdentificationFirstScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/frame_nxtbtn_viewgrp"
-        android:layout_below="@+id/title_text">
-
-        <!--        <include layout="@layout/fragment_registration_firstscreen" />-->
+        android:layout_above="@id/flNextIdentificationActivity"
+        android:layout_below="@+id/rlTitlesGroupIdentificationActivity">
 
     </FrameLayout>
 
-
-<!--
-    <FrameLayout
-        android:id="@+id/frame_nxtbtn_viewgrp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_24">
-
-        <RelativeLayout
-            android:id="@+id/relative_firstscreen_nxt_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible">
-
-            <Button
-                android:id="@+id/nxt_btn_main"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:background="@drawable/registr_nxt_btn" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_secondscreen_nxt_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/btn_back_firstscreen"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/fu_card_margin_updown"
-                android:layout_weight="1"
-                android:background="@drawable/back_btn_patregistra" />
-
-            <Button
-                android:id="@+id/btn_nxt_firstscreen"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fu_btn_size"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_toEndOf="@+id/btn_back_firstscreen"
-                android:layout_weight="1"
-                android:background="@drawable/nxt_btn_secondscreen" />
-        </LinearLayout>
-    </FrameLayout>
--->
 
 </RelativeLayout>

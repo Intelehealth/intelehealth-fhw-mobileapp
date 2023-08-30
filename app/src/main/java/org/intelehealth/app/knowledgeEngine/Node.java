@@ -430,7 +430,7 @@ public class Node implements Serializable {
 
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
-        ImageView imageView = convertView.findViewById(R.id.dialog_subquestion_image_view);
+        ImageView imageView = convertView.findViewById(R.id.ivSubQuestionDialog);
         if (node.isAidAvailable()) {
             if (node.getJobAidType().equals("image")) {
                 String drawableName = node.getJobAidFile();
@@ -443,7 +443,7 @@ public class Node implements Serializable {
 
 
         subQuestion.setTitle(node.findDisplay());
-        ListView listView = convertView.findViewById(R.id.dialog_subquestion_list_view);
+        ListView listView = convertView.findViewById(R.id.lvSubQuestionDialog);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setClickable(true);
         listView.setAdapter(adapter);
@@ -1300,7 +1300,7 @@ public class Node implements Serializable {
        /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
-        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        EditText et_enter_value = convertView.findViewById(R.id.etEnterValueNumberPickerDialog1);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -1356,10 +1356,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         areaDialog.setView(convertView);
-        final NumberPicker widthPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker lengthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker widthPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker lengthPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setText("X");
 
@@ -1407,10 +1407,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         rangeDialog.setView(convertView);
-        final NumberPicker startPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker endPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker startPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker endPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setText(" - ");
 
@@ -1465,10 +1465,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         frequencyDialog.setView(convertView);
-        final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker quantityPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker unitPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         //  final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
@@ -1526,10 +1526,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         durationDialog.setView(convertView);
-        final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker quantityPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker unitPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         // final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
@@ -1884,7 +1884,7 @@ public class Node implements Serializable {
       /*  final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
-        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        EditText et_enter_value = convertView.findViewById(R.id.etEnterValueNumberPickerDialog1);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -1958,10 +1958,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         areaDialog.setView(convertView);
-        final NumberPicker widthPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker lengthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker widthPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker lengthPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setText("X");
 
@@ -2007,10 +2007,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         rangeDialog.setView(convertView);
-        final NumberPicker startPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker endPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker startPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker endPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setText(" - ");
 
@@ -2063,10 +2063,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         frequencyDialog.setView(convertView);
-        final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker quantityPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker unitPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         // final String[] units = context.getResources().getStringArray(R.array.units);
@@ -2116,10 +2116,10 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
         durationDialog.setView(convertView);
-        final NumberPicker quantityPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-        final NumberPicker unitPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-        final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        final NumberPicker quantityPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+        final NumberPicker unitPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+        final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+        final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         // final String[] units = context.getResources().getStringArray(R.array.duration_units);
@@ -2314,7 +2314,7 @@ public class Node implements Serializable {
                 int screen_height = displayMetrics.heightPixels;
                 int screen_width = displayMetrics.widthPixels;
 
-                ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
+                ImageView imageView = dialog.findViewById(R.id.ivImageConfirmDialog);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
                 Glide.with(context)
                         .load(new File(imagePath))

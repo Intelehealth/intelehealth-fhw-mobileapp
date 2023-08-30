@@ -5,16 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/rlParentMostSearchedVideosScreen"
+    android:contentDescription="Most Searched Videos Screen Parent RelativeLayout"
     android:paddingStart="@dimen/help_parent1_videos_padding_start"
     android:paddingEnd="@dimen/help_parent_videos_padding_end"
     tools:context=".activities.help.activities.MostSearchedVideosActivity_New">
 
     <include
-        android:id="@+id/toolbar_videos"
+        android:id="@+id/toolbarMostSearchedVideosScreen"
+        android:contentDescription="Most Searched Videos Screen Toolbar"
         layout="@layout/toolbar_common_new2_ui2" />
 
     <LinearLayout
-        android:layout_below="@+id/toolbar_videos"
+        android:id="@+id/llChildMostSearchedVideosScreen"
+        android:contentDescription="Most Searched Videos Screen Child LinearLayout"
+        android:layout_below="@id/toolbarMostSearchedVideosScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/help_parent1_videos_margin_top"
@@ -22,12 +27,14 @@
         android:paddingBottom="@dimen/help_parent1_videos_padding_bottom">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutLocation"
+            android:id="@+id/tilSearchBarMostSearchedVideosScreen"
+            android:contentDescription="Most Searched Videos Screen Search Bar TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/autotv_select_location"
+                android:id="@+id/actvSearchBarMostSearchedVideosScreen"
+                android:contentDescription="Most Searched Videos Screen Search Bar AutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_fieldnew"
@@ -50,18 +57,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <include
-            android:id="@+id/layout_buttons_options_help"
+            android:id="@+id/categoriesButtonsLayoutMostSearchedVideosScreen"
+            android:contentDescription="Most Searched Videos Screen Categories Button Layout"
             layout="@layout/ui2_button_help_options" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_most_searched_videos"
+            android:id="@+id/rvMostSearchedVideosScreen"
+            android:contentDescription="Most Searched Videos Screen RecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/help_rv_videos1_margin_top" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_help_videos"
+        android:id="@+id/fabChatMostSearchedVideosScreen"
+        android:contentDescription="Most Searched Videos Screen Chat FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -71,7 +81,6 @@
         android:layout_marginBottom="@dimen/fab_more_videos_margin_bottom"
         android:background="@color/colorPrimary1"
         android:backgroundTint="@color/colorPrimary1"
-        android:contentDescription="@string/submit"
         android:elevation="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ui2_ic_help_chat_support"

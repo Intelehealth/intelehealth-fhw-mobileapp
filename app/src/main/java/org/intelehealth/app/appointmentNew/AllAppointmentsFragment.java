@@ -228,15 +228,15 @@ public class AllAppointmentsFragment extends Fragment {
         frameLayoutFilter = parentView.findViewById(R.id.filter_frame_all_appointments);
         ivFilterAllApp = parentView.findViewById(R.id.iv_filter_all_app);
         frameLayoutDateFilter = parentView.findViewById(R.id.filter_frame_date_appointments);
-        tvFromDate = frameLayoutDateFilter.findViewById(R.id.tv_from_date_all_app);
-        tvToDate = frameLayoutDateFilter.findViewById(R.id.tv_to_date_all_app);
+        tvFromDate = frameLayoutDateFilter.findViewById(R.id.tvFromDateAllAppFilterByDate);
+        tvToDate = frameLayoutDateFilter.findViewById(R.id.tvToDateAllAppFilterByDate);
 
 
         ivDateFilter = parentView.findViewById(R.id.iv_calendar_all_app);
-        rgFilterAppointments = frameLayoutFilter.findViewById(R.id.rg_filter_appointments);
-        rbUpcoming = frameLayoutFilter.findViewById(R.id.rb_upcoming_appointments);
-        rbCancelled = frameLayoutFilter.findViewById(R.id.rb_cancelled_appointments);
-        rbCompleted = frameLayoutFilter.findViewById(R.id.rb_completed_appointments);
+        rgFilterAppointments = frameLayoutFilter.findViewById(R.id.rgAllAppFilter);
+        rbUpcoming = frameLayoutFilter.findViewById(R.id.rbUpcomingAllAppFilter);
+        rbCancelled = frameLayoutFilter.findViewById(R.id.rbCancelledAllAppFilter);
+        rbCompleted = frameLayoutFilter.findViewById(R.id.rbCompletedAllAppFilter);
         tvResultsFor = parentView.findViewById(R.id.tv_results_for);
         scrollChips = parentView.findViewById(R.id.scroll_chips);
 
@@ -478,7 +478,7 @@ public class AllAppointmentsFragment extends Fragment {
 
         setFiltersToTheGroup(filterOptionsModel);
         switch (view.getId()) {
-            case R.id.rb_upcoming_appointments:
+            case R.id.rbUpcomingAllAppFilter:
                 if (checked) {
                     whichAppointment = "upcoming";
 
@@ -490,7 +490,7 @@ public class AllAppointmentsFragment extends Fragment {
                 }
 
                 break;
-            case R.id.rb_cancelled_appointments:
+            case R.id.rbCancelledAllAppFilter:
                 if (checked) {
                     whichAppointment = "cancelled";
 
@@ -503,7 +503,7 @@ public class AllAppointmentsFragment extends Fragment {
                 }
 
                 break;
-            case R.id.rb_completed_appointments:
+            case R.id.rbCompletedAllAppFilter:
                 if (checked) {
                     whichAppointment = "completed";
 

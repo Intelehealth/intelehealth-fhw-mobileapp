@@ -4,7 +4,8 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/iv_full_image"
+        android:id="@+id/ivFullScreenImageDialog"
+        android:contentDescription="Full Screen Image Dialog ImageView"
         android:layout_width="match_parent"
         android:layout_height="500dp" />
 

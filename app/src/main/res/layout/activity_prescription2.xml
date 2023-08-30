@@ -2,14 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentPresc"
+    android:contentDescription="Prescription Screen Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
     tools:context=".activities.visit.PrescriptionActivity">
 
-    <!--Toolbar - start -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/presc_toolbar"
+    <LinearLayout
+        android:id="@+id/llToolbarPresc"
+        android:contentDescription="Prescription Screen Toolbar LinearLayout"
         android:layout_width="0dp"
         android:layout_height="@dimen/fu_toolbat_txt_height"
         android:layout_alignParentLeft="true"
@@ -24,7 +26,8 @@
 
         <!-- Frame 100116 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10011"
+            android:id="@+id/llToolbarArrowTitlePresc"
+            android:contentDescription="Prescription Screen Toolbar Arrow Title LinearLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
@@ -32,7 +35,8 @@
 
             <!-- arrow-right -->
             <ImageButton
-                android:id="@+id/backArrow"
+                android:id="@+id/ibBackArrowPresc"
+                android:contentDescription="Prescription Screen Back Arrow ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
@@ -45,7 +49,8 @@
 
             <!-- Label -->
             <TextView
-                android:id="@+id/label"
+                android:id="@+id/tvTitlePresc"
+                android:contentDescription="Prescription Screen Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_10"
@@ -60,13 +65,16 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llToolbarRefreshDownloadPresc"
+            android:contentDescription="Prescription Screen Toolbar Refresh Download LinearLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/ibRefreshPresc"
+                android:contentDescription="Prescription Screen Refresh ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/fu_margin_start"
@@ -75,7 +83,8 @@
                 android:src="@drawable/ic_refreshbtn" />
 
             <ImageButton
-                android:id="@+id/downloadBtn"
+                android:id="@+id/ibDownloadPresc"
+                android:contentDescription="Prescription Screen Download ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/margin_6"
@@ -84,7 +93,8 @@
                 android:src="@drawable/download_icon_toolbar" />
 
             <ImageButton
-                android:id="@+id/filter"
+                android:id="@+id/ibFilterPresc"
+                android:contentDescription="Prescription Screen Filter ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -98,8 +108,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_bottom"
-        android:layout_below="@+id/presc_toolbar"
+        android:layout_above="@+id/llButtonsPresc"
+        android:layout_below="@+id/llToolbarPresc"
         android:fillViewport="true"
         android:scrollIndicators="none"
         android:scrollbars="none">
@@ -110,7 +120,7 @@
 
             <!--User Card - start-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_head"
+                android:id="@+id/cvPatientDetailsPresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -128,7 +138,7 @@
 
                     <!-- Frame 100340 -->
                     <LinearLayout
-                        android:id="@+id/presc_profile_header"
+                        android:id="@+id/llProfileHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_margin_start"
@@ -145,7 +155,7 @@
                             android:layout_weight="1">
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/profile"
+                                android:id="@+id/cvProfileImagePresc"
                                 android:layout_width="@dimen/patdetail_profile_imgview_14sp"
                                 android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                                 android:layout_centerVertical="true"
@@ -154,7 +164,7 @@
                                 app:cardCornerRadius="@dimen/cardcornerradius_imagev">
 
                                 <ImageView
-                                    android:id="@+id/ivPatientImageRowItem"
+                                    android:id="@+id/ivProfileImagePresc"
                                     android:layout_width="@dimen/patdetail_profile_imgview_14sp"
                                     android:layout_height="@dimen/patdetail_profile_imgview_14sp"
                                     android:src="@drawable/avatar1" />
@@ -164,18 +174,18 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
-                                android:layout_toEndOf="@+id/profile"
+                                android:layout_toEndOf="@+id/cvProfileImagePresc"
                                 android:orientation="vertical">
 
                                 <LinearLayout
-                                    android:id="@+id/frame_10033"
+                                    android:id="@+id/llPatientNameAgePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:id="@+id/textView_name_value"
+                                        android:id="@+id/tvPatientNamePresc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/lato_bold"
@@ -187,7 +197,7 @@
                                         android:textStyle="bold" />
 
                                     <TextView
-                                        android:id="@+id/textView_gender_value"
+                                        android:id="@+id/tvPatientAgePresc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:layout_marginStart="@dimen/fu_male_margin_start"
@@ -199,7 +209,7 @@
                                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                                     <ImageView
-                                        android:id="@+id/icons8_edit"
+                                        android:id="@+id/ivProfileEditPresc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
@@ -211,7 +221,7 @@
 
                                 <!-- Caption -->
                                 <TextView
-                                    android:id="@+id/textView_id_value"
+                                    android:id="@+id/tvPatientIDPresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_marginTop="@dimen/margin_4"
@@ -233,7 +243,7 @@
                             android:orientation="horizontal">
 
                             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                                android:id="@+id/btn_up_header"
+                                android:id="@+id/ibPatientDetailsCollapsePresc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -243,15 +253,15 @@
                     </LinearLayout>
 
                     <RelativeLayout
-                        android:id="@+id/vs_header_expandview"
+                        android:id="@+id/rlPatientDetailsExpandedPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/presc_profile_header"
+                        android:layout_below="@+id/llProfileHeaderPresc"
                         android:visibility="gone"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/viewDivider1Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -263,7 +273,7 @@
                         <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/viewDivider1Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
@@ -275,20 +285,21 @@
                                 android:layout_weight="2">
 
                                 <TextView
+                                    android:id="@+id/tvCHWNamePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/chw_worker"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/chw_worker"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
 
                                 <TextView
-                                    android:id="@+id/chw_details"
+                                    android:id="@+id/tvCHWNameValuePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -306,20 +317,21 @@
                                 android:layout_weight="2">
 
                                 <TextView
+                                    android:id="@+id/tvVisitIDPresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/visitID"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/visitID"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
 
                                 <TextView
-                                    android:id="@+id/textView_visit_value"
+                                    android:id="@+id/tvVisitIDValuePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -337,10 +349,10 @@
 
             <!--consultaed dr details - start -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/dr_details_Card"
+                android:id="@+id/cvDocDetailsPresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_head"
+                android:layout_below="@+id/cvPatientDetailsPresc"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_40dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -353,7 +365,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/dr_details_header_relative"
+                        android:id="@+id/rlDocDetailsHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -362,22 +374,23 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/ivDocDetailsHeaderIconPresc"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/dr_details_icon" />
 
                         <TextView
                             style="@style/text_title_style"
+                            android:id="@+id/tvDocDetailsHeaderTitlePresc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/ivDocDetailsHeaderIconPresc"
                             android:text="@string/consulted_doctor_details" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_drdetails_header"
+                            android:id="@+id/ibDocDetailsCollapsePresc"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -388,15 +401,15 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_drdetails_header_expandview"
+                        android:id="@+id/rlDocDetailsExpandedPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/dr_details_header_relative"
+                        android:layout_below="@+id/rlDocDetailsHeaderPresc"
                         android:visibility="visible"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/viewDivider2Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -406,54 +419,27 @@
 
                         <!--Personal Sub-Child-->
                         <RelativeLayout
-                            android:id="@+id/vitals_details_relative"
+                            android:id="@+id/rlDetailsTextPresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/viewDivider2Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start">
 
                             <TextView
-                                android:id="@+id/details_personal_txtview"
                                 style="@style/vs_title_head_14sp"
+                                android:id="@+id/tvDetailsTextPresc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/details"
                                 android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/edit_change_patdetail"
-                                android:layout_alignParentEnd="true"
-                                android:visibility="gone"
-                                android:paddingHorizontal="4dp"
-                                android:id="@+id/imagebutton_edit_vitals">
-
-                                <ImageView
-                                    android:layout_width="14dp"
-                                    android:layout_height="14dp"
-                                    android:layout_margin="5dp"
-                                    android:src="@drawable/edit"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/change"
-                                    android:textSize="12sp"
-                                    android:textAlignment="center"
-                                    android:layout_gravity="center"
-                                    android:fontFamily="@font/lato_bold"
-                                    android:textColor="#2E1E91"/>
-
-                            </LinearLayout>
 
                         </RelativeLayout>
 
                         <TableLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/vitals_details_relative"
+                            android:layout_below="@+id/rlDetailsTextPresc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/hamburger_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -467,6 +453,7 @@
                                 android:layout_weight="2">
 
                                 <TextView
+                                    android:id="@+id/tvDocNamePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -480,7 +467,7 @@
                                     android:textSize="@dimen/find_patient_hint_size" />
 
                                 <TextView
-                                    android:id="@+id/drname"
+                                    android:id="@+id/tvDocNameValuePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -499,6 +486,7 @@
                                 android:visibility="visible">
 
                                 <TextView
+                                    android:id="@+id/tvDocAgeGenderPresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -512,7 +500,7 @@
                                     android:visibility="invisible" />
 
                                 <TextView
-                                    android:id="@+id/dr_age_gender"
+                                    android:id="@+id/tvDocAgeGenderValuePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -532,6 +520,7 @@
                                 android:layout_weight="2">
 
                                 <TextView
+                                    android:id="@+id/tvDocQualificationPresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -545,7 +534,7 @@
                                     android:textSize="@dimen/find_patient_hint_size" />
 
                                 <TextView
-                                    android:id="@+id/qualification"
+                                    android:id="@+id/tvDocQualificationValuePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -563,6 +552,7 @@
                                 android:layout_weight="2">
 
                                 <TextView
+                                    android:id="@+id/tvDocSpecialityPresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -576,7 +566,7 @@
                                     android:textSize="@dimen/find_patient_hint_size" />
 
                                 <TextView
-                                    android:id="@+id/dr_speciality"
+                                    android:id="@+id/tvDocSpecialityValuePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -595,10 +585,10 @@
 
             <!--Diagnosis - start-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/diagnosisCard"
+                android:id="@+id/cvDiagnosisPresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/dr_details_Card"
+                android:layout_below="@+id/cvDocDetailsPresc"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_20dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -611,7 +601,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/diagnosis_header_relative"
+                        android:id="@+id/rlDiagnosisHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -620,7 +610,7 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/ivDiagnosisHeaderIconPresc"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/diagnosis_icon" />
@@ -631,11 +621,12 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:id="@+id/ivDiagnosisHeaderTitlePresc"
+                            android:layout_toEndOf="@+id/ivDiagnosisHeaderIconPresc"
                             android:text="@string/diagnosis" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_diagnosis_header"
+                            android:id="@+id/ibDiagnosisCollapsePresc"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -646,15 +637,15 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_diagnosis_header_expandview"
+                        android:id="@+id/rlDiagnosisExpandedPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/diagnosis_header_relative"
+                        android:layout_below="@+id/rlDiagnosisHeaderPresc"
                         android:visibility="visible"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/viewDivider3Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -663,10 +654,10 @@
 
                         <!--Personal Sub-Child-->
                         <TextView
-                            android:id="@+id/diagnosis_txt"
+                            android:id="@+id/tvDiagnosisValuePresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/viewDivider3Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -681,10 +672,10 @@
 
             <!--Prescribed Medication - start-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/medicationCard"
+                android:id="@+id/cvMedicationPresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/diagnosisCard"
+                android:layout_below="@+id/cvDiagnosisPresc"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_20dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -697,7 +688,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/medication_header_relative"
+                        android:id="@+id/rlMedicationHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -706,22 +697,23 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/ivMedicationHeaderIconPresc"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/medication_icon" />
 
                         <TextView
                             style="@style/text_title_style"
+                            android:id="@+id/tvMedicationHeaderTitlePresc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/ivMedicationHeaderIconPresc"
                             android:text="@string/visit_summary_rx" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_medication_header"
+                            android:id="@+id/ibMedicationCollapsePresc"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -732,15 +724,15 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_medication_header_expandview"
+                        android:id="@+id/rlMedicationExpandPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/medication_header_relative"
+                        android:layout_below="@+id/rlMedicationHeaderPresc"
                         android:visibility="visible"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider1"
+                            android:id="@+id/viewDivider4Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -748,13 +740,13 @@
                             android:background="@color/notifi_divider_color" />
 
                         <androidx.appcompat.widget.LinearLayoutCompat
-                            android:id="@+id/ll_medicine_column"
+                            android:id="@+id/llMedicineColumnPresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_16dp">
 
                             <TextView
-                                android:id="@+id/tv_drug_name_title"
+                                android:id="@+id/tvDrugNameTitlePresc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -763,7 +755,7 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_dosage_title"
+                                android:id="@+id/tvDosageTitlePresc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -772,7 +764,7 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_days_title"
+                                android:id="@+id/tvDaysTitlePresc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -781,7 +773,7 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_remarks_title"
+                                android:id="@+id/tvRemarksTitlePresc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -793,10 +785,10 @@
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <View
-                            android:id="@+id/divider2"
+                            android:id="@+id/viewDivider5Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_below="@id/ll_medicine_column"
+                            android:layout_below="@id/llMedicineColumnPresc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -804,10 +796,10 @@
 
                         <!--Personal Sub-Child-->
                         <TextView
-                            android:id="@+id/medication_txt"
+                            android:id="@+id/tvMedicationValuePresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider2"
+                            android:layout_below="@+id/viewDivider5Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -822,10 +814,10 @@
 
             <!--Advice - Start-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/adviceCard"
+                android:id="@+id/cvAdvicePresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/medicationCard"
+                android:layout_below="@+id/cvMedicationPresc"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_20dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -838,7 +830,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/advice_header_relative"
+                        android:id="@+id/rlAdviceHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -847,22 +839,23 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/ivAdviceHeaderIconPresc"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/med_history_icon" />
 
                         <TextView
                             style="@style/text_title_style"
+                            android:id="@+id/tvAdviceHeaderTitlePresc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/ivAdviceHeaderIconPresc"
                             android:text="@string/advice" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_advice_header"
+                            android:id="@+id/ibAdviceCollapsePresc"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -873,15 +866,15 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_adviceheader_expandview"
+                        android:id="@+id/rlAdviceExpandedPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/advice_header_relative"
+                        android:layout_below="@+id/rlAdviceHeaderPresc"
                         android:visibility="visible"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/viewDivider6Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -890,10 +883,10 @@
 
                         <!--Personal Sub-Child-->
                         <TextView
-                            android:id="@+id/advice_txt"
+                            android:id="@+id/tvAdviceValuePresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/viewDivider6Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -908,10 +901,10 @@
 
             <!--Test - start-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/testCard"
+                android:id="@+id/cvTestsPresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/adviceCard"
+                android:layout_below="@+id/cvAdvicePresc"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_20dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -924,7 +917,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/test_header_relative"
+                        android:id="@+id/rlTestHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -933,22 +926,23 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/ivTestHeaderIconPresc"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/test_icon" />
 
                         <TextView
                             style="@style/text_title_style"
+                            android:id="@+id/tvTestHeaderTitlePresc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/ivTestHeaderIconPresc"
                             android:text="Test" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_test_header"
+                            android:id="@+id/ibTestCollapsePresc"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -959,15 +953,15 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_testheader_expandview"
+                        android:id="@+id/rlTestExpandedPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/test_header_relative"
+                        android:layout_below="@+id/rlTestHeaderPresc"
                         android:visibility="visible"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/viewDivider7Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -976,10 +970,10 @@
 
                         <!--Personal Sub-Child-->
                         <TextView
-                            android:id="@+id/test_txt"
+                            android:id="@+id/tvTestValuePresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/viewDivider7Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -994,10 +988,10 @@
 
             <!--Speciality - start-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/specialityCard"
+                android:id="@+id/cvRefSpecialistPresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/testCard"
+                android:layout_below="@+id/cvTestsPresc"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_20dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -1010,7 +1004,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/referred_header_relative"
+                        android:id="@+id/rlRefSpecialistHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -1019,22 +1013,23 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/ivRefSpecialistHeaderIconPresc"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/dr_details_icon" />
 
                         <TextView
                             style="@style/text_title_style"
+                            android:id="@+id/tvRefSpecialistHeaderTitlePresc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/ivRefSpecialistHeaderIconPresc"
                             android:text="@string/referred_specialist" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_speciality_header"
+                            android:id="@+id/ibRefSpecialistCollapsePresc"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -1045,15 +1040,15 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_speciality_header_expandview"
+                        android:id="@+id/rlRefSpecialistExpandedPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/referred_header_relative"
+                        android:layout_below="@+id/rlRefSpecialistHeaderPresc"
                         android:visibility="visible"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/viewDivider8Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -1062,10 +1057,10 @@
 
                         <!--Personal Sub-Child-->
                         <TextView
-                            android:id="@+id/referred_speciality_txt"
+                            android:id="@+id/tvRefSpecialistValuePresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/viewDivider8Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -1081,10 +1076,10 @@
 
             <!--Follow up - start -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/followupCard"
+                android:id="@+id/cvFollowUpPresc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/specialityCard"
+                android:layout_below="@+id/cvRefSpecialistPresc"
                 android:layout_marginStart="@dimen/toolbar_margin_left"
                 android:layout_marginTop="@dimen/margin_20dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -1098,7 +1093,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/followup_header_relative"
+                        android:id="@+id/rlFollowUpHeaderPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -1107,22 +1102,23 @@
                         android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                         <ImageView
-                            android:id="@+id/vs_icon"
+                            android:id="@+id/ivFollowUpHeaderIconPresc"
                             android:layout_width="@dimen/edittext_height_44dp"
                             android:layout_height="@dimen/edittext_height_44dp"
                             android:src="@drawable/followup_icon" />
 
                         <TextView
                             style="@style/text_title_style"
+                            android:id="@+id/tvFollowUpHeaderTitlePresc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/margin_8"
-                            android:layout_toEndOf="@+id/vs_icon"
+                            android:layout_toEndOf="@+id/ivFollowUpHeaderIconPresc"
                             android:text="@string/follow_up" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_followup_header"
+                            android:id="@+id/ibFollowUpCollapsePresc"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -1133,15 +1129,15 @@
 
                     <!--Expanded Vitals-->
                     <RelativeLayout
-                        android:id="@+id/vs_followup_header_expandview"
+                        android:id="@+id/rlFollowUpExpandedPresc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/followup_header_relative"
+                        android:layout_below="@+id/rlFollowUpHeaderPresc"
                         android:visibility="visible"
                         tools:visibility="visible">
 
                         <View
-                            android:id="@+id/divider"
+                            android:id="@+id/viewDivider9Presc"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -1151,10 +1147,10 @@
                         <!--Visibility based - start-->
                         <!--Personal Sub-Child-->
                         <TextView
-                            android:id="@+id/no_followup_txt"
+                            android:id="@+id/tvNoFollowUpPresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/divider"
+                            android:layout_below="@+id/viewDivider9Presc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -1166,10 +1162,10 @@
                             tools:visibility="visible" />
 
                         <RelativeLayout
-                            android:id="@+id/followup_date_block"
+                            android:id="@+id/rlFollowUpDateBlockPresc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/no_followup_txt"
+                            android:layout_below="@+id/tvNoFollowUpPresc"
                             android:layout_marginStart="@dimen/fu_margin_start"
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
@@ -1178,12 +1174,12 @@
                             tools:visibility="visible">
 
                             <RelativeLayout
-                                android:id="@+id/date_relative"
+                                android:id="@+id/rlFollowUpDatePresc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/followup_date_txt"
+                                    android:id="@+id/tvFollowUpDatePresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/fu_margin_start"
@@ -1193,16 +1189,18 @@
                                     android:textStyle="bold" />
 
                                 <LinearLayout
+                                    android:id="@+id/llFollowUpButtonsPresc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginStart="@dimen/margin_10"
                                     android:orientation="horizontal"
-                                    android:visibility="gone">
+                                    android:visibility="gone"
+                                    tools:visibility="visible">
 
                                     <ImageButton
-                                        android:id="@+id/no_btn"
+                                        android:id="@+id/btnNoFollowUpPresc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
@@ -1210,7 +1208,7 @@
                                         android:src="@drawable/no_small_btn" />
 
                                     <ImageButton
-                                        android:id="@+id/yes_btn"
+                                        android:id="@+id/btnYesFollowUpPresc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:background="@null"
@@ -1220,10 +1218,10 @@
                             </RelativeLayout>
 
                             <TextView
-                                android:id="@+id/followup_info"
+                                android:id="@+id/tvFollowUpInfoPresc"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/date_relative"
+                                android:layout_below="@+id/rlFollowUpDatePresc"
                                 android:layout_marginTop="@dimen/margin_16dp"
                                 android:text="The doctor suggested a follow-up visit on 15 May, 2022. Does the patient want to take a follow-up visit?"
                                 android:textColor="@color/edittext_hint_color"
@@ -1246,7 +1244,7 @@
 
     <!--Button - start -->
     <LinearLayout
-        android:id="@+id/btn_bottom"
+        android:id="@+id/llButtonsPresc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -1256,7 +1254,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_vs_print"
+            android:id="@+id/btnPrintPresc"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_btn_size"
             android:layout_marginStart="@dimen/margin_24"
@@ -1273,7 +1271,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_vs_share"
+            android:id="@+id/btnSharePresc"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_btn_size"
             android:layout_alignParentBottom="true"
@@ -1293,7 +1291,7 @@
     <!--Button - end -->
 
     <FrameLayout
-        android:id="@+id/filter_framelayout"
+        android:id="@+id/flFilterPresc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

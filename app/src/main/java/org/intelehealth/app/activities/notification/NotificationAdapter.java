@@ -107,12 +107,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         public MyHolderView(@NonNull View itemView) {
             super(itemView);
-            search_name = itemView.findViewById(R.id.search_name);
-            delete_relative = itemView.findViewById(R.id.delete_relative);
-            scroll_layout = itemView.findViewById(R.id.scroll_layout);
-            scroll_relative = itemView.findViewById(R.id.scroll_relative);
-            delete_imgview = itemView.findViewById(R.id.delete_imgview);
-            open_presc_btn = itemView.findViewById(R.id.open_presc_btn);
+            search_name = itemView.findViewById(R.id.tvNameTextNotificationListItem);
+            delete_relative = itemView.findViewById(R.id.rlDeleteNotificationListItem);
+            scroll_layout = itemView.findViewById(R.id.llParentNotificationListItem);
+            scroll_relative = itemView.findViewById(R.id.rlProfileNotificationListItem);
+            delete_imgview = itemView.findViewById(R.id.ivDeleteNotificationListItem);
+            open_presc_btn = itemView.findViewById(R.id.btnOpenPrescNotificationListItem);
 
             scroll_relative.setOnTouchListener(new OnSwipeTouchListener(context) {
                 @Override

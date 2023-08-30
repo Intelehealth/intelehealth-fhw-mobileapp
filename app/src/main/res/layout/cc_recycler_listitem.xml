@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_4"
-    >
+    android:id="@+id/llParentCCRecyclerListItem"
+    android:contentDescription="Chief Complaint Header TextView"
+    android:layout_margin="@dimen/margin_4">
 
     <TextView
-        android:id="@+id/cc_textview"
+        android:id="@+id/tvChiefComplaintHeader"
+        android:contentDescription="Chief Complaint Header TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ui2_common_primary_bg"

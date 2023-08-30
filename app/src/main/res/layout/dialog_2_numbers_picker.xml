@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llParentLayoutNumberPickerDialog"
+    android:contentDescription="Number Picker Dialog Parent LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llQtyLayoutNumberPickerDialog"
+        android:contentDescription="Number Picker Dialog Quantity LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <NumberPicker
-            android:id="@+id/dialog_2_numbers_quantity"
+            android:id="@+id/npQty1NumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Quantity 1 Picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
@@ -17,7 +22,8 @@
 
         </NumberPicker>
         <NumberPicker
-            android:id="@+id/dialog_2_numbers_unit"
+            android:id="@+id/npQty2NumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Quantity 2 Picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
@@ -25,7 +31,8 @@
 
         </NumberPicker>
         <NumberPicker
-            android:id="@+id/dialog_3_numbers_unit"
+            android:id="@+id/npQty3NumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Quantity 3 Picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -36,11 +43,23 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llUnitLayoutNumberPickerDialog"
+        android:contentDescription="Number Picker Dialog Unit LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/dialog_2_numbers_text"
+            android:id="@+id/tvUnit1NumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Unit 1 TextView"            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/padding_card"
+            android:fontFamily="@font/lato_regular"/>
+        <TextView
+            android:id="@+id/tvUnit2NumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Unit 2 TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -49,16 +68,8 @@
             android:padding="@dimen/padding_card"
             android:fontFamily="@font/lato_regular"/>
         <TextView
-            android:id="@+id/dialog_2_numbers_text_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="@dimen/padding_card"
-            android:fontFamily="@font/lato_regular"/>
-        <TextView
-            android:id="@+id/dialog_2_numbers_text_3"
+            android:id="@+id/tvUnit3NumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Unit 3 TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -70,6 +81,8 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rlButtonLayoutNumberPickerDialog"
+        android:contentDescription="Number Picker Dialog Buttons RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -77,7 +90,8 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/btn_cancel_picker"
+            android:id="@+id/btnCancelNumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Cancel Button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
@@ -92,10 +106,11 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/button_ok_picker"
+            android:id="@+id/btnOkayNumberPickerDialog"
+            android:contentDescription="Number Picker Dialog Okay Button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/btn_cancel_picker"
+            android:layout_toEndOf="@+id/btnCancelNumberPickerDialog"
             android:background="@drawable/darkblue_bg_button"
             android:gravity="center"
             android:paddingLeft="10dp"
@@ -106,15 +121,4 @@
             android:textSize="14sp" />
 
     </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
 </LinearLayout>

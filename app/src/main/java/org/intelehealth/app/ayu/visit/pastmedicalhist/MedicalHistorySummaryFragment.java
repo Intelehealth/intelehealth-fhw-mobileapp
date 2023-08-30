@@ -84,8 +84,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medical_history_summary, container, false);
-        mSummaryLinearLayout = view.findViewById(R.id.ll_summary);
-        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+        mSummaryLinearLayout = view.findViewById(R.id.llSummaryMedHistSummaryFragment);
+        view.findViewById(R.id.btnSubmitMedHistSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode) {
@@ -95,21 +95,21 @@ public class MedicalHistorySummaryFragment extends Fragment {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_6_VISIT_SUMMARY, mIsEditMode, null);
             }
         });
-        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnCancelMedHistSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIsEditMode = true;
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
             }
         });
-        view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibCancelMedHistSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIsEditMode = true;
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_4_PAST_MEDICAL_HISTORY);
             }
         });
-        ImageButton refresh = view.findViewById(R.id.imb_btn_refresh);
+        ImageButton refresh = view.findViewById(R.id.ibRefreshMedHistSummaryFragment);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,9 +161,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                 complainLabelTextView.setText(_complain);
-                view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (key.equalsIgnoreCase("Patient history")) {
@@ -174,7 +174,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
                     }
                 });
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 for (int i = 0; i < _list.size(); i++) {
@@ -305,9 +305,9 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                 complainLabelTextView.setText(_complain);
-                view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (key.equalsIgnoreCase("Patient history")) {
@@ -318,7 +318,7 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
                     }
                 });
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                 SummarySingleViewAdapter summaryViewAdapter = new SummarySingleViewAdapter(recyclerView, getActivity(), _list, new SummarySingleViewAdapter.OnItemSelection() {
                     @Override
