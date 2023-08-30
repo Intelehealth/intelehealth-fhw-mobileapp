@@ -90,8 +90,8 @@ public class PastMedicalHistoryFragment extends Fragment {
         mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
         if (mIsEditMode) {
-            view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.llButtonsMedHistFragment).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.btnSubmitMedHistFragment).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -99,7 +99,7 @@ public class PastMedicalHistoryFragment extends Fragment {
 
                 }
             });
-            view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.btnCancelMedHistFragment).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     getActivity().setResult(Activity.RESULT_OK);

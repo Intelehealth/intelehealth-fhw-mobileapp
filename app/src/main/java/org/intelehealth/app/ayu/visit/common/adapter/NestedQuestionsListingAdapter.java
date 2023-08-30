@@ -1548,18 +1548,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            knowMoreTextView = itemView.findViewById(R.id.tv_know_more);
+            knowMoreTextView = itemView.findViewById(R.id.tvKnowMoreNestedQuesItemView);
             knowMoreTextView.setPaintFlags(knowMoreTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             knowMoreTextView.setVisibility(View.GONE);
 
-            skipButton = itemView.findViewById(R.id.btn_skip);
-            submitButton = itemView.findViewById(R.id.btn_submit);
-            optionRecyclerView = itemView.findViewById(R.id.rcv_nested_container);
-            superNestedRecyclerView = itemView.findViewById(R.id.rcv_super_nested_container);
-            singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
+            skipButton = itemView.findViewById(R.id.btnSkipNestedQuesItemView);
+            submitButton = itemView.findViewById(R.id.btnSubmitNestedQuesItemView);
+            optionRecyclerView = itemView.findViewById(R.id.rvNestedQuesItemView);
+            superNestedRecyclerView = itemView.findViewById(R.id.rvSuperNestedQuesItemView);
+            singleComponentContainer = itemView.findViewById(R.id.llSingleComponentContainerNestedQuestionItemView);
 
-            tvQuestion = itemView.findViewById(R.id.tv_question);
-            tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
+            tvQuestion = itemView.findViewById(R.id.tvQuestionNestedQuesItemView);
+            tvQuestionDesc = itemView.findViewById(R.id.tvQuestionDescNestedQuesItemView);
 
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override

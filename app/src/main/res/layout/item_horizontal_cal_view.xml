@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_horizontal_view"
+    android:id="@+id/cvHorizontalCalView"
+    android:contentDescription="Horizontal Cal View CardView"
     android:layout_width="@dimen/tv_cal_view_date_width"
     android:layout_height="@dimen/tv_cal_view_date_height"
     android:layout_marginTop="@dimen/tv_cal_view_date_margin_top"
@@ -17,7 +18,8 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_date_cal"
+            android:id="@+id/tvDateHorizontalCalView"
+            android:contentDescription="Horizontal Cal View Date TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|top"
@@ -27,7 +29,8 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_date_day"
+            android:id="@+id/tvDayHorizontalCalView"
+            android:contentDescription="Horizontal Cal View Day TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_cal_view_date_day_margin_top"

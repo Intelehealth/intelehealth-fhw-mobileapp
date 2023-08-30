@@ -6,7 +6,8 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_question"
+        android:id="@+id/tvQuestionNestedQuesItemView"
+        android:contentDescription="Nested Question Item View Question TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/margin_8"
@@ -24,7 +25,8 @@
         android:paddingHorizontal="@dimen/margin_18">
 
         <TextView
-            android:id="@+id/tv_question_desc"
+            android:id="@+id/tvQuestionDescNestedQuesItemView"
+            android:contentDescription="Nested Question Description Item View Question TextView"
             style="@style/label_misc_txt_14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +34,8 @@
             android:text="@string/select_any_one" />
 
         <TextView
-            android:id="@+id/tv_know_more"
+            android:id="@+id/tvKnowMoreNestedQuesItemView"
+            android:contentDescription="Nested Question Item View Know More TextView"
             style="@style/label_misc_txt_14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,26 +51,22 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_nested_container"
+        android:id="@+id/rvNestedQuesItemView"
+        android:contentDescription="Nested Question Item View RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8" />
 
     <LinearLayout
-        android:id="@+id/ll_single_component_container"
+        android:id="@+id/llSingleComponentContainerNestedQuestionItemView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"
         android:orientation="vertical" />
 
-    <!-- <LinearLayout
-         android:id="@+id/ll_others_container"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="@dimen/margin_16"
-         android:orientation="vertical" />-->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_super_nested_container"
+        android:id="@+id/rvSuperNestedQuesItemView"
+        android:contentDescription="Nested Question Item View Super RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8" />
@@ -79,7 +78,8 @@
         android:gravity="end">
 
         <Button
-            android:id="@+id/btn_skip"
+            android:id="@+id/btnSkipNestedQuesItemView"
+            android:contentDescription="Nested Question Item View Skip Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ui2_common_button_bg_submit"
@@ -92,7 +92,8 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/btn_submit"
+            android:id="@+id/btnSubmitNestedQuesItemView"
+            android:contentDescription="Nested Question Item View Submit Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_24"

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_todays_appointments1"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvParentTodayAppointmentItem"
+    android:contentDescription="Today Appointment Item Parent CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/item_ta_margin_horizontal"
@@ -16,7 +18,8 @@
         android:padding="@dimen/item_ta_card_padding">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_member_image"
+            android:id="@+id/cvProfileImageTodayAppointmentItem"
+            android:contentDescription="Today Appointment Item Profile Image CardView"
             android:layout_width="@dimen/item_ta_member_image_width"
             android:layout_height="@dimen/item_ta_member_image_height"
             android:layout_alignParentTop="true"
@@ -25,30 +28,33 @@
             app:cardCornerRadius="@dimen/item_ta_member_iv_card_radius">
 
             <ImageView
-                android:id="@+id/profile_image_todays"
+                android:id="@+id/ivProfileImageTodayAppointmentItem"
+                android:contentDescription="Today Appointment Item Profile Image ImageView"
                 android:layout_width="@dimen/item_ta_member_image_width"
                 android:layout_height="@dimen/item_ta_member_image_height"
                 android:src="@drawable/avatar1" />
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tv_patient_name_todays"
+            android:id="@+id/tvPatientNameTodayAppointmentItem"
+            android:contentDescription="Today Appointment Item Patient Name TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
-            android:layout_toEndOf="@+id/card_member_image"
+            android:layout_toEndOf="@+id/cvProfileImageTodayAppointmentItem"
             android:lineSpacingExtra="3sp"
             android:text="Anthony Gonsalves"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/item_ta_tv_name_text_size1" />
 
         <TextView
-            android:id="@+id/tv_dr_name_todays"
+            android:id="@+id/tvDoctorNameTodayAppointmentItem"
+            android:contentDescription="Today Appointment Item Doctor Name TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_patient_name_todays"
+            android:layout_below="@+id/tvPatientNameTodayAppointmentItem"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
-            android:layout_toEndOf="@+id/card_member_image"
+            android:layout_toEndOf="@+id/cvProfileImageTodayAppointmentItem"
             android:drawableStart="@drawable/ic_baseline_account_circle_14"
             android:drawablePadding="@dimen/margin_8"
             android:gravity="center_vertical"
@@ -58,29 +64,32 @@
             android:textSize="@dimen/txtsize_patdetail_14sp" />
 
         <TextView
-            android:id="@+id/tv_patient_id_todays"
+            android:id="@+id/tvPatientIDTodayAppointmentItem"
+            android:contentDescription="Today Appointment Item Time ImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_patient_name_todays"
+            android:layout_below="@+id/tvDoctorNameTodayAppointmentItem"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_marginTop="@dimen/item_ta_tv_date_margin_top"
-            android:layout_toEndOf="@+id/card_member_image"
+            android:layout_toEndOf="@+id/cvProfileImageTodayAppointmentItem"
             android:gravity="center_vertical"
             android:lineSpacingExtra="3sp"
             android:text="ID - 987654jK"
             android:textAppearance="@style/caption"
             android:textColor="@color/iconTintGray"
             android:textSize="@dimen/item_ta_tv_date_text_size"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <ImageView
-            android:id="@+id/iv_time_todays"
+            android:id="@+id/ivTimeTodayAppointmentItem"
+            android:contentDescription="Today Appointment Item Time ImageView"
             android:layout_width="@dimen/cal_size_new"
             android:layout_height="@dimen/cal_size_new"
-            android:layout_below="@+id/tv_dr_name_todays"
+            android:layout_below="@+id/tvDoctorNameTodayAppointmentItem"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_marginTop="@dimen/item_ta_iv_name_margin_start"
-            android:layout_toEndOf="@+id/card_member_image"
+            android:layout_toEndOf="@+id/cvProfileImageTodayAppointmentItem"
             android:src="@drawable/ui2_ic_time"
             android:tint="@color/iconTintGray"
             android:visibility="gone" />
@@ -88,14 +97,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_dr_name_todays"
+            android:layout_below="@+id/tvDoctorNameTodayAppointmentItem"
             android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_marginTop="4dp"
-            android:layout_toEndOf="@+id/iv_time_todays"
+            android:layout_toEndOf="@+id/ivTimeTodayAppointmentItem"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_date_appointment_todays"
+                android:id="@+id/tvAppDateTodayAppointmentItem"
+                android:contentDescription="Today Appointment Item Appointment Date TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/margin_8"
@@ -109,7 +119,8 @@
                 app:drawableStartCompat="@drawable/ui2_ic_calendar" />
 
             <TextView
-                android:id="@+id/tv_presc_rec_status"
+                android:id="@+id/tvPrescStateTodayAppointmentItem"
+                android:contentDescription="Today Appointment Item Prescription State TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="@dimen/margin_8"
@@ -123,7 +134,8 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/iv_priority_tag1_todays"
+            android:id="@+id/ivPriorityTagTodayAppointmentItem"
+            android:contentDescription="Today Appointment Item Priority Tag ImageView"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/item_ta_priority_tag_height"
             android:layout_alignParentEnd="true"

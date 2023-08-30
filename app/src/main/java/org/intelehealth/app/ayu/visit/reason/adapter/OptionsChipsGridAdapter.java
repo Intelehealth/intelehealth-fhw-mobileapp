@@ -109,7 +109,7 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
+            tvName = itemView.findViewById(R.id.tvReasonItemChip);
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

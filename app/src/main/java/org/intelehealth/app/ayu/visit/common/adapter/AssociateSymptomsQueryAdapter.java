@@ -247,12 +247,11 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            recyclerView = itemView.findViewById(R.id.rcv_container);
-            //recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
-            singleComponentContainer = itemView.findViewById(R.id.ll_single_component_container);
-            questionTextView = itemView.findViewById(R.id.tv_question);
-            yesTextView = itemView.findViewById(R.id.tv_yes);
-            noTextView = itemView.findViewById(R.id.tv_no);
+            recyclerView = itemView.findViewById(R.id.rvAssSymListItem);
+            singleComponentContainer = itemView.findViewById(R.id.llSingleComponentContainerAssSymListItem);
+            questionTextView = itemView.findViewById(R.id.tvQuestionAssSymListItem);
+            yesTextView = itemView.findViewById(R.id.tvYesAssSymListItem);
+            noTextView = itemView.findViewById(R.id.tvNoAssSymListItem);
             yesTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

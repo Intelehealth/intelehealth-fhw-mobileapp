@@ -25,7 +25,8 @@
             android:background="@drawable/tooltip_bg">
 
             <TextView
-                android:id="@+id/tooltip_text"
+                android:id="@+id/tvTooltipLayout"
+                android:contentDescription="Tooltip Layout TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
