@@ -981,6 +981,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     initialValueArray = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
                     patientDenies = initialValueArray[1];
                 }
+                
+                if (valueArray[1].contains("• Пациент отрицает")) {
+                    initialValueArray = valueArray[1].replace("• Пациент отрицает -<br>", "• Пациент отрицает -<br/>").split("• Пациент отрицает -<br/>");
+                    patientDenies = initialValueArray[1];
+                }
 
                 if (valueArray[1].contains("• Patient reports")) {
                     String[] reportsArray = new String[]{};
@@ -988,6 +993,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         reportsArray = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
                     } else {
                         reportsArray = initialValueArray[0].replace("• Patient reports -<br>", "• Patient reports -<br/>").split("• Patient reports -<br/>");
+                    }
+                    patientReports = reportsArray[1];
+                }
+
+                if (valueArray[1].contains("• Пациент сообщает")) {
+                    String[] reportsArray = new String[]{};
+                    if (initialValueArray.length == 0) {
+                        reportsArray = valueArray[1].replace("• Пациент сообщает -<br>", "• Пациент сообщает -<br/>").split("• Пациент сообщает -<br/>");
+                    } else {
+                        reportsArray = initialValueArray[0].replace("• Пациент сообщает -<br>", "• Пациент сообщает -<br/>").split("• Пациент сообщает -<br/>");
                     }
                     patientReports = reportsArray[1];
                 }
