@@ -1508,12 +1508,6 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             @Override
             public void onClick(View view) {
                 // get from data
-                Log.v("DataSubmit", "genericViewHolder.index - " + genericViewHolder.index);
-                Log.v("DataSubmit", "genericViewHolder.index - " + new Gson().toJson(genericViewHolder.node));
-                Log.v("DataSubmit", "mParentNode - " + new Gson().toJson(mParentNode.getOption(1)));
-                Log.v("DataSubmit", "index - " + index);
-                Log.v("DataSubmit", new Gson().toJson(parentNode));
-
 
                 String fromDate = "";
                 if (isToDate) {
