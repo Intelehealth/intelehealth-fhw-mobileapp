@@ -30,7 +30,7 @@
             android:layout_marginTop="@dimen/margin_10"
             android:hint="@string/enter_mobile_no"
             android:paddingStart="@dimen/fu_margin_start"
-            android:maxLength="15"
+            android:maxLength="13"
             android:inputType="phone"
             android:paddingTop="@dimen/fu_margin_start"
             android:paddingEnd="@dimen/margin_16dp"
