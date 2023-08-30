@@ -442,12 +442,12 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     private void addDateView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
-        final Button submitButton = view.findViewById(R.id.btn_submit);
-        final Button skipButton = view.findViewById(R.id.btn_skip);
+        final Button submitButton = view.findViewById(R.id.btnSubmitVisitReasonDatePicker);
+        final Button skipButton = view.findViewById(R.id.btnSkipVisitReasonDatePicker);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
-        final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        final TextView displayDateButton = view.findViewById(R.id.tvSelectedDateVisitReasonDatePicker);
+        final CalendarView calendarView = view.findViewById(R.id.cvVisitReasonDatePicker);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override

@@ -74,7 +74,7 @@ public class PastMedicalHistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_past_medical_history, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
+        RecyclerView recyclerView = view.findViewById(R.id.rvMedHistFragment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setStackFromEnd(true);

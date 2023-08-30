@@ -61,14 +61,14 @@
         tools:ignore="TextContrastCheck" />
 
     <TextView
-        android:id="@+id/btnSubmitVisitNumberRange"
-        android:contentDescription="Visit Number Range Submit Button"
+        android:id="@+id/tvSubmitVisitNumberRange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llSliderVisitNumberRange"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
+        android:contentDescription="Visit Number Range Submit TextView"
         android:gravity="center"
         android:minWidth="80dip"
         android:padding="@dimen/padding_10"
@@ -87,7 +87,7 @@
         android:layout_below="@+id/llSliderVisitNumberRange"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_24"
-        android:layout_toStartOf="@+id/btnSubmitVisitNumberRange"
+        android:layout_toStartOf="@+id/tvSubmitVisitNumberRange"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:minWidth="100dip"
         android:paddingHorizontal="@dimen/padding_7"

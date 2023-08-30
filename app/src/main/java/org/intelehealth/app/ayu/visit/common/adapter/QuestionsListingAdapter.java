@@ -378,7 +378,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         RangeSlider rangeSlider = view.findViewById(R.id.rsVisitNumberRange);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
         TextView rangeTextView = view.findViewById(R.id.tvSelectedValueVisitNumberRange);
-        TextView submitTextView = view.findViewById(R.id.btnSubmitVisitNumberRange);
+        TextView submitTextView = view.findViewById(R.id.tvSubmitVisitNumberRange);
 
         Button skipButton = view.findViewById(R.id.btnSkipVisitNumberRange);
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);

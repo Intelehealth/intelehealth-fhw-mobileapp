@@ -285,12 +285,12 @@
 
     <TextView
         android:id="@+id/tvSelectedValueVisitNumberSliderIcon"
-        android:contentDescription="Visit Number Slider Icon Selected Value TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llSliderVisitNumberSliderIcon"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/edittext_border_blue"
+        android:contentDescription="Visit Number Slider Icon Selected Value TextView"
         android:gravity="center"
         android:minWidth="80dip"
         android:padding="@dimen/padding_10"

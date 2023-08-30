@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_toEndOf="@id/negative_btn"
+                    android:layout_toEndOf="@id/btnNegativeCommonMessageDialog"
                     android:background="@drawable/primary_bg_rounded_corners"
                     android:paddingHorizontal="@dimen/padding_15"
                     android:paddingVertical="@dimen/padding_12"

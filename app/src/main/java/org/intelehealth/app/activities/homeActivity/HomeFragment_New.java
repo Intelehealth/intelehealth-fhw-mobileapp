@@ -221,7 +221,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
         DrawerLayout mDrawerLayout = requireActivity().findViewById(R.id.dlHomeScreen);
 
-        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.textView5);
+        mUpcomingAppointmentCountTextView = requireActivity().findViewById(R.id.tvAppointmentNumHomeFragment);
         TextView tvLocation = requireActivity().findViewById(R.id.tvLocationNameCustomToolbar);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getLocationName(), sessionManager.getAppLanguage()));
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ui2_ic_location_home, 0);
@@ -234,9 +234,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         ivInternet = requireActivity().findViewById(R.id.ivInternetCustomToolbar);
 
 
-        CardView cardAppointment = view.findViewById(R.id.cardView4_appointment);
-        CardView closedVisitsCardView = view.findViewById(R.id.closedVisitsCardView);
-        CardView card_prescription = view.findViewById(R.id.card_prescription);
+        CardView cardAppointment = view.findViewById(R.id.cvAppointmentHomeFragment);
+        CardView closedVisitsCardView = view.findViewById(R.id.cvClosedVisitHomeFragment);
+        CardView card_prescription = view.findViewById(R.id.cvPrescHomeFragment);
 
         cardAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +266,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         });
 
         //
-        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        TextView prescriptionCountTextView = view.findViewById(R.id.tvPrescNumberHomeFragment);
         int pendingCountTotalVisits = getCurrentMonthsVisits(false);
         int countReceivedPrescription = getCurrentMonthsVisits(true);
 
@@ -276,7 +276,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
                 getResources().getString(R.string.received).toLowerCase());
 
       //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
-        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
+        TextView countPendingCloseVisitsTextView = view.findViewById(R.id.tvClosedVisitNumberHomeFragment);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -288,7 +288,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         getUpcomingAppointments();
 
         int count = countPendingFollowupVisits();
-        TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
+        TextView countPendingFollowupVisitsTextView = view.findViewById(R.id.tvFollowUpNumHomeFragment);
         countPendingFollowupVisitsTextView.setText(count + " " + getResources().getString(R.string.pending));
     }
 
@@ -303,9 +303,9 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        followup_cardview = view.findViewById(R.id.followup_cardview);
-        addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
-        textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
+        followup_cardview = view.findViewById(R.id.cvFollowUpHomeFragment);
+        addpatient_cardview = view.findViewById(R.id.cvAddPatientHomeFragment);
+        textlayout_find_patient = view.findViewById(R.id.tvFindPatientHomeFragment);
 
 
     }

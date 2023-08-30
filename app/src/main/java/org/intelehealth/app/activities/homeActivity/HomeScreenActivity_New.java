@@ -511,9 +511,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     private void updateSimpleDialog(Dialog dialog, String title, String subtitle, Drawable dialogIcon) {
-        ImageView icon = dialog.findViewById(R.id.dialog_icon);
-        TextView dialogTitle = dialog.findViewById(R.id.dialog_title);
-        TextView dialogSubtitle = dialog.findViewById(R.id.dialog_subtitle);
+        ImageView icon = dialog.findViewById(R.id.ivIconPatientRegisteredDialog);
+        TextView dialogTitle = dialog.findViewById(R.id.tvTitlePatientRegisteredDialog);
+        TextView dialogSubtitle = dialog.findViewById(R.id.tvSubtitlePatientRegisteredDialog);
 
         icon.setImageDrawable(dialogIcon);
         dialogTitle.setText(title);

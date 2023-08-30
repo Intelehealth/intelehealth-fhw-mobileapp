@@ -90,10 +90,10 @@ public class VisitReasonSummaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_visit_reason_summary, container, false);
 
-        mComplainSummaryLinearLayout = view.findViewById(R.id.ll_complain_summary);
-        mAssociateSymptomsLinearLayout = view.findViewById(R.id.ll_associated_sympt);
-        mAssociateSymptomsLabelTextView = view.findViewById(R.id.tv_ass_complain_label);
-        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+        mComplainSummaryLinearLayout = view.findViewById(R.id.llSummaryVisitReasonSummaryFragment);
+        mAssociateSymptomsLinearLayout = view.findViewById(R.id.llAssSympVisitReasonSummaryFragment);
+        mAssociateSymptomsLabelTextView = view.findViewById(R.id.tvAssSympTitleVisitReasonSummaryFragment);
+        view.findViewById(R.id.btnSubmitVisitReasonSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode) {
@@ -103,25 +103,25 @@ public class VisitReasonSummaryFragment extends Fragment {
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_PHYSICAL_EXAMINATION, mIsEditMode, null);
             }
         });
-        view.findViewById(R.id.tv_change_associate_sympt).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.tvAssSympEditVisitReasonSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS);
             }
         });
-        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnCancelVisitReasonSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
             }
         });
-        view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibCancelVisitReasonSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, VisitCreationActivity.STEP_2_VISIT_REASON_QUESTION);
             }
         });
-        view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibRefreshVisitReasonSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getActivity())) {

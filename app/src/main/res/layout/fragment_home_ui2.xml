@@ -8,7 +8,8 @@
 
 
     <TextView
-        android:id="@+id/textlayout_find_patient"
+        android:id="@+id/tvFindPatientHomeFragment"
+        android:contentDescription="Home Fragment Find Patient TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/find_patient_margin_start_new"
@@ -35,13 +36,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textlayout_find_patient"
+        android:layout_below="@+id/tvFindPatientHomeFragment"
         android:orientation="vertical"
         android:weightSum="10">
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/addpatient_cardview"
+            android:id="@+id/cvAddPatientHomeFragment"
+            android:contentDescription="Home Fragment Add Patient CardView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_marginStart="@dimen/common_all_card_start_margin"
@@ -51,7 +53,6 @@
             android:backgroundTint="@color/cardTintDarkBlue"
             app:cardCornerRadius="@dimen/common_card_corner_radius"
             app:cardUseCompatPadding="true"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textlayout_find_patient">
@@ -62,7 +63,8 @@
                 android:layout_margin="@dimen/card_add_patient_margin">
 
                 <ImageView
-                    android:id="@+id/imageview_add_patient"
+                    android:id="@+id/ivAddPatientIconHomeFragment"
+                    android:contentDescription="Home Fragment Add Patient Icon ImageView"
                     android:layout_width="@dimen/image_add_patient_width"
                     android:layout_height="@dimen/image_add_patient_height"
                     android:layout_centerVertical="true"
@@ -74,22 +76,24 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/tvAddPatientTitleHomeFragment"
+                    android:contentDescription="Home Fragment Add Patient Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/image_add_patient_margin_start"
-                    android:layout_toEndOf="@+id/imageview_add_patient"
+                    android:layout_toEndOf="@+id/ivAddPatientIconHomeFragment"
                     android:text="@string/add_patient"
                     android:textColor="@color/textColorWhite"
                     android:textSize="@dimen/common_headings_home"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageview_add_patient"
+                    app:layout_constraintStart_toEndOf="@+id/ivAddPatientIconHomeFragment"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_add_patient_next"
+                    android:id="@+id/ivAddPatientArrowIconHomeFragment"
+                    android:contentDescription="Home Fragment Add Patient Arrow Icon ImageView"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_alignParentEnd="true"
@@ -108,7 +112,8 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_prescription"
+            android:id="@+id/cvPrescHomeFragment"
+            android:contentDescription="Home Fragment Prescription CardView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_gravity="center_vertical"
@@ -126,7 +131,6 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card_prescription_inner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/common_all_card_top_margin"
@@ -134,7 +138,8 @@
                 android:paddingStart="@dimen/common_all_card_start_padding">
 
                 <TextView
-                    android:id="@+id/textview_prescriptions"
+                    android:id="@+id/tvPrescTitleHomeFragment"
+                    android:contentDescription="Home Fragment Prescription Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/prescriptions"
@@ -144,22 +149,24 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textview_received_no"
+                    android:id="@+id/tvPrescNumberHomeFragment"
+                    android:contentDescription="Home Fragment Prescription Number TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_prescriptions"
+                    android:layout_below="@+id/tvPrescTitleHomeFragment"
                     android:layout_marginTop="@dimen/common_info_margin_top"
                     android:text="5 out of 12 received"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvPrescTitleHomeFragment" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next"
+                    android:id="@+id/ivPrescArrowIconHomeFragment"
+                    android:contentDescription="Home Fragment Prescription Arrow Icon ImageView"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
-                    android:layout_below="@+id/textview_received_no"
+                    android:layout_below="@+id/tvPrescNumberHomeFragment"
                     android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
                     android:paddingTop="@dimen/image_add_patient_icon_padding_top"
                     android:paddingEnd="@dimen/image_add_patient_icon_padding_end"
@@ -169,10 +176,10 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_img_temp"
+                    android:id="@+id/ivPrescIconHomeFragment"
+                    android:contentDescription="Home Fragment Prescription Icon ImageView"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="72dip"
-
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="16dp"
                     android:scaleType="fitXY"
@@ -181,7 +188,8 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_img"
+                    android:id="@+id/ivPrescIcon1HomeFragment"
+                    android:contentDescription="Home Fragment Prescription Icon 1 ImageView"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_alignParentEnd="true"
@@ -195,7 +203,8 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/closedVisitsCardView"
+            android:id="@+id/cvClosedVisitHomeFragment"
+            android:contentDescription="Home Fragment Closed Visit CardView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_marginStart="@dimen/common_all_card_start_margin"
@@ -218,7 +227,8 @@
                 android:paddingStart="@dimen/common_all_card_start_padding">
 
                 <TextView
-                    android:id="@+id/textview_close_visit"
+                    android:id="@+id/tvCloseVisitTitleHomeFragment"
+                    android:contentDescription="Home Fragment Closed Visits Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/close_visits"
@@ -228,19 +238,21 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textview_close_visit_no"
+                    android:id="@+id/tvClosedVisitNumberHomeFragment"
+                    android:contentDescription="Home Fragment Closed Visit Number TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_close_visit"
+                    android:layout_below="@+id/tvCloseVisitTitleHomeFragment"
                     android:layout_marginTop="@dimen/common_info_margin_top"
                     android:text="12 unclosed visits"
                     android:textColor="@color/textColorGray"
                     android:textSize="@dimen/common_label_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_close_visit" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvCloseVisitTitleHomeFragment" />
 
                 <ImageView
-                    android:id="@+id/imageview_close_visit_next"
+                    android:id="@+id/ivCloseVisitArrowIconHomeFragment"
+                    android:contentDescription="Home Fragment Close Visit Arrow Icon ImageView"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
@@ -252,10 +264,10 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next2"
+                    android:id="@+id/ivCloseVisitIcon1HomeFragment"
+                    android:contentDescription="Home Fragment Close Visit Icon 1 ImageView"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
-
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/margin_8"
                     android:src="@drawable/ui2_ic_close_visit"
@@ -277,7 +289,8 @@
             app:layout_constraintTop_toBottomOf="@+id/closedVisitsCardView">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView4_appointment"
+                android:id="@+id/cvAppointmentHomeFragment"
+                android:contentDescription="Home Fragment Appointment CardView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/card_appointment_margin_end"
@@ -287,7 +300,7 @@
                 app:cardMaxElevation="8dp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/followup_cardview"
+                app:layout_constraintEnd_toStartOf="@+id/cvFollowUpHomeFragment"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
@@ -295,7 +308,6 @@
                 app:strokeWidth="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -306,7 +318,8 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/ivAppointmentIconHomeFragment"
+                        android:contentDescription="Home Fragment Appointment Icon ImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/card_options_icons_margin_top"
@@ -315,7 +328,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tvAppointmentTitleHomeFragment"
+                        android:contentDescription="Home Fragment Appointment Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_8"
@@ -323,10 +337,11 @@
                         android:textSize="@dimen/common_sub_headings_home"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                        app:layout_constraintTop_toBottomOf="@+id/ivAppointmentIconHomeFragment" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/tvAppointmentNumHomeFragment"
+                        android:contentDescription="Home Fragment Appointment Number TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/options_sub_heading_margin_top"
@@ -335,13 +350,14 @@
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvAppointmentTitleHomeFragment" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/followup_cardview"
+                android:id="@+id/cvFollowUpHomeFragment"
+                android:contentDescription="Home Fragment Follow Up CardView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/card_followup_margin_start"
@@ -354,7 +370,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/cardView4_appointment"
+                app:layout_constraintStart_toEndOf="@+id/cvAppointmentHomeFragment"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -365,7 +381,8 @@
                     android:padding="@dimen/card_options_padding">
 
                     <ImageView
-                        android:id="@+id/imageView1"
+                        android:id="@+id/ivFollowUpIconHomeFragment"
+                        android:contentDescription="Home Fragment Follow Up Icon ImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/card_options_icons_margin_top"
@@ -374,7 +391,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/tvFollowUpTitleHomeFragment"
+                        android:contentDescription="Home Fragment Follow Up Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_8"
@@ -382,10 +400,11 @@
                         android:textSize="@dimen/common_sub_headings_home"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+                        app:layout_constraintTop_toBottomOf="@+id/ivFollowUpIconHomeFragment" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/tvFollowUpNumHomeFragment"
+                        android:contentDescription="Home Fragment Follow Up Number TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/options_sub_heading_margin_top"
@@ -394,7 +413,7 @@
                         android:textSize="@dimen/common_label_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvFollowUpTitleHomeFragment" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
@@ -402,9 +421,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-    <!--   <include
-      android:id="@+id/bottom_nav_add_pay_cr"
-      layout="@layout/ui2_layout_common_bottom_nav" />
--->
-
 </RelativeLayout>
