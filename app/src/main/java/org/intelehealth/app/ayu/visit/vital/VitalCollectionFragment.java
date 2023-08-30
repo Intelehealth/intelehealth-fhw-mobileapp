@@ -15,12 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -145,8 +143,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         //mHeightSpinner = view.findViewById(R.id.sp_height);
         //mWeightSpinner = view.findViewById(R.id.sp_weight);
 
-        mHeightEditText = view.findViewById(R.id.etv_height);
-        mWeightEditText = view.findViewById(R.id.etv_weight);
+        mHeightEditText = view.findViewById(R.id.etHeightVitalCollection);
+        mWeightEditText = view.findViewById(R.id.etWeightVitalCollection);
 
         mHeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
         mWeightEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
@@ -156,31 +154,31 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mBMILinearLayout = view.findViewById(R.id.ll_bmi);
         if (float_ageYear_Month < 19)
             mBMILinearLayout.setVisibility(View.GONE);
-        mBMITextView = view.findViewById(R.id.tv_bmi_value);
-        mBmiStatusTextView = view.findViewById(R.id.tv_bmi_status);
+        mBMITextView = view.findViewById(R.id.tvBMIValueVisitCollection);
+        mBmiStatusTextView = view.findViewById(R.id.tvBMIStatusVisitCollection);
 
-        mBpSysEditText = view.findViewById(R.id.etv_bp_sys);
-        mBpDiaEditText = view.findViewById(R.id.etv_bp_dia);
+        mBpSysEditText = view.findViewById(R.id.etBpSysVisitCollection);
+        mBpDiaEditText = view.findViewById(R.id.etBpDiaVisitCollection);
 
-        mSpo2EditText = view.findViewById(R.id.etv_spo2);
-        mPulseEditText = view.findViewById(R.id.etv_pulse);
-        mRespEditText = view.findViewById(R.id.etv_respiratory_rate);
-        mTemperatureEditText = view.findViewById(R.id.etv_temperature);
+        mSpo2EditText = view.findViewById(R.id.etSPO2VitalCollection);
+        mPulseEditText = view.findViewById(R.id.etPulseVisitCollection);
+        mRespEditText = view.findViewById(R.id.etRRVitalCollection);
+        mTemperatureEditText = view.findViewById(R.id.etTemperatureVitalCollection);
         mTemperatureEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
         // errors
-        mHeightErrorTextView = view.findViewById(R.id.tv_height_error);
-        mWeightErrorTextView = view.findViewById(R.id.tv_weight_error);
+        mHeightErrorTextView = view.findViewById(R.id.tvHeightErrorVitalCollection);
+        mWeightErrorTextView = view.findViewById(R.id.tvWeightErrorVitalCollection);
 
-        mBpSysErrorTextView = view.findViewById(R.id.etv_bp_sys_error);
-        mBpDiaErrorTextView = view.findViewById(R.id.etv_bp_dia_error);
+        mBpSysErrorTextView = view.findViewById(R.id.tvBpSysErrorVisitCollection);
+        mBpDiaErrorTextView = view.findViewById(R.id.tvBpDiaErrorVisitCollection);
 
-        mSpo2ErrorTextView = view.findViewById(R.id.etv_spo2_error);
+        mSpo2ErrorTextView = view.findViewById(R.id.tvSPO2ErrorVitalCollection);
 
-        mPulseErrorTextView = view.findViewById(R.id.etv_pulse_error);
+        mPulseErrorTextView = view.findViewById(R.id.tvPulseErrorVisitCollection);
 
-        mRespErrorTextView = view.findViewById(R.id.etv_respiratory_rate_error);
+        mRespErrorTextView = view.findViewById(R.id.tvRRErrorVitalCollection);
 
-        mTemperatureErrorTextView = view.findViewById(R.id.etv_temperature_error);
+        mTemperatureErrorTextView = view.findViewById(R.id.tvTempErrorVitalCollection);
 
         mHeightErrorTextView.setVisibility(View.GONE);
         mWeightErrorTextView.setVisibility(View.GONE);
@@ -201,7 +199,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mRespEditText.addTextChangedListener(new MyTextWatcher(mRespEditText));
         mTemperatureEditText.addTextChangedListener(new MyTextWatcher(mTemperatureEditText));
 
-        mSubmitButton = view.findViewById(R.id.btn_submit);
+        mSubmitButton = view.findViewById(R.id.btnNextVitalCollection);
         mSubmitButton.setOnClickListener(this);
 
 
@@ -237,7 +235,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.etv_pulse) {
+            if (this.editText.getId() == R.id.etPulseVisitCollection) {
                 if (val.isEmpty()) {
                     /*mPulseErrorTextView.setVisibility(View.VISIBLE);
                     mPulseErrorTextView.setText(getString(R.string.error_field_required));
@@ -259,7 +257,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_temperature) {
+            } else if (this.editText.getId() == R.id.etTemperatureVitalCollection) {
                 if (val.isEmpty()) {
                     /*mTemperatureErrorTextView.setVisibility(View.VISIBLE);
                     mTemperatureErrorTextView.setText(getString(R.string.error_field_required));
@@ -295,7 +293,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_spo2) {
+            } else if (this.editText.getId() == R.id.etSPO2VitalCollection) {
                 if (val.isEmpty()) {
                     /*mSpo2ErrorTextView.setVisibility(View.VISIBLE);
                     mSpo2ErrorTextView.setText(getString(R.string.error_field_required));
@@ -316,7 +314,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_respiratory_rate) {
+            } else if (this.editText.getId() == R.id.etRRVitalCollection) {
                 if (val.isEmpty()) {
                     /*mRespErrorTextView.setVisibility(View.VISIBLE);
                     mRespErrorTextView.setText(getString(R.string.error_field_required));
@@ -337,7 +335,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     }
 
                 }
-            } else if (this.editText.getId() == R.id.etv_bp_sys) {
+            } else if (this.editText.getId() == R.id.etBpSysVisitCollection) {
                 String bpDia = mBpDiaEditText.getText().toString().trim();
                 if (val.isEmpty()) {
                     if (bpDia.isEmpty()) {
@@ -379,7 +377,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         }
                     }
                 }
-            } else if (this.editText.getId() == R.id.etv_bp_dia) {
+            } else if (this.editText.getId() == R.id.etBpDiaVisitCollection) {
                 String bpSys = mBpSysEditText.getText().toString().trim();
 
                 if (val.isEmpty()) {
@@ -421,7 +419,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         }
                     }
                 }
-            } else if (this.editText.getId() == R.id.etv_height) {
+            } else if (this.editText.getId() == R.id.etHeightVitalCollection) {
                 String weight = mWeightEditText.getText().toString().trim();
                 if (val.isEmpty()) {
                     if (weight.isEmpty()) {
@@ -449,7 +447,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
                 heightvalue = val;
                 calculateBMI();
-            } else if (this.editText.getId() == R.id.etv_weight) {
+            } else if (this.editText.getId() == R.id.etWeightVitalCollection) {
                 String height = mHeightEditText.getText().toString().trim();
 
                 if (val.isEmpty()) {
@@ -483,7 +481,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_submit) {//validate
+        if (view.getId() == R.id.btnNextVitalCollection) {//validate
             if (validateTable()) {
                 mActionListener.onProgress(100);
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, mIsEditMode, results);
