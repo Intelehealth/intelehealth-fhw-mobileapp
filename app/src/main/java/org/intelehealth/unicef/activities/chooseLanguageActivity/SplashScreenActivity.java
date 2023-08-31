@@ -1,6 +1,7 @@
 package org.intelehealth.unicef.activities.chooseLanguageActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,7 +61,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 
-public class SplashScreenActivity extends BaseActivity {
+public class SplashScreenActivity extends BaseActivity implements SplashLanguageUpdater {
     private static final String TAG = "SplashScreenActivity";
     RecyclerView rvSelectLanguage;
     View layoutLanguage;
@@ -72,6 +74,9 @@ public class SplashScreenActivity extends BaseActivity {
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
 
+    private TextView tvSelectLanguage;
+    private Button btnNextToIntro;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +88,7 @@ public class SplashScreenActivity extends BaseActivity {
         layoutLanguage = findViewById(R.id.layout_panel);
         layoutParent = findViewById(R.id.layout_parent);
         layoutHeader = findViewById(R.id.layout_child1);
+        tvSelectLanguage = findViewById(R.id.textView8);
 
         //        Getting App language through the session manager
         sessionManager = new SessionManager(this);
@@ -116,7 +122,7 @@ public class SplashScreenActivity extends BaseActivity {
             setLocale(appLanguage);
         }
 
-        Button btnNextToIntro = findViewById(R.id.btn_next_to_intro);
+        btnNextToIntro = findViewById(R.id.btn_next_to_intro);
         btnNextToIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -385,7 +391,7 @@ public class SplashScreenActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            });
+            }, this);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             rvSelectLanguage.setLayoutManager(layoutManager);
@@ -396,6 +402,17 @@ public class SplashScreenActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onLanguageSelected(String language) {
+        Configuration configuration = getResources().getConfiguration();
+        configuration = new Configuration(configuration);
+        configuration.setLocale(new Locale(language));
+        Context localizedContext = createConfigurationContext(configuration);
+
+        tvSelectLanguage.setText(localizedContext.getText(R.string.select_language));
+        btnNextToIntro.setText(localizedContext.getText(R.string.next_new));
     }
 
     public interface ItemSelectionListener {

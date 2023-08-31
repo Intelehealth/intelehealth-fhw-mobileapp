@@ -1533,5 +1533,7 @@
 
     <string name="could_not_connect_with_server">Не удалось подключиться к серверу. Пожалуйста, проверьте свое подключение к Интернету.</string>
     <string name="search_hint_text">Ранее искали</string>
+    <string name="select_language">Выберите язык</string>
+    <string name="next_new">Дальше</string>
 
 </resources>

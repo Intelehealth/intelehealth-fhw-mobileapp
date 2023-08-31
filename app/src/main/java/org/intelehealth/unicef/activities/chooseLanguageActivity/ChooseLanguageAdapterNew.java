@@ -20,14 +20,18 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
     private List<JSONObject> mItemList;
     int selectedPosition1 = -1;
     SplashScreenActivity.ItemSelectionListener mItemSelectionListener;
+    SplashLanguageUpdater splashLanguageUpdater;
 
-    public ChooseLanguageAdapterNew(Context context,
-                                    List<JSONObject> itemList,
-                                    SplashScreenActivity.ItemSelectionListener itemSelectionListener
-                                          ) {
+    public ChooseLanguageAdapterNew(
+            Context context,
+            List<JSONObject> itemList,
+            SplashScreenActivity.ItemSelectionListener itemSelectionListener,
+            SplashLanguageUpdater splashLanguageUpdater
+    ) {
         mContext = context;
         mItemList = itemList;
         mItemSelectionListener = itemSelectionListener;
+        this.splashLanguageUpdater = splashLanguageUpdater;
     }
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
@@ -108,28 +112,26 @@ public class ChooseLanguageAdapterNew extends RecyclerView.Adapter<RecyclerView.
             layoutRb = itemView.findViewById(R.id.layout_rb_choose_language);
 
 
-            rbChooseLanguage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    try {
-                        for (int i = 0; i < mItemList.size(); i++) {
-                            if (i == index) {
-                                mItemList.get(i).put("selected", true);
-                            } else {
-                                mItemList.get(i).put("selected", false);
-                            }
+            rbChooseLanguage.setOnClickListener(v -> {
+                try {
+                    for (int i = 0; i < mItemList.size(); i++) {
+                        if (i == index) {
+                            mItemList.get(i).put("selected", true);
+                            String languageSelected = mItemList.get(i).getString("code");
+                            splashLanguageUpdater.onLanguageSelected(languageSelected);
+                        } else {
+                            mItemList.get(i).put("selected", false);
                         }
-                       int  selectedPosition = getAdapterPosition();
-                        String name = mItemList.get(selectedPosition).getString("name");
-                    //    Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
-                       mItemSelectionListener.onSelect(jsonObject, index);
-                        notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-
+                    int selectedPosition = getAdapterPosition();
+                    String name = mItemList.get(selectedPosition).getString("name");
+                    //    Toast.makeText(mContext, "Selected language : " + name, Toast.LENGTH_SHORT).show();
+                    mItemSelectionListener.onSelect(jsonObject, index);
+                    notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
             });
 
         }
