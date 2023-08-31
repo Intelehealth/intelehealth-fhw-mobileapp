@@ -90,26 +90,20 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 if (model.isPrescription_exists()) {
                     holder.presc_receivingCV.setVisibility(View.VISIBLE);
                     holder.presc_pendingCV.setVisibility(View.GONE);
-                }
-                else if (!model.isPrescription_exists()){
+                } else if (!model.isPrescription_exists()) {
                     holder.presc_pendingCV.setVisibility(View.VISIBLE);
                     holder.presc_receivingCV.setVisibility(View.GONE);
                 }
 
-                // checking visit uploaded or not - start
+                //  5. Checking visit uploaded or not and Prescription received/pending tag display. - start
                 if (model.getVisitDTO() != null) {
                     if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
                         holder.visitNotUploadCV.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         holder.visitNotUploadCV.setVisibility(View.VISIBLE);
                         holder.presc_pendingCV.setVisibility(View.GONE);
                         holder.presc_receivingCV.setVisibility(View.GONE);
                     }
-
-                }
-                else {
-
                 }
                 // checking visit uploaded or not - end
 
@@ -122,40 +116,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 holder.fu_item_calendar.setVisibility(View.GONE);
                 holder.search_date_relative.setText(R.string.no_visit_created);
             }
-
-            //  5. Prescription received/pending tag display.
-         /*   if (model.getVisit_startdate() != null) {
-                if (model.isPrescription_exists()) {
-                    holder.presc_receivingCV.setVisibility(View.VISIBLE);
-                    holder.presc_pendingCV.setVisibility(View.GONE);
-                }
-                else {
-                    holder.presc_pendingCV.setVisibility(View.VISIBLE);
-                    holder.presc_receivingCV.setVisibility(View.GONE);
-                }
-
-                // checking visit uploaded or not - start
-                if (model.getVisitDTO() != null) {
-                    if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
-                        holder.visitNotUploadCV.setVisibility(View.GONE);
-                    }
-                    else {
-                        holder.visitNotUploadCV.setVisibility(View.VISIBLE);
-                        holder.presc_pendingCV.setVisibility(View.GONE);
-                        holder.presc_receivingCV.setVisibility(View.GONE);
-                    }
-
-                }
-                else {
-
-                }
-                // checking visit uploaded or not - end
-
-            } else {
-                holder.presc_pendingCV.setVisibility(View.GONE);
-                holder.presc_receivingCV.setVisibility(View.GONE);
-            }*/
-
 
             //  6. Patient Profile Pic
             //1.

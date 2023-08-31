@@ -182,8 +182,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                     iconClear.setVisibility(View.GONE);
                     iconSearch.setVisibility(View.VISIBLE);
                 }
-//                else
-//                    iconClear.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -479,4 +478,4 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         end += limit;
     }
 
-    }
+}
