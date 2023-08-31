@@ -443,12 +443,12 @@
         <item>इतर</item>
     </string-array>
     <string-array name="education_ru">
-        <item>Выберите Образование</item>
-        <item>Неграмотный</item>
-        <item>Первичный</item>
-        <item>Необязательно</item>
-        <item>Среднее образование</item>
-        <item>Окончание и высшее</item>
+        <item>Выберите образование</item>
+        <item>Начальное образование</item>
+        <item>Средне неоконченное образование</item>
+        <item>Средне оконченное образование</item>
+        <item>Бакалавриат</item>
+        <item>Магистратура или выше</item>
     </string-array>
     <string-array name="education_kn">
         <item>ಆಯ್ಕೆಮಾಡಿ</item>
@@ -632,9 +632,9 @@
 
     </string-array>
     <string-array name="economic_ru">
-        <item>Выбирать</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>Выберите</item>
+        <item>Выше черты бедности</item>
+        <item>За чертой бедности</item>
     </string-array>
 
     <string-array name="states_india">

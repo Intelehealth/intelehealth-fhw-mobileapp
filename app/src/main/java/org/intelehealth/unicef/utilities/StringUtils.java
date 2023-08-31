@@ -203,19 +203,19 @@ public final class StringUtils {
     public static String switch_ru_education_edit(String val) {
         switch (val) {
             case "Illiterate":
-                val = "Безграмотный";
+                val = "Начальное образование";
                 break;
             case "Primary":
-                val = "Начальный";
+                val = "Средне неоконченное образование";
                 break;
             case "Secondary":
-                val = "Вторичный";
+                val = "Средне оконченное образование";
                 break;
             case "Higher Secondary":
-                val = "Высшее среднее";
+                val = "Бакалавриат";
                 break;
             case "Graduation & Higher":
-                val = "Выпускной и высшее";
+                val = "Магистратура или выше";
                 break;
             default:
                 return val;
@@ -273,19 +273,19 @@ public final class StringUtils {
 
     public static String switch_ru_education(String val) {
         switch (val) {
-            case "Безграмотный":
+            case "Начальное образование":
                 val = "Illiterate";
                 break;
-            case "Начальный":
+            case "Средне неоконченное образование":
                 val = "Primary";
                 break;
-            case "Вторичный":
+            case "Средне оконченное образование":
                 val = "Secondary";
                 break;
-            case "Высшее среднее":
+            case "Бакалавриат":
                 val = "Higher Secondary";
                 break;
-            case "Выпускной и высшее":
+            case "Магистратура или выше":
                 val = "Graduation & Higher";
                 break;
             default:
@@ -825,10 +825,10 @@ public final class StringUtils {
     public static String switch_ru_economic_edit(String val) {
         switch (val) {
             case "APL":
-                val = "APL";
+                val = "Выше черты бедности";
                 break;
             case "BPL":
-                val = "BPL";
+                val = "За чертой бедности";
                 break;
             default:
                 return val;
@@ -1007,10 +1007,10 @@ public final class StringUtils {
 
     public static String switch_ru_economic(String val) {
         switch (val) {
-            case "APL":
+            case "Выше черты бедности":
                 val = "APL";
                 break;
-            case "BPL":
+            case "За чертой бедности":
                 val = "BPL";
                 break;
             default:
