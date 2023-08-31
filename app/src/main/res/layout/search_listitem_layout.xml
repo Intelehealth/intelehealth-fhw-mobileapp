@@ -52,18 +52,16 @@
                     android:layout_toEndOf="@+id/profile">
 
                     <!-- Label -->
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/lll"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/search_name"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_toStartOf="@id/search_gender"
                             android:ellipsize="end"
                             android:fontFamily="@font/lato_bold"
                             android:gravity="center_vertical"
@@ -78,15 +76,15 @@
                             android:id="@+id/search_gender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:layout_marginStart="@dimen/cal_margnin_start"
-                            android:layout_toEndOf="@+id/search_name"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:text="@string/search_gender"
                             android:textAppearance="@style/label_misc_txt_14sp"
                             android:textColor="@null"
                             android:textSize="@dimen/fu_name_txt_size" />
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <ImageView
                         android:id="@+id/fu_item_calendar"

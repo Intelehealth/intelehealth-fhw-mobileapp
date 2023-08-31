@@ -47,19 +47,17 @@
                     android:layout_marginStart="@dimen/fu_margin_start">
 
                     <!-- Label -->
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/lll"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_height="wrap_content">
 
                     <!-- fu_patname_txtview -->
                     <TextView
                         android:id="@+id/fu_patname_txtview"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
+                        android:layout_toStartOf="@id/search_gender"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:gravity="center_vertical"
@@ -74,14 +72,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/cal_margnin_start"
-                            android:layout_toEndOf="@+id/search_name"
+                            android:layout_alignParentEnd="true"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:text="@string/search_gender"
                             android:textAppearance="@style/label_misc_txt_14sp"
                             android:textColor="@null"
                             android:textSize="@dimen/fu_name_txt_size" />
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <ImageView
                         android:id="@+id/fu_item_calendar"
@@ -147,7 +145,7 @@
                     android:layout_gravity="top"
                     android:gravity="center"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     />
 
             </FrameLayout>
