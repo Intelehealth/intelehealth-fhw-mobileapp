@@ -94,7 +94,7 @@ public class Fragment_ThirdScreen extends Fragment {
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     private EditText mRelationNameEditText, mOccupationEditText, mNationalIDEditText;
-    private Spinner mCasteSpinner, mEducationSpinner, mEconomicstatusSpinner;
+    private Spinner /*mCasteSpinner*/ mEducationSpinner, mEconomicstatusSpinner;
     private ImageView personal_icon, address_icon, other_icon;
     private Button frag3_btn_back, frag3_btn_next;
     private TextView mRelationNameErrorTextView, mOccupationErrorTextView, mCasteErrorTextView, mEducationErrorTextView, mEconomicErrorTextView;
@@ -129,7 +129,7 @@ public class Fragment_ThirdScreen extends Fragment {
         mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
         mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(15)});
         mOccupationEditText = view.findViewById(R.id.occupation_editText);
-        mCasteSpinner = view.findViewById(R.id.caste_spinner);
+//        mCasteSpinner = view.findViewById(R.id.caste_spinner);
         mEducationSpinner = view.findViewById(R.id.education_spinner);
         mEconomicstatusSpinner = view.findViewById(R.id.economicstatus_spinner);
 
@@ -188,20 +188,20 @@ public class Fragment_ThirdScreen extends Fragment {
             }*/
         }
 
-        mCasteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) {
-                    mCasteErrorTextView.setVisibility(View.GONE);
-                    mCasteSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        mCasteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (i != 0) {
+//                    mCasteErrorTextView.setVisibility(View.GONE);
+//                    mCasteSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
         mEducationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -296,21 +296,21 @@ public class Fragment_ThirdScreen extends Fragment {
 
         // caste spinner
         Resources res = getResources();
-        try {
-            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
-            int castes = res.getIdentifier(casteLanguage, "array", getActivity().getApplicationContext().getPackageName());
-            if (castes != 0) {
-                casteAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        castes, R.layout.simple_spinner_item_1);
-                casteAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-            }
-            mCasteSpinner.setAdapter(casteAdapter);
-            mCasteSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
+//        try {
+//            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
+//            int castes = res.getIdentifier(casteLanguage, "array", getActivity().getApplicationContext().getPackageName());
+//            if (castes != 0) {
+//                casteAdapter = ArrayAdapter.createFromResource(getActivity(),
+//                        castes, R.layout.simple_spinner_item_1);
+//                casteAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+//            }
+//            mCasteSpinner.setAdapter(casteAdapter);
+//            mCasteSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
 
-        } catch (Exception e) {
+//        } catch (Exception e) {
 //            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
+//            Logger.logE("Identification", "#648", e);
+//        }
 
         // education spinner
         try {
@@ -357,51 +357,51 @@ public class Fragment_ThirdScreen extends Fragment {
         // setting screen in edit for spinners...
         if (fromThirdScreen || fromSecondScreen) {
             //caste
-            if (patientDTO.getCaste() != null) {
-                if (patientDTO.getCaste().equals(getResources().getString(R.string.not_provided)))
-                    mCasteSpinner.setSelection(0);
+//            if (patientDTO.getCaste() != null) {
+//                if (patientDTO.getCaste().equals(getResources().getString(R.string.not_provided)))
+//                    mCasteSpinner.setSelection(0);
 //            else
 //                caste_spinner.setSelection(casteAdapter.getPosition(patientDTO.getCaste()));
 
-                else {
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String caste = switch_hi_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        String caste = switch_or_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        String caste = switch_te_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                        String caste = switch_mr_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                        String caste = switch_as_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                        String caste = switch_ml_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                        String caste = switch_kn_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                        String caste = switch_ru_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                        String caste = switch_gu_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                        String caste = switch_bn_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                        String caste = switch_ta_caste_edit(patientDTO.getCaste());
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
-                    } else {
-                        mCasteSpinner.setSelection(casteAdapter.getPosition(patientDTO.getCaste()));
-                    }
-                }
-            }
+//                else {
+//                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                        String caste = switch_hi_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                        String caste = switch_or_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+//                        String caste = switch_te_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                        String caste = switch_mr_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+//                        String caste = switch_as_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+//                        String caste = switch_ml_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+//                        String caste = switch_kn_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+//                        String caste = switch_ru_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+//                        String caste = switch_gu_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+//                        String caste = switch_bn_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+//                        String caste = switch_ta_caste_edit(patientDTO.getCaste());
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(caste));
+//                    } else {
+//                        mCasteSpinner.setSelection(casteAdapter.getPosition(patientDTO.getCaste()));
+//                    }
+//                }
+//        }
 
             //education status
             if (patientDTO.getEducation() != null) {
@@ -507,7 +507,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
-        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+//        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
 
@@ -527,7 +527,7 @@ public class Fragment_ThirdScreen extends Fragment {
         patientDTO.setSon_dau_wife(mRelationNameEditText.getText().toString());
         patientDTO.setOccupation(mOccupationEditText.getText().toString());
         patientDTO.setNationalID(mNationalIDEditText.getText().toString());
-        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
+//        patientDTO.setCaste(StringUtils.getValue(mCasteSpinner.getSelectedItem().toString()));
         patientDTO.setEducation(StringUtils.getValue(mEducationSpinner.getSelectedItem().toString()));
         patientDTO.setEconomic(StringUtils.getValue(mEconomicstatusSpinner.getSelectedItem().toString()));
 
@@ -637,13 +637,13 @@ public class Fragment_ThirdScreen extends Fragment {
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // caste
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-        patientAttributesDTO.setValue(StringUtils.getProvided(mCasteSpinner));
-        patientAttributesDTOList.add(patientAttributesDTO);
-        Log.v(TAG, "values_caste: " + patientAttributesDTO.toString());
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+//        patientAttributesDTO.setValue(StringUtils.getProvided(mCasteSpinner));
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//        Log.v(TAG, "values_caste: " + patientAttributesDTO.toString());
 
         // education
         patientAttributesDTO = new PatientAttributesDTO();

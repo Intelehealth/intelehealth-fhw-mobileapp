@@ -134,7 +134,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, /*patientdistrict,*/
-            village, address1, son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID, address2;
+            village, address1, son_daughter_wife, patientoccupation, /*patientcaste,*/
+            patienteducation, patienteconomicstatus, patientNationalID, address2;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -492,7 +493,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
         patientoccupation = findViewById(R.id.occupation);
-        patientcaste = findViewById(R.id.caste);
+//        patientcaste = findViewById(R.id.caste);
         patienteducation = findViewById(R.id.education);
         patienteconomicstatus = findViewById(R.id.economicstatus);
 
@@ -1225,80 +1226,80 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         // setting caste value
-        if (patientDTO.getCaste() != null) {
-            if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                patientcaste.setText("नहीं दिया गया");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                patientcaste.setText("ଦିଅ ଯାଇ ନାହିଁ");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                patientcaste.setText("సమకూర్చబడలేదు");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                patientcaste.setText("झाले नाही");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                patientcaste.setText("প্ৰদান কৰা হোৱা নাই");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                patientcaste.setText("നൽകിയിട്ടില്ല");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                patientcaste.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                patientcaste.setText("Не предоставлен");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                patientcaste.setText("પૂરી પાડવામાં આવેલ નથી");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                patientcaste.setText("সরবরাহ করা হয়নি");
-            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                patientcaste.setText("வழங்கப்படவில்லை");
-            } else {
-                patientcaste.setText(patientDTO.getCaste());
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String caste = switch_hi_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String caste = switch_or_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    String caste = switch_gu_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                    String caste = switch_te_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                    String caste = switch_mr_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                    String caste = switch_as_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                    String caste = switch_ml_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                    String caste = switch_kn_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    String caste = switch_ru_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                    String caste = switch_bn_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                    String caste = switch_ta_caste_edit(patientDTO.getCaste());
-                    patientcaste.setText(caste);
-                } else {
-                    patientcaste.setText(patientDTO.getCaste());
-                }
-            }
-        }
+//        if (patientDTO.getCaste() != null) {
+//            if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                patientcaste.setText("नहीं दिया गया");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                patientcaste.setText("ଦିଅ ଯାଇ ନାହିଁ");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+//                patientcaste.setText("సమకూర్చబడలేదు");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                patientcaste.setText("झाले नाही");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+//                patientcaste.setText("প্ৰদান কৰা হোৱা নাই");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+//                patientcaste.setText("നൽകിയിട്ടില്ല");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+//                patientcaste.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+//                patientcaste.setText("Не предоставлен");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+//                patientcaste.setText("પૂરી પાડવામાં આવેલ નથી");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+//                patientcaste.setText("সরবরাহ করা হয়নি");
+//            } else if (patientDTO.getCaste().equalsIgnoreCase("Not provided") &&
+//                    sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+//                patientcaste.setText("வழங்கப்படவில்லை");
+//            } else {
+//                patientcaste.setText(patientDTO.getCaste());
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String caste = switch_hi_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    String caste = switch_or_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+//                    String caste = switch_gu_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+//                    String caste = switch_te_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                    String caste = switch_mr_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+//                    String caste = switch_as_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+//                    String caste = switch_ml_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+//                    String caste = switch_kn_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+//                    String caste = switch_ru_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+//                    String caste = switch_bn_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+//                    String caste = switch_ta_caste_edit(patientDTO.getCaste());
+//                    patientcaste.setText(caste);
+//                } else {
+//                    patientcaste.setText(patientDTO.getCaste());
+//                }
+//            }
+//        }
 
         // setting son/daughet_wife value
         if (patientDTO.getSon_dau_wife() != null && !patientDTO.getSon_dau_wife().equals("")) {

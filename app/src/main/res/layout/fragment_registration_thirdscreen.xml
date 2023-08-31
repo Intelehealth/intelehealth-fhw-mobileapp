@@ -183,7 +183,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_occupation"
                 android:layout_marginTop="@dimen/margin_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/caste_title"
