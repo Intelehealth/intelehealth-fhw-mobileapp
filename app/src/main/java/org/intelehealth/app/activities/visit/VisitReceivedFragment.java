@@ -113,7 +113,7 @@ public class VisitReceivedFragment extends Fragment {
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
-        ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+        ((TextView) view.findViewById(R.id.tvSubtitleNoPatientFound)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
         LinearLayout addPatientTV = view.findViewById(R.id.llAddNewPatientNoPatientFound);
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {

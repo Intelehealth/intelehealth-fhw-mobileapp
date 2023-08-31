@@ -45,13 +45,13 @@
 
             <TextView
                 android:id="@+id/tvSubtitleNoPatientFound"
-                android:contentDescription="No Patient Found Placeholder Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvTitleNoPatientFound"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="@dimen/fu_margin_start"
+                android:contentDescription="No Patient Found Placeholder Subtitle TextView"
                 android:gravity="center_horizontal|top"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/search_pat_hint_txt"

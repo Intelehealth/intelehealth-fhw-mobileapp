@@ -317,11 +317,11 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tvNoDataOlderVisitReceivedPrescription"
-                    android:contentDescription="no data for recent visit textview in received prescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/older"
                     android:layout_marginTop="@dimen/text_margin"
+                    android:contentDescription="no data for recent visit textview in received prescription"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/margin_5"
                     android:visibility="visible"

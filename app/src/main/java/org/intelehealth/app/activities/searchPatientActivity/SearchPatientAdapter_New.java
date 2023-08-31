@@ -161,7 +161,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             search_name = itemView.findViewById(R.id.tvNameFindPatientListItem);
             priority_tag_imgview = itemView.findViewById(R.id.ivPriorityTagFindPatientListItem);
             fu_item_calendar = itemView.findViewById(R.id.ivCalendarFindPatientListItem);
-            search_date_relative = itemView.findViewById(R.id.tvDateTimeFollowUpListItem);
+            search_date_relative = itemView.findViewById(R.id.tvDateTimeFindPatientListItem);
             profile_imgview = itemView.findViewById(R.id.ivPatientImageFindPatientListItem);
             presc_pendingCV = itemView.findViewById(R.id.cvPrescPendingFindPatientListItem);
             presc_receivingCV = itemView.findViewById(R.id.cvPrescReceivedFindPatientListItem);
