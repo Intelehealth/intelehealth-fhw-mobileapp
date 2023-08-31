@@ -49,7 +49,8 @@
     <string name="content_webview_page_loading_issue">Something went wrong, Please check the network connectivity and retry or exit</string>
     <string name="action_exit">Exit</string>
     <string name="error_diastolic_require">Please enter Diastolic BP,\nIt require with Systolic BP</string>
-
+    <string name="error_iv_fluid">Please enter all IV Fluids required field\n\nOR\n\nSelect \"No\" to continue.</string>
+    <string name="error_oxytocin">Please enter all Oxytocin required field\n\nOR\n\nSelect \"No\" to continue.</string>
     <string name="please_enter_pin">Please enter received OTP</string>
     <string name="enter_new_password">Please enter new password</string>
     <string name="reenter_password">Please reenter password</string>

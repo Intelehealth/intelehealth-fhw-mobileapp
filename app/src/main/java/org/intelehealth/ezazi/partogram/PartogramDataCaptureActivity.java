@@ -24,6 +24,7 @@ import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivi
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
+import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
@@ -39,6 +40,7 @@ import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.utilities.SessionManager;
+import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
@@ -299,6 +301,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         String systolicBp = null;
         String diastolicBp = null;
+        boolean isValidIVFluid = true;
+        boolean isValidOxytocin = true;
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
                 ParamInfo info = mItemList.get(i).getParamInfoList().get(j);
@@ -311,6 +315,14 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
                     if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.DIASTOLIC_BP.value)) {
                         diastolicBp = info.getCapturedValue();
+                    }
+
+                    if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
+                        isValidIVFluid = info.isValidJson();
+                    }
+
+                    if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                        isValidOxytocin = info.isValidJson();
                     }
 
                     ObsDTO obsDTOData = new ObsDTO();
@@ -341,18 +353,13 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         if (obsDTOList.isEmpty()) {
             showErrorDialog(R.string.please_enter_field_value);
-//            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//            alertDialogBuilder.setMessage("Please enter/select at least one field value!");
-//            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                }
-//            });
-//            alertDialogBuilder.show();
         } else if (systolicBp != null && systolicBp.length() > 0
                 && (diastolicBp == null || diastolicBp.length() == 0)) {
             showErrorDialog(R.string.error_diastolic_require);
+        } else if (!isValidOxytocin) {
+            showErrorDialog(R.string.error_oxytocin);
+        } else if (!isValidIVFluid) {
+            showErrorDialog(R.string.error_iv_fluid);
         } else {
 
             try {
@@ -374,7 +381,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 new EncounterDAO().updateEncounterSync("false", mEncounterUUID);
 
 
-//                new VisitsDAO().updateVisitSync(mVisitUUID, "false");
+                new VisitsDAO().updateVisitSync(mVisitUUID, "false");
+                new VisitAttributeListDAO().markVisitAsRead(mVisitUUID);
 
                 SyncUtils syncUtils = new SyncUtils();
                 boolean isSynced = syncUtils.syncForeground("visitSummary");

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
@@ -47,6 +48,7 @@ public class VisitCompletionHelper {
             if (encounterUuid != null && encounterUuid.length() > 0) {
                 VisitsDAO visitsDAO = new VisitsDAO();
                 visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
+                new VisitAttributeListDAO().markVisitAsRead(visitId);
             }
             return encounterUuid;
         } catch (DAOException e) {

@@ -1,6 +1,8 @@
 package org.intelehealth.ezazi.database.dao;
 
+import static org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity.VISIT_DR_SPECIALITY;
 import static org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity.VISIT_HOLDER;
+import static org.intelehealth.ezazi.activities.patientDetailActivity.PatientDetailActivity.VISIT_READ_STATUS;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -107,7 +109,9 @@ public class VisitAttributeListDAO {
             values.put("voided", visitDTO.getVoided());
             values.put("sync", "1");
 
-            if (visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d") || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_HOLDER)) {
+            if (visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_DR_SPECIALITY)
+                    || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_HOLDER)
+                    || visitDTO.getVisitAttributeTypeUuid().equalsIgnoreCase(VISIT_READ_STATUS)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             if (createdRecordsCount != -1) {
@@ -200,6 +204,30 @@ public class VisitAttributeListDAO {
             values.put("voided", "0");
             values.put("sync", "0");
             createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitUUid, VISIT_HOLDER});
+            db.setTransactionSuccessful();
+            Logger.logD("created records", "created records count" + createdRecordsCount1);
+        } catch (SQLException e) {
+            isUpdated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isUpdated;
+
+    }
+
+    public boolean markVisitAsRead(String visitUUid) throws DAOException {
+        boolean isUpdated = true;
+        long createdRecordsCount1 = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        String whereclause = "visit_uuid=? AND visit_attribute_type_uuid=?";
+        db.beginTransaction();
+        try {
+            values.put("value", "$");
+            values.put("voided", "0");
+            values.put("sync", "0");
+            createdRecordsCount1 = db.update("tbl_visit_attribute", values, whereclause, new String[]{visitUUid, VISIT_READ_STATUS});
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {

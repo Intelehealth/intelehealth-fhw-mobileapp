@@ -23,6 +23,7 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
+import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
@@ -251,6 +252,7 @@ public class CardGenerationEngine {
                 if (isInserted) {
                     VisitsDAO visitsDAO = new VisitsDAO();
                     visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
+                    new VisitAttributeListDAO().markVisitAsRead(visitId);
                     Intent intent = new Intent(AppConstants.VISIT_OUT_OF_TIME_ACTION);
                     IntelehealthApplication.getAppContext().sendBroadcast(intent);
                 }

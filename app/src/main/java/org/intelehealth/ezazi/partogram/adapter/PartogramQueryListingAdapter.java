@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
@@ -35,6 +36,7 @@ import org.intelehealth.ezazi.databinding.PartoLablRadioViewMedicineBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewEzaziBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewOxytocinBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
+import org.intelehealth.ezazi.partogram.model.Medication;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
@@ -58,11 +60,11 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private Context mContext;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private TextView selectedTextview;
-    private static JSONObject ivFluidsJsonObject = new JSONObject();
-    private static JSONObject oxytocinDataObject = new JSONObject();
-
-    private TextView ivTypeValue, ivInfusionRate, ivInfusionStatus;
-    private TextView strengthOxytocin, ivInfusionRateOxytocin, ivInfusionStatusOxytocin;
+    //    private static JSONObject ivFluidsJsonObject = new JSONObject();
+//    private static JSONObject oxytocinDataObject = new JSONObject();
+//
+//        , ivInfusionRate, ivInfusionStatus;
+//    private TextView strengthOxytocin, ivInfusionRateOxytocin, ivInfusionStatusOxytocin;
 
     public interface OnItemSelection {
         public void onSelect(PartogramItemData partogramItemData);
@@ -288,12 +290,16 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         selected.setTag(info.getCapturedValue());
         selected.setText(info.getCapturedValue());
 
-        if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) {
-            showRadioOptionBoxForIVFluid(tempView, info, selected, title);
-        } else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
-            showRadioOptionBoxForOxytocin(tempView, info, selected, title);
-        } else if (info.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
-            showRadioOptionBoxForMedicine(tempView, info, selected, title);
+        switch (info.getConceptUUID()) {
+            case UuidDictionary.IV_FLUIDS:
+                showRadioOptionBoxForIVFluid(tempView, info, selected, title);
+                break;
+            case UuidDictionary.OXYTOCIN_UL_DROPS_MIN:
+                showRadioOptionBoxForOxytocin(tempView, info, selected, title);
+                break;
+            case UuidDictionary.MEDICINE:
+                showRadioOptionBoxForMedicine(tempView, info, selected, title);
+                break;
         }
     }
 
@@ -445,15 +451,16 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 && !info.getCapturedValue().equalsIgnoreCase("NO")) {
             // selected.setVisibility(View.VISIBLE);
             radioGroup.check(R.id.radioYes);
-
+            info.setCheckedRadioOption(ParamInfo.RadioOptions.YES);
             binding.ivFluidOptions.getRoot().setVisibility(View.VISIBLE);
-            setIvFluidDetails(info.getCapturedValue(), binding);
+            setIvFluidDetails(info, binding);
 
             showIVFluidOptionsDetails(title, info, tempView, binding);
 
         } else {
             radioGroup.check(R.id.radioNo);
-            info.setCapturedValue("No");
+            info.setCapturedValue(ParamInfo.RadioOptions.NO.name());
+            info.setCheckedRadioOption(ParamInfo.RadioOptions.NO);
             selected.setVisibility(View.GONE);
         }
 
@@ -461,18 +468,18 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             RadioButton radioButton = tempView.findViewById(checkedId);
             if (checkedId == R.id.radioYes && radioButton.isChecked()) {
                 // showIVFluidDialog(title, info, tempView);
+                info.setCheckedRadioOption(ParamInfo.RadioOptions.YES);
                 ivFluidDetails.setVisibility(View.VISIBLE);
                 showIVFluidOptionsDetails(title, info, tempView, binding);
-
             } else if (checkedId == R.id.radioNo && radioButton.isChecked()) {
                 ivFluidDetails.setVisibility(View.GONE);
                 if (!TextUtils.isEmpty(info.getCapturedValue())) {
-                    info.setCapturedValue("NO");
+                    info.setCapturedValue(ParamInfo.RadioOptions.NO.name());
+                    info.setCheckedRadioOption(ParamInfo.RadioOptions.NO);
                     selected.setVisibility(View.GONE);
                     binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText("");
                     binding.ivFluidOptions.viewInfusionRate.etvData.setText("");
                     binding.ivFluidOptions.viewInfusionStatus.tvData.setText("");
-
                 }
             }
         });
@@ -489,7 +496,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         DialogIvfluidOptionsBinding binding = DialogIvfluidOptionsBinding.inflate(LayoutInflater.from(mContext));
         binding.setItems(info.getOptions());
         TextView selected = view.findViewById(R.id.tvSelectedValue);
-//        TextView selected = view.findViewById(R.id.tvData);
+        TextView ivTypeValue = view.findViewById(R.id.tvData);
         binding.etOtherFluid.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
         binding.etOtherFluid.setInputType(InputType.TYPE_CLASS_TEXT);
 
@@ -518,7 +525,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             //selected.setVisibility(View.VISIBLE);
             ivTypeValue.setText(((TextView) v).getText().toString());
             Log.d(TAG, "showIVFluidDialog: cchheck " + ((TextView) v).getText().toString());
-            saveIvFluidDataInJson(info, ((TextView) v).getText().toString(), IvFluidTypes.type.name());
+            info.getMedication().setType(((TextView) v).getText().toString());
+            info.saveJson();
+//            saveIvFluidDataInJson(info, ((TextView) v).getText().toString(), IvFluidTypes.type.name());
 
         });
 
@@ -541,7 +550,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     selected.setText(otherFluidValue);
                     ivTypeValue.setText(otherFluidValue);
                     Log.d(TAG, "custom dialog: otherval :  " + otherFluidValue);
-                    saveIvFluidDataInJson(info, otherFluidValue, IvFluidTypes.type.name());
+                    info.getMedication().setType(otherFluidValue);
+                    info.saveJson();
+//                    saveIvFluidDataInJson(info, otherFluidValue, IvFluidTypes.type.name());
 
                     if (binding.etOtherFluid.getText().toString().length() > 0)
                         // selected.setVisibility(View.VISIBLE);
@@ -687,9 +698,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         binding.ivFluidOptions.viewTypeOfIvFluid.tvParamName.setText(R.string.type_of_iv_fluid);
         binding.ivFluidOptions.viewInfusionRate.tvParamName.setText(R.string.iv_infusion_rate);
         binding.ivFluidOptions.viewInfusionStatus.tvParamName.setText(R.string.iv_infusion_status);
-        ivTypeValue = binding.ivFluidOptions.viewTypeOfIvFluid.tvData;
-        ivInfusionRate = binding.ivFluidOptions.viewInfusionRate.etvData;
-        ivInfusionStatus = binding.ivFluidOptions.viewInfusionStatus.tvData;
+        TextView ivTypeValue = binding.ivFluidOptions.viewInfusionStatus.tvData;
+        EditText ivInfusionRate = binding.ivFluidOptions.viewInfusionRate.etvData;
+//        ivInfusionStatus = binding.ivFluidOptions.viewInfusionStatus.tvData;
         ivInfusionRate.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
         ivInfusionRate.setInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -704,8 +715,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         binding.ivFluidOptions.viewInfusionStatus.getRoot().setOnClickListener(v -> {
             //show infusion status
             // showIVFluidInfusionStatusDialog(title, info, view);
-            showSingleSelectionDialog(title, info, view);
-
+            String heading = "Select " + v.getContext().getString(R.string.title_iv_infusion_status);
+            showSingleSelectionDialog(heading, info, ivTypeValue);
         });
         binding.ivFluidOptions.viewInfusionRate.etvData.addTextChangedListener(new TextWatcher() {
             @Override
@@ -716,7 +727,13 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    saveIvFluidDataInJson(info, s.toString(), IvFluidTypes.infusionRate.name());
+//                    ivTypeValue.setText(s.toString());
+                    info.getMedication().setInfusionRate(s.toString());
+                    info.saveJson();
+//                    saveIvFluidDataInJson(info, s.toString(), IvFluidTypes.infusionRate.name());
+                } else {
+                    info.getMedication().setInfusionRate(null);
+                    info.saveJson();
                 }
             }
 
@@ -727,52 +744,52 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         });
     }
 
-    private void saveIvFluidDataInJson(ParamInfo info, String value, String type) {
-        try {
-            ivFluidsJsonObject.put(type, value);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        info.setCapturedValue(ivFluidsJsonObject.toString());
-    }
+//    private void saveIvFluidDataInJson(ParamInfo info, String value, String type) {
+//        try {
+//            ivFluidsJsonObject.put(type, value);
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//        info.setCapturedValue(ivFluidsJsonObject.toString());
+//    }
 
-    private void saveOxytocinDataInJson(ParamInfo info, String value, String type) {
-        try {
-            oxytocinDataObject.put(type, value);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        info.setCapturedValue(oxytocinDataObject.toString());
-        String oxytocinString = oxytocinDataObject.toString();
-        Log.d(TAG, "oxytocinDataObject: oxytocinString : " + oxytocinString);
-    }
+//    private void saveOxytocinDataInJson(ParamInfo info, String value, String type) {
+//        try {
+//            oxytocinDataObject.put(type, value);
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//        info.setCapturedValue(oxytocinDataObject.toString());
+//        String oxytocinString = oxytocinDataObject.toString();
+//        Log.d(TAG, "oxytocinDataObject: oxytocinString : " + oxytocinString);
+//    }
 
-    private enum IvFluidTypes {
-        type,
-        infusionRate,
-        infusionStatus
-    }
+//    public enum IvFluidTypes {
+//        type,
+//        infusionRate,
+//        infusionStatus
+//    }
 
-    private enum OxytocinDetails {
-        strength,
-        infusionRate,
-        infusionStatus
-    }
+//    public enum OxytocinDetails {
+//        strength,
+//        infusionRate,
+//        infusionStatus
+//    }
 
-    private void setIvFluidDetails(String capturedValue, PartoLblRadioViewEzaziBinding binding) {
+    private void setIvFluidDetails(ParamInfo info, PartoLblRadioViewEzaziBinding binding) {
         try {
             Gson gson = new Gson();
-            IvFluidData ivFluidData = gson.fromJson(capturedValue, IvFluidData.class);
-            binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.type);
-            binding.ivFluidOptions.viewInfusionRate.etvData.setText(ivFluidData.infusionRate);
-            binding.ivFluidOptions.viewInfusionStatus.tvData.setText(ivFluidData.infusionStatus);
-
+            Medication ivFluidData = gson.fromJson(info.getCapturedValue(), Medication.class);
+            binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setText(ivFluidData.getType());
+            binding.ivFluidOptions.viewInfusionRate.etvData.setText(ivFluidData.getInfusionRate());
+            binding.ivFluidOptions.viewInfusionStatus.tvData.setText(ivFluidData.getInfusionStatus());
+            info.setMedication(ivFluidData);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
     }
 
-    private void showSingleSelectionDialog(String title, ParamInfo info, View view) {
+    private void showSingleSelectionDialog(String title, ParamInfo info, TextView selected) {
         final String[] items = info.getStatus();
         ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
@@ -782,14 +799,13 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             choiceItems.add(item);
         }
 
-        String titleDialog = "Select for " + title;
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
-                .title(titleDialog)
+                .title(title)
                 .content(choiceItems)
                 .build();
 
         dialog.setListener(item -> {
-            manageSelectionSingleChoiceSelection(info, item);
+            manageSelectionSingleChoiceSelection(info, item, selected);
         });
         dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
 
@@ -806,14 +822,15 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 && !info.getCapturedValue().equalsIgnoreCase("NO")) {
             // selected.setVisibility(View.VISIBLE);
             radioGroup.check(R.id.radioYes);
-
+            info.setCheckedRadioOption(ParamInfo.RadioOptions.YES);
             oxytocinDetails.setVisibility(View.VISIBLE);
-            setOxytocinDetails(info.getCapturedValue(), binding);
+            setOxytocinDetails(info, binding);
             showOxytocinOptionsDetails(title, info, tempView, binding);
 
         } else {
             radioGroup.check(R.id.radioNo);
-            info.setCapturedValue("No");
+            info.setCapturedValue(ParamInfo.RadioOptions.NO.name());
+            info.setCheckedRadioOption(ParamInfo.RadioOptions.NO);
             selected.setVisibility(View.GONE);
         }
 
@@ -821,30 +838,32 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             RadioButton radioButton = tempView.findViewById(checkedId);
             if (checkedId == R.id.radioYes && radioButton.isChecked()) {
                 // showIVFluidDialog(title, info, tempView);
+                info.setCheckedRadioOption(ParamInfo.RadioOptions.YES);
                 oxytocinDetails.setVisibility(View.VISIBLE);
                 showOxytocinOptionsDetails(title, info, tempView, binding);
 
             } else if (checkedId == R.id.radioNo && radioButton.isChecked()) {
                 oxytocinDetails.setVisibility(View.GONE);
                 if (!TextUtils.isEmpty(info.getCapturedValue())) {
-                    info.setCapturedValue("NO");
+                    info.setCapturedValue(ParamInfo.RadioOptions.NO.name());
+                    info.setCheckedRadioOption(ParamInfo.RadioOptions.NO);
                     selected.setVisibility(View.GONE);
                     binding.includeLayoutPartoOxytocin.viewStrength.etvData.setText("");
                     binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData.setText("");
                     binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData.setText("");
-
                 }
             }
         });
     }
 
-    private void setOxytocinDetails(String capturedValue, PartoLblRadioViewOxytocinBinding binding) {
+    private void setOxytocinDetails(ParamInfo info, PartoLblRadioViewOxytocinBinding binding) {
         try {
             Gson gson = new Gson();
-            OxytocinData oxytocinData = gson.fromJson(capturedValue, OxytocinData.class);
-            binding.includeLayoutPartoOxytocin.viewStrength.etvData.setText(oxytocinData.strength);
-            binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData.setText(oxytocinData.infusionRate);
-            binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData.setText(oxytocinData.infusionStatus);
+            Medication oxytocinData = gson.fromJson(info.getCapturedValue(), Medication.class);
+            binding.includeLayoutPartoOxytocin.viewStrength.etvData.setText(oxytocinData.getStrength());
+            binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData.setText(oxytocinData.getInfusionRate());
+            binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData.setText(oxytocinData.getInfusionStatus());
+            info.setMedication(oxytocinData);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         }
@@ -854,9 +873,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         binding.includeLayoutPartoOxytocin.viewStrength.tvParamName.setText(R.string.strength_unit);
         binding.includeLayoutPartoOxytocin.viewInfusionRate.tvParamName.setText(R.string.iv_infusion_rate);
         binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvParamName.setText(R.string.iv_infusion_status);
-        strengthOxytocin = binding.includeLayoutPartoOxytocin.viewStrength.etvData;
-        ivInfusionRateOxytocin = binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData;
-        ivInfusionStatusOxytocin = binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData;
+//        strengthOxytocin = binding.includeLayoutPartoOxytocin.viewStrength.etvData;
+//        ivInfusionRateOxytocin = binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData;
+//        ivInfusionStatusOxytocin = binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData;
 
         TextView selected = view.findViewById(R.id.tvSelectedValue);
         binding.includeLayoutPartoOxytocin.viewStrength.etvData.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
@@ -867,8 +886,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         binding.includeLayoutPartoOxytocin.viewInfusionStatus.getRoot().setOnClickListener(v -> {
             //show infusion status
             // showIVFluidInfusionStatusDialog(title, info, view);
-            showSingleSelectionDialog(title, info, view);
-
+            String heading = "Select " + v.getContext().getString(R.string.title_iv_infusion_status);
+            showSingleSelectionDialog(heading, info, binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData);
         });
 
         binding.includeLayoutPartoOxytocin.viewStrength.etvData.addTextChangedListener(new TextWatcher() {
@@ -880,7 +899,12 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    saveOxytocinDataInJson(info, s.toString(), OxytocinDetails.strength.name());
+                    info.getMedication().setStrength(s.toString());
+                    info.saveJson();
+//                    saveOxytocinDataInJson(info, s.toString(), OxytocinDetails.strength.name());
+                } else {
+                    info.getMedication().setStrength(null);
+                    info.saveJson();
                 }
             }
 
@@ -899,7 +923,12 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    saveOxytocinDataInJson(info, s.toString(), OxytocinDetails.infusionRate.name());
+                    info.getMedication().setInfusionRate(s.toString());
+                    info.saveJson();
+//                    saveOxytocinDataInJson(info, s.toString(), OxytocinDetails.infusionRate.name());
+                } else {
+                    info.getMedication().setInfusionRate(null);
+                    info.saveJson();
                 }
             }
 
@@ -910,14 +939,21 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         });
     }
 
-    private void manageSelectionSingleChoiceSelection(ParamInfo info, SingChoiceItem item) {
-        if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS)) { //for infusion status -iv fluid
-            ivInfusionStatus.setText(item.getItem());
-            saveIvFluidDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());
-        } else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) { //for oxytocin
-            ivInfusionStatusOxytocin.setText(item.getItem());
-            saveOxytocinDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());
+    private void manageSelectionSingleChoiceSelection(ParamInfo info, SingChoiceItem item, TextView view) {
+        if (info.getConceptUUID().equals(UuidDictionary.IV_FLUIDS) || info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) { //for infusion status -iv fluid
+            info.getMedication().setInfusionStatus(item.getItem());
+            info.saveJson();
+            TextView selected = view.findViewById(R.id.tvData);
+            selected.setText(item.getItem());
+//            ivInfusionStatus.setText(item.getItem());
+//            saveIvFluidDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());
         }
+//        else if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) { //for oxytocin
+//            info.getMedication().setInfusionStatus(item.getItem());
+//            info.saveJson();
+////            ivInfusionStatusOxytocin.setText(item.getItem());
+////            saveOxytocinDataInJson(info, item.getItem(), IvFluidTypes.infusionStatus.name());
+//        }
     }
 
     private void showMedicineDialog(String title, ParamInfo info, View tempView) {
@@ -1060,26 +1096,26 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 */
     }
 
-    private class IvFluidData {
-        @SerializedName("type")
-        private String type;
-
-        @SerializedName("infusionRate")
-        private String infusionRate;
-
-        @SerializedName("infusionStatus")
-        private String infusionStatus;
-    }
-
-    private class OxytocinData {
-        @SerializedName("strength")
-        private String strength;
-
-        @SerializedName("infusionRate")
-        private String infusionRate;
-
-        @SerializedName("infusionStatus")
-        private String infusionStatus;
-    }
+//    private class IvFluidData {
+//        @SerializedName("type")
+//        private String type;
+//
+//        @SerializedName("infusionRate")
+//        private String infusionRate;
+//
+//        @SerializedName("infusionStatus")
+//        private String infusionStatus;
+//    }
+//
+//    private class OxytocinData {
+//        @SerializedName("strength")
+//        private String strength;
+//
+//        @SerializedName("infusionRate")
+//        private String infusionRate;
+//
+//        @SerializedName("infusionStatus")
+//        private String infusionStatus;
+//    }
 
 }

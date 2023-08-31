@@ -63,7 +63,6 @@ import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.knowledgeEngine.Node;
 import org.intelehealth.ezazi.models.Patient;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
-import org.intelehealth.ezazi.models.dto.VisitAttributeDTO;
 import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
@@ -140,8 +139,10 @@ public class PatientDetailActivity extends BaseActionBarActivity {
     String stage1Hr1_1_EncounterUuid, stage1Hr1_2_EncounterUuid;
     TextView tvBedNumber;
 
-    public static final String VISIT_ATTR_TYPE_UUID = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
+    public static final String VISIT_DR_SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String VISIT_HOLDER = "a0378be4-d9c6-4cb2-bbf5-777e27a32efc";
+
+    public static final String VISIT_READ_STATUS = "2e4b62a5-aa71-43e2-abc9-f4a777697b19";
 
 //    @Override
 //    protected void onBackNavigate() {
@@ -384,7 +385,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     speciality_attributes
-                            .insertVisitAttributes(uuid, "General Physician", VISIT_ATTR_TYPE_UUID);
+                            .insertVisitAttributes(uuid, "General Physician", VISIT_DR_SPECIALITY);
                     speciality_attributes
                             .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
 

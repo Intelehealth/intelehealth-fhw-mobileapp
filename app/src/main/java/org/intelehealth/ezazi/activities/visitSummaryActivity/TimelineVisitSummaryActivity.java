@@ -43,6 +43,7 @@ import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
+import org.intelehealth.ezazi.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.databinding.DialogOutOfTimeEzaziBinding;
 import org.intelehealth.ezazi.databinding.DialogReferHospitalEzaziBinding;
@@ -719,6 +720,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
         VisitsDAO visitsDAO = new VisitsDAO();
         visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+        new VisitAttributeListDAO().markVisitAsRead(visitUuid);
 
         ////
         // Now get this encounteruuid and create refer obs table.
@@ -782,6 +784,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+            new VisitAttributeListDAO().markVisitAsRead(visitUuid);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
