@@ -895,7 +895,7 @@
     <string name="enter_username1">Введите ваше имя пользователя</string>
     <string name="enter_password1">Введите пароль</string>
 
-    <string name="start_visit">Начальный визит</string>
+    <string name="start_visit">Начать визит</string>
     <string name="chw_worker">Работник КСР</string>
     <string name="notifi_reminders">Напоминания</string>
     <string name="notifi_incompl_activity">Незавершенная деятельность</string>
