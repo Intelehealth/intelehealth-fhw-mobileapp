@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/margin_10"
-        android:layout_toEndOf="@id/tv_name"
+        android:layout_toEndOf="@id/tvNameSelectedChipItemView"
         android:src="@drawable/ic_baseline_clear_24_white" />
 </RelativeLayout>
 

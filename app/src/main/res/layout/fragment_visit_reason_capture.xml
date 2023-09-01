@@ -161,10 +161,10 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvSelectedReasonsCapture"
-                    android:contentDescription="selected reasons recyclerview in Visit Reason Capture Fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16" />
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:contentDescription="selected reasons recyclerview in Visit Reason Capture Fragment" />
             </RelativeLayout>
 
             <TextView
