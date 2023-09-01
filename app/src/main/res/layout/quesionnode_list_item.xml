@@ -21,17 +21,25 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/margin_10">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/physical_exam_image_view"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/physical_exam_img_max_height"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/margin_20"
-                android:layout_marginTop="@dimen/margin_10"
-                android:contentDescription="TODO"
-                android:scaleType="fitXY"
-                android:visibility="visible"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="@drawable/edittext_border"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:paddingVertical="@dimen/margin_5">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/physical_exam_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/physical_exam_img_max_height"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="TODO"
+                    android:scaleType="fitXY"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
