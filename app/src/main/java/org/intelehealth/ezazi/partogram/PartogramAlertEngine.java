@@ -65,7 +65,7 @@ public class PartogramAlertEngine {
                 if (paramInfo.getCapturedValue().equalsIgnoreCase("OA")) {
                     alert = "G";
                 } else if (paramInfo.getCapturedValue().equalsIgnoreCase("OP") || paramInfo.getCapturedValue().equalsIgnoreCase("OT")) {
-                    alert = "R";
+                    alert = "Y";
                 }
 //                else if (paramInfo.getCapturedValue().equalsIgnoreCase("M+++") || paramInfo.getCapturedValue().equalsIgnoreCase("B")) {
 //                    alert = "R";

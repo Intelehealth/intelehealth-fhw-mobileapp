@@ -424,7 +424,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     private void showErrorDialog(@StringRes int errorRes) {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
                 .content(getString(errorRes))
-                .positiveButtonLabel(R.string.ok).build();
+                .hideNegativeButton(true)
+                .positiveButtonLabel(R.string.okay).build();
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
