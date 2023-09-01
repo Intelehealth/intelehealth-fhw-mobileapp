@@ -852,6 +852,10 @@ public class Node implements Serializable {
         }
     }
 
+    public boolean isHasPopUp() {
+        return hasPopUp;
+    }
+
     public boolean anySubPopUp() {
         if (!terminal) {
             for (int i = 0; i < optionsList.size(); i++) {

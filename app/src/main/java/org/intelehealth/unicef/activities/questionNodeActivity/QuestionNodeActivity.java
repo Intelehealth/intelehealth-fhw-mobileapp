@@ -283,6 +283,10 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
+            if (question.isHasPopUp()) {
+                currentNode.getOption(groupPosition).generatePopUp(this);
+            }
+
             if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")
                     && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")
                     && !currentNode.findDisplay().equalsIgnoreCase("ପେଟଯନ୍ତ୍ରଣା")
