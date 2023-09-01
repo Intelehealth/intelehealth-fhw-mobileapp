@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,11 +26,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -121,6 +126,18 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
         no_patient_found_block = findViewById(R.id.no_patient_found_block);
         main_block = findViewById(R.id.main_block);
+        ((TextView) findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+        LinearLayout addPatientTV = findViewById(R.id.add_new_patientTV);
+        addPatientTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PrivacyPolicyActivity_New.class);
+                intent.putExtra("intentType", "navigateFurther");
+                intent.putExtra("add_patient", "add_patient");
+                startActivity(intent);
+                finish();
+            }
+        });
 
         nestedscrollview = findViewById(R.id.nestedscrollview);
         nestedscrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -421,5 +438,11 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
             no_patient_found_block.setVisibility(View.GONE);
             main_block.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(context, HomeScreenActivity_New.class);
+        startActivity(intent);
     }
 }
