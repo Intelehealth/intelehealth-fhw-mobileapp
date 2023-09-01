@@ -918,8 +918,8 @@
 
     <string name="close_all">Закрыть всё</string>
     <string name="open_all">Открыть все</string>
-    <string name="send_visit_button">Отправьте визит</string>
-    <string name="appointment">Назначение</string>
+    <string name="send_visit_button">Отправить визит</string>
+    <string name="appointment">Назначить</string>
     <string name="secondary_hospital_type">Вторичный</string>
     <string name="tertial_hospital_type">третичный</string>
     <string name="hospital_type">тип больницы</string>
