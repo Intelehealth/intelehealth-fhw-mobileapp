@@ -316,7 +316,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         if (intent_exit != null) {
             String intentTag = intent_exit.getStringExtra("intentTag");
             if (intentTag != null) {
-                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater();
+                if (intentTag.equalsIgnoreCase("Feedback screen with feedback")) showSnackBarAndRemoveLater(getResources().getString(R.string.thank_you_for_feedback));
+                else if (intentTag.equalsIgnoreCase("profile updated")) showSnackBarAndRemoveLater(getResources().getString(R.string.profile_details_updated_new));
                 else survey_snackbar_cv.setVisibility(View.GONE);
             }
         }
@@ -617,9 +618,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     }
 
-    private void showSnackBarAndRemoveLater() {
+    private void showSnackBarAndRemoveLater(String text) {
         survey_snackbar_cv.setVisibility(View.VISIBLE);
-
+        TextView textView = findViewById(R.id.snackbar_text);
+        textView.setText(text);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override

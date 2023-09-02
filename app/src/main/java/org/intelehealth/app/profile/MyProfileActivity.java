@@ -488,6 +488,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         String updatedPhoneNum = etMobileNo.getText().toString();
         String updatedEmailID = etEmail.getText().toString();
         String updatedCountryCode = countryCodePicker.getSelectedCountryCode();
+        boolean profileUpdated = false;
         if (!updatedDOB.equalsIgnoreCase(prevDOB)) {
             updateDOB(updatedAge, formattedDOB, gender);
         }
@@ -509,7 +510,10 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             updateProfileAttribute(countryCodeAttributeUuid, updatedCountryCode);
         }
 
-        snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
+        Intent i = new Intent(this, HomeScreenActivity_New.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.putExtra("intentTag", "profile updated");
+        startActivity(i);
     }
 
     private void createProfileAttribute(String attributeTypeUuid, String newValue) {

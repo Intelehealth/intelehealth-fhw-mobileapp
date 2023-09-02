@@ -1025,7 +1025,7 @@
     <string name="who_we_are_intro">इंटेलिहेल्थ एक ऐसा नया टेलिमेडिसिन प्लैटफॉर्म है जिसे फ्रंटलाइन स्वास्थ्य कार्यकर्ताओं और रोगियों को वर्चुअल डॉक्टर के साथ कनेक्ट करके दूरवर्ती इलाकों में स्वास्थ्य देखभाल कमी को दूर करने के लिए तैयार किया गया है ताकि उच्च गुणवत्तापूर्ण स्वास्थ्य देखभाल प्रदान की जा सके।</string>
     <string name="collect_patient_info">AYU की मदद से रोगी जानकारी एकत्र करें</string>
     <string name="profile_details_added">प्रोफ़ाइल विवरण सफलतापूर्वज जुड़ गया</string>
-    <string name="profile_details_updated_new">प्रोफ़ाइल विवरण सफलतापूर्वज अपडेट हुआ</string>
+    <string name="profile_details_updated_new">प्रोफ़ाइल विवरण सफलतापूर्वज अपडेट हुआ!</string>
     <string name="profile_photo_updated_new">प्रोफ़ाइल फ़ोटो सफलतापूर्वज अपडेट हुआ</string>
     <string name="otp_sent_success">ओटीपी सफलतापूर्वक भेजा गया</string>
     <string name="provide_prescriptions">प्रिस्क्रिप्शन प्रदान करें</string>
