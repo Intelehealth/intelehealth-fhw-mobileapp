@@ -286,6 +286,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
+
         networkUtils = new NetworkUtils(context, this);
         DeviceInfoUtils.saveDeviceInfo(this);
         catchFCMMessageData();
@@ -297,15 +298,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
         }
         sessionManager = new SessionManager(this);
-        String appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            Locale locale = new Locale(appLanguage);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-
         Log.d("onCreate: ", "I m called! " + sessionManager.getAppLanguage());
         initUI();
         clickListeners();
@@ -580,13 +572,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
             }
         });
-        //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            /*mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();*/
             showRefreshInProgressDialog();
             syncUtils.initialSync("home");
         } else {
@@ -595,26 +581,14 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             saveToken();
             requestPermission();
         }
-        /*sessionManager.setMigration(true);
-
-        if (sessionManager.isReturningUser()) {
-            syncUtils.syncForeground("");
-        }*/
-
         //bottom nav
         bottomNav = findViewById(R.id.bottom_nav_home);
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-
-
-       /* String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        tvAppLastSync.setText(sync_text);
-        Log.d(TAG, "onReceive: sync_text initui : " + sessionManager.getLastSyncDateTime());
-*/
-
         tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
 
+        setLocale(HomeScreenActivity_New.this);
 
     }
 
@@ -942,12 +916,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        setLocale("onRestart");
-    }
-
-    @Override
     protected void onResume() {
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
             dialogRefreshInProgress.dismiss();
@@ -971,21 +939,12 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        setLocale("onResume");
         super.onResume();
     }
 
     @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setLocale("onConfigurationChanged");
-    }
-
-
-    @Override
     protected void onStart() {
         super.onStart();
-        setLocale("onStart");
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
         requestPermission();
@@ -1309,31 +1268,8 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     public void logout() {
         // to insert time spent by user into the db
         insertTimeSpentByUserIntoDb();
-
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
-//        parseLogOut();
-
-       /* AccountManager manager = AccountManager.get(HomeActivity.this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }*/
-     /*   Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
-        if (accountList.length > 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                manager.removeAccount(accountList[0], HomeActivity.this, null, null);
-            } else {
-                manager.removeAccount(accountList[0], null, null); // Legacy implementation
-            }
-        }
-*/
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -1428,7 +1364,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void loadLastSelectedFragment() {
         Fragment fragment = null;
         String tag = getTopFragmentTag();
-        //if (currentFragment != null && !currentFragment.isEmpty()) {
         if (tag.equalsIgnoreCase(TAG_HOME)) {
             fragment = new HomeFragment_New();
             ivHamburger.setVisibility(View.VISIBLE);
@@ -1449,7 +1384,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
             tag = TAG_ACHIEVEMENT;
         }
-        // }
         loadFragment(fragment, tag);
 
     }
@@ -1458,20 +1392,9 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
-            /*if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-                mSyncProgressDialog.dismiss();
-            }
-            mSyncProgressDialog = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle); //thats how to add a style!
-            mSyncProgressDialog.setTitle(R.string.syncInProgress);
-            mSyncProgressDialog.setCancelable(false);
-            mSyncProgressDialog.setProgress(i);
-            mSyncProgressDialog.show();*/
-
             if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing())
                 dialogRefreshInProgress.dismiss();
-
             showRefreshInProgressDialog();
-
             syncUtils.initialSync("home");
         }
     }
@@ -1502,20 +1425,4 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
             }
         }
     }
-
-    public void setLocale(String tag) {
-        sessionManager = new SessionManager(this);
-        Log.d(tag, ": I m called! " + sessionManager.getAppLanguage());
-        String appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            Locale locale = new Locale(appLanguage);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-    }
-
-
-
 }
