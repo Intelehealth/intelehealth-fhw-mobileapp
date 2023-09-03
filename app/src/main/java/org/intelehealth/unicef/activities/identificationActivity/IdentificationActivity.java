@@ -458,7 +458,7 @@ public class IdentificationActivity extends BaseActivity {
 
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
-                R.array.countries, R.layout.custom_spinner);
+                R.array.countries_en, R.layout.custom_spinner);
         //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 

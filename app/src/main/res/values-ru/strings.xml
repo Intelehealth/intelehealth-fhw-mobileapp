@@ -466,7 +466,7 @@
     <string name="previous_visits">Предыдущие визиты</string>
     <string name="accept">Принять</string>
     <string name="reject">Отклонить</string>
-    <string name="next">Дальше</string>
+    <string name="next">Следующий</string>
     <string name="which_server_would_you_like_to_connect_to">К какому серверу вы хотите подключиться?</string>
     <string name="enter_url">Введите URL</string>
     <string name="choose_a_location_to_login">Выберите место для входа</string>

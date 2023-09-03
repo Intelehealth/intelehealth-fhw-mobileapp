@@ -76,7 +76,7 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
             }
         });
 
-            changeToSelect(selectedPos, position, holder, calendarModel);
+        changeToSelect(selectedPos, position, holder, calendarModel);
 
         if(calendarModel.getSelectedYear() ==  currentYear && calendarModel.getSelectedMonth() == currentMonthNew){
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth || calendarModel.isCurrentMonthCompletedDate()) {
@@ -86,7 +86,7 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
             if (calendarModel.isPrevMonth || calendarModel.isNextMonth){
                 holder.tvDate.setTextColor(context.getColor(R.color.edittextBorder));
             }
-         }
+        }
 
         if(calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() > currentMonthNew)
         {
@@ -133,7 +133,7 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
     }
 
     public void changeToSelect(int selectedPos, int position, MyViewHolder holder, CalendarviewModel calendarModel) {
-         Log.d(TAG, "changeToSelect: position : " + position);
+        Log.d(TAG, "changeToSelect: position : " + position);
 
         if (selectedPos == position) {
             Log.d(TAG, "changeToSelect: in true");
@@ -145,8 +145,8 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
 
         } else {
             Log.d(TAG, "changeToSelect: in false");
-                holder.layoutParent.setBackground(null);
-                holder.tvDate.setTextColor(context.getResources().getColor(R.color.textColorBlack));
+            holder.layoutParent.setBackground(null);
+            holder.tvDate.setTextColor(context.getResources().getColor(R.color.textColorBlack));
         }
     }
 

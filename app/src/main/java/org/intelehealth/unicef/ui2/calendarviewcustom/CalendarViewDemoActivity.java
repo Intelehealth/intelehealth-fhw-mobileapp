@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CalendarViewDemoActivity extends BaseActivity implements SendSelectedDateInterface {
     private static final String TAG = "CalendarViewDemoActivit";
@@ -72,10 +73,10 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
         calendarInstanceDefault.add(Calendar.MONTH, -1);
         Date monthNameNEw = calendarInstanceDefault.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 
             String[] dateSplit = formateDate.split("/");
             yearToCompare = dateSplit[2];

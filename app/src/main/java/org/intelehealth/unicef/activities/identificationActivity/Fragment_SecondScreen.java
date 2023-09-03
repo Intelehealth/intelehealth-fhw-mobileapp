@@ -268,14 +268,28 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         Resources res = getResources();
+        ArrayAdapter<CharSequence> countryAdapter = null;
+
+        String countryLanguage = "countries_" + sessionManager.getAppLanguage();
+        int countries = res.getIdentifier(countryLanguage, "array", getActivity().getApplicationContext().getPackageName());
+        if (countries != 0) {
+            countryAdapter = ArrayAdapter.createFromResource(getActivity(), countries, R.layout.simple_spinner_item_1);
+            countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+        }
 
         // country
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_spinner_item_1, getResources().getStringArray(R.array.countries));
-        countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+//        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_spinner_item_1, getResources().getStringArray(R.array.countries));
+//        countryAdapter.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 //        country_spinner.setSelection(countryAdapter.getPosition(country1));
         mCountryNameSpinner.setAdapter(countryAdapter); // keeping this is setting textcolor to white so comment this and add android:entries in xml
         mCountryNameSpinner.setPopupBackgroundDrawable(getActivity().getDrawable(R.drawable.popup_menu_background));
-        mCountryNameSpinner.setSelection(countryAdapter.getPosition("India"));
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            mCountryNameSpinner.setSelection(countryAdapter.getPosition("Кыргызстан"));
+        } else {
+            mCountryNameSpinner.setSelection(countryAdapter.getPosition("India"));
+        }
+
        /* ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.states_india, android.R.layout.simple_spinner_dropdown_item);
         state_spinner.setSelection(stateAdapter.getPosition(state));
@@ -305,7 +319,25 @@ public class Fragment_SecondScreen extends Fragment {
             if (patientDTO.getAddress2() != null && !patientDTO.getAddress2().isEmpty())
                 mAddress2EditText.setText(patientDTO.getAddress2());
             mCountryName = String.valueOf(patientDTO.getCountry());
-            int countryIndex = countryAdapter.getPosition(String.valueOf(patientDTO.getCountry()));
+
+            String selectedCountry = "";
+
+            if (!mCountryName.equalsIgnoreCase("null")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    selectedCountry = StringUtils.translateCountriesEdit(mCountryName);
+                } else {
+                    selectedCountry = mCountryName;
+                }
+            } else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    selectedCountry = "Кыргызстан";
+                } else {
+                    selectedCountry = "India";
+                }
+            }
+
+
+            int countryIndex = countryAdapter.getPosition(selectedCountry);
             if (countryIndex <= 0) {
                 countryIndex = countryAdapter.getPosition("India");
                 mCountryName = "India";
@@ -334,7 +366,7 @@ public class Fragment_SecondScreen extends Fragment {
 //                    if (mDistName != null && mDistName.isEmpty())
 //                        mDistrictNameSpinner.setSelection(districtAdapter.getPosition(district));
                 }
-            } else if (mCountryName.equalsIgnoreCase("Kyrgyzstan")) {
+            } else if (mCountryName.equalsIgnoreCase("Kyrgyzstan") || mCountryName.equalsIgnoreCase("Кыргызстан")) {
                 mIsKyrgyzstanSelected = true;
                 setStateAdapter(mCountryName);
                 if (mStateName != null && mStateName.isEmpty()) {
@@ -345,7 +377,7 @@ public class Fragment_SecondScreen extends Fragment {
                 mIsKyrgyzstanSelected = false;
                 mStateEditText.setVisibility(View.VISIBLE);
                 mStateNameSpinner.setVisibility(View.GONE);
-                mStateEditText.setText(patientDTO.getStateprovince() != null ? String.valueOf(patientDTO.getStateprovince()) : "");
+//                mStateEditText.setText(patientDTO.getStateprovince() != null ? String.valueOf(patientDTO.getStateprovince()) : "");
 //                mDistrictET.setVisibility(View.VISIBLE);
 //                mDistrictNameSpinner.setVisibility(View.GONE);
 //                mDistrictET.setText(String.valueOf(district));
@@ -520,7 +552,7 @@ public class Fragment_SecondScreen extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                    mCountryName = adapterView.getItemAtPosition(i).toString();
+                    mCountryName = StringUtils.translateCountries(adapterView.getItemAtPosition(i).toString());
                     mCountryNameErrorTextView.setVisibility(View.GONE);
                     mCountryNameSpinner.setBackgroundResource(R.drawable.ui2_spinner_background_new);
 
@@ -648,7 +680,7 @@ public class Fragment_SecondScreen extends Fragment {
         mCityVillageName = mCityVillageET.getText().toString().trim();
 
         patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
-        patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
+        patientDTO.setCountry(StringUtils.translateCountries(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString())));
 
         if (mIsIndiaSelected || mIsKyrgyzstanSelected) {
             patientDTO.setStateprovince(StringUtils.getValue(mStateNameSpinner.getSelectedItem().toString()));
@@ -810,7 +842,12 @@ public class Fragment_SecondScreen extends Fragment {
             mCityVillageName = mCityVillageET.getText().toString().trim();
 
             patientDTO.setPostalcode(mPostalCodeEditText.getText().toString());
-            patientDTO.setCountry(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString()));
+
+            String selectedCountry = mCountryNameSpinner.getSelectedItem().toString();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                selectedCountry = StringUtils.translateCountries(selectedCountry);
+            }
+            patientDTO.setCountry(StringUtils.getValue(selectedCountry));
 
             if (mIsIndiaSelected || mIsKyrgyzstanSelected) {
                 patientDTO.setStateprovince(StringUtils.getValue(mStateNameSpinner.getSelectedItem().toString()));

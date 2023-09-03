@@ -54,18 +54,15 @@ public final class StringUtils {
         for (int i = 0; i < st.length(); i++) {
             char ch = st.charAt(i);
             if (ch == '\\') {
-                char nextChar = (i == st.length() - 1) ? '\\' : st
-                        .charAt(i + 1);
+                char nextChar = (i == st.length() - 1) ? '\\' : st.charAt(i + 1);
                 // Octal escape?
                 if (nextChar >= '0' && nextChar <= '7') {
                     String code = "" + nextChar;
                     i++;
-                    if ((i < st.length() - 1) && st.charAt(i + 1) >= '0'
-                            && st.charAt(i + 1) <= '7') {
+                    if ((i < st.length() - 1) && st.charAt(i + 1) >= '0' && st.charAt(i + 1) <= '7') {
                         code += st.charAt(i + 1);
                         i++;
-                        if ((i < st.length() - 1) && st.charAt(i + 1) >= '0'
-                                && st.charAt(i + 1) <= '7') {
+                        if ((i < st.length() - 1) && st.charAt(i + 1) >= '0' && st.charAt(i + 1) <= '7') {
                             code += st.charAt(i + 1);
                             i++;
                         }
@@ -104,9 +101,7 @@ public final class StringUtils {
                             ch = 'u';
                             break;
                         }
-                        int code = Integer.parseInt(
-                                "" + st.charAt(i + 2) + st.charAt(i + 3)
-                                        + st.charAt(i + 4) + st.charAt(i + 5), 16);
+                        int code = Integer.parseInt("" + st.charAt(i + 2) + st.charAt(i + 3) + st.charAt(i + 4) + st.charAt(i + 5), 16);
                         sb.append(Character.toChars(code));
                         i += 5;
                         continue;
@@ -123,24 +118,21 @@ public final class StringUtils {
 
     public static String getValue(String value) {
         String val = "";
-        if (value != null)
-            val = value;
+        if (value != null) val = value;
         return val;
 
     }
 
     public static String getValue1(String value) {
         String val = " ";
-        if (value != null)
-            val = value;
+        if (value != null) val = value;
         return val;
 
     }
 
     public static String getProvided(Spinner spinner) {
         String val = "";
-        if (spinner.getSelectedItemPosition() == 0)
-            val = "Not provided";
+        if (spinner.getSelectedItemPosition() == 0) val = "Not provided";
 
 
         else if (spinner.getSelectedItem() == null) {
@@ -1619,61 +1611,24 @@ public final class StringUtils {
 
     public static String mobileNumberEmpty(String value) {
         String val = "N/A";
-        if (value != null && !value.isEmpty())
-            val = value;
+        if (value != null && !value.isEmpty()) val = value;
         return val;
     }
 
     public static String en__hi_dob(String dob) { //English dob is replaced to Hindi text.
-        String mdob_text = dob
-                .replace("January", "जनवरी")
-                .replace("February", "फ़रवरी")
-                .replace("March", "मार्च")
-                .replace("April", "अप्रैल")
-                .replace("May", "मई")
-                .replace("June", "जून")
-                .replace("July", "जुलाई")
-                .replace("August", "अगस्त")
-                .replace("September", "सितंबर")
-                .replace("October", "अक्टूबर")
-                .replace("November", "नवंबर")
-                .replace("December", "दिसंबर");
+        String mdob_text = dob.replace("January", "जनवरी").replace("February", "फ़रवरी").replace("March", "मार्च").replace("April", "अप्रैल").replace("May", "मई").replace("June", "जून").replace("July", "जुलाई").replace("August", "अगस्त").replace("September", "सितंबर").replace("October", "अक्टूबर").replace("November", "नवंबर").replace("December", "दिसंबर");
 
         return mdob_text;
     }
 
     public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
-        String mdob_text = dob
-                .replace("January", "જાન્યુઆરી")
-                .replace("February", "ફેબ્રુઆરી")
-                .replace("March", "કુચ")
-                .replace("April", "એપ્રિલ")
-                .replace("May", "મે")
-                .replace("June", "જૂન")
-                .replace("July", "જુલાઈ")
-                .replace("August", ".ગસ્ટ")
-                .replace("September", "સપ્ટેમ્બર")
-                .replace("October", "ઓક્ટોબર")
-                .replace("November", "નવેમ્બર")
-                .replace("December", "ડિસેમ્બર");
+        String mdob_text = dob.replace("January", "જાન્યુઆરી").replace("February", "ફેબ્રુઆરી").replace("March", "કુચ").replace("April", "એપ્રિલ").replace("May", "મે").replace("June", "જૂન").replace("July", "જુલાઈ").replace("August", ".ગસ્ટ").replace("September", "સપ્ટેમ્બર").replace("October", "ઓક્ટોબર").replace("November", "નવેમ્બર").replace("December", "ડિસેમ્બર");
 
         return mdob_text;
     }
 
     public static String en__or_dob(String dob) { //English dob is replaced to Odiya text.
-        String mdob_text = dob
-                .replace("January", "ଜାନୁଆରୀ")
-                .replace("February", "ଫେବୃଆରୀ")
-                .replace("March", "ମାର୍ଚ୍ଚ")
-                .replace("April", "ଏପ୍ରିଲ୍")
-                .replace("May", "ମେ")
-                .replace("June", "ଜୁନ୍")
-                .replace("July", "ଜୁଲାଇ")
-                .replace("August", "ଅଗଷ୍ଟ")
-                .replace("September", "ସେପ୍ଟେମ୍ବର")
-                .replace("October", "ଅକ୍ଟୋବର")
-                .replace("November", "ନଭେମ୍ବର")
-                .replace("December", "ଡିସେମ୍ବର");
+        String mdob_text = dob.replace("January", "ଜାନୁଆରୀ").replace("February", "ଫେବୃଆରୀ").replace("March", "ମାର୍ଚ୍ଚ").replace("April", "ଏପ୍ରିଲ୍").replace("May", "ମେ").replace("June", "ଜୁନ୍").replace("July", "ଜୁଲାଇ").replace("August", "ଅଗଷ୍ଟ").replace("September", "ସେପ୍ଟେମ୍ବର").replace("October", "ଅକ୍ଟୋବର").replace("November", "ନଭେମ୍ବର").replace("December", "ଡିସେମ୍ବର");
 
         return mdob_text;
     }
@@ -1687,145 +1642,49 @@ public final class StringUtils {
      */
 
     public static String en__te_dob(String dob) { //English dob is replaced to Tamil text.
-        String mdob_text = dob
-                .replace("January", "జనవరి")
-                .replace("February", "ఫిబ్రవరి")
-                .replace("March", "మార్చి")
-                .replace("April", "ఏప్రిల్")
-                .replace("May", "మే")
-                .replace("June", "జూన్")
-                .replace("July", "జూలై")
-                .replace("August", "ఆగస్టు")
-                .replace("September", "సెప్టెంబర్")
-                .replace("October", "అక్టోబర్")
-                .replace("November", "నవంబర్")
-                .replace("December", "డిసెంబర్");
+        String mdob_text = dob.replace("January", "జనవరి").replace("February", "ఫిబ్రవరి").replace("March", "మార్చి").replace("April", "ఏప్రిల్").replace("May", "మే").replace("June", "జూన్").replace("July", "జూలై").replace("August", "ఆగస్టు").replace("September", "సెప్టెంబర్").replace("October", "అక్టోబర్").replace("November", "నవంబర్").replace("December", "డిసెంబర్");
 
         return mdob_text;
     }
 
     public static String en__mr_dob(String dob) { //English dob is replaced to marathi text.
-        String mdob_text = dob
-                .replace("January", "जानेवारी")
-                .replace("February", "फेब्रुवारी")
-                .replace("March", "मार्च")
-                .replace("April", "एप्रिल")
-                .replace("May", "मे")
-                .replace("June", "जून")
-                .replace("July", "जुलै")
-                .replace("August", "ऑगस्ट")
-                .replace("September", "सप्टेंबर")
-                .replace("October", "ऑक्टोबर")
-                .replace("November", "नोव्हेंबर")
-                .replace("December", "डिसेंबर");
+        String mdob_text = dob.replace("January", "जानेवारी").replace("February", "फेब्रुवारी").replace("March", "मार्च").replace("April", "एप्रिल").replace("May", "मे").replace("June", "जून").replace("July", "जुलै").replace("August", "ऑगस्ट").replace("September", "सप्टेंबर").replace("October", "ऑक्टोबर").replace("November", "नोव्हेंबर").replace("December", "डिसेंबर");
 
         return mdob_text;
     }
 
     public static String en__as_dob(String dob) { //English dob is replaced to marathi text.
-        String mdob_text = dob
-                .replace("January", "জানুৱাৰী")
-                .replace("February", "ফেব্ৰুৱাৰী")
-                .replace("March", "মাৰ্চ")
-                .replace("April", "এপ্ৰিল")
-                .replace("May", "মে")
-                .replace("June", "জুন")
-                .replace("July", "জুলাই")
-                .replace("August", "আগষ্ট")
-                .replace("September", "ছেপ্টেম্বৰ")
-                .replace("October", "অক্টোবৰ")
-                .replace("November", "নৱেম্বৰ")
-                .replace("December", "ডিচেম্বৰ");
+        String mdob_text = dob.replace("January", "জানুৱাৰী").replace("February", "ফেব্ৰুৱাৰী").replace("March", "মাৰ্চ").replace("April", "এপ্ৰিল").replace("May", "মে").replace("June", "জুন").replace("July", "জুলাই").replace("August", "আগষ্ট").replace("September", "ছেপ্টেম্বৰ").replace("October", "অক্টোবৰ").replace("November", "নৱেম্বৰ").replace("December", "ডিচেম্বৰ");
 
         return mdob_text;
     }
 
     public static String en__ml_dob(String dob) { //English dob is replaced to marathi text.
-        String mdob_text = dob
-                .replace("January", "ജനുവരി")
-                .replace("February", "ഫെബ്രുവരി")
-                .replace("March", "മാർച്ച്")
-                .replace("April", "ഏപ്രിൽ")
-                .replace("May", "മെയ്")
-                .replace("June", "ജൂൺ")
-                .replace("July", "ജൂലൈ")
-                .replace("August", "ആഗസ്റ്റ്")
-                .replace("September", "സെപ്റ്റംബർ")
-                .replace("October", "ഒക്ടോബർ")
-                .replace("November", "നവംബർ")
-                .replace("December", "ഡിസംബർ");
+        String mdob_text = dob.replace("January", "ജനുവരി").replace("February", "ഫെബ്രുവരി").replace("March", "മാർച്ച്").replace("April", "ഏപ്രിൽ").replace("May", "മെയ്").replace("June", "ജൂൺ").replace("July", "ജൂലൈ").replace("August", "ആഗസ്റ്റ്").replace("September", "സെപ്റ്റംബർ").replace("October", "ഒക്ടോബർ").replace("November", "നവംബർ").replace("December", "ഡിസംബർ");
 
         return mdob_text;
     }
 
     public static String en__kn_dob(String dob) { //English dob is replaced to marathi text.
-        String mdob_text = dob
-                .replace("January", "ಜನವರಿ")
-                .replace("February", "ಫೆಬ್ರುವರಿ")
-                .replace("March", "ಮಾರ್ಚ್")
-                .replace("April", "ಏಪ್ರಿಲ್")
-                .replace("May", "ಮೇ")
-                .replace("June", "ಜೂನ")
-                .replace("July", "ಜುಲೈ")
-                .replace("August", "ಆಗಸ್ಟ್")
-                .replace("September", "ಸೆಪ್ಟೆಂಬರ್")
-                .replace("October", "ಅಕ್ಟೋಬರ್")
-                .replace("November", "ನವೆಂಬರ್")
-                .replace("December", "ಡಿಸೆಂಬರ್");
+        String mdob_text = dob.replace("January", "ಜನವರಿ").replace("February", "ಫೆಬ್ರುವರಿ").replace("March", "ಮಾರ್ಚ್").replace("April", "ಏಪ್ರಿಲ್").replace("May", "ಮೇ").replace("June", "ಜೂನ").replace("July", "ಜುಲೈ").replace("August", "ಆಗಸ್ಟ್").replace("September", "ಸೆಪ್ಟೆಂಬರ್").replace("October", "ಅಕ್ಟೋಬರ್").replace("November", "ನವೆಂಬರ್").replace("December", "ಡಿಸೆಂಬರ್");
 
         return mdob_text;
     }
 
     public static String en__ru_dob(String dob) { //English dob is replaced to Odiya text.
-        String mdob_text = dob
-                .replace("January", "Январь")
-                .replace("February", "Февраль")
-                .replace("March", "Март")
-                .replace("April", "апреля")
-                .replace("May", "Май")
-                .replace("June", "июнь")
-                .replace("July", "июль")
-                .replace("August", "август")
-                .replace("September", "сентябрь")
-                .replace("October", "Октябрь")
-                .replace("November", "Ноябрь")
-                .replace("December", "Декабрь");
+        String mdob_text = dob.replace("January", "Январь").replace("February", "Февраль").replace("March", "Март").replace("April", "апреля").replace("May", "Май").replace("June", "июнь").replace("July", "июль").replace("August", "август").replace("September", "сентябрь").replace("October", "Октябрь").replace("November", "Ноябрь").replace("December", "Декабрь");
 
         return mdob_text;
     }
 
     public static String en__bn_dob(String dob) { //English dob is replaced to Bengali text.
-        String mdob_text = dob
-                .replace("January", "জানুয়ারী")
-                .replace("February", "ফেব্রুয়ারী")
-                .replace("March", "মার্চ")
-                .replace("April", "এপ্রিল")
-                .replace("May", "মে")
-                .replace("June", "জুন")
-                .replace("July", "জুলাই")
-                .replace("August", "আগস্ট")
-                .replace("September", "সেপ্টেম্বর")
-                .replace("October", "অক্টোবর")
-                .replace("November", "নভেম্বর")
-                .replace("December", "ডিসেম্বর");
+        String mdob_text = dob.replace("January", "জানুয়ারী").replace("February", "ফেব্রুয়ারী").replace("March", "মার্চ").replace("April", "এপ্রিল").replace("May", "মে").replace("June", "জুন").replace("July", "জুলাই").replace("August", "আগস্ট").replace("September", "সেপ্টেম্বর").replace("October", "অক্টোবর").replace("November", "নভেম্বর").replace("December", "ডিসেম্বর");
 
         return mdob_text;
     }
 
     public static String en__ta_dob(String dob) { //English dob is replaced to Tamil text.
-        String mdob_text = dob
-                .replace("January", "ஜனவரி")
-                .replace("February", "பிப்ரவரி")
-                .replace("March", "மார்ச்")
-                .replace("April", "ஏப்ரல்")
-                .replace("May", "மே")
-                .replace("June", "ஜூன்")
-                .replace("July", "ஜூலை")
-                .replace("August", "ஆகஸ்ட்")
-                .replace("September", "செப்டம்பர்")
-                .replace("October", "அக்டோபர்")
-                .replace("November", "நவம்பர்")
-                .replace("December", "டிசம்பர்");
+        String mdob_text = dob.replace("January", "ஜனவரி").replace("February", "பிப்ரவரி").replace("March", "மார்ச்").replace("April", "ஏப்ரல்").replace("May", "மே").replace("June", "ஜூன்").replace("July", "ஜூலை").replace("August", "ஆகஸ்ட்").replace("September", "செப்டம்பர்").replace("October", "அக்டோபர்").replace("November", "நவம்பர்").replace("December", "டிசம்பர்");
 
         return mdob_text;
     }
@@ -1879,34 +1738,12 @@ public final class StringUtils {
     }
 
     public static String getFullMonthName(String dobString) {
-        return dobString
-                .replace("Jan", "January")
-                .replace("Feb", "February")
-                .replace("Mar", "March")
-                .replace("Apr", "April")
-                .replace("Jun", "June")
-                .replace("Jul", "July")
-                .replace("Aug", "August")
-                .replace("Sept", "September")
-                .replace("Oct", "October")
-                .replace("Nov", "November")
-                .replace("Dec", "December");
+        return dobString.replace("Jan", "January").replace("Feb", "February").replace("Mar", "March").replace("Apr", "April").replace("Jun", "June").replace("Jul", "July").replace("Aug", "August").replace("Sept", "September").replace("Oct", "October").replace("Nov", "November").replace("Dec", "December");
 
     }
 
     public static String getShortMonthName(String dobString) {
-        return dobString
-                .replace("January", "Jan")
-                .replace("February", "Feb")
-                .replace("March", "Mar")
-                .replace("April", "Apr")
-                .replace("June", "Jun")
-                .replace("July", "Jul")
-                .replace("August", "Aug")
-                .replace("September", "Sept")
-                .replace("October", "Oct")
-                .replace("November", "Nov")
-                .replace("December", "Dec");
+        return dobString.replace("January", "Jan").replace("February", "Feb").replace("March", "Mar").replace("April", "Apr").replace("June", "Jun").replace("July", "Jul").replace("August", "Aug").replace("September", "Sept").replace("October", "Oct").replace("November", "Nov").replace("December", "Dec");
 
     }
 
@@ -1915,178 +1752,49 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("hi")) {
             String dob = dobString
                     //Hindi
-                    .replace("जनवरी", "January")
-                    .replace("फ़रवरी", "February")
-                    .replace("मार्च", "March")
-                    .replace("अप्रैल", "April")
-                    .replace("मई", "May")
-                    .replace("जून", "June")
-                    .replace("जुलाई", "July")
-                    .replace("अगस्त", "August")
-                    .replace("सितंबर", "September")
-                    .replace("अक्टूबर", "October")
-                    .replace("नवंबर", "November")
-                    .replace("दिसंबर", "December");
+                    .replace("जनवरी", "January").replace("फ़रवरी", "February").replace("मार्च", "March").replace("अप्रैल", "April").replace("मई", "May").replace("जून", "June").replace("जुलाई", "July").replace("अगस्त", "August").replace("सितंबर", "September").replace("अक्टूबर", "October").replace("नवंबर", "November").replace("दिसंबर", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("or")) {
             //Odiya
-            String dob = dobString
-                    .replace("ଜାନୁଆରୀ", "January")
-                    .replace("ଫେବୃଆରୀ", "February")
-                    .replace("ମାର୍ଚ୍ଚ", "March")
-                    .replace("ଏପ୍ରିଲ୍", "April")
-                    .replace("ମେ", "May")
-                    .replace("ଜୁନ୍", "June")
-                    .replace("ଜୁଲାଇ", "July")
-                    .replace("ଅଗଷ୍ଟ", "August")
-                    .replace("ସେପ୍ଟେମ୍ବର", "September")
-                    .replace("ଅକ୍ଟୋବର", "October")
-                    .replace("ନଭେମ୍ବର", "November")
-                    .replace("ଡିସେମ୍ବର", "December");
+            String dob = dobString.replace("ଜାନୁଆରୀ", "January").replace("ଫେବୃଆରୀ", "February").replace("ମାର୍ଚ୍ଚ", "March").replace("ଏପ୍ରିଲ୍", "April").replace("ମେ", "May").replace("ଜୁନ୍", "June").replace("ଜୁଲାଇ", "July").replace("ଅଗଷ୍ଟ", "August").replace("ସେପ୍ଟେମ୍ବର", "September").replace("ଅକ୍ଟୋବର", "October").replace("ନଭେମ୍ବର", "November").replace("ଡିସେମ୍ବର", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("gu")) {
             String dob = dobString
                     //Gujarati
-                    .replace("જાન્યુઆરી", "January")
-                    .replace("ફેબ્રુઆરી", "February")
-                    .replace("કુચ", "March")
-                    .replace("એપ્રિલ", "April")
-                    .replace("મે", "May")
-                    .replace("જૂન", "June")
-                    .replace("જુલાઈ", "July")
-                    .replace(".ગસ્ટ", "August")
-                    .replace("સપ્ટેમ્બર", "September")
-                    .replace("ઓક્ટોબર", "October")
-                    .replace("નવેમ્બર", "November")
-                    .replace("ડિસેમ્બર", "December");
+                    .replace("જાન્યુઆરી", "January").replace("ફેબ્રુઆરી", "February").replace("કુચ", "March").replace("એપ્રિલ", "April").replace("મે", "May").replace("જૂન", "June").replace("જુલાઈ", "July").replace(".ગસ્ટ", "August").replace("સપ્ટેમ્બર", "September").replace("ઓક્ટોબર", "October").replace("નવેમ્બર", "November").replace("ડિસેમ્બર", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("te")) {
             //Telugu
-            String dob = dobString
-                    .replace("జనవరి", "January")
-                    .replace("ఫిబ్రవరి", "February")
-                    .replace("మార్చి", "March")
-                    .replace("ఏప్రిల్", "April")
-                    .replace("మే", "May")
-                    .replace("జూన్", "June")
-                    .replace("జూలై", "July")
-                    .replace("ఆగస్టు", "August")
-                    .replace("సెప్టెంబర్", "September")
-                    .replace("అక్టోబర్", "October")
-                    .replace("నవంబర్", "November")
-                    .replace("డిసెంబర్", "December");
+            String dob = dobString.replace("జనవరి", "January").replace("ఫిబ్రవరి", "February").replace("మార్చి", "March").replace("ఏప్రిల్", "April").replace("మే", "May").replace("జూన్", "June").replace("జూలై", "July").replace("ఆగస్టు", "August").replace("సెప్టెంబర్", "September").replace("అక్టోబర్", "October").replace("నవంబర్", "November").replace("డిసెంబర్", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("mr")) {
             //Marathi
-            String dob = dobString
-                    .replace("जानेवारी", "January")
-                    .replace("फेब्रुवारी", "February")
-                    .replace("मार्च", "March")
-                    .replace("एप्रिल", "April")
-                    .replace("मे", "May")
-                    .replace("जून", "June")
-                    .replace("जुलै", "July")
-                    .replace("ऑगस्ट", "August")
-                    .replace("सप्टेंबर", "September")
-                    .replace("ऑक्टोबर", "October")
-                    .replace("नोव्हेंबर", "November")
-                    .replace("डिसेंबर", "December");
+            String dob = dobString.replace("जानेवारी", "January").replace("फेब्रुवारी", "February").replace("मार्च", "March").replace("एप्रिल", "April").replace("मे", "May").replace("जून", "June").replace("जुलै", "July").replace("ऑगस्ट", "August").replace("सप्टेंबर", "September").replace("ऑक्टोबर", "October").replace("नोव्हेंबर", "November").replace("डिसेंबर", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("as")) {
             //Marathi
-            String dob = dobString
-                    .replace("জানুৱাৰী", "January")
-                    .replace("ফেব্ৰুৱাৰী", "February")
-                    .replace("মাৰ্চ", "March")
-                    .replace("এপ্ৰিল", "April")
-                    .replace("মে", "May")
-                    .replace("জুন", "June")
-                    .replace("জুলাই", "July")
-                    .replace("আগষ্ট", "August")
-                    .replace("ছেপ্টেম্বৰ", "September")
-                    .replace("অক্টোবৰ", "October")
-                    .replace("নৱেম্বৰ", "November")
-                    .replace("ডিচেম্বৰ", "December");
+            String dob = dobString.replace("জানুৱাৰী", "January").replace("ফেব্ৰুৱাৰী", "February").replace("মাৰ্চ", "March").replace("এপ্ৰিল", "April").replace("মে", "May").replace("জুন", "June").replace("জুলাই", "July").replace("আগষ্ট", "August").replace("ছেপ্টেম্বৰ", "September").replace("অক্টোবৰ", "October").replace("নৱেম্বৰ", "November").replace("ডিচেম্বৰ", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("ml")) {
             //Marathi
-            String dob = dobString
-                    .replace("ജനുവരി", "January")
-                    .replace("ഫെബ്രുവരി", "February")
-                    .replace("മാർച്ച്", "March")
-                    .replace("ഏപ്രിൽ", "April")
-                    .replace("മെയ്", "May")
-                    .replace("ജൂൺ", "June")
-                    .replace("ജൂലൈ", "July")
-                    .replace("ആഗസ്റ്റ്", "August")
-                    .replace("സെപ്റ്റംബർ", "September")
-                    .replace("ഒക്ടോബർ", "October")
-                    .replace("നവംബർ", "November")
-                    .replace("ഡിസംബർ", "December");
+            String dob = dobString.replace("ജനുവരി", "January").replace("ഫെബ്രുവരി", "February").replace("മാർച്ച്", "March").replace("ഏപ്രിൽ", "April").replace("മെയ്", "May").replace("ജൂൺ", "June").replace("ജൂലൈ", "July").replace("ആഗസ്റ്റ്", "August").replace("സെപ്റ്റംബർ", "September").replace("ഒക്ടോബർ", "October").replace("നവംബർ", "November").replace("ഡിസംബർ", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("kn")) {
             //kannad
-            String dob = dobString
-                    .replace("ಜನವರಿ", "January")
-                    .replace("ಫೆಬ್ರುವರಿ", "February")
-                    .replace("ಮಾರ್ಚ್", "March")
-                    .replace("ಏಪ್ರಿಲ್", "April")
-                    .replace("ಮೇ", "May")
-                    .replace("ಜೂನ", "June")
-                    .replace("ಜುಲೈ", "July")
-                    .replace("ಆಗಸ್ಟ್", "August")
-                    .replace("ಸೆಪ್ಟೆಂಬರ್", "September")
-                    .replace("ಅಕ್ಟೋಬರ್", "October")
-                    .replace("ನವೆಂಬರ್", "November")
-                    .replace("ಡಿಸೆಂಬರ್", "December");
+            String dob = dobString.replace("ಜನವರಿ", "January").replace("ಫೆಬ್ರುವರಿ", "February").replace("ಮಾರ್ಚ್", "March").replace("ಏಪ್ರಿಲ್", "April").replace("ಮೇ", "May").replace("ಜೂನ", "June").replace("ಜುಲೈ", "July").replace("ಆಗಸ್ಟ್", "August").replace("ಸೆಪ್ಟೆಂಬರ್", "September").replace("ಅಕ್ಟೋಬರ್", "October").replace("ನವೆಂಬರ್", "November").replace("ಡಿಸೆಂಬರ್", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("ta")) {
             //Bengali
-            String dob = dobString
-                    .replace("ஜனவரி", "January")
-                    .replace("பிப்ரவரி", "February")
-                    .replace("மார்ச்", "March")
-                    .replace("ஏப்ரல்", "April")
-                    .replace("மே", "May")
-                    .replace("ஜூன்", "June")
-                    .replace("ஜூலை", "July")
-                    .replace("ஆகஸ்ட்", "August")
-                    .replace("செப்டம்பர்", "September")
-                    .replace("அக்டோபர்", "October")
-                    .replace("நவம்பர்", "November")
-                    .replace("டிசம்பர்", "December");
+            String dob = dobString.replace("ஜனவரி", "January").replace("பிப்ரவரி", "February").replace("மார்ச்", "March").replace("ஏப்ரல்", "April").replace("மே", "May").replace("ஜூன்", "June").replace("ஜூலை", "July").replace("ஆகஸ்ட்", "August").replace("செப்டம்பர்", "September").replace("அக்டோபர்", "October").replace("நவம்பர்", "November").replace("டிசம்பர்", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("bn")) {
             //Bengali
-            String dob = dobString
-                    .replace("জানুয়ারী", "January")
-                    .replace("ফেব্রুয়ারী", "February")
-                    .replace("মার্চ", "March")
-                    .replace("এপ্রিল", "April")
-                    .replace("মে", "May")
-                    .replace("জুন", "June")
-                    .replace("জুলাই", "July")
-                    .replace("আগস্ট", "August")
-                    .replace("সেপ্টেম্বর", "September")
-                    .replace("অক্টোবর", "October")
-                    .replace("নভেম্বর", "November")
-                    .replace("ডিসেম্বর", "December");
+            String dob = dobString.replace("জানুয়ারী", "January").replace("ফেব্রুয়ারী", "February").replace("মার্চ", "March").replace("এপ্রিল", "April").replace("মে", "May").replace("জুন", "June").replace("জুলাই", "July").replace("আগস্ট", "August").replace("সেপ্টেম্বর", "September").replace("অক্টোবর", "October").replace("নভেম্বর", "November").replace("ডিসেম্বর", "December");
             return dob;
         } else if (locale.equalsIgnoreCase("ru")) {
             String dob = dobString
                     //Russian
-                    .replace("Январь", "January")
-                    .replace("Февраль", "February")
-                    .replace("Март", "March")
-                    .replace("апреля", "April")
-                    .replace("Май", "May")
-                    .replace("июнь", "June")
-                    .replace("июль", "July")
-                    .replace("август", "August")
-                    .replace("сентябрь", "September")
-                    .replace("Октябрь", "October")
-                    .replace("Ноябрь", "November")
-                    .replace("Декабрь", "December");
+                    .replace("Январь", "January").replace("Февраль", "February").replace("Март", "March").replace("апреля", "April").replace("Май", "May").replace("июнь", "June").replace("июль", "July").replace("август", "August").replace("сентябрь", "September").replace("Октябрь", "October").replace("Ноябрь", "November").replace("Декабрь", "December");
             return dob;
         } else {
             return dobString;
@@ -3741,11 +3449,9 @@ public final class StringUtils {
                 char c = charSequence.charAt(i);
                 if (isCharAllowed(c)) // put your condition here
                     sb.append(c);
-                else
-                    keepOriginal = false;
+                else keepOriginal = false;
             }
-            if (keepOriginal)
-                return null;
+            if (keepOriginal) return null;
             else {
                 if (charSequence instanceof Spanned) {
                     SpannableString sp = new SpannableString(sb);
@@ -3771,11 +3477,9 @@ public final class StringUtils {
                 char c = charSequence.charAt(i);
                 if (isCharAllowed(c)) // put your condition here
                     sb.append(c);
-                else
-                    keepOriginal = false;
+                else keepOriginal = false;
             }
-            if (keepOriginal)
-                return null;
+            if (keepOriginal) return null;
             else {
                 if (charSequence instanceof Spanned) {
                     SpannableString sp = new SpannableString(sb);
@@ -3867,11 +3571,7 @@ public final class StringUtils {
     }
 
     public static String convertDiagnosisText(String diagnosisReturned) {
-        return diagnosisReturned
-                .replace("Primary", "Начальный")
-                .replace("Secondary", "Среднее")
-                .replace("Provisional", "Предварительный")
-                .replace("Confirmed", "Подтвержденный");
+        return diagnosisReturned.replace("Primary", "Начальный").replace("Secondary", "Среднее").replace("Provisional", "Предварительный").replace("Confirmed", "Подтвержденный");
     }
 
     public static String translateDatesUsingRegex(String complaintString) {
@@ -3909,5 +3609,19 @@ public final class StringUtils {
             result = matcher.group();
         }
         return result;
+    }
+
+    public static String translateCountries(String countryName) {
+        if ("Кыргызстан".equals(countryName)) {
+            return "Kyrgyzstan";
+        }
+        return countryName;
+    }
+
+    public static String translateCountriesEdit(String countryName) {
+        if ("Kyrgyzstan".equals(countryName)) {
+            return "Кыргызстан";
+        }
+        return countryName;
     }
 }

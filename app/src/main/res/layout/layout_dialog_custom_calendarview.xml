@@ -21,7 +21,6 @@
             android:id="@+id/iv_prev_month2"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_alignParentStart="true"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="8dp"
             android:layout_weight="0.3"
