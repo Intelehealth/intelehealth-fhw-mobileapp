@@ -3888,4 +3888,26 @@ public final class StringUtils {
 
         return complaintString;
     }
+
+    public static String extractTimeFromString(String dateTimeString) {
+        String result = "";
+        String regex = "\\b\\d{1,2}:\\d{2} [APap][mM]\\b";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(dateTimeString);
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+        return result;
+    }
+
+    public static String extractDateFromString(String date) {
+        String result = "";
+        String regex = "\\d{2}/\\d{2}/\\d{4}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(date);
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+        return result;
+    }
 }

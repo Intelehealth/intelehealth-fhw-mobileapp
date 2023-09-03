@@ -408,14 +408,12 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
                 findViewById(R.id.tv_afternoon_label).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 findViewById(R.id.rv_afternoon_time_slots).setVisibility(slotInfoAfternoonList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
+                if (isSlotNotAvailable) isSlotNotAvailable = slotInfoAfternoonList.isEmpty();
 
                 findViewById(R.id.tv_evening_label).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 findViewById(R.id.rv_evening_time_slots).setVisibility(slotInfoEveningList.isEmpty() ? View.GONE : View.VISIBLE);
                 setDataForEveningAppointments(slotInfoEveningList);
-                if (isSlotNotAvailable)
-                    isSlotNotAvailable = slotInfoEveningList.isEmpty();
+                if (isSlotNotAvailable) isSlotNotAvailable = slotInfoEveningList.isEmpty();
 
                 ((TextView) findViewById(R.id.empty_tv)).setText(getString(R.string.slot_empty_message));
                 findViewById(R.id.empty_tv).setVisibility(isSlotNotAvailable ? View.VISIBLE : View.GONE);
@@ -454,8 +452,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(ScheduleAppointmentActivity_New.this, slotInfoList, "afternoon", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
-                String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
-                selectedDateTime = result + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
+                selectedDateTime = slotInfo.getSlotDate() + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
 
                 slotInfoForBookApp = slotInfo;
                 setDataForMorningAppointments(slotInfoMorningList);
@@ -471,8 +468,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         PickUpTimeSlotsAdapter slotListingAdapter = new PickUpTimeSlotsAdapter(ScheduleAppointmentActivity_New.this, slotInfoList, "evening", new PickUpTimeSlotsAdapter.OnItemSelection() {
             @Override
             public void onSelect(SlotInfo slotInfo) {
-                String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
-                selectedDateTime = result + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
+                selectedDateTime = slotInfo.getSlotDate() + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
 
                 slotInfoForBookApp = slotInfo;
 
@@ -490,9 +486,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             @Override
             public void onSelect(SlotInfo slotInfo) {
                 slotInfoForBookApp = slotInfo;
-
-                String result = getDayOfMonthSuffix(slotInfo.getSlotDate());
-                selectedDateTime = result + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
+                selectedDateTime = slotInfo.getSlotDate() + " " + getResources().getString(R.string.at) + " " + slotInfo.getSlotTime();
 
                 setDataForAfternoonAppointments(slotInfoAfternoonList);
                 setDataForEveningAppointments(slotInfoEveningList);
@@ -673,8 +667,10 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
             selectedDateTime = StringUtils.en__ru_dob(selectedDateTime);
         }
 
-        String infoText = getResources().getString(R.string.sure_to_book_appointment) + " <b>" + selectedDateTime + "?</b>";
-        tvInfo.setText(Html.fromHtml(infoText));
+        String finalDateTime = getFinalAppointmentDateAndTime(selectedDateTime);
+        String displayMessage = getResources().getString(R.string.sure_to_book_appointment) + " <b>" + finalDateTime + "?</b>";
+
+        tvInfo.setText(Html.fromHtml(displayMessage));
 
         alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
@@ -694,6 +690,21 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
 
         alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private String getFinalAppointmentDateAndTime(String selectedDateTime) {
+        String selectedAppointmentTime = StringUtils.extractTimeFromString(selectedDateTime);
+        String appointmentTimeIn24Hours = DateAndTimeUtils.convert12HoursTimeTo24Hours(selectedAppointmentTime);
+        String selectedAppointmentDate = StringUtils.extractDateFromString(selectedDateTime);
+        String convertedDateFormat = DateAndTimeUtils.formatDateFromOnetoAnother(selectedAppointmentDate, "dd/mm/yyyy", "d MMMM");
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            convertedDateFormat = StringUtils.en__ru_dob(convertedDateFormat);
+        }
+
+        return selectedDateTime
+                .replace(selectedAppointmentDate, convertedDateFormat)
+                .replace(selectedAppointmentTime, appointmentTimeIn24Hours);
     }
 
     private void bookAppointment() {

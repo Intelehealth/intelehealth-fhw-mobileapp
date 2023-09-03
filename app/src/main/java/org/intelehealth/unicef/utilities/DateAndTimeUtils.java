@@ -14,6 +14,8 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -954,5 +956,9 @@ public class DateAndTimeUtils {
         int minutes = (int) ((timeInMilliseconds / (1000 * 60)) % 60);
         int hours = (int) ((timeInMilliseconds / (1000 * 60 * 60)) % 24);
         return String.format(Locale.ENGLISH, "%dh %dm", hours, minutes);
+    }
+
+    public static String convert12HoursTimeTo24Hours(String twelveHourTime) {
+        return LocalTime.parse(twelveHourTime, DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH)).format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.appointment.model.SlotInfo;
+import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringUtils;
 import org.json.JSONObject;
@@ -61,7 +62,8 @@ public class PickUpTimeSlotsAdapter extends RecyclerView.Adapter<PickUpTimeSlots
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.slotInfo = mItemList.get(position);
 
-            genericViewHolder.tvTime.setText(genericViewHolder.slotInfo.getSlotTime().toLowerCase());
+            String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(genericViewHolder.slotInfo.getSlotTime());
+            genericViewHolder.tvTime.setText(twentyFourHourTime);
             genericViewHolder.tvDuration.setText(String.format("%d %s", genericViewHolder.slotInfo.getSlotDuration(), context.getString(R.string.minutes_txt)));
             changeToSelect(selectedPos, position, holder);
 
