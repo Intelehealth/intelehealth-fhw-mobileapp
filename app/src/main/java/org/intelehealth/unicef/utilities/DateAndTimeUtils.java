@@ -958,7 +958,7 @@ public class DateAndTimeUtils {
         return String.format(Locale.ENGLISH, "%dh %dm", hours, minutes);
     }
 
-    public static String convert12HoursTimeTo24Hours(String twelveHourTime) {
-        return LocalTime.parse(twelveHourTime, DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH)).format(DateTimeFormatter.ofPattern("HH:mm"));
+    public static String convert12HoursTimeTo24Hours(String twelveHourTime, String inputFormat, String outputFormat) {
+        return LocalTime.parse(twelveHourTime, DateTimeFormatter.ofPattern(inputFormat, Locale.ENGLISH)).format(DateTimeFormatter.ofPattern(outputFormat));
     }
 }

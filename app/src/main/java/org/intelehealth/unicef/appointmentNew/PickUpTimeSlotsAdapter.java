@@ -62,7 +62,7 @@ public class PickUpTimeSlotsAdapter extends RecyclerView.Adapter<PickUpTimeSlots
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.slotInfo = mItemList.get(position);
 
-            String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(genericViewHolder.slotInfo.getSlotTime());
+            String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(genericViewHolder.slotInfo.getSlotTime(), "h:mm a", "HH:mm");
             genericViewHolder.tvTime.setText(twentyFourHourTime);
             genericViewHolder.tvDuration.setText(String.format("%d %s", genericViewHolder.slotInfo.getSlotDuration(), context.getString(R.string.minutes_txt)));
             changeToSelect(selectedPos, position, holder);

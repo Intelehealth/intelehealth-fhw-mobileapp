@@ -694,7 +694,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
 
     private String getFinalAppointmentDateAndTime(String selectedDateTime) {
         String selectedAppointmentTime = StringUtils.extractTimeFromString(selectedDateTime);
-        String appointmentTimeIn24Hours = DateAndTimeUtils.convert12HoursTimeTo24Hours(selectedAppointmentTime);
+        String appointmentTimeIn24Hours = DateAndTimeUtils.convert12HoursTimeTo24Hours(selectedAppointmentTime, "h:mm a", "HH:mm");
         String selectedAppointmentDate = StringUtils.extractDateFromString(selectedDateTime);
         String convertedDateFormat = DateAndTimeUtils.formatDateFromOnetoAnother(selectedAppointmentDate, "dd/MM/yyyy", "d MMMM");
 
