@@ -22,12 +22,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.intelehealth.app.registry.PermissionRegistry
 import org.intelehealth.app.registry.allGranted
+import org.intelehealth.klivekit.R
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.ui.viewmodel.SocketViewModel
 import org.intelehealth.klivekit.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.utils.AudioType
+import org.intelehealth.klivekit.utils.FROM_APP
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import org.intelehealth.klivekit.utils.extensions.showToast
 import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
@@ -42,7 +44,7 @@ import java.util.Calendar
 abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     protected lateinit var args: RtcArgs
-
+    private var isDeclined: Boolean = false
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
             ?: throw NullPointerException("arg is null!")
@@ -123,13 +125,27 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteConnectionQuality.observe(this) { onConnectivityChanged(it) }
         videoCallViewModel.screenshareEnabled.observe(this) {}
         videoCallViewModel.localCameraMirrorStatus.observe(this) {}
-        videoCallViewModel.remoteParticipantDisconnected.observe(this) { if (it) sayBye("${args.doctorName} left the call") }
+        videoCallViewModel.remoteParticipantDisconnected.observe(this) {
+            if (it && isDeclined.not()) sayBye(
+                getString(
+                    R.string.left_the_call,
+                    args.doctorName
+                )
+            )
+        }
         videoCallViewModel.cameraPosition.observe(this) { onCameraPositionChanged(it) }
-        socketViewModel.eventCallRejectByDoctor.observe(this) { if (it) sayBye("Call rejected by ${args.doctorName}") }
+        socketViewModel.eventCallRejectByDoctor.observe(this) {
+            if (it && isDeclined.not()) sayBye(
+                getString(
+                    R.string.call_rejected_by,
+                    args.doctorName
+                )
+            )
+        }
         socketViewModel.eventCallCancelByDoctor.observe(this) {
-            if (it) {
+            if (it && isDeclined.not()) {
                 Timber.e { "Remain time up mil ${videoCallViewModel.remainTimeupMilliseconds}" }
-                sayBye("Call canceled by ${args.doctorName}")
+                sayBye(getString(R.string.call_canceled_by, args.doctorName))
             }
         }
         videoCallViewModel.remoteCallDisconnectedReason.observe(this) {
@@ -145,7 +161,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
             finish()
             Timber.e { "Call time up ${Calendar.getInstance().time}" }
             videoCallViewModel.stopCallTimeoutTimer()
-            showToast("Call time up")
+            showToast(getString(R.string.call_time_up))
         }
     }
 
@@ -190,7 +206,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     private fun observerSocketEvent() {
         socketViewModel.connect()
-        socketViewModel.eventNoAnswer.observe(this) { if (it) sayBye("No answer from ${args.doctorName}") }
+        socketViewModel.eventNoAnswer.observe(this) {
+            val reason = getString(R.string.no_answer_from, args.doctorName)
+            if (it) sayBye(reason)
+        }
 //        socketViewModel.eventBye.observe(this) { if (it) sayBye() }
         lifecycleScope.launch {
             delay(1000)
@@ -314,7 +333,8 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     open fun declineCall() {
-        stopRingtone()
+        isDeclined = true
+        showToast(getString(R.string.you_declined_call))
         if (args.isIncomingCall.not()) {
             socketViewModel.emit(
                 SocketManager.EVENT_CALL_CANCEL_BY_HW,
@@ -323,19 +343,21 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         } else {
             socketViewModel.emit(SocketManager.EVENT_HW_CALL_REJECT, args.doctorId)
         }
+
+        stopRingtone()
         onCallDecline()
         finish()
     }
 
     open fun endCall() {
-        sayBye("Call ended by you", "app")
+        sayBye(getString(R.string.left_the_call, "You"), FROM_APP)
     }
 
     open fun sayBye(message: String, arg: String? = null) {
         Timber.e { "$message ${Calendar.getInstance().time}" }
         showToast(message)
         arg?.let {
-            socketViewModel.emit("bye", args)
+            socketViewModel.emit(SocketManager.EVENT_BYE, args)
         }
         stopRingtone()
         finish()
@@ -359,14 +381,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     private fun checkCallDisconnectReason(reason: DisconnectReason) {
         when (reason) {
-            DisconnectReason.CLIENT_INITIATED -> showToast("Call disconnected due to not initiated")
-            DisconnectReason.DUPLICATE_IDENTITY -> showToast("Call disconnected due to duplicated identity")
-            DisconnectReason.SERVER_SHUTDOWN -> showToast("Call disconnected due to server shutdown")
-            DisconnectReason.PARTICIPANT_REMOVED -> showToast("Call disconnected due to doctor removed")
-            DisconnectReason.ROOM_DELETED -> showToast("Call disconnected due to no room found")
-            DisconnectReason.STATE_MISMATCH -> showToast("Call disconnected due to room mismatched")
-            DisconnectReason.JOIN_FAILURE -> showToast("Call disconnected due to join failure")
-            DisconnectReason.UNKNOWN_REASON -> showToast("Call disconnected due to unkhown reason")
+            DisconnectReason.CLIENT_INITIATED -> showToast(getString(R.string.reason_not_initiated))
+            DisconnectReason.DUPLICATE_IDENTITY -> showToast(getString(R.string.reason_duplicated_identity))
+            DisconnectReason.SERVER_SHUTDOWN -> showToast(getString(R.string.reason_server_shutdown))
+            DisconnectReason.PARTICIPANT_REMOVED -> showToast(getString(R.string.reason_participant_removed))
+            DisconnectReason.ROOM_DELETED -> showToast(getString(R.string.reason_room_deleted))
+            DisconnectReason.STATE_MISMATCH -> showToast(getString(R.string.reason_state_mismatch))
+            DisconnectReason.JOIN_FAILURE -> showToast(getString(R.string.reason_join_failure))
+            DisconnectReason.UNKNOWN_REASON -> showToast(getString(R.string.reason_unknown))
         }
 
         finish()
