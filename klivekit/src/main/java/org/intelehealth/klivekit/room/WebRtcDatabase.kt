@@ -17,8 +17,7 @@ abstract class WebRtcDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: WebRtcDatabase? = null
 
-        @VisibleForTesting
-        private val DATABASE_NAME = "webrtc-db"
+        const val DATABASE_NAME = "webrtc-db"
 
         fun getInstance(context: Context): WebRtcDatabase =
             INSTANCE ?: synchronized(this) {

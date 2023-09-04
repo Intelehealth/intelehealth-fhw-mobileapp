@@ -1,4 +1,4 @@
-package com.codeglo.coyamore.di
+package org.intelehealth.klivekit.di
 
 import org.intelehealth.klivekit.restapi.AuthInterceptor
 import com.google.gson.Gson
@@ -58,14 +58,18 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideWebRtcApiClient(
+    fun provideRetrofitBuilder(
         okhttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ) = Retrofit.Builder()
-        .baseUrl(Constants.BASE_URL)
+    ): Retrofit.Builder = Retrofit.Builder()
         .client(okhttpClient)
         .addConverterFactory(gsonConverterFactory)
+
+
+    @Provides
+    fun provideWebRtcApiClient(
+        retrofitBuilder: Retrofit.Builder
+    ): WebRtcApiClient = retrofitBuilder.baseUrl(Constants.BASE_URL)
         .build()
         .create(WebRtcApiClient::class.java)
-
 }

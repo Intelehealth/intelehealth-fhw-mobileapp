@@ -64,22 +64,22 @@ open class CallViewModel(
             highPassFilter = true,
             typingNoiseDetection = true,
         ),
-        videoTrackCaptureDefaults = LocalVideoTrackOptions(
-            deviceId = "",
-            position = CameraPosition.FRONT,
-            captureParams = VideoPreset169.QVGA.capture,
-        ),
+//        videoTrackCaptureDefaults = LocalVideoTrackOptions(
+//            deviceId = "",
+//            position = CameraPosition.FRONT,
+//            captureParams = VideoPreset169.QVGA.capture,
+//        ),
         audioTrackPublishDefaults = AudioTrackPublishDefaults(
             audioBitrate = 20_000,
             dtx = true,
         ),
-        videoTrackPublishDefaults = VideoTrackPublishDefaults(
-            videoEncoding = VideoPreset169.QVGA.encoding,
-        ),
+//        videoTrackPublishDefaults = VideoTrackPublishDefaults(
+//            videoEncoding = VideoPreset169.QVGA.encoding,
+//        ),
         adaptiveStream = true
     )
 
-    val audioHandler = AudioSwitchHandler(application)
+    private val audioHandler = AudioSwitchHandler(application)
     val room = LiveKit.create(
         appContext = application.applicationContext,
         options = options,
@@ -487,13 +487,13 @@ open class CallViewModel(
 ////
 //            localParticipant.publishAudioTrack(audioTrack)
 
-//            val videoTrack = localParticipant.createVideoTrack(
-//                "video", LocalVideoTrackOptions(
-//                    position = CameraPosition.FRONT
-//                )
-//            )
+            val videoTrack = localParticipant.createVideoTrack(
+                "video", LocalVideoTrackOptions(
+                    position = CameraPosition.FRONT
+                )
+            )
 //
-//            localParticipant.publishVideoTrack(videoTrack)
+            localParticipant.publishVideoTrack(videoTrack)
 //            updateVideoTrack(localParticipant)
             mutableCameraPosition.postValue(CameraPosition.FRONT)
             mutableLocalVideoTrack.postValue(getVideoTrack(localParticipant))

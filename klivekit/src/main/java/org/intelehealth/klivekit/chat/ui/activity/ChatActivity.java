@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -114,6 +115,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void setupActionBar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(mPatientName);
+//        getSupportActionBar().setSubtitle(m);
     }
 
     protected void initiateView() {
@@ -196,9 +198,14 @@ public class ChatActivity extends AppCompatActivity {
                 Log.e(TAG, "onUpdateMessageEvent: socket => " + message.getPatientId());
                 Log.e(TAG, "onUpdateMessageEvent: screen => " + mPatientUUid);
                 if (message.getPatientId().equalsIgnoreCase(mPatientUUid)) {
-                    message.setMessageStatus(MessageStatus.RECEIVED.getValue());
-                    addNewMessage(message);
-                    setReadStatus(message.getId());
+                    if (mToUUId.isEmpty()) {
+                        mToUUId = message.getFromUser();
+                        getAllMessages(false);
+                    } else {
+                        message.setMessageStatus(MessageStatus.RECEIVED.getValue());
+                        addNewMessage(message);
+                        setReadStatus(message.getId());
+                    }
                 }
 //                if (mToUUId.isEmpty()) {
 //                    try {
@@ -459,19 +466,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void postMessages(String fromUUId, String toUUId, String patientUUId, String message, String type) {
+        if (toUUId == null || TextUtils.isEmpty(toUUId)) {
+            Toast.makeText(this, getString(R.string.please_wait_for_doctor), Toast.LENGTH_LONG).show();
+            return;
+        }
 
-//            JSONObject inputJsonObject = new JSONObject();
-//            inputJsonObject.put("fromUser", fromUUId);
-//            inputJsonObject.put("toUser", toUUId);
-//            inputJsonObject.put("patientId", patientUUId);
-//            inputJsonObject.put("message", message);
-//            inputJsonObject.put("patientName", mPatientName);
-//            inputJsonObject.put("hwName", "");
-//            inputJsonObject.put("patientPic", "");
-//            inputJsonObject.put("hwPic", "");
-//            inputJsonObject.put("visitId", mVisitUUID);
-//            inputJsonObject.put("isRead", false);
-//            inputJsonObject.put("type", type);
         mLoadingLinearLayout.setVisibility(View.VISIBLE);
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setMessage(message);

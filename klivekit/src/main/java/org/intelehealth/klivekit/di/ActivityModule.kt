@@ -1,4 +1,4 @@
-package com.codeglo.coyamore.di
+package org.intelehealth.klivekit.di
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

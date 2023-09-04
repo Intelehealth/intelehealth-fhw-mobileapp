@@ -8,6 +8,8 @@ package org.intelehealth.klivekit.utils
 
 const val RTC_ARGS: String = "rtc_args"
 
+const val FROM_APP = "app"
+
 enum class RemoteActionType {
     VIDEO_CALL, TEXT_CHAT
 }
