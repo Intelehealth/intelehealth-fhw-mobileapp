@@ -296,8 +296,8 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         currentYear = calendarInstance.get(Calendar.YEAR);
         monthToCompare = String.valueOf(currentMonth);
         yearToCompare = String.valueOf(currentYear);
-        SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
-        String month_name = getMonthNameInRussianIfRequired(month_date.format(calendarInstance.getTime()), false);
+        SimpleDateFormat month_date = new SimpleDateFormat("MMMM", Locale.ENGLISH);
+        String month_name = getMonthNameInRussianIfRequired(month_date.format(calendarInstance.getTime()), true);
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
         monthToCompare = String.valueOf(currentMonth);
@@ -696,7 +696,7 @@ public class ScheduleAppointmentActivity_New extends BaseActivity implements Net
         String selectedAppointmentTime = StringUtils.extractTimeFromString(selectedDateTime);
         String appointmentTimeIn24Hours = DateAndTimeUtils.convert12HoursTimeTo24Hours(selectedAppointmentTime);
         String selectedAppointmentDate = StringUtils.extractDateFromString(selectedDateTime);
-        String convertedDateFormat = DateAndTimeUtils.formatDateFromOnetoAnother(selectedAppointmentDate, "dd/mm/yyyy", "d MMMM");
+        String convertedDateFormat = DateAndTimeUtils.formatDateFromOnetoAnother(selectedAppointmentDate, "dd/MM/yyyy", "d MMMM");
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
             convertedDateFormat = StringUtils.en__ru_dob(convertedDateFormat);
