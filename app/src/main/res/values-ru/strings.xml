@@ -1535,5 +1535,6 @@
     <string name="search_hint_text">Ранее искали</string>
     <string name="select_language">Выберите язык</string>
     <string name="next_new">Дальше</string>
+    <string name="prescription_consultation_details">Информация о консультации</string>
 
 </resources>

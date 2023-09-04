@@ -981,7 +981,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     initialValueArray = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>").split("• Patient denies -<br/>");
                     patientDenies = initialValueArray[1];
                 }
-                
+
                 if (valueArray[1].contains("• Пациент отрицает")) {
                     initialValueArray = valueArray[1].replace("• Пациент отрицает -<br>", "• Пациент отрицает -<br/>").split("• Пациент отрицает -<br/>");
                     patientDenies = initialValueArray[1];
@@ -4074,21 +4074,112 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (isRespiratory) {
-            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
-                            /* doctorDetailStr +*/
-                            "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getResources().getString(R.string.prescription_age) + ": %s | " + getResources().getString(R.string.prescription_gender) + ": %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getResources().getString(R.string.prescription_address_contact) + ": %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_patient_id) + ": %s | " + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_ht) + ": %s | " + getResources().getString(R.string.prescription_wt) + ": %s | " + getResources().getString(R.string.prescription_bmi) + ": %s | " + getResources().getString(R.string.prescription_bp) + ": %s | " + getResources().getString(R.string.prescription_pulse) + ": %s | %s | " + getResources().getString(R.string.prescription_rr) + ": %s |  %s </p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.chief_complaint) + "</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.diagnosis) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.visit_summary_rx) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.test) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.advice) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>" +
+            String htmlDocument = String.format(font_face
+                            + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>"
+                            + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>"
+                            + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p> <hr style=\"font-size:12pt;\">" + "<br/>"
+                            + "<u><p id=\"patient_name\" style=\"font-size:15pt; margin: 0px; padding: 0px;\">%s</p></b></u>"
+                            + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">"
+                            + getResources().getString(R.string.prescription_age) + ": %s <br/> "
+                            + getResources().getString(R.string.prescription_gender) + ": %s  </p>"
+                            + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getResources().getString(R.string.prescription_address_contact) + ": %s</p><br>"
+                            + "<u><b><p id=\"vitals_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_consultation_details) + "</p></b></u>"
+                            + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">"
+                            + getResources().getString(R.string.prescription_patient_id) + ": %s <br/> "
+                            + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>"
+                    , heading, heading2, heading3, mPatientName, age, mGender, address, mPatientOpenMRSID, mDate);
 
+            if (!mComplaint.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.chief_complaint) + "</p></b></u>" + para_open + "%s" + para_close + "<br><br>", mComplaint));
+            }
 
-                                   /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
-                            doctorDetailStr
-                                    /*+
-                                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
-                                    "</div>"*/, heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                    /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+            if (!TextUtils.isEmpty(mHeight) || !TextUtils.isEmpty(mWeight) || !TextUtils.isEmpty(mBMI) || !TextUtils.isEmpty(bp) || !TextUtils.isEmpty(mPulse)
+                    || !TextUtils.isEmpty(mTemp) || !TextUtils.isEmpty(mresp) || !TextUtils.isEmpty(mSPO2)) {
+                htmlDocument = htmlDocument.concat("<u><b><p id=\"vitals_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b></u>");
+                htmlDocument = htmlDocument.concat("<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">");
+
+                if (!TextUtils.isEmpty(mHeight)) {
+                    htmlDocument = htmlDocument.concat(String.format(getResources().getString(R.string.prescription_ht) + ": %s <br/> ", mHeight));
+                }
+
+                if (!TextUtils.isEmpty(mWeight)) {
+                    htmlDocument = htmlDocument.concat(String.format(getResources().getString(R.string.prescription_wt) + ": %s <br/> ", mWeight));
+                }
+
+                if (!TextUtils.isEmpty(mBMI)) {
+                    htmlDocument = htmlDocument.concat(String.format(getResources().getString(R.string.prescription_bmi) + ": %s <br/> ", mBMI));
+                }
+
+                if (!TextUtils.isEmpty(bp)) {
+                    htmlDocument = htmlDocument.concat(String.format(getResources().getString(R.string.prescription_bp) + ": %s <br/> ", bp));
+                }
+
+                if (!TextUtils.isEmpty(mPulse)) {
+                    htmlDocument = htmlDocument.concat(String.format(getResources().getString(R.string.prescription_pulse) + ": %s <br/> ", mPulse));
+                }
+
+                if (!TextUtils.isEmpty(mTemp)) {
+                    htmlDocument = htmlDocument.concat(String.format("%s <br/> ", mTemp));
+                }
+
+                if (!TextUtils.isEmpty(mresp)) {
+                    htmlDocument = htmlDocument.concat(String.format(getResources().getString(R.string.prescription_rr) + ": %s </p>", mresp));
+                }
+
+                if (!TextUtils.isEmpty(mSPO2)) {
+                    htmlDocument = htmlDocument.concat(String.format("%s </p><br>", mSPO2));
+                }
+            }
+
+            if (!diagnosis_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.diagnosis) + "</p></b></u>" + "%s<br>", diagnosis_web));
+            }
+
+            if (!rx_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.visit_summary_rx) + "</p></b></u>" + "%s<br>", rx_web));
+            }
+
+            if (!advice_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.advice) + "</p></b></u>" + "%s<br>", advice_web));
+            }
+
+            if (!tests_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.test) + "</p></b></u>" + "%s<br>", tests_web));
+            }
+
+            if (!followUp_web.isEmpty()) {
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", followUp_web));
+            }
+
+            htmlDocument = htmlDocument.concat(String.format(doctorDetailStr, doctor_web));
+
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getResources().getString(R.string.prescription_age) + ": %s | " + getResources().getString(R.string.prescription_gender) + ": %s   </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getResources().getString(R.string.prescription_address_contact) + ": %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_patient_id) + ": %s | " + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_ht) + ": %s | " + getResources().getString(R.string.prescription_wt) + ": %s | " + getResources().getString(R.string.prescription_bmi) + ": %s | " + getResources().getString(R.string.prescription_bp) + ": %s | " + getResources().getString(R.string.prescription_pulse) + ": %s | %s | " + getResources().getString(R.string.prescription_rr) + ": %s |  %s  </p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.chief_complaint) + "</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.diagnosis) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.visit_summary_rx) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.test) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.advice) + "</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>" +
+            String htmlDocument = String.format(font_face
+                            + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>"
+                            + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>"
+                            + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>"
+                            + "<u><hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:15pt; margin: 0px; padding: 0px;\">%s</p></b></u>"
+                            + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">"
+                            + getResources().getString(R.string.prescription_age) + ": %s <br/> "
+                            + getResources().getString(R.string.prescription_gender) + ": %s   </p>"
+                            + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">" + getResources().getString(R.string.prescription_address_contact) + ": %s</p><br>"
+                            + "<u><b><p id=\"vitals_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_consultation_details) + "</p></b></u>"
+                            + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_patient_id) + ": %s <br/>" + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>"
+                            + "<u><b><p id=\"vitals_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b></u>"
+                            + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">"
+                            + getResources().getString(R.string.prescription_ht) + ": %s | "
+                            + getResources().getString(R.string.prescription_wt) + ": %s | "
+                            + getResources().getString(R.string.prescription_bmi) + ": %s | "
+                            + getResources().getString(R.string.prescription_bp) + ": %s | "
+                            + getResources().getString(R.string.prescription_pulse) + ": %s | %s | "
+                            + getResources().getString(R.string.prescription_rr) + ": %s |  %s  </p><br>"
+                            + "<u><b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.chief_complaint) + "</p></b></u>" + para_open + "%s" + para_close + "<br><br>"
+                            + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.diagnosis) + "</p></b></u>" + "%s<br>"
+                            + "<u><b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.visit_summary_rx) + "</p></b></u>" + "%s<br>"
+                            + "<u><b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.test) + "</p></b></u>" + "%s<br>"
+                            + "<u><b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.advice) + "</p></b></u>" + "%s<br>"
+                            + "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>" +
 
                                    /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                     "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +*/
