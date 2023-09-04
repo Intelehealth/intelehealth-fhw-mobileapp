@@ -547,6 +547,9 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private List<PastVisitData> mCurrentVisitDataList = new ArrayList<PastVisitData>();
 
     private void initForOpenVisit() {
+        if(patientDTO==null || patientDTO.getUuid()==null){
+            return;
+        }
         mCurrentVisitDataList.clear();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String visitSelection = "patientuuid = ?";

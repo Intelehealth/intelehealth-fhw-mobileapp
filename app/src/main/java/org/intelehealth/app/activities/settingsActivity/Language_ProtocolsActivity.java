@@ -185,7 +185,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
     public void showLangSelectionDialog(View view) {
         List<SimpleItemData> mItemList = new ArrayList<SimpleItemData>();
         List<String> displaySelection = new ArrayList<>();
-        String locale = sessionManager.getAppLanguage();
+        String locale = new SessionManager(this).getAppLanguage();
         displaySelection = Arrays.asList(getResources().getStringArray(R.array.language_names));
         for (int i = 0; i < displaySelection.size(); i++) {
             SimpleItemData simpleItemData = new SimpleItemData();

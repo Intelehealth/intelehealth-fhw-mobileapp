@@ -1538,7 +1538,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
                 String d = (String) displayDateButton.getTag();
-                if (d == null || d.equalsIgnoreCase("null") || !d.contains("/")) {
+                if (d == null || d.equalsIgnoreCase("null") || d.isEmpty() || !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     Date fromDateFormat = null;

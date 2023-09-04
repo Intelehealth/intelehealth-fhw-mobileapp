@@ -367,6 +367,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         showPastMedicalHistoryFragment(isEditMode);
                     } else if (caseNo == STEP_5_FAMILY_HISTORY) {
                         showFamilyHistoryFragment(isEditMode);
+                    }else if (caseNo == STEP_3_PHYSICAL_EXAMINATION){
+                        mStep3ProgressBar.setProgress(100);
+                        setTitle(getResources().getString(R.string._phy_examination));
+                        mSummaryFrameLayout.setVisibility(View.GONE);
+                        //mPhysicalExamNode =
+                        //loadPhysicalExam();
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), isEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
+                                commit();
                     }
                     // step 2
                     else if (caseNo == STEP_2_VISIT_REASON_QUESTION) {
