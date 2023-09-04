@@ -30,7 +30,6 @@ import org.intelehealth.klivekit.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.ui.viewmodel.SocketViewModel
 import org.intelehealth.klivekit.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.utils.AudioType
-import org.intelehealth.klivekit.utils.FROM_APP
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import org.intelehealth.klivekit.utils.extensions.showToast
 import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
@@ -353,7 +352,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     open fun endCall() {
-        sayBye(getString(R.string.left_the_call, "You"), FROM_APP)
+        sayBye(getString(R.string.left_the_call, "You"), "app")
     }
 
     open fun sayBye(message: String, arg: String? = null) {
