@@ -108,6 +108,7 @@ import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.exception.DAOException;
@@ -132,8 +133,7 @@ import okhttp3.ResponseBody;
 
 public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
-    TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
-            postalcode, patientcountry, patientstate, /*patientdistrict,*/
+    TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone, postalcode, patientcountry, patientstate, /*patientdistrict,*/
             village, address1, son_daughter_wife, patientoccupation, /*patientcaste,*/
             patienteducation, patienteconomicstatus, patientNationalID, address2;
     SessionManager sessionManager = null;
@@ -263,19 +263,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         startVisitBtn.setOnClickListener(v -> {
-            patientRegistrationDialog(context,
-                    getResources().getDrawable(R.drawable.dialog_icon_complete),
-                    getResources().getString(R.string.patient_registered),
-                    getResources().getString(R.string.does_patient_start_visit_now),
-                    getResources().getString(R.string.button_continue),
-                    getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
-                        @Override
-                        public void onDialogActionDone(int action) {
-                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                                startVisit();
-                            }
-                        }
-                    });
+            patientRegistrationDialog(context, getResources().getDrawable(R.drawable.dialog_icon_complete), getResources().getString(R.string.patient_registered), getResources().getString(R.string.does_patient_start_visit_now), getResources().getString(R.string.button_continue), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                @Override
+                public void onDialogActionDone(int action) {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        startVisit();
+                    }
+                }
+            });
           /*  startVisitDialog(PatientDetailActivity2.this, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
                     "ssss", "swwwww", "yes", "no");*/ // todo: added jsut for testing purposes...
         });
@@ -397,8 +392,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         String[] cols = {"value"};
         Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
-                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
-                null, null, null);
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB}, null, null, null);
 
         if (cursor.moveToFirst()) {
             // rows present
@@ -406,8 +400,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 // so that null data is not appended
                 phistory = phistory + cursor.getString(0);
 
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             returning = true;
             sessionManager.setReturning(returning);
         }
@@ -666,10 +659,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo"};
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender", "date_of_birth", "address1", "address2", "city_village", "state_province", "postal_code", "country", "phone_number", "gender", "sdw", "patient_photo"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -748,9 +738,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(Objects.requireNonNullElse
-                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
-                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context), String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
@@ -809,14 +797,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 profilePicDownloaded();
             }
         }
-        Glide.with(this)
-                .load(patientDTO.getPatientPhoto())
-                .thumbnail(0.3f)
-                .centerCrop()
-                .error(R.drawable.avatar1)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(profile_image);
+        Glide.with(this).load(patientDTO.getPatientPhoto()).thumbnail(0.3f).centerCrop().error(R.drawable.avatar1).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
 
         // setting openmrs id
         if (patientDTO.getOpenmrsId() != null && !patientDTO.getOpenmrsId().isEmpty()) {
@@ -1022,6 +1003,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String country;
         if (patientDTO.getCountry() != null) {
             country = patientDTO.getCountry().trim();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                country = StringUtils.translateCountriesEdit(country);
+            }
         } else {
             country = getResources().getString(R.string.no_country_added);
         }
@@ -1031,6 +1015,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String state;
         if (patientDTO.getStateprovince() != null) {
             state = patientDTO.getStateprovince().trim();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                state = StringUtils.translateCities(state);
+            }
         } else {
             state = getResources().getString(R.string.no_state_added);
         }
@@ -1076,38 +1063,27 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting education status
         if (patientDTO.getEducation() != null) {
-            if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patienteducation.setText("नहीं दिया गया");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 patienteducation.setText("ଦିଅ ଯାଇ ନାହିଁ");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 patienteducation.setText("પૂરી પાડવામાં આવેલ નથી");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 patienteducation.setText("సమకూర్చబడలేదు");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 patienteducation.setText("झाले नाही");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 patienteducation.setText("প্ৰদান কৰা হোৱা নাই");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 patienteducation.setText("നൽകിയിട്ടില്ല");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                 patienteducation.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 patienteducation.setText("Не предоставлен");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                 patienteducation.setText("সরবরাহ করা হয়নি");
-            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            } else if (patientDTO.getEducation().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 patienteducation.setText("வழங்கப்படவில்லை");
             } else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1151,38 +1127,27 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting economic status
         if (patientDTO.getEconomic() != null) {
-            if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 patienteconomicstatus.setText("नहीं दिया गया");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 patienteconomicstatus.setText("ଦିଅ ଯାଇ ନାହିଁ");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 patienteconomicstatus.setText("வழங்கப்படவில்லை");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 patienteconomicstatus.setText("પૂરી પાડવામાં આવેલ નથી");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 patienteconomicstatus.setText("సమకూర్చబడలేదు");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 patienteconomicstatus.setText("झाले नाही");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 patienteconomicstatus.setText("প্ৰদান কৰা হোৱা নাই");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 patienteconomicstatus.setText("നൽകിയിട്ടില്ല");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                 patienteconomicstatus.setText("ಒದಗಿಸಲಾಗಿಲ್ಲ");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 patienteconomicstatus.setText("Не предоставлен");
-            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") &&
-                    sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            } else if (patientDTO.getEconomic().equalsIgnoreCase("Not provided") && sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                 patienteconomicstatus.setText("সরবরাহ করা হয়নি");
             } else {
                 patienteconomicstatus.setText(patientDTO.getEconomic());
@@ -1329,51 +1294,41 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String url = urlModifiers.patientProfileImageUrl(patientDTO.getUuid());
         Logger.logD(TAG, "profileimage url" + url);
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, patientDTO.getUuid());
-                        Logger.logD(TAG, file.toString());
-                    }
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, patientDTO.getUuid());
+                Logger.logD(TAG, file.toString());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD(TAG, e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        Logger.logD(TAG, "complete" + patientDTO.getPatientPhoto());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(PatientDetailActivity2.this)
-                                    .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .error(R.drawable.avatar1)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(profile_image);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH +
-                                    patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                });
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "complete" + patientDTO.getPatientPhoto());
+                PatientsDAO patientsDAO = new PatientsDAO();
+                boolean updated = false;
+                try {
+                    updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(PatientDetailActivity2.this).load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg").thumbnail(0.3f).centerCrop().error(R.drawable.avatar1).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(profile_image);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+        });
     }
 
     public void backPress(View view) {
@@ -1430,8 +1385,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }*/
 
     // Dialog show
-    public void startVisitDialog(Context context, Drawable drawable, String title, String subTitle,
-                                 String positiveBtnTxt, String negativeBtnTxt) {
+    public void startVisitDialog(Context context, Drawable drawable, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
@@ -1503,9 +1457,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         String[] cols = {"value"};
         // querying for PMH (Past Medical History)
-        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",
-                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
-                null, null, null);
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?", new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB}, null, null, null);
 
         if (cursor.moveToFirst()) {
             // rows present
@@ -1513,8 +1465,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 // so that null data is not appended
                 phistory = phistory + cursor.getString(0);
 
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             returning = true;
             sessionManager.setReturning(returning);
         }
@@ -1683,8 +1634,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
                         }
                     }
-                }
-                while (visitCursor.moveToPrevious());
+                } while (visitCursor.moveToPrevious());
             }
 
             if (!mPastVisitDataList.isEmpty()) {

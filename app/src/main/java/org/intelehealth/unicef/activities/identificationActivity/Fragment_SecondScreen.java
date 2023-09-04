@@ -363,14 +363,16 @@ public class Fragment_SecondScreen extends Fragment {
                 if (mStateName != null && mStateName.isEmpty()) {
                     mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
                     setDistAdapter(mStateName);
-//                    if (mDistName != null && mDistName.isEmpty())
-//                        mDistrictNameSpinner.setSelection(districtAdapter.getPosition(district));
                 }
             } else if (mCountryName.equalsIgnoreCase("Kyrgyzstan") || mCountryName.equalsIgnoreCase("Кыргызстан")) {
                 mIsKyrgyzstanSelected = true;
                 setStateAdapter(mCountryName);
                 if (mStateName != null && mStateName.isEmpty()) {
-                    mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
+                    String stateProvince = patientDTO.getStateprovince();
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                        stateProvince = StringUtils.translateCities(stateProvince);
+                    }
+                    mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(stateProvince)));
                 }
             } else {
                 mIsIndiaSelected = false;
@@ -565,9 +567,13 @@ public class Fragment_SecondScreen extends Fragment {
 //                        mDistrictET.setVisibility(View.GONE);
 //                        mDistrictNameSpinner.setVisibility(View.VISIBLE);
 
-                        if (fromThirdScreen || fromFirstScreen)
-                            mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-                        else {
+                        if (fromThirdScreen || fromFirstScreen) {
+                            String stateProvince = patientDTO.getStateprovince();
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                                stateProvince = StringUtils.translateCities(stateProvince);
+                            }
+                            mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(stateProvince)));
+                        } else {
                             if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                                 mStateNameSpinner.setSelection(stateAdapter.getPosition("Выберите"));
                             } else {
@@ -582,9 +588,13 @@ public class Fragment_SecondScreen extends Fragment {
                         mStateNameSpinner.setVisibility(View.VISIBLE);
                         setStateAdapter(mCountryName);
 
-                        if (fromThirdScreen || fromFirstScreen)
-                            mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(patientDTO.getStateprovince())));
-                        else {
+                        if (fromThirdScreen || fromFirstScreen) {
+                            String stateProvince = patientDTO.getStateprovince();
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                                stateProvince = StringUtils.translateCities(stateProvince);
+                            }
+                            mStateNameSpinner.setSelection(stateAdapter.getPosition(String.valueOf(stateProvince)));
+                        } else {
                             if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                                 mStateNameSpinner.setSelection(stateAdapter.getPosition("Выберите"));
                             } else {
@@ -638,7 +648,11 @@ public class Fragment_SecondScreen extends Fragment {
         }
 
         for (int i = 1; i <= mStateDistMaster.getStateDataList().size(); i++) {
-            stateList[i] = mStateDistMaster.getStateDataList().get(i - 1).getState();
+            String stateName = mStateDistMaster.getStateDataList().get(i - 1).getState();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                stateName = StringUtils.translateCities(stateName);
+            }
+            stateList[i] = stateName;
         }
 
         stateAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_spinner_item_1, stateList);
@@ -683,7 +697,11 @@ public class Fragment_SecondScreen extends Fragment {
         patientDTO.setCountry(StringUtils.translateCountries(StringUtils.getValue(mCountryNameSpinner.getSelectedItem().toString())));
 
         if (mIsIndiaSelected || mIsKyrgyzstanSelected) {
-            patientDTO.setStateprovince(StringUtils.getValue(mStateNameSpinner.getSelectedItem().toString()));
+            String stateProvince = mStateNameSpinner.getSelectedItem().toString();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                stateProvince = StringUtils.translateCitiesEdit(stateProvince);
+            }
+            patientDTO.setStateprovince(StringUtils.getValue(stateProvince));
         } else {
             patientDTO.setStateprovince(StringUtils.getValue(mStateName));
         }
@@ -850,7 +868,11 @@ public class Fragment_SecondScreen extends Fragment {
             patientDTO.setCountry(StringUtils.getValue(selectedCountry));
 
             if (mIsIndiaSelected || mIsKyrgyzstanSelected) {
-                patientDTO.setStateprovince(StringUtils.getValue(mStateNameSpinner.getSelectedItem().toString()));
+                String stateName = mStateNameSpinner.getSelectedItem().toString();
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    stateName = StringUtils.translateCitiesEdit(stateName);
+                }
+                patientDTO.setStateprovince(StringUtils.getValue(stateName));
             } else {
                 patientDTO.setStateprovince(StringUtils.getValue(mStateName));
             }
