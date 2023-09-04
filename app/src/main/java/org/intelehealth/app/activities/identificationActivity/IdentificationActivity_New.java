@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -211,6 +212,11 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         }
         else
         {
+            Intent intent = new Intent(this, PatientDetailActivity2.class);
+            intent.putExtra("patientUuid", patientID_edit);
+            intent.putExtra("tag", "searchPatient");
+            intent.putExtra("privacy", "false");
+            startActivity(intent);
             finish();
         }
 

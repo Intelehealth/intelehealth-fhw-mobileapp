@@ -724,22 +724,12 @@ public class Fragment_ThirdScreen extends Fragment {
                 intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
                 intent.putExtra("tag", "newPatient");
                 intent.putExtra("hasPrescription", "false");
-                //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
-                //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
-                //    intent.putExtra("patientUuid", patientID_edit);
-                //   if (patient_detail) {
                 getActivity().startActivity(intent);
-                //   }
-                //startActivity(intent);
-                  getActivity().finish();
-            }/* else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
-            }*/
+                getActivity().finish();
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
