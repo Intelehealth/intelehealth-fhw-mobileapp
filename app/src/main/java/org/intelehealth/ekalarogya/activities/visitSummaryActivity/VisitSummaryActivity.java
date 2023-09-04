@@ -611,24 +611,24 @@ public class VisitSummaryActivity extends BaseActivity {
 //                chatIntent.putExtra("patientUuid", patientUuid);
 //                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
 
-//                if (rtcConnectionDTO != null) {
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                if (rtcConnectionDTO != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
 //                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
                         RtcArgs args = new RtcArgs();
-                        args.setDoctorId("");
+                        args.setDoctorUuid(jsonObject.getString("toUUID"));
                         args.setPatientId(patientUuid);
                         args.setPatientName(patientName);
                         args.setVisitId(visitUUID);
                         args.setNurseId(encounterDTO.getProvideruuid());
                         EkalChatActivity.startChatActivity(VisitSummaryActivity.this, args);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-//                } else {
+                } else {
 //                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-//                }
+                }
 //                startActivity(chatIntent);
             }
         });
