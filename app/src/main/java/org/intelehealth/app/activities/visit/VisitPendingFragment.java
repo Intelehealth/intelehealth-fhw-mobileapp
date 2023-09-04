@@ -968,7 +968,7 @@ public class VisitPendingFragment extends Fragment {
                             String lastName = model.getLast_name().toLowerCase();
                             String fullName = firstName + " " + lastName;
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.equalsIgnoreCase(finalQuery)) {
+                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
                                 recent.add(model);
                             } else {
                                 // dont add in list value.
@@ -985,7 +985,7 @@ public class VisitPendingFragment extends Fragment {
                             String lastName = model.getLast_name().toLowerCase();
                             String fullName = firstName + " " + lastName;
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.equalsIgnoreCase(finalQuery)) {
+                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
                                 older.add(model);
                             } else {
                                 // do nothing
