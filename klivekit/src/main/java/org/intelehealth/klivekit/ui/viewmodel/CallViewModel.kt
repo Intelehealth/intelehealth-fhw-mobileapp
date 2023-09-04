@@ -1,35 +1,28 @@
 package org.intelehealth.klivekit.ui.viewmodel
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ajalt.timberkt.Timber
-import com.twilio.audioswitch.AudioDevice
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.livekit.android.ConnectOptions
 import io.livekit.android.LiveKit
-import io.livekit.android.LiveKitOverrides
-import io.livekit.android.RoomOptions
 import io.livekit.android.audio.AudioSwitchHandler
 import io.livekit.android.events.DisconnectReason
 import io.livekit.android.events.RoomEvent
 import io.livekit.android.events.collect
 import io.livekit.android.room.Room
-import io.livekit.android.room.participant.AudioTrackPublishDefaults
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.participant.Participant
 import io.livekit.android.room.participant.RemoteParticipant
-import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
-import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalScreencastVideoTrack
 import io.livekit.android.room.track.LocalVideoTrack
 import io.livekit.android.room.track.LocalVideoTrackOptions
 import io.livekit.android.room.track.Track
-import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoTrack
 import io.livekit.android.util.LoggingLevel
 import io.livekit.android.util.flow
@@ -41,58 +34,15 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.intelehealth.klivekit.httpclient.OkHttpClientProvider
 import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.AudioType.*
 import org.intelehealth.klivekit.utils.extensions.flatMapLatestOrNull
 import org.intelehealth.klivekit.utils.extensions.hide
-import org.webrtc.EglBase
-import org.webrtc.HardwareVideoEncoderFactory
+import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 
-open class CallViewModel(
-    private val url: String,
-    private val token: String,
-    private val application: Application
-) : ViewModel() {
-
-    val options = RoomOptions(
-        audioTrackCaptureDefaults = LocalAudioTrackOptions(
-            noiseSuppression = true,
-            echoCancellation = true,
-            autoGainControl = true,
-            highPassFilter = true,
-            typingNoiseDetection = true,
-        ),
-//        videoTrackCaptureDefaults = LocalVideoTrackOptions(
-//            deviceId = "",
-//            position = CameraPosition.FRONT,
-//            captureParams = VideoPreset169.QVGA.capture,
-//        ),
-        audioTrackPublishDefaults = AudioTrackPublishDefaults(
-            audioBitrate = 20_000,
-            dtx = true,
-        ),
-//        videoTrackPublishDefaults = VideoTrackPublishDefaults(
-//            videoEncoding = VideoPreset169.QVGA.encoding,
-//        ),
-        adaptiveStream = true
-    )
-
-    private val audioHandler = AudioSwitchHandler(application)
-    val room = LiveKit.create(
-        appContext = application.applicationContext,
-        options = options,
-        overrides = LiveKitOverrides(
-            okHttpClient = OkHttpClientProvider().provideOkHttpClient(),
-            audioHandler = audioHandler,
-            videoEncoderFactory = HardwareVideoEncoderFactory(
-                EglBase.create().eglBaseContext,
-                false,
-                true
-            )
-        )
-    )
+open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHandler) :
+    ViewModel() {
 
     private val mutableError = MutableStateFlow<Throwable?>(null)
     val error = mutableError.hide()
@@ -430,7 +380,7 @@ open class CallViewModel(
         }
     }
 
-    fun connectToRoom() {
+    fun connectToRoom(url: String, token: String) {
         viewModelScope.launch {
             try {
                 Timber.e { System.currentTimeMillis().toString() }
@@ -613,9 +563,9 @@ open class CallViewModel(
     fun reconnect() {
         Timber.e { "Reconnecting." }
         room.disconnect()
-        viewModelScope.launch {
-            connectToRoom()
-        }
+//        viewModelScope.launch {
+//            connectToRoom()
+//        }
     }
 
     fun disconnect() {

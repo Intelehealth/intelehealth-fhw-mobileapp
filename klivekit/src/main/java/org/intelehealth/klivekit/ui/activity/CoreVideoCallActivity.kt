@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
@@ -45,18 +46,20 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     protected lateinit var args: RtcArgs
     private var isDeclined: Boolean = false
-    protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
-        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-            ?: throw NullPointerException("arg is null!")
-        VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
-    }
+    protected val videoCallViewModel by viewModels<VideoCallViewModel>()
+//    protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
+//        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+//            ?: throw NullPointerException("arg is null!")
+//        VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
+//    }
 
-    private val socketViewModel: SocketViewModel by viewModelByFactory {
-        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-            ?: throw NullPointerException("args is null!")
-//        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
-        SocketViewModel(args)
-    }
+    private val socketViewModel: SocketViewModel by viewModels()
+//    private val socketViewModel: SocketViewModel by viewModelByFactory {
+//        args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+//            ?: throw NullPointerException("args is null!")
+////        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
+//        SocketViewModel(args)
+//    }
 
     private val permissionRegistry: PermissionRegistry by lazy {
         PermissionRegistry(this@CoreVideoCallActivity, activityResultRegistry)
@@ -205,7 +208,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
 
     private fun observerSocketEvent() {
-        socketViewModel.connect()
+        args.socketUrl?.let { socketViewModel.connect(it) }
         socketViewModel.eventNoAnswer.observe(this) {
             val reason = getString(R.string.no_answer_from, args.doctorName)
             if (it) sayBye(reason)
@@ -237,7 +240,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         permissionRegistry.requestPermissions(neededPermissions).observe(this) {
             if (it.allGranted()) {
                 startCallTimer()
-                videoCallViewModel.connectToRoom()
+                videoCallViewModel.connectToRoom(args.url ?: "", args.appToken ?: "")
             }
         }
     }
@@ -300,7 +303,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //        )
         playRingtone()
         videoCallViewModel.startCallTimeoutTimer()
-        socketViewModel.connectWithDoctor()
+        socketViewModel.connectWithDoctor(args)
         startConnecting()
     }
 
@@ -338,7 +341,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         if (args.isIncomingCall.not()) {
             socketViewModel.emit(
                 SocketManager.EVENT_CALL_CANCEL_BY_HW,
-                socketViewModel.buildOutGoingCallParams()
+                socketViewModel.buildOutGoingCallParams(args)
             )
         } else {
             socketViewModel.emit(SocketManager.EVENT_HW_CALL_REJECT, args.doctorId)

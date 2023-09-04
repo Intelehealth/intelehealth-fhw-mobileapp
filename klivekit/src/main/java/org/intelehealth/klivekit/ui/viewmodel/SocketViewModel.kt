@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.coroutines.Dispatchers
@@ -14,16 +15,15 @@ import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.extensions.hide
 import org.json.JSONObject
+import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 20:17.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class SocketViewModel(
-    private val args: RtcArgs,
-    private val socketManager: SocketManager = SocketManager.instance
-) : ViewModel() {
+@HiltViewModel
+class SocketViewModel @Inject constructor(private val socketManager: SocketManager) : ViewModel() {
 
     private val mutableEventBye = MutableLiveData(false)
     val eventBye = mutableEventBye.hide()
@@ -113,10 +113,10 @@ class SocketViewModel(
         Timber.d { "Active users => ${Gson().toJson(socketManager.activeUsers)}" }
     }
 
-    fun connect() {
+    fun connect(socketUrl: String) {
         socketManager.emitterListener = this::emitter
         if (socketManager.isConnected().not()) {
-            socketManager.connect(args.socketUrl)
+            socketManager.connect(socketUrl)
         }
     }
 
@@ -125,13 +125,13 @@ class SocketViewModel(
         mutableSocketConnected.postValue(true)
     }
 
-    fun connectWithDoctor() {
+    fun connectWithDoctor(args: RtcArgs) {
         executeInUIThread {
-            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, buildOutGoingCallParams())
+            emit(SocketManager.EVENT_CREATE_OR_JOIN_HW, buildOutGoingCallParams(args))
         }
     }
 
-    fun buildOutGoingCallParams() = JSONObject().apply {
+    fun buildOutGoingCallParams(args: RtcArgs) = JSONObject().apply {
         put("patientId", args.patientId)
         put("connectToDrId", args.doctorUuid)
         put("visitId", args.visitId)

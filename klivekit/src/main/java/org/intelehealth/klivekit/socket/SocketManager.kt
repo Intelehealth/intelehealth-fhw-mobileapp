@@ -12,12 +12,14 @@ import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
 import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Vaghela Mithun R. on 08-06-2023 - 18:47.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
+@Singleton
 open class SocketManager @Inject constructor(){
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null

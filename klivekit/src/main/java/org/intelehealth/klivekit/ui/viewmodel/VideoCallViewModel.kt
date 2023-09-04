@@ -10,16 +10,23 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.github.ajalt.timberkt.Timber
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.livekit.android.audio.AudioSwitchHandler
+import io.livekit.android.room.Room
 import org.intelehealth.klivekit.utils.AwsS3Utils
 import org.intelehealth.klivekit.utils.extensions.hide
+import javax.inject.Inject
 
 /**
  * Created by Vaghela Mithun R. on 07-06-2023 - 19:19.
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class VideoCallViewModel(url: String, token: String, application: Application) :
-    CallViewModel(url, token, application) {
+@HiltViewModel
+class VideoCallViewModel @Inject constructor(
+    room: Room,
+    audioHandler: AudioSwitchHandler
+) : CallViewModel(room, audioHandler) {
 
     private val callEndData = MutableLiveData(false)
     val callEnd = callEndData.hide()
