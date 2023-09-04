@@ -208,7 +208,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
 
     private fun observerSocketEvent() {
-        args.socketUrl?.let { socketViewModel.connect(it) }
+        socketViewModel.connect()
         socketViewModel.eventNoAnswer.observe(this) {
             val reason = getString(R.string.no_answer_from, args.doctorName)
             if (it) sayBye(reason)
