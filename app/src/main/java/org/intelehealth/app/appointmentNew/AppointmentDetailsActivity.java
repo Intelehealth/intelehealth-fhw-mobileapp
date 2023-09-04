@@ -174,7 +174,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         //this is for remind doctor functionality
         layoutPrescButtons = findViewById(R.id.llButtons2AppointmentDetails);
         layoutContactAction = findViewById(R.id.llChatCallDocAppointmentDetails);
-        tvPrescStatus = findViewById(R.id.tvPrescPendingFindPatientListItem);
+        tvPrescStatus = findViewById(R.id.tvPrescPendingSinceAppointmentDetails);
         ivPrescription = findViewById(R.id.ivPrescIconAppointmentDetails);
         btnEndVisit = findViewById(R.id.btnEndVisitAppointmentDetails);
         layoutSummaryBtns = findViewById(R.id.llButtons1AppointmentDetails);
