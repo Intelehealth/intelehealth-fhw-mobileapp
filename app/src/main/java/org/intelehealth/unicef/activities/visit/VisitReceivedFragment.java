@@ -137,8 +137,7 @@ public class VisitReceivedFragment extends Fragment {
         int totalCounts = totalCounts_recent + totalCounts_older;
 
 //        thisMonths_Visits();
-        if (mlistener != null)
-            mlistener.receivedCount(totalCounts);
+        if (mlistener != null) mlistener.receivedCount(totalCounts);
         progress.setVisibility(View.GONE);
     }
 
@@ -161,10 +160,8 @@ public class VisitReceivedFragment extends Fragment {
 
         // Filter - start
         filter_icon.setOnClickListener(v -> {
-            if (filter_menu.getVisibility() == View.VISIBLE)
-                filter_menu.setVisibility(View.GONE);
-            else
-                filter_menu.setVisibility(View.VISIBLE);
+            if (filter_menu.getVisibility() == View.VISIBLE) filter_menu.setVisibility(View.GONE);
+            else filter_menu.setVisibility(View.VISIBLE);
         });
 
         priority_visits_txt.setOnClickListener(v -> {
@@ -236,9 +233,10 @@ public class VisitReceivedFragment extends Fragment {
                 String firstName = model.getFirst_name().toLowerCase();
                 String lastName = model.getLast_name().toLowerCase();
                 String fullName = firstName + " " + lastName;
+                String openMrsID = model.getOpenmrs_id();
 
 
-                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
+                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query) || openMrsID.equalsIgnoreCase(query)) {
                     recent.add(model);
                 } else {
                     // dont add in list value.
@@ -247,8 +245,7 @@ public class VisitReceivedFragment extends Fragment {
                 totalCounts_recent = recent.size();
                 if (totalCounts_recent == 0 || totalCounts_recent < 0)
                     recent_nodata.setVisibility(View.VISIBLE);
-                else
-                    recent_nodata.setVisibility(View.GONE);
+                else recent_nodata.setVisibility(View.GONE);
                 recent_adapter = new VisitAdapter(getActivity(), recent, sessionManager.getAppLanguage());
                 recycler_recent.setNestedScrollingEnabled(false);
                 recycler_recent.setAdapter(recent_adapter);
@@ -261,8 +258,9 @@ public class VisitReceivedFragment extends Fragment {
                 String firstName = model.getFirst_name().toLowerCase();
                 String lastName = model.getLast_name().toLowerCase();
                 String fullName = firstName + " " + lastName;
+                String openMrsID = model.getOpenmrs_id();
 
-                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
+                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query) || openMrsID.equalsIgnoreCase(query)) {
                     older.add(model);
                 } else {
                     // do nothing
@@ -271,8 +269,7 @@ public class VisitReceivedFragment extends Fragment {
                 totalCounts_older = older.size();
                 if (totalCounts_older == 0 || totalCounts_older < 0)
                     older_nodata.setVisibility(View.VISIBLE);
-                else
-                    older_nodata.setVisibility(View.GONE);
+                else older_nodata.setVisibility(View.GONE);
                 //older_adapter = new VisitAdapter(getActivity(), older);
                 //recycler_older.setNestedScrollingEnabled(false);
                 //recycler_older.setAdapter(older_adapter);
@@ -322,14 +319,12 @@ public class VisitReceivedFragment extends Fragment {
         // todays - start
         List<PrescriptionModel> prio_todays = new ArrayList<>();
         for (int i = 0; i < recentList.size(); i++) {
-            if (recentList.get(i).isEmergency())
-                prio_todays.add(recentList.get(i));
+            if (recentList.get(i).isEmergency()) prio_todays.add(recentList.get(i));
         }
         totalCounts_recent = prio_todays.size();
         if (totalCounts_recent == 0 || totalCounts_recent < 0)
             recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
+        else recent_nodata.setVisibility(View.GONE);
         recent_adapter = new VisitAdapter(getActivity(), prio_todays, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
@@ -338,14 +333,12 @@ public class VisitReceivedFragment extends Fragment {
         // weeks - start
         List<PrescriptionModel> prio_weeks = new ArrayList<>();
         for (int i = 0; i < olderList.size(); i++) {
-            if (olderList.get(i).isEmergency())
-                prio_weeks.add(olderList.get(i));
+            if (olderList.get(i).isEmergency()) prio_weeks.add(olderList.get(i));
         }
         totalCounts_older = prio_weeks.size();
         if (totalCounts_older == 0 || totalCounts_older < 0)
             older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
+        else older_nodata.setVisibility(View.GONE);
         //older_adapter = new VisitAdapter(getActivity(), prio_weeks);
         // recycler_older.setNestedScrollingEnabled(false);
         //recycler_older.setAdapter(older_adapter);
@@ -354,14 +347,12 @@ public class VisitReceivedFragment extends Fragment {
         // months - start
         List<PrescriptionModel> prio_months = new ArrayList<>();
         for (int i = 0; i < monthsList.size(); i++) {
-            if (monthsList.get(i).isEmergency())
-                prio_months.add(monthsList.get(i));
+            if (monthsList.get(i).isEmergency()) prio_months.add(monthsList.get(i));
         }
         totalCounts_month = prio_months.size();
         if (totalCounts_month == 0 || totalCounts_month < 0)
             month_nodata.setVisibility(View.VISIBLE);
-        else
-            month_nodata.setVisibility(View.GONE);
+        else month_nodata.setVisibility(View.GONE);
         //months_adapter = new VisitAdapter(getActivity(), prio_months);
         // recycler_month.setNestedScrollingEnabled(false);
         //recycler_month.setAdapter(months_adapter);
@@ -387,16 +378,7 @@ public class VisitReceivedFragment extends Fragment {
                         " ORDER BY v.startdate DESC"
                 , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 */
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        "  e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " o.conceptuuid = ? and" +
-                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " +
-                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" +
-                        " group by e.visituuid ORDER BY v.startdate DESC"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" + "  e.encounter_type_uuid = ? and" + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " o.conceptuuid = ? and" + " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " + " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))" + " group by e.visituuid ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
         db.setTransactionSuccessful();
         db.endTransaction();
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -425,8 +407,7 @@ public class VisitReceivedFragment extends Fragment {
 
                     if (!emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
                         model.setEmergency(true);
-                    else
-                        model.setEmergency(false);
+                    else model.setEmergency(false);
                     // emergency - end
 
                     model.setHasPrescription(true);
@@ -449,8 +430,7 @@ public class VisitReceivedFragment extends Fragment {
                     nonPriorityRecentList.add(model);
                 }*/
                 }
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -461,8 +441,7 @@ public class VisitReceivedFragment extends Fragment {
         totalCounts_recent = recentList.size();
         if (totalCounts_recent == 0 || totalCounts_recent < 0)
             recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
+        else recent_nodata.setVisibility(View.GONE);
 
         recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
@@ -582,17 +561,10 @@ public class VisitReceivedFragment extends Fragment {
         olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        "  e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " o.conceptuuid = ? and" +
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" + "  e.encounter_type_uuid = ? and" + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " o.conceptuuid = ? and" +
 //                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now'))" +
 //                        " AND STRFTIME('%W',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%W',DATE('now'))" +
-                        " v.startdate < DATETIME('now', '-4 day') " +
-                        "group by p.openmrs_id ORDER BY v.startdate DESC"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                " v.startdate < DATETIME('now', '-4 day') " + "group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -610,8 +582,7 @@ public class VisitReceivedFragment extends Fragment {
 
                 if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
                     model.setEmergency(true);
-                else
-                    model.setEmergency(false);
+                else model.setEmergency(false);
                 // emergency - end
 
                 model.setHasPrescription(true);
@@ -633,8 +604,7 @@ public class VisitReceivedFragment extends Fragment {
                 } else {
                     nonPriorityRecentList.add(model);
                 }
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         db.setTransactionSuccessful();
@@ -646,8 +616,7 @@ public class VisitReceivedFragment extends Fragment {
         totalCounts_older = olderList.size();
         if (totalCounts_older == 0 || totalCounts_older < 0)
             older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
+        else older_nodata.setVisibility(View.GONE);
 
         //older_adapter = new VisitAdapter(getActivity(), olderList);
         //recycler_older.setNestedScrollingEnabled(false);
@@ -762,16 +731,7 @@ public class VisitReceivedFragment extends Fragment {
         monthsList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
-                        "  e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
-                        " o.conceptuuid = ? and" +
-                        " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " +
-                        " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" +
-                        " group by p.openmrs_id"
-                , new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" + "  e.encounter_type_uuid = ? and" + " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" + " o.conceptuuid = ? and" + " STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%Y',DATE('now')) AND " + " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 4)||'-'||substr(o.obsservermodifieddate, 6, 2)||'-'||substr(o.obsservermodifieddate, 9,2))) = STRFTIME('%m',DATE('now'))" + " group by p.openmrs_id", new String[]{ENCOUNTER_VISIT_NOTE, "537bb20d-d09d-4f88-930b-cc45c7d662df"});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -789,8 +749,7 @@ public class VisitReceivedFragment extends Fragment {
 
                 if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
                     model.setEmergency(true);
-                else
-                    model.setEmergency(false);
+                else model.setEmergency(false);
                 // emergency - end
 
                 model.setHasPrescription(true);
@@ -808,8 +767,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
                 monthsList.add(model);
 
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         db.setTransactionSuccessful();
@@ -818,8 +776,7 @@ public class VisitReceivedFragment extends Fragment {
         totalCounts_month = monthsList.size();
         if (totalCounts_month == 0 || totalCounts_month < 0)
             month_nodata.setVisibility(View.VISIBLE);
-        else
-            month_nodata.setVisibility(View.GONE);
+        else month_nodata.setVisibility(View.GONE);
 
         //months_adapter = new VisitAdapter(getActivity(), monthsList);
         //recycler_month.setNestedScrollingEnabled(false);

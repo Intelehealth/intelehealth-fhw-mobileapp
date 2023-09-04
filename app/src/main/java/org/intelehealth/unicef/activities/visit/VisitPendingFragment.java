@@ -833,8 +833,9 @@ public class VisitPendingFragment extends Fragment {
                 String firstName = model.getFirst_name().toLowerCase();
                 String lastName = model.getLast_name().toLowerCase();
                 String fullName = firstName + " " + lastName;
+                String openMrsID = model.getOpenmrs_id();
 
-                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
+                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query) || openMrsID.equalsIgnoreCase(query)) {
                     recent.add(model);
                 } else {
                     // dont add in list value.
@@ -859,8 +860,9 @@ public class VisitPendingFragment extends Fragment {
                     String firstName = model.getFirst_name().toLowerCase();
                     String lastName = model.getLast_name().toLowerCase();
                     String fullName = firstName + " " + lastName;
+                    String openMrsID = model.getOpenmrs_id();
 
-                    if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
+                    if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query) || openMrsID.equalsIgnoreCase(query)) {
                         older.add(model);
                     } else {
                         // do nothing
