@@ -141,7 +141,6 @@ public class VisitReceivedFragment extends Fragment {
 
         no_patient_found_block = view.findViewById(R.id.no_patient_found_block);
         main_block = view.findViewById(R.id.main_block);
-
         visit_received_card_header = view.findViewById(R.id.visit_received_card_header);
         searchview_received = view.findViewById(R.id.searchview_received);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
@@ -319,11 +318,36 @@ public class VisitReceivedFragment extends Fragment {
         closeButton.setOnClickListener(v -> {
             no_patient_found_block.setVisibility(View.GONE);
             main_block.setVisibility(View.VISIBLE);
-            defaultData();
+//            defaultData();
+            resetData();
             searchview_received.setQuery("", false);
 
         });
         // Search - end
+    }
+
+    private void recent_older_visibility(List<PrescriptionModel> recent, List<PrescriptionModel> older) {
+        if (recent.size() == 0 || recent.size() < 0)
+            recent_nodata.setVisibility(View.VISIBLE);
+        else
+            recent_nodata.setVisibility(View.GONE);
+
+        if (older.size() == 0 || older.size() < 0)
+            older_nodata.setVisibility(View.VISIBLE);
+        else
+            older_nodata.setVisibility(View.GONE);
+    }
+    private void resetData() {
+        recent_older_visibility(recentList, olderList);
+        Log.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
+
+        recent_adapter = new VisitAdapter(getActivity(), recentList);
+        recycler_recent.setNestedScrollingEnabled(false);
+        recycler_recent.setAdapter(recent_adapter);
+
+        older_adapter = new VisitAdapter(getActivity(), olderList);
+        recycler_older.setNestedScrollingEnabled(false);
+        recycler_older.setAdapter(older_adapter);
     }
 
     /**
@@ -338,96 +362,85 @@ public class VisitReceivedFragment extends Fragment {
 
         List<PrescriptionModel> recent = new ArrayList<>();
         List<PrescriptionModel> older = new ArrayList<>();
-//        List<PrescriptionModel> month = new ArrayList<>();
 
-        recent.addAll(recentList);
-        older.addAll(olderList);
-//        month.addAll(monthsList);
+        String finalQuery = query;
 
-        if (!query.isEmpty()) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // To return all data adding a bigger digit LIMIT to avoid creating duplicate function.
+                List<PrescriptionModel> allRecentList = recentVisits(200000000, 0);
+                List<PrescriptionModel> allOlderList = olderVisits(200000000, 0);
 
-            // todays - start
-            recent.clear();
-            for (PrescriptionModel model : recentList) {
-                String firstName = model.getFirst_name().toLowerCase();
-                String lastName = model.getLast_name().toLowerCase();
-                String fullName = firstName + " " + lastName;
+                if (!finalQuery.isEmpty()) {
+                    recent.clear();
+                    older.clear();
 
+                    // recent - start
+                    if (allRecentList.size() > 0) {
+                        for (PrescriptionModel model : recentList) {
+                            String firstName = model.getFirst_name().toLowerCase();
+                            String lastName = model.getLast_name().toLowerCase();
+                            String fullName = firstName + " " + lastName;
 
-                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
-                    recent.add(model);
-                } else {
-                    // dont add in list value.
+                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                recent.add(model);
+                            } else {
+                                // dont add in list value.
+                            }
+                        }
+                    }
+                    // recent - end
+
+                    // older - start
+                    if (allOlderList.size() > 0) {
+                        for (PrescriptionModel model : olderList) {
+                            String firstName = model.getFirst_name().toLowerCase();
+                            String lastName = model.getLast_name().toLowerCase();
+                            String fullName = firstName + " " + lastName;
+
+                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                older.add(model);
+                            } else {
+                                // do nothing
+                            }
+                        }
+                    }
+                    // older - end
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            recent_adapter = new VisitAdapter(getActivity(), recent);
+                            recycler_recent.setNestedScrollingEnabled(false);
+                            recycler_recent.setAdapter(recent_adapter);
+
+                            older_adapter = new VisitAdapter(getActivity(), older);
+                            recycler_older.setNestedScrollingEnabled(false);
+                            recycler_older.setAdapter(older_adapter);
+
+                            /**
+                             * Checking here the query that is entered and it is not empty so check the size of all of these
+                             * arraylists; if there size is 0 than show the no patient found view.
+                             */
+                            int allCount = recent.size() + older.size();
+                            allCountVisibility(allCount);
+                            recent_older_visibility(recent, older);
+                        }
+                    });
+
                 }
-
-                totalCounts_recent = recent.size();
-                if (totalCounts_recent == 0 || totalCounts_recent < 0)
-                    recent_nodata.setVisibility(View.VISIBLE);
-                else
-                    recent_nodata.setVisibility(View.GONE);
-                recent_adapter = new VisitAdapter(getActivity(), recent);
-                recycler_recent.setNestedScrollingEnabled(false);
-                recycler_recent.setAdapter(recent_adapter);
             }
-            // todays - end
+        }).start();
+    }
 
-            // weeks - start
-            older.clear();
-            for (PrescriptionModel model : olderList) {
-                String firstName = model.getFirst_name().toLowerCase();
-                String lastName = model.getLast_name().toLowerCase();
-                String fullName = firstName + " " + lastName;
-
-                if (firstName.contains(query) || lastName.contains(query) || fullName.equalsIgnoreCase(query)) {
-                    older.add(model);
-                } else {
-                    // do nothing
-                }
-
-                totalCounts_older = older.size();
-                if (totalCounts_older == 0 || totalCounts_older < 0)
-                    older_nodata.setVisibility(View.VISIBLE);
-                else
-                    older_nodata.setVisibility(View.GONE);
-                older_adapter = new VisitAdapter(getActivity(), older);
-                recycler_older.setNestedScrollingEnabled(false);
-                recycler_older.setAdapter(older_adapter);
-            }
-            // weeks - end
-
-            // months - start
-//            month.clear();
-//            for (PrescriptionModel model : monthsList) {
-//                if (model.getFirst_name().toLowerCase().contains(query) || model.getLast_name().toLowerCase().contains(query)) {
-//                    month.add(model);
-//                } else {
-//                    // do nothing
-//                }
-//
-//                totalCounts_month = month.size();
-//                if (totalCounts_month == 0 || totalCounts_month < 0)
-//                    month_nodata.setVisibility(View.VISIBLE);
-//                else
-//                    month_nodata.setVisibility(View.GONE);
-//                months_adapter = new VisitAdapter(getActivity(), month);
-//                recycler_month.setNestedScrollingEnabled(false);
-//                recycler_month.setAdapter(months_adapter);
-//            }
-            // months - end
-
-            /**
-             * Checking here the query that is entered and it is not empty so check the size of all of these
-             * arraylists; if there size is 0 than show the no patient found view.
-             */
-            totalCounts = totalCounts_recent + totalCounts_older + totalCounts_month;
-            if (totalCounts <= 0) {
-                no_patient_found_block.setVisibility(View.VISIBLE);
-                main_block.setVisibility(View.GONE);
-            } else {
-                no_patient_found_block.setVisibility(View.GONE);
-                main_block.setVisibility(View.VISIBLE);
-            }
-
+    private void allCountVisibility(int allCount) {
+        if (allCount == 0 || allCount < 0) {
+            no_patient_found_block.setVisibility(View.VISIBLE);
+            main_block.setVisibility(View.GONE);
+        } else {
+            no_patient_found_block.setVisibility(View.GONE);
+            main_block.setVisibility(View.VISIBLE);
         }
     }
 
