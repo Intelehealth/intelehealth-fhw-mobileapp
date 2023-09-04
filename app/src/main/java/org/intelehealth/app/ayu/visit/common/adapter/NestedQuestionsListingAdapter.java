@@ -647,6 +647,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         } else {
             holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
             holder.submitButton.setVisibility(View.GONE);
+            if (selectedNode.isDataCaptured()) {
+                AdapterUtils.setToDisable(holder.skipButton);
+            } else {
+                AdapterUtils.setToDefault(holder.skipButton);
+            }
         }
 
         if (selectedNode.isRequired()) {
@@ -772,8 +777,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 public void onSelect(Node node, boolean isLoadingForNestedEditData) {
                     if (!isLoadingForNestedEditData)
                         VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
-                    mItemList.get(index).setSelected(false);
-                    mItemList.get(index).setDataCaptured(false);
+                    if (!isLoadingForNestedEditData) {
+                        mItemList.get(index).setSelected(false);
+                        mItemList.get(index).setDataCaptured(false);
+                    }
                     for (int i = 0; i < options.size(); i++) {
                         if (options.get(i).isSelected()) {
                             mItemList.get(index).setSelected(true);
@@ -781,9 +788,20 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             break;
                         }
                     }
-                    AdapterUtils.setToDefault(holder.submitButton);
-                    AdapterUtils.setToDefault(holder.skipButton);
-                    /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+                    if(isLoadingForNestedEditData){
+                        if (selectedNode.isDataCaptured()) {
+                            AdapterUtils.setToDisable(holder.skipButton);
+                            AdapterUtils.setToDisable(holder.submitButton);
+                        } else {
+                            AdapterUtils.setToDefault(holder.skipButton);
+                            AdapterUtils.setToDefault(holder.submitButton);
+                        }
+                    }else{
+                        AdapterUtils.setToDefault(holder.submitButton);
+                        AdapterUtils.setToDefault(holder.skipButton);
+
+                    }
+                     /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
                     holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
 
                     String type = node.getInputType();
@@ -805,6 +823,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                             holder.submitButton.setVisibility(View.GONE);
                             mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                            AdapterUtils.setToDisable(holder.skipButton);
                         }
 
                         if (mItemList.get(index).isRequired()) {
@@ -1429,7 +1448,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
             try {
                 fromDateFormat = simpleDateFormat.parse(fromDate);
-                calendarView.setMinDate(fromDateFormat.getTime() - 1000);
+                calendarView.setMinDate(fromDateFormat.getTime() + 1000);
                 calendarView.setMaxDate(System.currentTimeMillis() + 1000);
             } catch (ParseException e) {
                 throw new RuntimeException(e);

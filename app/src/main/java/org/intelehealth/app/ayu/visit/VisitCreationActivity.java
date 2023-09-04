@@ -59,6 +59,7 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -1287,9 +1288,21 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
-
+    private AlertDialog mImagePickerAlertDialog;
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
+            @Override
+            public void onActionDone(int action) {
+                mImagePickerAlertDialog.dismiss();
+                if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
+                    cameraStart();
+
+                } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
+                    galleryStart();
+                }
+            }
+        });
+       /* final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(VisitCreationActivity.this);
         builder.setTitle(getResources().getString(R.string.add_image_by));
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -1306,7 +1319,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
             }
         });
-        builder.show();
+        builder.show();*/
     }
 
 

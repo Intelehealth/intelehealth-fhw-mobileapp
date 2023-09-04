@@ -154,7 +154,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mWeightTextView.setOnClickListener(this);*/
 
         mBMILinearLayout = view.findViewById(R.id.ll_bmi);
-        if (float_ageYear_Month < 19)
+        if (float_ageYear_Month <= 19)
             mBMILinearLayout.setVisibility(View.GONE);
         mBMITextView = view.findViewById(R.id.tv_bmi_value);
         mBmiStatusTextView = view.findViewById(R.id.tv_bmi_status);

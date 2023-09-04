@@ -6,7 +6,6 @@ import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -72,9 +70,7 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
-import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.MyProfilePOJO;
-import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.hwprofile.PersonAttributes;
 import org.intelehealth.app.models.hwprofile.Profile;
@@ -106,9 +102,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -715,8 +709,27 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         }
     }
 
+    private AlertDialog mImagePickerAlertDialog;
+
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.select_image_hdr), new DialogUtils.ImagePickerDialogListener() {
+            @Override
+            public void onActionDone(int action) {
+                mImagePickerAlertDialog.dismiss();
+                if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
+                    Intent cameraIntent = new Intent(MyProfileActivity.this, CameraActivity.class);
+                    String imageName = UUID.randomUUID().toString();
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+
+                } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                }
+            }
+        });
+        /*final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_profile_image);
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -737,7 +750,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                 }
             }
         });
-        builder.show();
+        builder.show();*/
     }
 
     private void updateProfileDetailsToLocalDb() throws DAOException {

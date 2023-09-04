@@ -840,7 +840,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             } else {
                 holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                 holder.submitButton.setVisibility(View.GONE);
-
+                if (mItemList.get(index).isDataCaptured()) {
+                    AdapterUtils.setToDisable(holder.skipButton);
+                } else {
+                    AdapterUtils.setToDefault(holder.skipButton);
+                }
             }
 
             if (mItemList.get(index).isRequired()) {
@@ -1029,7 +1033,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 } else {
                     holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
                     holder.submitButton.setVisibility(View.GONE);
-
+                    if (mItemList.get(index).isDataCaptured()) {
+                        AdapterUtils.setToDisable(holder.skipButton);
+                    } else {
+                        AdapterUtils.setToDefault(holder.skipButton);
+                    }
                 }
 
                 if (mItemList.get(index).isRequired()) {
@@ -1068,8 +1076,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         if (!isLoadingForNestedEditData)
                             VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
                         ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
-                        mItemList.get(index).setSelected(false);
-                        mItemList.get(index).setDataCaptured(false);
+                        if (!isLoadingForNestedEditData) {
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                        }
                         for (int i = 0; i < options.size(); i++) {
                             if (options.get(i).isSelected()) {
                                 mItemList.get(index).setSelected(true);
@@ -1101,8 +1111,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     break;
                                 }
                             }
-                            AdapterUtils.setToDefault(holder.submitButton);
-                            AdapterUtils.setToDefault(holder.skipButton);
+
+                            if(isLoadingForNestedEditData){
+                                if (selectedNode.isDataCaptured()) {
+                                    AdapterUtils.setToDisable(holder.skipButton);
+                                    AdapterUtils.setToDisable(holder.submitButton);
+                                } else {
+                                    AdapterUtils.setToDefault(holder.skipButton);
+                                    AdapterUtils.setToDefault(holder.submitButton);
+                                }
+                            }else{
+                                AdapterUtils.setToDefault(holder.submitButton);
+                                AdapterUtils.setToDefault(holder.skipButton);
+
+                            }
+
+                            /*AdapterUtils.setToDefault(holder.submitButton);
+                            AdapterUtils.setToDefault(holder.skipButton);*/
                             /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
                             holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
 
@@ -1123,8 +1148,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                         }
                                     }
                                 }, 100);
-                                if (!isLoadingForNestedEditData)
+                                if (!isLoadingForNestedEditData) {
                                     mOnItemSelection.onSelect(node, index, false, selectedNode);
+                                    AdapterUtils.setToDisable(holder.skipButton);
+                                }
                             }
 
                             if (mItemList.get(index).isRequired()) {

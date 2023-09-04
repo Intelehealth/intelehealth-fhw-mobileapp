@@ -89,13 +89,23 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             // name
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
+
+            //  1. Age
+            String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);
+
             // share icon visibility
-            String encounteruuid = getStartVisitNoteEncounterByVisitUUID(model.getVisitUuid());
+            /*String encounteruuid = getStartVisitNoteEncounterByVisitUUID(model.getVisitUuid());
             if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
                 holder.shareicon.setVisibility(View.VISIBLE);
             } else {
                 holder.shareicon.setVisibility(View.GONE);
-            }
+            }*/
+
+            if (model.isHasPrescription())
+                holder.shareicon.setVisibility(View.VISIBLE);
+            else
+                holder.shareicon.setVisibility(View.GONE);
 
             // Patient Photo
             //1.
@@ -144,6 +154,23 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
             holder.end_visit_btn.setOnClickListener(v -> {
                 showConfirmDialog(model);
+            });
+
+            holder.fu_cardview_item.setOnClickListener(v -> {
+                Intent intent = new Intent(context, VisitDetailsActivity.class);
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
+                intent.putExtra("patientUuid", model.getPatientUuid());
+                intent.putExtra("gender", model.getGender());
+                String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+                intent.putExtra("age", age1);
+                intent.putExtra("priority_tag", model.isEmergency());
+                intent.putExtra("hasPrescription", model.isHasPrescription());
+                intent.putExtra("openmrsID", model.getOpenmrs_id());
+                intent.putExtra("visit_ID", model.getVisitUuid());
+                intent.putExtra("visit_startDate", model.getVisit_start_date());
+                intent.putExtra("patient_photo", model.getPatient_photo());
+                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+                context.startActivity(intent);
             });
 
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +243,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     public class Myholder extends RecyclerView.ViewHolder {
         Button end_visit_btn;
         private CardView fu_cardview_item;
-        private TextView name, fu_date_txtview;
+        private TextView name, fu_date_txtview,search_gender;
         private ImageView profile_image;
         private LinearLayout shareicon;
 
@@ -226,6 +253,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             end_visit_btn = itemView.findViewById(R.id.end_visit_btn);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
             name = itemView.findViewById(R.id.fu_patname_txtview);
+            search_gender = itemView.findViewById(R.id.search_gender);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             shareicon = itemView.findViewById(R.id.shareiconLL);

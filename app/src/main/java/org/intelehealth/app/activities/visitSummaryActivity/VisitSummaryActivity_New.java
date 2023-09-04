@@ -125,6 +125,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -2043,12 +2044,25 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     }
 
     // Permission - end
-
+    private AlertDialog mImagePickerAlertDialog;
     /**
      * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.additional_doc_image_picker_title), new DialogUtils.ImagePickerDialogListener() {
+            @Override
+            public void onActionDone(int action) {
+                mImagePickerAlertDialog.dismiss();
+                if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
+                    checkPerm(action);
+
+                } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
+                    checkPerm(action);
+                }
+            }
+        });
+
+        /*final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this);
         builder.setTitle(R.string.additional_doc_image_picker_title);
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -2070,7 +2084,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
         int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();
+        alertDialog.show();*/
 
     }
 

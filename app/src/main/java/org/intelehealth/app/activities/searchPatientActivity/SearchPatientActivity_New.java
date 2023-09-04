@@ -3,7 +3,6 @@ package org.intelehealth.app.activities.searchPatientActivity;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
-import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_SearchBar;
 
 import android.content.Context;
@@ -13,13 +12,11 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
 import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -141,8 +138,6 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             public void onClick(View view) {
                 if (!mSearchEditText.getText().toString().isEmpty()) {
                     mSearchEditText.setText("");
-                    view.setVisibility(View.GONE);
-                    iconSearch.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -166,21 +161,30 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-                mSearchEditText.requestFocus();
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+               /* mSearchEditText.requestFocus();
                 iconClear.setVisibility(View.GONE);
-                iconSearch.setVisibility(View.VISIBLE);
+                iconSearch.setVisibility(View.VISIBLE);*/
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().isEmpty()) {
-                    allPatientsTV.setText(getString(R.string.all_patients_txt));
-                    query = "";
-                    doQuery(query);
                     iconClear.setVisibility(View.GONE);
                     iconSearch.setVisibility(View.VISIBLE);
+                    allPatientsTV.setText(getString(R.string.all_patients_txt));
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                             query = "";
+                            doQuery(query);
+                        }
+                    }, 100);
+
+                } else {
+                    iconClear.setVisibility(View.VISIBLE);
+                    iconSearch.setVisibility(View.GONE);
                 }
 //                else
 //                    iconClear.setVisibility(View.VISIBLE);
@@ -259,8 +263,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 search_recycelview.setAdapter(adapter);
                 start = end;
                 end += limit;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 Logger.logE("doquery", "doquery", e);
             }
@@ -445,7 +448,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (patientDTOList != null && patientDTOList.size() == 0){
+                if (patientDTOList != null && patientDTOList.size() == 0) {
                     isFullyLoaded = true;
                     return;
                 }
@@ -474,4 +477,4 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         end += limit;
     }
 
-    }
+}

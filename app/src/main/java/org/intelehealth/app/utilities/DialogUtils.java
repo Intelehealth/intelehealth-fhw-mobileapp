@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexDirection;
@@ -19,13 +20,14 @@ import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.adapter.ImagePickerListAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsPreviewGridAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class DialogUtils {
     public interface CustomDialogListener {
@@ -34,6 +36,14 @@ public class DialogUtils {
         public static final int CANCELLED = 2;
 
         public void onDialogActionDone(int action);
+    }
+
+    public interface ImagePickerDialogListener {
+        public static final int CAMERA = 0;
+        public static final int GALLERY = 1;
+        public static final int CANCELLED = 2;
+
+        public void onActionDone(int action);
     }
 
     public void showOkDialog(Context context, String title, String message, String ok) {
@@ -132,7 +142,8 @@ public class DialogUtils {
         Button negative_btn = convertView.findViewById(R.id.negative_btn);
 
         if (iconResource == 0) icon.setVisibility(View.GONE);
-        if(message== null || message.equalsIgnoreCase("")) dialog_subtitle.setVisibility(View.GONE);
+        if (message == null || message.equalsIgnoreCase(""))
+            dialog_subtitle.setVisibility(View.GONE);
         icon.setImageResource(iconResource);
         dialog_title.setText(title);
         dialog_subtitle.setText(message);
@@ -249,4 +260,29 @@ public class DialogUtils {
         alertDialog.show();
         return alertDialog;
     }
+
+    public static AlertDialog showCommonImagePickerDialog(Context context, String title, ImagePickerDialogListener imagePickerDialogListener) {
+        List<String> displaySelection = new ArrayList<>();
+        String[] options = {context.getString(R.string.take_photo), context.getString(R.string.choose_from_gallery), context.getString(R.string.cancel)};
+        displaySelection = Arrays.asList(options);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        View convertView = View.inflate(context, R.layout.image_picker_dialog, null);
+        alertDialogBuilder.setView(convertView);
+
+        RecyclerView recyclerView = convertView.findViewById(R.id.rcvDialogImagePicker);
+        TextView titleView = convertView.findViewById(R.id.tvTitleDialogImagePicker);
+        titleView.setText(title);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        ImagePickerListAdapter dialogListAdapter = new ImagePickerListAdapter(recyclerView, context, displaySelection, new ImagePickerDialogListener() {
+            @Override
+            public void onActionDone(int action) {
+                imagePickerDialogListener.onActionDone(action);
+            }
+        });
+        recyclerView.setAdapter(dialogListAdapter);
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_menu_background);
+        return alertDialog;
+    }
+
 }

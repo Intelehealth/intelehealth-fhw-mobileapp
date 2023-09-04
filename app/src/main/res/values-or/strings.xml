@@ -731,6 +731,7 @@
     <string name="already_selected_lbl">Already selected!</string>
     <string name="please_submit_to_proceed_next_step">Please submit to proceed next step</string>
     <string name="to_date_validation">To date should be greater than from date</string>
+    <string name="select_image_hdr">Select Image</string>
 
 
 </resources>
