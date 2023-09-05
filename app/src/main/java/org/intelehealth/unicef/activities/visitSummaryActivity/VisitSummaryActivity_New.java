@@ -1,5 +1,6 @@
 package org.intelehealth.unicef.activities.visitSummaryActivity;
 
+import static org.intelehealth.unicef.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.unicef.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.unicef.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parseYYYYMMDDDateToddMMyyyy;
@@ -1901,6 +1902,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+
+        String drDetails = fetchDrDetailsFromLocalDb(visitUuid);
+        parseDoctorDetails(drDetails);
     }
 
     // permission code - start
@@ -4151,7 +4155,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", followUp_web));
             }
 
-            htmlDocument = htmlDocument.concat(String.format(doctorDetailStr, doctor_web));
+            htmlDocument = htmlDocument.concat(String.format("<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
+                    doctorDetailStr +
+                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
+                    "</div>"));
+
+//            htmlDocument = htmlDocument.concat(String.format(doctorDetailStr, doctor_web));
 
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {

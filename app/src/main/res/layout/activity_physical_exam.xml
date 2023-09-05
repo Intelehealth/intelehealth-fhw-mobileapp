@@ -8,102 +8,108 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.physcialExamActivity.PhysicalExamActivity">
 
-    <LinearLayout
-        style="@style/AppTheme.AppBarOverlay"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!--        <androidx.appcompat.widget.Toolbar-->
-        <!--            android:id="@+id/toolbar"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="?attr/actionBarSize"-->
-        <!--            android:background="@color/colorPrimary"-->
-        <!--            app:layout_scrollFlags="scroll|enterAlways"-->
-        <!--            app:popupTheme="@style/AppTheme.PopupOverlay"-->
-        <!--            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
-
-        <!--        </androidx.appcompat.widget.Toolbar>-->
-
-        <RelativeLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15"
-            android:gravity="center_vertical"
-            android:minHeight="?actionBarSize"
-            android:paddingHorizontal="@dimen/toolbar_margin_left">
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="1sp"
-                android:text="Lincon Testing"
-                android:textAppearance="@style/label"
-                android:textColor="@null"
-                android:textSize="@dimen/toolbar_text_size"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_title_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_title"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="1sp"
-                android:text="Lincon Testing"
-                android:textAppearance="@style/caption_fu_openmrsId"
-                android:textColor="@null"
-                android:textSize="@dimen/text_13sp"
-                android:textStyle="normal" />
-
-        </RelativeLayout>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:visibility="gone"
-            app:tabSelectedTextColor="@android:color/white"
-            app:tabTextColor="@android:color/white" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/container"
+        <LinearLayout
+            style="@style/AppTheme.AppBarOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignBottom="@id/app_bar"
-            android:visibility="gone"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:orientation="vertical">
+
+            <!--        <androidx.appcompat.widget.Toolbar-->
+            <!--            android:id="@+id/toolbar"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="?attr/actionBarSize"-->
+            <!--            android:background="@color/colorPrimary"-->
+            <!--            app:layout_scrollFlags="scroll|enterAlways"-->
+            <!--            app:popupTheme="@style/AppTheme.PopupOverlay"-->
+            <!--            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
+
+            <!--        </androidx.appcompat.widget.Toolbar>-->
+
+            <RelativeLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:gravity="center_vertical"
+                android:minHeight="?actionBarSize"
+                android:paddingHorizontal="@dimen/toolbar_margin_left">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="1sp"
+                    android:text="Lincon Testing"
+                    android:textAppearance="@style/label"
+                    android:textColor="@null"
+                    android:textSize="@dimen/toolbar_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_title_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_title"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="1sp"
+                    android:text="Lincon Testing"
+                    android:textAppearance="@style/caption_fu_openmrsId"
+                    android:textColor="@null"
+                    android:textSize="@dimen/text_13sp"
+                    android:textStyle="normal" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:visibility="gone"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextColor="@android:color/white" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@id/app_bar"
+                android:visibility="gone"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-        <org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator
-            android:id="@+id/recyclerViewIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_10"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-            app:spi_dotSelectedColor="@color/colorPrimary"
-            app:spi_visibleDotCount="21">
+            <org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator
+                android:id="@+id/recyclerViewIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_10"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+                app:spi_dotSelectedColor="@color/colorPrimary"
+                app:spi_visibleDotCount="21">
 
-        </org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator>
+            </org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/physExam_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_10"
-            android:fadeScrollbars="false"
-            android:scrollbarThumbVertical="@color/colorAccent"
-            android:scrollbars="vertical"
-            android:visibility="visible" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/physExam_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:fadeScrollbars="false"
+                android:scrollbarThumbVertical="@color/colorAccent"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

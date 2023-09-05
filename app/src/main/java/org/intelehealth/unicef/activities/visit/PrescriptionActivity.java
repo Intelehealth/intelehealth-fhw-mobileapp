@@ -1301,6 +1301,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     diagnosis_txt.setText(StringUtils.convertDiagnosisText(diagnosisReturned));
                 } else {
                     diagnosis_txt.setText(diagnosisReturned);
+                    diagnosisReturned = diagnosisReturned.replace("\n\n", "\n");
                 }
                 break;
             }
@@ -1315,6 +1316,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 }
                 Log.i("TAG", "parseData: rxfin" + rxReturned);
                 medication_txt.setText(rxReturned);
+                rxReturned = rxReturned.replace("\n\n", "\n ");
                 //checkForDoctor();
                 break;
             }
@@ -1345,6 +1347,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
                 if (!medicalAdvice_string.equalsIgnoreCase(""))
                     advice_txt.setText(medicalAdvice_string);
+                adviceReturned = adviceReturned.replace("\n\n", "\n");
                 Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*
@@ -2361,7 +2364,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", followUp_web));
             }
 
-            htmlDocument = htmlDocument.concat(String.format(doctorDetailStr, doctor_web));
+            htmlDocument = htmlDocument.concat(String.format("<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
+                    doctorDetailStr +
+                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
+                    "</div>"));
+
+//            htmlDocument = htmlDocument.concat(String.format(doctorDetailStr, doctor_web));
 
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
