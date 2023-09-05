@@ -381,18 +381,14 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         visit_startTime = findViewById(R.id.visit_startTime);
 
         if (visit_startDate != null) {
-            Log.v("Followup", "actual date: " + visit_startDate);
 
             // Time - start
-            String startTime = DateAndTimeUtils.date_formatter(visit_startDate,
-                    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-                    "HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
-            Log.v("SearchPatient", "date: " + startTime);
-            visit_startTime.setText(startTime);
+            String startTime = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "HH:mm a");    // Eg. 26 Sep 2022 at 03:15 PM
+            String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(startTime, "HH:mm a", "HH:mm");
+            visit_startTime.setText(twentyFourHourTime);
             // Time - end
 
             visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
-            Log.v("Followup", "foramted date: " + visit_startDate);
 
             if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                 visit_startDate_txt.setText(StringUtils.en__ru_dob(visit_startDate));

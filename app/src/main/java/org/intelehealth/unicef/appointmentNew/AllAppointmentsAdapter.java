@@ -27,6 +27,7 @@ import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -76,13 +77,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
 
         if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
-            Glide.with(context)
-                    .load(appointmentInfoModel.getPatientProfilePhoto())
-                    .thumbnail(0.3f)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(holder.ivProfileImage);
+            Glide.with(context).load(appointmentInfoModel.getPatientProfilePhoto()).thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.ivProfileImage);
         } else {
             holder.ivProfileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar1));
         }
@@ -111,17 +106,20 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                         if (hours > 12) {
 
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                            //holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
-                            //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
-
                             timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
-                            holder.tvDate.setText(timeText);
+                            String twelveHourTime = StringUtils.extractTimeFromString(timeText);
+                            String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(twelveHourTime, "h:mm a", "HH:mm");
+                            String finalTimeText = timeText.replace(twelveHourTime, twentyFourHourTime);
+                            holder.tvDate.setText(finalTimeText);
                             holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                         } else {
                             timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at) + " " + appointmentInfoModel.getSlotTime();
                             //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                            holder.tvDate.setText(timeText);
+                            String twelveHourTime = StringUtils.extractTimeFromString(timeText);
+                            String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(twelveHourTime, "h:mm a", "HH:mm");
+                            String finalTimeText = timeText.replace(twelveHourTime, twentyFourHourTime);
+                            holder.tvDate.setText(finalTimeText);
                             holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                         }
                     } else {
@@ -188,7 +186,10 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             holder.rlPrescriptionBackground.setVisibility(View.GONE);
 
             String timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
-            holder.tvDate.setText(timeText);
+            String twelveHourTime = StringUtils.extractTimeFromString(timeText);
+            String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(twelveHourTime, "h:mm a", "HH:mm");
+            String finalTimeText = timeText.replace(twelveHourTime, twentyFourHourTime);
+            holder.tvDate.setText(finalTimeText);
             //  holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
             // imageView.setColorFilter(ContextCompat.getColor(context, R.color.COLOR_YOUR_COLOR), android.graphics.PorterDuff.Mode.SRC_IN);
 
@@ -260,53 +261,42 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
         Logger.logD("TAG", "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD
-                (url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, model.getUuid());
-                        Logger.logD("TAG", file.toString());
-                    }
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(ResponseBody file) {
+                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                downloadFilesUtils.saveToDisk(file, model.getUuid());
+                Logger.logD("TAG", file.toString());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD("TAG", e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD("TAG", e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        Logger.logD("TAG", "complete" + model.getPatientProfilePhoto());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(model.getUuid(),
-                                    AppConstants.IMAGE_PATH + model.getUuid() + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (updated) {
-                            Glide.with(context)
-                                    .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(0.3f)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(holder.ivProfileImage);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(
-                                    AppConstants.IMAGE_PATH + model.getUuid() + ".jpg", model.getUuid());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    }
-                });
+            @Override
+            public void onComplete() {
+                Logger.logD("TAG", "complete" + model.getPatientProfilePhoto());
+                PatientsDAO patientsDAO = new PatientsDAO();
+                boolean updated = false;
+                try {
+                    updated = patientsDAO.updatePatientPhoto(model.getUuid(), AppConstants.IMAGE_PATH + model.getUuid() + ".jpg");
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                if (updated) {
+                    Glide.with(context).load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg").thumbnail(0.3f).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(holder.ivProfileImage);
+                }
+                ImagesDAO imagesDAO = new ImagesDAO();
+                boolean isImageDownloaded = false;
+                try {
+                    isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg", model.getUuid());
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+        });
     }
 
    /* public void searchForFilters(String appointmentType,

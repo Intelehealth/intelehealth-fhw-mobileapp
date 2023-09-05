@@ -287,7 +287,9 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         }
 
         tvVisitStartDate.setText(dateText);
-        tvVisitStartTime.setText(app_start_time);
+        String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(app_start_time, "h:mm a", "HH:mm");
+        tvVisitStartTime.setText(twentyFourHourTime);
+
         if (isVisitStartsIn) { //that means appointment scheduled
             stateAppointmentStarted.setVisibility(View.VISIBLE);
             layoutContactAction.setVisibility(View.GONE);

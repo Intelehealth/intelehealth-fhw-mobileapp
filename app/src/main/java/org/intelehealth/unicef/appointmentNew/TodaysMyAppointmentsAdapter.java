@@ -31,6 +31,7 @@ import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -118,7 +119,10 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
 
                                 timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ", " + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
-                                holder.tvDate.setText(timeText);
+                                String twelveHourTime = StringUtils.extractTimeFromString(timeText);
+                                String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(twelveHourTime, "h:mm a", "HH:mm");
+                                String finalTimeText = timeText.replace(twelveHourTime, twentyFourHourTime);
+                                holder.tvDate.setText(finalTimeText);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                                 }
@@ -127,8 +131,11 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
+                                String twelveHourTime = StringUtils.extractTimeFromString(timeText);
+                                String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(twelveHourTime, "h:mm a", "HH:mm");
+                                String finalTimeText = timeText.replace(twelveHourTime, twentyFourHourTime);
+                                holder.tvDate.setText(finalTimeText);
 
-                                holder.tvDate.setText(timeText);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                                 }
@@ -185,10 +192,9 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.rlPrescriptionBackground.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
 
-                holder.tvDate.setText(appointmentInfoModel.getSlotTime());
-                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotDate());
-                Log.d(TAG, "onBindViewHolder: time : " + appointmentInfoModel.getSlotTime());
-
+                String timeText = appointmentInfoModel.getSlotTime();
+                String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(timeText, "h:mm a", "HH:mm");
+                holder.tvDate.setText(twentyFourHourTime);
             }
 
 
