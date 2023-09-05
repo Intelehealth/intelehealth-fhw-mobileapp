@@ -69,4 +69,8 @@
     <string name="disconnected">Disconnected!</string>
     <string name="enter_room_id">Please enter room-id</string>
     <string name="permission_denied">Permission Denied\n</string>
+    <string name="incoming_call">Incoming Call</string>
+    <string name="incoming_voice_call">Incoming Voice Call</string>
+    <string name="webrtc_accept">Accept</string>
+    <string name="webrtc_decline">Decline</string>
 </resources>

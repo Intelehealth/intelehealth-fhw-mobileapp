@@ -281,7 +281,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="24dip"
                         android:layout_marginTop="16dip"
-                        android:text="Incoming call"
+                        android:text="@string/incoming_call"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -325,7 +325,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/caller_name_tv"
                     android:layout_centerHorizontal="true"
-                    android:text="Incoming voice call"
+                    android:text="@string/incoming_voice_call"
                     android:textColor="@color/gray_3"
                     android:textSize="14sp"
                     android:textStyle="normal" />
@@ -367,7 +367,7 @@
                             android:layout_below="@+id/in_call_reject_imv"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="16dip"
-                            android:text="Decline"
+                            android:text="@string/webrtc_decline"
                             android:textColor="@color/gray_4"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -408,7 +408,7 @@
                             android:layout_below="@+id/in_call_accept_imv"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="16dip"
-                            android:text="Accept"
+                            android:text="@string/webrtc_accept"
                             android:textColor="@color/gray_4"
                             android:textSize="14sp"
                             android:textStyle="bold" />

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Int-Health V-Call</string>
+    <string name="audio_on_lbl">Звук включен!</string>
+    <string name="audio_off_lbl">Звук выключен!</string>
+    <string name="disconnected">Отключен!</string>
+    <string name="call_end_lbl">Вызов завершен!</string>
+    <string name="video_on_lbl">Видео на!</string>
+    <string name="video_off_lbl">Видео выключено!</string>
+    <string name="incoming_call">Входящий вызов</string>
+    <string name="incoming_voice_call">Входящий голосовой вызов</string>
+    <string name="webrtc_accept">Принять</string>
+    <string name="webrtc_decline">Отменить</string>
+</resources>
