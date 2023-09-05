@@ -2645,6 +2645,8 @@ int string favorites 0x0
 int string format_description 0x0
 int string hide_bottom_view_on_scroll_behavior 0x0
 int string icon_content_description 0x0
+int string incoming_call 0x0
+int string incoming_voice_call 0x0
 int string invalid_url_text 0x0
 int string invalid_url_title 0x0
 int string item_view_role_description 0x0
@@ -2756,6 +2758,8 @@ int string video_call 0x0
 int string video_off_lbl 0x0
 int string video_on_lbl 0x0
 int string video_on_off_button 0x0
+int string webrtc_accept 0x0
+int string webrtc_decline 0x0
 int string yes 0x0
 int string you 0x0
 int string you_have_no_messages_start_sending_messages_now 0x0

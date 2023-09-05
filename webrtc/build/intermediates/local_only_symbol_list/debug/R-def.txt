@@ -258,6 +258,8 @@ string empty_message_txt
 string enter_room_id
 string favorites
 string format_description
+string incoming_call
+string incoming_voice_call
 string invalid_url_text
 string invalid_url_title
 string loading
@@ -289,6 +291,8 @@ string video_call
 string video_off_lbl
 string video_on_lbl
 string video_on_off_button
+string webrtc_accept
+string webrtc_decline
 string yes
 string you
 string you_have_no_messages_start_sending_messages_now
