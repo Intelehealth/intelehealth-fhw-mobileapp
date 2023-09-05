@@ -472,10 +472,11 @@ public class EncounterDAO {
             //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
 
             Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and " +
-                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",
-                    new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+                            "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",  // ENCOUNTER_PATIENT_EXIT_SURVEY
+                    new String[]{visitUUID});
             EncounterDTO encounterDTO = new EncounterDTO();
-            if (idCursor.getCount() != 0) {
+            Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
+            if (idCursor.getCount() > 0) {
                 return true;
             }
             idCursor.close();
@@ -502,7 +503,7 @@ public class EncounterDAO {
                             "encounter_type_uuid = ?",
                     new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_NOTE}); // ENCOUNTER_PATIENT_EXIT_SURVEY
             EncounterDTO encounterDTO = new EncounterDTO();
-            if (idCursor.getCount() != 0) {
+            if (idCursor.getCount() > 0) {
                 return true;
             }
             idCursor.close();

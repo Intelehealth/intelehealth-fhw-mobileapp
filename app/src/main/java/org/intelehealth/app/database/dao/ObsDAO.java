@@ -322,7 +322,7 @@ public class ObsDAO {
     public static String getFollowupDataForVisitUUID(String visitUUID) {
         String result = null;
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if(visitUUID != null) {
@@ -357,7 +357,7 @@ public class ObsDAO {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         String encounterIDSelection = "visituuid = ? ";

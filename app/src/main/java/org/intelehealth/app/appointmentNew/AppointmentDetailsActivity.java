@@ -1003,7 +1003,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         Log.d(TAG, "fetchPrescriptionReceivedTime:visitUUID :" + visitUUID);
         String modifiedDate = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if (visitUUID != null) {

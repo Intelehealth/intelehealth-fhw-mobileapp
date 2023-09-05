@@ -99,7 +99,7 @@ public class SyncDAO {
     public boolean pullData_Background(final Context context) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
-        db = mDbHelper.getWritableDatabase();
+        db = mDbHelper.getWriteDb();
 
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
@@ -201,7 +201,7 @@ public class SyncDAO {
     public boolean pullData(final Context context, String fromActivity) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
-        db = mDbHelper.getWritableDatabase();
+        db = mDbHelper.getWriteDb();
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();

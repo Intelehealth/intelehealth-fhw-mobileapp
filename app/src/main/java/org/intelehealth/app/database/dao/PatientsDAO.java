@@ -581,7 +581,7 @@ public class PatientsDAO {
 
     public static List<PatientDTO> getAllPatientsFromDB(int limit, int offset) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String table = "tbl_patient";
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY modified_date DESC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
         try {
@@ -614,7 +614,7 @@ public class PatientsDAO {
         String search = query/*.trim().replaceAll("\\s", "")*/;
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String table = "tbl_patient";
         List<String> patientUUID_List = new ArrayList<>();
 
@@ -707,7 +707,7 @@ public class PatientsDAO {
 
     public static String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND " +
                 "person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7'", new String[]{patientuuid});
         try {
@@ -725,7 +725,7 @@ public class PatientsDAO {
 
     public static VisitDTO isVisitPresentForPatient_fetchVisitValues(String patientUUID) {
         VisitDTO visitDTO = new VisitDTO();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit WHERE patientuuid = ?", new String[]{patientUUID});
         try {
             if (idCursor.moveToFirst()) {
