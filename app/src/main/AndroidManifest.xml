@@ -388,21 +388,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.activitySync.ActivitySync"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_sync"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_video_library"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.activePatientsActivity.ActivePatientActivity"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_active_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

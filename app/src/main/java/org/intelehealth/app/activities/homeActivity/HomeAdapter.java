@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
@@ -20,8 +19,6 @@ import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity
 import org.intelehealth.app.activities.videoLibraryActivity.VideoLibraryActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.ConfigUtils;
-
-import org.intelehealth.app.activities.activitySync.ActivitySync;
 
 /**
  * Created by tusharjois on 9/20/16.
