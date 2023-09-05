@@ -284,6 +284,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
         context = HomeScreenActivity_New.this;
 
@@ -298,7 +299,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
         }
         sessionManager = new SessionManager(this);
-        Log.d("onCreate: ", "I m called! " + sessionManager.getAppLanguage());
         initUI();
         clickListeners();
     }
