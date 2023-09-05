@@ -43,6 +43,8 @@ import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
+import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.ezazi.ui.validation.RangeInputFilter;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -628,9 +630,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView ivTypeValue = binding.ivFluidOptions.viewInfusionStatus.tvData;
         EditText ivInfusionRate = binding.ivFluidOptions.viewInfusionRate.etvData;
 //        ivInfusionStatus = binding.ivFluidOptions.viewInfusionStatus.tvData;
-        ivInfusionRate.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
-        ivInfusionRate.setInputType(InputType.TYPE_CLASS_NUMBER);
-
 
         TextView selected = view.findViewById(R.id.tvSelectedValue);
 
@@ -646,28 +645,53 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             showSingleSelectionDialog(heading, info, ivTypeValue);
         });
 
-        setInfusionRateTextChangeListener(binding.ivFluidOptions.viewInfusionRate.etvData, info);
+        setInfusionRateTextChangeListener(ivInfusionRate, info);
     }
 
     private void setInfusionRateTextChangeListener(EditText editText, ParamInfo info) {
-        editText.addTextChangedListener(new TextChangeListener() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    int value = Integer.parseInt(s.toString());
-                    if (value <= 60 && value > 4) {
-                        info.getMedication().setInfusionRate(s.toString());
-                        info.saveJson();
-                    } else {
-                        editText.setText("");
-                        Toast.makeText(editText.getContext(), "Infusion Rate must be in range of 5 to 60", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    info.getMedication().setInfusionRate(null);
-                    info.saveJson();
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        , new RangeInputFilter(5, 60, (min, max) ->
+//                Toast.makeText(editText.getContext(), "Infusion Rate must be in range of " + min + " to " + max, Toast.LENGTH_LONG).show())}
+
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus && editText.getText().length() > 0) {
+                int value = Integer.parseInt(editText.getText().toString());
+                if (value < 5) {
+                    saveInfusionRateValue(info, null);
+                    editText.setText("");
+                    showInfusionRateError(editText.getContext());
                 }
             }
         });
+
+        editText.addTextChangedListener(new TextChangeListener() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    int value = Integer.parseInt(s.toString());
+                    if (value < 5) {
+                        showInfusionRateError(editText.getContext());
+                    } else if (value <= 60) {
+                        saveInfusionRateValue(info, s.toString());
+                    } else {
+                        editText.setText("");
+                        showInfusionRateError(editText.getContext());
+                    }
+                } else {
+                    saveInfusionRateValue(info, null);
+                }
+            }
+        });
+    }
+
+    private void showInfusionRateError(Context context) {
+        Toast.makeText(context, "Infusion Rate must be in range of 5 to 60", Toast.LENGTH_LONG).show();
+    }
+
+    private void saveInfusionRateValue(ParamInfo info, String value) {
+        info.getMedication().setInfusionRate(value);
+        info.saveJson();
     }
 
     private void setIvFluidDetails(ParamInfo info, PartoLblRadioViewEzaziBinding binding) {
