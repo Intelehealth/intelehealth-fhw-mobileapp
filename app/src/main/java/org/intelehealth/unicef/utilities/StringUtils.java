@@ -1738,7 +1738,7 @@ public final class StringUtils {
     }
 
     public static String getFullMonthName(String dobString) {
-        return dobString.replace("Jan", "January").replace("Feb", "February").replace("Mar", "March").replace("Apr", "April").replace("Jun", "June").replace("Jul", "July").replace("Aug", "August").replace("Sept", "September").replace("Oct", "October").replace("Nov", "November").replace("Dec", "December");
+        return dobString.replace("Jan", "January").replace("Feb", "February").replace("Mar", "March").replace("Apr", "April").replace("Jun", "June").replace("Jul", "July").replace("Aug", "August").replace("Sep", "September").replace("Oct", "October").replace("Nov", "November").replace("Dec", "December");
 
     }
 
