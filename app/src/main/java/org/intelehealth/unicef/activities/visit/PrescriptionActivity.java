@@ -1292,7 +1292,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
-                    diagnosisReturned = diagnosisReturned + ",\n" + value;
+                    diagnosisReturned = diagnosisReturned + ",\n\n" + value;
                 } else {
                     diagnosisReturned = value;
                 }
@@ -1309,7 +1309,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 Log.i("TAG", "parse_va: " + value);
                 Log.i("TAG", "parseData: rx" + rxReturned);
                 if (!rxReturned.trim().isEmpty() && !rxReturned.contains(value)) {
-                    rxReturned = rxReturned + "\n" + value;
+                    rxReturned = rxReturned + "\n\n" + value;
                 } else {
                     rxReturned = value;
                 }
@@ -1320,7 +1320,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty() && !adviceReturned.contains(value)) {
-                    adviceReturned = adviceReturned + "\n" + value;
+                    adviceReturned = adviceReturned + "\n\n" + value;
                     Log.d("GAME", "GAME: " + adviceReturned);
                 } else {
                     adviceReturned = value;
