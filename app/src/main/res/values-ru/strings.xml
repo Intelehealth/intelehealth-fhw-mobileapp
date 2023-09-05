@@ -852,6 +852,7 @@
     <string name="please_enter_the_server_url_with_license_key_to_download_the_protocols">Пожалуйста, введите URL сервера с лицензионным ключом, чтобы загрузить протоколы</string>
     <string name="previously_scheduled_appointment_details">Информация о ранее запланированной встрече</string>
     <string name="loading_slots">Загрузка…</string>
+    <string name="loading_more">Загрузка…</string>
     <string name="alert_txt">Alert!</string>
     <string name="valid_dob_msg">Please select valid DOB!</string>
     <string name="all_patients_txt">Все пациенты</string>

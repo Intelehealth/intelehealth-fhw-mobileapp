@@ -50,7 +50,7 @@ import okhttp3.ResponseBody;
  */
 public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     private Context context;
-    private List<PrescriptionModel> list;
+    List<PrescriptionModel> list;
     ImagesDAO imagesDAO = new ImagesDAO();
     String profileImage = "";
     String profileImage1 = "";

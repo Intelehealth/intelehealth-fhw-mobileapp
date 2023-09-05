@@ -755,7 +755,6 @@ public class VisitsDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        Log.d("TAG", "getPendingPrescCount: " + String.valueOf(count));
         return count;
     }
 }
