@@ -74,10 +74,13 @@ public class VisitPendingFragment extends Fragment {
     private VisitCountInterface mlistener;
 
     private final int recentLimit = 15, olderLimit = 15;
+    private final int finalRecentLimit = 15, finalOlderLimit = 15;
     private int recentStart = 0, recentEnd = recentStart + recentLimit;
+    private final int finalRecentStart = 0;
     private boolean isRecentFullyLoaded = false;
 
     private int olderStart = 0, olderEnd = olderStart + olderLimit;
+    private final int finalOlderStart = 0;
     private boolean isolderFullyLoaded = false;
     NestedScrollView nestedscrollview;
     private SessionManager sessionManager1;
@@ -222,14 +225,14 @@ public class VisitPendingFragment extends Fragment {
 
     private void fetchOlderData() {
         // pagination - start
-        olderList = olderVisits(olderLimit, olderStart);
+        olderList = olderVisits(finalOlderLimit, finalOlderStart);
         Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
         older_adapter = new VisitAdapter(getActivity(), olderList, sessionManager1.getAppLanguage());
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
 
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
+        olderStart = finalOlderStart;
+        olderEnd += finalOlderLimit;
         // pagination - end
 
         totalCounts_older = olderList.size();
@@ -240,14 +243,14 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void fetchRecentData() {
-        recentList = recentVisits(recentLimit, recentStart);
+        recentList = recentVisits(finalRecentLimit, finalRecentStart);
         // pagination - start
         recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager1.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
+        recentStart = finalRecentStart;
+        recentEnd += finalRecentLimit;
         // pagination - end
 
         totalCounts_recent = recentList.size();
@@ -347,10 +350,10 @@ public class VisitPendingFragment extends Fragment {
         });
 
         closeButton.setOnClickListener(v -> {
-            resetData();
+//            resetData();
             no_patient_found_block.setVisibility(View.GONE);
             main_block.setVisibility(View.VISIBLE);
-//            defaultData();
+            defaultData();
             searchview_pending.setQuery("", false);
         });
         // Search - end
@@ -550,7 +553,7 @@ public class VisitPendingFragment extends Fragment {
 
 
     private List<PrescriptionModel> olderVisits(int limit, int offset) {
-        olderList = new ArrayList<>();
+        List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
@@ -887,12 +890,13 @@ public class VisitPendingFragment extends Fragment {
                     // recent - start
                     recent.clear();
                     if (allRecentList.size() > 0) {
-                        for (PrescriptionModel model : recentList) {
+                        for (PrescriptionModel model : allRecentList) {
                             String firstName = model.getFirst_name().toLowerCase();
                             String lastName = model.getLast_name().toLowerCase();
                             String fullName = firstName + " " + lastName;
+                            String openMrsID = model.getOpenmrs_id();
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                 recent.add(model);
                             } else {
                                 // dont add in list value.
@@ -904,12 +908,13 @@ public class VisitPendingFragment extends Fragment {
                     // older - start
                     older.clear();
                     if (allOlderList.size() > 0) {
-                        for (PrescriptionModel model : olderList) {
+                        for (PrescriptionModel model : allOlderList) {
                             String firstName = model.getFirst_name().toLowerCase();
                             String lastName = model.getLast_name().toLowerCase();
                             String fullName = firstName + " " + lastName;
+                            String openMrsID = model.getOpenmrs_id();
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                 older.add(model);
                             } else {
                                 // do nothing
