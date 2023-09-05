@@ -196,7 +196,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             }
 
                             @Override
-                            public void onImageRemoved(int index, String image) {
+                            public void onImageRemoved(int nodeIndex,int imageIndex, String imagee) {
 
                             }
                         });
@@ -480,9 +480,17 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                node.setSelected(false);
-                //mOnItemSelection.onSelect(node, index);
-                VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        node.setSelected(false);
+                        node.setSelected(false);
+                        //mOnItemSelection.onSelect(node, index);
+                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
+                    }
+                });
+
+
             }
         });
 
@@ -515,13 +523,14 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                     //notifyDataSetChanged();
                     //mOnItemSelection.onSelect(node, index);
+                    AdapterUtils.setToDisable(skipButton);
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
 
                         }
                     });
-                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
                 }
             }
         });

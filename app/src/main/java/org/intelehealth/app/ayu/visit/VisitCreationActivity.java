@@ -145,6 +145,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     // Family History
 
     private boolean mIsEditMode = false;
+    private boolean mIsEditTriggerFromVisitSummary = false;
     private int mEditFor = 0; // STEP_1_VITAL , STEP_2_VISIT_REASON, STEP_3_PHYSICAL_EXAMINATION, STEP_4_PAST_MEDICAL_HISTORY
 
     @Override
@@ -189,6 +190,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
             if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
+                mIsEditTriggerFromVisitSummary = true;
             }
             Log.v(TAG, "Patient ID: " + patientUuid);
             Log.v(TAG, "Visit ID: " + visitUuid);
@@ -234,6 +236,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         else makeReadyForEdit();
     }
 
+    public boolean isEditTriggerFromVisitSummary() {
+        return mIsEditTriggerFromVisitSummary;
+    }
 
     private void makeReadyForEdit() {
         findViewById(R.id.llProgressStepsVisitCreation).setVisibility(View.GONE);
@@ -697,8 +702,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     @Override
-    public void onImageRemoved(int index, String image) {
-        deleteImageFromDatabase(index, image);
+    public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+        deleteImageFromDatabase(nodeIndex,imageIndex, image);
     }
 
     @Override
@@ -1171,13 +1176,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
 
-    private void deleteImageFromDatabase(int index, String imageName) {
+    private void deleteImageFromDatabase(int nodeIndex,int imageIndex, String imageName) {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
             String obsUUID = imageName.substring(imageName.lastIndexOf("/") + 1).split("\\.")[0];
             imagesDAO.deleteImageFromDatabase(obsUUID);
-            imageUtilsListener.onImageReadyForDelete(index, imageName);
+            imageUtilsListener.onImageReadyForDelete(nodeIndex,imageIndex, imageName);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1340,7 +1345,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public interface ImageUtilsListener {
         void onImageReady(Bundle bundle);
 
-        void onImageReadyForDelete(int index, String image);
+        void onImageReadyForDelete(int nodeIndex,int imageIndex, String imageName);
     }
 
     private ActivityResultLauncher<String> requestPermissionLauncher =

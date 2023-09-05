@@ -11,5 +11,7 @@ public interface OnItemSelection {
 
     void onCameraRequest();
 
-    void onImageRemoved(int index, String image);
+    void onImageRemoved(int nodeIndex,int imageIndex, String image);
+
+
 }

@@ -76,7 +76,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
         view.findViewById(R.id.btnSubmitPhyExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mIsEditMode) {
+                if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else
