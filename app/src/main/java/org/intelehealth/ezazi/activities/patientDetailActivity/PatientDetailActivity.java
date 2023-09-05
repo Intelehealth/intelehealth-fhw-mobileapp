@@ -388,6 +388,8 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                             .insertVisitAttributes(uuid, "General Physician", VISIT_DR_SPECIALITY);
                     speciality_attributes
                             .insertVisitAttributes(uuid, sessionManager.getProviderID(), VISIT_HOLDER);
+                    speciality_attributes
+                            .insertVisitAttributes(uuid, "$", VISIT_READ_STATUS);
 
 
                 } catch (DAOException e) {
