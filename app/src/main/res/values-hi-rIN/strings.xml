@@ -1227,7 +1227,7 @@
     <string name="how_to_book_an_appointment">अपॉइंटमेंट कैसे बुक करें?</string>
     <string name="how_to_book_an_appointment_ans">रोगी पंजीकृत हो जाने पर और विज़िट बन जाने पर, विज़िट विवरण स्क्रीन पर, \”अपॉइंटमेंट\” बटन पर क्लिक करें। तारीख और समय (उपलब्ध स्लॉट में से) का चयन करें जो रोगी के लिए सुविधाजनक हो। विशेषज्ञ डॉक्टर के साथ अपॉइंटमेंट बुक करने के लिए \”अपॉइंटमेंट बुक करें\” पर क्लिक करें।</string>
     <string name="config_file_missing">कॉन्फ़िग फ़ाइल गायब है।</string>
-    <string name="follow_up_on">.. को फॉलो-अप</string>
+    <string name="follow_up_on">फॉलो-अप</string>
     <string name="failed_to_send_otp">ओटीपी नहीं भेजा जा सका</string>
     <string name="otp_is_incorrect">ओटीपी गलत है!</string>
     <string name="otp_verification_failed">ओटीपी सत्यापन विफल हुआ!</string>
@@ -1443,5 +1443,5 @@
     <string name="references">निर्देश:</string>
     <string name="already_selected_lbl">पहले से ही चयनित!</string>
     <string name="please_submit_to_proceed_next_step">कृपया अगले चरण पर आगे बढ़ने के लिए सबमिट करें</string>
-    <string name="to_date_validation">दिनांक दिनांक से दिनांक से बड़ा होना चाहिए</string>
+    <string name="to_date_validation"> शुरु की तारीख, अंत की तारीख से पहले होनी चाहिए </string>
 </resources>
