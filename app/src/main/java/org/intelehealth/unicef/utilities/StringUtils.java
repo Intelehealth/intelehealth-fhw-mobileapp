@@ -1743,7 +1743,7 @@ public final class StringUtils {
     }
 
     public static String getShortMonthName(String dobString) {
-        return dobString.replace("January", "Jan").replace("February", "Feb").replace("March", "Mar").replace("April", "Apr").replace("June", "Jun").replace("July", "Jul").replace("August", "Aug").replace("September", "Sept").replace("October", "Oct").replace("November", "Nov").replace("December", "Dec");
+        return dobString.replace("January", "Jan").replace("February", "Feb").replace("March", "Mar").replace("April", "Apr").replace("June", "Jun").replace("July", "Jul").replace("August", "Aug").replace("September", "Sep").replace("October", "Oct").replace("November", "Nov").replace("December", "Dec");
 
     }
 

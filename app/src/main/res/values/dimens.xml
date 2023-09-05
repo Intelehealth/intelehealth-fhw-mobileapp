@@ -1010,5 +1010,6 @@
     <dimen name="margin_3">3dp</dimen>
     <dimen name="text_12sp">12sp</dimen>
     <dimen name="update_reset_btn_size">140dp</dimen>
+    <dimen name="padding_70">70dp</dimen>
 
 </resources>
