@@ -420,7 +420,7 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor;
 

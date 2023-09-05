@@ -913,9 +913,8 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 args.putSerializable("patientDTO", (Serializable) patientdto);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
-            }/* else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
-            }*/
+                getActivity().finish();
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

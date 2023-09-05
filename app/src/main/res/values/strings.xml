@@ -891,7 +891,7 @@
     <string name="take_patient_visits">Take patient visits</string>
     <string name="collect_patient_info">Collect Patient information using AYU</string>
     <string name="profile_details_added">Profile details added successfully</string>
-    <string name="profile_details_updated_new">Profile details updated successfully</string>
+    <string name="profile_details_updated_new">Profile details updated successfully!</string>
     <string name="profile_photo_updated_new">Profile photo updated successfully</string>
     <string name="otp_sent_success">OTP sent successfully</string>
 
