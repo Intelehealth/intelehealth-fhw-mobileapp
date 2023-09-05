@@ -11,4 +11,6 @@ import javax.inject.Inject
  **/
 class ChatDataSource @Inject constructor(private val restClient: WebRtcApiClient) {
     suspend fun sendMessage(message: ChatMessage) = restClient.sendMessage(message)
+
+    suspend fun markAsRead(messageId: Int) = restClient.markAsRead(messageId)
 }

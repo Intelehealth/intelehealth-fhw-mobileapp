@@ -16,14 +16,16 @@ data class ChatMessage(
     @PrimaryKey
     @SerializedName("id")
     var messageId: Int = 0,
+    @SerializedName("roomId")
+    var roomId: String? = null,
     @SerializedName("fromUser")
-    val senderId: String = "",
+    var senderId: String = "",
     @SerializedName("toUser")
-    val receiverId: String = "",
-    val senderName: String = "",
-    val receiverName: String = "",
+    var receiverId: String = "",
+    var senderName: String = "",
+    var receiverName: String = "",
     @SerializedName("message")
-    val message: String = "",
+    var message: String = "",
     var messageStatus: Int = 0,
     var hwName: String? = null,
     @SerializedName("isRead")
@@ -31,11 +33,11 @@ data class ChatMessage(
     @SerializedName("createdAt")
     var createdAt: String? = null,
     @SerializedName("patientId")
-    var roomId: String? = null,
+    var patientId: String? = null,
     @SerializedName("patientName")
     var roomName: String? = null,
-    val hwPic: String? = null,
-    val patientPic: String? = null,
+    var hwPic: String? = null,
+    var patientPic: String? = null,
     var visitId: String? = null,
     @SerializedName("updatedAt")
     var updatedAt: String? = null,

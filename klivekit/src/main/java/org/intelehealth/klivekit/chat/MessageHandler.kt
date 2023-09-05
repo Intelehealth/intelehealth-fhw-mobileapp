@@ -26,6 +26,14 @@ class MessageHandler @Inject constructor(
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
+    fun sendMessage(message: ChatMessage) {
+        scope.launch { chatRepository.sendMessage(message) }
+    }
+
+    fun markMessageAsRead(messageId: Int) {
+        scope.launch { chatRepository.markAsRead(messageId) }
+    }
+
     override fun onConversationUpdate() {
 
     }
@@ -35,8 +43,16 @@ class MessageHandler @Inject constructor(
     }
 
     override fun onMessageReceived(messages: MutableList<ChatMessage>?) {
+        messages?.let { saveMessages(messages) }
+    }
+
+    private fun saveMessages(messages: MutableList<ChatMessage>) {
         scope.launch {
-            messages?.let { chatRepository.addMessages(it) }
+            messages.map {
+                it.roomId = "${it.receiverId}_${it.patientId}_${it.senderId}"
+                it.messageStatus = MessageStatus.RECEIVED.value
+                return@map it
+            }.also { chatRepository.addMessages(it) }
         }
     }
 

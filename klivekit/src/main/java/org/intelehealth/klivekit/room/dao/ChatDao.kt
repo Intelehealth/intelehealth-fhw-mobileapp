@@ -1,4 +1,4 @@
-package com.codeglo.billingclient.room.dao
+package org.intelehealth.klivekit.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -15,8 +15,8 @@ import org.intelehealth.klivekit.chat.model.ChatMessage
  **/
 @Dao
 interface ChatDao {
-    @Query("SELECT * FROM tbl_chat_message")
-    fun getAll(): Flow<List<ChatMessage>>
+    @Query("SELECT * FROM tbl_chat_message WHERE roomId =:chatRoomId")
+    fun getAll(chatRoomId: String): Flow<List<ChatMessage>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(messages: List<ChatMessage>)

@@ -29,4 +29,7 @@ class DatabaseModule {
     @Provides
     fun provideChatDao(appDatabase: WebRtcDatabase) = appDatabase.chatDao()
 
+    @Singleton
+    @Provides
+    fun provideChatRoom(appDatabase: WebRtcDatabase) = appDatabase.chatRoom()
 }
