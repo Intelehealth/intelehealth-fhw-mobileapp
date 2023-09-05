@@ -983,6 +983,7 @@
                 android:layout_marginTop="@dimen/margin_20dp"
                 android:layout_marginEnd="@dimen/toolbar_margin_left"
                 android:elevation="16dp"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/margin_5"
                 app:cardElevation="@dimen/margin_5">
 

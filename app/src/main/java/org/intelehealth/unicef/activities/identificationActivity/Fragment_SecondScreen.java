@@ -633,6 +633,7 @@ public class Fragment_SecondScreen extends Fragment {
     private void setStateAdapter(String countryName) {
         String[] stateList = new String[]{};
         if (countryName.equalsIgnoreCase("India")) {
+            mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(requireActivity(), "state_district_tehsil.json").toString(), StateDistMaster.class);
             stateList = new String[mStateDistMaster.getStateDataList().size() + 1];
         }
 
