@@ -1444,6 +1444,5 @@
     <string name="already_selected_lbl">पहले से ही चयनित!</string>
     <string name="please_submit_to_proceed_next_step">कृपया अगले चरण पर आगे बढ़ने के लिए सबमिट करें</string>
     <string name="to_date_validation"> शुरु की तारीख, अंत की तारीख से पहले होनी चाहिए </string>
-    <string name="to_date_validation">दिनांक दिनांक से दिनांक से बड़ा होना चाहिए</string>
     <string name="select_image_hdr">छवि चुने</string>
 </resources>
