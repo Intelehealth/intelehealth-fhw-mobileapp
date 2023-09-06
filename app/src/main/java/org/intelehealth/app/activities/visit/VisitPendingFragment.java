@@ -414,7 +414,7 @@ public class VisitPendingFragment extends Fragment {
         recentList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
@@ -463,6 +463,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -483,7 +484,7 @@ public class VisitPendingFragment extends Fragment {
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
@@ -530,6 +531,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -551,7 +553,7 @@ public class VisitPendingFragment extends Fragment {
         olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
@@ -598,6 +600,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -618,7 +621,7 @@ public class VisitPendingFragment extends Fragment {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
@@ -665,6 +668,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -885,14 +889,29 @@ public class VisitPendingFragment extends Fragment {
                     recent.clear();
                     if (allRecentList.size() > 0) {
                         for (PrescriptionModel model : recentList) {
-                            String firstName = model.getFirst_name().toLowerCase();
-                            String lastName = model.getLast_name().toLowerCase();
-                            String fullName = firstName + " " + lastName;
+                            if (model.getMiddle_name() != null) {
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String middleName = model.getMiddle_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullPartName = firstName + " " + lastName;
+                                String fullName = firstName + " " + middleName + " " + lastName;
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                recent.add(model);
+                                if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
+                                        lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    recent.add(model);
+                                } else {
+                                    // dont add in list value.
+                                }
                             } else {
-                                // dont add in list value.
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullName = firstName + " " + lastName;
+
+                                if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    recent.add(model);
+                                } else {
+                                    // dont add in list value.
+                                }
                             }
                         }
                     }
@@ -902,14 +921,30 @@ public class VisitPendingFragment extends Fragment {
                     older.clear();
                     if (allOlderList.size() > 0) {
                         for (PrescriptionModel model : olderList) {
-                            String firstName = model.getFirst_name().toLowerCase();
-                            String lastName = model.getLast_name().toLowerCase();
-                            String fullName = firstName + " " + lastName;
+                            if (model.getMiddle_name() != null) {
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String middleName = model.getMiddle_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullPartName = firstName + " " + lastName;
+                                String fullName = firstName + " " + middleName + " " + lastName;
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                older.add(model);
-                            } else {
-                                // do nothing
+                                if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
+                                        || lastName.contains(finalQuery)  || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    older.add(model);
+                                } else {
+                                    // do nothing
+                                }
+                            }
+                            else {
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullName = firstName + " " + lastName;
+
+                                if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    older.add(model);
+                                } else {
+                                    // do nothing
+                                }
                             }
                         }
                     }
