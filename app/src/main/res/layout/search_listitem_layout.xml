@@ -17,17 +17,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fu_margin_start"
-                android:layout_weight="2.4">
+                android:layout_toStartOf="@+id/rlPrioritySearchRowItem">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile"
@@ -61,9 +59,8 @@
                             android:id="@+id/search_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toStartOf="@id/search_gender"
+                            android:layout_toStartOf="@id/fl_priority"
                             android:ellipsize="end"
-                            android:fontFamily="@font/lato_bold"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:maxLines="1"
@@ -72,18 +69,26 @@
                             android:textColor="@null"
                             android:textSize="@dimen/fu_name_txt_size" />
 
-                        <TextView
-                            android:id="@+id/search_gender"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <FrameLayout
+                            android:id="@+id/fl_priority"
+                            android:layout_width="@dimen/btn_prioirty_w_60dp"
+                            android:layout_height="@dimen/btn_prioirty_h_20dp"
                             android:layout_alignParentEnd="true"
                             android:layout_marginStart="@dimen/cal_margnin_start"
-                            android:gravity="center_vertical"
-                            android:lineSpacingExtra="3sp"
-                            android:text="@string/search_gender"
-                            android:textAppearance="@style/label_misc_txt_14sp"
-                            android:textColor="@null"
-                            android:textSize="@dimen/fu_name_txt_size" />
+                            android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/priority_tag_imgview"
+                            android:layout_width="@dimen/btn_prioirty_w_60dp"
+                            android:layout_height="@dimen/btn_prioirty_h_20dp"
+                            android:layout_gravity="top"
+                            android:gravity="center"
+                            android:lineSpacingExtra="0sp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:src="@drawable/ui2_frame_priority" />
+                        </FrameLayout>
+
                     </RelativeLayout>
 
                     <ImageView
@@ -96,7 +101,7 @@
 
                     <TextView
                         android:id="@+id/search_date_relative"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/lll"
                         android:layout_marginStart="@dimen/cal_margnin_start"
@@ -225,19 +230,30 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/priority_tag_imgview"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/search_priority_tag"
-                android:layout_gravity="top|end|center"
+            <RelativeLayout
+                android:id="@+id/rlPrioritySearchRowItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:layout_weight="0.6"
-                android:gravity="center"
-                android:lineSpacingExtra="0sp"
-                android:src="@drawable/ui2_frame_priority" />
+                android:layout_marginEnd="@dimen/fu_margin_start">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/search_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/cal_margnin_start"
+                    android:layout_gravity="end"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/search_gender"
+                    android:paddingRight="5dp"
+                    android:textAppearance="@style/label_misc_txt_14sp"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_name_txt_size"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
 
     </RelativeLayout>
