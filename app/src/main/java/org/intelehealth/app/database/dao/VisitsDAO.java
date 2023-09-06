@@ -494,7 +494,7 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND " +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
@@ -510,6 +510,7 @@ public class VisitsDAO {
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
             //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
@@ -531,7 +532,7 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND " +
               //  " v.startdate > DATETIME('now', '-4 day') " +
@@ -547,6 +548,7 @@ public class VisitsDAO {
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
             //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
@@ -567,7 +569,7 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND" +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
@@ -583,6 +585,7 @@ public class VisitsDAO {
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
              //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
@@ -607,7 +610,7 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
@@ -624,6 +627,7 @@ public class VisitsDAO {
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
              //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
@@ -644,7 +648,7 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
@@ -661,6 +665,7 @@ public class VisitsDAO {
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
              //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350

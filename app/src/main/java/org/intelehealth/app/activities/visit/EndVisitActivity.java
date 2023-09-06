@@ -369,28 +369,59 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
                             if (allRecentList.size() > 0) {
                                 for (PrescriptionModel model : allRecentList) {
-                                    String firstName = model.getFirst_name().toLowerCase();
-                                    String lastName = model.getLast_name().toLowerCase();
-                                    String fullName = firstName + " " + lastName;
+                                    if (model.getMiddle_name() != null) {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String middleName = model.getMiddle_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullPartName = firstName + " " + lastName;
+                                        String fullName = firstName + " " + middleName + " " + lastName;
 
-                                    if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.equalsIgnoreCase(finalQuery)) {
-                                        recent.add(model);
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
+                                                lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            recent.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
                                     } else {
-                                        // dont add in list value.
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullName = firstName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            recent.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
                                     }
                                 }
                             }
 
                             if (allOlderList.size() > 0) {
                                 for (PrescriptionModel model : allOlderList) {
-                                    String firstName = model.getFirst_name().toLowerCase();
-                                    String lastName = model.getLast_name().toLowerCase();
-                                    String fullName = firstName + " " + lastName;
+                                    if (model.getMiddle_name() != null) {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String middleName = model.getMiddle_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullPartName = firstName + " " + lastName;
+                                        String fullName = firstName + " " + middleName + " " + lastName;
 
-                                    if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.equalsIgnoreCase(finalQuery)) {
-                                        older.add(model);
-                                    } else {
-                                        // dont add in list value.
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
+                                                || lastName.contains(finalQuery)  || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            older.add(model);
+                                        } else {
+                                            // do nothing
+                                        }
+                                    }
+                                    else {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullName = firstName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            older.add(model);
+                                        } else {
+                                            // do nothing
+                                        }
                                     }
                                 }
                             }
