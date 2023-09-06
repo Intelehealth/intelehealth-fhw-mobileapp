@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.visitSummaryActivity;
 
+import static org.intelehealth.unicef.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
+import static org.intelehealth.unicef.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.unicef.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.unicef.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.unicef.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
@@ -144,6 +146,7 @@ import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
+import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1889,8 +1892,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         incomplete_act.setOnClickListener(v -> {
             // filter options
-            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(VisitSummaryActivity_New.this, EndVisitActivity.class);
+//            startActivity(intent);
+            triggerEndVisitDialog();
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
@@ -4954,5 +4958,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void setTvOpenAll() {
         tvCloseAll.setText(R.string.open_all);
         tvCloseAll.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.chevron_up), null);
+    }
+
+    private void triggerEndVisitDialog() {
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.confirm_end_visit_reason), context.getResources().getString(R.string.confirm_end_visit_reason_message), false, context.getResources().getString(R.string.confirm), context.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+            @Override
+            public void onDialogActionDone(int action) {
+                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                    String vitalsUUID = fetchEncounterUuidForEncounterVitals(visitUUID);
+                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+
+                    VisitUtils.endVisit(context, visitUUID, patientUuid, followUpDate,
+                            vitalsUUID, adultInitialUUID, "state",
+                            patient.getFirst_name() + " " + patient.getLast_name().substring(0, 1), "VisitSummaryActivity");
+                }
+            }
+        });
     }
 }
