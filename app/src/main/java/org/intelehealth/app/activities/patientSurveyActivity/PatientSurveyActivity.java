@@ -35,7 +35,6 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class PatientSurveyActivity extends AppCompatActivity {

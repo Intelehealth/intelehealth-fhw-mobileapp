@@ -33,7 +33,6 @@ import java.util.Objects;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;

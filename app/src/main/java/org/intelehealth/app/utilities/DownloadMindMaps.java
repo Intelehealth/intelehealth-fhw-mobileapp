@@ -1,11 +1,9 @@
 package org.intelehealth.app.utilities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -20,7 +18,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.setupActivity.SetupActivity;
 
 
 /**

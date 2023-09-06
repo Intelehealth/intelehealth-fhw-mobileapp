@@ -30,8 +30,6 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
-
 public class PrivacyNotice_Activity extends AppCompatActivity implements View.OnClickListener {
     TextView privacy_textview;
     SessionManager sessionManager = null;
