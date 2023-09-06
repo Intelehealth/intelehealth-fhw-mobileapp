@@ -216,7 +216,7 @@ public class VisitAttributeListDAO {
 
     }
 
-    public boolean markVisitAsRead(String visitUUid) throws DAOException {
+    public void markVisitAsRead(String visitUUid) throws DAOException {
         boolean isUpdated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -236,7 +236,6 @@ public class VisitAttributeListDAO {
         } finally {
             db.endTransaction();
         }
-        return isUpdated;
 
     }
 

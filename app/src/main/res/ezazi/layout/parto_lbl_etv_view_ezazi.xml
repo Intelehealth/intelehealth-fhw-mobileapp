@@ -37,7 +37,6 @@
                 android:hint="Enter Value"
                 app:drawableEndCompat="@drawable/ic_space"
                 android:inputType="numberDecimal"
-                android:maxLength="2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
