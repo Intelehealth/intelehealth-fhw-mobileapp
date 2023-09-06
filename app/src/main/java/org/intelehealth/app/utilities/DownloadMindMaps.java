@@ -130,7 +130,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
             if(screenStr.equalsIgnoreCase("setup")){
-                ((SetupActivity)context).showMindmapFailedAlert();
+              //  ((SetupActivity)context).showMindmapFailedAlert();    // Prajwal - commenting this line as it is using old java context. Not sure on what change is needed so commenting it out.
             }else if(screenStr.equalsIgnoreCase("home")){
                 SessionManager sessionManager=new SessionManager(context);
                 sessionManager.setLicenseKey("");

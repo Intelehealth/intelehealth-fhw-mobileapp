@@ -378,7 +378,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             }
 
             // displaying all values in another activity
-            Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+           /* Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -389,7 +389,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
-            startActivity(intent);
+            startActivity(intent);*/
         } else {
 
             //  if(patientHistoryMap.anySubSelected()){

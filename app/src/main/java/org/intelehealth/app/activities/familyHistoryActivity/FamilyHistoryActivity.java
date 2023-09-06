@@ -374,7 +374,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(insertion);
 
-            Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+         /*   Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -385,7 +385,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
-            startActivity(intent);
+            startActivity(intent);*/
         } else {
 
             if (flag == true) {

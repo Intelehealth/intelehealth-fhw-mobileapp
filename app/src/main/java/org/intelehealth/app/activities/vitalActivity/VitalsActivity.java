@@ -901,7 +901,7 @@ public class VitalsActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-                Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+              /*  Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -912,7 +912,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
-                startActivity(intent);
+                startActivity(intent);*/
             } catch (DAOException dao) {
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }

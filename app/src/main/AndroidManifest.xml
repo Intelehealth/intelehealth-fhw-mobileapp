@@ -291,22 +291,9 @@
         </receiver>
 
         <activity
-            android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_privacy_notice"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" />
-        <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_additional_documents"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.patientSurveyActivity.PatientSurveyActivity"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_patient_survey"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -314,22 +301,6 @@
             android:configChanges="uiMode"
             android:label="@string/title_activity_physical_exam"
             android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_family_history"
-            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_past_medical_history"
-            android:parentActivityName=".activities.questionNodeActivity.QuestionNodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
@@ -347,17 +318,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".activities.vitalActivity.VitalsActivity"
-            android:configChanges="uiMode"
-            android:label="@string/title_activity_vitals"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.patientDetailActivity.PatientDetailActivity"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
             android:configChanges="uiMode"
@@ -379,12 +339,7 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.followuppatients.FollowUpPatientActivity"
-            android:configChanges="uiMode"
-            android:exported="true"
-            android:label="@string/title_follow_up"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
+        <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
         <activity

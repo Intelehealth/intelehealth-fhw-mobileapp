@@ -97,6 +97,8 @@ public class OfflineLogin {
         Log.i(TAG, "Password Hash: " + hash);
     }
 
+    // this was already not being used anywhere so commented it as this class is also used in new ui so not deleting it.
+/*
     public void login(String username, String password) {
         Log.i(TAG, "Checking Offline Login!");
         if (mSharedPreference.contains(mContext.getString(R.string.offline_login_username_key)) &&
@@ -143,6 +145,7 @@ public class OfflineLogin {
             Toast.makeText(mContext, mContext.getString(R.string.offline_credentials_unavailable), Toast.LENGTH_LONG).show();
         }
     }
+*/
 
     public void invalidateLoginCredentials() {
         mSharedPreference.edit().clear().apply();
