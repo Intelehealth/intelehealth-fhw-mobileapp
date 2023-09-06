@@ -691,13 +691,13 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         View convertView = inflater.inflate(R.layout.layout_dialog_custom_calendarview, null);
         alertdialogBuilder.setView(convertView);
 
-        rvCalendarView = convertView.findViewById(R.id.rv_calendarview_new);
-        spinnerMonths = convertView.findViewById(R.id.spinner_months_caleview);
-        spinnerYear = convertView.findViewById(R.id.spinner_year_caleview);
-        ivPrevMonth = convertView.findViewById(R.id.iv_prev_month2);
-        ivNextMonth = convertView.findViewById(R.id.iv_next_month2);
-        Button btnCancelCalendar = convertView.findViewById(R.id.btn_cancel_calendar);
-        Button btnOkCalendar = convertView.findViewById(R.id.btn_okay_calendar);
+        rvCalendarView = convertView.findViewById(R.id.rvCustomCVDialog);
+        spinnerMonths = convertView.findViewById(R.id.spinnerMonthCustomCVDialog);
+        spinnerYear = convertView.findViewById(R.id.spinnerYearCustomCVDialog);
+        ivPrevMonth = convertView.findViewById(R.id.ivPrevArrowCustomCVDialog);
+        ivNextMonth = convertView.findViewById(R.id.ivNextArrowCustomCVDialog);
+        Button btnCancelCalendar = convertView.findViewById(R.id.btnCancelCustomCVDialog);
+        Button btnOkCalendar = convertView.findViewById(R.id.btnOkayCustomCVDialog);
 
 
         ivPrevMonth.setOnClickListener(v -> {

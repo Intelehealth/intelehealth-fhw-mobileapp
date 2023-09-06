@@ -177,19 +177,26 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         bundle.putBoolean("patient_detail", true);
         fragment.setArguments(bundle); // passing data to Fragment
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.flMainIdentificationFirstScreen, fragment)
+                .commit();
     }
 
     private void initUI() {
         i_privacy = getIntent();
         context = IdentificationActivity_New.this;
-        label = findViewById(R.id.label);
-        refresh = findViewById(R.id.refresh);
+        label = findViewById(R.id.tvTitleIdentificationActivity);
+        refresh = findViewById(R.id.ibRefreshIdentificationActivity);
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.flMainIdentificationFirstScreen, new Fragment_FirstScreen())
+                .commit();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, new Fragment_FirstScreen()).commit();
 

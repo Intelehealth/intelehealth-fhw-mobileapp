@@ -24,7 +24,8 @@
                 android:layout_margin="@dimen/fu_margin_start">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/fu_profile_imgv"
+                    android:id="@+id/cvPatientImageRowItem"
+                    android:contentDescription="patient image cardview row item"
                     android:layout_width="@dimen/notifi_header_icon"
                     android:layout_height="@dimen/notifi_header_icon"
                     android:layout_alignParentTop="true"
@@ -33,7 +34,8 @@
                     app:cardCornerRadius="@dimen/cardcornerradius_imagev">
 
                     <ImageView
-                        android:id="@+id/profile_image"
+                        android:id="@+id/ivPatientImageRowItem"
+                        android:contentDescription="patient image imageview row item"
                         android:layout_width="@dimen/notifi_header_icon"
                         android:layout_height="@dimen/notifi_header_icon"
                         android:src="@drawable/avatar1" />
@@ -43,7 +45,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/fu_profile_imgv"
+                    android:layout_toEndOf="@+id/cvPatientImageRowItem"
                     android:layout_marginStart="@dimen/fu_margin_start">
 
                     <!-- Label -->
@@ -54,9 +56,10 @@
                         android:orientation="horizontal"
                         android:weightSum="2">
 
-                    <!-- fu_patname_txtview -->
+                    <!-- tvPatientNameRowItem -->
                     <TextView
-                        android:id="@+id/fu_patname_txtview"
+                        android:id="@+id/tvPatientNameRowItem"
+                        android:contentDescription="patient name row item title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
@@ -70,7 +73,8 @@
                         android:textSize="@dimen/fu_name_txt_size" />
 
                         <TextView
-                            android:id="@+id/search_gender"
+                            android:id="@+id/tvGenderAgeRowItem"
+                            android:contentDescription="patient age gender row item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/cal_margnin_start"
@@ -92,7 +96,8 @@
                         android:src="@drawable/followup_item_calendar" />
 
                     <TextView
-                        android:id="@+id/fu_date_txtview"
+                        android:id="@+id/tvDateTimeRowItem"
+                        android:contentDescription="patient date and time row item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/lll"
@@ -107,10 +112,11 @@
                         android:textSize="@dimen/fu_male_textsize" />
 
                     <Button
-                        android:id="@+id/end_visit_btn"
+                        android:id="@+id/btnEndVisitRowItem"
+                        android:contentDescription="close visit button row item"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_below="@+id/fu_date_txtview"
+                        android:layout_below="@+id/tvDateTimeRowItem"
                         android:layout_marginTop="@dimen/margin_8"
                         android:background="@drawable/bg_end_visit"
                         android:text="@string/close_visit"
@@ -139,7 +145,8 @@
                 android:layout_height="@dimen/btn_prioirty_h_20dp">
 
                 <ImageView
-                    android:id="@+id/fu_priority_tag"
+                    android:id="@+id/ivPriorityTagRowItem"
+                    android:contentDescription="priority tag imageview in row item"
                     android:layout_width="@dimen/btn_prioirty_w_60dp"
                     android:layout_height="@dimen/btn_prioirty_h_20dp"
                     android:src="@drawable/ui2_frame_priority"
@@ -147,7 +154,7 @@
                     android:layout_gravity="top"
                     android:gravity="center"
                     android:visibility="gone"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     />
 
             </FrameLayout>
@@ -180,7 +187,8 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/shareicon"
+                android:id="@+id/imgbtnSharePrescriptionRowItem"
+                android:contentDescription="share prescription image button in row item"
                 android:layout_width="@dimen/btn_prioirty_w_60dp"
                 android:layout_height="@dimen/btn_prioirty_h_20dp"
                 android:src="@drawable/visit_share_presc_icon"

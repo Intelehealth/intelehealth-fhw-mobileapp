@@ -94,25 +94,21 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         setContentView(R.layout.activity_search_patient_new);
 
         sessionManager = new SessionManager(this);
-        search_recycelview = findViewById(R.id.search_recycelview);
-        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
-        search_recycelview.setLayoutManager(lm);
-        initializeRecyclerView(lm);
-
-        mSearchEditText = findViewById(R.id.search_txt_enter);
+        search_recycelview = findViewById(R.id.rvSearchFindPatient);
+        mSearchEditText = findViewById(R.id.etSearchBarFindPatient);
         mSearchEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_SearchBar}); //maxlength 25
 
-        search_hint_text = findViewById(R.id.search_hint_text);
-        view_nopatientfound = findViewById(R.id.view_nopatientfound);
-        backbtn = findViewById(R.id.backbtn);
-        dividerView = findViewById(R.id.divider_view);
-        allPatientsTV = findViewById(R.id.all_patients_tv);
-        addPatientTV = findViewById(R.id.add_new_patientTV);
-        iconSearch = findViewById(R.id.icon_search);
-        iconClear = findViewById(R.id.icon_clear);
+        search_hint_text = findViewById(R.id.tvHintSearchBarFindPatient);
+        view_nopatientfound = findViewById(R.id.viewNoPatientFoundFindPatient);
+        backbtn = findViewById(R.id.ibBackArrowFindPatient);
+        dividerView = findViewById(R.id.viewDividerFindPatient);
+        allPatientsTV = findViewById(R.id.tvAllPatientsFindPatients);
+        addPatientTV = findViewById(R.id.llAddNewPatientNoPatientFound);
+        iconSearch = findViewById(R.id.ivSearchFindPatient);
+        iconClear = findViewById(R.id.ivClearFindPatient);
 
 
-        mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
+        mSearchHistoryRecyclerView = findViewById(R.id.rvPreSearchedFindPatient);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);
@@ -424,7 +420,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             allPatientsTV.setVisibility(View.VISIBLE);
             dividerView.setVisibility(View.GONE);
         }
-//        findViewById(R.id.search_clear_tv).setVisibility(View.VISIBLE);
+        findViewById(R.id.tvClearFindPatient).setVisibility(View.VISIBLE);
     }
 
     private void searchData_Unavailable() {
@@ -434,7 +430,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         search_recycelview.setVisibility(View.GONE);
         dividerView.setVisibility(View.GONE);
         allPatientsTV.setVisibility(View.GONE);
-        findViewById(R.id.search_clear_tv).setVisibility(View.GONE);
+        findViewById(R.id.tvClearFindPatient).setVisibility(View.GONE);
     }
 
     public void clearSearch(View view) {

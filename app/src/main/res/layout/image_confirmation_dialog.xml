@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/flImageConfirmDialog"
+    android:contentDescription="Image Confirmation Dialog FrameLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/pbImageConfirmDialog"
+        android:contentDescription="Image Confirmation Dialog ProgressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:id="@+id/confirmationImageView"
+        android:id="@+id/ivImageConfirmDialog"
+        android:contentDescription="Image Confirmation Dialog ImageView"
         android:adjustViewBounds="true"
         android:layout_width="match_parent"
-        android:contentDescription="TODO"
         android:layout_height="wrap_content"/>
 
 

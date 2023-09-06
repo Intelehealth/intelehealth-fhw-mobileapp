@@ -23,17 +23,10 @@ import org.intelehealth.app.knowledgeEngine.Node;
  */
 public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdapter.ItemViewHolder> {
 
-
-
-
-
     public interface FabVisibility {
         void setVisibility(boolean data);
-
-
-
-
     }
+
         private static final String TAG = "CNodeListAdapter";
 
         private Context mContext;

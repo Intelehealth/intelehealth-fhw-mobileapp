@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.setupActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import org.intelehealth.app.R;
 
 public class LocationArrayAdapter extends ArrayAdapter<String> {
 
+
     public LocationArrayAdapter(Context context, List<String> objects) {
         super(context, R.layout.spinner_textview, R.id.text1, objects);
     }
@@ -27,27 +29,28 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
         return super.getCount();
     }
 
-    @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View v;
-        if (position == 0) {
-            TextView tv = new TextView(getContext());
-            tv.setHeight(0);
-            tv.setVisibility(View.GONE);
-            v = tv;
-        }
-        else {
-            v = super.getDropDownView(position, null, parent);
-        }
-
-        parent.setVerticalScrollBarEnabled(false);
-        return v;
-    }
+//    @Override
+//    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+//        View v;
+//        if (position == 0) {
+//            TextView tv = new TextView(getContext());
+//            tv.setHeight(0);
+//            tv.setVisibility(View.GONE);
+//            v = tv;
+//        }
+//        else {
+//            v = super.getDropDownView(position, null, parent);
+//        }
+//
+//        parent.setVerticalScrollBarEnabled(false);
+//        return v;
+//    }
 
     @Override
     public long getItemId(int position) {
         return position;
     }
+            view.setContentDescription(getItem(position));
 
     @NonNull
     @Override

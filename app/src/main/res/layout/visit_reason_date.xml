@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <CalendarView
-        android:id="@+id/cav_date"
+        android:id="@+id/cvVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker CalendarView"
         style="@style/edittext_textcolor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,10 +21,11 @@
         android:textSize="@dimen/edittext_textsize_16sp" />
 
     <LinearLayout
-        android:id="@+id/ll_selected_info"
+        android:id="@+id/llSelectedDateVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker Selected Date LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cav_date"
+        android:layout_below="@+id/cvVisitReasonDatePicker"
         android:background="@color/white"
         android:gravity="center"
         android:minHeight="@dimen/margin_24"
@@ -38,7 +39,8 @@
                android:background="@color/gray_3" />-->
 
         <TextView
-            android:id="@+id/btn_view_date"
+            android:id="@+id/tvSelectedDateVisitReasonDatePicker"
+            android:contentDescription="Visit Reason Date Picker Selected Date TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border_blue"
@@ -55,10 +57,11 @@
 
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btnSubmitVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker Submit Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_selected_info"
+        android:layout_below="@+id/llSelectedDateVisitReasonDatePicker"
         android:layout_alignParentEnd="true"
         android:layout_marginVertical="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
@@ -70,13 +73,14 @@
         android:textSize="14sp" />
 
     <Button
-        android:id="@+id/btn_skip"
+        android:id="@+id/btnSkipVisitReasonDatePicker"
+        android:contentDescription="Visit Reason Date Picker Skip Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_selected_info"
+        android:layout_below="@+id/llSelectedDateVisitReasonDatePicker"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_12"
-        android:layout_toStartOf="@+id/btn_submit"
+        android:layout_toStartOf="@+id/btnSubmitVisitReasonDatePicker"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:drawablePadding="8dip"
         android:paddingHorizontal="@dimen/margin_10"

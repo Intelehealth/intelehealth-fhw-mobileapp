@@ -79,41 +79,17 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     }
 
     private void initUI() {
-        //View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
-        //TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
-        //TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tv_app_sync_time);
-        //ImageView ivNotification = layoutToolbar.findViewById(R.id.imageview_notifications_home);
-        //ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
-        // ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
-        /*ivBackArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HomeScreenActivity_New.class);
-                startActivity(intent);
-            *//*    FragmentManager fm = Objects.requireNonNull(getActivity()).getFragmentManager();
-                fm.popBackStack();*//*
-            }
-        });*/
-        //tvLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        //tvLastSyncApp.setVisibility(View.GONE);
-        // ivNotification.setVisibility(View.GONE);
-      /*  RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivIsInternet.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_PARENT_END);
-        ivIsInternet.setLayoutParams(params);*/
-        // tvLocation.setText(getResources().getString(R.string.help));
-        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bnvHomeScreen);
+        bottomNav.getMenu().findItem(R.id.bottomNavHelp).setChecked(true);
         bottomNav.setVisibility(View.VISIBLE);
-
-
-        View optionsView = view.findViewById(R.id.layout_buttons_options_help);
-        TextView btnAll = optionsView.findViewById(R.id.btn_all_help);
-        RecyclerView rvSearchedVideos = view.findViewById(R.id.rv_most_searched_videos);
-        RecyclerView rvFaq = view.findViewById(R.id.rv_faq1);
-        TextView tvMoreVideos = view.findViewById(R.id.tv_more_videos);
-        TextView tvMoreFaq = view.findViewById(R.id.tv_faq_more);
-        FloatingActionButton fabHelp = view.findViewById(R.id.fab_chat_help);
-        ivInternet = view.findViewById(R.id.iv_help_internet);
+        View optionsView = view.findViewById(R.id.categoriesButtonsLayoutHelpScreen);
+        TextView btnAll = optionsView.findViewById(R.id.tvAllCategoryFAQHelp);
+        RecyclerView rvSearchedVideos = view.findViewById(R.id.rvMostSearchedHelpScreen);
+        RecyclerView rvFaq = view.findViewById(R.id.rvFAQHelpScreen);
+        TextView tvMoreVideos = view.findViewById(R.id.tvMostSearchedMoreHelpScreen);
+        TextView tvMoreFaq = view.findViewById(R.id.tvFAQMoreHelpScreen);
+        FloatingActionButton fabHelp = view.findViewById(R.id.fabChatHelpScreen);
+        ivInternet = view.findViewById(R.id.ivInternetHelpScreen);
         ivInternet.setOnClickListener(v -> SyncUtils.syncNow(requireActivity(), ivInternet, syncAnimator));
 
         fabHelp.setOnClickListener(v -> {
@@ -207,7 +183,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_all_help:
+            case R.id.tvAllCategoryFAQHelp:
                 break;
         }
     }

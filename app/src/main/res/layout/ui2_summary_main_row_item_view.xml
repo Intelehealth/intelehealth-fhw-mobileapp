@@ -7,7 +7,8 @@
     android:orientation="vertical">
 
     <View
-        android:id="@+id/height_adjust_view"
+        android:id="@+id/viewMainRowItem"
+        android:contentDescription="Main Row Item View to adjust height"
         android:layout_width="match_parent"
         android:layout_height="24dip" />
 
@@ -18,7 +19,8 @@
 
 
         <TextView
-            android:id="@+id/tv_complain_label"
+            android:id="@+id/tvComplaintLabelMainRowItem"
+            android:contentDescription="Main Row Item Complaint Label TextView"
             style="@style/label_misc_txt_14sp_dark_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +30,8 @@
             android:text="Abdominal pain" />
 
         <TextView
-            android:id="@+id/tv_change"
+            android:id="@+id/tvComplaintEditMainRowItem"
+            android:contentDescription="Main Row Item Complaint Edit TextView"
             style="@style/label_misc_txt_12sp_primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +46,8 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_qa"
+        android:id="@+id/rvMainRowItem"
+        android:contentDescription="Main Row Item RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/ui2_summary_qa_row_item_view" />

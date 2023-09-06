@@ -89,7 +89,7 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_name);
+            tvName = itemView.findViewById(R.id.tvReasonItemChip);
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

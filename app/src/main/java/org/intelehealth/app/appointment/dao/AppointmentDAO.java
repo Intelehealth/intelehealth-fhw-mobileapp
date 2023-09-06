@@ -129,7 +129,7 @@ public class AppointmentDAO {
     public AppointmentInfo getAppointmentByVisitId(String visitUUID) {
         Log.v(TAG, "getByVisitUUID - visitUUID - " + visitUUID);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments where visit_uuid = ?", new String[]{visitUUID});
         AppointmentInfo appointmentInfo = null;
@@ -206,7 +206,7 @@ public class AppointmentDAO {
 
     public void deleteAppointmentByVisitId(String visitUuid) {
         Log.v(TAG, "deleteAppointmentByVisitId - visitUUID - " + visitUuid);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         db.delete("tbl_appointments", "visit_uuid=?", new String[]{visitUuid});
         db.setTransactionSuccessful();
@@ -216,7 +216,7 @@ public class AppointmentDAO {
 
     public void deleteAllAppointments() {
         Log.v(TAG, "deleteAllAppointments ");
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         db.delete("tbl_appointments", null, null);
         db.setTransactionSuccessful();
@@ -227,7 +227,7 @@ public class AppointmentDAO {
 
     public List<AppointmentInfo> getAppointments() {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments", new String[]{});
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -276,7 +276,7 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor;
         String table = "tbl_appointments";
@@ -511,7 +511,7 @@ public class AppointmentDAO {
     public AppointmentInfo getDetailsOfRescheduledAppointment(String visitUUID, String appointmentId) {
         Log.v(TAG, "getDetailsOfRescheduledAppointment - visitUUID - " + visitUUID);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments where appointment_id = ? and visit_uuid = ?", new String[]{appointmentId, visitUUID});
         AppointmentInfo appointmentInfo = null;
@@ -545,7 +545,7 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor;
 
@@ -613,7 +613,7 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor;
 

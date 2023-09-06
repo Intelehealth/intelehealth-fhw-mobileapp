@@ -72,8 +72,8 @@ public class PhysicalExamSummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_physical_exam_summary, container, false);
-        mSummaryLinearLayout = view.findViewById(R.id.ll_summary);
-        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+        mSummaryLinearLayout = view.findViewById(R.id.llSummaryPhyExamSummaryFragment);
+        view.findViewById(R.id.btnSubmitPhyExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
@@ -84,19 +84,19 @@ public class PhysicalExamSummaryFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnCancelPhyExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, null);
             }
         });
-        view.findViewById(R.id.img_btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibCancelPhysExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, mIsEditMode, null);
             }
         });
-        view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.ibRefreshPhysExamSummaryFragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkConnection.isOnline(getActivity())) {
@@ -142,16 +142,17 @@ public class PhysicalExamSummaryFragment extends Fragment {
 
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
+                TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
                 TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
                 view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
                 complainLabelTextView.setText(_complain);
-                view.findViewById(R.id.tv_change).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.tvComplaintEditMainRowItem).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mActionListener.onFormSubmitted(VisitCreationActivity.FROM_SUMMARY_RESUME_BACK_FOR_EDIT, true, null);
                     }
                 });
-                RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
+                RecyclerView recyclerView = view.findViewById(R.id.rvMainRowItem);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                 String k1 = "";

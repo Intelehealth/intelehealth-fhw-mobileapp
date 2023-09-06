@@ -5,15 +5,16 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:contentDescription="TODO"
+        android:contentDescription="SubQuestion Dialog ImageView"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/dialog_subquestion_image_view"/>
+        android:id="@+id/ivSubQuestionDialog" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dialog_subquestion_list_view">
+        android:contentDescription="SubQuestion Dialog ListView"
+        android:id="@+id/lvSubQuestionDialog">
 
     </ListView>
 

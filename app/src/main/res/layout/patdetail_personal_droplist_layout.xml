@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/card_name_openmrsid"
+    android:id="@+id/cvPersonalDetails"
+    android:contentDescription="Patient Details Screen Personal Details CardView"
+    android:layout_below="@+id/cvNameIDPatientDetails"
     android:layout_marginStart="@dimen/toolbar_margin_left"
     android:layout_marginTop="@dimen/margin_40dp"
     android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -11,6 +13,8 @@
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
+        android:id="@+id/rlParentPersonalDetails"
+        android:contentDescription="Patient Details Screen Personal Details Parent RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fu_margin_start"
@@ -21,23 +25,26 @@
 
         <!--Personal Header-->
         <RelativeLayout
-            android:id="@+id/relative_personal_header"
+            android:id="@+id/rlHeaderPersonalDetails"
+            android:contentDescription="Patient Details Screen Personal Details Header RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/personal_info_icon"
+                android:id="@+id/ivIconHeaderPersonalDetails"
+                android:contentDescription="Patient Details Screen Personal Details Header Icon ImageView"
                 android:layout_width="@dimen/edittext_height_44dp"
                 android:layout_height="@dimen/edittext_height_44dp"
                 android:src="@drawable/addpatient_icon_unselected" />
 
             <TextView
-                android:id="@+id/label"
+                android:id="@+id/tvTitleHeaderPersonalDetails"
+                android:contentDescription="Patient Details Screen Personal Details Header Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/hamburger_margin_start"
-                android:layout_toEndOf="@+id/personal_info_icon"
+                android:layout_toEndOf="@+id/ivIconHeaderPersonalDetails"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/personal_identification"
@@ -45,7 +52,8 @@
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <ImageView
-                android:id="@+id/iv_personal_drop"
+                android:id="@+id/ivCollapseCardPersonalDetails"
+                android:contentDescription="Patient Details Screen Personal Details Collapse Card Arrow ImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -55,23 +63,26 @@
         </RelativeLayout>
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/viewDividerPersonalDetails"
+            android:contentDescription="Patient Details Screen Personal Details Divider View"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/relative_personal_header"
+            android:layout_below="@+id/rlHeaderPersonalDetails"
             android:layout_marginTop="@dimen/fu_margin_start"
             android:layout_marginBottom="@dimen/fu_card_margin_updown"
             android:background="@color/notifi_divider_color" />
 
         <!--Personal Sub-Child-->
         <RelativeLayout
-            android:id="@+id/details_relative"
+            android:id="@+id/rlDetailsParentPersonalDetails"
+            android:contentDescription="Patient Details Screen Personal Details 'Details' Parent RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/divider">
+            android:layout_below="@+id/viewDividerPersonalDetails">
 
             <TextView
-                android:id="@+id/details_personal_txtview"
+                android:id="@+id/tvDetailsTitlePersonalDetails"
+                android:contentDescription="Patient Details Screen Personal Details 'Details' Title TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
@@ -80,20 +91,25 @@
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 
             <LinearLayout
+                android:id="@+id/llEditPersonalDetails"
+                android:contentDescription="Patient Details Screen Personal Details Edit LinearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_change_patdetail"
                 android:layout_alignParentEnd="true"
-                android:paddingHorizontal="4dp"
-                android:id="@+id/personal_edit">
+                android:paddingHorizontal="4dp">
 
                 <ImageView
+                    android:id="@+id/ivEditIconPersonalDetails"
+                    android:contentDescription="Patient Details Screen Personal Details Edit Icon ImageView"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_margin="5dp"
                     android:src="@drawable/edit"/>
 
                 <TextView
+                    android:id="@+id/tvChangeTitlePersonalDetails"
+                    android:contentDescription="Patient Details Screen Personal Details Change Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/change"
@@ -109,23 +125,30 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/ll_personal_extra"
+            android:id="@+id/rlDetailsChildPersonalDetails"
+            android:contentDescription="Patient Details Screen Personal Details 'Details' Child RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/details_relative"
+            android:layout_below="@+id/rlDetailsParentPersonalDetails"
             android:layout_marginTop="@dimen/hamburger_margin_start">
 
             <TableLayout
+                android:id="@+id/tlDetailsPersonalDetails"
+                android:contentDescription="Patient Details Screen Personal Details 'Details' TableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:shrinkColumns="1">
 
                 <TableRow
+                    android:id="@+id/trNamePersonalDetails"
+                    android:contentDescription="Patient Details Screen Personal Details 'Name' TableRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvNamePersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Name' TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -139,7 +162,8 @@
                         android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
-                        android:id="@+id/name"
+                        android:id="@+id/tvNameValuePersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Name' Value TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -151,12 +175,16 @@
 
                 <!--Gender-->
                 <TableRow
+                    android:id="@+id/trGenderPersonalDetails"
+                    android:contentDescription="Patient Details Screen Personal Details 'Gender' TableRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvGenderPersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Gender' TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -170,7 +198,8 @@
                         android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
-                        android:id="@+id/gender"
+                        android:id="@+id/tvGenderValuePersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Gender' Value TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -182,12 +211,16 @@
 
                 <!--Date of birth-->
                 <TableRow
+                    android:id="@+id/trDOBPersonalDetails"
+                    android:contentDescription="Patient Details Screen Personal Details 'DOB' TableRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvDOBPersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'DOB' TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -201,7 +234,8 @@
                         android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
-                        android:id="@+id/dob"
+                        android:id="@+id/tvDOBValuePersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'DOB' Value TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -213,12 +247,16 @@
 
                 <!--Age-->
                 <TableRow
+                    android:id="@+id/trAgePersonalDetails"
+                    android:contentDescription="Patient Details Screen Personal Details 'Age' TableRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvAgePersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Age' TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -232,7 +270,8 @@
                         android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
-                        android:id="@+id/age"
+                        android:id="@+id/tvAgeValuePersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Age' Value TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -244,12 +283,16 @@
 
                 <!--Phone number-->
                 <TableRow
+                    android:id="@+id/trPhoneNumPersonalDetails"
+                    android:contentDescription="Patient Details Screen Personal Details 'Phone Num' TableRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvPhoneNumPersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Phone Num' TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -263,7 +306,8 @@
                         android:textSize="@dimen/find_patient_hint_size" />
 
                     <TextView
-                        android:id="@+id/phone"
+                        android:id="@+id/tvPhoneNumValuePersonalDetails"
+                        android:contentDescription="Patient Details Screen Personal Details 'Phone Num' Value TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

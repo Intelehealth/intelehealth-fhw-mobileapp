@@ -1259,7 +1259,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
 
-                final TextView famHistText = convertView.findViewById(R.id.textView_entry);
+                final TextView famHistText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (famHistory.getValue() != null)
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
                 famHistText.setEnabled(false);
@@ -1363,7 +1363,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 complaintDialog.setView(convertView);
 
-                final TextView complaintText = convertView.findViewById(R.id.textView_entry);
+                final TextView complaintText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (complaint.getValue() != null) {
                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                 }
@@ -1473,7 +1473,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 physicalDialog.setView(convertView);
 
-                final TextView physicalText = convertView.findViewById(R.id.textView_entry);
+                final TextView physicalText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (phyExam.getValue() != null)
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
@@ -1583,7 +1583,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 historyDialog.setView(convertView);
 
-                final TextView historyText = convertView.findViewById(R.id.textView_entry);
+                final TextView historyText = convertView.findViewById(R.id.tvEditEntryDialog);
                 if (patHistory.getValue() != null)
                     historyText.setText(Html.fromHtml(patHistory.getValue()));
                 historyText.setEnabled(false);
@@ -2016,7 +2016,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -2390,7 +2390,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));

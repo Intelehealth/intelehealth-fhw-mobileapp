@@ -9,7 +9,8 @@
 
 
     <TextView
-        android:id="@+id/tv_question_label"
+        android:id="@+id/tvQuestionLabelAssSymptomRowItem"
+        android:contentDescription="Associated Symptom Row Item Question Label TextView"
         style="@style/label_misc_txt_14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +26,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_blt"
+            android:id="@+id/ivBulletAssSymptomRowItem"
+            android:contentDescription="Associated Symptom Row Item Bullet ImageView"
             android:layout_width="6dip"
             android:layout_height="6dip"
             android:layout_marginEnd="@dimen/padding_5"
@@ -33,7 +35,8 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tv_answer_value"
+            android:id="@+id/tvAnswerValueAssSymptomRowItem"
+            android:contentDescription="Associated Symptom Row Item Answer Value TextView"
             style="@style/label_misc_txt_14sp_dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

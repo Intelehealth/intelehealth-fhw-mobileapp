@@ -6,7 +6,8 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/parent"
+        android:id="@+id/llParentFAQRowItem"
+        android:contentDescription="FAQ Row Item Parent LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:clickable="true"
@@ -16,7 +17,8 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_question"
+            android:id="@+id/tvQuestionFAQRowItem"
+            android:contentDescription="FAQ Row Item Question TextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +29,8 @@
             android:textSize="@dimen/common_info_text_size" />
 
         <ImageView
-            android:id="@+id/iv_view_more"
+            android:id="@+id/ivExpandViewFAQRowItem"
+            android:contentDescription="FAQ Row Item Expand View ImageView"
             android:layout_width="@dimen/rv_faq_down_icon_width"
             android:layout_height="@dimen/rv_faq_down_icon_height"
             android:src="@drawable/ui2_ic_chevron_down"
@@ -37,16 +40,17 @@
 
 
     <LinearLayout
-        android:id="@+id/layout_expand"
+        android:id="@+id/llExpandedViewFAQRowItem"
+        android:contentDescription="FAQ Row Item Expanded View LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/parent"
         android:orientation="vertical"
         android:visibility="gone">
 
-
         <TextView
-            android:id="@+id/tv_desc"
+            android:id="@+id/tvAnswerFAQRowItem"
+            android:contentDescription="FAQ Row Item Answer TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/rv_faq_tv_desc_margin_top"

@@ -125,8 +125,8 @@ public class VisitReceivedFragment extends Fragment {
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
-        ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
-        LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
+        ((TextView) view.findViewById(R.id.tvSubtitleNoPatientFound)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+        LinearLayout addPatientTV = view.findViewById(R.id.llAddNewPatientNoPatientFound);
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,10 +143,10 @@ public class VisitReceivedFragment extends Fragment {
         main_block = view.findViewById(R.id.main_block);
 
         visit_received_card_header = view.findViewById(R.id.visit_received_card_header);
-        searchview_received = view.findViewById(R.id.searchview_received);
+        searchview_received = view.findViewById(R.id.svReceivedPrescriptions);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
 
-        recent_nodata = view.findViewById(R.id.recent_nodata);
+        recent_nodata = view.findViewById(R.id.tvNoDataRecentVisitReceivedPrescription);
         older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
 
@@ -154,7 +154,7 @@ public class VisitReceivedFragment extends Fragment {
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_recent.setLayoutManager(reLayoutManager);
 
-        recycler_older = view.findViewById(R.id.rv_older);
+        recycler_older = view.findViewById(R.id.tvNoDataOlderVisitReceivedPrescription);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_older.setLayoutManager(layoutManager);
 
@@ -189,14 +189,14 @@ public class VisitReceivedFragment extends Fragment {
 
 
         //recycler_month = view.findViewById(R.id.rv_thismonth);
-        received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
+        received_endvisit_no = view.findViewById(R.id.tvAwaitingCountReceivedPrescriptions);
 
         filter_icon = view.findViewById(R.id.filter_icon);
         filter_menu = view.findViewById(R.id.filter_menu);
-        allvisits_txt = view.findViewById(R.id.allvisits_txt);
-        priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
+        allvisits_txt = view.findViewById(R.id.tvAllVisitsVisitScreenFilter);
+        priority_visits_txt = view.findViewById(R.id.tvPriorityVisitsVisitScreenFilter);
         filter_relative = view.findViewById(R.id.filter_relative);
-        priority_cancel = view.findViewById(R.id.priority_cancel);
+        priority_cancel = view.findViewById(R.id.imgBtnPriorityVisitsCancelReceivedPrescriptions);
      //   olderList = new ArrayList<>();
 
 //        visit_received_card_header.setOnClickListener(v -> {
@@ -573,7 +573,7 @@ public class VisitReceivedFragment extends Fragment {
         db.endTransaction();
 
         return recentList;
-        
+
         //  thisWeeks_Visits();
         //new
 

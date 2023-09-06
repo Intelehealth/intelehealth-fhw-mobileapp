@@ -74,8 +74,8 @@ public class SummarySingleViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            questionTextView = itemView.findViewById(R.id.tv_question_label);
-            answerTextView = itemView.findViewById(R.id.tv_answer_value);
+            questionTextView = itemView.findViewById(R.id.tvQuestionQaRowItemViewSingleItem);
+            answerTextView = itemView.findViewById(R.id.tvAnswerQaRowItemViewSingleItem);
         }
     }
 }

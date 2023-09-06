@@ -2,13 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentVitalsSummary"
+    android:contentDescription="Vitals Summary Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ayu.visit.vital.VitalCollectionSummaryFragment">
 
     <RelativeLayout
-        android:id="@+id/toolbar"
+        android:id="@+id/rlToolbarVitalsSummary"
+        android:contentDescription="Vitals Summary Toolbar RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -16,32 +19,33 @@
         android:paddingHorizontal="@dimen/toolbar_margin_left">
 
         <ImageButton
-            android:id="@+id/img_btn_cancel"
+            android:id="@+id/ibCancelVitalsSummary"
+            android:contentDescription="Vitals Summary Cancel ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center"
             android:background="@null"
-            android:contentDescription="img_btn_cancel"
             app:srcCompat="@drawable/cancel_btn_cross" />
 
 
         <ImageButton
-            android:id="@+id/imb_btn_refresh"
+            android:id="@+id/ibRefreshVitalsSummary"
+            android:contentDescription="Vitals Summary Refresh ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/common_title_margin_top"
-            android:layout_toStartOf="@+id/img_btn_cancel"
+            android:layout_toStartOf="@+id/ibCancelVitalsSummary"
             android:background="@null"
-            android:contentDescription="imb_btn_refresh"
             app:srcCompat="@drawable/ic_refreshbtn" />
 
 
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/ll_footer"
+        android:id="@+id/llButtonsVitalsSummary"
+        android:contentDescription="Vitals Summary Buttons LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -51,11 +55,11 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_cancel"
+            android:id="@+id/btnCancelVitalsSummary"
+            android:contentDescription="Vitals Summary Cancel Button"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-
             android:layout_weight="1"
             android:background="@drawable/ui2_common_input_bg"
             android:drawableTint="@color/iconTintWhite"
@@ -71,7 +75,8 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_submit"
+            android:id="@+id/btnSubmitVitalsSummary"
+            android:contentDescription="Vitals Summary Submit Button"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -92,11 +97,12 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_summary_body"
+        android:id="@+id/nsvVitalsSummary"
+        android:contentDescription="Vitals Summary NestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll_footer"
-        android:layout_below="@id/toolbar">
+        android:layout_above="@+id/llButtonsVitalsSummary"
+        android:layout_below="@id/rlToolbarVitalsSummary">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,17 +111,19 @@
             android:paddingHorizontal="@dimen/toolbar_margin_left">
 
             <ImageView
-                android:id="@+id/iv_vital_image"
+                android:id="@+id/ivVitalsIconVitalsSummary"
+                android:contentDescription="Vitals Summary Vitals Icon ImageView"
                 android:layout_width="64dip"
                 android:layout_height="64dip"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ui2_ic_vital_icon" />
 
             <TextView
-                android:id="@+id/tv_sub_title"
+                android:id="@+id/tvSubTitleVitalsSummaryFragment"
+                android:contentDescription="Vitals Summary Vitals Subtitle TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
+                android:layout_below="@+id/rlToolbarVitalsSummary"
                 android:layout_marginTop="@dimen/margin_16"
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
@@ -131,22 +139,22 @@
                 android:layout_marginTop="@dimen/margin_24">
 
                 <TextView
-                    android:id="@+id/tv_details_label"
+                    android:id="@+id/tvDetailsLabelVitalsSummary"
+                    android:contentDescription="Vitals Summary Details Label TextView"
                     style="@style/label_misc_txt_14sp_dark_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:lineSpacingExtra="1sp"
                     android:text="@string/details" />
 
                 <TextView
-                    android:id="@+id/tv_change"
+                    android:id="@+id/tvEditVitalsSummary"
+                    android:contentDescription="Vitals Summary Edit TextView"
                     style="@style/label_misc_txt_12sp_primary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/ui2_common_gray_round_stroke_bg"
                     android:drawableStart="@drawable/ui2_ic_edit"
@@ -172,13 +180,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivHeightBulletVitalsSummary"
+                        android:contentDescription="Vitals Summary Height Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_height_label"
+                        android:id="@+id/tvHeightTitleVitalsSummary"
+                        android:contentDescription="Vitals Summary Height Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -189,7 +200,8 @@
                         android:text="@string/height_cm" />
 
                     <TextView
-                        android:id="@+id/tv_height"
+                        android:id="@+id/tvHeightValueVitalsSummary"
+                        android:contentDescription="Vitals Summary Height Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -209,13 +221,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivWeightBulletVitalsSummary"
+                        android:contentDescription="Vitals Summary Weight Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_weight_label"
+                        android:id="@+id/tvWeightTitleVitalsSummary"
+                        android:contentDescription="Vitals Summary Weight Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -226,7 +241,8 @@
                         android:text="@string/weight_kg" />
 
                     <TextView
-                        android:id="@+id/tv_weight"
+                        android:id="@+id/tvWeightValueVitalsSummary"
+                        android:contentDescription="Vitals Summary Weight Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -246,13 +262,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivBMIBulletVitalsSummary"
+                        android:contentDescription="Vitals Summary BMI Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_bmi_label"
+                        android:id="@+id/tvBMITitleVitalsSummary"
+                        android:contentDescription="Vitals Summary BMI Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -263,7 +282,8 @@
                         android:text="@string/visit_summary_bmi" />
 
                     <TextView
-                        android:id="@+id/tv_bmi"
+                        android:id="@+id/tvBMIValueVitalsSummary"
+                        android:contentDescription="Vitals Summary BMI Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -283,13 +303,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivBPBulletVitalsSummary"
+                        android:contentDescription="Vitals Summary BP Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_bp_label"
+                        android:id="@+id/tvBPTitleVitalsSummary"
+                        android:contentDescription="Vitals Summary BP Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -300,7 +323,8 @@
                         android:text="@string/visit_summary_bp" />
 
                     <TextView
-                        android:id="@+id/tv_bp"
+                        android:id="@+id/tvBPValueVitalsSummary"
+                        android:contentDescription="Vitals Summary BP Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -320,13 +344,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivPulseBulletVitalsSummary"
+                        android:contentDescription="Vitals Summary Pulse Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_pulse_label"
+                        android:id="@+id/tvPulseTitleVitalsSummary"
+                        android:contentDescription="Vitals Summary Pulse Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -337,7 +364,8 @@
                         android:text="@string/visit_summary_pulse" />
 
                     <TextView
-                        android:id="@+id/tv_pulse"
+                        android:id="@+id/tvPulseValueVitalsSummary"
+                        android:contentDescription="Vitals Summary Pulse Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -357,13 +385,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivTempBulletVitalsSummary"
+                        android:contentDescription="Vitals Summary Temp Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_temperature_label"
+                        android:id="@+id/tvTempTitleVitalsSummary"
+                        android:contentDescription="Vitals Summary Temp Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -374,7 +405,8 @@
                         android:text="@string/temperature_f" />
 
                     <TextView
-                        android:id="@+id/tv_temperature"
+                        android:id="@+id/tvTempValueVitalsSummary"
+                        android:contentDescription="Vitals Summary Temp Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -394,13 +426,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivSpO2BulletVitalsSummary"
+                        android:contentDescription="Vitals Summary SpO2 Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_spo2_label"
+                        android:id="@+id/tvSpO2TitleVitalsSummary"
+                        android:contentDescription="Vitals Summary SpO2 Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -411,7 +446,8 @@
                         android:text="@string/table_spo2" />
 
                     <TextView
-                        android:id="@+id/tv_spo2"
+                        android:id="@+id/tvSpO2ValueVitalsSummary"
+                        android:contentDescription="Vitals Summary SpO2 Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -431,13 +467,16 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/ivRRBulletVitalsSummary"
+                        android:contentDescription="Vitals Summary RR Bullet ImageView"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
                         android:src="@drawable/ic_baseline_lens_24" />
 
                     <TextView
-                        android:id="@+id/tv_respiratory_rate_label"
+                        android:id="@+id/tvRRTitleVitalsSummary"
+                        android:contentDescription="Vitals Summary RR Title TextView"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
@@ -448,7 +487,8 @@
                         android:text="@string/respiratory_rate" />
 
                     <TextView
-                        android:id="@+id/tv_respiratory_rate"
+                        android:id="@+id/tvRRValueVitalsSummary"
+                        android:contentDescription="Vitals Summary RR Value TextView"
                         style="@style/label_misc_txt_14sp_dark"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"

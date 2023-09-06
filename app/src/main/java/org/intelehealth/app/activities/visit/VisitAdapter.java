@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,12 +28,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.followuppatients.FollowUpPatientAdapter_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
-import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -197,11 +194,11 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         public Myholder(@NonNull View itemView) {
             super(itemView);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
-            name = itemView.findViewById(R.id.fu_patname_txtview);
-            search_gender = itemView.findViewById(R.id.search_gender);
-            fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
-            profile_image = itemView.findViewById(R.id.profile_image);
-            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            name = itemView.findViewById(R.id.tvPatientNameRowItem);
+            search_gender = itemView.findViewById(R.id.tvGenderAgeRowItem);
+            fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
+            profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
+            fu_priority_tag = itemView.findViewById(R.id.ivPriorityTagRowItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
         }
     }
@@ -268,8 +265,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
         alertdialogBuilder.setView(convertView);
-        EditText editText = convertView.findViewById(R.id.editText_mobileno);
-        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+        EditText editText = convertView.findViewById(R.id.etMobileNumSharePrescDialog);
+        Button sharebtn = convertView.findViewById(R.id.btnSharePrescDialog);
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
         if(model.getPhone_number()!=null)

@@ -127,9 +127,9 @@ public class VisitPendingFragment extends Fragment {
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
-        ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+        ((TextView) view.findViewById(R.id.tvSubtitleNoPatientFound)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
 
-        LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
+        LinearLayout addPatientTV = view.findViewById(R.id.llAddNewPatientNoPatientFound);
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,10 +147,10 @@ public class VisitPendingFragment extends Fragment {
         main_block = view.findViewById(R.id.main_block);
 
         visit_pending_card_header = view.findViewById(R.id.visit_pending_card_header);
-        searchview_pending = view.findViewById(R.id.searchview_pending);
+        searchview_pending = view.findViewById(R.id.svPendingPrescriptions);
         closeButton = searchview_pending.findViewById(R.id.search_close_btn);
 
-        recent_nodata = view.findViewById(R.id.recent_nodata);
+        recent_nodata = view.findViewById(R.id.tvNoDataRecentVisitPendingPrescription);
         older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
 
@@ -158,7 +158,7 @@ public class VisitPendingFragment extends Fragment {
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_recent.setLayoutManager(reLayoutManager);
 
-        recycler_older = view.findViewById(R.id.rv_older);
+        recycler_older = view.findViewById(R.id.tvNoDataOlderVisitPendingPrescription);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_older.setLayoutManager(layoutManager);
 
@@ -192,12 +192,12 @@ public class VisitPendingFragment extends Fragment {
         });
 
         //recycler_month = view.findViewById(R.id.rv_thismonth);
-        pending_endvisit_no = view.findViewById(R.id.pending_endvisit_no);
+        pending_endvisit_no = view.findViewById(R.id.tvAwaitingPrescriptionPendingPrescription);
 
         filter_icon = view.findViewById(R.id.filter_icon);
         filter_menu = view.findViewById(R.id.filter_menu);
-        allvisits_txt = view.findViewById(R.id.allvisits_txt);
-        priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
+        allvisits_txt = view.findViewById(R.id.tvAllVisitsVisitScreenFilter);
+        priority_visits_txt = view.findViewById(R.id.tvPriorityVisitsVisitScreenFilter);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
       //  olderList = new ArrayList<>();  // IDA-1347 ticket.

@@ -8,7 +8,8 @@
     tools:context=".activities.onboarding.SetupPrivacyNoteActivity_New">
 
     <ImageView
-        android:id="@+id/iv_setup_privacy_back"
+        android:id="@+id/ivBackArrowSetupAyuIntro"
+        android:contentDescription="Setup Ayu Intro Screen Back Arrow ImageView"
         android:layout_width="@dimen/back_arrow_demo1_width"
         android:layout_height="@dimen/back_arrow_demo1_height"
         android:layout_alignParentStart="true"
@@ -19,19 +20,20 @@
 
 
     <ImageView
-        android:id="@+id/iv_ayu_icon"
+        android:id="@+id/ivAyuLogoSetupAyuIntro"
+        android:contentDescription="Setup Ayu Intro Screen Ayu Logo ImageView"
         android:layout_width="@dimen/demo1_ayu_image_width"
         android:layout_height="@dimen/demo1_ayu_image_height"
-        android:layout_below="@+id/tv_please_continue"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/demo1_ayu_img_margin_top"
         android:src="@drawable/ui2_ic_ayu_image" />
 
     <TextView
-        android:id="@+id/tv_hello_ayu"
+        android:id="@+id/tvHelloSetupAyuIntro"
+        android:contentDescription="Setup Ayu Intro Screen Hello TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_ayu_icon"
+        android:layout_below="@+id/ivAyuLogoSetupAyuIntro"
         android:layout_marginTop="@dimen/setup_title_margin_top"
         android:gravity="center"
         android:lineHeight="@dimen/setup_title_line_height"
@@ -41,9 +43,11 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvHelloSubtitleSetupAyuIntro"
+        android:contentDescription="Setup Ayu Intro Screen Subtitle TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_hello_ayu"
+        android:layout_below="@+id/tvHelloSetupAyuIntro"
         android:layout_marginTop="@dimen/setup_info_margin_top"
         android:gravity="center"
         android:lineHeight="@dimen/setup_info_line_height"
@@ -60,63 +64,39 @@
         android:padding="@dimen/padding_25">
 
         <CheckBox
-            android:id="@+id/checkbox_privacy_policy"
+            android:id="@+id/cbAcceptTCandPPSetupAyuIntro"
+            android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/chk_box_ayu_margin_top"
             android:button="@drawable/ui2_ic_default_checkbox" />
 
         <LinearLayout
-            android:id="@+id/ll_tc_pp"
+            android:id="@+id/llAcceptTCandPPSetupAyuIntro"
+            android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP Linear Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_10"
-            android:layout_toEndOf="@+id/checkbox_privacy_policy">
+            android:layout_toEndOf="@+id/cbAcceptTCandPPSetupAyuIntro">
 
             <TextView
-                android:id="@+id/tv_privacy_notice_link_1"
+                android:id="@+id/tvAcceptTcandPPSetupAyuIntro"
+                android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:text="@string/agree_to_terms"
                 android:textSize="@dimen/terms_link_text_size" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_privacy_notice_link_2"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:maxLines="2"-->
-<!--                android:text="@string/terms_conditions"-->
-<!--                android:textColor="@color/ui2_link"-->
-<!--                android:onClick="openTermsConditions"-->
-<!--                android:textSize="@dimen/terms_link_text_size" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_privacy_notice_link_3"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:maxLines="2"-->
-<!--                android:text="@string/and_setup"-->
-<!--                android:textSize="@dimen/terms_link_text_size" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_privacy_notice_link_4"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:maxLines="2"-->
-<!--                android:onClick="openPrivacyPolicy"-->
-<!--                android:text="@string/privacy_policy_setup"-->
-<!--                android:textColor="@color/ui2_link"-->
-<!--                android:textSize="@dimen/terms_link_text_size" />-->
-
         </LinearLayout>
 
 
         <Button
-            android:id="@+id/btn_setup"
+            android:id="@+id/btnSetupAyuIntro"
+            android:contentDescription="Setup Ayu Intro Screen Setup Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_tc_pp"
+            android:layout_below="@+id/llAcceptTCandPPSetupAyuIntro"
             android:layout_marginTop="@dimen/button_setup_margin_top"
             android:layout_marginBottom="@dimen/button_setup_margin_bottom"
             android:background="@drawable/common_button_bg_primary_new_ui2"
@@ -131,7 +111,8 @@
     </RelativeLayout>
 
     <include
-        android:id="@+id/card_note_snack_policy"
+        android:id="@+id/snackbarAcceptTCandPPSetupAyuIntro"
+        android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP Snackbar"
         layout="@layout/cutom_snackbar_policy_ui2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -140,6 +121,7 @@
         android:layout_marginEnd="@dimen/margin_24"
         android:layout_marginBottom="@dimen/margin_24"
         android:visibility="gone" />
+
 </RelativeLayout>
 
 

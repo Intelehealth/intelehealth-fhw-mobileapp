@@ -160,11 +160,11 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         }
 
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        mSummaryFrameLayout = findViewById(R.id.fl_steps_summary);
-        mStep1ProgressBar = findViewById(R.id.prog_bar_step1);
-        mStep2ProgressBar = findViewById(R.id.prog_bar_step2);
-        mStep3ProgressBar = findViewById(R.id.prog_bar_step3);
-        mStep4ProgressBar = findViewById(R.id.prog_bar_step4);
+        mSummaryFrameLayout = findViewById(R.id.flProgressStepsSummaryVisitCreation);
+        mStep1ProgressBar = findViewById(R.id.pbStep1VisitCreation);
+        mStep2ProgressBar = findViewById(R.id.pbStep2VisitCreation);
+        mStep3ProgressBar = findViewById(R.id.pbStep3VisitCreation);
+        mStep4ProgressBar = findViewById(R.id.pbStep4VisitCreation);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -198,8 +198,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             Log.v(TAG, "Patient Name: " + patientName);
             Log.v(TAG, "Intent Tag: " + intentTag);
             Log.v(TAG, "Intent float_ageYear_Month: " + float_ageYear_Month);
-            ((TextView) findViewById(R.id.tv_title)).setText(patientName);
-            ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s", patientGender, mAgeAndMonth));
+            ((TextView) findViewById(R.id.tvTitleVisitCreation)).setText(patientName);
+            ((TextView) findViewById(R.id.tvTitleDescVisitCreation)).setText(String.format("%s/%s", patientGender, mAgeAndMonth));
 
         }
 
@@ -232,7 +232,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
         if (!mIsEditMode)
             getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
+                    replace(R.id.flProgressStepsBodyVisitCreation, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
                     commit();
         else makeReadyForEdit();
     }
@@ -242,7 +242,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     private void makeReadyForEdit() {
-        findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
+        findViewById(R.id.llProgressStepsVisitCreation).setVisibility(View.GONE);
         // init all resources
         mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
         }.getType());
@@ -268,29 +268,21 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         switch (mEditFor) {
             case STEP_1_VITAL:
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
+                        replace(R.id.flProgressStepsBodyVisitCreation, VitalCollectionFragment.newInstance(getIntent(), mIsEditMode, null), VITAL_FRAGMENT).
                         commit();
                 break;
             case STEP_2_VISIT_REASON:
-
-
-                //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
-                //mStep2ProgressBar.setProgress(40);
                 setTitle(getResources().getString(R.string.visit_reason) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
-                //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mIsEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.flProgressStepsBodyVisitCreation, VisitReasonQuestionsFragment.newInstance(getIntent(), mIsEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
             case STEP_3_PHYSICAL_EXAMINATION:
                 mStep3ProgressBar.setProgress(10);
                 setTitle(getResources().getString(R.string._phy_examination));
                 mSummaryFrameLayout.setVisibility(View.GONE);
-                //mPhysicalExamNode =
-                //loadPhysicalExam();
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), mIsEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
+                        replace(R.id.flProgressStepsBodyVisitCreation, PhysicalExaminationFragment.newInstance(getIntent(), mIsEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
                         commit();
                 break;
             case STEP_4_PAST_MEDICAL_HISTORY:
@@ -321,29 +313,29 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep1ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode), VITAL_SUMMARY_FRAGMENT).
+                            replace(R.id.flProgressStepsSummaryVisitCreation, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode), VITAL_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
             case STEP_1_VITAL:
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
-                ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string._1_4_vitals));
+                ((TextView) findViewById(R.id.tvSubtitleVisitCreation)).setText(getResources().getString(R.string._1_4_vitals));
                 mStep1ProgressBar.setProgress(100);
                 mStep2ProgressBar.setProgress(0);
                 mStep3ProgressBar.setProgress(0);
                 mStep4ProgressBar.setProgress(0);
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(getIntent(), isEditMode, mVitalsObject), VITAL_FRAGMENT).
+                        replace(R.id.flProgressStepsBodyVisitCreation, VitalCollectionFragment.newInstance(getIntent(), isEditMode, mVitalsObject), VITAL_FRAGMENT).
                         commit();
                 break;
             case STEP_2_VISIT_REASON:
                 mStep2ProgressBar.setProgress(20);
-                ((TextView) findViewById(R.id.tv_sub_title)).setText(getResources().getString(R.string.visit_reason));
+                ((TextView) findViewById(R.id.tvSubtitleVisitCreation)).setText(getResources().getString(R.string.visit_reason));
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
 
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonCaptureFragment.newInstance(getIntent(), isEditMode, false), VISIT_REASON_FRAGMENT).
+                        replace(R.id.flProgressStepsBodyVisitCreation, VisitReasonCaptureFragment.newInstance(getIntent(), isEditMode, false), VISIT_REASON_FRAGMENT).
                         commit();
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 break;
@@ -356,7 +348,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), isEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
+                        replace(R.id.flProgressStepsBodyVisitCreation, VisitReasonQuestionsFragment.newInstance(getIntent(), isEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
                 break;
             case FROM_SUMMARY_RESUME_BACK_FOR_EDIT:
@@ -382,7 +374,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(getIntent(), insertionWithLocaleJsonString, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
+                            replace(R.id.flProgressStepsSummaryVisitCreation, VisitReasonSummaryFragment.newInstance(getIntent(), insertionWithLocaleJsonString, isEditMode), VISIT_REASON_QUESTION_FRAGMENT).
                             commit();
                 }
                 break;
@@ -394,7 +386,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 //mPhysicalExamNode =
                 loadPhysicalExam();
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), isEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
+                        replace(R.id.flProgressStepsBodyVisitCreation, PhysicalExaminationFragment.newInstance(getIntent(), isEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
                         commit();
                 break;
             case STEP_3_PHYSICAL_SUMMARY_EXAMINATION:
@@ -402,7 +394,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
                             //replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
-                                    replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalStringLocale, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                                    replace(R.id.flProgressStepsSummaryVisitCreation, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalStringLocale, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -419,7 +411,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 if (isSavedPastHistory()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistoryLocale, familyHistoryLocale, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
+                            replace(R.id.flProgressStepsSummaryVisitCreation, MedicalHistorySummaryFragment.newInstance(getIntent(), patientHistoryLocale, familyHistoryLocale, isEditMode), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -453,7 +445,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             isEditMode = false;
         }
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, PastMedicalHistoryFragment.newInstance(getIntent(), isEditMode, mPastMedicalHistoryNode), PAST_MEDICAL_HISTORY_FRAGMENT).
+                replace(R.id.flProgressStepsBodyVisitCreation, PastMedicalHistoryFragment.newInstance(getIntent(), isEditMode, mPastMedicalHistoryNode), PAST_MEDICAL_HISTORY_FRAGMENT).
                 commit();
     }
 
@@ -467,7 +459,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             isEditMode = false;
         }
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, FamilyHistoryFragment.newInstance(getIntent(), isEditMode, mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
+                replace(R.id.flProgressStepsBodyVisitCreation, FamilyHistoryFragment.newInstance(getIntent(), isEditMode, mFamilyHistoryNode), FAMILY_HISTORY_SUMMARY_FRAGMENT).
                 commit();
     }
 
@@ -664,7 +656,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
 
     public void setTitle(String text) {
-        ((TextView) findViewById(R.id.tv_sub_title)).setText(text);
+        ((TextView) findViewById(R.id.tvSubtitleVisitCreation)).setText(text);
     }
 
     @Override

@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
+    android:id="@+id/rlParentIntroScreenSecond"
+    android:contentDescription="Intro Screen Second Parent Relative Layout"
 android:layout_height="match_parent">
 
 <LinearLayout
+    android:id="@+id/llChildIntroScreenSecond"
+    android:contentDescription="Intro Screen Second Child Linear Layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/ivDisplayIntroScreenSecond"
+        android:contentDescription="Intro Screen Second Display ImageView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_gravity="center"
         android:src="@drawable/second" />
 
     <TextView
+        android:id="@+id/tvTitleIntroScreenSecond"
+        android:contentDescription="Intro Screen Second Title TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/intro_heading_margin_top"
@@ -27,6 +35,8 @@ android:layout_height="match_parent">
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvSubtitleIntroScreenSecond"
+        android:contentDescription="Intro Screen Second Subtitle TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/intro_description_margin_start"

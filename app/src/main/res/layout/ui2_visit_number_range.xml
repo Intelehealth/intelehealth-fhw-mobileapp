@@ -2,12 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentVisitNumberRange"
+    android:contentDescription="Visit Number Range Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <TextView
-        android:id="@+id/tv_desc"
+        android:id="@+id/tvDescVisitNumberRange"
+        android:contentDescription="Visit Number Range Description TextView"
         style="@style/label_misc_txt_14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,21 +18,22 @@
         android:text="@string/drag_tow_capture_range_from_0_to_100" />
 
     <LinearLayout
-        android:id="@+id/ll_range"
+        android:id="@+id/llSliderVisitNumberRange"
+        android:contentDescription="Visit Number Range Slider LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_desc"
+        android:layout_below="@+id/tvDescVisitNumberRange"
         android:layout_marginTop="@dimen/padding_12"
         android:background="@drawable/ui2_common_gray_round_stroke_bg"
         android:orientation="vertical"
         android:padding="@dimen/padding_12">
 
         <com.google.android.material.slider.RangeSlider
-            android:id="@+id/range_slider"
+            android:id="@+id/rsVisitNumberRange"
+            android:contentDescription="Visit Number Range Slider"
             style="@style/slider_scrollbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/slider_desc"
             android:valueFrom="1"
             android:valueTo="100"
             app:labelBehavior="floating"
@@ -39,10 +43,11 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/btn_values"
+        android:id="@+id/tvSelectedValueVisitNumberRange"
+        android:contentDescription="Visit Number Range Selected Value TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_range"
+        android:layout_below="@+id/llSliderVisitNumberRange"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/edittext_border_blue"
         android:gravity="center"
@@ -56,13 +61,14 @@
         tools:ignore="TextContrastCheck" />
 
     <TextView
-        android:id="@+id/btn_submit"
+        android:id="@+id/tvSubmitVisitNumberRange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_range"
+        android:layout_below="@+id/llSliderVisitNumberRange"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_16"
         android:background="@drawable/ui2_common_button_bg_submit"
+        android:contentDescription="Visit Number Range Submit TextView"
         android:gravity="center"
         android:minWidth="80dip"
         android:padding="@dimen/padding_10"
@@ -74,13 +80,14 @@
         tools:ignore="TextContrastCheck" />
 
     <Button
-        android:id="@+id/btn_skip"
+        android:id="@+id/btnSkipVisitNumberRange"
+        android:contentDescription="Visit Number Range Skip Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_range"
+        android:layout_below="@+id/llSliderVisitNumberRange"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_24"
-        android:layout_toStartOf="@+id/btn_submit"
+        android:layout_toStartOf="@+id/tvSubmitVisitNumberRange"
         android:background="@drawable/ui2_common_button_bg_submit"
         android:minWidth="100dip"
         android:paddingHorizontal="@dimen/padding_7"

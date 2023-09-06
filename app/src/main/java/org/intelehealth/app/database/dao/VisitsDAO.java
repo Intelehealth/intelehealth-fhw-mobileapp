@@ -309,7 +309,7 @@ public class VisitsDAO {
 
     public List<VisitDTO> getAllVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit", null);
         VisitDTO visitDTO = new VisitDTO();
@@ -489,6 +489,7 @@ public class VisitsDAO {
     /**
      * Todays Visits that are not Ended.
      */
+
     public static List<PrescriptionModel> recentNotEndedVisits(int limit, int offset) {
         List<PrescriptionModel> arrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -702,7 +703,7 @@ public class VisitsDAO {
     public static String fetchVisitModifiedDateForPrescPending(String visitUUID) {
         String modifiedDate = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if (visitUUID != null) {
@@ -739,7 +740,7 @@ public class VisitsDAO {
     public static int getTotalCounts_EndVisit() {
         int total = 0;
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         // Todays cursor

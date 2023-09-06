@@ -20,7 +20,8 @@
             android:src="@drawable/ic_baseline_lens_24" />
 
         <TextView
-            android:id="@+id/tv_question_label"
+            android:id="@+id/tvQuestionQaRowItemView1"
+            android:contentDescription="QA Row Item View1 Question TextView"
             style="@style/label_misc_txt_14sp"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -32,7 +33,8 @@
             android:text="@string/question" />
 
         <TextView
-            android:id="@+id/tv_answer_value"
+            android:id="@+id/tvAnswerQaRowItemView1"
+            android:contentDescription="QA Row Item View1 Answer TextView"
             style="@style/label_misc_txt_14sp_dark"
             android:layout_width="0dip"
             android:layout_height="wrap_content"

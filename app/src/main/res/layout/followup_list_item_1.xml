@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fu_cardview_item"
+    android:id="@+id/cvParentFollowUpListItem"
+    android:contentDescription="Follow Up List Item Parent CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/margin_10"
@@ -10,16 +11,14 @@
     app:contentPadding="@dimen/margin_8">
 
     <RelativeLayout
-        android:id="@+id/frame_10014"
+        android:id="@+id/rlParentFollowUpListItem"
+        android:contentDescription="Follow Up List Item Parent RelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
             <androidx.cardview.widget.CardView
-                android:id="@+id/fu_profile_imgv"
+                android:id="@+id/cvPatientImageFollowUpListItem"
+                android:contentDescription="Follow Up List Item Patient Image CardView"
                 android:layout_width="@dimen/notifi_header_icon"
                 android:layout_height="@dimen/notifi_header_icon"
                 android:layout_alignParentTop="true"
@@ -28,22 +27,27 @@
                 app:cardCornerRadius="@dimen/cardcornerradius_imagev">
 
                 <ImageView
-                    android:id="@+id/profile_image"
+                    android:id="@+id/ivPatientImageFollowUpListItem"
+                    android:contentDescription="Follow Up List Item Patient Image ImageView"
                     android:layout_width="@dimen/notifi_header_icon"
                     android:layout_height="@dimen/notifi_header_icon"
                     android:src="@drawable/avatar1" />
+
             </androidx.cardview.widget.CardView>
 
 
             <RelativeLayout
+                android:id="@+id/rlNameDateFollowUpListItem"
+                android:contentDescription="Follow Up List Item Name Date RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_toEndOf="@+id/fu_profile_imgv">
+                android:layout_toEndOf="@+id/cvPatientImageFollowUpListItem">
 
-                <!-- fu_patname_txtview -->
+                <!-- tvPatientNameRowItem -->
                 <TextView
-                    android:id="@+id/fu_patname_txtview"
+                    android:id="@+id/tvPatientNameFollowUpListItem"
+                    android:contentDescription="Follow Up List Item Patient Name TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -55,21 +59,23 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/fu_item_calendar"
+                    android:id="@+id/ivCalendarFollowUpListItem"
+                    android:contentDescription="Follow Up List Item Calendar ImageView"
                     android:layout_width="@dimen/cal_size"
                     android:layout_height="@dimen/cal_size"
-                    android:layout_below="@+id/fu_patname_txtview"
+                    android:layout_below="@+id/tvPatientNameFollowUpListItem"
                     android:layout_marginTop="@dimen/cal_margin_top"
                     android:src="@drawable/followup_item_calendar" />
 
                 <TextView
-                    android:id="@+id/fu_date_txtview"
+                    android:id="@+id/tvDateTimeFollowUpListItem"
+                    android:contentDescription="Follow Up List Item Date Time TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fu_patname_txtview"
+                    android:layout_below="@+id/tvPatientNameFollowUpListItem"
                     android:layout_marginStart="@dimen/cal_margnin_start"
                     android:layout_marginTop="@dimen/cal_margnin_start"
-                    android:layout_toEndOf="@+id/fu_item_calendar"
+                    android:layout_toEndOf="@+id/ivCalendarFollowUpListItem"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/fu_card_item_date"
@@ -78,16 +84,15 @@
                     android:textSize="@dimen/fu_male_textsize" />
 
                 <ImageView
-                    android:id="@+id/fu_priority_tag"
+                    android:id="@+id/ivPriorityTagFollowUpListItem"
+                    android:contentDescription="Follow Up List Item Priority Tag ImageView"
                     android:layout_width="@dimen/btn_prioirty_w_60dp"
                     android:layout_height="@dimen/btn_prioirty_h_20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="top"
-
                     android:lineSpacingExtra="0sp"
                     android:src="@drawable/ui2_frame_priority"
                     android:visibility="gone" />
-            </RelativeLayout>
         </RelativeLayout>
 
 

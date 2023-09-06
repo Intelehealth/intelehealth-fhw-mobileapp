@@ -146,26 +146,26 @@ public class Fragment_ThirdScreen extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(getActivity());
 
-        personal_icon = getActivity().findViewById(R.id.addpatient_icon);
-        address_icon = getActivity().findViewById(R.id.addresslocation_icon);
-        other_icon = getActivity().findViewById(R.id.other_icon);
-        frag3_btn_back = getActivity().findViewById(R.id.frag3_btn_back);
-        frag3_btn_next = getActivity().findViewById(R.id.frag3_btn_next);
+        personal_icon = getActivity().findViewById(R.id.ivPersonalIconIdentificationActivity);
+        address_icon = getActivity().findViewById(R.id.ivAddressIconIdentificationActivity);
+        other_icon = getActivity().findViewById(R.id.ivOtherIconIdentificationActivity);
+        frag3_btn_back = getActivity().findViewById(R.id.btnBackIdentificationThirdScreen);
+        frag3_btn_next = getActivity().findViewById(R.id.btnNextIdentificationThirdScreen);
 
-        mRelationNameEditText = view.findViewById(R.id.relation_edittext);
-        mNationalIDEditText = view.findViewById(R.id.national_ID_editText);
+        mRelationNameEditText = view.findViewById(R.id.etRelationIdentificationThirdScreen);
+        mNationalIDEditText = view.findViewById(R.id.etNationalIDIdentificationThirdScreen);
         mNationalIDEditText.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(24)}); //all capital input
 
-        mOccupationEditText = view.findViewById(R.id.occupation_editText);
-        mCasteSpinner = view.findViewById(R.id.caste_spinner);
-        mEducationSpinner = view.findViewById(R.id.education_spinner);
-        mEconomicstatusSpinner = view.findViewById(R.id.economicstatus_spinner);
+        mOccupationEditText = view.findViewById(R.id.etOccupationIdentificationThirdScreen);
+        mCasteSpinner = view.findViewById(R.id.spinnerCasteIdentificationThirdScreen);
+        mEducationSpinner = view.findViewById(R.id.spinnerEducationIdentificationThirdScreen);
+        mEconomicstatusSpinner = view.findViewById(R.id.spinnerEconomicIdentificationThirdScreen);
 
-        mRelationNameErrorTextView = view.findViewById(R.id.relation_error);
-        mOccupationErrorTextView = view.findViewById(R.id.occupation_error);
-        mCasteErrorTextView = view.findViewById(R.id.caste_error);
-        mEducationErrorTextView = view.findViewById(R.id.education_error);
-        mEconomicErrorTextView = view.findViewById(R.id.economic_error);
+        mRelationNameErrorTextView = view.findViewById(R.id.tvRelationErrorIdentificationThirdScreen);
+        mOccupationErrorTextView = view.findViewById(R.id.tvOccupationErrorIdentificationThirdScreen);
+        mCasteErrorTextView = view.findViewById(R.id.tvCasteErrorIdentificationThirdScreen);
+        mEducationErrorTextView = view.findViewById(R.id.tvEducationErrorIdentificationThirdScreen);
+        mEconomicErrorTextView = view.findViewById(R.id.tvEconomicErrorIdentificationThirdScreen);
 
 
         mRelationNameEditText.addTextChangedListener(new MyTextWatcher(mRelationNameEditText));
@@ -256,7 +256,7 @@ public class Fragment_ThirdScreen extends Fragment {
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            /*if (this.editText.getId() == R.id.relation_edittext) {
+            /*if (this.editText.getId() == R.id.etRelationIdentificationThirdScreen) {
                 if (val.isEmpty()) {
                     mRelationNameErrorTextView.setVisibility(View.VISIBLE);
                     mRelationNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -265,7 +265,7 @@ public class Fragment_ThirdScreen extends Fragment {
                     mRelationNameErrorTextView.setVisibility(View.GONE);
                     mRelationNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.occupation_editText) {
+            } else if (this.editText.getId() == R.id.etOccupationIdentificationThirdScreen) {
                 if (val.isEmpty()) {
                     mOccupationErrorTextView.setVisibility(View.VISIBLE);
                     mOccupationErrorTextView.setText(getString(R.string.error_field_required));
@@ -521,7 +521,7 @@ public class Fragment_ThirdScreen extends Fragment {
 
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_firstscreen, secondScreen)
+                .replace(R.id.flMainIdentificationFirstScreen, secondScreen)
                 .commit();
     }
 

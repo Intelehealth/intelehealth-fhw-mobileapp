@@ -2,18 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlParentCustomProgressDialog"
+    android:contentDescription="Custom Progress Dialog Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent" >
 
     <RelativeLayout
+        android:id="@+id/rlChildCustomProgressDialog"
+        android:contentDescription="Custom Progress Dialog Child RelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="10dp" >
 
         <org.intelehealth.app.widget.materialprogressbar.CircleProgressBar
-            android:id="@+id/ivAnim"
+            android:id="@+id/cpbCustomProgressDialog"
+            android:contentDescription="Custom Progress Dialog CircleProgressBar"
             android:layout_width="55dp"
             android:layout_height="55dp"
             app:mlpb_arrow_height="5dp"
@@ -23,10 +28,11 @@
             app:mlpb_show_arrow="true" />
 
         <TextView
-            android:id="@+id/tvProgressTitle"
+            android:id="@+id/tvTitleCustomProgressDialog"
+            android:contentDescription="Custom Progress Dialog Title TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivAnim"
+            android:layout_below="@+id/cpbCustomProgressDialog"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical|center"
             android:textColor="@color/primary_text"

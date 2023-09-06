@@ -13,17 +13,19 @@
         android:layout_margin="@dimen/fu_margin_start">
 
         <TextView
-            android:id="@+id/message"
+            android:id="@+id/tvMessageSharePrescDialog"
+            android:contentDescription="Share Prescription Dialog Message TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_mobile_number_to_share_prescription"/>
 
         <EditText
-            android:id="@+id/editText_mobileno"
+            android:id="@+id/etMobileNumSharePrescDialog"
+            android:contentDescription="Share Prescription Dialog Mobile Num EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/edittext_textcolor"
-            android:layout_below="@+id/message"
+            android:layout_below="@+id/tvMessageSharePrescDialog"
             android:background="@drawable/edittext_border"
             android:gravity="center_vertical"
             android:textSize="@dimen/edittext_textsize_16sp"
@@ -38,13 +40,14 @@
             />
 
         <Button
-            android:id="@+id/sharebtn"
+            android:id="@+id/btnSharePrescDialog"
+            android:contentDescription="Share Prescription Dialog 'Share' Button"
             style="@style/positive_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_10"
-            android:layout_below="@+id/editText_mobileno"
+            android:layout_below="@+id/etMobileNumSharePrescDialog"
             android:background="@drawable/ui2_common_primary_bg"
             android:layout_alignParentEnd="true"
             android:paddingHorizontal="@dimen/margin_32dp"

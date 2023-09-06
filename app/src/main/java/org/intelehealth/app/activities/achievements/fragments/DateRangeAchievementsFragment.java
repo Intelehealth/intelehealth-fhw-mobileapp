@@ -94,15 +94,15 @@ public class DateRangeAchievementsFragment extends Fragment {
     }
 
     private void initUI(View view) {
-        LinearLayout selectStartDate = view.findViewById(R.id.layout_start_date);
-        LinearLayout selectEndDate = view.findViewById(R.id.layout_end_date);
+        LinearLayout selectStartDate = view.findViewById(R.id.llStartDateDRAchievements);
+        LinearLayout selectEndDate = view.findViewById(R.id.llEndDateDRAchievements);
 
-        tvStartDate = view.findViewById(R.id.tv_start_date);
-        tvEndDate = view.findViewById(R.id.tv_end_date);
-        tvRangePatientsCreated = view.findViewById(R.id.tv_range_patients_created);
-        tvRangeVisitsEnded = view.findViewById(R.id.tv_range_visits_ended);
-        tvAveragePatientSatisfactionScore = view.findViewById(R.id.tv_average_patient_satisfaction_score);
-        tvTotalTimeSpentInRange = view.findViewById(R.id.tv_time_spent_in_range);
+        tvStartDate = view.findViewById(R.id.tvStartDateDRAchievements);
+        tvEndDate = view.findViewById(R.id.tvEndDateDRAchievements);
+        tvRangePatientsCreated = view.findViewById(R.id.tvPatientAddedValueDRAchievements);
+        tvRangeVisitsEnded = view.findViewById(R.id.tvVisitCompletedValueDRAchievements);
+        tvAveragePatientSatisfactionScore = view.findViewById(R.id.tvSatisfactionScoreValueDRAchievements);
+        tvTotalTimeSpentInRange = view.findViewById(R.id.tvTimeSpentValueDRAchievements);
 
         tvStartDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy", sessionManager.getAppLanguage()));
         tvEndDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy", sessionManager.getAppLanguage()));

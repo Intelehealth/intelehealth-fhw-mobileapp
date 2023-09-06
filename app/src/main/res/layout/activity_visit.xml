@@ -41,7 +41,8 @@
 
                 <!-- arrow-right -->
                 <ImageButton
-                    android:id="@+id/vector"
+                    android:id="@+id/imgBtnBackPrescriptions"
+                    android:contentDescription="image button to move back to previous screen from prescription screen"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
@@ -54,7 +55,8 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/label"
+                    android:id="@+id/tvScreenTitlePrescriptions"
+                    android:contentDescription="screen title textview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -69,7 +71,8 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/imgBtnRefreshPrescriptions"
+                android:contentDescription="imagebutton to refresh data"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
@@ -82,7 +85,8 @@
 
     <!--Tablayout-->
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout_appointments"
+        android:id="@+id/tabPrescriptions"
+        android:contentDescription="tablayout to show received and pending tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabInlineLabel="true"
@@ -102,10 +106,11 @@
 
     <!--ViewPager-->
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager_appointments"
+        android:id="@+id/vpPrescriptions"
+        android:contentDescription="view pager to show received and pending tabs with sliding feature"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tablayout_appointments"
+        android:layout_below="@+id/tabPrescriptions"
         android:visibility="visible"
         android:layout_marginTop="@dimen/margin_24"
         android:layout_marginStart="@dimen/fu_margin_start"

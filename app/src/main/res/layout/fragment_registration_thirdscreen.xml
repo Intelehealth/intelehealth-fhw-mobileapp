@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ndroid="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_3"
+    xmlns:ndroid="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlParentIdentificationThirdScreen"
+    android:contentDescription="Identification Third Screen Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_16dp"
@@ -11,55 +13,73 @@
     android:tag="thirdsc">
 
     <ScrollView
+        android:id="@+id/svParentIdentificationThirdScreen"
+        android:contentDescription="Identification Third Screen Parent ScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/frame_nxtbtn_viewgrp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_24"
-        android:fillViewport="true">
+        android:layout_above="@+id/flNextIdentificationActivity">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:id="@+id/rlChildIdentificationThirdScreen"
+        android:contentDescription="Identification Third Screen Child RelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_24"
+        android:layout_marginEnd="@dimen/margin_24">
+
+        <LinearLayout
+            android:id="@+id/llNationalIDIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen National ID LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24">
 
-            <LinearLayout
-                android:id="@+id/linear_national_ID"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvNationalIDTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen National ID Title TextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_relation"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/national_ID_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/national_ID"
+            <EditText
+                android:id="@+id/etNationalIDIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen National ID EditText"
+                style="@style/edittext_textcolor"
+                android:background="@drawable/edittext_border"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                ndroid:textAllCaps="true"
+                android:textSize="@dimen/edittext_textsize_16sp"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
+                android:hint="@string/enter_national_ID"
+                android:maxLength="18"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10" />
                     android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
-                    android:textSize="@null" />
 
-                <EditText
-                    android:id="@+id/national_ID_editText"
-                    style="@style/edittext_textcolor"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:background="@drawable/edittext_border"
-                    android:gravity="center_vertical"
-                    android:hint="@string/enter_national_ID"
-                    android:inputType="text"
-                    android:maxLength="18"
-                    android:maxLines="1"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:textSize="@dimen/edittext_textsize_16sp"
-                    ndroid:textAllCaps="true" />
+            <TextView
+                android:id="@+id/tvNationalIDErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen National ID Error TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
 
                 <TextView
                     android:id="@+id/national_ID_error"
@@ -75,39 +95,52 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llRelationIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Relation LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/linear_relation"
+            <TextView
+                android:id="@+id/tvRelationTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Relation Title TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/relation_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/son_daughter_wife_of"
-                    android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
-                    android:textSize="@null" />
+            <EditText
+                android:id="@+id/etRelationIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Relation EditText"
+                style="@style/edittext_textcolor"
+                android:background="@drawable/edittext_border"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
+                android:hint="@string/enter_your_relation_with_patient"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:inputType="textCapWords"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
+                android:textSize="@dimen/edittext_textsize_16sp" />
 
-                <EditText
-                    android:id="@+id/relation_edittext"
-                    style="@style/edittext_textcolor"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:background="@drawable/edittext_border"
-                    android:hint="@string/enter_your_relation_with_patient"
-                    android:inputType="textCapWords"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+            <TextView
+                android:id="@+id/tvRelationErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Relation Error TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
 
                 <TextView
                     android:id="@+id/relation_error"
@@ -123,42 +156,57 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
-            </LinearLayout>
+        <!--Occupation-->
+        <LinearLayout
+            android:id="@+id/llOccupationIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Occupation LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llNationalIDIdentificationThirdScreen"
+            android:layout_marginTop="@dimen/margin_24"
+            android:orientation="vertical">
 
-            <!--Occupation-->
-            <LinearLayout
-                android:id="@+id/linear_occupation"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvOccupationTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Occupation Title TextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_national_ID"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/occupation_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/occupation"
-                    android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
-                    android:textSize="@null" />
+            <EditText
+                android:id="@+id/etOccupationIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Occupation EditText"
+                style="@style/edittext_textcolor"
+                android:background="@drawable/edittext_border"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/edittext_textsize_16sp"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
+                android:hint="@string/enter_occupation_txt"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:inputType="textCapWords"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
+                />
 
-                <EditText
-                    android:id="@+id/occupation_editText"
-                    style="@style/edittext_textcolor"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:background="@drawable/edittext_border"
-                    android:gravity="center_vertical"
-                    android:hint="@string/enter_occupation_txt"
-                    android:inputType="textCapWords"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+            <TextView
+                android:id="@+id/tvOccupationErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Occupation Error TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
 
                 <TextView
                     android:id="@+id/occupation_error"
@@ -174,43 +222,57 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
-            </LinearLayout>
+        <!--Caste-->
+        <LinearLayout
+            android:id="@+id/llCasteIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Caste LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llOccupationIdentificationThirdScreen"
+            android:layout_marginTop="@dimen/margin_24"
+            android:orientation="vertical">
 
-            <!--Caste-->
-            <LinearLayout
-                android:id="@+id/linear_caste"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvCasteTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Caste Title TextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_occupation"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/caste_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/social_category"
-                    android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
-                    android:textSize="@null" />
+            <Spinner
+                android:id="@+id/spinnerCasteIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Caste Spinner "
+                style="@style/SpinnerTheme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
+                android:hint="@string/select_social_category"
+                android:popupBackground="@drawable/spinner_popup"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="50dp"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/edittext_textsize_16sp" />
 
-                <Spinner
-                    android:id="@+id/caste_spinner"
-                    style="@style/SpinnerTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:dropDownVerticalOffset="50dp"
-                    android:gravity="center_vertical"
-                    android:hint="@string/select_social_category"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:popupBackground="@drawable/spinner_popup"
-                    android:spinnerMode="dropdown"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+            <TextView
+                android:id="@+id/tvCasteErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Caste Error TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
 
                 <TextView
                     android:id="@+id/caste_error"
@@ -226,43 +288,57 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
-            </LinearLayout>
+        <!--Education-->
+        <LinearLayout
+            android:id="@+id/llEducationIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Education LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llCasteIdentificationThirdScreen"
+            android:layout_marginTop="@dimen/margin_24"
+            android:orientation="vertical">
 
-            <!--Education-->
-            <LinearLayout
-                android:id="@+id/linear_education"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvEducationTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Education Title TextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_caste"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/education_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/education"
-                    android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
-                    android:textSize="@null" />
+            <Spinner
+                android:id="@+id/spinnerEducationIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Education Spinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
+                android:gravity="center_vertical"
+                android:hint="@string/select_education"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@drawable/spinner_popup"
+                android:dropDownVerticalOffset="50dp"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
+                android:textSize="@dimen/edittext_textsize_16sp" />
 
-                <Spinner
-                    android:id="@+id/education_spinner"
-                    style="@style/SpinnerTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:dropDownVerticalOffset="50dp"
-                    android:gravity="center_vertical"
-                    android:hint="@string/select_education"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:popupBackground="@drawable/spinner_popup"
-                    android:spinnerMode="dropdown"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+            <TextView
+                android:id="@+id/tvEducationErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Education Error TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
 
                 <TextView
                     android:id="@+id/education_error"
@@ -278,44 +354,58 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
-            </LinearLayout>
+        <!--Economic Status-->
+        <LinearLayout
+            android:id="@+id/llEconomicIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Economic LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llEducationIdentificationThirdScreen"
+            android:layout_marginTop="@dimen/margin_24"
+            android:orientation="vertical">
 
-            <!--Economic Status-->
-            <LinearLayout
-                android:id="@+id/linear_economicstatus"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvEconomicTitleIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Economic Title TextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_education"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/economicstatus_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/economic_category"
-                    android:textAppearance="@style/blur_txtview"
-                    android:textColor="@null"
-                    android:textSize="@null" />
+            <Spinner
+                android:id="@+id/spinnerEconomicIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Economic Spinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height_44dp"
+                android:layout_marginTop="@dimen/common_edittext_margin_top"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:gravity="center_vertical"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@drawable/spinner_popup"
+                android:dropDownVerticalOffset="50dp"
+                android:hint="@string/select_economic_category"
+                android:paddingStart="@dimen/fu_margin_start"
+                android:paddingTop="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_16dp"
+                android:paddingBottom="@dimen/margin_10"
+                android:textSize="@dimen/edittext_textsize_16sp" />
 
-                <Spinner
-                    android:id="@+id/economicstatus_spinner"
-                    style="@style/SpinnerTheme"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/edittext_height_44dp"
-                    android:layout_marginTop="@dimen/common_edittext_margin_top"
-                    android:layout_marginBottom="@dimen/margin_10"
-                    android:dropDownVerticalOffset="50dp"
-                    android:gravity="center_vertical"
-                    android:hint="@string/select_economic_category"
-                    android:paddingStart="@dimen/fu_margin_start"
-                    android:paddingTop="@dimen/margin_10"
-                    android:paddingEnd="@dimen/margin_16dp"
-                    android:paddingBottom="@dimen/margin_10"
-                    android:popupBackground="@drawable/spinner_popup"
-                    android:spinnerMode="dropdown"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+            <TextView
+                android:id="@+id/tvEconomicErrorIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Economic Error TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:textColor="@color/red"
+                android:text="@string/this_field_is_mandatory"
+                android:textAppearance="@style/registr_error_msg"
+                android:textSize="@null" />
 
                 <TextView
                     android:id="@+id/economic_error"
@@ -337,21 +427,24 @@
 
 
     <FrameLayout
-        android:id="@+id/frame_nxtbtn_viewgrp"
+        android:id="@+id/flNextIdentificationActivity"
+        android:contentDescription="Identification Activity Buttons FrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_24">
 
         <LinearLayout
-            android:id="@+id/linear_secondscreen_nxt_btn"
+            android:id="@+id/llButtonsIdentificationThirdScreen"
+            android:contentDescription="Identification Third Screen Buttons LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:visibility="visible">
 
             <Button
-                android:id="@+id/frag3_btn_back"
+                android:id="@+id/btnBackIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Back Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"
@@ -362,7 +455,8 @@
                 android:textColor="@color/primary_text" />
 
             <Button
-                android:id="@+id/frag3_btn_next"
+                android:id="@+id/btnNextIdentificationThirdScreen"
+                android:contentDescription="Identification Third Screen Next Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/space_12dp"

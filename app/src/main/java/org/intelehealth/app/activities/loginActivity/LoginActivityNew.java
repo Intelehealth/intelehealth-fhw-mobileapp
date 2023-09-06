@@ -94,16 +94,16 @@ public class LoginActivityNew extends AppCompatActivity {
         snackbarUtils = new SnackbarUtils();
 
 
-        TextView textviewPassword = findViewById(R.id.tv_forgot_password1);
-        TextView buttonLogin = findViewById(R.id.button_login);
-        tvUsernameError = findViewById(R.id.tv_username_error);
-        tvPasswordError = findViewById(R.id.tv_password_error);
+        TextView textviewPassword = findViewById(R.id.tvForgotPasswordLogin);
+        TextView buttonLogin = findViewById(R.id.btnLoginScreen);
+        tvUsernameError = findViewById(R.id.tvUsernameErrorLogin);
+        tvPasswordError = findViewById(R.id.tvPasswordErrorLogin);
         tipWindow = new TooltipWindow(LoginActivityNew.this);
-        layoutParent = findViewById(R.id.layout_parent_login);
+        layoutParent = findViewById(R.id.clParentLogin);
 
 
-        etUsername = findViewById(R.id.et_username_login);
-        etPassword = findViewById(R.id.et_password_login);
+        etUsername = findViewById(R.id.etUsernameLogin);
+        etPassword = findViewById(R.id.etPasswordLogin);
 
         textviewPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +137,7 @@ public class LoginActivityNew extends AppCompatActivity {
         }
 
 
-        ImageView ivLoginDetails = findViewById(R.id.iv_login_details_info);
+        ImageView ivLoginDetails = findViewById(R.id.ivDetailsInfoLogin);
         ivLoginDetails.setOnClickListener(v -> {
             if (!tipWindow.isTooltipShown())
                 tipWindow.showToolTip(ivLoginDetails, getResources().getString(R.string.setup_tooltip_text));
@@ -231,8 +231,8 @@ public class LoginActivityNew extends AppCompatActivity {
     }
 
     private void manageCollapsingLayout() {
-        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.layout_collapsing);
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayoutLogin);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayoutLogin);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
             int scrollRange = -1;

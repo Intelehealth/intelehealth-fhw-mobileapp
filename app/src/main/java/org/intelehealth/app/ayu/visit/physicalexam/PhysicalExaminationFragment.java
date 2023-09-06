@@ -88,8 +88,8 @@ public class PhysicalExaminationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_physical_examination, container, false);
         if (physicalExam != null) {
             if (mIsEditMode) {
-                view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.llButtonsPhyExamFragment).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.btnSubmitPhyExamFragment).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -97,7 +97,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
                     }
                 });
-                view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.btnCancelPhyExamFragment).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         getActivity().setResult(Activity.RESULT_OK);
@@ -105,7 +105,7 @@ public class PhysicalExaminationFragment extends Fragment {
                     }
                 });
             }
-            RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
+            RecyclerView recyclerView = view.findViewById(R.id.rvPhysExamFragment);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             linearLayoutManager.setStackFromEnd(true);

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -204,8 +203,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
         alertdialogBuilder.setView(convertView);
-        EditText editText = convertView.findViewById(R.id.editText_mobileno);
-        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+        EditText editText = convertView.findViewById(R.id.etMobileNumSharePrescDialog);
+        Button sharebtn = convertView.findViewById(R.id.btnSharePrescDialog);
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
         if(model.getPhone_number()!=null)
@@ -250,12 +249,11 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
-            end_visit_btn = itemView.findViewById(R.id.end_visit_btn);
+            end_visit_btn = itemView.findViewById(R.id.btnEndVisitRowItem);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
-            name = itemView.findViewById(R.id.fu_patname_txtview);
-            search_gender = itemView.findViewById(R.id.search_gender);
-            fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
-            profile_image = itemView.findViewById(R.id.profile_image);
+            name = itemView.findViewById(R.id.tvPatientNameRowItem);
+            fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
+            profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
             end_visit_btn.setVisibility(View.VISIBLE);
         }

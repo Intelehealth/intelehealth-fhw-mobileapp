@@ -19,17 +19,6 @@
         android:textColor="@color/textColorGray"
         android:textSize="@dimen/tv_chat_time_text_size" />
 
-    <!-- <androidx.cardview.widget.CardView
-         android:id="@+id/card_incoming_msg"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/tv_incoming_msg_time"
-         android:layout_alignParentEnd="true"
-         android:layout_marginStart="@dimen/card_incoming_margin_start"
-         android:layout_marginTop="@dimen/card_incoming_margin_top"
-         app:cardElevation="2dp"
-         app:cardMaxElevation="2dp">-->
-
     <RelativeLayout
         android:id="@+id/card_incoming_msg"
         android:layout_width="match_parent"

@@ -8,41 +8,35 @@
     tools:context=".activities.settingsActivity.Language_ProtocolsActivity">
 
     <!--    Toolbar - start -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar_relative"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:id="@+id/rlToolbarParentLanguageProtocol"
+        android:contentDescription="Language Protocol Toolbar Parent Relative Layout"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/followup_toolbar"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/toolbar_top_minus_24dp"
         android:background="@drawable/frame_10021">
 
-        <!-- Frame 100167 -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10016"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="@dimen/followup_toolbar"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/fu_margin_start"
             android:layout_marginTop="@dimen/toolbar_margin_top"
             android:layout_marginRight="@dimen/fu_margin_start"
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <!-- Frame 100116 -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10011"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/llToolbarChildLanguageProtocol"
+                android:contentDescription="Language Protocol Toolbar Child Linear Layout"                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.7"
                 android:orientation="horizontal">
 
-                <!-- arrow-right -->
                 <ImageButton
-                    android:id="@+id/vector"
+                    android:id="@+id/ivBackArrowLanguageProtocol"
+                    android:contentDescription="Language Protocol Back Arrow ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
@@ -56,7 +50,8 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/label"
+                    android:id="@+id/tvTitleLanguageProtocol"
+                    android:contentDescription="Language Protocol Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -71,7 +66,8 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/refresh"
+                android:id="@+id/ibRefreshLanguageProtocol"
+                android:contentDescription="Language Protocol Refresh ImageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
@@ -84,10 +80,11 @@
 
     <!--Language - Start-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/lang_card"
+        android:id="@+id/cvLangLanguageProtocol"
+        android:contentDescription="Language Protocol - Language CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_relative"
+        android:layout_below="@+id/rlToolbarParentLanguageProtocol"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -101,7 +98,8 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/lang_header_relative"
+                android:id="@+id/rlLangTitleLanguageProtocol"
+                android:contentDescription="Language Protocol Change Language Card Title RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -110,7 +108,8 @@
                 android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                 <ImageView
-                    android:id="@+id/vs_icon"
+                    android:id="@+id/ivLangIconLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language Card Icon ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_2dp"
@@ -122,12 +121,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
-                    android:layout_toEndOf="@+id/vs_icon"
+                    android:layout_toEndOf="@+id/ivLangIconLanguageProtocol"
                     android:text="@string/language"
                     android:textStyle="bold" />
 
-                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_special_vd_header"
+                <ImageButton
+                    android:id="@+id/ibLangCardCollapseLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language Card Collapse ImageButton"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:layout_alignParentEnd="true"
@@ -139,13 +139,15 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/lang_header_expandview"
+                android:id="@+id/rlLangExpandViewLanguageProtocol"
+                android:contentDescription="Language Protocol Change Language Card Expanded RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lang_header_relative">
+                android:layout_below="@+id/rlLangTitleLanguageProtocol">
 
                 <View
-                    android:id="@+id/divider"
+                    android:id="@+id/viewLangLayoutDividerLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language Card Divider View"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -156,10 +158,11 @@
 
                 <!--Language Relative - Start-->
                 <RelativeLayout
-                    android:id="@+id/lang_relative"
+                    android:id="@+id/rlChangeLanguageProtocol"
+                    android:contentDescription="Language Protocol Change Language RelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/divider"
+                    android:layout_below="@+id/viewLangLayoutDividerLanguageProtocol"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/fu_margin_start">
@@ -173,7 +176,8 @@
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                     <Spinner
-                        android:id="@+id/lang_spinner"
+                        android:id="@+id/spinnerChangeLanguageProtocol"
+                        android:contentDescription="Language Protocol Change Language Spinner"
                         style="@style/SmallSpinnerTheme"
                         android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -189,7 +193,8 @@
                         android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/lang_spinner_txt"
+                        android:id="@+id/tvLangSpinnerLanguageProtocol"
+                        android:contentDescription="Language Protocol Change Language Spinner TextView"
                         style="@style/SmallSpinnerTheme"
                         android:layout_width="@dimen/size_120dp"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -202,10 +207,11 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/reset_lang_relative_1"
+                    android:id="@+id/rlResetLanguageProtocol"
+                    android:contentDescription="Language Protocol Reset Language RelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/lang_relative"
+                    android:layout_below="@+id/rlChangeLanguageProtocol"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginTop="@dimen/margin_24"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -220,7 +226,8 @@
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                     <RelativeLayout
-                        android:id="@+id/reset_btn"
+                        android:id="@+id/btnResetLanguageProtocol"
+                        android:contentDescription="Language Protocol Reset Language Button RelativeLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -232,7 +239,6 @@
                             android:layout_centerInParent="true">
 
                             <ImageView
-                                android:id="@+id/refresh_icon"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_baseline_refresh_24" />
@@ -263,10 +269,11 @@
 
     <!--Protocols - Start-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/protocols_card"
+        android:id="@+id/cvProtocolLanguageProtocol"
+        android:contentDescription="Language Protocol - Protocol CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lang_card"
+        android:layout_below="@+id/cvLangLanguageProtocol"
         android:layout_marginStart="@dimen/toolbar_margin_left"
         android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginEnd="@dimen/toolbar_margin_left"
@@ -280,7 +287,8 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/protocols_header_relative"
+                android:id="@+id/rlProtocolTitleLanguageProtocol"
+                android:contentDescription="Language Protocol Update Protocol Card Title RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fu_card_margin_sides"
@@ -289,7 +297,8 @@
                 android:layout_marginBottom="@dimen/fu_card_margin_sides">
 
                 <ImageView
-                    android:id="@+id/vs_icon"
+                    android:id="@+id/ivProtocolIconLanguageProtocol"
+                    android:contentDescription="Language Protocol Update Protocol Card Icon ImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_2dp"
@@ -301,12 +310,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/margin_8"
-                    android:layout_toEndOf="@+id/vs_icon"
+                    android:layout_toEndOf="@+id/ivProtocolIconLanguageProtocol"
                     android:text="@string/protocols"
                     android:textStyle="bold" />
 
-                <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/btn_up_special_vd_header"
+                <ImageButton
+                    android:id="@+id/ibProtocolCardCollapseLanguageProtocol"
+                    android:contentDescription="Language Protocol Update Protocol Card Collapse ImageButton"
                     android:layout_width="@dimen/fu_icon_width"
                     android:layout_height="@dimen/fu_icon_height"
                     android:layout_alignParentEnd="true"
@@ -318,13 +328,15 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/protocols_header_expandview"
+                android:id="@+id/rlProtocolExpandViewLanguageProtocol"
+                android:contentDescription="Language Protocol Update Protocol Card Expanded RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/protocols_header_relative">
+                android:layout_below="@+id/rlProtocolTitleLanguageProtocol">
 
                 <View
-                    android:id="@+id/divider"
+                    android:id="@+id/viewProtocolLayoutDividerLanguageProtocol"
+                    android:contentDescription="Language Protocol Update Protocol Card Divider View"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -335,10 +347,9 @@
 
                 <!--Protocols Relative - Start-->
                 <RelativeLayout
-                    android:id="@+id/reset_lang_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/divider"
+                    android:layout_below="@+id/viewProtocolLayoutDividerLanguageProtocol"
                     android:layout_marginStart="@dimen/fu_margin_start"
                     android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/fu_margin_start"
@@ -353,7 +364,8 @@
                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                     <RelativeLayout
-                        android:id="@+id/update_protocols_btn"
+                        android:id="@+id/rlUpdateLanguageProtocol"
+                        android:contentDescription="Language Protocol Update Protocol RelativeLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -382,7 +394,8 @@
     <!--Protocols - End-->
 
     <include
-        android:id="@+id/snackbar_cv"
+        android:id="@+id/snackbarLanguageProtocol"
+        android:contentDescription="Language Protocol Snackbar"
         layout="@layout/custom_snackbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

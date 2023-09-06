@@ -43,16 +43,13 @@ import java.util.Locale;
 public class SplashActivity extends AppCompatActivity {
     private static final int GROUP_PERMISSION_REQUEST = 1000;
     SessionManager sessionManager = null;
-    //    ProgressDialog TempDialog;
-    //int i = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_activity);
-//        Getting App language through the session manager
+        // getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
-        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);

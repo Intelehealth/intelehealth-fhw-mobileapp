@@ -145,35 +145,35 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(getActivity());
-        patient_imgview = view.findViewById(R.id.patient_imgview);
-        frag1_nxt_btn_main = view.findViewById(R.id.frag1_nxt_btn_main);
-        personal_icon = getActivity().findViewById(R.id.addpatient_icon);
-        address_icon = getActivity().findViewById(R.id.addresslocation_icon);
-        other_icon = getActivity().findViewById(R.id.other_icon);
-        mFirstNameEditText = view.findViewById(R.id.firstname_edittext);
+        patient_imgview = view.findViewById(R.id.ivProfileIdentificationFirstScreen);
+        frag1_nxt_btn_main = view.findViewById(R.id.btnNextIdentificationFirstScreen);
+        personal_icon = getActivity().findViewById(R.id.ivPersonalIconIdentificationActivity);
+        address_icon = getActivity().findViewById(R.id.ivAddressIconIdentificationActivity);
+        other_icon = getActivity().findViewById(R.id.ivOtherIconIdentificationActivity);
+        mFirstNameEditText = view.findViewById(R.id.etFirstNameIdentificationFirstScreen);
         mFirstNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
-        mMiddleNameEditText = view.findViewById(R.id.middlename_edittext);
+        mMiddleNameEditText = view.findViewById(R.id.etMiddleNameIdentificationFirstScreen);
         mMiddleNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
-        mLastNameEditText = view.findViewById(R.id.lastname_edittext);
+        mLastNameEditText = view.findViewById(R.id.etLastNameIdentificationFirstScreen);
         mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25  // IDA4-1344
-        mGenderMaleRadioButton = view.findViewById(R.id.gender_male);
-        mGenderFemaleRadioButton = view.findViewById(R.id.gender_female);
-        mGenderOthersRadioButton = view.findViewById(R.id.gender_other);
-        mDOBEditText = view.findViewById(R.id.dob_edittext);
-        mAgeEditText = view.findViewById(R.id.age_edittext);
-        mCountryCodePicker = view.findViewById(R.id.countrycode_spinner);
-        mPhoneNumberEditText = view.findViewById(R.id.phoneno_edittext);
+        mGenderMaleRadioButton = view.findViewById(R.id.rbMaleIdentificationFirstScreen);
+        mGenderFemaleRadioButton = view.findViewById(R.id.rbFemaleIdentificationFirstScreen);
+        mGenderOthersRadioButton = view.findViewById(R.id.rbOtherIdentificationFirstScreen);
+        mDOBEditText = view.findViewById(R.id.etDOBIdentificationFirstScreen);
+        mAgeEditText = view.findViewById(R.id.etAgeIdentificationFirstScreen);
+        mCountryCodePicker = view.findViewById(R.id.ccpIdentificationFirstScreen);
+        mPhoneNumberEditText = view.findViewById(R.id.etPhoneNumIdentificationFirstScreen);
         Log.v("phone", "phone value: " + mCountryCodePicker.getSelectedCountryCode());
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
 
-        mFirstNameErrorTextView = view.findViewById(R.id.firstname_error);
-        mMiddleNameErrorTextView = view.findViewById(R.id.middlename_error);
-        mLastNameErrorTextView = view.findViewById(R.id.lastname_error);
-        mGenderErrorTextView = view.findViewById(R.id.gender_error);
-        mDOBErrorTextView = view.findViewById(R.id.dob_error);
-        mAgeErrorTextView = view.findViewById(R.id.age_error);
-        mPhoneNumberErrorTextView = view.findViewById(R.id.phone_error);
+        mFirstNameErrorTextView = view.findViewById(R.id.tvFirstNameErrorIdentificationFirstScreen);
+        mMiddleNameErrorTextView = view.findViewById(R.id.tvMiddleNameErrorIdentificationFirstScreen);
+        mLastNameErrorTextView = view.findViewById(R.id.tvLastNameErrorIdentificationFirstScreen);
+        mGenderErrorTextView = view.findViewById(R.id.tvGenderErrorIdentificationFirstScreen);
+        mDOBErrorTextView = view.findViewById(R.id.tvDOBErrorIdentificationFirstScreen);
+        mAgeErrorTextView = view.findViewById(R.id.tvAgeErrorIdentificationFirstScreen);
+        mPhoneNumberErrorTextView = view.findViewById(R.id.tvPhoneNumErrorIdentificationFirstScreen);
 
         mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText));
         mMiddleNameEditText.addTextChangedListener(new MyTextWatcher(mMiddleNameEditText));
@@ -352,7 +352,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         @Override
         public void afterTextChanged(Editable editable) {
             String val = editable.toString().trim();
-            if (this.editText.getId() == R.id.firstname_edittext) {
+            if (this.editText.getId() == R.id.etFirstNameIdentificationFirstScreen) {
                 if (val.isEmpty()) {
                     mFirstNameErrorTextView.setVisibility(View.VISIBLE);
                     mFirstNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -361,7 +361,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mFirstNameErrorTextView.setVisibility(View.GONE);
                     mFirstNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.middlename_edittext) {
+            } else if (this.editText.getId() == R.id.etMiddleNameIdentificationFirstScreen) {
                /* if (val.isEmpty()) {
                     mMiddleNameErrorTextView.setVisibility(View.VISIBLE);
                     mMiddleNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -370,7 +370,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mMiddleNameErrorTextView.setVisibility(View.GONE);
                     mMiddleNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }*/
-            } else if (this.editText.getId() == R.id.lastname_edittext) {
+            } else if (this.editText.getId() == R.id.etLastNameIdentificationFirstScreen) {
                 if (val.isEmpty()) {
                     mLastNameErrorTextView.setVisibility(View.VISIBLE);
                     mLastNameErrorTextView.setText(getString(R.string.error_field_required));
@@ -379,7 +379,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mLastNameErrorTextView.setVisibility(View.GONE);
                     mLastNameEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.dob_edittext) {
+            } else if (this.editText.getId() == R.id.etDOBIdentificationFirstScreen) {
                 if (val.isEmpty()) {
                     mDOBErrorTextView.setVisibility(View.VISIBLE);
                     mDOBErrorTextView.setText(getString(R.string.error_field_required));
@@ -388,7 +388,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mDOBErrorTextView.setVisibility(View.GONE);
                     mDOBEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.age_edittext) {
+            } else if (this.editText.getId() == R.id.etAgeIdentificationFirstScreen) {
                 if (val.isEmpty()) {
                     mAgeErrorTextView.setVisibility(View.VISIBLE);
                     mAgeErrorTextView.setText(getString(R.string.error_field_required));
@@ -397,7 +397,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                     mAgeErrorTextView.setVisibility(View.GONE);
                     mAgeEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
                 }
-            } else if (this.editText.getId() == R.id.phoneno_edittext) {
+            } else if (this.editText.getId() == R.id.etPhoneNumIdentificationFirstScreen) {
                 if (val.isEmpty()) {
                     mPhoneNumberErrorTextView.setVisibility(View.VISIBLE);
                     mPhoneNumberErrorTextView.setText(getString(R.string.error_field_required));
@@ -483,15 +483,15 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
                 mAgePicker.setView(convertView);
-                NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-                NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-                NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
+                NumberPicker yearPicker = convertView.findViewById(R.id.npQty1NumberPickerDialog);
+                NumberPicker monthPicker = convertView.findViewById(R.id.npQty2NumberPickerDialog);
+                NumberPicker dayPicker = convertView.findViewById(R.id.npQty3NumberPickerDialog);
                 dayPicker.setVisibility(View.VISIBLE);
-                Button okButton = convertView.findViewById(R.id.button_ok_picker);
-                Button cancelButton = convertView.findViewById(R.id.btn_cancel_picker);
-                final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
-                final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
-                final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
+                Button okButton = convertView.findViewById(R.id.btnOkayNumberPickerDialog);
+                Button cancelButton = convertView.findViewById(R.id.btnCancelNumberPickerDialog);
+                final TextView middleText = convertView.findViewById(R.id.tvUnit1NumberPickerDialog);
+                final TextView endText = convertView.findViewById(R.id.tvUnit2NumberPickerDialog);
+                final TextView dayTv = convertView.findViewById(R.id.tvUnit3NumberPickerDialog);
                 dayPicker.setVisibility(View.VISIBLE);
 
                 dayTv.setText(getString(R.string.days));
@@ -698,17 +698,17 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
-            case R.id.gender_male:
+            case R.id.rbMaleIdentificationFirstScreen:
                 if (checked)
                     mGender = "M";
                 Log.v(TAG, "gender:" + mGender);
                 break;
-            case R.id.gender_female:
+            case R.id.rbFemaleIdentificationFirstScreen:
                 if (checked)
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
-            case R.id.gender_other:
+            case R.id.rbOtherIdentificationFirstScreen:
                 if (checked)
                     mGender = "Other";
                 Log.v(TAG, "gender: " + mGender);
@@ -891,7 +891,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
 
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.frame_firstscreen, fragment_secondScreen)
+                        .replace(R.id.flMainIdentificationFirstScreen, fragment_secondScreen)
                         .commit();
             }
 

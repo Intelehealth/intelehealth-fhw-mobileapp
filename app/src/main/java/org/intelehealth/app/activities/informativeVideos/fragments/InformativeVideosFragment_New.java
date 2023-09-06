@@ -69,11 +69,11 @@ public class InformativeVideosFragment_New extends Fragment {
     }
 
     private void initUI() {
-        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_home);
-        TextView tvLocation = layoutToolbar.findViewById(R.id.tv_user_location_home);
-        TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tv_app_sync_time);
-        ImageView ivNotification = layoutToolbar.findViewById(R.id.imageview_notifications_home);
-        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.iv_hamburger);
+        View layoutToolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbarNewAppBar);
+        TextView tvLocation = layoutToolbar.findViewById(R.id.tvLocationNameCustomToolbar);
+        TextView tvLastSyncApp = layoutToolbar.findViewById(R.id.tvAppSyncTimeCustomToolbar);
+        ImageView ivNotification = layoutToolbar.findViewById(R.id.ivNotificationCustomToolbar);
+        ImageView ivBackArrow = layoutToolbar.findViewById(R.id.ivBackArrowCustomToolbar);
         ivBackArrow.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_arrow_back_new));
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +88,7 @@ public class InformativeVideosFragment_New extends Fragment {
         tvLastSyncApp.setVisibility(View.GONE);
         ivNotification.setVisibility(View.GONE);
         tvLocation.setText(getResources().getString(R.string.videos));
-        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+        BottomNavigationView bottomNav = getActivity().findViewById(R.id.bnvHomeScreen);
         bottomNav.setVisibility(View.GONE);
 
         configureTabLayout();
@@ -96,13 +96,13 @@ public class InformativeVideosFragment_New extends Fragment {
     }
 
     public void configureTabLayout() {
-        TabLayout tabLayout = view.findViewById(R.id.tablayout_videos);
+        TabLayout tabLayout = view.findViewById(R.id.tlInformativeVideosFragment);
 
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.health)));
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.training)));
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.about_app)));
 
-        ViewPager viewPager = view.findViewById(R.id.pager_videos);
+        ViewPager viewPager = view.findViewById(R.id.vpInformativeVideosFragment);
         PagerAdapter adapter = new InformativeVideosPagerAdapter
                 (getChildFragmentManager(), tabLayout.getTabCount(), getActivity());
         viewPager.setAdapter(adapter);

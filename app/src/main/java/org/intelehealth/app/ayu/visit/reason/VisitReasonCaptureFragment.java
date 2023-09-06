@@ -114,11 +114,11 @@ public class VisitReasonCaptureFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_visit_reason_capture, container, false);
-        mSelectedComplainRecyclerView = view.findViewById(R.id.rcv_selected_container);
+        mSelectedComplainRecyclerView = view.findViewById(R.id.rvSelectedReasonsCapture);
         //mClearImageView = view.findViewById(R.id.iv_clear);
-        mEmptyReasonLabelTextView = view.findViewById(R.id.tv_empty_reason_lbl);
-        mVisitReasonAutoCompleteTextView = view.findViewById(R.id.actv_reasons);
-        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+        mEmptyReasonLabelTextView = view.findViewById(R.id.tvEmptyReasonCapture);
+        mVisitReasonAutoCompleteTextView = view.findViewById(R.id.actvReasonCapture);
+        view.findViewById(R.id.btnNextReasonCapture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mSelectedComplains.isEmpty()) {
@@ -129,7 +129,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnBackReasonCapture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
@@ -221,7 +221,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
         });*/
 
-        RecyclerView recyclerView = view.findViewById(R.id.rcv_all_reason);
+        RecyclerView recyclerView = view.findViewById(R.id.rvAllReasonsCapture);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mVisitReasonItemList = getVisitReasonList();
         mReasonListingAdapter = new ReasonListingAdapter(recyclerView, getActivity(), mVisitReasonItemList, new ReasonListingAdapter.OnItemSelection() {

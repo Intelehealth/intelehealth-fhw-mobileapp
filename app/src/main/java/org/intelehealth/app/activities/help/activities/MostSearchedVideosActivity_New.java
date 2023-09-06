@@ -61,9 +61,9 @@ public class MostSearchedVideosActivity_New extends AppCompatActivity {
     }
 
     private void initUI() {
-        View toolbar = findViewById(R.id.toolbar_videos);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+        View toolbar = findViewById(R.id.toolbarMostSearchedVideosScreen);
+        TextView tvTitle = toolbar.findViewById(R.id.tvTitleCommonToolbar);
+        ImageView ivIsInternet = toolbar.findViewById(R.id.ivRefreshCommonToolbar);
 
         tvTitle.setText(getResources().getString(R.string.videos));
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -73,13 +73,13 @@ public class MostSearchedVideosActivity_New extends AppCompatActivity {
 
         }
 
-        RecyclerView rvSearchedVideos = findViewById(R.id.rv_most_searched_videos);
+        RecyclerView rvSearchedVideos = findViewById(R.id.rvMostSearchedVideosScreen);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvSearchedVideos.setLayoutManager(layoutManager);
         HelpVideosAdapterVerticle_New helpVideosAdapterVerticle_new = new HelpVideosAdapterVerticle_New(this);
         rvSearchedVideos.setAdapter(helpVideosAdapterVerticle_new);
 
-        FloatingActionButton fabHelp = findViewById(R.id.fab_help_videos);
+        FloatingActionButton fabHelp = findViewById(R.id.fabChatMostSearchedVideosScreen);
         fabHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

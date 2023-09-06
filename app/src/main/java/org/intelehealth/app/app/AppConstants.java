@@ -169,7 +169,7 @@ public class AppConstants {
     //public static final String DEMO_URL = "demo2.intelehealth.org";
     //public static final String DEMO_URL = "demo.intelehealth.org";
 
-    public static final String DEMO_URL = "dev.intelehealth.org";
+    public static final String DEMO_URL = "tf.intelehealth.org"; //changing the server name for TFW testing.
 //    public static final String DEMO_URL = "revamp.intelehealth.org";
     //public static final String DEMO_URL = "testing.intelehealth.org";
 

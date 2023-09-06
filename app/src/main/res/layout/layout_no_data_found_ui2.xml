@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_nopatientfound_appointment"
+    android:id="@+id/flParentNoDataFound"
+    android:contentDescription="No Data Found Parent FrameLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/toolbar_relative"
@@ -14,7 +14,8 @@
         android:layout_gravity="start">
 
         <ImageView
-            android:id="@+id/search_bg_icon"
+            android:id="@+id/ivSearchIconNoDataFound"
+            android:contentDescription="No Data Found Search Icon ImageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_centerHorizontal="true"
@@ -22,10 +23,11 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/search_pat_not_found_txt"
+            android:id="@+id/tvPatientNotFoundNoDataFound"
+            android:contentDescription="No Data Found 'Patient Not Found' TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/search_bg_icon"
+            android:layout_below="@+id/ivSearchIconNoDataFound"
             android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
             android:lineSpacingExtra="4sp"

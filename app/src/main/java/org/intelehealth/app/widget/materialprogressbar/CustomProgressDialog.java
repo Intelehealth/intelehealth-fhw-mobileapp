@@ -26,10 +26,10 @@ public class CustomProgressDialog extends Dialog {
         super(context, R.style.Theme_Transparent);
 
         this.setContentView(R.layout.custom_progress_dialog);
-        mTvProgressTitle = (TextView) this.findViewById(R.id.tvProgressTitle);
+        mTvProgressTitle = (TextView) this.findViewById(R.id.tvTitleCustomProgressDialog);
         mTvProgressTitle.setVisibility(View.GONE);
         this.setCancelable(false);
-        mIvAnimation = (CircleProgressBar) findViewById(R.id.ivAnim);
+        mIvAnimation = (CircleProgressBar) findViewById(R.id.cpbCustomProgressDialog);
 
     }
 

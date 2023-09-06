@@ -102,13 +102,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     }
 
     private void configureCrashReporting() {
-//        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
-//                //.disabled(BuildConfig.DEBUG) // comment by Venu as per intelesafe
-//                .build();
-//        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
-
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-
     }
 
     @Override

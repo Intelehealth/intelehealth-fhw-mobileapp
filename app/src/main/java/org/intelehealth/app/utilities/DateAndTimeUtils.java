@@ -426,17 +426,18 @@ public class DateAndTimeUtils {
      */
     public static String timeAgoFormat(String datetime) {
         String time = "";
+        if(datetime!=null && !datetime.isEmpty()) {
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            try {
+                long date = format.parse(datetime).getTime();
+                long now = System.currentTimeMillis();
+                CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now, DateUtils.MINUTE_IN_MILLIS);
+                time = String.valueOf(ago);
+                Log.v("TimeAgo", "TimeAgo: " + time);
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        try {
-            long date = format.parse(datetime).getTime();
-            long now = System.currentTimeMillis();
-            CharSequence ago = DateUtils.getRelativeTimeSpanString(date, now, DateUtils.MINUTE_IN_MILLIS);
-            time = String.valueOf(ago);
-            Log.v("TimeAgo", "TimeAgo: " + time);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         return time;

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlParentPastVisitListItem"
+    android:contentDescription="Past Visit List Item Parent RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:id="@+id/vs_arrowRight"
+        android:id="@+id/ibForwardArrowPastVisitListItem"
+        android:contentDescription="Past Visit List Item Forward Arrow ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -14,11 +17,12 @@
         android:src="@drawable/arrow_right_icon8" />
 
     <TextView
-        android:id="@+id/chief_complaint_txt"
+        android:id="@+id/tvChiefComplaintPastVisitListItem"
+        android:contentDescription="Past Visit List Item Chief Complaint TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fu_margin_start"
-        android:layout_toStartOf="@+id/vs_arrowRight"
+        android:layout_toStartOf="@+id/ibForwardArrowPastVisitListItem"
         android:gravity="center_vertical"
         android:lineSpacingExtra="3sp"
         android:text="Abdominal Pain"
@@ -27,10 +31,11 @@
         android:textSize="@dimen/fu_name_txt_size" />
 
     <TextView
-        android:id="@+id/visitID_tv"
+        android:id="@+id/tvVisitIDPastVisitListItem"
+        android:contentDescription="Past Visit List Item Visit ID TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chief_complaint_txt"
+        android:layout_below="@+id/tvChiefComplaintPastVisitListItem"
         android:layout_marginStart="@dimen/fu_margin_start"
         android:gravity="center_vertical"
         android:lineSpacingExtra="3sp"
@@ -40,10 +45,11 @@
         android:textSize="@dimen/fu_male_textsize" />
 
     <TextView
-        android:id="@+id/visit_date_tv"
+        android:id="@+id/tvVisitDatePastVisitListItem"
+        android:contentDescription="Past Visit List Item Visit Date TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/visitID_tv"
+        android:layout_below="@+id/tvVisitIDPastVisitListItem"
         android:layout_marginStart="@dimen/fu_margin_start"
         android:gravity="center_vertical"
         android:lineSpacingExtra="3sp"
@@ -54,10 +60,11 @@
 
 
     <View
-        android:id="@+id/separator"
+        android:id="@+id/viewSeparatorPastVisitListItem"
+        android:contentDescription="Past Visit List Item Separator View"
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:layout_below="@id/visit_date_tv"
+        android:layout_below="@id/tvVisitDatePastVisitListItem"
         android:layout_marginVertical="@dimen/padding_12"
         android:background="@color/gray_1" />
 </RelativeLayout>

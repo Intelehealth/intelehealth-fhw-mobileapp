@@ -75,7 +75,7 @@ public class FamilyHistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_family_history, container, false);
         if (mCurrentNode != null) {
-            RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
+            RecyclerView recyclerView = view.findViewById(R.id.rvFamHistFragment);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             linearLayoutManager.setStackFromEnd(true);
@@ -91,8 +91,8 @@ public class FamilyHistoryFragment extends Fragment {
             mRootComplainBasicInfoHashMap.put(0, complainBasicInfo);
 
             if (mIsEditMode) {
-                view.findViewById(R.id.ll_footer).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.llButtonsFamHistFragment).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.btnSubmitFamHistFragment).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -100,7 +100,7 @@ public class FamilyHistoryFragment extends Fragment {
 
                     }
                 });
-                view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.btnCancelFamHistFragment).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         getActivity().setResult(Activity.RESULT_OK);

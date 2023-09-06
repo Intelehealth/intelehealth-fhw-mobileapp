@@ -25,7 +25,7 @@ public class TooltipWindow {
         tipWindow = new PopupWindow(ctx);
         inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         contentView = inflater.inflate(R.layout.tooltip_layout, null);
-        tooltipText = contentView.findViewById(R.id.tooltip_text);
+        tooltipText = contentView.findViewById(R.id.tvTooltipLayout);
     }
 
     public void showToolTip(View anchor, String text) {

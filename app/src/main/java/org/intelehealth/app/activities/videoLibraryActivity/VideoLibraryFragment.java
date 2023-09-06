@@ -82,7 +82,7 @@ public class VideoLibraryFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = view.findViewById(R.id.video_library_RecyclerView);
+        mRecyclerView = view.findViewById(R.id.rvVideoLibraryFragment);
     }
 
     @Override

@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_8"
+    android:layout_marginBottom="@dimen/margin_16"
     android:layout_marginTop="@dimen/margin_8"
-    android:layout_marginBottom="@dimen/margin_8"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,14 +15,16 @@
         android:weightSum="2">
 
         <ImageView
-            android:id="@+id/blt_view"
+            android:id="@+id/ivBulletQaRowItemView2"
+            android:contentDescription="QA Row Item View2 Bullet ImageView"
             android:layout_width="10dip"
             android:layout_height="10dip"
             android:layout_marginEnd="@dimen/margin_8"
             android:src="@drawable/ic_baseline_lens_24" />
 
         <TextView
-            android:id="@+id/tv_question_label"
+            android:id="@+id/tvQuestionQaRowItemView2"
+            android:contentDescription="QA Row Item View2 Question TextView"
             style="@style/label_misc_txt_14sp_dark_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +36,8 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_answer_value"
+        android:id="@+id/tvAnswerQaRowItemView2"
+        android:contentDescription="QA Row Item View2 Answer TextView"
         style="@style/label_misc_txt_14sp_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

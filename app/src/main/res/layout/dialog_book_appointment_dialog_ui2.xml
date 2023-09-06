@@ -12,14 +12,16 @@
         android:padding="24dp">
 
         <ImageView
-            android:id="@+id/iv_dialog_image"
+            android:id="@+id/ivIconBookAppointmentDialog"
+            android:contentDescription="Book Appointment Dialog Icon ImageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/iv_icon_height"
             android:layout_marginTop="24dp"
             android:src="@drawable/ui2_ic_book_appointment" />
 
         <TextView
-            android:id="@+id/tv_title_book_app"
+            android:id="@+id/tvTitleBookAppointmentDialog"
+            android:contentDescription="Book Appointment Dialog Title TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_title_margin_top"
@@ -30,7 +32,8 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_info_dialog_app"
+            android:id="@+id/tvSubtitleBookAppointmentDialog"
+            android:contentDescription="Book Appointment Dialog Subtitle TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_desc_margin_top"
@@ -45,7 +48,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dialog_subtitle"
+            android:layout_below="@+id/tvSubtitleBookAppointmentDialog"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="24dp"
@@ -53,7 +56,8 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button_no_appointment"
+                android:id="@+id/btnNegBookAppointmentDialog"
+                android:contentDescription="Book Appointment Dialog Negative (No) Button"
                 android:layout_width="74dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -68,10 +72,11 @@
                 android:textSize="14sp" />
 
             <Button
-                android:id="@+id/btn_yes_appointment"
+                android:id="@+id/btnPosBookAppointmentDialog"
+                android:contentDescription="Book Appointment Dialog Positive (Yes) Button"
                 android:layout_width="74dp"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/button_no_appointment"
+                android:layout_toEndOf="@id/btnNegBookAppointmentDialog"
                 android:background="@drawable/darkblue_bg_button"
                 android:gravity="center"
                 android:paddingLeft="10dp"

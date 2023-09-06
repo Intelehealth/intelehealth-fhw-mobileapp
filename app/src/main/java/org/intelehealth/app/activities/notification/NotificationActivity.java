@@ -147,20 +147,20 @@ public class NotificationActivity extends AppCompatActivity implements AdapterIn
     }
 
     private void initViews() {
-        backbtn = findViewById(R.id.backbtn);
-        clearAll_btn = findViewById(R.id.clearAll_btn);
-        arrow_right = findViewById(R.id.arrow_right);
-        notifi_header_title = findViewById(R.id.notifi_header_title);
-        refresh = findViewById(R.id.refresh);
-        filter = findViewById(R.id.filter);
-        reminder = findViewById(R.id.reminder);
-        incomplete_act = findViewById(R.id.incomplete_act);
-        archieved_notifi = findViewById(R.id.archieved_notifi);
-        recycler_today = findViewById(R.id.recycler_today);
-        recycler_yesterday = findViewById(R.id.recycler_yesterday);
-        filter_framelayout = findViewById(R.id.filter_framelayout);
-        today_nodata = findViewById(R.id.today_nodata);
-        yesterday_nodata = findViewById(R.id.yesterday_nodata);
+        backbtn = findViewById(R.id.ibBackArrowNotifications);
+        clearAll_btn = findViewById(R.id.ibClearAllNotifications);
+        arrow_right = findViewById(R.id.ibHeaderArrowNotifications);
+        notifi_header_title = findViewById(R.id.tvHeaderTitleNotifications);
+        refresh = findViewById(R.id.ibRefreshNotifications);
+        filter = findViewById(R.id.ibFilterNotifications);
+        reminder = findViewById(R.id.tvReminderNotificationsFilter);
+        incomplete_act = findViewById(R.id.tvIncompleteNotificationsFilter);
+        archieved_notifi = findViewById(R.id.tvArchivedNotificationsFilter);
+        recycler_today = findViewById(R.id.rvTodayNotifications);
+        recycler_yesterday = findViewById(R.id.rvYesterdayNotifications);
+        filter_framelayout = findViewById(R.id.flFilterNotifications);
+        today_nodata = findViewById(R.id.tvTodayNoDataNotifications);
+        yesterday_nodata = findViewById(R.id.tvYesterdayNoDataNotifications);
     }
 
     private void clickListeners() {

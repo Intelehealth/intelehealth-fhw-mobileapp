@@ -32,7 +32,7 @@
                 android:layout_marginEnd="@dimen/margin_5">
 
                 <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchview_received"
+                    android:id="@+id/svReceivedPrescriptions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -91,7 +91,8 @@
 
                     <!-- label-text -->
                     <TextView
-                        android:id="@+id/received_endvisit_no"
+                        android:id="@+id/tvAwaitingCountReceivedPrescriptions"
+                        android:contentDescription="displays the count of awaiting prescriptions textview for Received Prescriptions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -150,7 +151,8 @@
                     tools:visibility="visible">
 
                     <TextView
-                        android:id="@+id/filter_header"
+                        android:id="@+id/tvResultsForReceivedPrescriptions"
+                        android:contentDescription="results for text in textview as title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/results_for"
@@ -159,10 +161,11 @@
                         android:textSize="@dimen/fu_male_textsize" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/filter_priority_relative"
+                        android:id="@+id/cvPriorityVisitsFilterReceivedPrescriptions"
+                        android:contentDescription="priority visits filter cardview for received prescriptions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/filter_header"
+                        android:layout_below="@+id/tvResultsForReceivedPrescriptions"
                         android:layout_marginTop="@dimen/margin_4"
                         android:layout_marginEnd="@dimen/margin_10"
                         android:backgroundTint="@color/grey_button_bg"
@@ -178,7 +181,8 @@
                             android:background="@color/grey_button_bg">
 
                             <TextView
-                                android:id="@+id/filter_priority"
+                                android:id="@+id/tvPriorityVisitsFilterReceivedPrescriptions"
+                                android:contentDescription="priority visits filter textview in received prescriptions"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/margin_4"
@@ -188,11 +192,11 @@
                                 android:textSize="@dimen/notifi_subtitle_size" />
 
                             <ImageButton
-                                android:id="@+id/priority_cancel"
+                                android:id="@+id/imgBtnPriorityVisitsCancelReceivedPrescriptions"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/margin_2dp"
-                                android:layout_toEndOf="@id/filter_priority"
+                                android:layout_toEndOf="@id/tvPriorityVisitsFilterReceivedPrescriptions"
                                 android:background="@null"
                                 android:src="@drawable/cancel_small_crossbtn"
                                 app:tint="@color/colorPrimary" />
@@ -210,7 +214,7 @@
                                         app:contentPaddingBottom="@dimen/margin_6"
                                         app:cardCornerRadius="@dimen/corner_radius_8dp"
                                         android:layout_marginEnd="@dimen/margin_10"
-                                        android:layout_toEndOf="@+id/filter_priority_relative"
+                                        android:layout_toEndOf="@+id/cvPriorityVisitsFilterReceivedPrescriptions"
                                         android:backgroundTint="@color/grey_button_bg">
 
                                         <RelativeLayout
@@ -259,7 +263,8 @@
 
                 <!-- Frame 100314 -->
                 <TextView
-                    android:id="@+id/recent_nodata"
+                    android:id="@+id/tvNoDataRecentVisitReceivedPrescription"
+                    android:contentDescription="no data for recent visit textview in received prescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/you_can_add"
@@ -311,11 +316,12 @@
                     android:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_older"
+                    android:id="@+id/tvNoDataOlderVisitReceivedPrescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/older"
                     android:layout_marginTop="@dimen/text_margin"
+                    android:contentDescription="no data for recent visit textview in received prescription"
                     android:nestedScrollingEnabled="false"
                     android:padding="@dimen/margin_5"
                     android:visibility="visible"
@@ -328,7 +334,7 @@
                     android:id="@+id/this_month"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rv_older"
+                    android:layout_below="@+id/tvNoDataOlderVisitReceivedPrescription"
                     android:gravity="top"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/this_months_visits"

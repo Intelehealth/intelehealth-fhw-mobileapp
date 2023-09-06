@@ -7,7 +7,8 @@
     tools:context=".ayu.visit.vital.VitalCollectionFragment">
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btnNextVitalCollection"
+        android:contentDescription="next button in Vital Collection Fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -28,10 +29,11 @@
         android:textSize="@dimen/common_button_text_size" />
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_vital_body"
+        android:id="@+id/nsvVitalCollection"
+        android:contentDescription="nested scrollview in Vital Collection Fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_submit"
+        android:layout_above="@+id/btnNextVitalCollection"
         android:padding="8dip"
         android:scrollbars="vertical">
 
@@ -96,7 +98,8 @@
                             android:src="@drawable/ui2_ic_dropdown"
                             android:visibility="visible" />-->
                         <EditText
-                            android:id="@+id/etv_height"
+                            android:id="@+id/etHeightVitalCollection"
+                            android:contentDescription="editext for height input in Vital Collection Fragment"
                             style="@style/edittext_textcolor"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"
@@ -112,7 +115,8 @@
                     </FrameLayout>
 
                     <TextView
-                        android:id="@+id/tv_height_error"
+                        android:id="@+id/tvHeightErrorVitalCollection"
+                        android:contentDescription="height error textview in Vital Collection Fragment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -164,7 +168,8 @@
                              android:src="@drawable/ui2_ic_dropdown"
                              android:visibility="visible" />-->
                         <EditText
-                            android:id="@+id/etv_weight"
+                            android:id="@+id/etWeightVitalCollection"
+                            android:contentDescription="edittext for weight in Vital Collection Fragment"
                             style="@style/edittext_textcolor"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/edittext_height_44dp"
@@ -179,7 +184,8 @@
                     </FrameLayout>
 
                     <TextView
-                        android:id="@+id/tv_weight_error"
+                        android:id="@+id/tvWeightErrorVitalCollection"
+                        android:contentDescription="Weight Error textview in Vital Collection Fragment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -221,7 +227,8 @@
                     android:weightSum="2">
 
                     <TextView
-                        android:id="@+id/tv_bmi_value"
+                        android:id="@+id/tvBMIValueVisitCollection"
+                        android:contentDescription="bmi value textview in Vital Collection Fragment"
                         style="@style/edittext_textcolor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -232,7 +239,8 @@
                         android:textStyle="normal" />
 
                     <TextView
-                        android:id="@+id/tv_bmi_status"
+                        android:id="@+id/tvBMIStatusVisitCollection"
+                        android:contentDescription="bmi status textview in Vital Collection Fragment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_10"
@@ -279,7 +287,8 @@
                         android:textStyle="normal" />
 
                     <EditText
-                        android:id="@+id/etv_bp_sys"
+                        android:id="@+id/etBpSysVisitCollection"
+                        android:contentDescription="bp systolic edittext input in Vital Collection Fragment"
                         style="@style/edittext_textcolor"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -293,7 +302,8 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/etv_bp_sys_error"
+                        android:id="@+id/tvBpSysErrorVisitCollection"
+                        android:contentDescription="bp systolic error display textview in Vital Collection Fragment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -324,7 +334,8 @@
                         android:textStyle="normal" />
 
                     <EditText
-                        android:id="@+id/etv_bp_dia"
+                        android:id="@+id/etBpDiaVisitCollection"
+                        android:contentDescription="bp diastolic edittext input in Vital Collection Fragment"
                         style="@style/edittext_textcolor"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -338,7 +349,8 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/etv_bp_dia_error"
+                        android:id="@+id/tvBpDiaErrorVisitCollection"
+                        android:contentDescription="bp diastolic error textview in Vital Collection Fragment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -364,7 +376,8 @@
                 android:textStyle="normal" />
 
             <EditText
-                android:id="@+id/etv_pulse"
+                android:id="@+id/etPulseVisitCollection"
+                android:contentDescription="pulse input edittext in Vital Collection Fragment"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -378,7 +391,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/etv_pulse_error"
+                android:id="@+id/tvPulseErrorVisitCollection"
+                android:contentDescription="pulse error textview in Vital Collection Fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -402,7 +416,8 @@
                 android:textStyle="normal" />
 
             <EditText
-                android:id="@+id/etv_temperature"
+                android:id="@+id/etTemperatureVitalCollection"
+                android:contentDescription="temperature input edittext in Vital Collection Fragment"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -416,7 +431,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/etv_temperature_error"
+                android:id="@+id/tvTempErrorVitalCollection"
+                android:contentDescription="temperature error textview in Vital Collection Fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -440,7 +456,8 @@
                 android:textStyle="normal" />
 
             <EditText
-                android:id="@+id/etv_spo2"
+                android:id="@+id/etSPO2VitalCollection"
+                android:contentDescription="spo2 input edittext in Vital Collection Fragment"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -454,7 +471,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/etv_spo2_error"
+                android:id="@+id/tvSPO2ErrorVitalCollection"
+                android:contentDescription="spo2 error textview in Vital Collection Fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -478,7 +496,8 @@
                 android:textStyle="normal" />
 
             <EditText
-                android:id="@+id/etv_respiratory_rate"
+                android:id="@+id/etRRVitalCollection"
+                android:contentDescription="Respiratory Rate input edittext in Vital Collection Fragment"
                 style="@style/edittext_textcolor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edittext_height_44dp"
@@ -492,7 +511,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/etv_respiratory_rate_error"
+                android:id="@+id/tvRRErrorVitalCollection"
+                android:contentDescription="respiratory rate error textview in Vital Collection Fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

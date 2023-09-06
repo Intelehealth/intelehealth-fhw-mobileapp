@@ -158,14 +158,14 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
-            search_gender = itemView.findViewById(R.id.search_gender);
-            search_name = itemView.findViewById(R.id.search_name);
-            priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
-            fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
-            search_date_relative = itemView.findViewById(R.id.search_date_relative);
-            profile_imgview = itemView.findViewById(R.id.profile_imgview);
-            presc_pendingCV = itemView.findViewById(R.id.presc_pending_CV);
-            presc_receivingCV = itemView.findViewById(R.id.presc_received_CV);
+            search_gender = itemView.findViewById(R.id.tvGenderAgeFindPatientListItem);
+            search_name = itemView.findViewById(R.id.tvNameFindPatientListItem);
+            priority_tag_imgview = itemView.findViewById(R.id.ivPriorityTagFindPatientListItem);
+            fu_item_calendar = itemView.findViewById(R.id.ivCalendarFindPatientListItem);
+            search_date_relative = itemView.findViewById(R.id.tvDateTimeFindPatientListItem);
+            profile_imgview = itemView.findViewById(R.id.ivPatientImageFindPatientListItem);
+            presc_pendingCV = itemView.findViewById(R.id.cvPrescPendingFindPatientListItem);
+            presc_receivingCV = itemView.findViewById(R.id.cvPrescReceivedFindPatientListItem);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

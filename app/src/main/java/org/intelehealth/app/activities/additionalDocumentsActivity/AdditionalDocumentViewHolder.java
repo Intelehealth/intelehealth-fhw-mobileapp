@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.additionalDocumentsActivity;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,15 +18,15 @@ public class AdditionalDocumentViewHolder extends RecyclerView.ViewHolder{
 
     private TextView documentNameTextView;
     private ImageView documentPhotoImageView;
-    private ImageView deleteDocumentImageView;
+    private ImageButton deleteDocumentImageView;
     private View rootView;
 
     public AdditionalDocumentViewHolder(View itemView) {
         super(itemView);
         rootView = itemView;
-        documentNameTextView = itemView.findViewById(R.id.document_name_TextView);
-        documentPhotoImageView = itemView.findViewById(R.id.document_photo_ImageView);
-        deleteDocumentImageView = itemView.findViewById(R.id.document_delete_button_ImageView);
+        documentNameTextView = itemView.findViewById(R.id.tvDocNameAddDocsListItem);
+        documentPhotoImageView = itemView.findViewById(R.id.ivDocPhotoAddDocsListItem);
+        deleteDocumentImageView = itemView.findViewById(R.id.ibDocDeletedAddDocsListItem);
     }
 
     public TextView getDocumentNameTextView() {

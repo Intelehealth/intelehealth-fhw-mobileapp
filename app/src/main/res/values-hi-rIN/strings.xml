@@ -1062,7 +1062,7 @@
     <string name="please_wait_refresh">कृपया प्रतीक्षा करें, ऐप रिफ़्रेश हो रहा है।</string>
     <string name="login_success">सफलतापूर्वक लॉगिन हुआ</string>
     <string name="login_success_note">बहुत खूब! आप सफलतापूर्वक लॉगिन हो गए</string>
-    <string name="start_typing_location">टाइपिंग शुरू करें या लोकेशन चुनें</string>
+    <string name="start_typing_location">लोकेशन चुनें</string>
     <string name="patients_added">आपने द्वारा शामिल रोगी</string>
     <string name="daily_avg_time_spent">आपके द्वारा बिताया गया दैनिक औसत समय</string>
     <string name="enter_first_name">पहला नाम एंटर करें</string>

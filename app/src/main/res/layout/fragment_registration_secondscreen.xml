@@ -3,49 +3,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/rlParentIdentificationSecondScreen"
+    android:contentDescription="Identification Second Screen Parent RelativeLayout"
     android:layout_marginTop="@dimen/margin_16dp"
     android:layout_marginBottom="@dimen/margin_16dp">
 
     <ScrollView
+        android:id="@+id/svParentIdentificationSecondScreen"
+        android:contentDescription="Identification Second Screen Parent ScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/frame_nxtbtn_viewgrp"
+        android:layout_above="@+id/flNextIdentificationActivity"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_24"
         android:fillViewport="true">
 
         <RelativeLayout
+            android:id="@+id/rlChildIdentificationSecondScreen"
+            android:contentDescription="Identification Second Screen Child RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginEnd="@dimen/margin_24">
 
-
-            <!--Postal code and Country-->
             <LinearLayout
-                android:id="@+id/postal_country"
+                android:id="@+id/llPostalCodeCountryIdentificationSecondScreen"
+                android:contentDescription="Identification Second Screen Postal Code Country LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/llPostalCodeIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Postal Code LinearLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/postalcode_title"
+                        android:id="@+id/tvPostalCodeTitleIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Postal Code Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
                         android:text="@string/identification_screen_prompt_postal_code"
                         android:textAppearance="@style/blur_txtview"
-
                         android:textSize="@null" />
 
                     <EditText
-                        android:id="@+id/postalcode_edittext"
+                        android:id="@+id/etPostalCodeIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Postal Code EditText"
                         style="@style/edittext_textcolor"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -62,7 +70,8 @@
                         android:textSize="@dimen/edittext_textsize_16sp" />
 
                     <TextView
-                        android:id="@+id/postalcode_error"
+                        android:id="@+id/tvPostalCodeErrorIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Postal Code Error TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -78,6 +87,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llCountryIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Country LinearLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_16dp"
@@ -85,7 +96,8 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/country_title"
+                        android:id="@+id/tvCountryTitleIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Country Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -94,7 +106,8 @@
                         android:textSize="@null" />
 
                     <Spinner
-                        android:id="@+id/country_spinner"
+                        android:id="@+id/spinnerCountryIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Country Spinner"
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -107,7 +120,8 @@
                         android:paddingBottom="@dimen/margin_10" />
 
                     <TextView
-                        android:id="@+id/country_error"
+                        android:id="@+id/tvCountryErrorIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Country Error TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -124,25 +138,27 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linear_state"
+                android:id="@+id/llStateIdentificationSecondScreen"
+                android:contentDescription="Identification Second Screen State LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/postal_country"
+                android:layout_below="@+id/llPostalCodeCountryIdentificationSecondScreen"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/state_title"
+                    android:id="@+id/tvStateTitleIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen State Title TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/identification_screen_prompt_state"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <Spinner
-                    android:id="@+id/state_spinner"
+                    android:id="@+id/spinnerStateIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen State Spinner"
                     style="@style/AppTheme"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
@@ -156,7 +172,8 @@
                     android:paddingBottom="@dimen/margin_10" />
 
                 <EditText
-                    android:id="@+id/state_edittext"
+                    android:id="@+id/etStateIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen State EditText"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
@@ -174,7 +191,8 @@
                     tools:visibility="visible" />
 
                 <TextView
-                    android:id="@+id/state_error"
+                    android:id="@+id/tvStateErrorIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen State Error TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -191,21 +209,25 @@
 
             <!--District & City-->
             <LinearLayout
-                android:id="@+id/linear_distr_city"
+                android:id="@+id/llDistrictVillageIdentificationSecondScreen"
+                android:contentDescription="Identification Second Screen District Village LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_state"
+                android:layout_below="@+id/llStateIdentificationSecondScreen"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/llDistrictIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen District LinearLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/district_title"
+                        android:id="@+id/tvDistrictTitleIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen District Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -214,7 +236,8 @@
                         android:textSize="@null" />
 
                     <Spinner
-                        android:id="@+id/district_spinner"
+                        android:id="@+id/spinnerDistrictIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen District Spinner"
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -227,7 +250,8 @@
                         android:paddingBottom="@dimen/margin_10" />
 
                     <EditText
-                        android:id="@+id/district_edittext"
+                        android:id="@+id/etDistrictIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen District EditText"
                         style="@style/edittext_textcolor"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -245,7 +269,8 @@
                         tools:visibility="visible" />
 
                     <TextView
-                        android:id="@+id/district_error"
+                        android:id="@+id/tvDistrictErrorIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen District Error TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -261,6 +286,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llVillageIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Village LinearLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_16dp"
@@ -268,17 +295,18 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/city_title"
+                        android:id="@+id/tvVillageTitleIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Village Title TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
                         android:text="@string/identification_screen_prompt_city"
                         android:textAppearance="@style/blur_txtview"
-
                         android:textSize="@null" />
 
                     <Spinner
-                        android:id="@+id/city_spinner"
+                        android:id="@+id/spinnerVillageIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Village Spinner"
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -292,7 +320,8 @@
                         android:visibility="gone" />
 
                     <EditText
-                        android:id="@+id/city_village_edittext"
+                        android:id="@+id/etVillageIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Village EditText"
                         style="@style/edittext_textcolor"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -309,7 +338,8 @@
                         android:textSize="@dimen/edittext_textsize_16sp" />
 
                     <TextView
-                        android:id="@+id/city_error"
+                        android:id="@+id/tvVillageErrorIdentificationSecondScreen"
+                        android:contentDescription="Identification Second Screen Village Error TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -327,15 +357,17 @@
 
             <!--Address 1-->
             <LinearLayout
-                android:id="@+id/linear_address1"
+                android:id="@+id/llCorrespondingAddress1IdentificationSecondScreen"
+                android:contentDescription="Identification Second Screen Corresponding Address1 LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_distr_city"
+                android:layout_below="@+id/llDistrictVillageIdentificationSecondScreen"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/address1_title"
+                    android:id="@+id/tvCorrespondingAddress1TitleIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Corresponding Address1 Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -344,7 +376,8 @@
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/address1_edittext"
+                    android:id="@+id/etCorrespondingAddress1IdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Corresponding Address1 EditText"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
@@ -359,7 +392,8 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/address1_error"
+                    android:id="@+id/tvCorrespondingAddress1ErrorIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Corresponding Address1 Error TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -376,25 +410,27 @@
 
             <!--Address 2-->
             <LinearLayout
-                android:id="@+id/linear_address2"
+                android:id="@+id/llCorrespondingAddress2IdentificationSecondScreen"
+                android:contentDescription="Identification Second Screen Corresponding Address2 LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_address1"
+                android:layout_below="@+id/llCorrespondingAddress1IdentificationSecondScreen"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/address2_title"
+                    android:id="@+id/tvCorrespondingAddress2TitleIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Corresponding Address2 Title TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/corresponding_address_2"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/address2_edittext"
+                    android:id="@+id/etCorrespondingAddress2IdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Corresponding Address2 EditText"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
@@ -410,7 +446,8 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/address2_error"
+                    android:id="@+id/tvCorrespondingAddress2ErrorIdentificationSecondScreen"
+                    android:contentDescription="Identification Second Screen Corresponding Address2 Error TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -431,21 +468,24 @@
 
 
     <FrameLayout
-        android:id="@+id/frame_nxtbtn_viewgrp"
+        android:id="@+id/flNextIdentificationActivity"
+        android:contentDescription="Identification Activity Buttons FrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_24">
 
         <LinearLayout
-            android:id="@+id/linear_secondscreen_nxt_btn"
+            android:id="@+id/llButtonsIdentificationSecondScreen"
+            android:contentDescription="Identification Second Screen Buttons LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:visibility="visible">
 
             <Button
-                android:id="@+id/frag2_btn_back"
+                android:id="@+id/btnBackIdentificationSecondScreen"
+                android:contentDescription="Identification Second Screen Back Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"
@@ -456,7 +496,8 @@
                 android:textColor="@color/primary_text" />
 
             <Button
-                android:id="@+id/frag2_btn_next"
+                android:id="@+id/btnNextIdentificationSecondScreen"
+                android:contentDescription="Identification Second Screen Next Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginEnd="@dimen/margin_24"

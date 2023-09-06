@@ -2,62 +2,67 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlParentIdentificationFirstScreen"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:contentDescription="Identification First Screen Parent RelativeLayout">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollview"
+        android:id="@+id/svParentIdentificationFirstScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/frame_nxtbtn_viewgrp"
+        android:layout_above="@+id/flNextIdentificationActivity"
         android:layout_marginBottom="@dimen/margin_24"
+        android:contentDescription="Identification First Screen Parent ScrollView"
         android:fillViewport="true"
         android:scrollbars="none">
 
         <!--Firstname-->
         <RelativeLayout
-            android:id="@+id/relative_frame"
+            android:id="@+id/rlChildIdentificationFirstScreen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginEnd="@dimen/margin_24">
+            android:layout_marginEnd="@dimen/margin_24"
+            android:contentDescription="Identification First Screen Child RelativeLayout">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/img_profile"
+                android:id="@+id/cvProfileIdentificationFirstScreen"
                 android:layout_width="@dimen/patregist_profileimg_icon"
                 android:layout_height="@dimen/patregist_profileimg_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_16dp"
+                android:contentDescription="Identification First Screen Profile CardView"
                 android:elevation="0dp"
                 app:cardCornerRadius="30dp">
 
-
                 <ImageView
-                    android:id="@+id/patient_imgview"
+                    android:id="@+id/ivProfileIdentificationFirstScreen"
                     android:layout_width="@dimen/patregist_profileimg_icon"
                     android:layout_height="@dimen/patregist_profileimg_icon"
+                    android:contentDescription="Identification First Screen Profile ImageView"
                     android:src="@drawable/avatar1" />
-
-
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/patient_camera_imgview"
+                android:id="@+id/ivCameraIdentificationFirstScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/img_profile"
+                android:layout_alignBottom="@id/cvProfileIdentificationFirstScreen"
                 android:layout_marginStart="-20dip"
-                android:layout_toEndOf="@+id/img_profile"
+                android:layout_toEndOf="@+id/cvProfileIdentificationFirstScreen"
+                android:contentDescription="Identification First Screen Camera ImageView"
                 android:elevation="8dip"
                 android:src="@drawable/lense_with_camera_icon" />
 
             <TextView
-                android:id="@+id/add_picture"
+                android:id="@+id/tvAddPicIdentificationFirstScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/img_profile"
+                android:layout_below="@+id/cvProfileIdentificationFirstScreen"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/common_edittext_margin_top"
+                android:contentDescription="Identification First Screen Add Picture TextView"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/add_a_picture"
@@ -68,29 +73,32 @@
 
 
             <LinearLayout
-                android:id="@+id/linear_firstname"
+                android:id="@+id/llFirstNameIdentificationFirstScreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/add_picture"
+                android:layout_below="@+id/tvAddPicIdentificationFirstScreen"
                 android:layout_marginTop="@dimen/margin_24"
+                android:contentDescription="Identification First Screen First Name LinearLayout"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/firstname_title"
+                    android:id="@+id/tvFirstNameTitleIdentificationFirstScreen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Identification First Screen First Name Title TextView"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/first_name_mandatory"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/firstname_edittext"
+                    android:id="@+id/etFirstNameIdentificationFirstScreen"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
+                    android:contentDescription="Identification First Screen First Name EditText"
                     android:hint="@string/enter_first_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -100,11 +108,12 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/firstname_error"
+                    android:id="@+id/tvFirstNameErrorIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:contentDescription="Identification First Screen First Name Error TextView"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
@@ -117,29 +126,32 @@
 
             <!--Middlename-->
             <LinearLayout
-                android:id="@+id/linear_middlename"
+                android:id="@+id/llMiddleNameIdentificationFirstScreen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/linear_firstname"
+                android:layout_below="@+id/llFirstNameIdentificationFirstScreen"
                 android:layout_marginTop="@dimen/margin_24"
+                android:contentDescription="Identification First Screen Middle Name LinearLayout"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/middlename_title"
+                    android:id="@+id/tvMiddleNameTitleIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Identification First Screen Middle Name Title TextView"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/middle_name_registration"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/middlename_edittext"
+                    android:id="@+id/etMiddleNameIdentificationFirstScreen"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
+                    android:contentDescription="Identification First Screen Middle Name EditText"
                     android:hint="@string/enter_middle_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -149,11 +161,12 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/middlename_error"
+                    android:id="@+id/tvMiddleNameErrorIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:contentDescription="Identification First Screen Middle Name Error TextView"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
@@ -167,29 +180,32 @@
 
             <!--Lastname-->
             <LinearLayout
-                android:id="@+id/linear_lastname"
+                android:id="@+id/llLastNameIdentificationFirstScreen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/linear_middlename"
+                android:layout_below="@+id/llMiddleNameIdentificationFirstScreen"
                 android:layout_marginTop="@dimen/margin_24"
+                android:contentDescription="Identification First Screen Last Name LinearLayout"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lastname_title"
+                    android:id="@+id/tvLastNameTitleIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Identification First Screen Last Name Title TextView"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/last_name_mandatory"
                     android:textAppearance="@style/blur_txtview"
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/lastname_edittext"
+                    android:id="@+id/etLastNameIdentificationFirstScreen"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
+                    android:contentDescription="Identification First Screen Last Name EditText"
                     android:hint="@string/enter_last_name"
                     android:inputType="textCapWords"
                     android:paddingStart="@dimen/fu_margin_start"
@@ -200,35 +216,37 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/lastname_error"
+                    android:id="@+id/tvLastNameErrorIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:contentDescription="Identification First Screen Last Name Error TextView"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
                     android:textColor="@color/red"
                     android:textSize="@null"
                     android:visibility="gone"
-
                     tools:visibility="visible" />
 
             </LinearLayout>
 
             <!--Gender-->
             <LinearLayout
-                android:id="@+id/linear_gender"
+                android:id="@+id/llGenderIdentificationFirstScreen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/linear_lastname"
+                android:layout_below="@+id/llLastNameIdentificationFirstScreen"
                 android:layout_marginTop="@dimen/margin_24"
+                android:contentDescription="Identification First Screen Gender LinearLayout"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lastname_title"
+                    android:id="@+id/tvGenderTitleIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Identification First Screen Gender Title TextView"
                     android:gravity="center"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/gender_mandatory"
@@ -236,41 +254,46 @@
                     android:textSize="@null" />
 
                 <RadioGroup
+                    android:id="@+id/rgGenderIdentificationFirstScreen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:contentDescription="Identification First Screen Gender RadioGroup"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
                     <RadioButton
-                        android:id="@+id/gender_male"
+                        android:id="@+id/rbMaleIdentificationFirstScreen"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="start"
                         android:layout_weight="1"
+                        android:contentDescription="Identification First Screen Gender Male RadioButton"
                         android:drawableEnd="@drawable/gender_male_svg"
                         android:text="@string/male"
                         android:textSize="@dimen/select_language"
                         android:theme="@style/RadioButtonStyleSelection" />
 
                     <RadioButton
-                        android:id="@+id/gender_female"
+                        android:id="@+id/rbFemaleIdentificationFirstScreen"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/gender_margin"
                         android:layout_marginEnd="@dimen/gender_margin"
                         android:layout_weight="1"
+                        android:contentDescription="Identification First Screen Gender Female RadioButton"
                         android:drawableEnd="@drawable/gender_female_svg"
                         android:text="@string/female"
                         android:textSize="@dimen/select_language"
                         android:theme="@style/RadioButtonStyleSelection" />
 
                     <RadioButton
-                        android:id="@+id/gender_other"
+                        android:id="@+id/rbOtherIdentificationFirstScreen"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="end"
                         android:layout_weight="1"
+                        android:contentDescription="Identification First Screen Gender Other RadioButton"
                         android:drawableEnd="@drawable/gender_other_svg"
                         android:text="@string/other"
                         android:textSize="@dimen/select_language"
@@ -279,11 +302,12 @@
                 </RadioGroup>
 
                 <TextView
-                    android:id="@+id/gender_error"
+                    android:id="@+id/tvGenderErrorIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:contentDescription="Identification First Screen Gender Error TextView"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
@@ -296,17 +320,19 @@
 
             <!--DOB-->
             <LinearLayout
-                android:id="@+id/linear_dob"
+                android:id="@+id/llDOBIdentificationFirstScreen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/linear_gender"
+                android:layout_below="@+id/llGenderIdentificationFirstScreen"
                 android:layout_marginTop="@dimen/margin_24"
+                android:contentDescription="Identification First Screen DOB LinearLayout"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dob_title"
+                    android:id="@+id/tvDOBTitleIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Identification First Screen DOB Title TextView"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/date_of_birth_mandatory"
                     android:textAppearance="@style/blur_txtview"
@@ -314,12 +340,13 @@
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/dob_edittext"
+                    android:id="@+id/etDOBIdentificationFirstScreen"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
+                    android:contentDescription="Identification First Screen DOB EditText"
                     android:drawableEnd="@drawable/followup_item_calendar"
                     android:focusable="false"
                     android:hint="@string/enter_date_of_birth"
@@ -334,11 +361,12 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/dob_error"
+                    android:id="@+id/tvDOBErrorIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:contentDescription="Identification First Screen DOB Error TextView"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
@@ -352,30 +380,32 @@
 
             <!--Age-->
             <LinearLayout
-                android:id="@+id/linear_age"
+                android:id="@+id/llAgeIdentificationFirstScreen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/linear_dob"
+                android:layout_below="@+id/llDOBIdentificationFirstScreen"
                 android:layout_marginTop="@dimen/margin_24"
+                android:contentDescription="Identification First Screen Age LinearLayout"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/age_title"
+                    android:id="@+id/tvAgeTitleIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Identification First Screen Age Title TextView"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/age_mandatory"
                     android:textAppearance="@style/blur_txtview"
-
                     android:textSize="@null" />
 
                 <EditText
-                    android:id="@+id/age_edittext"
+                    android:id="@+id/etAgeIdentificationFirstScreen"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edittext_height_44dp"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
                     android:background="@drawable/edittext_border"
+                    android:contentDescription="Identification First Screen Age EditText"
                     android:focusable="false"
                     android:hint="@string/enter_age"
                     android:inputType=""
@@ -389,11 +419,12 @@
                     android:textSize="@dimen/edittext_textsize_16sp" />
 
                 <TextView
-                    android:id="@+id/age_error"
+                    android:id="@+id/tvAgeErrorIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:contentDescription="Identification First Screen Age Error TextView"
                     android:lineSpacingExtra="0sp"
                     android:text="@string/this_field_is_mandatory"
                     android:textAppearance="@style/registr_error_msg"
@@ -406,18 +437,20 @@
 
             <!--Phone number-->
             <LinearLayout
-                android:id="@+id/linear_phoneno"
+                android:id="@+id/llPhoneNumIdentificationFirstScreen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/linear_age"
+                android:layout_below="@+id/llAgeIdentificationFirstScreen"
                 android:layout_marginTop="@dimen/margin_24"
                 android:layout_marginBottom="@dimen/margin_24"
+                android:contentDescription="Identification First Screen Phone Num LinearLayout"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/phoneno_title"
+                    android:id="@+id/llPhoneNumTitleIdentificationFirstScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="Identification First Screen Phone Num Title LinearLayout"
                     android:lineSpacingExtra="3sp"
                     android:text="@string/phone_number"
                     android:textAppearance="@style/blur_txtview"
@@ -429,7 +462,8 @@
                     android:orientation="horizontal">
 
                     <com.hbb20.CountryCodePicker
-                        android:id="@+id/countrycode_spinner"
+                        android:id="@+id/ccpIdentificationFirstScreen"
+                        android:contentDescription="Identification First Screen Country Code Picker"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/edittext_height_44dp"
                         android:layout_marginTop="@dimen/hamburger_margin_start"
@@ -440,7 +474,8 @@
                         app:ccp_textSize="@dimen/txtsize_patdetail_16sp" />
 
                     <EditText
-                        android:id="@+id/phoneno_edittext"
+                        android:id="@+id/etPhoneNumIdentificationFirstScreen"
+                        android:contentDescription="Identification First Screen Phone Num EditText"
                         style="@style/edittext_textcolor"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -460,7 +495,8 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/phone_error"
+                    android:id="@+id/tvPhoneNumErrorIdentificationFirstScreen"
+                    android:contentDescription="Identification First Screen Phone Num Error TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -481,20 +517,23 @@
 
 
     <FrameLayout
-        android:id="@+id/frame_nxtbtn_viewgrp"
+        android:id="@+id/flNextIdentificationActivity"
+        android:contentDescription="Identification Activity Buttons FrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_24">
 
         <RelativeLayout
-            android:id="@+id/relative_firstscreen_nxt_btn"
+            android:id="@+id/rlNextIdentificationFirstScreen"
+            android:contentDescription="Identification First Screen Next Button RelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible">
 
             <Button
-                android:id="@+id/frag1_nxt_btn_main"
+                android:id="@+id/btnNextIdentificationFirstScreen"
+                android:contentDescription="Identification First Screen Next Button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"

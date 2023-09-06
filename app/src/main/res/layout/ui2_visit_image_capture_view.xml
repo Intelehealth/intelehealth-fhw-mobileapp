@@ -5,17 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/llParentVisitImageCaptureView"
+    android:contentDescription="Visit Image Capture View Parent LinearLayout"
     tools:context=".ayu.visit.reason.VisitReasonCaptureFragment">
 
     <LinearLayout
-        android:id="@+id/ll_emptyView"
+        android:id="@+id/llCaptureVisitImageCaptureView"
+        android:contentDescription="Visit Image Capture View Capture LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_1st_capture"
+            android:id="@+id/btnCaptureVisitImageCaptureView"
+            android:contentDescription="Visit Image Capture View Capture Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ui2_common_button_bg_submit"
@@ -25,7 +29,8 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_question"
+            android:id="@+id/tvUploadImageVisitImageCaptureView"
+            android:contentDescription="Visit Image Capture View Upload Image TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="1sp"
@@ -37,13 +42,15 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_added_image"
+        android:id="@+id/rvVisitImageCaptureView"
+        android:contentDescription="Visit Image Capture View RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/ui2_image_item_vire" />
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btnSubmitVisitImageCaptureView"
+        android:contentDescription="Visit Image Capture View Submit Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

@@ -120,8 +120,8 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            tvDate = itemView.findViewById(R.id.tv_date_newview);
-            layoutParent = itemView.findViewById(R.id.parent_calview);
+            tvDate = itemView.findViewById(R.id.tvDateCalendarViewItem);
+            layoutParent = itemView.findViewById(R.id.rlParentCalendarViewItem);
 
         }
     }

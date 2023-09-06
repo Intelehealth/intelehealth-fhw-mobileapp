@@ -161,11 +161,11 @@ public class PatientSurveyActivity_New extends AppCompatActivity implements Netw
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
 
-        mComments = findViewById(R.id.editText_exit_survey);
-        mSkip = findViewById(R.id.cancelbtn);
-        mSubmit = findViewById(R.id.btn_submit);
-        ratingBar = (RatingBar) findViewById(R.id.ratingbar);
-        refresh = findViewById(R.id.refresh);
+        mComments = findViewById(R.id.etFeedbackPatientSurvey);
+        mSkip = findViewById(R.id.ibCancelPatientSurvey);
+        mSubmit = findViewById(R.id.btnSubmitPatientSurvey);
+        ratingBar = (RatingBar) findViewById(R.id.rbPatientSurvey);
+        refresh = findViewById(R.id.ibRefreshPatientSurvey);
     }
 
 

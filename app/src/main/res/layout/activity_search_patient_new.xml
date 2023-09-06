@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rlParentFindPatient"
+    android:contentDescription="Find Patient Screen Parent RelativeLayout"
     tools:context=".activities.searchPatientActivity.SearchPatientActivity_New">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar_relative"
+        android:id="@+id/rlParentToolbarFindPatient"
+        android:contentDescription="Find Patient Screen Toolbar Parent RelativeLayout"
         android:layout_width="0dp"
         android:layout_height="@dimen/search_toolbar_height"
         android:layout_alignParentLeft="true"
@@ -18,7 +21,8 @@
         android:backgroundTint="#2E1E91">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_26086"
+            android:id="@+id/rlChildToolbarFindPatient"
+            android:contentDescription="Find Patient Screen Toolbar Child RelativeLayout"
             android:layout_width="0dp"
             android:layout_height="@dimen/toolbar_margin_top"
             android:layout_alignParentLeft="true"
@@ -30,30 +34,32 @@
             android:layout_marginBottom="@dimen/margin_20">
 
             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/backbtn"
+                android:id="@+id/ibBackArrowFindPatient"
+                android:contentDescription="Find Patient Screen Back Arrow Image Button"
                 android:layout_width="@dimen/toolbar_margin_left"
                 android:layout_height="@dimen/toolbar_margin_left"
                 android:layout_centerVertical="true"
                 android:background="@drawable/ic_arrow_back_white" />
 
-            <!-- Frame 100030 -->
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10003"
+                android:id="@+id/rlSearchBarFindPatient"
+                android:contentDescription="Find Patient Screen Search Bar RelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_margin_top"
                 android:layout_marginStart="@dimen/fu_margin_start"
-                android:layout_toEndOf="@+id/backbtn"
+                android:layout_toEndOf="@+id/ibBackArrowFindPatient"
                 android:background="@drawable/search_edittext_vector">
 
                 <EditText
-                    android:id="@+id/search_txt_enter"
+                    android:id="@+id/etSearchBarFindPatient"
+                    android:contentDescription="Find Patient Screen Search Bar EditText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="@dimen/fu_vs_margin_start"
                     android:layout_marginTop="@dimen/margin_10"
                     android:layout_marginBottom="@dimen/margin_10"
-                    android:layout_toStartOf="@+id/icon_search"
+                    android:layout_toStartOf="@+id/ivSearchFindPatient"
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/search_txt_enter"
@@ -65,7 +71,8 @@
                     android:imeOptions="actionSearch" />
 
                 <ImageView
-                    android:id="@+id/icon_clear"
+                    android:id="@+id/ivClearFindPatient"
+                    android:contentDescription="Find Patient Screen Clear Search Bar ImageView"
                     android:layout_width="@dimen/search_icon_toolbar"
                     android:layout_height="@dimen/search_icon_toolbar"
                     android:layout_centerVertical="true"
@@ -77,7 +84,8 @@
                     android:visibility="gone"/>
 
                 <ImageView
-                    android:id="@+id/icon_search"
+                    android:id="@+id/ivSearchFindPatient"
+                    android:contentDescription="Find Patient Screen Search ImageView"
                     android:layout_width="@dimen/search_icon_toolbar"
                     android:layout_height="@dimen/search_icon_toolbar"
                     android:layout_alignParentEnd="true"
@@ -92,10 +100,11 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/search_hint_text"
+        android:id="@+id/tvHintSearchBarFindPatient"
+        android:contentDescription="Find Patient Hint Search Bar TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_relative"
+        android:layout_below="@+id/rlParentToolbarFindPatient"
         android:layout_marginHorizontal="@dimen/toolbar_margin_right"
         android:layout_marginTop="@dimen/toolbar_margin_right"
         android:lineSpacingExtra="3sp"
@@ -106,27 +115,30 @@
         android:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_selected_container"
+        android:id="@+id/rvPreSearchedFindPatient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/search_hint_text"
+        android:layout_below="@+id/tvHintSearchBarFindPatient"
         android:layout_marginHorizontal="@dimen/toolbar_margin_right"
-        android:layout_marginTop="@dimen/margin_16" />
+        android:layout_marginTop="@dimen/margin_16"
+        android:contentDescription="Find Patient Pre Searched Values RecyclerView" />
 
     <View
-        android:id="@+id/divider_view"
+        android:id="@+id/viewDividerFindPatient"
+        android:contentDescription="Find Patient Divider View"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/rcv_selected_container"
+        android:layout_below="@id/rvPreSearchedFindPatient"
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="20dp"
         android:background="@color/gray_1" />
 
     <TextView
-        android:id="@+id/all_patients_tv"
+        android:id="@+id/tvAllPatientsFindPatients"
+        android:contentDescription="Find Patients 'All Patients' TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_view"
+        android:layout_below="@+id/viewDividerFindPatient"
         android:layout_marginStart="@dimen/toolbar_margin_right"
         android:layout_marginTop="20dp"
         android:lineSpacingExtra="3sp"
@@ -137,10 +149,11 @@
         android:visibility="visible" />
 
     <TextView
-        android:id="@+id/search_clear_tv"
+        android:id="@+id/tvClearFindPatient"
+        android:contentDescription="Find Patient Screen Clear Search TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_view"
+        android:layout_below="@+id/viewDividerFindPatient"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="@dimen/toolbar_margin_right"
@@ -155,18 +168,20 @@
         android:visibility="gone" />
 
     <include
-        android:id="@+id/view_nopatientfound"
+        android:id="@+id/viewNoPatientFoundFindPatient"
+        android:contentDescription="Find Patient Screen No Patient Found View"
         layout="@layout/no_patient_found_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_relative"
+        android:layout_below="@+id/rlParentToolbarFindPatient"
         android:layout_marginTop="@dimen/search_empty_margin_top" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_recycelview"
+        android:id="@+id/rvSearchFindPatient"
+        android:contentDescription="Find Patient Searched Values RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/all_patients_tv"
+        android:layout_below="@+id/tvAllPatientsFindPatients"
         android:layout_marginStart="@dimen/fu_card_margin_sides"
         android:layout_marginTop="@dimen/fu_card_margin_updown"
         android:layout_marginEnd="@dimen/fu_card_margin_sides"

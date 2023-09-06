@@ -223,78 +223,78 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     }
 
     private void initUI() {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        filter_framelayout = findViewById(R.id.filter_framelayout);
-        filter = findViewById(R.id.filter);
+        filter_framelayout = findViewById(R.id.flFilterPresc);
+        filter = findViewById(R.id.ibFilterPresc);
 
-        reminder = findViewById(R.id.reminder);
+        reminder = findViewById(R.id.tvReminderNotificationsFilter);
         reminder.setText(getResources().getString(R.string.action_home));
 
-        incomplete_act = findViewById(R.id.incomplete_act);
+        incomplete_act = findViewById(R.id.tvIncompleteNotificationsFilter);
         incomplete_act.setText(getResources().getString(R.string.action_end_visit));
 
-        archieved_notifi = findViewById(R.id.archieved_notifi);
+        archieved_notifi = findViewById(R.id.tvArchivedNotificationsFilter);
         archieved_notifi.setVisibility(View.GONE);
-        hl_2 = findViewById(R.id.hl_2);
+        hl_2 = findViewById(R.id.viewDivider2NotificationFilter);
         hl_2.setVisibility(View.GONE);
 
-        patName_txt = findViewById(R.id.textView_name_value);
-        profile_image = findViewById(R.id.profile_image);
-        gender_age_txt = findViewById(R.id.textView_gender_value);
-        openmrsID_txt = findViewById(R.id.textView_id_value);
-        mCHWname = findViewById(R.id.chw_details);
-        visitID_txt = findViewById(R.id.textView_visit_value);
+        patName_txt = findViewById(R.id.tvPatientNamePresc);
+        profile_image = findViewById(R.id.ivProfileImagePresc);
+        gender_age_txt = findViewById(R.id.tvPatientAgePresc);
+        openmrsID_txt = findViewById(R.id.tvPatientIDPresc);
+        mCHWname = findViewById(R.id.tvCHWNameValuePresc);
+        visitID_txt = findViewById(R.id.tvVisitIDValuePresc);
 
-        drname = findViewById(R.id.drname);
-        dr_age_gender = findViewById(R.id.dr_age_gender);
-        qualification = findViewById(R.id.qualification);
-        dr_speciality = findViewById(R.id.dr_speciality);
+        drname = findViewById(R.id.tvDocNameValuePresc);
+        dr_age_gender = findViewById(R.id.tvDocAgeGenderValuePresc);
+        qualification = findViewById(R.id.tvDocQualificationValuePresc);
+        dr_speciality = findViewById(R.id.tvDocSpecialityValuePresc);
 
-        diagnosis_txt = findViewById(R.id.diagnosis_txt);
-        medication_txt = findViewById(R.id.medication_txt);
-        advice_txt = findViewById(R.id.advice_txt);
-        test_txt = findViewById(R.id.test_txt);
-        referred_speciality_txt = findViewById(R.id.referred_speciality_txt);
-        no_followup_txt = findViewById(R.id.no_followup_txt);
-        followup_date_txt = findViewById(R.id.followup_date_txt);
-        followup_subtext = findViewById(R.id.followup_info);
-        followup_date_block = findViewById(R.id.followup_date_block);
+        diagnosis_txt = findViewById(R.id.tvDiagnosisValuePresc);
+        medication_txt = findViewById(R.id.tvMedicationValuePresc);
+        advice_txt = findViewById(R.id.tvAdviceValuePresc);
+        test_txt = findViewById(R.id.tvTestValuePresc);
+        referred_speciality_txt = findViewById(R.id.tvRefSpecialistValuePresc);
+        no_followup_txt = findViewById(R.id.tvNoFollowUpPresc);
+        followup_date_txt = findViewById(R.id.tvFollowUpDatePresc);
+        followup_subtext = findViewById(R.id.tvFollowUpInfoPresc);
+        followup_date_block = findViewById(R.id.rlFollowUpDateBlockPresc);
 
-        no_btn = findViewById(R.id.no_btn);
-        yes_btn = findViewById(R.id.yes_btn);
-        downloadBtn = findViewById(R.id.downloadBtn);
-        btn_vs_print = findViewById(R.id.btn_vs_print);   // print
-        btn_vs_share = findViewById(R.id.btn_vs_share);   // share
+        no_btn = findViewById(R.id.btnNoFollowUpPresc);
+        yes_btn = findViewById(R.id.btnYesFollowUpPresc);
+        downloadBtn = findViewById(R.id.ibDownloadPresc);
+        btn_vs_print = findViewById(R.id.btnPrintPresc);   // print
+        btn_vs_share = findViewById(R.id.btnSharePresc);   // share
 
-        btn_up_header = findViewById(R.id.btn_up_header);
-        presc_profile_header = findViewById(R.id.presc_profile_header);
-        dr_details_header_relative = findViewById(R.id.dr_details_header_relative);
-        diagnosis_header_relative = findViewById(R.id.diagnosis_header_relative);
-        medication_header_relative = findViewById(R.id.medication_header_relative);
-        advice_header_relative = findViewById(R.id.advice_header_relative);
-        test_header_relative = findViewById(R.id.test_header_relative);
-        referred_header_relative = findViewById(R.id.referred_header_relative);
-        followup_header_relative = findViewById(R.id.followup_header_relative);
+        btn_up_header = findViewById(R.id.ibPatientDetailsCollapsePresc);
+        presc_profile_header = findViewById(R.id.llProfileHeaderPresc);
+        dr_details_header_relative = findViewById(R.id.rlDocDetailsHeaderPresc);
+        diagnosis_header_relative = findViewById(R.id.rlDiagnosisHeaderPresc);
+        medication_header_relative = findViewById(R.id.rlMedicationHeaderPresc);
+        advice_header_relative = findViewById(R.id.rlAdviceHeaderPresc);
+        test_header_relative = findViewById(R.id.rlTestHeaderPresc);
+        referred_header_relative = findViewById(R.id.rlRefSpecialistHeaderPresc);
+        followup_header_relative = findViewById(R.id.rlFollowUpHeaderPresc);
 
-        btnup_drdetails_header = findViewById(R.id.btnup_drdetails_header);
-        btnup_diagnosis_header = findViewById(R.id.btnup_diagnosis_header);
-        btnup_medication_header = findViewById(R.id.btnup_medication_header);
-        btnup_test_header = findViewById(R.id.btnup_test_header);
-        btnup_speciality_header = findViewById(R.id.btnup_speciality_header);
-        btnup_followup_header = findViewById(R.id.btnup_followup_header);
+        btnup_drdetails_header = findViewById(R.id.ibDocDetailsCollapsePresc);
+        btnup_diagnosis_header = findViewById(R.id.ibDiagnosisCollapsePresc);
+        btnup_medication_header = findViewById(R.id.ibMedicationCollapsePresc);
+        btnup_test_header = findViewById(R.id.ibTestCollapsePresc);
+        btnup_speciality_header = findViewById(R.id.ibRefSpecialistCollapsePresc);
+        btnup_followup_header = findViewById(R.id.ibFollowUpCollapsePresc);
 
-        vs_header_expandview = findViewById(R.id.vs_header_expandview);
-        vs_drdetails_header_expandview = findViewById(R.id.vs_drdetails_header_expandview);
-        vs_diagnosis_header_expandview = findViewById(R.id.vs_diagnosis_header_expandview);
-        vs_medication_header_expandview = findViewById(R.id.vs_medication_header_expandview);
-        vs_adviceheader_expandview = findViewById(R.id.vs_adviceheader_expandview);
-        vs_testheader_expandview = findViewById(R.id.vs_testheader_expandview);
-        vs_speciality_header_expandview = findViewById(R.id.vs_speciality_header_expandview);
-        vs_followup_header_expandview = findViewById(R.id.vs_followup_header_expandview);
+        vs_header_expandview = findViewById(R.id.rlPatientDetailsExpandedPresc);
+        vs_drdetails_header_expandview = findViewById(R.id.rlDocDetailsExpandedPresc);
+        vs_diagnosis_header_expandview = findViewById(R.id.rlDiagnosisExpandedPresc);
+        vs_medication_header_expandview = findViewById(R.id.rlMedicationExpandPresc);
+        vs_adviceheader_expandview = findViewById(R.id.rlAdviceExpandedPresc);
+        vs_testheader_expandview = findViewById(R.id.rlTestExpandedPresc);
+        vs_speciality_header_expandview = findViewById(R.id.rlRefSpecialistExpandedPresc);
+        vs_followup_header_expandview = findViewById(R.id.rlFollowUpExpandedPresc);
 
-        backArrow = findViewById(R.id.backArrow);
-        refresh = findViewById(R.id.refresh);
+        backArrow = findViewById(R.id.ibBackArrowPresc);
+        refresh = findViewById(R.id.ibRefreshPresc);
 
         backArrow.setOnClickListener(v -> {
             finish();
@@ -344,7 +344,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         // settind data - end
 
         // Patient Photo
-        profile_image = findViewById(R.id.profile_image);
+        profile_image = findViewById(R.id.ivProfileImagePresc);
         if (patient_photo_path != null) {
             Glide.with(this)
                     .load(patient_photo_path)
@@ -869,7 +869,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitID};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -1210,11 +1210,11 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
         alertdialogBuilder.setView(convertView);
-        ImageView icon = convertView.findViewById(R.id.dialog_icon);
-        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
-        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
-        Button positive_btn = convertView.findViewById(R.id.positive_btn);
-        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+        ImageView icon = convertView.findViewById(R.id.ivIconPatientRegisteredDialog);
+        TextView dialog_title = convertView.findViewById(R.id.tvTitlePatientRegisteredDialog);
+        TextView dialog_subtitle = convertView.findViewById(R.id.tvSubtitlePatientRegisteredDialog);
+        Button positive_btn = convertView.findViewById(R.id.btnPosPatientRegisteredDialog);
+        Button negative_btn = convertView.findViewById(R.id.btnNegPatientRegisteredDialog);
         negative_btn.setVisibility(View.GONE);  // as this view requires only one button so other button has hidden.
 
         icon.setImageDrawable(drawable);
@@ -1910,34 +1910,13 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
             alertdialogBuilder.setView(convertView);
 
-            EditText editText = convertView.findViewById(R.id.editText_mobileno);
-            Button sharebtn = convertView.findViewById(R.id.sharebtn);
-
-           /* AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            EditText editText = new EditText(this);
-            editText.setInputType(InputType.TYPE_CLASS_PHONE);
-
-            InputFilter inputFilter = new InputFilter() {
-                @Override
-                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                    return null;
-                }
-            };*/
-
+            EditText editText = convertView.findViewById(R.id.etMobileNumSharePrescDialog);
+            Button sharebtn = convertView.findViewById(R.id.btnSharePrescDialog);
             String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
             String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitID, PRESCRIPTION_LINK);
             String whatsapp_url = partial_whatsapp_presc_url.concat(prescription_link);
             editText.setText(patient.getPhone_number());
 
-//                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
-
-            //  editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(15)});
-           /* LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            editText.setLayoutParams(layoutParams);
-            alertDialog.setView(editText);
-*/
-            //   alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
             sharebtn.setOnClickListener(v -> {
                 if (!editText.getText().toString().equalsIgnoreCase("")) {
                     String phoneNumber = /*"+91" +*/ editText.getText().toString();
@@ -1949,9 +1928,6 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                     // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse(whatsappMessage)));
-
-                    // isreturningWhatsapp = true;
-
                 } else {
                     Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.please_enter_mobile_number),
                             Toast.LENGTH_SHORT).show();
@@ -1965,52 +1941,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
             int width = PrescriptionActivity.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
             alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
             alertDialog.show();
-
-//            alertDialog.setPositiveButton(getResources().getString(R.string.share),
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                            if (!editText.getText().toString().equalsIgnoreCase("")) {
-//                                String phoneNumber = /*"+91" +*/ editText.getText().toString();
-//                                String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-//                                        + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
-//
-//                                // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
-//                                startActivity(new Intent(Intent.ACTION_VIEW,
-//                                        Uri.parse(
-//                                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-//                                                        phoneNumber, whatsappMessage))));
-//
-//                                // isreturningWhatsapp = true;
-//
-//                            } else {
-//                                Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-
-           /* AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
         } else {
-            /*AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
-            alertDialog.setPositiveButton(getResources().getString(R.string.ok),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-            AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);*/
-
             Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.download_prescription_first_before_sharing), Toast.LENGTH_SHORT).show();
         }
     }
@@ -2128,7 +2059,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitID};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
