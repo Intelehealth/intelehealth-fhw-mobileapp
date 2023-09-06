@@ -262,13 +262,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.prescription.PrescriptionActivity"
-            android:configChanges="uiMode"
-            android:label="@string/prescription"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing|adjustPan" />
-        <activity
             android:name=".appointment.AppointmentListingActivity"
             android:exported="true"
             android:screenOrientation="portrait"
