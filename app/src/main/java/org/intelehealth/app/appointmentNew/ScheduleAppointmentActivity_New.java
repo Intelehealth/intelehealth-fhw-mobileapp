@@ -269,7 +269,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             }
         });
 
-        ivBackArrow = findViewById(R.id.iv_back_arrow_common);
+        ivBackArrow = findViewById(R.id.ivBackArrowCommonToolbar);
         ivBackArrow.setOnClickListener(v -> finish());
 
         //rvMorningSlots.setHasFixedSize(true);

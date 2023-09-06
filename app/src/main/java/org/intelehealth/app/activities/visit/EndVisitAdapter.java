@@ -252,6 +252,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             end_visit_btn = itemView.findViewById(R.id.btnEndVisitRowItem);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
             name = itemView.findViewById(R.id.tvPatientNameRowItem);
+            search_gender = itemView.findViewById(R.id.tvGenderAgeRowItem);
             fu_date_txtview = itemView.findViewById(R.id.tvDateTimeRowItem);
             profile_image = itemView.findViewById(R.id.ivPatientImageRowItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);

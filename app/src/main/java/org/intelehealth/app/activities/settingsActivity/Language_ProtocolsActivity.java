@@ -109,6 +109,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
 
     private void initUI() {
         context = Language_ProtocolsActivity.this;
+        sessionManager = new SessionManager(context);
         lang_spinner = findViewById(R.id.spinnerChangeLanguageProtocol);
         reset_btn = findViewById(R.id.btnResetLanguageProtocol);
         snackbar_cv = findViewById(R.id.snackbarLanguageProtocol);
@@ -116,6 +117,7 @@ public class Language_ProtocolsActivity extends AppCompatActivity {
         update_protocols_btn = findViewById(R.id.rlUpdateLanguageProtocol);
         btRefresh = findViewById(R.id.ibRefreshLanguageProtocol);
         mLangTextView = findViewById(R.id.tvLangSpinnerLanguageProtocol);
+        setLocale(Language_ProtocolsActivity.this);
 
         Intent intent = getIntent();
         if (intent.getStringExtra("intentType") != null && intent.getStringExtra("intentType").equalsIgnoreCase("language updated")) {

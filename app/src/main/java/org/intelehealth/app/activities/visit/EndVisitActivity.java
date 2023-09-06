@@ -36,13 +36,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
-    RecyclerView rvCloseVisitRecentData, rvCloseVisitOlderData, recycler_month;
     RecyclerView recycler_recent, recycler_older, recycler_month;
     NestedScrollView nestedscrollview;
     private static SQLiteDatabase db;
     private int total_counts = 0, todays_count = 0, weeks_count = 0, months_count = 0;
-    private ImageButton imgBtnCloseVisitBackArrow, imgBtnCloseVisitRefresh;
-    TextView tvCloseVisitRecentNoData, tvCloseVisitOlderNoData, month_nodata;
+    private ImageButton backArrow, refresh;
+    TextView recent_nodata, older_nodata, month_nodata;
     private NetworkUtils networkUtils;
     private ObjectAnimator syncAnimator;
     private final int recentLimit = 15, olderLimit = 15;
@@ -70,8 +69,8 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
         initViews();
         endVisits_data();
 
-        imgBtnCloseVisitRefresh.setOnClickListener(v -> {
-            syncNow(EndVisitActivity.this, imgBtnCloseVisitRefresh, syncAnimator);
+        refresh.setOnClickListener(v -> {
+            syncNow(EndVisitActivity.this, refresh, syncAnimator);
         });
     }
 
@@ -100,13 +99,11 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     }
 
     private void initViews() {
-        rvCloseVisitRecentData = findViewById(R.id.rvCloseVisitRecentData);
-        rvCloseVisitOlderData = findViewById(R.id.rvCloseVisitOlderData);
-        recycler_recent = findViewById(R.id.recycler_recent);
+        recycler_recent = findViewById(R.id.rvCloseVisitRecentData);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recycler_recent.setLayoutManager(reLayoutManager);
 
-        recycler_older = findViewById(R.id.recycler_older);
+        recycler_older = findViewById(R.id.rvCloseVisitOlderData);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recycler_older.setLayoutManager(layoutManager);
 
@@ -141,13 +138,13 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
 
         recycler_month = findViewById(R.id.recycler_month);
-        tvCloseVisitRecentNoData = findViewById(R.id.tvCloseVisitRecentNoData);
-        tvCloseVisitOlderNoData = findViewById(R.id.tvCloseVisitOlderNoData);
+        recent_nodata = findViewById(R.id.tvCloseVisitRecentNoData);
+        older_nodata = findViewById(R.id.tvCloseVisitOlderNoData);
         month_nodata = findViewById(R.id.month_nodata);
-        imgBtnCloseVisitBackArrow = findViewById(R.id.imgBtnCloseVisitBackArrow);
-        imgBtnCloseVisitRefresh = findViewById(R.id.imgBtnCloseVisitRefresh);
+        backArrow = findViewById(R.id.imgBtnCloseVisitBackArrow);
+        refresh = findViewById(R.id.imgBtnCloseVisitRefresh);
 
-        imgBtnCloseVisitBackArrow.setOnClickListener(v -> {
+        backArrow.setOnClickListener(v -> {
             finish();
         });
     }
@@ -158,12 +155,6 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 //        thisMonths_EndVisits();
     }
 
-    private void todays_EndVisits() {
-        List<PrescriptionModel> arrayList = recentNotEndedVisits();
-        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
-        rvCloseVisitRecentData.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
-        rvCloseVisitRecentData.setAdapter(adapter_new);
-        todays_count = arrayList.size();
     private void recentCloseVisits() {
         recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
         recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
@@ -175,17 +166,11 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
         todays_count = recentCloseVisitsList.size();
         if (todays_count == 0 || todays_count < 0)
-            tvCloseVisitRecentNoData.setVisibility(View.VISIBLE);
+            recent_nodata.setVisibility(View.VISIBLE);
         else
-            tvCloseVisitRecentNoData.setVisibility(View.GONE);
+            recent_nodata.setVisibility(View.GONE);
     }
 
-    private void thisWeeks_EndVisits() {
-        List<PrescriptionModel> arrayList = olderNotEndedVisits();
-        EndVisitAdapter adapter_new = new EndVisitAdapter(this, arrayList);
-        rvCloseVisitOlderData.setNestedScrollingEnabled(false);
-        rvCloseVisitOlderData.setAdapter(adapter_new);
-        weeks_count = arrayList.size();
     private void olderCloseVisits() {
         olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart);
         olderVisitsAdapter = new EndVisitAdapter(this, olderCloseVisitsList);
@@ -197,9 +182,9 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
         weeks_count = olderCloseVisitsList.size();
         if (weeks_count == 0 || weeks_count < 0)
-            tvCloseVisitOlderNoData.setVisibility(View.VISIBLE);
+            older_nodata.setVisibility(View.VISIBLE);
         else
-            tvCloseVisitOlderNoData.setVisibility(View.GONE);
+            older_nodata.setVisibility(View.GONE);
     }
 
     // This method will be accessed every time the person scrolls the recyclerView further.
@@ -247,9 +232,9 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            imgBtnCloseVisitRefresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
         } else {
-            imgBtnCloseVisitRefresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
 

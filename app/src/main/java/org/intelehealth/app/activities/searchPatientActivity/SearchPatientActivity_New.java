@@ -95,6 +95,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.rvSearchFindPatient);
+        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
+        search_recycelview.setLayoutManager(lm);
+        initializeRecyclerView(lm);
+
         mSearchEditText = findViewById(R.id.etSearchBarFindPatient);
         mSearchEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_SearchBar}); //maxlength 25
 
@@ -420,7 +424,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             allPatientsTV.setVisibility(View.VISIBLE);
             dividerView.setVisibility(View.GONE);
         }
-        findViewById(R.id.tvClearFindPatient).setVisibility(View.VISIBLE);
+        //      findViewById(R.id.tvClearFindPatient).setVisibility(View.VISIBLE);
     }
 
     private void searchData_Unavailable() {

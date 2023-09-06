@@ -5,7 +5,8 @@
     android:orientation="vertical">
 
     <View
-        android:id="@+id/spinner_divider"
+        android:id="@+id/viewDividerSpinner"
+        android:contentDescription="Setup Spinner Divider View"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_1"

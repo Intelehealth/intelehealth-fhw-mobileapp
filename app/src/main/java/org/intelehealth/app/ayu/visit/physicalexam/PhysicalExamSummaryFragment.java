@@ -143,8 +143,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
             if (!_complain.isEmpty() && !_list.isEmpty()) {
                 View view = View.inflate(getActivity(), R.layout.ui2_summary_main_row_item_view, null);
                 TextView complainLabelTextView = view.findViewById(R.id.tvComplaintLabelMainRowItem);
-                TextView complainLabelTextView = view.findViewById(R.id.tv_complain_label);
-                view.findViewById(R.id.height_adjust_view).setVisibility(View.GONE);
+                view.findViewById(R.id.viewMainRowItem).setVisibility(View.GONE);
                 complainLabelTextView.setText(_complain);
                 view.findViewById(R.id.tvComplaintEditMainRowItem).setOnClickListener(new View.OnClickListener() {
                     @Override

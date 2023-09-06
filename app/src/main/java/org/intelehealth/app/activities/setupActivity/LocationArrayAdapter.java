@@ -20,7 +20,7 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
 
 
     public LocationArrayAdapter(Context context, List<String> objects) {
-        super(context, R.layout.spinner_textview, R.id.text1, objects);
+        super(context, R.layout.spinner_textview, R.id.tvLocationNameSetupSpinner, objects);
     }
 
 
@@ -50,17 +50,16 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
     public long getItemId(int position) {
         return position;
     }
-            view.setContentDescription(getItem(position));
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
         if (view != null) {
-//            if(getItem(position).equalsIgnoreCase("Telemedicine Clinic 1") /*|| getItem(position).equalsIgnoreCase("Telemedicine Clinic 2")*/)
+            view.setContentDescription(getItem(position));
             if(position==0)
             {
-                View divider = view.findViewById(R.id.spinner_divider);
+                View divider = view.findViewById(R.id.viewDividerSpinner);
                 divider.setVisibility(View.GONE);
             }
         }

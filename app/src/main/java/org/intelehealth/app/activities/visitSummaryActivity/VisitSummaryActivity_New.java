@@ -3089,6 +3089,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
      * @return void
      */
     public void queryData(String dataString) {
+
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
 
@@ -4982,8 +4984,6 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     private void setQAData() {
         mIsCCInOldFormat = false;
-        mFamilyHistorySummaryLinearLayout = findViewById(R.id.ll_family_history_summary);
-        mPastMedicalHistorySummaryLinearLayout = findViewById(R.id.ll_patient_history_summary);
         mFamilyHistorySummaryLinearLayout = findViewById(R.id.llFamHistDetailsVisitSummaryItemCard);
         mPastMedicalHistorySummaryLinearLayout = findViewById(R.id.llPatHistDetailsVisitSummaryItemCard);
 

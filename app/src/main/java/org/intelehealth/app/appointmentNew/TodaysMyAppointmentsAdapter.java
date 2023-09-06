@@ -153,22 +153,18 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
 
             if (whichAppointments.equalsIgnoreCase("completed")) {
-                //bcz of common UI
-                //hide  : ivTime, tvDate, tvPatientId
-                //show :  tvPrescRecStatus
-
                 holder.ivTime.setVisibility(View.GONE);
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
-                holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
                 Log.d(TAG, "onBindViewHolder:time :  " + appointmentInfoModel.getPresc_received_time());
                 if (appointmentInfoModel.isPrescription_exists()) {
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
+                    holder.presc_pendingCV.setVisibility(View.GONE);
+                    holder.presc_receivingCV.setVisibility(View.VISIBLE);
                 } else {
-                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
-
+                    holder.presc_receivingCV.setVisibility(View.GONE);
+                    holder.presc_pendingCV.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -176,7 +172,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.ivTime.setVisibility(View.VISIBLE);
                 holder.tvDate.setVisibility(View.VISIBLE);
-                holder.tvPrescRecStatus.setVisibility(View.GONE);
+                holder.presc_pendingCV.setVisibility(View.GONE);
+                holder.presc_receivingCV.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
 
                 holder.tvDate.setText(appointmentInfoModel.getSlotTime());
@@ -185,18 +182,13 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
             }
 
-
             holder.cardParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  /*    patientname patientUuid gender age openmrsID visit_ID visit_startDate visit_speciality followup_date
-                  priority_tag hasPrescription patient_photo chief_complaint */
-
                     Intent intent = new Intent(context, AppointmentDetailsActivity.class);
                     intent.putExtra("patientname", appointmentInfoModel.getPatientName());
                     intent.putExtra("patientUuid", appointmentInfoModel.getPatientId());
                     intent.putExtra("gender", "");
-                    //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
                     intent.putExtra("age", "");
                     intent.putExtra("priority_tag", "");
                     intent.putExtra("hasPrescription", appointmentInfoModel.isPrescription_exists());
@@ -211,9 +203,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     intent.putExtra("app_start_day", appointmentInfoModel.getSlotDay());
                     intent.putExtra("prescription_received_time", DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
                     intent.putExtra("status", appointmentInfoModel.getStatus());
-
                     context.startActivity(intent);
-
                 }
             });
 
@@ -232,8 +222,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        CardView cardParent;
-        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView;
+        CardView cardParent, presc_pendingCV, presc_receivingCV;
+        TextView tvPatientName, tvDate, tvPatientId, doctNameTextView;
         ImageView ivProfileImage, ivTime, IvPriorityTag;
 
 
@@ -246,7 +236,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             ivTime = itemView.findViewById(R.id.ivTimeTodayAppointmentItem);
             IvPriorityTag = itemView.findViewById(R.id.ivPriorityTagTodayAppointmentItem);
             tvPatientId = itemView.findViewById(R.id.tvPatientIDTodayAppointmentItem);
-            tvPrescRecStatus = itemView.findViewById(R.id.tvPrescStateTodayAppointmentItem);
+            presc_pendingCV = itemView.findViewById(R.id.cvPrescPendingAllAppointmentItem);
+            presc_receivingCV = itemView.findViewById(R.id.cvPrescReceivedAllAppointmentItem);
             doctNameTextView = itemView.findViewById(R.id.tvDoctorNameTodayAppointmentItem);
 
 

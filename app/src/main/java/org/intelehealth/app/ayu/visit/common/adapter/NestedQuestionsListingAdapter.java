@@ -1448,29 +1448,6 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
             try {
                 fromDateFormat = simpleDateFormat.parse(fromDate);
-                calendarView.setMinDate(fromDateFormat.getTime() - 1000);
-                calendarView.setMaxDate(System.currentTimeMillis() + 1000);
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-        boolean isToDate = genericViewHolder.node.getText().equalsIgnoreCase("To");
-        String fromDate = "";
-        if (isToDate) {
-            if (mParentNode.getOptionsList() != null && mParentNode.getOptionsList().size() >= 1) {
-                fromDate = mParentNode.getOption(1).getOption(0).getLanguage();
-            }
-        }
-        Log.v("DataSubmit", "fromDate - " + fromDate);
-
-        Date fromDateFormat = null;
-        if (!fromDate.isEmpty() && !fromDate.equalsIgnoreCase("%")) {
-            //22/Aug/2023
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
-            try {
-                fromDateFormat = simpleDateFormat.parse(fromDate);
                 calendarView.setMinDate(fromDateFormat.getTime() + 1000);
                 calendarView.setMaxDate(System.currentTimeMillis() + 1000);
             } catch (ParseException e) {

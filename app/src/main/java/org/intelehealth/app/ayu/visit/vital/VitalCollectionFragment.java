@@ -239,7 +239,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 editText.setText("");
                 return;
             }
-            if (this.editText.getId() == R.id.etv_pulse) {
             if (this.editText.getId() == R.id.etPulseVisitCollection) {
                 if (val.isEmpty()) {
                     /*mPulseErrorTextView.setVisibility(View.VISIBLE);

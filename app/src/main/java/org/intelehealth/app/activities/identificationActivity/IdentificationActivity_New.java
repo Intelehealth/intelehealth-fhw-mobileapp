@@ -197,9 +197,6 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
                 .beginTransaction()
                 .replace(R.id.flMainIdentificationFirstScreen, new Fragment_FirstScreen())
                 .commit();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, new Fragment_FirstScreen()).commit();
-
     }
 
     @Override

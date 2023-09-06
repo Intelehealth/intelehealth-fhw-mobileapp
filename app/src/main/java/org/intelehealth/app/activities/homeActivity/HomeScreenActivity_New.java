@@ -586,13 +586,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottomNavHome).setChecked(true);
-
-
-       /* String sync_text = setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        tvAppLastSync.setText(sync_text);
-        Log.d(TAG, "onReceive: sync_text initui : " + sessionManager.getLastSyncDateTime());
-*/
-
         tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
 
         setLocale(HomeScreenActivity_New.this);
@@ -601,7 +594,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     private void showSnackBarAndRemoveLater(String text) {
         survey_snackbar_cv.setVisibility(View.VISIBLE);
-        TextView textView = findViewById(R.id.snackbar_text);
+        TextView textView = findViewById(R.id.tvSnackbarContent);
         textView.setText(text);
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
@@ -946,7 +939,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         }
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottomNavHome).setChecked(true);
-        setLocale("onResume");
         super.onResume();
     }
 

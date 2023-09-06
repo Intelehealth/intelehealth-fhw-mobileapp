@@ -507,6 +507,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         patientdistrict = findViewById(R.id.tvDistrictValueAddressDetails);
         village = findViewById(R.id.tvVillageValueAddressDetails);
         address1 = findViewById(R.id.tvCorrAddress1ValueAddressDetails);
+        trAddress2 = findViewById(R.id.trCorrAddress2AddressDetails);
+        addr2View = findViewById(R.id.tvCorrAddress2ValueAddressDetails);
 
         son_daughter_wife = findViewById(R.id.tvRelationValueOtherDetails);
         patientNationalID = findViewById(R.id.tvNationalIDValueOtherDetails);
@@ -739,6 +741,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     }
 
     public void setDisplay(String dataString) {
+
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
