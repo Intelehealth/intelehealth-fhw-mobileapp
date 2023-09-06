@@ -96,8 +96,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
         holder.doctNameTextView.setText(context.getString(R.string.doctor_annotation)+" " + appointmentInfoModel.getDrName());
         if (whichAppointments.equalsIgnoreCase("upcoming")) {
             //hide show ui elements bcz of common ui
-            holder.presc_pendingCV.setVisibility(View.GONE);
-            holder.presc_receivingCV.setVisibility(View.GONE);
+            holder.tvPrescRecStatus.setVisibility(View.GONE);
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
             String currentDateTime = dateFormat.format(new Date());
             String slottime = appointmentInfoModel.getSlotDate() + " " + appointmentInfoModel.getSlotTime();
@@ -165,18 +164,17 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
                 //holder.ivTime.setVisibility(View.VISIBLE);
                 holder.tvDate.setVisibility(View.VISIBLE);
+                holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                 holder.tvDate.setText(DateAndTimeUtils.getDisplayDateAndTime(appointmentInfoModel.getPresc_received_time()));
                 Log.d(TAG, "onBindViewHolder: presc time : "+appointmentInfoModel.getPresc_received_time());
 
                 if (appointmentInfoModel.isPrescription_exists()) {
-                    holder.presc_pendingCV.setVisibility(View.GONE);
-                    holder.presc_receivingCV.setVisibility(View.VISIBLE);
+                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_received));
                 } else {
                     //holder.ivTime.setVisibility(View.GONE);
                     holder.tvDate.setVisibility(View.GONE);
-                    holder.presc_receivingCV.setVisibility(View.GONE);
-                    holder.presc_pendingCV.setVisibility(View.VISIBLE);
+                    holder.tvPrescRecStatus.setBackground(context.getResources().getDrawable(R.drawable.ui2_ic_presc_pending));
 
                 }
             }
@@ -195,11 +193,9 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
             //holder.ivTime.setVisibility(View.VISIBLE);
             holder.tvDate.setVisibility(View.VISIBLE);
-            holder.presc_pendingCV.setVisibility(View.GONE);
-            holder.presc_receivingCV.setVisibility(View.GONE);
+            holder.tvPrescRecStatus.setVisibility(View.GONE);
 
-
-            String timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
+           String timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
             holder.tvDate.setText(timeText);
             //  holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
             // imageView.setColorFilter(ContextCompat.getColor(context, R.color.COLOR_YOUR_COLOR), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -246,9 +242,10 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        CardView cardParent, presc_pendingCV, presc_receivingCV;
-        TextView tvPatientName, tvDate, doctNameTextView;
+        CardView cardParent;
+        TextView tvPatientName, tvDate, tvPrescRecStatus,doctNameTextView;
         ImageView ivProfileImage, IvPriorityTag/*, ivTime*/;
+
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -257,9 +254,9 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             ivProfileImage = itemView.findViewById(R.id.ivProfileImageAllAppointmentItem);
             tvDate = itemView.findViewById(R.id.tvAppDateAllAppointmentItem);
             IvPriorityTag = itemView.findViewById(R.id.ivPriorityTagAllAppointmentItem);
+            //ivTime = itemView.findViewById(R.id.iv_time_all);
+            tvPrescRecStatus = itemView.findViewById(R.id.tvPrescStateAllAppointmentItem);
             doctNameTextView = itemView.findViewById(R.id.tvDoctorNameAllAppointmentItem);
-            presc_pendingCV = itemView.findViewById(R.id.cvPrescPendingAllAppointmentItem);
-            presc_receivingCV = itemView.findViewById(R.id.cvPrescReceivedAllAppointmentItem);
 
         }
     }

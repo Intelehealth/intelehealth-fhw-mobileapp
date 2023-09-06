@@ -118,91 +118,18 @@
                 android:textSize="@dimen/presc_rec_text_size"
                 app:drawableStartCompat="@drawable/ui2_ic_calendar" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvPrescReceivedTodayAppointmentItem"
-                android:contentDescription="Today Appointment Item Prescription Received CardView"
+            <TextView
+                android:id="@+id/tvPrescStateTodayAppointmentItem"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvAppDateTodayAppointmentItem"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginHorizontal="2dp"
-                app:cardCornerRadius="3dp">
-
-                <LinearLayout
-                    android:id="@+id/llPrescReceivedTodayAppointmentItem"
-                    android:contentDescription="Today Appointment Item Prescription Received LinearLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/cardTintLightGreen"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="3dp">
-
-                    <ImageView
-                        android:id="@+id/ivPrescReceivedTodayAppointmentItem"
-                        android:contentDescription="All Appointment Item Prescription Received ImageView"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/prescription_icon_blue" />
-
-                    <TextView
-                        android:id="@+id/tvPrescReceivedTodayAppointmentItem"
-                        android:contentDescription="All Appointment Item Prescription Received TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:paddingRight="3dp"
-                        android:text="@string/presc_received"
-                        android:textColor="#1B163A"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvPrescPendingTodayAppointmentItem"
-                android:contentDescription="Today Appointment Item Prescription Pending CardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvAppDateTodayAppointmentItem"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:visibility="gone"
-                android:layout_marginHorizontal="2dp"
-                app:cardCornerRadius="3dp">
-
-                <LinearLayout
-                    android:id="@+id/llPrescPendingTodayAppointmentItem"
-                    android:contentDescription="Today Appointment Item Prescription Pending LinearLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/cardTintLightOrange"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="3dp">
-
-                    <ImageView
-                        android:id="@+id/ivPrescPendingTodayAppointmentItem"
-                        android:contentDescription="Today Appointment Item Prescription Pending ImageView"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/prescription_icon_blue" />
-
-                    <TextView
-                        android:id="@+id/tvPrescPendingTodayAppointmentListItem"
-                        android:contentDescription="Today Appointment Item Prescription Pending TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:paddingRight="5dp"
-                        android:text="@string/presc_pending"
-                        android:textColor="#1B163A"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/ui2_ic_presc_received"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="3sp"
+                android:textAppearance="@style/caption"
+                android:textColor="@color/iconTintGray"
+                android:textSize="@dimen/item_ta_tv_date_text_size"
+                android:visibility="gone" />
         </LinearLayout>
 
         <ImageView
