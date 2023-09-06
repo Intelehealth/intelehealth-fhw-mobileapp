@@ -383,6 +383,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sessionManager = new SessionManager(getApplicationContext());
+        sessionManager1 = new SessionManager(this);
+        appLanguage = sessionManager1.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            super.setLocale(appLanguage);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary_new);
         context = VisitSummaryActivity_New.this;
@@ -404,13 +411,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private void fetchingIntent() {
-        sessionManager = new SessionManager(getApplicationContext());
-        sessionManager1 = new SessionManager(this);
-        appLanguage = sessionManager1.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            super.setLocale(appLanguage);
-        }
-
         // todo: uncomment this block later for testing it is commented.
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -4152,7 +4152,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
             if (!followUp_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", followUp_web));
+                String finalFollowUp = followUp_web;
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    finalFollowUp = finalFollowUp
+                            .replace("Remark:", "Примечания:")
+                            .replace("Time:", "Время:");
+                }
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", finalFollowUp));
             }
 
             htmlDocument = htmlDocument.concat(String.format("<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +

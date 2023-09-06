@@ -1076,7 +1076,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             if (!followUp_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", followUp_web));
+                String finalFollowUp = followUp_web;
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    finalFollowUp = finalFollowUp
+                            .replace("Remark:", "Примечания:")
+                            .replace("Time:", "Время:");
+                }
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", finalFollowUp));
             }
 
             htmlDocument = htmlDocument.concat(String.format(doctorDetailStr, doctor_web));
@@ -2361,7 +2367,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             if (!followUp_web.isEmpty()) {
-                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", followUp_web));
+                String finalFollowUp = followUp_web;
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    finalFollowUp = finalFollowUp
+                            .replace("Remark:", "Примечания:")
+                            .replace("Time:", "Время:");
+                }
+                htmlDocument = htmlDocument.concat(String.format("<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.follow_up) + "</p></b></u>" + "%s<br>", finalFollowUp));
             }
 
             htmlDocument = htmlDocument.concat(String.format("<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
