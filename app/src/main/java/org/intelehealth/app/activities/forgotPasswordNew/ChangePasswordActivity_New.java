@@ -51,6 +51,7 @@ import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
+import java.security.SecureRandom;
 import java.util.Locale;
 
 import io.reactivex.Observable;
@@ -69,7 +70,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     UrlModifiers urlModifiers = new UrlModifiers();
     Base64Utils base64Utils = new Base64Utils();
     SessionManager sessionManager = null;
-    TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword;
+    TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword,tvGeneratePassword;
     RelativeLayout layoutParent;
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
@@ -113,6 +114,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         tvErrorCurrentPassword = findViewById(R.id.tv_error_current_password);
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
         tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
+        tvGeneratePassword = findViewById(R.id.textview_mobile_no_note);
+        tvGeneratePassword.setOnClickListener(v -> {
+            randomString(8);
+        });
 
         btnSave = findViewById(R.id.btn_save_change);
 
@@ -416,4 +421,18 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             btnSave.setVisibility(View.VISIBLE);
         }, 4000);
     }
+
+    void randomString(int len) {
+        String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+
+        etNewPassword.setText(sb.toString());
+        etNewPasswordConfirm.setText(sb.toString());
+
+    }
+
 }
