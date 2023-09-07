@@ -130,7 +130,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         sessionManager = new SessionManager(this);
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);

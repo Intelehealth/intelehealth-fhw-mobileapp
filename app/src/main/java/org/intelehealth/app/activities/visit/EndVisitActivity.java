@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -64,7 +65,7 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         networkUtils = new NetworkUtils(this, this);
         initViews();
         endVisits_data();

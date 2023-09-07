@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
@@ -83,7 +84,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_survey);
         setTitle(R.string.title_activity_login);
         sessionManager = new SessionManager(this);
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         context = getApplicationContext();
 
         mScaleButton1 = findViewById(R.id.button_scale_1);

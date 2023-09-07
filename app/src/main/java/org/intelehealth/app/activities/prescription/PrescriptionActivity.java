@@ -166,7 +166,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         setTitle(R.string.prescription);
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription);
         Toolbar toolbar = findViewById(R.id.toolbar);

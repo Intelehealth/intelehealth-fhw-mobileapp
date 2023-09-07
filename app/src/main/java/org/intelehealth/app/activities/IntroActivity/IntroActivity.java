@@ -38,6 +38,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.Location;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.loginModel.LoginModel;
@@ -396,8 +397,8 @@ public class IntroActivity extends AppCompatActivity {
                                                     .build()
                                             );
 
-                                            SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-                                            //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+                                            SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+                                            //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
                                             sqLiteDatabase.beginTransaction();
                                             //read_db.beginTransaction();

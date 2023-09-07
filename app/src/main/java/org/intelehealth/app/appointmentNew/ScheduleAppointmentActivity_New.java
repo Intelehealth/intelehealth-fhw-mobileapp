@@ -211,7 +211,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     }
 
 //    private void fetchDataFromDB() {
-//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 //
 //        String patientSelection = "uuid = ?";
 //        String[] patientArgs = {patientUuid};

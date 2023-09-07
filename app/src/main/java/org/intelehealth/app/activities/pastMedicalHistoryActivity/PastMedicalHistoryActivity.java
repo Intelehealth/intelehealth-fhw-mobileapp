@@ -128,7 +128,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         filePath = new File(AppConstants.IMAGE_PATH);
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        e = sharedPreferences.edit();
@@ -570,7 +570,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String result = "";    db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {

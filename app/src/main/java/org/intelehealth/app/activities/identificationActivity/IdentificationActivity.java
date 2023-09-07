@@ -1370,7 +1370,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     // This method is for setting the screen with existing values in database whenn user clicks edit details
     private void setscreen(String str) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         String patientSelection = "uuid=?";
         String[] patientArgs = {str};

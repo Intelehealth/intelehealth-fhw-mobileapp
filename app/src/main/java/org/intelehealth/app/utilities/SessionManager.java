@@ -516,4 +516,9 @@ public class SessionManager {
     public String getVisitEditCache(String key) {
         return pref.getString(key, "");
     }
+
+    public void removeVisitEditCache(String key) {
+        editor.remove(key);
+        editor.commit();
+    }
 }

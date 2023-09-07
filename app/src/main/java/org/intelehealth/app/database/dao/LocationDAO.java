@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.List;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.LocationDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -18,7 +19,7 @@ public class LocationDAO {
     public boolean insertLocations(List<LocationDTO> locationDTOS) throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             for (LocationDTO location : locationDTOS) {

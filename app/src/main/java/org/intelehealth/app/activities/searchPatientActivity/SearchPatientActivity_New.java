@@ -45,6 +45,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -361,7 +362,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private List<PatientDTO> fetchDataforTags(List<PatientDTO> patientDTOList) {
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         /**
          * 1. Check first if visit is present for this patient or not if yes than do other code logic.

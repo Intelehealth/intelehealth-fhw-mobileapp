@@ -54,6 +54,7 @@ import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -514,7 +515,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
     private void initForPastVisit() {
         mPastVisitDataList.clear();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "uuid != ? and patientuuid = ? and enddate IS NOT NULL and enddate != ''";
         String[] visitArgs = {visitID, patientUuid};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
@@ -828,7 +829,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
-        SQLiteDatabase db = db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {

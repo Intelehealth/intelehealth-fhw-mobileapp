@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Base64Utils;
@@ -133,7 +134,7 @@ public class DiagnosisPrescAdapter extends RecyclerView.Adapter<DiagnosisPrescAd
         }
 
         private void deleteObsDBItem(String obsuuid, String encounterVisitNoteUuid, String conceptUuid) {
-            SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
             db.beginTransaction();
 
             String tablename = "tbl_obs";

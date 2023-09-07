@@ -97,6 +97,7 @@ import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
@@ -150,7 +151,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
     private boolean hasLicense = false;
-    SQLiteDatabase db = null;
+    //SQLiteDatabase db = null;
     private PatientDTO patientDTO;
     String profileImage = "";
     String profileImage1 = "";
@@ -205,7 +206,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         filter = new IntentFilter("OpenmrsID");
         reMyreceive = new Myreceiver();
 
@@ -546,11 +547,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private List<PastVisitData> mCurrentVisitDataList = new ArrayList<PastVisitData>();
 
     private void initForOpenVisit() {
-        if(patientDTO==null || patientDTO.getUuid()==null){
+        if (patientDTO == null || patientDTO.getUuid() == null) {
             return;
         }
         mCurrentVisitDataList.clear();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientDTO.getUuid()};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
@@ -670,7 +671,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
                                 }
                                 StringBuilder stringBuilder = new StringBuilder();
-                                int size = list.size()==1 ? list.size() : list.size()-1;
+                                int size = list.size() == 1 ? list.size() : list.size() - 1;
                                 for (int i = 0; i < size; i++) {
                                     String complainName = "";
                                     List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
@@ -750,7 +751,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     }
 
     public void setDisplay(String dataString) {
-
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
@@ -1702,7 +1703,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
     private void initForPastVisit() {
         mPastVisitDataList.clear();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
         String[] visitArgs = {patientDTO.getUuid()};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
@@ -1818,7 +1819,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
                                     }
                                     StringBuilder stringBuilder = new StringBuilder();
-                                    int size = list.size()==1 ? list.size() : list.size()-1;
+                                    int size = list.size() == 1 ? list.size() : list.size() - 1;
                                     for (int i = 0; i < size; i++) {
                                         String complainName = "";
                                         List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();

@@ -180,7 +180,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
         reLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -522,7 +522,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         String search = query.trim().replaceAll("\\s", "");
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String table = "tbl_patient";
         List<String> patientUUID_List = new ArrayList<>();
 

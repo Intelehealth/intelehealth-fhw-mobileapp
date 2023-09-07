@@ -1281,8 +1281,8 @@ public class SetupActivity extends AppCompatActivity {
 //                                                    .build()
 //                                            );
 //
-//                                            SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-//                                            //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+//                                            SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//                                            //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 //
 //                                            sqLiteDatabase.beginTransaction();
 //                                            //read_db.beginTransaction();
@@ -1443,8 +1443,8 @@ public class SetupActivity extends AppCompatActivity {
                                                     .build()
                                             );
 
-                                            SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-                                            //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+                                            SQLiteDatabase sqLiteDatabase = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+                                            //SQLiteDatabase read_db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
                                             sqLiteDatabase.beginTransaction();
                                             //read_db.beginTransaction();

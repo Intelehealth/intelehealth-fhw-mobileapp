@@ -178,7 +178,7 @@ import okhttp3.ResponseBody;
 public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
-    SQLiteDatabase db;
+    //SQLiteDatabase db;
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
@@ -416,7 +416,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -533,6 +533,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 String visitIDorderBy = "startdate";
                 String visitIDSelection = "uuid = ?";
                 String[] visitIDArgs = {visitUuid};
+                SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
                 final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
                 if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
                     visitIDCursor.moveToFirst();
@@ -2538,6 +2539,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     }
 
     private void visitUploadBlock() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
@@ -2633,6 +2635,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         SyncUtils syncUtils = new SyncUtils();
                         boolean isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
+                            // remove the local cache
+                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
                             visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
                                     getResources().getString(R.string.visit_successfully_sent),
@@ -2802,6 +2810,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // download presc default
     public void downloadPrescriptionDefault() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? AND voided = ?";
@@ -2839,6 +2848,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // downlaod doctor details
     private void downloadDoctorDetails() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? ";
@@ -3089,6 +3099,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
      * @return void
      */
     public void queryData(String dataString) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
 
@@ -3425,6 +3436,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // handle message
     private void handleMessage(Intent msg) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Log.i(TAG, "handleMessage: Entered");
         Bundle data = msg.getExtras();
         int check = 0;
@@ -3514,7 +3526,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         boolean isExists = false;
 
         if (uuid != null) {
-            SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
             Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
                     new String[]{uuid});
@@ -3759,7 +3771,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -4250,7 +4262,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -4863,7 +4875,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
-        SQLiteDatabase db = db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {

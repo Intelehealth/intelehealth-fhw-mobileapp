@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -17,7 +18,7 @@ public class RTCConnectionDAO {
     public boolean insert(RTCConnectionDTO connectionDTO) throws DAOException {
         if (getByVisitUUID(connectionDTO.getVisitUUID()) != null) return false;
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -41,8 +42,8 @@ public class RTCConnectionDAO {
 
     public RTCConnectionDTO getByVisitUUID(String visitUUID) {
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_rtc_connection_log where visit_uuid = ?", new String[]{visitUUID});
         RTCConnectionDTO connectionDTO = null;
         if (idCursor.getCount() != 0) {
@@ -54,8 +55,8 @@ public class RTCConnectionDAO {
             }
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
         db.close();
 
         return connectionDTO;

@@ -26,6 +26,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.TodayPatientModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -108,7 +109,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 String[] patientArgs = {patientUuid};
                 String[] patientColumns = {"first_name", "middle_name", "last_name", "gender",
                         "date_of_birth",};
-                SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
 

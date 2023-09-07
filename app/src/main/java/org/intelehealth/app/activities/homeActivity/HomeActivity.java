@@ -911,8 +911,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showBadge() {
-        long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
-        long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long activePatientCount = ActivePatientActivity.getActiveVisitsCount(IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase());
+        long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase());
 
         tvTodayVisitsBadge.setVisibility(View.VISIBLE);
         if (todayPatientCount > 0) {

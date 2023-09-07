@@ -21,6 +21,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.utilities.Logger;
@@ -73,7 +74,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         }
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());

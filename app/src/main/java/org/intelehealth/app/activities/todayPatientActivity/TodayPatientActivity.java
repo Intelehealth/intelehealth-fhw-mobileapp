@@ -142,7 +142,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             }
         });
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         if (sessionManager.isPullSyncFinished()) {
             List<TodayPatientModel> todayPatientModels = doQuery(offset);
             todayPatientAdapter = new TodayPatientAdapter(todayPatientModels, this, listPatientUUID);

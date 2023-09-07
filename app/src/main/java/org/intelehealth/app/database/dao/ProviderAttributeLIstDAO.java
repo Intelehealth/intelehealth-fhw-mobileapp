@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.Uuid_Value;
 import org.intelehealth.app.models.dto.ProviderAttributeListDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -29,7 +30,7 @@ public class ProviderAttributeLIstDAO {
             throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             for (ProviderAttributeListDTO providerAttributeListDTO : providerAttributeListDTOS) {
@@ -83,8 +84,8 @@ public class ProviderAttributeLIstDAO {
 
     public List<String> getAllValues() {
         List<String> listDTOArrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
                 "attributetypeuuid = ? AND voided = ?", selectionArgs); //checking....
@@ -100,8 +101,8 @@ public class ProviderAttributeLIstDAO {
 
         sortSpecialties(listDTOArrayList);
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+       // db.setTransactionSuccessful();
+        //db.endTransaction();
         db.close();
         return listDTOArrayList;
     }
@@ -109,7 +110,7 @@ public class ProviderAttributeLIstDAO {
 
     public List<Uuid_Value> getSpeciality_Uuid_Value() {
         List<Uuid_Value> listDTOArrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +

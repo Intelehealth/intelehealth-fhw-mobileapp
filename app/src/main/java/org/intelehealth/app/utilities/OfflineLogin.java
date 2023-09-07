@@ -166,7 +166,7 @@ public class OfflineLogin {
 
     public void offline_login(String username, String password)
     {
-        SQLiteDatabase db_1 = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db_1 = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor c = db_1.rawQuery("SELECT * FROM tbl_user_credentials",null);
 
         String hash_de_password = null;
@@ -197,7 +197,7 @@ public class OfflineLogin {
         String[] cols = {username,hash_de_password};
         Log.d("Column","Column: "+username+" "+hash_de_password);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 "tbl_user_credentials",
                 null,

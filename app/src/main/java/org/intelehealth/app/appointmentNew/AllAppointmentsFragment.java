@@ -40,6 +40,7 @@ import com.google.android.material.chip.ChipGroup;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -214,7 +215,7 @@ public class AllAppointmentsFragment extends Fragment {
 
     private void initUI() {
 
-        //db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         rvUpcomingApp = parentView.findViewById(R.id.rv_all_upcoming_appointments);
         rvCancelledApp = parentView.findViewById(R.id.rv_all_cancelled_appointments);
@@ -722,7 +723,7 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
-        //db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         //check if visit is present or not
 
@@ -767,7 +768,7 @@ public class AllAppointmentsFragment extends Fragment {
 
     private String getPatientProfile(String patientUuid) {
         Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         String imagePath = "";
 

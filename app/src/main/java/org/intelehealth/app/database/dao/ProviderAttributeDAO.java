@@ -5,13 +5,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class ProviderAttributeDAO {
 
     public boolean createProviderAttribute(ProviderAttributeDTO providerAttributeDTO) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         boolean isInserted = true;
 

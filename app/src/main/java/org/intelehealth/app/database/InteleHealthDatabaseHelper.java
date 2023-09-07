@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.utilities.SessionManager;
 
 public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
@@ -332,5 +332,16 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             return database;
         else
             return getWritableDatabase();
+    }
+
+    private static InteleHealthDatabaseHelper sInstance;
+
+    public static synchronized InteleHealthDatabaseHelper getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        if (sInstance == null) {
+            sInstance = new InteleHealthDatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 }
