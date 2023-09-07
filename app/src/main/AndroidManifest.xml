@@ -261,16 +261,6 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".appointment.AppointmentListingActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|adjustPan" />
-        <activity
-            android:name=".appointment.ScheduleListingActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|adjustPan" />
 
         <receiver
             android:name=".services.firebase_services.RTCMessageReceiver"
