@@ -190,7 +190,13 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
                 } else {
                     Log.v(TAG, "Sync Done!");
-                    recreate();
+//                    recreate();
+                    Intent newIntent = getIntent();
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(newIntent);
+                    overridePendingTransition(0, 0);
+                    finish();
                 }
 
                 ivIsInternet.clearAnimation();
