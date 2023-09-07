@@ -44,6 +44,7 @@
         <item name="android:background">@color/white</item>
         <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>
+        <item name="colorSurface">#FFFFFF</item>
     </style>
 
     <style name="CameraActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -68,6 +69,19 @@
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/DefaultTextviewStyle</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="buttonStyle">@style/DefaultButtonStyle</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="alertDialogTheme">@style/AlertDialogStyle</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#212121</item>
+        <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
     </style>
 
     <style name="SelectableItemTheme">

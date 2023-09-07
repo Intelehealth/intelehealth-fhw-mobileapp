@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.achievements.fragments;
 
+import static org.intelehealth.unicef.knowledgeEngine.Node.setAlertDialogBackground;
+
 import android.animation.ObjectAnimator;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStatsManager;
@@ -31,6 +33,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.achievements.adapters.MyAchievementsPagerAdapter;
 import org.intelehealth.unicef.syncModule.SyncUtils;
+import org.intelehealth.unicef.utilities.DialogUtils;
 import org.intelehealth.unicef.utilities.NetworkUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
 
@@ -153,7 +156,12 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
 
             if (mode != AppOpsManager.MODE_ALLOWED) {
                 CustomDialog customDialog = new CustomDialog(requireActivity());
-                customDialog.showDialog1();
+                customDialog.showDialog1(getString(R.string.permissions_required), getString(R.string.enable_permission_for_time_tracking), action -> {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
             }
         } catch (PackageManager.NameNotFoundException ignored) {
             // Control shouldn't reach at this point of the code
@@ -161,22 +169,28 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
         }
     }
 
-    static class CustomDialog extends DialogFragment {
+    public static class CustomDialog extends DialogFragment {
         Context context;
 
         public CustomDialog(Context context) {
             this.context = context;
         }
 
-        public void showDialog1() {
-            AlertDialog.Builder builder
-                    = new AlertDialog.Builder(context);
+        public void showDialog1(String title, String message, DialogUtils.CustomDialogListener customDialogListener) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setCancelable(false);
             LayoutInflater inflater = LayoutInflater.from(context);
             View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_enable_permissions, null);
             builder.setView(customLayout);
 
+            TextView tvTitle = customLayout.findViewById(R.id.tvTitle);
+            tvTitle.setText(title);
+
+            TextView tvMessage = customLayout.findViewById(R.id.tvMessage);
+            tvMessage.setText(message);
+
             AlertDialog dialog = builder.create();
+            setAlertDialogBackground(context, dialog);
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
             dialog.show();
             int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
@@ -186,8 +200,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
             Button btnOkay = customLayout.findViewById(R.id.btn_okay);
             btnOkay.setOnClickListener(v -> {
                 dialog.dismiss();
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                context.startActivity(intent);
+                customDialogListener.onDialogActionDone(DialogUtils.CustomDialogListener.POSITIVE_CLICK);
             });
         }
     }

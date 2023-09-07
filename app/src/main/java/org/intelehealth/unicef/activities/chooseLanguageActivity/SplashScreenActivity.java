@@ -44,6 +44,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import org.intelehealth.unicef.BuildConfig;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.IntroActivity.IntroScreensActivity_New;
+import org.intelehealth.unicef.activities.achievements.fragments.MyAchievementsFragment;
 import org.intelehealth.unicef.activities.base.BaseActivity;
 import org.intelehealth.unicef.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivityNew;
@@ -51,6 +52,7 @@ import org.intelehealth.unicef.activities.onboarding.SetupPrivacyNoteActivity_Ne
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.dataMigration.SmoothUpgrade;
 import org.intelehealth.unicef.services.firebase_services.TokenRefreshUtils;
+import org.intelehealth.unicef.utilities.DialogUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.json.JSONException;
@@ -76,13 +78,21 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
 
     private TextView tvSelectLanguage;
     private Button btnNextToIntro;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screenactivity_ui2);
+        //        Getting App language through the session manager
+        sessionManager = new SessionManager(this);
+        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        String appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            super.setLocale(appLanguage);
+        }
 
-        sessionManager = new SessionManager(SplashScreenActivity.this);
+        setContentView(R.layout.activity_splash_screenactivity_ui2);
+        context = SplashScreenActivity.this;
 
         rvSelectLanguage = findViewById(R.id.rv_select_language);
         layoutLanguage = findViewById(R.id.layout_panel);
@@ -90,17 +100,6 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
         layoutHeader = findViewById(R.id.layout_child1);
         tvSelectLanguage = findViewById(R.id.textView8);
 
-        //        Getting App language through the session manager
-        sessionManager = new SessionManager(this);
-        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
-        String appLanguage = sessionManager.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            Locale locale = new Locale(appLanguage);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
         initFirebaseRemoteConfig();
@@ -162,22 +161,17 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
                 if (task.isSuccessful() && !isFinishing()) {
                     long force_update_version_code = instance.getLong("force_update_version_code");
                     if (force_update_version_code > BuildConfig.VERSION_CODE) {
-                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashScreenActivity.this);
-                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
-                        alertDialogBuilder.setCancelable(false);
-                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        MyAchievementsFragment.CustomDialog customDialog = new MyAchievementsFragment.CustomDialog(context);
+                        customDialog.showDialog1(getResources().getString(R.string.app_update_available), getResources().getString(R.string.warning_app_update), action -> {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                                 try {
                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
                                 } catch (android.content.ActivityNotFoundException anfe) {
                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                                 }
-                                dialog.dismiss();
                                 finish();
                             }
                         });
-                        alertDialogBuilder.show();
                     } else {
                         checkPerm();
                     }

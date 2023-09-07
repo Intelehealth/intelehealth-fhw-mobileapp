@@ -191,7 +191,7 @@
         <activity
             android:name="org.intelehealth.unicef.activities.chooseLanguageActivity.SplashScreenActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme"
+            android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

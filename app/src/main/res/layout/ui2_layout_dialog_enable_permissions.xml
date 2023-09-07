@@ -17,22 +17,24 @@
             android:src="@drawable/ui2_ic_warning_internet" />
 
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_title_margin_top"
             android:gravity="center"
-            android:text="@string/permissions_required"
+            android:padding="@dimen/padding_10"
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/internet_warning_title" />
 
         <TextView
+            android:id="@+id/tvMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tv_internet_desc_margin_top"
             android:gravity="center"
             android:lineHeight="@dimen/tv_internet_desc_line_height"
             android:lineSpacingExtra="@dimen/tv_internet_desc_line_spacing"
-            android:text="@string/enable_permission_for_time_tracking"
+            android:padding="@dimen/padding_10"
             android:textColor="@color/textColorGray"
             android:textSize="@dimen/internet_warning_note" />
 
@@ -49,7 +51,7 @@
             android:paddingStart="@dimen/btn_okay_internet_padding_start"
             android:paddingEnd="@dimen/btn_okay_internet_padding_end"
             android:paddingBottom="@dimen/btn_okay_internet_padding_bottom"
-            android:text="@string/okay"
+            android:text="@string/generic_ok"
             android:textAlignment="center"
             android:textSize="@dimen/btn_okay_text_size" />
 

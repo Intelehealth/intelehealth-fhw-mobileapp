@@ -53,6 +53,26 @@ public class DialogUtils {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
+    public void showOkDialogWithListener(Context context, String title, String message, String ok, CustomDialogListener customDialogListener) {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context, R.style.AlertDialogStyle);
+
+        //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton(ok,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+                    }
+                });
+        AlertDialog dialog = alertDialog.show();
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
     public void showerrorDialog(Context context, String title, String message, String ok) {
         //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);

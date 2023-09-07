@@ -686,6 +686,7 @@
     <string name="str_check_UnitedStates">United States</string>
     <string name="str_check_Philippines">Philippines</string>
     <string name="loading_more">Loading more...</string>
+    <string name="app_update_available">App Update Available</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
     <string name="location">Location</string>
 
