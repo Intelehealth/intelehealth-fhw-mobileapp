@@ -1,10 +1,15 @@
 package org.intelehealth.app.activities.setupActivity;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -14,8 +19,8 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
 
     public LocationArrayAdapter(Context context, List<String> objects) {
         super(context, R.layout.spinner_textview, R.id.text1, objects);
-        setDropDownViewResource(R.layout.spinner_checked_textview);
     }
+
 
     @Override
     public int getCount() {
@@ -42,6 +47,22 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View view = super.getView(position, convertView, parent);
+        if (view != null) {
+//            if(getItem(position).equalsIgnoreCase("Telemedicine Clinic 1") /*|| getItem(position).equalsIgnoreCase("Telemedicine Clinic 2")*/)
+            if(position==0)
+            {
+                View divider = view.findViewById(R.id.spinner_divider);
+                divider.setVisibility(View.GONE);
+            }
+        }
+        assert view != null;
+        return view;
     }
 }
 

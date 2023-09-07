@@ -219,7 +219,6 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         Intent intent = getIntent();
         if (intent != null) {
             tag = intent.getStringExtra("tag");
-
             if (intent.hasExtra("BUNDLE")) {
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
@@ -238,11 +237,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             intent2.putExtra("patientUuid", patientDTO.getUuid());
             intent2.putExtra("ScreenEdit", "personal_edit");
             intent2.putExtra("patient_detail", true);
-
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
+            finish();
         });
 
         address_edit.setOnClickListener(v -> {
@@ -250,11 +249,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             intent2.putExtra("patientUuid", patientDTO.getUuid());
             intent2.putExtra("ScreenEdit", "address_edit");
             intent2.putExtra("patient_detail", true);
-
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
+            finish();
         });
 
         others_edit.setOnClickListener(v -> {
@@ -262,16 +261,17 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             intent2.putExtra("patientUuid", patientDTO.getUuid());
             intent2.putExtra("ScreenEdit", "others_edit");
             intent2.putExtra("patient_detail", true);
-
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
+            finish();
         });
 
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
             startActivity(i);
+            finish();
         });
 
         startVisitBtn.setOnClickListener(v -> {
@@ -460,9 +460,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
         String patientUuid = patientDTO.getUuid();
         intent2.putExtra("patientUuid", patientUuid);
-
         VisitDTO visitDTO = new VisitDTO();
-
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patientDTO.getUuid());
         visitDTO.setStartdate(thisDate);
@@ -490,6 +488,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         intent2.putExtra("tag", "new");
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         startActivity(intent2);
+        finish();
     }
 
 
@@ -1661,9 +1660,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         Intent intent2 = new Intent(PatientDetailActivity2.this, VitalsActivity.class);
         String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
         intent2.putExtra("patientUuid", patientDTO.getUuid());
-
         VisitDTO visitDTO = new VisitDTO();
-
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patientDTO.getUuid());
         visitDTO.setStartdate(thisDate);

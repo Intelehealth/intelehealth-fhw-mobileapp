@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -70,7 +71,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
     private Fragment_ThirdScreen thirdScreen;
     private ImageButton refresh;
     private NetworkUtils networkUtils;
-
+    Intent intentRx;
     private ObjectAnimator syncAnimator;
     private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -114,17 +115,15 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         initUI();
         networkUtils = new NetworkUtils(this, this);
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            if (intent.hasExtra("patientUuid")) {
+        intentRx = this.getIntent(); // The intent was passed to the activity
+        if (intentRx != null) {
+            if (intentRx.hasExtra("patientUuid")) {
                 label.setText(R.string.update_patient_identification);
-                patientID_edit = intent.getStringExtra("patientUuid");
-                screenName = intent.getStringExtra("ScreenEdit");
+                patientID_edit = intentRx.getStringExtra("patientUuid");
+                screenName = intentRx.getStringExtra("ScreenEdit");
                 patient1.setUuid(patientID_edit);
-
-                Bundle args = intent.getBundleExtra("BUNDLE");
+                Bundle args = intentRx.getBundleExtra("BUNDLE");
                 patientdto = (PatientDTO) args.getSerializable("patientDTO");
-
                 if (screenName.equalsIgnoreCase("personal_edit")) {
                     setscreen(firstScreen);
                 } else if (screenName.equalsIgnoreCase("address_edit")) {
@@ -203,12 +202,24 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
 
 
     public void cancelRegistration(View view) {
-        patientRegistrationDialog(context, getResources().getDrawable(R.drawable.close_patient_svg), getResources().getString(R.string.close_patient_registration), getResources().getString(R.string.sure_you_want_close_registration), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
-            @Override
-            public void onDialogActionDone(int action) {
-                if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) finish();
-            }
-        });
+        if(!intentRx.hasExtra("patientUuid")) {
+            patientRegistrationDialog(context, getResources().getDrawable(R.drawable.close_patient_svg), getResources().getString(R.string.close_patient_registration), getResources().getString(R.string.sure_you_want_close_registration), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+                @Override
+                public void onDialogActionDone(int action) {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) finish();
+                }
+            });
+        }
+        else
+        {
+            Intent intent = new Intent(this, PatientDetailActivity2.class);
+            intent.putExtra("patientUuid", patientID_edit);
+            intent.putExtra("tag", "searchPatient");
+            intent.putExtra("privacy", "false");
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     public void syncNow(View view) {

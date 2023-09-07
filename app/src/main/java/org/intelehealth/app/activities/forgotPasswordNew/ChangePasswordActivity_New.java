@@ -51,6 +51,7 @@ import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
+import java.security.SecureRandom;
 import java.util.Locale;
 
 import io.reactivex.Observable;
@@ -69,7 +70,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     UrlModifiers urlModifiers = new UrlModifiers();
     Base64Utils base64Utils = new Base64Utils();
     SessionManager sessionManager = null;
-    TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword;
+    TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword,tvGeneratePassword;
     RelativeLayout layoutParent;
     NetworkUtils networkUtils;
     ImageView ivIsInternet;
@@ -113,6 +114,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         tvErrorCurrentPassword = findViewById(R.id.tv_error_current_password);
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
         tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
+        tvGeneratePassword = findViewById(R.id.textview_mobile_no_note);
+        tvGeneratePassword.setOnClickListener(v -> {
+            randomString(8);
+        });
 
         btnSave = findViewById(R.id.btn_save_change);
 
@@ -166,13 +171,12 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        String encoded = "Bearer " + sessionManager.getEncoded(); //Bearer bnVyc2UyMzpEYW5pZWxDcmFpZzE=
         ChangePasswordModel_New inputModel = new ChangePasswordModel_New(currentPassword, newPassword);
 
         ApiClient.changeApiBaseUrl(serverUrl);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<ResponseBody> loginModelObservable = apiService.CHANGE_PASSWORD_OBSERVABLE(inputModel,
-                "Basic " + sessionManager.getEncoded());
+        Observable<ResponseBody> loginModelObservable = apiService.CHANGE_PASSWORD_OBSERVABLE(inputModel, encoded);
         loginModelObservable.subscribe(new Observer<ResponseBody>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -192,12 +196,6 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
-
-                // snackbarUtils.showSnackCoordinatorLayoutParentSuccess(LoginActivityNew.this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
-
-//                Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                // mEmailSignInButton.setText(getString(R.string.action_sign_in));
-                //mEmailSignInButton.setEnabled(true);
             }
 
             @Override
@@ -236,6 +234,11 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
                 tvErrorNewPassword.setVisibility(View.VISIBLE);
                 etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
             }
+        } else if (newPassword.length() >= 8 && !isValid(etNewPassword.getText().toString())) {
+            result = false;
+            tvErrorNewPassword.setText(getString(R.string.password_validation));
+            tvErrorNewPassword.setVisibility(View.VISIBLE);
+            etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
         } else if (!newPassword.equals(confirmPassword)) {
             result = false;
             etNewPasswordConfirm.setText("");
@@ -338,24 +341,32 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     }
 
     public static boolean isValid(String passwordhere) {
-
+        boolean hasUppercase = false;
+        boolean hasLowercase = false;
+        boolean hasDigit = false;
         if (passwordhere.length() < 8) {
             return false;
         } else {
-
             for (int p = 0; p < passwordhere.length(); p++) {
                 if (Character.isUpperCase(passwordhere.charAt(p))) {
+                    hasUppercase = true;
                 }
             }
             for (int q = 0; q < passwordhere.length(); q++) {
                 if (Character.isLowerCase(passwordhere.charAt(q))) {
+                    hasLowercase = true;
                 }
             }
             for (int r = 0; r < passwordhere.length(); r++) {
                 if (Character.isDigit(passwordhere.charAt(r))) {
+                    hasDigit = true;
                 }
             }
-            return true;
+
+            if(hasUppercase && hasLowercase && hasDigit)
+                return true;
+            else
+                return false;
         }
     }
 
@@ -391,10 +402,10 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
     private void performLogout() {
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
-            Intent intent = new Intent(ChangePasswordActivity_New.this, LoginActivityNew.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
+        Intent intent = new Intent(ChangePasswordActivity_New.this, LoginActivityNew.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
@@ -410,4 +421,18 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             btnSave.setVisibility(View.VISIBLE);
         }, 4000);
     }
+
+    void randomString(int len) {
+        String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+
+        etNewPassword.setText(sb.toString());
+        etNewPasswordConfirm.setText(sb.toString());
+
+    }
+
 }

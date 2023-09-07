@@ -431,15 +431,11 @@ public class LoginActivityNew extends AppCompatActivity {
                                         sqLiteDatabase.endTransaction();
                                     }
 
-
-                                    // offlineLogin.setUpOfflineLogin(mEmail, mPassword);
                                     cpd.dismiss();
                                     Intent intent = new Intent(LoginActivityNew.this, HomeScreenActivity_New.class);
                                     intent.putExtra("login", true);
-//                startJobDispatcherService(LoginActivity.this);
                                     startActivity(intent);
                                     finish();
-                                    //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
                                     sessionManager.setLogout(false);
@@ -471,9 +467,6 @@ public class LoginActivityNew extends AppCompatActivity {
 
                     }
                 });
-
-                // mEmailSignInButton.setText(getString(R.string.action_sign_in));
-                //mEmailSignInButton.setEnabled(true);
             }
 
             @Override
@@ -482,6 +475,12 @@ public class LoginActivityNew extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
     }
 
     public String getSalt_DATA() {
