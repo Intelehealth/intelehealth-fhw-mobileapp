@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="medDetails"
+            type="org.intelehealth.ezazi.partogram.model.Medicine" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/input_stroke_size"
+            android:background="@color/colorInputBgBorder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailStrength"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@string/strength"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailStrengthValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@{medDetails.strength}"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Value" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@string/lbl_type"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailStrength"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailTypeValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@{medDetails.type}"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailStrengthValue"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Value" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailDose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@string/lbl_dosage"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailType"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailDoseValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@{medDetails.dosage +` `+ medDetails.dosageUnit}"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailTypeValue"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Value" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailRoute"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@string/lbl_route"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailDose"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailRouteValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@{medDetails.route}"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailDoseValue"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Value" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailFrequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@string/frequency"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailRoute"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMedDetailFrequencyValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@{medDetails.frequency}"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMedDetailRouteValue"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="Value" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

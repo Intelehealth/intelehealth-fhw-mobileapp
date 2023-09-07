@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.partogram.viewholder;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 import org.intelehealth.ezazi.databinding.RowItemMedicineBinding;
@@ -24,5 +26,10 @@ public class MedicineViewHolder extends BaseViewHolder {
         binding.btnEditMedicine.setOnClickListener(this);
         binding.btnMedicineDelete.setOnClickListener(this);
         binding.clMedicineRowItemRoot.setOnClickListener(this);
+    }
+
+    public void expandDetails(boolean isExpanded) {
+        binding.includeMedicineDetails.getRoot().setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        binding.btnExpandCollapseIndicator.setRotation(isExpanded ? 0 : 270);
     }
 }

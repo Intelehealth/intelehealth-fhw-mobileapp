@@ -21,9 +21,22 @@ import java.util.List;
  **/
 public class MedicineAdapter extends BaseRecyclerViewAdapter<Medicine> {
     private BaseViewHolder.ViewHolderClickListener clickListener;
+    private int expandedItemPosition = -1;
 
     public void setClickListener(BaseViewHolder.ViewHolderClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    public void setExpandedItemPosition(int expandedItemPosition) {
+        if (expandedItemPosition == this.expandedItemPosition) {
+            this.expandedItemPosition = -1;
+            notifyItemChanged(expandedItemPosition);
+        } else {
+            if (expandedItemPosition > -1)
+                notifyItemChanged(this.expandedItemPosition);
+            this.expandedItemPosition = expandedItemPosition;
+            notifyItemChanged(expandedItemPosition);
+        }
     }
 
     public MedicineAdapter(@NonNull Context ctx, @NonNull List<Medicine> lists) {
@@ -43,6 +56,7 @@ public class MedicineAdapter extends BaseRecyclerViewAdapter<Medicine> {
             MedicineViewHolder medicineViewHolder = (MedicineViewHolder) holder;
             medicineViewHolder.setViewClickListener(clickListener);
             medicineViewHolder.bind(getItem(position));
+            medicineViewHolder.expandDetails(expandedItemPosition == position);
         }
     }
 }

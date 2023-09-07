@@ -3,7 +3,10 @@ package org.intelehealth.ezazi.partogram.dialog;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.setupActivity.LocationArrayAdapter;
@@ -20,6 +24,7 @@ import org.intelehealth.ezazi.partogram.adapter.MedicineAdapter;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
+import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
@@ -72,26 +77,33 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) binding.clMedicineDialogRoot.getParent());
         behavior.setPeekHeight(ScreenUtils.getInstance(requireContext()).getHeight());
         setMedicineListView();
-//        behavior.addBottomSheetCallback(callback);
         setButtonClickListener();
         setToolbarNavClick();
         buildAddNewMedicineDialog();
         validateMedicineFormInput();
+        setupInputFilter();
     }
 
-//    private final BottomSheetBehavior.BottomSheetCallback callback = new BottomSheetBehavior.BottomSheetCallback() {
-//        @Override
-//        public void onStateChanged(@NonNull View bottomSheet, int newState) {
-//            adapter.updateItems(medicines);
-//        }
-//
-//        @Override
-//        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-//
-//        }
-//    };
+    private void setupInputFilter() {
+        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineType);
+        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineStrength);
+        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineDosage);
+        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineDosageUnit);
+        setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineFrequency);
+        setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine);
+        setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute);
+    }
+
+    private void setInputFilter(TextInputEditText editText) {
+        editText.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+    }
+
+    private void setInputFilter(AutoCompleteTextView autoCompleteTextView) {
+        autoCompleteTextView.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter()});
+    }
 
     private void setToolbarNavClick() {
+        binding.bottomSheetAppBar.toolbar.setTitle(getString(R.string.lbl_medicines));
         binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> dismiss());
     }
 
@@ -107,6 +119,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
 
     private void setMedicineListView() {
         binding.btnSaveMedicines.setEnabled(medicines.size() > 0);
+        if (medicines.size() == 0) openNewMedicineDialog();
         binding.rvMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new MedicineAdapter(requireContext(), medicines);
         adapter.setClickListener(this);
@@ -124,6 +137,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
             binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setText(getString(R.string.update));
         } else if (view.getId() == R.id.btnMedicineDelete) {
             showConfirmationDialog(position);
+        } else if (view.getId() == R.id.clMedicineRowItemRoot) {
+            adapter.setExpandedItemPosition(position);
         }
     }
 
@@ -153,18 +168,20 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         switch (v.getId()) {
             case R.id.btnAddMoreMedicine:
                 setupMedicines();
-                binding.clAddNewMedicineRoot.setVisibility(View.VISIBLE);
+                openNewMedicineDialog();
                 binding.btnAddMoreMedicine.setVisibility(View.GONE);
                 binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setText(getString(R.string.lbl_add));
                 break;
             case R.id.btnAddMedicineAdd:
                 binding.btnAddMoreMedicine.setVisibility(View.VISIBLE);
-                binding.clAddNewMedicineRoot.setVisibility(View.GONE);
+                closeNewMedicineDialog();
                 Medicine medicine = validateMedicineFormInput();
                 if (medicine.isValidMedicine()) {
                     int updated = -1;
                     if (binding.includeAddNewMedicineDialog.getUpdatePosition() != null) {
                         updated = binding.includeAddNewMedicineDialog.getUpdatePosition();
+                        if (binding.includeAddNewMedicineDialog.getMedicine() != null)
+                            medicine.setObsUuid(binding.includeAddNewMedicineDialog.getMedicine().getObsUuid());
                     }
                     if (updated > -1) adapter.updateItemAt(updated, medicine);
                     else adapter.addItem(medicine);
@@ -174,7 +191,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
                 break;
             case R.id.btnAddMedicineCancel:
                 binding.btnAddMoreMedicine.setVisibility(View.VISIBLE);
-                binding.clAddNewMedicineRoot.setVisibility(View.GONE);
+                closeNewMedicineDialog();
                 break;
             case R.id.btnSaveMedicines:
                 saveAndUpdateFinalListOfMedicines();
@@ -255,14 +272,14 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
 
     private void setupRoutes() {
         String[] routes = requireContext().getResources().getStringArray(R.array.medicine_routes);
-        AutoCompleteTextView medicineDropDown = binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute;
-        setupAutoCompleteAdapter(routes, medicineDropDown);
+        AutoCompleteTextView routeDropDown = binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute;
+        setupAutoCompleteAdapter(routes, routeDropDown);
     }
 
     private void setupFrequency() {
         String[] frequencies = requireContext().getResources().getStringArray(R.array.medicine_frequencies);
-        AutoCompleteTextView medicineDropDown = binding.includeAddNewMedicineDialog.autoCompleteMedicineFrequency;
-        setupAutoCompleteAdapter(frequencies, medicineDropDown);
+        AutoCompleteTextView frequenciesDropDown = binding.includeAddNewMedicineDialog.autoCompleteMedicineFrequency;
+        setupAutoCompleteAdapter(frequencies, frequenciesDropDown);
     }
 
     private void setupAutoCompleteAdapter(String[] items, AutoCompleteTextView autoCompleteTextView) {
@@ -281,5 +298,32 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
+    }
+
+    private void openNewMedicineDialog() {
+        binding.clAddNewMedicineRoot.setVisibility(View.VISIBLE);
+        Animation bottomUp = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_bottom);
+        binding.clAddNewMedicineRoot.startAnimation(bottomUp);
+    }
+
+    private void closeNewMedicineDialog() {
+        Animation bottomDown = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_bottom);
+        bottomDown.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.clAddNewMedicineRoot.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        binding.clAddNewMedicineRoot.startAnimation(bottomDown);
     }
 }

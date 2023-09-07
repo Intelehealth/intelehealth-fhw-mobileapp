@@ -329,7 +329,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
                     if (info.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
                         isValidMedicine = info.isValidMedicine();
-                        if (isValidMedicine) {
+                        if (isValidMedicine && info.getCheckedRadioOption() != ParamInfo.RadioOptions.NO) {
                             obsDTOList.addAll(info.getMedicinesObsList(mEncounterUUID, new SessionManager(this).getCreatorID()));
                         }
                         voidedMedicines = info.getVoidedMedicineUuid();

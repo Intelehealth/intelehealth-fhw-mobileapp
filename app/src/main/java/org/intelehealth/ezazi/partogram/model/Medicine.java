@@ -1,5 +1,9 @@
 package org.intelehealth.ezazi.partogram.model;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 
@@ -126,6 +130,7 @@ public class Medicine implements Serializable {
         obs.setValue(toDBFormat());
         obs.setCreator(creator);
         obs.setEncounteruuid(encounterId);
+        Log.e("Medicine", "toObs: " + new Gson().toJson(obs));
         return obs;
     }
 }

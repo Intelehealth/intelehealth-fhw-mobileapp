@@ -216,6 +216,10 @@ public class ParamInfo implements Serializable {
         this.checkedRadioOption = checkedRadioOption;
     }
 
+    public RadioOptions getCheckedRadioOption() {
+        return checkedRadioOption;
+    }
+
     public void setMedicines(List<Medicine> medicines) {
         this.medicines = medicines;
     }
@@ -238,12 +242,16 @@ public class ParamInfo implements Serializable {
 
     public List<Medicine> getDeletedMedicines() {
         if (deletedMedicines == null) deletedMedicines = new ArrayList<>();
+        if (checkedRadioOption == RadioOptions.NO && getMedicines().size() > 0) {
+            deletedMedicines.addAll(getMedicines());
+        }
         return deletedMedicines;
     }
 
     public List<ObsDTO> getMedicinesObsList(String encounterId, String creator) {
         ArrayList<ObsDTO> obsList = new ArrayList<>();
         for (Medicine medicine : getMedicines()) {
+
             obsList.add(medicine.toObs(encounterId, creator));
         }
         return obsList;

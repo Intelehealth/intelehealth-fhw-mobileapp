@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -27,7 +28,6 @@
             android:text="@{medicine.name}"
             android:textColor="@color/gray_6"
             android:textSize="@dimen/content_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnEditMedicine"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +43,6 @@
             android:paddingEnd="@dimen/list_container_padding"
             android:rotation="270"
             app:icon="@drawable/ic_dropdown_spinner"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,12 +52,10 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:contentDescription="@string/content_expand_collapse_indicator"
-            android:padding="@dimen/list_container_padding"
             android:paddingStart="@dimen/list_container_padding"
             android:paddingEnd="@dimen/list_container_padding"
             app:icon="@drawable/ic_action_delete"
             app:iconTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnExpandCollapseIndicator"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,9 +68,19 @@
             android:paddingStart="@dimen/list_container_padding"
             android:paddingEnd="@dimen/list_container_padding"
             app:icon="@drawable/ic_mode_edit"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnMedicineDelete"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/includeMedicineDetails"
+            layout="@layout/view_medicine_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:paddingTop="@dimen/list_container_padding"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvParamName"
+            bind:medDetails="@{medicine}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
