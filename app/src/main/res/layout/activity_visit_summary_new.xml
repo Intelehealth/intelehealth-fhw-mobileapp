@@ -22,7 +22,6 @@
 
         <!-- Frame 100167 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10016"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_toolbat_txt_height"
             android:layout_alignParentLeft="true"
@@ -36,7 +35,6 @@
 
             <!-- Frame 100116 -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
@@ -182,7 +180,6 @@
                                 android:orientation="vertical">
 
                                 <LinearLayout
-                                    android:id="@+id/frame_10033"
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
@@ -213,7 +210,6 @@
                                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                                     <ImageView
-                                        android:id="@+id/icons8_edit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
@@ -407,7 +403,6 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/addNotes"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/vs_notes_big_edittext_height"
                         android:layout_below="@+id/add_notes_title"
@@ -754,7 +749,6 @@
 
             <!--            Priority Visit-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/priority_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/bottom_btn_relative"
@@ -924,7 +918,6 @@
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -937,7 +930,6 @@
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

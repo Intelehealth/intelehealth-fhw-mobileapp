@@ -23,7 +23,6 @@
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
-            android:id="@+id/tv_title_privacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
@@ -37,7 +36,6 @@
     <!--toolbar end-->
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
@@ -68,7 +66,6 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btn_decline_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_24"

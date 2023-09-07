@@ -12,7 +12,6 @@
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
-        android:id="@+id/frame_10014"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -182,7 +181,6 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/shareicon"
                 android:layout_width="@dimen/btn_prioirty_w_60dp"
                 android:layout_height="@dimen/btn_prioirty_h_20dp"
                 android:src="@drawable/visit_share_presc_icon"

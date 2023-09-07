@@ -69,7 +69,6 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/frame_10033"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -102,7 +101,6 @@
                             android:textSize="@dimen/card_profile_name_text_size" />
 
                         <ImageView
-                            android:id="@+id/icons8_edit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -179,7 +177,6 @@
         app:cardElevation="@dimen/margin_5">
 
         <LinearLayout
-            android:id="@+id/frame_10004"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/cp_card_margin_updown"
@@ -256,7 +253,6 @@
                     android:textSize="@dimen/cp_male_textsize" />
 
                 <LinearLayout
-                    android:id="@+id/ll_11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_appointment_time1"
@@ -445,7 +441,6 @@
                     android:src="@drawable/arrow_right_icon8" />
 
                 <View
-                    android:id="@+id/dividerqq"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/visitDetails_textq"
@@ -745,7 +740,6 @@
                 android:visibility="gone">
 
                 <View
-                    android:id="@+id/divider_end_visit"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/state_prescription_appointment"

@@ -28,7 +28,6 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -45,7 +44,6 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_appointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -62,7 +60,6 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_registration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -79,7 +76,6 @@
             android:textSize="@dimen/btn_okay_text_size" />
 
         <TextView
-            android:id="@+id/btn_checkup_visit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

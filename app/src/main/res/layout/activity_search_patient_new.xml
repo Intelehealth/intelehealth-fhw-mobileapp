@@ -18,7 +18,6 @@
         android:backgroundTint="#2E1E91">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_26086"
             android:layout_width="0dp"
             android:layout_height="@dimen/toolbar_margin_top"
             android:layout_alignParentLeft="true"
@@ -38,7 +37,6 @@
 
             <!-- Frame 100030 -->
             <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10003"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_margin_top"
                 android:layout_marginStart="@dimen/fu_margin_start"

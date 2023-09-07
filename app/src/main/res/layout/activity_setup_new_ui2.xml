@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -112,7 +111,6 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layoutLocation"
                     style="@style/AutocompleteviewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -261,7 +259,6 @@
                     android:textSize="@dimen/common_label_text_size" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"

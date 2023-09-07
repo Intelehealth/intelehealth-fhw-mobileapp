@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:ndroid="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:tag="thirdsc"
@@ -33,7 +32,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/national_ID_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -60,7 +58,6 @@
                 android:paddingBottom="@dimen/margin_10" />
 
             <TextView
-                android:id="@+id/national_ID_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -83,7 +80,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/relation_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -133,7 +129,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/occupation_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -185,7 +180,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/caste_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -237,7 +231,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/education_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -281,7 +274,6 @@
 
         <!--Economic Status-->
         <LinearLayout
-            android:id="@+id/linear_economicstatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_education"
@@ -289,7 +281,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/economicstatus_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
@@ -343,7 +334,6 @@
         android:layout_marginBottom="@dimen/margin_24">
 
         <LinearLayout
-            android:id="@+id/linear_secondscreen_nxt_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

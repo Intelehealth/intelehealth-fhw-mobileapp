@@ -24,7 +24,6 @@
 
         <!-- Frame 100116 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10011"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
@@ -168,7 +167,6 @@
                                 android:orientation="vertical">
 
                                 <LinearLayout
-                                    android:id="@+id/frame_10033"
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
@@ -199,7 +197,6 @@
                                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                                     <ImageView
-                                        android:id="@+id/icons8_edit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
@@ -414,7 +411,6 @@
                             android:layout_marginEnd="@dimen/fu_margin_start">
 
                             <TextView
-                                android:id="@+id/details_personal_txtview"
                                 style="@style/vs_title_head_14sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -754,7 +750,6 @@
                             android:layout_marginTop="@dimen/margin_16dp">
 
                             <TextView
-                                android:id="@+id/tv_drug_name_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -763,7 +758,6 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_dosage_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -772,7 +766,6 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_days_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -781,7 +774,6 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_remarks_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -862,7 +854,6 @@
                             android:text="@string/advice" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_advice_header"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -1081,7 +1072,6 @@
 
             <!--Follow up - start -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/followupCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/specialityCard"

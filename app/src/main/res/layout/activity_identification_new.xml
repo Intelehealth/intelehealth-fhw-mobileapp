@@ -21,7 +21,6 @@
 
         <!-- Frame 100116 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10011"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
@@ -161,7 +160,6 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/personal_txtview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/image_intelehealth_margin_bottom"
@@ -176,7 +174,6 @@
             android:translationY="-1.19sp" />
 
         <TextView
-            android:id="@+id/address_icon_txtview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -191,7 +188,6 @@
             android:translationY="-1.19sp" />
 
         <TextView
-            android:id="@+id/other_icon_txtview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
