@@ -160,7 +160,7 @@ public class PatientsDAO {
             values.put("dead", false);
             values.put("sync", false);
 
-            insertPatientAttributes(patientAttributesDTOS, db);
+            insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
             db.setTransactionSuccessful();
