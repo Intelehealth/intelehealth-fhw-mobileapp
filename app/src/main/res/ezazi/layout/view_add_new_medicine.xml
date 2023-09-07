@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="updatePosition"
+            type="Integer" />
+
+        <variable
+            name="medicine"
+            type="org.intelehealth.ezazi.partogram.model.Medicine" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainerNewMedicine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_menu_bg"
+        android:contentDescription="@string/content_new_medicine_container"
+        android:elevation="@dimen/std_20dp"
+        android:padding="@dimen/screen_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvLblAddNewMedicine"
+            style="@style/Theme.EZazi.Screen.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/lbl_add_new_medicine"
+            android:text="@string/lbl_add_new_medicine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clAddNewMedicineInputBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/screen_padding"
+            android:background="@drawable/container_bg_rounded"
+            android:contentDescription="@string/content_item_container"
+            android:padding="@dimen/screen_container_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLblAddNewMedicine">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOtherMedicine"
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hint_medicine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/tilOtherMedicines"
+                    style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/list_container_padding"
+                    android:hint="@string/hint_medicine">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteOtherMedicine"
+                        style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:dropDownHeight="@dimen/dropdown_max_height_dialog"
+                        android:dropDownSelector="@color/white"
+                        android:editable="false"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/max_address_input_height"
+                        android:text="@{medicine.name}"
+                        android:textAlignment="viewStart"
+                        android:textSize="@dimen/input_inner_size"
+                        tools:ignore="LabelFor" />
+
+                </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMedicineStrength"
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/std_8dp"
+                android:contentDescription="@string/strength"
+                app:layout_constraintEnd_toStartOf="@id/cardMedicineType"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardOtherMedicine">
+
+                <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/tilMedicineStrength"
+                    style="@style/Theme.EZazi.Input.Add.Patient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/list_container_padding"
+                    android:hint="@string/hint_strength">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMedicineStrength"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@{medicine.strength}"
+                        android:textSize="@dimen/input_inner_size" />
+                </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMedicineType"
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/std_8dp"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cardMedicineStrength"
+                app:layout_constraintTop_toBottomOf="@id/cardOtherMedicine">
+
+                <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/tilMedicineType"
+                    style="@style/Theme.EZazi.Input.Add.Patient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/list_container_padding"
+                    android:hint="@string/hint_type">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMedicineType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@{medicine.dosageUnit}"
+                        android:textSize="@dimen/input_inner_size" />
+                </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMedicineDosage"
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/std_8dp"
+                android:contentDescription="@string/dosage"
+                app:layout_constraintEnd_toStartOf="@id/cardMedicineDosageUnit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardMedicineStrength">
+
+                <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/tilMedicineDosage"
+                    style="@style/Theme.EZazi.Input.Add.Patient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/list_container_padding"
+                    android:hint="@string/dosage">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMedicineDosage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@{medicine.dosage}"
+                        android:textSize="@dimen/input_inner_size" />
+                </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMedicineDosageUnit"
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/std_8dp"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cardMedicineDosage"
+                app:layout_constraintTop_toBottomOf="@id/cardMedicineStrength">
+
+                <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/tilMedicineDosageUnit"
+                    style="@style/Theme.EZazi.Input.Add.Patient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/list_container_padding"
+                    android:hint="@string/dosage_unit">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMedicineDosageUnit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@{medicine.dosageUnit}"
+                        android:textSize="@dimen/input_inner_size" />
+                </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMedicineRoute"
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/std_8dp"
+                android:contentDescription="@string/route"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardMedicineDosage">
+
+                <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/tilMedicineRoute"
+                    style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/list_container_padding"
+                    android:hint="@string/route">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteMedicineRoute"
+                        style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:dropDownHeight="@dimen/dropdown_max_height_dialog"
+                        android:dropDownSelector="@color/white"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/max_address_input_height"
+                        android:text="@{medicine.route}"
+                        android:textAlignment="viewStart"
+                        android:textSize="@dimen/input_inner_size"
+                        tools:ignore="LabelFor" />
+
+                </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMedicineFrequency"
+                style="@style/Theme.EZazi.Material.CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/std_8dp"
+                android:contentDescription="@string/route"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardMedicineRoute">
+
+                <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                    android:id="@+id/tilMedicineFrequency"
+                    style="@style/Widget.MyApp.TextInputLayout.custom.dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/list_container_padding"
+                    android:hint="@string/hint_frequency">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteMedicineFrequency"
+                        style="@style/Theme.EZazi.Scrollbar.Thumb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:dropDownHeight="@dimen/dropdown_max_height_dialog"
+                        android:dropDownSelector="@color/white"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/max_address_input_height"
+                        android:text="@{medicine.frequency}"
+                        android:textAlignment="viewStart"
+                        android:textSize="@dimen/input_inner_size"
+                        tools:ignore="LabelFor" />
+
+                </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddMedicineCancel"
+                style="@style/Theme.EZazi.Button.White"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/screen_padding"
+                android:layout_marginEnd="@dimen/screen_container_padding"
+                android:contentDescription="@string/cancel"
+                android:text="@string/cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnAddMedicineAdd"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardMedicineFrequency" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddMedicineAdd"
+                style="@style/Theme.EZazi.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/screen_container_padding"
+                android:contentDescription="@string/lbl_add_new_medicine"
+                android:text="@string/lbl_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnAddMedicineCancel" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1074,5 +1074,8 @@
     <string name="dosage">Dosage*</string>
     <string name="route">Route*</string>
     <string name="title_iv_infusion_status">IV Infusion Status</string>
+    <string name="dosage_unit">Dosage Unit*</string>
+    <string name="hint_type">Type*</string>
+    <string name="error_medicine">Please add at least 1 medicine\n\nOR\n\nSelect \"No\" to continue.</string>
 
 </resources>

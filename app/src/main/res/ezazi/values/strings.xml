@@ -97,5 +97,13 @@
     <string name="add_details_for_labour_completed">Please add details for labour completed</string>
     <string name="please_enter_reason_deceased">Please enter deceased reason</string>
     <string name="stage_2_labour_complete">Stage 2 Labour Complete</string>
+    <string name="lbl_add_new_medicine">Add New Medicine</string>
+    <string name="hint_other_medicines">Other Medicines</string>
+    <string name="hint_medicine">Medicine*</string>
+    <string name="lbl_add">Add</string>
+    <string name="hint_strength">Strength*</string>
+    <string name="hint_frequency">Frequency*</string>
+    <string name="alert_delete_medicine">Are you sure you want to delete this medicine?</string>
+    <string name="lbl_medicines">Medicines</string>
 
 </resources>

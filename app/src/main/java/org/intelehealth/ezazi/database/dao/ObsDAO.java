@@ -261,6 +261,40 @@ public class ObsDAO {
 
     }
 
+    public boolean markedAsVoidedObsToDb(List<String> obsUuids) throws DAOException {
+       /* ##remove##kz if (obsDTO.size() > 0) {
+            return false;
+        }*/
+        Log.e(TAG, "markedAsVoidedObsToDb: " + new Gson().toJson(obsUuids));
+        boolean isUpdated = true;
+        int updatedCount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String selection = "uuid = ?";
+        try {
+            for (String uuid : obsUuids) {
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("voided", "1");
+                values.put("sync", "false");    //Earlier was set to FALSE which caused the issue.
+                updatedCount = db.update("tbl_obs", values, selection, new String[]{uuid});
+                isUpdated = updatedCount > 0;
+            }
+            db.setTransactionSuccessful();
+            Logger.logD("markedAsVoidedObsToDb", "updatedrecords count" + updatedCount);
+            Log.e(TAG, "markedAsVoidedObsToDb: FROM " + TAG + ": total record" + updatedCount);
+        } catch (SQLException e) {
+            isUpdated = false;
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isUpdated;
+
+    }
+
     public List<ObsDTO> obsCommentList(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         ObsDTO obsDTO = new ObsDTO();
@@ -286,7 +320,7 @@ public class ObsDAO {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync IN ('0', 'FALSE', 'false')",
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided = '0' AND sync IN ('0', 'FALSE', 'false')",
                 new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
 
         ObsDTO obsDTO = new ObsDTO();
@@ -299,6 +333,7 @@ public class ObsDAO {
                     obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                     obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
                     obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                    obsDTO.setVoided(Integer.parseInt(idCursor.getString(idCursor.getColumnIndexOrThrow("voided"))));
                     obsDTOList.add(obsDTO);
                 }
             }
@@ -315,6 +350,52 @@ public class ObsDAO {
         //take All obs except image obs
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND voided='0'",
                 new String[]{encounteruuid});
+        ObsDTO obsDTO = new ObsDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
+                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                obsDTOList.add(obsDTO);
+            }
+        }
+        idCursor.close();
+
+        return obsDTOList;
+    }
+
+    public List<ObsDTO> getOBSByEncounterUUIDWithoughtMedicines(String encounteruuid) {
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //take All obs except image obs
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND conceptuuid != ? AND voided='0'",
+                new String[]{encounteruuid, UuidDictionary.MEDICINE});
+        ObsDTO obsDTO = new ObsDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                obsDTO = new ObsDTO();
+                obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
+                obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                obsDTO.setComment(idCursor.getString(idCursor.getColumnIndexOrThrow("comment")));
+                obsDTOList.add(obsDTO);
+            }
+        }
+        idCursor.close();
+
+        return obsDTOList;
+    }
+
+    public List<ObsDTO> getMedicineOBSByEncounterUUID(String encounteruuid) {
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //take All obs except image obs
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND conceptuuid = ? AND voided='0'",
+                new String[]{encounteruuid, UuidDictionary.MEDICINE});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

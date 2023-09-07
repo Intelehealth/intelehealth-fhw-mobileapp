@@ -72,18 +72,54 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include
-            android:id="@+id/includeLayoutPartoMedicine"
-            layout="@layout/medicine_details"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMedicineCountView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/list_container_padding"
             android:paddingVertical="@dimen/list_container_padding"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_radio_options" />
+            app:layout_constraintTop_toBottomOf="@id/layout_radio_options">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_child_container_bg"
+                android:padding="@dimen/screen_container_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvLblMedicine"
+                    style="@style/LabelStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_medicines"
+                    android:textSize="@dimen/caption"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvMedicineCount"
+                    style="@style/LabelStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:text="@string/lbl_add"
+                    app:drawableEndCompat="@drawable/ic_baseline_expand_more_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="@dimen/obs_input_min_width" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

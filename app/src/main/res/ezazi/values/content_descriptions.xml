@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_added_medicine_list">Added Medicine List</string>
+    <string name="content_expand_collapse_indicator">Item expand/collapse indicator</string>
+    <string name="content_item_container">Item container</string>
+    <string name="content_new_medicine_container">New Medicine Container</string>
+</resources>

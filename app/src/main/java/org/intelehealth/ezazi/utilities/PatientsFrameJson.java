@@ -241,6 +241,7 @@ public class PatientsFrameJson {
                         ob.setConcept(obs.getConceptuuid());
                         ob.setValue(obs.getValue());
                         ob.setComment(obs.getComment());
+                        ob.setVoided(obs.getVoided());
                         obsList.add(ob);
 
                         //   }

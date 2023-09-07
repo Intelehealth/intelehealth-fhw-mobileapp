@@ -29,6 +29,7 @@ import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
+import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
@@ -296,13 +297,14 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         ObsDAO obsDAO = new ObsDAO();
 
         // validation
-        int count = 0;
         Log.v("PartogramData", new Gson().toJson(mItemList));
         List<ObsDTO> obsDTOList = new ArrayList<>();
         String systolicBp = null;
         String diastolicBp = null;
         boolean isValidIVFluid = true;
         boolean isValidOxytocin = true;
+        boolean isValidMedicine = true;
+        List<String> voidedMedicines = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
                 ParamInfo info = mItemList.get(i).getParamInfoList().get(j);
@@ -325,27 +327,29 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         isValidOxytocin = info.isValidJson();
                     }
 
-                    ObsDTO obsDTOData = new ObsDTO();
-                    obsDTOData.setCreator(new SessionManager(this).getCreatorID());
-                    obsDTOData.setEncounteruuid(mEncounterUUID);
-                    obsDTOData.setConceptuuid(info.getConceptUUID());
-                    obsDTOData.setValue(info.getCapturedValue());
-                    obsDTOData.setComment(PartogramAlertEngine.getAlertName(info));
-
-                    String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
-                    obsDTOData.setUuid(uuid);
-
-                    if (uuid != null && !uuid.isEmpty()) {
-                        //update
-                        obsDTOList.add(obsDTOData);
-
+                    if (info.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
+                        isValidMedicine = info.isValidMedicine();
+                        if (isValidMedicine) {
+                            obsDTOList.addAll(info.getMedicinesObsList(mEncounterUUID, new SessionManager(this).getCreatorID()));
+                        }
+                        voidedMedicines = info.getVoidedMedicineUuid();
                     } else {
-                        //insert
-                        if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                        ObsDTO obsDTOData = buildObservation(info);
+
+                        String uuid = obsDAO.getObsuuid(mEncounterUUID, info.getConceptUUID());
+                        obsDTOData.setUuid(uuid);
+
+                        if (uuid != null && !uuid.isEmpty()) {
+                            //update
                             obsDTOList.add(obsDTOData);
+
+                        } else {
+                            //insert
+                            if (info.getCapturedValue() != null && !info.getCapturedValue().isEmpty()) {
+                                obsDTOList.add(obsDTOData);
+                            }
                         }
                     }
-                    count++;
                 }
             }
         }
@@ -360,6 +364,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             showErrorDialog(R.string.error_oxytocin);
         } else if (!isValidIVFluid) {
             showErrorDialog(R.string.error_iv_fluid);
+        } else if (!isValidMedicine) {
+            showErrorDialog(R.string.error_medicine);
         } else {
 
             try {
@@ -374,6 +380,10 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         } else {
                             obsDAO.insertObs(obsDTO);
                         }
+                    }
+
+                    if (voidedMedicines.size() > 0) {
+                        obsDAO.markedAsVoidedObsToDb(voidedMedicines);
                     }
                 } else {
                     obsDAO.insertObsToDb(obsDTOList, TAG);
@@ -400,6 +410,16 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         }
     }
 
+    private ObsDTO buildObservation(ParamInfo info) {
+        ObsDTO obsDTOData = new ObsDTO();
+        obsDTOData.setCreator(new SessionManager(this).getCreatorID());
+        obsDTOData.setEncounteruuid(mEncounterUUID);
+        obsDTOData.setConceptuuid(info.getConceptUUID());
+        obsDTOData.setValue(info.getCapturedValue());
+        obsDTOData.setComment(PartogramAlertEngine.getAlertName(info));
+        return obsDTOData;
+    }
+
     private List<ObsDTO> mObsDTOList = new ArrayList<>();
 
     private void setEditData() {
@@ -409,8 +429,14 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 ObsDTO obsDTO = mObsDTOList.get(i);
                 for (int j = 0; j < mItemList.size(); j++) {
                     for (int k = 0; k < mItemList.get(j).getParamInfoList().size(); k++) {
-                        if (obsDTO.getConceptuuid().equals(mItemList.get(j).getParamInfoList().get(k).getConceptUUID())) {
-                            mItemList.get(j).getParamInfoList().get(k).setCapturedValue(obsDTO.getValue());
+                        ParamInfo info = mItemList.get(j).getParamInfoList().get(k);
+                        if (obsDTO.getConceptuuid().equals(info.getConceptUUID())) {
+                            if (obsDTO.getConceptuuid().equals(UuidDictionary.MEDICINE)) {
+                                info.setCapturedValue(ParamInfo.RadioOptions.YES.name());
+                                info.convertToMedicine(obsDTO.getUuid(), obsDTO.getValue());
+                            } else {
+                                info.setCapturedValue(obsDTO.getValue());
+                            }
                             break;
                         }
                     }

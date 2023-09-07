@@ -44,4 +44,11 @@ abstract class BaseRecyclerViewHolderAdapter<I, VH : ViewHolder>(
     }
 
     fun getItem(position: Int) = items.get(position)
+
+    fun updateItemAt(position: Int, item: I) {
+        items[position] = item
+        notifyItemInserted(position)
+    }
+    fun getList(): List<I> = items;
+
 }

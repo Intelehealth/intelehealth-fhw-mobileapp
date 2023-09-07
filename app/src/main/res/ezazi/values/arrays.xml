@@ -45,6 +45,57 @@
         <item>@string/other_risk</item>
     </string-array>
 
+    <string-array name="medicines">
+        <item>Capsule Ampicillin 500 mg</item>
+        <item>Tablet Metronidazole 400 mg</item>
+        <item>Tablet Paracetamol 500 mg</item>
+        <item>Tablet Paracetamol 650 mg</item>
+        <item>Tablet Ibuprofen 400 mg</item>
+        <item>Tablet B Complex</item>
+        <item>Tablet Misoprostol 200 mcg</item>
+        <item>Injection Gentamycin</item>
+        <item>Injection Betamethasone</item>
+        <item>Injection Hydralazine</item>
+        <item>Capsule Nifedipine</item>
+        <item>Tablet Methyldopa</item>
+        <item>Injection Labetalol</item>
+        <item>Injection Magnesium Sulfate 50%</item>
+        <item>Injection Metronidazole</item>
+        <item>Injection Calcium Gluconate</item>
+        <item>Injection Dexamethasone</item>
+        <item>Injection Ampicillin</item>
+        <item>Injection Lignocaine 2%</item>
+        <item>Injection Adrenaline</item>
+        <item>Injection Hydrocortisone Succinate</item>
+        <item>Injection Diazepam</item>
+        <item>Injection Pheniramine Maleate</item>
+        <item>Injection Carboprost</item>
+        <item>Injection Pentazocin Chloride</item>
+        <item>Injection Promethazine</item>
+        <item>Injection Ceftriaxone</item>
+        <!--        <item>Other Medicine*</item>-->
+    </string-array>
+
+    <string-array name="medicine_routes">
+        <item>Oral</item>
+        <item>Sublingual (SL)</item>
+        <item>Intravenous (IV)</item>
+        <item>IV Infusion</item>
+        <item>Intramuscular (IM)</item>
+        <item>Subcutaneous (SC)</item>
+        <item>Intradermal (ID)</item>
+    </string-array>
+
+    <string-array name="medicine_frequencies">
+        <item>Once daily (OD)</item>
+        <item>Twice daily (BD)</item>
+        <item>Thrice daily (TID)</item>
+        <item>Four times in a day (QID)</item>
+        <item>Single Dose, Stat Dose</item>
+        <item>Single Dose, Stat Dose</item>
+        <item>As required (SOS)</item>
+    </string-array>
+
     <string-array name="months">
         <item>Jan</item>
         <item>Feb</item>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="medicine"
+            type="org.intelehealth.ezazi.partogram.model.Medicine" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/clMedicineRowItemRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/list_container_padding"
+        android:background="@drawable/selector_list_item"
+        android:paddingVertical="@dimen/screen_container_padding">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvParamName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_container_padding"
+            android:layout_weight="2"
+            android:padding="@dimen/common_padding"
+            android:text="@{medicine.name}"
+            android:textColor="@color/gray_6"
+            android:textSize="@dimen/content_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnEditMedicine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Medicine Name" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExpandCollapseIndicator"
+            style="@style/Theme.EZazi.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@string/content_expand_collapse_indicator"
+            android:paddingStart="@dimen/list_container_padding"
+            android:paddingEnd="@dimen/list_container_padding"
+            android:rotation="270"
+            app:icon="@drawable/ic_dropdown_spinner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMedicineDelete"
+            style="@style/Theme.EZazi.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@string/content_expand_collapse_indicator"
+            android:padding="@dimen/list_container_padding"
+            android:paddingStart="@dimen/list_container_padding"
+            android:paddingEnd="@dimen/list_container_padding"
+            app:icon="@drawable/ic_action_delete"
+            app:iconTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnExpandCollapseIndicator"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditMedicine"
+            style="@style/Theme.EZazi.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@string/content_expand_collapse_indicator"
+            android:paddingStart="@dimen/list_container_padding"
+            android:paddingEnd="@dimen/list_container_padding"
+            app:icon="@drawable/ic_mode_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnMedicineDelete"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

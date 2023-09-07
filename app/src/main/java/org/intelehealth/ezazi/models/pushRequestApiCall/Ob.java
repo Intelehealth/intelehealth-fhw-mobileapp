@@ -18,6 +18,10 @@ public class Ob {
     @Expose
     private String comment;
 
+    @SerializedName("voided")
+    @Expose
+    private int voided;
+
     public String getUuid() {
         return uuid;
     }
@@ -48,5 +52,13 @@ public class Ob {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public void setVoided(int voided) {
+        this.voided = voided;
+    }
+
+    public int getVoided() {
+        return voided;
     }
 }

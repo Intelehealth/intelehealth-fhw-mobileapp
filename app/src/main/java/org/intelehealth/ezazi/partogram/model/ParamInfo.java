@@ -5,13 +5,17 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
+import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ParamInfo implements Serializable {
@@ -36,6 +40,10 @@ public class ParamInfo implements Serializable {
     private Medication medication;
 
     private RadioOptions checkedRadioOption = RadioOptions.NO_VALUE;
+
+    private List<Medicine> medicines;
+
+    private List<Medicine> deletedMedicines;
 
     public enum RadioOptions {
         YES, NO, NO_VALUE
@@ -190,7 +198,64 @@ public class ParamInfo implements Serializable {
         return true;
     }
 
+    public boolean isValidMedicine() {
+        Log.e("ParamInfo", "isValidJson: " + getParamName() + " checked: " + checkedRadioOption);
+        Log.e("ParamInfo", "isValidJson: " + getParamName() + " value: " + getMedication().toJson());
+        if (getConceptUUID().equals(UuidDictionary.MEDICINE)) {
+            if (getCapturedValue() == null) return true;
+            else if (checkedRadioOption == RadioOptions.NO) return true;
+            else if (checkedRadioOption == RadioOptions.NO_VALUE) return true;
+            else {
+                return checkedRadioOption == RadioOptions.YES && medicines.size() > 0;
+            }
+        }
+        return true;
+    }
+
     public void setCheckedRadioOption(RadioOptions checkedRadioOption) {
         this.checkedRadioOption = checkedRadioOption;
+    }
+
+    public void setMedicines(List<Medicine> medicines) {
+        this.medicines = medicines;
+    }
+
+    public List<Medicine> getMedicines() {
+        if (medicines == null) medicines = new ArrayList<>();
+        return medicines;
+    }
+
+    public void convertToMedicine(String obsUuid, String value) {
+        Medicine medicine = new Medicine();
+        medicine.setObsUuid(obsUuid);
+        medicine.dbFormatToMedicineObject(value);
+        getMedicines().add(medicine);
+    }
+
+    public void setDeletedMedicines(List<Medicine> deletedMedicines) {
+        this.deletedMedicines = deletedMedicines;
+    }
+
+    public List<Medicine> getDeletedMedicines() {
+        if (deletedMedicines == null) deletedMedicines = new ArrayList<>();
+        return deletedMedicines;
+    }
+
+    public List<ObsDTO> getMedicinesObsList(String encounterId, String creator) {
+        ArrayList<ObsDTO> obsList = new ArrayList<>();
+        for (Medicine medicine : getMedicines()) {
+            obsList.add(medicine.toObs(encounterId, creator));
+        }
+        return obsList;
+    }
+
+    public List<String> getVoidedMedicineUuid() {
+        ArrayList<String> voided = new ArrayList<>();
+        for (Medicine med : getDeletedMedicines()) {
+            if (med.getObsUuid() != null && med.getObsUuid().length() > 0) {
+                voided.add(med.getObsUuid());
+            }
+        }
+        return voided;
     }
 }
