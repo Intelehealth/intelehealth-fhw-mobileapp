@@ -248,7 +248,7 @@ public class PatientsDAO {
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        //db.beginTransaction();
         try {
             String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "'";
             Cursor cursor = db.rawQuery(query, null, null);
@@ -263,11 +263,11 @@ public class PatientsDAO {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException e) {
             throw new DAOException(e.getMessage());
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
 
         }
         return patientAttributesList;
@@ -325,7 +325,7 @@ public class PatientsDAO {
         List<FamilyMemberRes> listPatientNames = new ArrayList<>();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        //db.beginTransaction();
         try {
             Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
@@ -338,19 +338,19 @@ public class PatientsDAO {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+           // db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
+           // db.endTransaction();
         }
         return listPatientNames;
     }
 
     public String getAttributesName(String attributeuuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        //db.beginTransaction();
         String name = "";
         try {
             String query = "SELECT name from tbl_patient_attribute_master WHERE uuid= '" + attributeuuid + "'";
@@ -362,12 +362,12 @@ public class PatientsDAO {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e.getMessage());
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
 
         }
         return name;
@@ -541,7 +541,7 @@ public class PatientsDAO {
     public String getOpenmrsId(String patientuuid) throws DAOException {
         String id = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        //db.beginTransaction();
         try {
             Cursor cursor = db.rawQuery("SELECT openmrs_id FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
@@ -550,12 +550,12 @@ public class PatientsDAO {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
 
         }
         return id;

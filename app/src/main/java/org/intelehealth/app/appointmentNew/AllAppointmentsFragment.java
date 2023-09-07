@@ -75,7 +75,7 @@ public class AllAppointmentsFragment extends Fragment {
     TextView tvUpcomingAppsCount, tvCompletedAppsCount, tvUpcomingAppsCountTitle,
             tvCompletedAppsCountTitle, tvCancelledAppsCount, tvCancelledAppsCountTitle;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-    private SQLiteDatabase db;
+    //private SQLiteDatabase db;
     String fromDate = "";
     String toDate = "";
     String whichAppointment = "";
@@ -93,8 +93,7 @@ public class AllAppointmentsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        initUI();
-        clickListeners();
+
 
     }
 
@@ -119,7 +118,8 @@ public class AllAppointmentsFragment extends Fragment {
                              Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2,
                 container, false);
-
+        initUI();
+        clickListeners();
         return parentView;
     }
 
@@ -214,7 +214,7 @@ public class AllAppointmentsFragment extends Fragment {
 
     private void initUI() {
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         rvUpcomingApp = parentView.findViewById(R.id.rv_all_upcoming_appointments);
         rvCancelledApp = parentView.findViewById(R.id.rv_all_cancelled_appointments);
@@ -280,7 +280,7 @@ public class AllAppointmentsFragment extends Fragment {
 
         updateCardBackgrounds("upcoming");
         //getSlots();
-        getAppointments();
+//        getAppointments();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -392,6 +392,11 @@ public class AllAppointmentsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
                     ivClearText.setVisibility(View.VISIBLE);
                 } else {
@@ -400,11 +405,6 @@ public class AllAppointmentsFragment extends Fragment {
                     ivClearText.setVisibility(View.GONE);
 
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -722,7 +722,7 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         //check if visit is present or not
 
@@ -914,60 +914,5 @@ public class AllAppointmentsFragment extends Fragment {
         }
     }
 
-    /*private void getSlots() {
-        String baseurl = "https://" + new SessionManager(getActivity()).getServerUrl() + ":3004";
 
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
-                        DateAndTimeUtils.getOneMonthAheadDateInDDMMYYYYFormat(),
-                        new SessionManager(getActivity()).getLocationUuid())
-
-                .enqueue(new Callback<AppointmentListingResponse>() {
-                    @Override
-                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
-                        if (response.body() == null) return;
-                        AppointmentListingResponse slotInfoResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
-
-
-                        if (slotInfoResponse != null && slotInfoResponse.getData().size() > 0) {
-                            for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
-
-                                try {
-                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
-
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
-                        if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
-
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        } else {
-                        }
-
-                        getAppointments();
-                    }
-
-                    @Override
-                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                    }
-                });
-
-
-    }*/
 }

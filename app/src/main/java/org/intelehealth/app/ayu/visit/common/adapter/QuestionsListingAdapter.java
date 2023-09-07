@@ -117,6 +117,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private OnItemSelection mOnItemSelection;
     private boolean mIsForPhysicalExam;
+    private boolean mIsFromAssociatedSymptoms;
     private PhysicalExam mPhysicalExam;
     private HashMap<Integer, ComplainBasicInfo> mRootComplainBasicInfoHashMap = new HashMap<>();
     private int mRootIndex = 0;
@@ -125,8 +126,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private HashMap<Integer, Integer> mIndexMappingHashMap = new HashMap<>();
     private boolean mIsEditMode;
 
-    public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isPhyExam, PhysicalExam physicalExam, int rootIndex, HashMap<Integer, ComplainBasicInfo> complainBasicInfoHashMap, boolean editMode, OnItemSelection onItemSelection) {
+    public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isFromAssociatedSymptoms, boolean isPhyExam, PhysicalExam physicalExam, int rootIndex, HashMap<Integer, ComplainBasicInfo> complainBasicInfoHashMap, boolean editMode, OnItemSelection onItemSelection) {
         mContext = context;
+        mIsFromAssociatedSymptoms = isFromAssociatedSymptoms;
         mIsForPhysicalExam = isPhyExam;
         mPhysicalExam = physicalExam;
         mRecyclerView = recyclerView;
@@ -1112,7 +1114,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             }
 
-                            if(isLoadingForNestedEditData){
+                            if (isLoadingForNestedEditData) {
                                 if (selectedNode.isDataCaptured()) {
                                     AdapterUtils.setToDisable(holder.skipButton);
                                     AdapterUtils.setToDisable(holder.submitButton);
@@ -1120,12 +1122,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     AdapterUtils.setToDefault(holder.skipButton);
                                     AdapterUtils.setToDefault(holder.submitButton);
                                 }
-                            }else{
+                            } else {
                                 AdapterUtils.setToDefault(holder.submitButton);
                                 AdapterUtils.setToDefault(holder.skipButton);
 
                             }
-
+                            if (mIsFromAssociatedSymptoms) {
+                                Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
+                                Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
+                            }
                             /*AdapterUtils.setToDefault(holder.submitButton);
                             AdapterUtils.setToDefault(holder.skipButton);*/
                             /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);

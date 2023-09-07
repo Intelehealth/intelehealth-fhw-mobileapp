@@ -323,7 +323,7 @@ public class ObsDAO {
         String result = null;
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        //db.beginTransaction();
 
         if(visitUUID != null) {
             final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " +
@@ -343,8 +343,8 @@ public class ObsDAO {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            db.setTransactionSuccessful();
-            db.endTransaction();
+//            db.setTransactionSuccessful();
+//            db.endTransaction();
         }
 
         return result;
@@ -358,7 +358,7 @@ public class ObsDAO {
         EncounterDAO encounterDAO = new EncounterDAO();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+//        db.beginTransaction();
 
         String encounterIDSelection = "visituuid = ? ";
         String[] encounterIDArgs = {visitUuid};
@@ -388,8 +388,8 @@ public class ObsDAO {
         }
         visitCursor.close();
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         return dbValue;
         // fetch dr details from local db - end

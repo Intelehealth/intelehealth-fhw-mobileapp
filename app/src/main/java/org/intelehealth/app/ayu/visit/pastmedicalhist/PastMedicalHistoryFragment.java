@@ -108,7 +108,7 @@ public class PastMedicalHistoryFragment extends Fragment {
             });
         }
 
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, 0, mRootComplainBasicInfoHashMap,mIsEditMode, new OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, 0, mRootComplainBasicInfoHashMap,mIsEditMode, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 // avoid the scroll for old data change

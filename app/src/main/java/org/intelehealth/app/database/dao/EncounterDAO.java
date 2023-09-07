@@ -438,7 +438,7 @@ public class EncounterDAO {
 
     public boolean isCompletedOrExited(String visitUUID) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+//        db.beginTransaction();
 
         try {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
@@ -452,12 +452,12 @@ public class EncounterDAO {
                 return true;
             }
             idCursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
 
         return false;
@@ -465,7 +465,7 @@ public class EncounterDAO {
 
     public boolean isCompletedExitedSurvey(String visitUUID) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+//        db.beginTransaction();
 
         try {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
@@ -480,12 +480,12 @@ public class EncounterDAO {
                 return true;
             }
             idCursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
 
         return false;
@@ -493,7 +493,7 @@ public class EncounterDAO {
 
     public boolean isPrescriptionReceived(String visitUUID) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        //db.beginTransaction();
 
         try {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
@@ -507,12 +507,12 @@ public class EncounterDAO {
                 return true;
             }
             idCursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
         }
 
         return false;

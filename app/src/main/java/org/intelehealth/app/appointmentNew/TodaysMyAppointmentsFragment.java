@@ -99,7 +99,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getAppointments();
+        //getAppointments();
     }
 
     private void initUI() {
@@ -181,6 +181,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
                     ivClearText.setVisibility(View.VISIBLE);
                 } else {
@@ -189,11 +194,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     ivClearText.setVisibility(View.GONE);
 
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
 
         });
