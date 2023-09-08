@@ -340,38 +340,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             }
         });
 
-//        if (info.getCapturedValue() != null &&
-//                !TextUtils.isEmpty(info.getCapturedValue())
-//                && !info.getCapturedValue().equalsIgnoreCase("NO")) {
-//            // selected.setVisibility(View.VISIBLE);
-//            radioGroup.check(R.id.radioYes);
-//
-//            medicineDetails.setVisibility(View.VISIBLE);
-//            // setOxytocinDetails(info.getCapturedValue(), binding);
-//            //showOxytocinOptionsDetails(title, info, tempView, binding);
-//
-//        } else {
-//            radioGroup.check(R.id.radioNo);
-//            info.setCapturedValue("No");
-//            selected.setVisibility(View.GONE);
-//        }
-//
-//        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-//            RadioButton radioButton = tempView.findViewById(checkedId);
-//            if (checkedId == R.id.radioYes && radioButton.isChecked()) {
-//                // showIVFluidDialog(title, info, tempView);
-//                medicineDetails.setVisibility(View.VISIBLE);
-//                showMedicineDialog(title, info, tempView);
-//                //showMedicineOptionsDialog(title, info, tempView, binding);
-//            } else if (checkedId == R.id.radioNo && radioButton.isChecked()) {
-//                medicineDetails.setVisibility(View.GONE);
-//                if (!TextUtils.isEmpty(info.getCapturedValue())) {
-//                    info.setCapturedValue("NO");
-//                    selected.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -381,50 +349,6 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         else
             textView.setText("" + updated.size());
     }
-
-//    private void showMedicineOptionsDialog(String title, ParamInfo info, View tempView, PartoLablRadioViewMedicineBinding binding) {
-//        MedicineDetailsBinding medicineBinding = binding.includeLayoutPartoMedicine;
-//        medicineBinding.viewListOfMedicines.tvParamName.setText(R.string.list_of_medicines);
-//        medicineBinding.viewListOfMedicines.tvParamName.setText(R.string.strength);
-//        medicineBinding.viewListOfMedicines.tvParamName.setText(R.string.route);
-//        medicineBinding.viewListOfMedicines.tvParamName.setText(R.string.dosage);
-//        medicineBinding.viewListOfMedicines.tvParamName.setText(R.string.frequency);
-//
-//        TextView medicineName = medicineBinding.viewListOfMedicines.tvData;
-//        TextView strength = medicineBinding.viewStrength.etvData;
-//        TextView route = medicineBinding.viewRoute.tvData;
-//        TextView dosage = medicineBinding.viewDosage.etvData;
-//        TextView frequency = medicineBinding.viewFrequency.tvData;
-//
-//
-//        TextView selected = tempView.findViewById(R.id.tvSelectedValue);
-//
-//        medicineBinding.viewRoute.getRoot().setOnClickListener(v -> {
-//            //show dialog for route
-//
-//            Toast.makeText(mContext, "clickedddd", Toast.LENGTH_SHORT).show();
-//            final String[] items = {"Oral", "Sublingual (SL)", "Intravenous (IV)", "IV Infusion", "Intramuscular (IM)", "Subcutaneous (SC)", "Intradermal (ID)"};
-//            ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
-//            for (int i = 0; i < items.length; i++) {
-//                SingChoiceItem item = new SingChoiceItem();
-//                item.setItemIndex(i);
-//                item.setItem(items[i]);
-//                choiceItems.add(item);
-//            }
-//
-//            String titleDialog = "Select for " + title;
-//            SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
-//                    .title(titleDialog)
-//                    .content(choiceItems)
-//                    .build();
-//
-//            dialog.setListener(item -> {
-//                route.setText(item.getItem());
-//                //manageSelectionSingleChoiceSelection(info, item);
-//            });
-//            dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-//        });
-//    }
 
     private void showRadioOptionBoxForIVFluid(View tempView, ParamInfo info, TextView selected, String title) {
         PartoLblRadioViewEzaziBinding binding = PartoLblRadioViewEzaziBinding.bind(tempView);
