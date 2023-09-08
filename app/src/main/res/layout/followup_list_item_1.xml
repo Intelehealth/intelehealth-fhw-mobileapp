@@ -10,7 +10,6 @@
     app:contentPadding="@dimen/margin_8">
 
     <RelativeLayout
-        android:id="@+id/frame_10014"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

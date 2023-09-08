@@ -95,7 +95,6 @@ import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivi
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -1581,12 +1580,13 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         });
 
         positive_btn.setOnClickListener(v -> {
-            checkVisitOrStartNewVisit();
+          //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
         });
 
         alertDialog.show();
     }
 
+/*
     private void checkVisitOrStartNewVisit() {
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
@@ -1690,6 +1690,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         startActivity(intent2);
     }
+*/
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {

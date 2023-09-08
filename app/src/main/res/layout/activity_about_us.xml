@@ -19,7 +19,6 @@
 
         <!-- Frame 100167 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10016"
             android:layout_width="0dp"
             android:layout_height="@dimen/followup_toolbar"
             android:layout_alignParentLeft="true"
@@ -33,7 +32,6 @@
 
             <!-- Frame 100116 -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.7"
@@ -175,14 +173,12 @@
             <!--Info - End-->
 
             <FrameLayout
-                android:id="@+id/frame_gotobtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relative_info"
                 android:layout_marginTop="@dimen/margin_24">
 
                 <RelativeLayout
-                    android:id="@+id/relative_goto_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="visible">

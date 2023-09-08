@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.followuppatients;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
+import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +18,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +32,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
+import org.intelehealth.app.activities.visit.EndVisitAdapter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.FollowUpModel;
+import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -60,6 +67,12 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     TextView toolbar_title, today_nodata, week_nodata, month_nodata;
     ImageButton refresh;
     int totalCounts = 0, totalCounts_today = 0, totalCounts_week = 0, totalCounts_month = 0;
+    private androidx.appcompat.widget.SearchView searchview_received;
+    private ImageView closeButton;
+    private Context context = FollowUpPatientActivity_New.this;
+    private RelativeLayout no_patient_found_block;
+    private LinearLayout main_block;
+    List<FollowUpModel> todays_modelList, weeks_modelList, months_modelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,10 +151,247 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         rv_month = findViewById(R.id.rv_thismonth);
         refresh = findViewById(R.id.refresh);
         ImageButton ibButtonBack = findViewById(R.id.vector);
+
+        searchview_received = findViewById(R.id.searchview_received);
+        closeButton = searchview_received.findViewById(R.id.search_close_btn);
+        no_patient_found_block = findViewById(R.id.no_patient_found_block);
+        main_block = findViewById(R.id.main_block);
+        ((TextView) findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
+        LinearLayout addPatientTV = findViewById(R.id.add_new_patientTV);
+        addPatientTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PrivacyPolicyActivity_New.class);
+                intent.putExtra("intentType", "navigateFurther");
+                intent.putExtra("add_patient", "add_patient");
+                startActivity(intent);
+                finish();
+            }
+        });
+
         ibButtonBack.setOnClickListener(v -> {
             Intent intent = new Intent(FollowUpPatientActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);
         });
+
+        // Search - start
+        searchview_received.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchOperation(query);
+                return false;   // setting to false will close the keyboard when clicked on search btn.
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equalsIgnoreCase("")) {
+                    searchview_received.setBackground(getResources().getDrawable(R.drawable.blue_border_bg));
+                } else {
+                    searchview_received.setBackground(getResources().getDrawable(R.drawable.ui2_common_input_bg));
+                }
+                return false;
+            }
+        });
+
+        closeButton.setOnClickListener(v -> {
+            no_patient_found_block.setVisibility(View.GONE);
+            main_block.setVisibility(View.VISIBLE);
+            resetData();
+            searchview_received.setQuery("", false);
+        });
+        // Search - end
+
+    }
+
+    private void resetData() {
+      //  recent_older_visibility(todays_modelList, weeks_modelList, months_modelList);
+        Log.d("TAG", "resetData followup: " + todays_modelList.size() + ", " + weeks_modelList.size() + ", " + months_modelList.size());
+
+        adapter_new = new FollowUpPatientAdapter_New(todays_modelList, this);
+        rv_today.setNestedScrollingEnabled(false);
+        rv_today.setAdapter(adapter_new);
+
+        adapter_new = new FollowUpPatientAdapter_New(weeks_modelList, this);
+        rv_week.setNestedScrollingEnabled(false);
+        rv_week.setAdapter(adapter_new);
+
+        adapter_new = new FollowUpPatientAdapter_New(months_modelList, this);
+        rv_month.setNestedScrollingEnabled(false);
+        rv_month.setAdapter(adapter_new);
+    }
+
+/*
+    private void recent_older_visibility(List<FollowUpModel> todays, List<FollowUpModel> weeks, List<FollowUpModel> months) {
+
+        if (recent.size() == 0 || recent.size() < 0)
+            recent_nodata.setVisibility(View.VISIBLE);
+        else
+            recent_nodata.setVisibility(View.GONE);
+
+        if (older.size() == 0 || older.size() < 0)
+            older_nodata.setVisibility(View.VISIBLE);
+        else
+            older_nodata.setVisibility(View.GONE);
+    }
+*/
+
+    private void allCountVisibility(int allCount) {
+        if (allCount == 0 || allCount < 0) {
+            no_patient_found_block.setVisibility(View.VISIBLE);
+            main_block.setVisibility(View.GONE);
+        } else {
+            no_patient_found_block.setVisibility(View.GONE);
+            main_block.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void searchOperation(String query) {
+        Log.v("Search", "Search Word: " + query);
+        query = query.toLowerCase().trim();
+        query = query.replaceAll(" {2}", " ");
+        Log.d("TAG", "searchOperation: " + query);
+
+        List<FollowUpModel> todays = new ArrayList<>();
+        List<FollowUpModel> weeks = new ArrayList<>();
+        List<FollowUpModel> months = new ArrayList<>();
+
+        String finalQuery = query;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<FollowUpModel> todayList = getAllPatientsFromDB_Today();
+                todayList = getChiefComplaint(todayList);
+
+                List<FollowUpModel> weekList = getAllPatientsFromDB_thisWeek();
+                weekList = getChiefComplaint(weekList);
+
+                List<FollowUpModel> monthList = getAllPatientsFromDB_thisMonth();
+                monthList = getChiefComplaint(monthList);
+
+                List<FollowUpModel> finalTodayList = todayList;
+                List<FollowUpModel> finalWeekList = weekList;
+                List<FollowUpModel> finalMonthList = monthList;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!finalQuery.isEmpty()) {
+
+                            if (finalTodayList.size() > 0) {
+                                for (FollowUpModel model : finalTodayList) {
+                                    //
+                                    if (model.getMiddle_name() != null) {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String middleName = model.getMiddle_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullPartName = firstName + " " + lastName;
+                                        String fullName = firstName + " " + middleName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
+                                                lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            todays.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
+                                    } else {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullName = firstName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            todays.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
+                                    }
+                                    //
+                                }
+                            }
+
+                            if (finalWeekList.size() > 0) {
+                                for (FollowUpModel model : finalWeekList) {
+                                    //
+                                    if (model.getMiddle_name() != null) {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String middleName = model.getMiddle_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullPartName = firstName + " " + lastName;
+                                        String fullName = firstName + " " + middleName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
+                                                lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            weeks.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
+                                    } else {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullName = firstName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            weeks.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
+                                    }
+                                    //
+                                }
+                            }
+
+                            if (finalMonthList.size() > 0) {
+                                for (FollowUpModel model : finalMonthList) {
+                                    //
+                                    if (model.getMiddle_name() != null) {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String middleName = model.getMiddle_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullPartName = firstName + " " + lastName;
+                                        String fullName = firstName + " " + middleName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
+                                                lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            months.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
+                                    } else {
+                                        String firstName = model.getFirst_name().toLowerCase();
+                                        String lastName = model.getLast_name().toLowerCase();
+                                        String fullName = firstName + " " + lastName;
+
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                            months.add(model);
+                                        } else {
+                                            // dont add in list value.
+                                        }
+                                    }
+                                    //
+                                }
+                            }
+
+                            adapter_new = new FollowUpPatientAdapter_New(todays, context);
+                            rv_today.setNestedScrollingEnabled(false);
+                            rv_today.setAdapter(adapter_new);
+
+                            adapter_new = new FollowUpPatientAdapter_New(weeks, context);
+                            rv_week.setNestedScrollingEnabled(false);
+                            rv_week.setAdapter(adapter_new);
+
+                            adapter_new = new FollowUpPatientAdapter_New(months, context);
+                            rv_month.setNestedScrollingEnabled(false);
+                            rv_month.setAdapter(adapter_new);
+
+                            /**
+                             * Checking here the query that is entered and it is not empty so check the size of all of these
+                             * arraylists; if there size is 0 than show the no patient found view.
+                             */
+                            int allCount = todays.size() + weeks.size() + months.size();
+                            allCountVisibility(allCount);
+                         //   recent_older_visibility(recent, older);
+                        }
+                    }
+                });
+            }
+        }).start();
 
     }
 
@@ -150,31 +400,23 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         thisWeeks_FollowupVisits();
         thisMonths_FollowupVisits();
         totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
-//        if (totalCounts == 0) {
-//            mBodyNestedScrollView.setVisibility(View.GONE);
-//            mEmptyTextView.setVisibility(View.VISIBLE);
-//            toolbar_title.setText("Follow-up visits");
-//        } else {
-//            mBodyNestedScrollView.setVisibility(View.VISIBLE);
-//            mEmptyTextView.setVisibility(View.GONE);
-//            toolbar_title.setText("Follow-up visits(" + totalCounts_month + ")"); // eg. Follow-up visits(6)
-//
-//        }
     }
 
     private void todays_FollowupVisits() {
         try {
             Date cDate = new Date();
             String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-            List<FollowUpModel> followUpModels = getAllPatientsFromDB_Today(offset, currentDate);
-            followUpModels = getChiefComplaint(followUpModels);
-            totalCounts_today = followUpModels.size();
-            if (totalCounts_today <= 0) {
+            todays_modelList = getAllPatientsFromDB_Today();
+            todays_modelList = getChiefComplaint(todays_modelList);
+
+            totalCounts_today = todays_modelList.size();
+            if (totalCounts_today == 0 || totalCounts_today < 0) {
                 today_nodata.setVisibility(View.VISIBLE);
             } else {
                 today_nodata.setVisibility(View.GONE);
             }
-            adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
+
+            adapter_new = new FollowUpPatientAdapter_New(todays_modelList, this);
             rv_today.setNestedScrollingEnabled(false);
             rv_today.setAdapter(adapter_new);
         } catch (Exception e) {
@@ -213,14 +455,16 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
     private void thisWeeks_FollowupVisits() {
         try {
-            List<FollowUpModel> followUpModels = getAllPatientsFromDB_thisWeek(offset);
-            followUpModels = getChiefComplaint(followUpModels);
-            totalCounts_week = followUpModels.size();
-            if (totalCounts_week <= 0)
+            weeks_modelList = getAllPatientsFromDB_thisWeek();
+            weeks_modelList = getChiefComplaint(weeks_modelList);
+
+            totalCounts_week = weeks_modelList.size();
+            if (totalCounts_week == 0 || totalCounts_week < 0)
                 week_nodata.setVisibility(View.VISIBLE);
             else
                 week_nodata.setVisibility(View.GONE);
-            adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
+
+            adapter_new = new FollowUpPatientAdapter_New(weeks_modelList, this);
             rv_week.setNestedScrollingEnabled(false);
             rv_week.setAdapter(adapter_new);
         } catch (Exception e) {
@@ -231,14 +475,16 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
     private void thisMonths_FollowupVisits() {
         try {
-            List<FollowUpModel> followUpModels = getAllPatientsFromDB_thisMonth(offset);
-            followUpModels = getChiefComplaint(followUpModels);
-            totalCounts_month = followUpModels.size();
-            if (totalCounts_month <= 0)
+            months_modelList = getAllPatientsFromDB_thisMonth();
+            months_modelList = getChiefComplaint(months_modelList);
+
+            totalCounts_month = months_modelList.size();
+            if (totalCounts_month == 0 || totalCounts_month < 0)
                 month_nodata.setVisibility(View.VISIBLE);
             else
                 month_nodata.setVisibility(View.GONE);
-            adapter_new = new FollowUpPatientAdapter_New(followUpModels, this);
+
+            adapter_new = new FollowUpPatientAdapter_New(months_modelList, this);
             rv_month.setNestedScrollingEnabled(false);
             rv_month.setAdapter(adapter_new);
         } catch (Exception e) {
@@ -248,7 +494,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     }
 
 
-    public List<FollowUpModel> getAllPatientsFromDB_Today(int offset, String currentDate) {
+    public List<FollowUpModel> getAllPatientsFromDB_Today() {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String table = "tbl_patient";
 
@@ -299,6 +545,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                     StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
@@ -316,6 +563,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                     StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
@@ -339,7 +587,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         return modelList;
     }
 
-    public List<FollowUpModel> getAllPatientsFromDB_thisWeek(int offset) {
+    public List<FollowUpModel> getAllPatientsFromDB_thisWeek() {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
 
 /*
@@ -388,6 +636,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                     StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
@@ -405,6 +654,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                     StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
@@ -429,7 +679,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         return modelList;
     }
 
-    public List<FollowUpModel> getAllPatientsFromDB_thisMonth(int offset) {
+    public List<FollowUpModel> getAllPatientsFromDB_thisMonth() {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String table = "tbl_patient";
 
@@ -482,6 +732,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                     StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
@@ -499,6 +750,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                     StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
@@ -523,5 +775,9 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         return modelList;
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(context, HomeScreenActivity_New.class);
+        startActivity(intent);
+    }
 }

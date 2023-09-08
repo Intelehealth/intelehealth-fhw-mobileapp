@@ -73,7 +73,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -88,7 +87,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_add_patient_next"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_alignParentEnd="true"
@@ -125,7 +123,6 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card_prescription_inner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/common_all_card_top_margin"
@@ -155,7 +152,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/textview_prescriptions" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_below="@+id/textview_received_no"
@@ -168,7 +164,6 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_img_temp"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="72dip"
 
@@ -180,7 +175,6 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_img"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
                     android:layout_alignParentEnd="true"
@@ -239,7 +233,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/textview_close_visit" />
 
                 <ImageView
-                    android:id="@+id/imageview_close_visit_next"
                     android:layout_width="@dimen/image_add_patient_next_width"
                     android:layout_height="@dimen/image_add_patient_next_height"
                     android:layout_marginBottom="@dimen/card_prescription_image_margin_bottom"
@@ -251,7 +244,6 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageview_prescription_next2"
                     android:layout_width="@dimen/card_prescription_image_width"
                     android:layout_height="@dimen/card_prescription_image_height"
 
@@ -294,7 +286,6 @@
                 app:strokeWidth="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

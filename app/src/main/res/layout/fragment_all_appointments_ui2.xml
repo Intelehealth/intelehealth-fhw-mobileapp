@@ -401,7 +401,6 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/view_nopatientfound_appointment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_relative"
@@ -452,7 +451,6 @@
                     android:translationY="-1.58sp" />
 
                 <TextView
-                    android:id="@+id/frame_10007"
                     android:layout_width="@dimen/search_addbtn_width"
                     android:layout_height="@dimen/search_add_btn_height"
                     android:layout_below="@id/search_pat_hint_txt"

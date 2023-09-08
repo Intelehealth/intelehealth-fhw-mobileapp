@@ -20,7 +20,6 @@
 
         <!-- Frame 100167 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10016"
             android:layout_width="0dp"
             android:layout_height="@dimen/followup_toolbar"
             android:layout_alignParentLeft="true"
@@ -34,7 +33,6 @@
 
             <!-- Frame 100116 -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.7"
@@ -139,7 +137,6 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/lang_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lang_header_relative">
@@ -202,7 +199,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/reset_lang_relative_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lang_relative"
@@ -232,7 +228,6 @@
                             android:layout_centerInParent="true">
 
                             <ImageView
-                                android:id="@+id/refresh_icon"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_baseline_refresh_24" />
@@ -263,7 +258,6 @@
 
     <!--Protocols - Start-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/protocols_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lang_card"
@@ -318,7 +312,6 @@
 
             <!--Expanded Vitals-->
             <RelativeLayout
-                android:id="@+id/protocols_header_expandview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/protocols_header_relative">
@@ -335,7 +328,6 @@
 
                 <!--Protocols Relative - Start-->
                 <RelativeLayout
-                    android:id="@+id/reset_lang_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/divider"

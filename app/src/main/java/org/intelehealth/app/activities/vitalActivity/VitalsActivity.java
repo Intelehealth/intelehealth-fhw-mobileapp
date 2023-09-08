@@ -34,7 +34,6 @@ import java.util.Objects;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -903,7 +902,7 @@ public class VitalsActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-                Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+              /*  Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -914,7 +913,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("gender", patientGender);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
-                startActivity(intent);
+                startActivity(intent);*/
             } catch (DAOException dao) {
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }

@@ -83,7 +83,6 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/iv_icon2"
                     android:layout_width="@dimen/iv_camera_width"
                     android:layout_height="@dimen/iv_camera_height"
                     android:layout_alignParentEnd="true"
@@ -93,7 +92,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/view_fingerprint_enable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/tv_pass_margin_start"
@@ -107,7 +105,6 @@
                     android:src="@drawable/ic_baseline_fingerprint_24" />
 
                 <TextView
-                    android:id="@+id/tv_fingerprint_lock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/tv_change_pass_margin_start"

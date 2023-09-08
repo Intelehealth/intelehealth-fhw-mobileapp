@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/frame_nxtbtn_viewgrp"
@@ -16,7 +15,6 @@
 
         <!--Firstname-->
         <RelativeLayout
-            android:id="@+id/relative_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_24"
@@ -42,7 +40,6 @@
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/patient_camera_imgview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/img_profile"
@@ -76,7 +73,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/firstname_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -125,7 +121,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/middlename_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -175,7 +170,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lastname_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -226,7 +220,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lastname_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -304,7 +297,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dob_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -360,7 +352,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/age_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -406,7 +397,6 @@
 
             <!--Phone number-->
             <LinearLayout
-                android:id="@+id/linear_phoneno"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_age"
@@ -415,7 +405,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/phoneno_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"

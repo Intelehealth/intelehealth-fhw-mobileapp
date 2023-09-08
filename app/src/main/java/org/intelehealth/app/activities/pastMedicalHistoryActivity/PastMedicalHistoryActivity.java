@@ -61,7 +61,6 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
@@ -379,7 +378,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             }
 
             // displaying all values in another activity
-            Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+           /* Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -390,7 +389,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
-            startActivity(intent);
+            startActivity(intent);*/
         } else {
 
             //  if(patientHistoryMap.anySubSelected()){

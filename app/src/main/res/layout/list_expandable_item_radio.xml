@@ -21,7 +21,6 @@
         android:textSize="@dimen/text_size_complaint" />
 
     <RadioGroup
-        android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_weight="0.40"
         android:layout_marginTop="10dp"
