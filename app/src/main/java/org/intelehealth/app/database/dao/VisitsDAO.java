@@ -517,21 +517,30 @@ public class VisitsDAO {
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
             //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+
+                try {
+                    model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
         }
 
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
 
         return arrayList;
     }
 
     public static List<PrescriptionModel> allNotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
