@@ -5,11 +5,15 @@ import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPat
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -72,6 +76,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(getContext());
         ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0,new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
@@ -89,11 +94,31 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setLocale(getContext());
         view = inflater.inflate(R.layout.fragment_todays_appointments_ui2, container, false);
         initUI();
         clickListeners();
 
         return view;
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     @Override

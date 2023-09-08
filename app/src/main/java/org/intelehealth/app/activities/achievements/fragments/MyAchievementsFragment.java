@@ -54,6 +54,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(getContext());
         sessionManager = new SessionManager(requireActivity());
         usageStatsManager = (UsageStatsManager) (requireActivity().getSystemService(Context.USAGE_STATS_SERVICE));
         checkAndAskForUsagePermissions();
@@ -61,6 +62,7 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setLocale(getContext());
         view = inflater.inflate(R.layout.fragment_my_achievements_ui2, container, false);
         networkUtils = new NetworkUtils(getActivity(), this);
         setLocale(getContext());

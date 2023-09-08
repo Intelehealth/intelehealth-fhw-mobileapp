@@ -136,7 +136,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             // visit start date
             if (!model.getVisit_start_date().equalsIgnoreCase("null") || !model.getVisit_start_date().isEmpty()) {
                 String startDate = model.getVisit_start_date();
-             //   startDate = DateAndTimeUtils.date_formatter(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMMM");
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
                 Log.v("startdate", "startDAte: " + startDate);

@@ -377,23 +377,25 @@ public class PatientsDAO {
         boolean isInserted = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();
-        try {
-            for (int i = 0; i < patientAttributesDTOS.size(); i++) {
-                values.put("uuid", patientAttributesDTOS.get(i).getUuid());
-                values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
-                values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
-                values.put("value", patientAttributesDTOS.get(i).getValue());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", false);
-                db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        if(patientAttributesDTOS!=null && patientAttributesDTOS.size()<=0) {
+            try {
+                for (int i = 0; i < patientAttributesDTOS.size(); i++) {
+                    values.put("uuid", patientAttributesDTOS.get(i).getUuid());
+                    values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
+                    values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
+                    values.put("value", patientAttributesDTOS.get(i).getValue());
+                    values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                    values.put("sync", false);
+                    db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                }
+                db.setTransactionSuccessful();
+            } catch (SQLException e) {
+                isInserted = false;
+                FirebaseCrashlytics.getInstance().recordException(e);
+                throw new DAOException(e.getMessage(), e);
+            } finally {
+                db.endTransaction();
             }
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            isInserted = false;
-            FirebaseCrashlytics.getInstance().recordException(e);
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
         }
 
 
@@ -581,7 +583,7 @@ public class PatientsDAO {
 
     public static List<PatientDTO> getAllPatientsFromDB(int limit, int offset) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String table = "tbl_patient";
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY modified_date DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
@@ -615,7 +617,7 @@ public class PatientsDAO {
         String search = query/*.trim().replaceAll("\\s", "")*/;
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String table = "tbl_patient";
         List<String> patientUUID_List = new ArrayList<>();
 
@@ -708,7 +710,7 @@ public class PatientsDAO {
 
     public static String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND " +
                 "person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7'", new String[]{patientuuid});
         try {
@@ -726,7 +728,7 @@ public class PatientsDAO {
 
     public static VisitDTO isVisitPresentForPatient_fetchVisitValues(String patientUUID) {
         VisitDTO visitDTO = new VisitDTO();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit WHERE patientuuid = ?", new String[]{patientUUID});
         try {
             if (idCursor.moveToFirst()) {

@@ -17,4 +17,5 @@
     <string name="util_title_activity_camera">Camera</string>
     <string name="util_cancel">Cancel</string>
     <string name="util_take_image">Take image</string>
+    <string name="util_photo">PHOTO</string>
 </resources>

@@ -117,6 +117,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(VisitDetailsActivity.this);
         setContentView(R.layout.activity_visit_details);
 
         // changing status bar color
@@ -330,7 +331,10 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
                 //presc_remind_block.setVisibility(View.VISIBLE); // show remind btn for presc to be given as its more than days.
                 presc_remind_block.setVisibility(View.GONE); // For now
             }
-            presc_time.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
+            String timeText = getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", "");
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                timeText = modifiedDate.replace("पहले", "")  + "से पेंडिंग है";
+            presc_time.setText(timeText);
             presc_time.setTextColor(getResources().getColor(R.color.red));
             icon_presc_details.setImageDrawable(getResources().getDrawable(R.drawable.prescription_red_icon));
         }
@@ -394,6 +398,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             // Time - end
 
             visit_startDate = DateAndTimeUtils.date_formatter(visit_startDate, "yyyy-MM-dd", "dd MMMM yyyy");
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                visit_startDate = StringUtils.en__hi_dob(visit_startDate);
             Log.v("Followup", "foramted date: " + visit_startDate);
             visit_startDate_txt.setText(visit_startDate);
         }

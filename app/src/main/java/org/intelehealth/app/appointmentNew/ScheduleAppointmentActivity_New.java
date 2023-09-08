@@ -658,7 +658,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         TextView tvInfo = convertView.findViewById(R.id.tv_info_dialog_app);
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
-        String infoText = getResources().getString(R.string.sure_to_book_appointment) + " <b>" + selectedDateTime + "?</b>";
+        String infoText = getResources().getString(R.string.sure_to_book_appointment, selectedDateTime);
         tvInfo.setText(Html.fromHtml(infoText));
 
         alertDialog = alertdialogBuilder.create();

@@ -223,7 +223,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
     }
 
     private void initUI() {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         filter_framelayout = findViewById(R.id.filter_framelayout);
         filter = findViewById(R.id.filter);
@@ -869,7 +869,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitID};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -2128,7 +2128,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitID};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));

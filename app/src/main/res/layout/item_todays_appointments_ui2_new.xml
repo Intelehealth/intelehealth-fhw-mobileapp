@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_todays_appointments1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -86,6 +87,8 @@
             android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/llAppointmentTimeTodayAppointment"
+            android:contentDescription="Today's Appointment Time Linear Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_dr_name_todays"
@@ -107,20 +110,84 @@
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/presc_rec_text_size"
                 app:drawableStartCompat="@drawable/ui2_ic_calendar" />
-
-            <TextView
-                android:id="@+id/tv_presc_rec_status"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginTop="@dimen/margin_8"
-                android:background="@drawable/ui2_ic_presc_received"
-                android:gravity="center_vertical"
-                android:lineSpacingExtra="3sp"
-                android:textAppearance="@style/caption"
-                android:textColor="@color/iconTintGray"
-                android:textSize="@dimen/item_ta_tv_date_text_size"
-                android:visibility="gone" />
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvPrescRxTodayAppointment"
+            android:contentDescription="Today's Appointment Presc Received CardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llAppointmentTimeTodayAppointment"
+            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:cardCornerRadius="3dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/cardTintLightGreen"
+                android:orientation="horizontal"
+                android:paddingHorizontal="3dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/prescription_icon_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="3dp"
+                    android:text="@string/presc_received"
+                    android:textColor="#1B163A"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvPrescPendingTodayAppointment"
+            android:contentDescription="Today's Appointment Presc Pending CardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llAppointmentTimeTodayAppointment"
+            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@+id/card_member_image"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:cardCornerRadius="3dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/cardTintLightOrange"
+                android:orientation="horizontal"
+                android:paddingHorizontal="3dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/prescription_icon_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="5dp"
+                    android:text="@string/presc_pending"
+                    android:textColor="#1B163A"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/iv_priority_tag1_todays"

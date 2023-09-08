@@ -13,13 +13,17 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,6 +127,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(AppointmentDetailsActivity.this);
         setContentView(R.layout.activity_appointment_details_ui2);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
@@ -354,12 +359,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
 
             btnRescheduleAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment) + " <b>" + patientName + "?</b>";
+                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment,patientName);
                 rescheduleAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
             btnCancelAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment) + " <b>" + patientName + "?</b>";
+                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment,patientName);
                 cancelAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.cancel_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
@@ -454,7 +459,10 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 // here show remind block as its pending from more than 1 day.
                 layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
             }
-            tvPrescStatus.setText(getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", ""));
+            String timeText1 = getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", "");
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                timeText1 = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
+            tvPrescStatus.setText(timeText1);
             tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
         }
         // presc block - end
@@ -675,7 +683,11 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
                     }
                 } else {
-                    timeText =  getResources().getString(R.string.in) + " " + minutes + " " +  getResources().getString(R.string.minutes_txt);
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                        timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
+                    else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        timeText = minutes + " " + getResources().getString(R.string.minutes_txt) + " " + getResources().getString(R.string.in) ;
+
                 }
             } else {
                 isVisitStartsIn = false;
@@ -1003,7 +1015,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         Log.d(TAG, "fetchPrescriptionReceivedTime:visitUUID :" + visitUUID);
         String modifiedDate = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         if (visitUUID != null) {
@@ -1154,5 +1166,24 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         args.putSerializable("patientDTO", (Serializable) patientDTO);
         intent2.putExtra("BUNDLE", args);
         startActivity(intent2);
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 }

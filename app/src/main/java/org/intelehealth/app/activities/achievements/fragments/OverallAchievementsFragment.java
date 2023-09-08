@@ -45,12 +45,14 @@ public class OverallAchievementsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(getContext());
         //sessionManager = ((MyAchievementsFragment) requireParentFragment()).sessionManager;
         sessionManager = new SessionManager(requireActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setLocale(getContext());
         View view = inflater.inflate(R.layout.fragment_overall_achievements_ui2, container, false);
         setLocale(getContext());
         initUI(view);

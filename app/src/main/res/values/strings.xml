@@ -1389,12 +1389,12 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="no_data_found">No data found</string>
     <string name="confirm_appointment">Confirm appointment?</string>
     <string name="cancel_appointment_new">Cancel appointment?</string>
-    <string name="sure_to_cancel_appointment">Are you sure you want to cancel the appointment for </string>
-    <string name="sure_to_reschedule_appointment">Are you sure you want to Reschedule the appointment for </string>
+    <string name="sure_to_cancel_appointment">Are you sure you want to cancel the appointment for <b>%1$s?</b></string>
+    <string name="sure_to_reschedule_appointment">Are you sure you want to Reschedule the appointment for <b>%1$s?</b></string>
     <string name="reschedule_appointment_new">Reschedule appointment?</string>
     <string name="speciality">Speciality</string>
     <string name="schedule_appointment">Schedule appointment</string>
-    <string name="sure_to_book_appointment">Are you sure, patient want to book the appointment on </string>
+    <string name="sure_to_book_appointment">Are you sure, patient want to book the appointment on <b>%1$s?</b></string>
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
     <string name="evening">Evening</string>
@@ -1627,7 +1627,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="health">Health</string>
     <string name="training">Training</string>
     <string name="about_app">About App</string>
-    <string name="sure_change_language">Are you sure you want to change language to</string>
+    <string name="sure_change_language">Are you sure you want to change language to %1$s?</string>
     <string name="change_language">Change language?</string>
     <string name="language_successfully_changed">Language successfully changed!</string>
     <string name="changing_protocols">Changing protocols</string>

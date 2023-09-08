@@ -2016,7 +2016,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -2390,7 +2390,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));

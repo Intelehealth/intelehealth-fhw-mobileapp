@@ -41,7 +41,7 @@ public class RTCConnectionDAO {
 
     public RTCConnectionDTO getByVisitUUID(String visitUUID) {
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_rtc_connection_log where visit_uuid = ?", new String[]{visitUUID});
         RTCConnectionDTO connectionDTO = null;

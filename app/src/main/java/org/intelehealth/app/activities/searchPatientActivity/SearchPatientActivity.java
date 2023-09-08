@@ -522,7 +522,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         String search = query.trim().replaceAll("\\s", "");
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String table = "tbl_patient";
         List<String> patientUUID_List = new ArrayList<>();
 

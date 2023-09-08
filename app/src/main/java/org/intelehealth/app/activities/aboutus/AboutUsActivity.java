@@ -46,6 +46,7 @@ public class AboutUsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(AboutUsActivity.this);
         setContentView(R.layout.activity_about_us);
 
         // changing status bar color

@@ -557,7 +557,9 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
     }
 
-    public static String getDisplayDateAndTime(String dateTime) {
+    public static String getDisplayDateAndTime(String dateTime, Context context) {
+        SessionManager sessionManager = new SessionManager(context);
+        String language = sessionManager.getAppLanguage();
         Log.d(TAG, "getDisplayDateAndTime: dateTime : " + dateTime);
         String finalDate = "";
         String hourFormated = "";
@@ -576,6 +578,8 @@ public class DateAndTimeUtils {
             String timeDisplay = hourFormated + ":" + splitedTime[1] + " " + textTime;
             String displayDate = getDateWithDayAndMonth(splitedString[0]);
             finalDate = displayDate + ", at " + timeDisplay;
+            if(language.equalsIgnoreCase("hi"))
+            finalDate = displayDate + ", " + timeDisplay + " " + context.getString(R.string.at);
         }
         return finalDate;
 

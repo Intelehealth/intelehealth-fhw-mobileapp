@@ -52,7 +52,7 @@
     <string name="error_incorrect_password" translatable="false">कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
     <string name="error_field_required" translatable="false">यह फ़ील्ड आवश्यक है</string>
     <string name="error_network" translatable="false">नेटवर्क त्रुटि</string>
-    <string name="error_location_not_selected" translatable="false">कृपया स्थान ड्रॉपडाउन मान का चयन करें</string>
+    <string name="error_location_not_selected" translatable="false">कृपया स्थान ड्रॉपडाउन से मान का चयन करें</string>
     <string name="error_location_not_fetched" translatable="false">स्थानों को लाने में असमर्थ</string>
     <string name="permission_rationale" translatable="false">ईमेल पूर्णता प्रदान करने के लिए संपर्क अनुमतियों की आवश्यकता होती है।
     </string>
@@ -1117,12 +1117,12 @@
     <string name="no_data_found">कोई डेटा नहीं मिला</string>
     <string name="confirm_appointment">अपॉइंटमेंट की पुष्टि करनी है?</string>
     <string name="cancel_appointment_new">अपॉइंटमेंट रद्द करना है?</string>
-    <string name="sure_to_cancel_appointment">क्या आप ... के लिए अपॉइंटमेंट रद्द करने के लिए आश्वस्त हैं?</string>
-    <string name="sure_to_reschedule_appointment">क्या आप ... के लिए अपॉइंटमेंट रीशेड्यूल करने के लिए आश्वस्त हैं?</string>
+    <string name="sure_to_cancel_appointment">क्या आप <b>%1$s</b> के लिए अपॉइंटमेंट रद्द करने के लिए आश्वस्त हैं?</string>
+    <string name="sure_to_reschedule_appointment">क्या आप <b>%1$s</b> के लिए अपॉइंटमेंट रीशेड्यूल करने के लिए आश्वस्त हैं?</string>
     <string name="reschedule_appointment_new">रीशेड्यूल करना है?</string>
     <string name="speciality">विशेषज्ञता</string>
     <string name="schedule_appointment">अपॉइंटमेंट शेड्यूल करें</string>
-    <string name="sure_to_book_appointment">क्या आप आश्वस्त हैं कि रोगी .. का अपॉइंटमेंट बुक करना चाहते हैं</string>
+    <string name="sure_to_book_appointment">क्या आप आश्वस्त हैं कि रोगी <b>%1$s</b> का अपॉइंटमेंट बुक करना चाहते हैं?</string>
     <string name="morning">सुबह</string>
     <string name="afternoon">दोपहर</string>
     <string name="evening">शाम</string>
@@ -1244,7 +1244,7 @@
     <string name="sure_you_want_close_registration">क्या आप रोगी पंजीकरण बंद करने के लिए आश्वस्त हैं?</string>
     <string name="health">स्वास्थ्य</string>
     <string name="about_app">ऐप का परिचय</string>
-    <string name="sure_change_language">क्या आप वाकई भाषा बदलना चाहते हैं</string>
+    <string name="sure_change_language">क्या आप वाकई भाषा को %1$s में बदलना चाहते हैं?</string>
     <string name="change_language">भाषा बदलें?</string>
     <string name="language_successfully_changed">भाषा सफलतापूर्वक बदल दी गई हैं!</string>
     <string name="changing_protocols">प्रोटोकॉल बदलना</string>
