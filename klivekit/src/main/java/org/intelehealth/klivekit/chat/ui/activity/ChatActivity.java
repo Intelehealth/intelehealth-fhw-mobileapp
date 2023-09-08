@@ -412,6 +412,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void updateListAdapter(ChatResponse response, boolean isAlreadySetReadStatus) {
         ArrayList<ItemHeader> messages = new ArrayList<>();
+        Log.e(TAG, "updateListAdapter: total messages" + response.getData().size());
         String messageDay = "";
         for (int i = 0; i < response.getData().size(); i++) {
             ChatMessage message = response.getData().get(i);
@@ -430,7 +431,6 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             String msgDay = message.getMessageDay();
-            Log.e(TAG, "updateListAdapter: MessageDay[" + i + "]=>" + msgDay);
             if (!msgDay.equals(messageDay)) {
                 messages.add(DayHeader.buildHeader(message.createdDate()));
                 messageDay = msgDay;
@@ -438,9 +438,9 @@ public class ChatActivity extends AppCompatActivity {
             messages.add(message);
         }
 
-        sortList(messages);
-        mChatListingAdapter.refresh(messages);
-
+//        sortList(messages);
+        Collections.reverse(messages);
+        Log.e(TAG, "updateListAdapter: adapter size =>" + mChatListingAdapter.getItemCount());
         if (!isAlreadySetReadStatus)
             for (int i = 0; i < response.getData().size(); i++) {
                 //Log.v(TAG, "ID=" + mChatList.get(i).getString("id"));
@@ -450,6 +450,8 @@ public class ChatActivity extends AppCompatActivity {
                     break;
                 }
             }
+
+        mChatListingAdapter.refresh(messages);
     }
 
     private void sortList(List<ItemHeader> messages) {

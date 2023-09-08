@@ -114,8 +114,8 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:layout_toStartOf="@+id/edit_button"
-                            android:visibility="gone"
-                            app:srcCompat="@drawable/ic_prescription_gray" />
+                            android:src="@drawable/ic_prescription_gray"
+                            android:visibility="gone" />
                     </LinearLayout>
 
 
