@@ -29,6 +29,7 @@ import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -142,7 +143,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             }
                         }
                         String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm", "dd MMMM, hh:mm");
-                        holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + " " + followupDate);
+                        String finalFollowUpDate = StringUtils.en__ru_dob(followupDate);
+                        holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + " " + finalFollowUpDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

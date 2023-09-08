@@ -48,12 +48,13 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
     Context context;
     List<AppointmentInfo> appointmentsList;
     String whichAppointments = "";
+    String appLanguage;
 
-    public AllAppointmentsAdapter(Context context, List<AppointmentInfo> appointmentsList, String whichAppointments) {
+    public AllAppointmentsAdapter(Context context, List<AppointmentInfo> appointmentsList, String whichAppointments, String appLanguage) {
         this.context = context;
         this.appointmentsList = appointmentsList;
         this.whichAppointments = whichAppointments;
-
+        this.appLanguage = appLanguage;
     }
 
     @Override
@@ -189,6 +190,12 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             String twelveHourTime = StringUtils.extractTimeFromString(timeText);
             String twentyFourHourTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(twelveHourTime, "h:mm a", "HH:mm");
             String finalTimeText = timeText.replace(twelveHourTime, twentyFourHourTime);
+
+            if (appLanguage.equalsIgnoreCase("ru")) {
+                finalTimeText = StringUtils.getFullMonthName(finalTimeText);
+                finalTimeText = StringUtils.en__ru_dob(finalTimeText);
+            }
+
             holder.tvDate.setText(finalTimeText);
             //  holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
             // imageView.setColorFilter(ContextCompat.getColor(context, R.color.COLOR_YOUR_COLOR), android.graphics.PorterDuff.Mode.SRC_IN);

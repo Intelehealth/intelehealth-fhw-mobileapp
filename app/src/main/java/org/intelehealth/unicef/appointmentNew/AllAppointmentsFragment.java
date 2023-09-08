@@ -121,7 +121,6 @@ public class AllAppointmentsFragment extends Fragment {
                              Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2,
                 container, false);
-
         return parentView;
     }
 
@@ -608,7 +607,7 @@ public class AllAppointmentsFragment extends Fragment {
                 }
 
                 AllAppointmentsAdapter allAppointmentsAdapter = new
-                        AllAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
+                        AllAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming", new SessionManager(getActivity()).getAppLanguage());
                 rvUpcomingApp.setAdapter(allAppointmentsAdapter);
 
             } else {
@@ -656,7 +655,7 @@ public class AllAppointmentsFragment extends Fragment {
                 //recyclerview for cancelled appointments
 
                 AllAppointmentsAdapter allAppointmentsAdapter = new
-                        AllAppointmentsAdapter(getActivity(), cancelledAppointmentsList, "cancelled");
+                        AllAppointmentsAdapter(getActivity(), cancelledAppointmentsList, "cancelled", new SessionManager(getActivity()).getAppLanguage());
                 rvCancelledApp.setAdapter(allAppointmentsAdapter);
 
             } else {
@@ -762,7 +761,7 @@ public class AllAppointmentsFragment extends Fragment {
         }
         //recyclerview for completed appointments
         AllAppointmentsAdapter allAppointmentsFragment = new
-                AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
+                AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed", new SessionManager(getActivity()).getAppLanguage());
         rvCompletedApp.setAdapter(allAppointmentsFragment);
 
     }
