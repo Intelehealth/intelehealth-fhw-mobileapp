@@ -29,22 +29,6 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
         return super.getCount();
     }
 
-//    @Override
-//    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-//        View v;
-//        if (position == 0) {
-//            TextView tv = new TextView(getContext());
-//            tv.setHeight(0);
-//            tv.setVisibility(View.GONE);
-//            v = tv;
-//        }
-//        else {
-//            v = super.getDropDownView(position, null, parent);
-//        }
-//
-//        parent.setVerticalScrollBarEnabled(false);
-//        return v;
-//    }
 
     @Override
     public long getItemId(int position) {
@@ -57,6 +41,8 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
         View view = super.getView(position, convertView, parent);
         if (view != null) {
             view.setContentDescription(getItem(position));
+            TextView textView = view.findViewById(R.id.tvLocationNameSetupSpinner);
+            textView.setContentDescription(getItem(position));
             if(position==0)
             {
                 View divider = view.findViewById(R.id.viewDividerSpinner);
