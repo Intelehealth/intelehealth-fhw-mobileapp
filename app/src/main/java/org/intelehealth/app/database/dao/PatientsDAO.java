@@ -374,6 +374,7 @@ public class PatientsDAO {
     }
 
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
+        if(patientAttributesDTOS==null) return false;
         boolean isInserted = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();
