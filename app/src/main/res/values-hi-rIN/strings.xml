@@ -194,8 +194,8 @@
     <string name="visit_summary_button_download" translatable="false">डाउनलोड</string>
     <string name="visit_summary_button_upload" translatable="false">अपलोड</string>
     <string name="name_button_download" translatable="false"> बटन डाउनलोड</string>
-    <string name="visit_summary_follow_up_date" translatable="false">तारीख का पालन करे</string>
-    <string name="visit_summary_follow_up_reminder" translatable="false">कृप्या मरीज को उसके तारीख याद दिलाये:</string>
+    <string name="visit_summary_follow_up_date" translatable="false">फॉलो-अप तारीख</string>
+    <string name="visit_summary_follow_up_reminder" translatable="false">कृप्या मरीज को उसके फॉलो-अप की तारीख याद दिलाये:</string>
     <string name="visit_summary_upload_reminder" translatable="false">कृप्या डालने से पहले यात्रा समाप्त करने का प्रयास करें!</string>
 
 
@@ -927,7 +927,7 @@
     <string name="upcoming_appointments">आगामी अपॉइंटमेंट्स</string>
     <string name="upcoming">आगामी</string>
     <string name="upcoming_0">आगामी (0)</string>
-    <string name="unclosed_visits">खुला विज़िट</string>
+    <string name="unclosed_visits">खुले विज़िट</string>
     <string name="unable_to_pick_data">गैलरी डेटा लेने में अक्षम!</string>
     <string name="type_or_select_reason">कारण टाइप करें या चुनें जैसे बुखार</string>
     <string name="type_here_patient_survey">यहां टाइप करें...</string>
@@ -955,7 +955,7 @@
     <string name="this_field_is_mandatory">यह फील्ड अनिवार्य है</string>
     <string name="take_patient_visits_intro">यह प्लैटफ़ॉर्म एक प्रोग्रामेबल डिज़िटल असिस्टेंस Ayu द्वारा संचालित है जो फ्रंटलाइन स्वास्थ्य कार्यकर्ताओं को क्षेत्रीय भाषाओं में प्राथमिक स्वास्थ्य देखभाल के लिए साक्ष्य-आधारित प्रोटोकॉल प्रदान करता है।</string>
     <string name="the_password_has_been_successfully_changed">पासवर्ड सफलतापूर्वक बदला जा चुका है!</string>
-    <string name="doctor_suggested_follow_up_on">डॉक्टर ने ... को फॉलो-अप विज़िट की सलाह दी है</string>
+    <string name="doctor_suggested_follow_up_on">डॉक्टर ने %1$s को फॉलो-अप विज़िट की सलाह दी है</string>
     <string name="provide_prescriptions_intro">मनचाही क्रियान्वयन रणनीति के साथ-साथ कम-संसाधन के लिए बनाया गया क्लाउड-बेस्ड ओपन-सोर्स प्लैटफॉर्म असरदार स्वास्थ्य परिणामों के लिए एक डिज़िटल हेल्थ समाधान तैयार करता है।</string>
     <string name="thank_you_for_feedback">आपके फीडबैक के लिए आपका धन्यवाद!</string>
     <string name="th">गुरू</string>

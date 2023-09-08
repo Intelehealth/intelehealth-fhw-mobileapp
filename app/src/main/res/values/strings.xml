@@ -1652,7 +1652,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="follow_up_scheduled">Follow up scheduled!</string>
     <string name="follow_up_scheduled_successfully">A follow up for this patient visit has been scheduled successfully.</string>
     <string name="downloaded_to">Downloaded to: </string>
-    <string name="doctor_suggested_follow_up_on">The doctor suggested a follow-up visit on\n</string>
+    <string name="doctor_suggested_follow_up_on">The doctor suggested a follow-up visit on %1$s</string>
     <string name="downloaded_successfully">Downloaded Successfully</string>
     <string name="prescription_up_to_date">Prescription is up to date.</string>
     <string name="select_all_answers">Select all the answers</string>

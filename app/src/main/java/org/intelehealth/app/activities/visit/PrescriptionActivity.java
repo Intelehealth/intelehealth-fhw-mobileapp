@@ -94,6 +94,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -1508,8 +1509,10 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 Log.i("TAG", "followUpDate: " + followUpDate);
                 String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
                 followup_date_txt.setText(followUpDate_format);
-                followup_subtext.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) +
-                        followUpDate_format + ".");
+                String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on,followUpDate_format);
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    followUpSubText = StringUtils.en__hi_dob(followUpSubText);
+                followup_subtext.setText(followUpSubText);
                 //checkForDoctor();
                 break;
             }
