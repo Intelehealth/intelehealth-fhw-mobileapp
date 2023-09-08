@@ -120,7 +120,6 @@ public class ChatListingAdapter extends DateHeaderAdapter {
 
             messageTextView.setText(message.getMessage());
             timeTextView.setText(message.getMessageTime());
-            Log.v("CHAT", "LEFT - ");
 
             if (message.getType() != null && message.getType().equalsIgnoreCase("attachment")) {
                 if (message.getMessage().endsWith(".pdf")) {
@@ -160,7 +159,6 @@ public class ChatListingAdapter extends DateHeaderAdapter {
             imageView.setOnClickListener(view -> mAttachmentClickListener.onClick(message.getMessage()));
             messageTextView.setText(message.getMessage());
             timeTextView.setText(message.getMessageTime());
-            Log.v("CHAT", "RIGHT - ");
             if (message.getType() != null && message.getType().equalsIgnoreCase("attachment")) {
                 if (message.getType().endsWith(".pdf")) {
                     imageView.setImageResource(R.drawable.pdf_icon);
