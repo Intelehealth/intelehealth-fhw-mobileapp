@@ -1508,6 +1508,8 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 }
                 Log.i("TAG", "followUpDate: " + followUpDate);
                 String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
                 followup_date_txt.setText(followUpDate_format);
                 String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on,followUpDate_format);
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -1856,13 +1858,7 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (!testsReturned.isEmpty()) {
                     testsReturned = "";
                     test_txt.setText("");
-                    //  requestedTestsCard.setVisibility(View.GONE);
                 }
-//                if (!additionalReturned.isEmpty()) {
-//                    additionalReturned = "";
-//                    additionalCommentsTextView.setText("");
-//                    additionalCommentsCard.setVisibility(View.GONE);
-//                }
 
                 if (!followUpDate.isEmpty()) {
                     followUpDate = "";

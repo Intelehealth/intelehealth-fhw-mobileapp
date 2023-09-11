@@ -747,7 +747,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     }
 
     public void setDisplay(String dataString) {
-
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};

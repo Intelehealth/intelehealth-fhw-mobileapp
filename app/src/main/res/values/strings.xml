@@ -1717,6 +1717,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="details">Details</string>
     <string name="name">Name</string>
     <string name="no_information">No information</string>
+    <string name="no_information_with_bullet">\u2022 No information</string>
     <string name="qualification">Qualificatio</string>
     <string name="advice">Advice</string>
     <string name="referred_specialist">Referred Specialist</string>

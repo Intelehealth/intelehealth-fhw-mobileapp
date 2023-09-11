@@ -433,6 +433,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
             followupDate = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM");
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                followupDate = StringUtils.en__hi_dob(followupDate);
             followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
             followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
             String followUpAcceptText = getResources().getString(R.string.doctor_suggested_follow_up_on,followUpDate_format);

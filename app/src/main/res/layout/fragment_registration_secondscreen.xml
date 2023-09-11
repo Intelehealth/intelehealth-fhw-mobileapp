@@ -305,8 +305,7 @@
                         android:paddingStart="@dimen/fu_margin_start"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingBottom="@dimen/margin_10"
-                        android:textColorHint="@color/edittext_hint_color"
-                        android:textSize="@dimen/edittext_textsize_16sp" />
+                        android:textColorHint="@color/edittext_hint_color" />
 
                     <TextView
                         android:id="@+id/city_error"

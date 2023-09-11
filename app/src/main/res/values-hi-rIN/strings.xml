@@ -836,8 +836,8 @@
     <string name="weight_kg">वजन (किग्रा)</string>
     <string name="bmi_index_auto_calculated">BMI इंडेक्स (ऑटो-कैलकुलेटेड)</string>
     <string name="enter_the_patient_s_vitals">रोगी के वायटल एंटर करें</string>
-    <string name="bp_sys">BP Systolic</string>
-    <string name="bp_dia">BP Diastolic</string>
+    <string name="bp_sys">बीपी सिस्टोलिक</string>
+    <string name="bp_dia">बीपी डायास्टोलिक</string>
     <string name="pulse_bpm">पल्स (bpm)</string>
     <string name="spo2">SpO2 (%)</string>
     <string name="respiratory_rate_breaths_min">श्वसन दर (सांस/मिनट)</string>
@@ -1329,6 +1329,7 @@
     <string name="details">विवरण</string>
     <string name="name">नाम</string>
     <string name="no_information">कोई जानकारी नहीं</string>
+    <string name="no_information_with_bullet">\u2022 कोई जानकारी नहीं</string>
     <string name="qualification">योग्यता</string>
     <string name="advice">सलाह</string>
     <string name="referred_specialist">"विशेषज्ञ को रिफर किया गया "</string>
