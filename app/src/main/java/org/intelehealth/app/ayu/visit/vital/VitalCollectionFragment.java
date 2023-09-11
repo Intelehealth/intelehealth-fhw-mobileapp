@@ -638,16 +638,16 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         } else if (bmi > 18.5 && bmi <= 24.9) {
             bmiStatus.setStatus(getResources().getString(R.string.normal));
             bmiStatus.setColor(R.color.ui2_bmi2);
-        } else if (bmi > 25.0 && bmi <= 29.9) {
+        } else if (bmi > 24.9 && bmi <= 29.9) {
             bmiStatus.setStatus(getResources().getString(R.string.overweight));
             bmiStatus.setColor(R.color.ui2_bmi3);
-        } else if (bmi > 30.0 && bmi <= 34.9) {
+        } else if (bmi > 29.9 && bmi <= 34.9) {
             bmiStatus.setStatus(getResources().getString(R.string.morbidly_obese));
             bmiStatus.setColor(R.color.ui2_bmi4);
-        } else if (bmi > 35.0 && bmi <= 39.9) {
+        } else if (bmi > 34.9 && bmi <= 39.9) {
             bmiStatus.setStatus(getResources().getString(R.string.severely_obese));
             bmiStatus.setColor(R.color.ui2_bmi5);
-        } else if (bmi >= 40.0) {
+        } else if (bmi >= 39.9) {
             bmiStatus.setStatus(getResources().getString(R.string.very_severely_obese));
             bmiStatus.setColor(R.color.ui2_bmi6);
         }
