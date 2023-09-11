@@ -377,7 +377,6 @@ public class PatientsDAO {
         boolean isInserted = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();
-        if(patientAttributesDTOS!=null && patientAttributesDTOS.size()<=0) {
             try {
                 for (int i = 0; i < patientAttributesDTOS.size(); i++) {
                     values.put("uuid", patientAttributesDTOS.get(i).getUuid());
@@ -396,10 +395,8 @@ public class PatientsDAO {
             } finally {
                 db.endTransaction();
             }
-        }
 
-
-        return isInserted;
+            return isInserted;
 
     }
 
