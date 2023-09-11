@@ -500,6 +500,7 @@
                                 android:layout_marginBottom="@dimen/margin_16dp"
                                 app:counterEnabled="true"
                                 app:counterMaxLength="1000"
+
                                 android:gravity="top">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -511,7 +512,6 @@
                                     android:inputType="textMultiLine"
                                     android:gravity="top"
                                     android:padding="@dimen/fu_margin_start"
-                                    android:hint="@string/leave_a_note_for_doctor"
                                     android:maxLength="1000"
                                     android:textColorHint="@color/edittext_hint_color"
                                     android:textSize="@dimen/find_patient_hint_size"
@@ -524,7 +524,7 @@
                             <TextView
                                 android:id="@+id/tvAddNotesValueVS"
                                 android:visibility="gone"
-                                tools:visibility="visible"
+                                tools:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/divider"

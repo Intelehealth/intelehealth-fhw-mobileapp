@@ -49,8 +49,10 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -2130,6 +2132,28 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
         etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
+
+//        android:hint="@string/leave_a_note_for_doctor"
+        etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
+        etAdditionalNotesVS.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                etAdditionalNotesVS.setHint("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().equalsIgnoreCase(""))
+                    etAdditionalNotesVS.setHint(R.string.leave_a_note_for_doctor);
+                else
+                    etAdditionalNotesVS.setHint("");
+            }
+        });
         // textview - end
 
         // up-down btn - start
