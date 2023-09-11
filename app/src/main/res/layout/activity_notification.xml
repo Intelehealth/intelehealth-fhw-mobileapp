@@ -99,7 +99,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/notifi_arrow_margin_end"
                     android:layout_marginEnd="@dimen/notifi_arrow_margin_end"
-                    android:background="@null"
+                    android:background="@null" android:visibility="gone"
                     android:src="@drawable/arrow_right_icon8" />
 
                 <ImageView
