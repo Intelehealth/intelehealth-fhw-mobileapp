@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:layout_marginTop="-300dp"
     tools:context=".profile.MyProfileActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,9 +18,11 @@
         android:orientation="vertical"
         android:paddingEnd="@dimen/layout_profile_padding">
 
+
         <include
             android:id="@+id/toolbar_common"
             layout="@layout/toolbar_common_ui2" />
+
 
         <LinearLayout
             android:id="@+id/layout_parent_profile"
@@ -650,8 +656,29 @@
                 android:paddingBottom="@dimen/common_button_padding_bottom"
                 android:text="@string/save"
                 android:textSize="@dimen/common_button_text_size" />
+
+
         </LinearLayout>
+
 
     </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+
+        <include
+            android:id="@+id/snackbar_cv"
+            layout="@layout/custom_snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_24"
+            style="@style/Widget.Design.FloatingActionButton"
+            />
+
+
+
+</RelativeLayout>

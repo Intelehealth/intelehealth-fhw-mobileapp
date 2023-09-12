@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -52,6 +53,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -136,6 +138,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     RadioGroup rgGroupGender;
     ImageView ivBack;
     private Context context;
+    private CardView snackbar_cv;
+    private TextView snackbar_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +177,8 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
         fingerprintSwitch = findViewById(R.id.fingerprint_enable_Switch);
+        snackbar_cv = findViewById(R.id.snackbar_cv);
+        snackbar_text = findViewById(R.id.snackbar_text);
 
         if (sessionManager.isEnableAppLock())
             fingerprintSwitch.setChecked(true);
@@ -440,9 +446,23 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         fetchUserDetails();
     }
 
+    private void showSnackBarAndRemoveLater(String appLanguage) {
+        snackbar_cv.setVisibility(View.VISIBLE);
+        snackbar_text.setText(appLanguage);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                snackbar_cv.setVisibility(View.GONE);
+            }
+        }, 4000);
+    }
+
+
     private void userFeedbackMsg() {
         etUsername.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
+//            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
         });
         etFirstName.setOnClickListener(v -> {
             Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
