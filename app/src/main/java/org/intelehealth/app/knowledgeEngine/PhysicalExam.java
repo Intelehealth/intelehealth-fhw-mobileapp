@@ -404,4 +404,8 @@ public class PhysicalExam extends Node {
     public void setPageTitlesLocale(List<String> pageTitlesLocale) {
         this.pageTitlesLocale = pageTitlesLocale;
     }
+    /*Node Engine - 3.0 support with new UI*/
+
+    /*End*/
+
 }

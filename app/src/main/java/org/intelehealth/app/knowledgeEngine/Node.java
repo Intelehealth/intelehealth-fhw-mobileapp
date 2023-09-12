@@ -72,7 +72,7 @@ public class Node implements Serializable {
     public void setNeedToHide(boolean needToHide) {
         this.needToHide = needToHide;
     }
-
+    private String engineVersion;
     private boolean needToHide;
     private String compareDuplicateNode;
     private boolean enableExclusiveOption;
@@ -175,6 +175,7 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
+            this.engineVersion = jsonNode.getString("engineVersion");
             this.id = jsonNode.getString("id");
 
             this.isMultiChoice = jsonNode.optBoolean("multi-choice");
@@ -370,6 +371,7 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
+        this.engineVersion = source.engineVersion;
         this.id = source.id;
         this.isMultiChoice = source.isMultiChoice;
         this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
@@ -3305,5 +3307,15 @@ public class Node implements Serializable {
     public void setImageUploaded(boolean imageUploaded) {
         isImageUploaded = imageUploaded;
     }
+
+    public String getEngineVersion() {
+        return engineVersion;
+    }
+
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
+    /*Node Engine - 3.0 support with new UI*/
+    /*End*/
 }
 
