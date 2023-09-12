@@ -165,7 +165,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
 
         try {
             pat_phoneno = StringUtils.mobileNumberEmpty(phoneNumber(patientUuid));
-            if(pat_phoneno.equalsIgnoreCase("N/A"))
+            if (pat_phoneno.equalsIgnoreCase("N/A"))
                 pat_phoneno = "";
         } catch (DAOException e) {
             e.printStackTrace();
@@ -424,6 +424,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         followup_accept_text = findViewById(R.id.followup_accept_text);
 
         if (followupDate != null) {
+            String originalFollowUpDate = followupDate;
             followUpDate_format = DateAndTimeUtils.date_formatter(followupDate, "yyyy-MM-dd", "dd MMMM,yyyy");
             followup_relative_block.setVisibility(View.VISIBLE);
             yes_no_followup_relative.setVisibility(View.VISIBLE);
@@ -431,9 +432,12 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
             followupDate_txt.setText(getResources().getString(R.string.follow_up_on) + " " + followupDate);
             followup_info.setText(getResources().getString(R.string.please_take) + " " + patientName + getResources().getString(R.string.s_follow_up_visit));
 
-            followup_accept_text.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + " " +
-                    followUpDate_format + ".");
-            Log.v("vd", "vd: " + followup_info);
+            if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(originalFollowUpDate, "yyyy-MM-dd")) {
+                followup_accept_text.setText(getResources().getString(R.string.doctor_suggested_follow_up_on) + " " + followUpDate_format + ".");
+            } else {
+                followup_accept_text.setText(getResources().getString(R.string.follow_up_date_arrived));
+            }
+
         } else {
             followup_relative_block.setVisibility(View.GONE);
             yes_no_followup_relative.setVisibility(View.GONE);
@@ -717,7 +721,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
      * @param phoneno
      */
     private void calling_feature(String phoneno) {
-        if (phoneno!= null && !phoneno.equalsIgnoreCase("")) {
+        if (phoneno != null && !phoneno.equalsIgnoreCase("")) {
             Intent i1 = new Intent(Intent.ACTION_DIAL);
             i1.setData(Uri.parse("tel:" + phoneno));
             startActivity(i1);

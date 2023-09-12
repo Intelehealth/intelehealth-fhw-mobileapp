@@ -10,10 +10,12 @@ import org.intelehealth.app.R;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -871,6 +873,7 @@ public class DateAndTimeUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return simpleDateFormat.format(new Date());
     }
+
     public static String getTodaysDateInRequiredFormat(String format, String localeCode) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
         return simpleDateFormat.format(new Date());
@@ -941,7 +944,8 @@ public class DateAndTimeUtils {
         Date createdDateObject = convertStringToDateObject(date, format, localeCode);
         Date startDateObject = convertStringToDateObject(startDate, format, localeCode);
         Date endDateObject = convertStringToDateObject(endDate, format, localeCode);
-        if(createdDateObject==null || startDateObject == null || endDateObject == null) return false;
+        if (createdDateObject == null || startDateObject == null || endDateObject == null)
+            return false;
         return createdDateObject.getTime() >= startDateObject.getTime() && createdDateObject.getTime() <= endDateObject.getTime();
     }
 
@@ -965,9 +969,9 @@ public class DateAndTimeUtils {
 
     public static String[] findDate(String str, String strPattern) {
         //23-JUN-1996
-        Log.v("UTILS", "findDate - "+str);
+        Log.v("UTILS", "findDate - " + str);
         str = str.replaceAll("<.*?>", "");
-        Log.v("UTILS", "findDate celan html- "+str);
+        Log.v("UTILS", "findDate celan html- " + str);
         String result = "";
         Pattern pattern = Pattern.compile(strPattern);
         Matcher matcher = pattern.matcher(str);
@@ -977,7 +981,7 @@ public class DateAndTimeUtils {
             stringBuilder.append(matcher.group());
         }
         result = stringBuilder.toString();
-        Log.v("UTILS", "findDate - "+result);
+        Log.v("UTILS", "findDate - " + result);
         if (!result.isEmpty()) {
             return result.split(",");
         } else {
@@ -988,7 +992,7 @@ public class DateAndTimeUtils {
 
     public static String formatInLocalDateForDDMMMYYYY(String inputDate, String localeCode) {
         String dateFormatted = "";
-        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - "+inputDate);
+        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - " + inputDate);
         //input date must be in dd/mm/yyyy format
         if (inputDate != null && !inputDate.isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy", new Locale("en"));
@@ -1002,7 +1006,18 @@ public class DateAndTimeUtils {
             dateFormatted = sdf2.format(d);
 
         }
-        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - "+dateFormatted);
+        Log.v("UTILS", "formatInLocalDateForDDMMMYYYY - " + dateFormatted);
         return dateFormatted;
+    }
+
+    public static boolean isCurrentDateBeforeFollowUpDate(String followUpDate, String followUpDateFormat) {
+        Date currentTime = new Date();
+        try {
+            Date parseFollowUpDate = new SimpleDateFormat(followUpDateFormat, Locale.ENGLISH).parse(followUpDate);
+            return currentTime.before(parseFollowUpDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
