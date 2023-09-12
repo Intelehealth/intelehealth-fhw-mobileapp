@@ -109,6 +109,7 @@ public class LabourCompletionFragment extends Fragment {
         binding.etLayoutDeceasedReason.setVisibility(hasMotherDeceased ? View.VISIBLE : View.GONE);
         binding.etLayoutDeceasedReason.setMultilineInputEndIconGravity();
         binding.etLayoutOtherComment.setMultilineInputEndIconGravity();
+        binding.etMotherStatus.setVisibility(hasMotherDeceased ? View.GONE : View.VISIBLE);
 //        binding.bottomSheetAppBar.toolbar.setTitle(getString(R.string.complete_visit));
 //        binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> dismiss());
         binding.btnLabourSubmit.setOnClickListener(v -> {
@@ -250,7 +251,8 @@ public class LabourCompletionFragment extends Fragment {
 
     private void saveVisitCompletionDetails(LabourCompleteAndMotherDeceasedDialogBinding binding) {
         labourInfo.setBabyStatus(binding.etBabyStatus.getText().toString());
-        labourInfo.setMotherStatus(binding.etMotherStatus.getText().toString());
+        if (!hasMotherDeceased)
+            labourInfo.setMotherStatus(binding.etMotherStatus.getText().toString());
         labourInfo.setOtherComment(binding.etOtherComment.getText().toString());
         labourInfo.setMotherDeceasedReason(binding.etDeceasedReason.getText().toString());
 
