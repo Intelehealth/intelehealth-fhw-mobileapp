@@ -66,7 +66,7 @@
     <string name="error_other_risk">Require Other high risk pregnancy</string>
     <string name="enter_other_ivfluid">Enter IV Fluids</string>
     <string name="labour_completed">Labour completed</string>
-    <string name="mother_deceased">Mother deceased</string>
+    <string name="mother_deceased">Mother Death</string>
     <string name="select_labour_completed">Select labour completed</string>
     <string name="other_comment">Other Comments</string>
     <string name="select_gender">Select Gender</string>
@@ -86,7 +86,7 @@
     <string name="comments">Comments</string>
     <string name="enter_reason_death">Enter reason of death</string>
     <string name="data_added_successfully">Data added successfully</string>
-    <string name="enter_reason_deceased">Mother Deceased Reason</string>
+    <string name="enter_reason_deceased">Mother Death Reason</string>
     <string name="female">Female</string>
     <string name="male">Male</string>
     <string name="baby_sex">Baby Sex</string>

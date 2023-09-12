@@ -90,8 +90,8 @@ public enum CompletedVisitStatus {
     }
 
     public enum MotherDeceased implements VisitStatus {
-        MOTHER_DECEASED_FLAG(UuidDictionary.MOTHER_DECEASED_FLAG, "Mother Deceased", "Mother Deceased"),
-        MOTHER_DECEASED_REASON(UuidDictionary.MOTHER_DECEASED, "Mother Deceased", "Mother Deceased");
+        MOTHER_DECEASED_FLAG(UuidDictionary.MOTHER_DECEASED_FLAG, "Mother Death", "Mother Death"),
+        MOTHER_DECEASED_REASON(UuidDictionary.MOTHER_DECEASED, "Mother Death", "Mother Death");
         private final String value;
         private final String uuid;
         private final String sortValue;
