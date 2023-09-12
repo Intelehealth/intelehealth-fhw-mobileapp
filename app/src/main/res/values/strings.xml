@@ -942,8 +942,7 @@
     <string name="daily_avg_time_spent">Daily average time\nspent by you</string>
     <string name="your_time_spent_today">Your time spent\ntoday</string>
     <string name="total_time_spent">Total time spent</string>
-    <string name="privacy_policy_content_old"><b>Personal Information</b>\nHealth Worker will collect personal information and health information from you for your medical records.\n\n<b>Use</b>\nYour information is\n- used for diagnosing and treating you.\n- used to send you reminders, prescription information, and other related communication.\n\nYour personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here <a href="https://www.intelehealth.org/privacy-policy">https://www.intelehealth.org/privacy-policy</a>.\n\n<b>Protection Measures</b>\nWe provide physical, electronic, and procedural safeguards to protect information we process and maintain.\n\n<b>Access and Correction</b>\nYou have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.\nIf you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time.\n\nOn clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.</string>
-    <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
+    <string name="privacy_policy_content_old"><b><font color='#2E1E91'>Personal Information</font></b>\nHealth Worker will collect personal information and health information from you for your medical records.\n\n<b><font color='#2E1E91'>Use</font></b>\nYour information is\n- used for diagnosing and treating you.\n- used to send you reminders, prescription information, and other related communication.\n\nYour personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here <a href="https://www.intelehealth.org/privacy-policy">https://www.intelehealth.org/privacy-policy</a>.\n\n<b><font color='#2E1E91'>Protection Measures</font></b>\nWe provide physical, electronic, and procedural safeguards to protect information we process and maintain.\n\n<b><font color='#2E1E91'>Access and Correction</font></b>\nYou have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.\nIf you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time.\n\nOn clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.</string>    <string name="privacy_policy_content">Your privacy is important to us. Intelehealth’s Enterprise
         Privacy Policy aligns with Generally Accepted
         Privacy Principles (GAPP). The GAPP are founded on key concepts from significant
         national and international privacy laws, regulations and good business practices.\n\nIn case of any privacy related complaints/grievances, please fill and submit this Privacy
@@ -1389,12 +1388,12 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="no_data_found">No data found</string>
     <string name="confirm_appointment">Confirm appointment?</string>
     <string name="cancel_appointment_new">Cancel appointment?</string>
-    <string name="sure_to_cancel_appointment">Are you sure you want to cancel the appointment for </string>
-    <string name="sure_to_reschedule_appointment">Are you sure you want to Reschedule the appointment for </string>
+    <string name="sure_to_cancel_appointment">Are you sure you want to cancel the appointment for <b>%1$s?</b></string>
+    <string name="sure_to_reschedule_appointment">Are you sure you want to Reschedule the appointment for <b>%1$s?</b></string>
     <string name="reschedule_appointment_new">Reschedule appointment?</string>
     <string name="speciality">Speciality</string>
     <string name="schedule_appointment">Schedule appointment</string>
-    <string name="sure_to_book_appointment">Are you sure, patient want to book the appointment on </string>
+    <string name="sure_to_book_appointment">Are you sure, patient want to book the appointment on <b>%1$s?</b></string>
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
     <string name="evening">Evening</string>
@@ -1627,7 +1626,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="health">Health</string>
     <string name="training">Training</string>
     <string name="about_app">About App</string>
-    <string name="sure_change_language">Are you sure you want to change language to</string>
+    <string name="sure_change_language">Are you sure you want to change language to %1$s?</string>
     <string name="change_language">Change language?</string>
     <string name="language_successfully_changed">Language successfully changed!</string>
     <string name="changing_protocols">Changing protocols</string>
@@ -1652,7 +1651,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="follow_up_scheduled">Follow up scheduled!</string>
     <string name="follow_up_scheduled_successfully">A follow up for this patient visit has been scheduled successfully.</string>
     <string name="downloaded_to">Downloaded to: </string>
-    <string name="doctor_suggested_follow_up_on">The doctor suggested a follow-up visit on\n</string>
+    <string name="doctor_suggested_follow_up_on">The doctor suggested a follow-up visit on %1$s</string>
     <string name="downloaded_successfully">Downloaded Successfully</string>
     <string name="prescription_up_to_date">Prescription is up to date.</string>
     <string name="select_all_answers">Select all the answers</string>
@@ -1717,6 +1716,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="details">Details</string>
     <string name="name">Name</string>
     <string name="no_information">No information</string>
+    <string name="no_information_with_bullet">\u2022 No information</string>
     <string name="qualification">Qualificatio</string>
     <string name="advice">Advice</string>
     <string name="referred_specialist">Referred Specialist</string>

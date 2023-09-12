@@ -668,7 +668,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="\u2022 No information"
+                            android:text="@string/no_information_with_bullet"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 
@@ -890,7 +890,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="\u2022 No information"
+                            android:text="@string/no_information_with_bullet"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 
@@ -976,7 +976,7 @@
                             android:layout_marginTop="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="\u2022 No information"
+                            android:text="@string/no_information_with_bullet"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 

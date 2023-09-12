@@ -31,6 +31,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -62,6 +63,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     public FollowUpPatientAdapter_New(List<FollowUpModel> patients, Context context) {
         this.patients = patients;
         this.context = context;
+        sessionManager = new SessionManager(context);
     }
 
     public FollowUpPatientAdapter_New(Context context) {
@@ -144,6 +146,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
                         }
                         String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM,hh:mm a");
+                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            followupDate = StringUtils.en__hi_dob(followupDate);
                         holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + " " + followupDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -224,7 +228,6 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
     }
 
     public void profilePicDownloaded(FollowUpModel model, Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientuuid());
         Logger.logD("TAG", "profileimage url" + url);

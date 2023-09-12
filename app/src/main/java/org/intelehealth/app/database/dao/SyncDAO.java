@@ -447,8 +447,6 @@ public class SyncDAO {
                                     }
                                 }
 
-                                //providerDAO.updateProviderProfileSync(sessionManager.getProviderID(), "true");
-
                                 //ui2.0 for provider profile details
                                 if(pushResponseApiCall.getData().getProviderlist()!=null) {
                                     Log.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());

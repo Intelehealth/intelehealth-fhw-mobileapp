@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IHUtils</string>
+    <string name="util_permission_camera_rationale">कैमरा प्रीव्यू दिखाने के लिए कैमरा की अनुमति की आवश्यकता होती है</string>
+    <string name="util_permission_camera_denied">कैमरा अनुमति देने से इंकार कर दिया गया था| कृपया कैमरे तक पहुचने के लिए इस देने का विचार करें!</string>
+    <string name="util_permission_camera_never_askagain">कैमरा की अनुमति से इंकार कर दिया था फिर कभी नहीं पूछे</string>
+    <string name="util_button_allow">अनुमति</string>
+    <string name="util_button_deny">मना</string>
+    <string name="util_button_ok">ठीक</string>
+    <string name="util_button_cancel">रद्द करना</string>
+    <string name="util_picture_taken">तस्वीर ली</string>
+    <string name="util_switch_flash">फ़्लैश स्विच करें</string>
+    <string name="util_switch_camera">कैमरा स्विच करें</string>
+    <string name="util_flash_auto">फ्लैश ऑटो</string>
+    <string name="util_flash_off">फ्लैश बंद</string>
+    <string name="util_flash_on">फ्लैश शुरू</string>
+    <string name="util_cancel">रद्द करना</string>
+    <string name="util_title_activity_camera">कैमरा</string>
+    <string name="util_take_image">फोटो लो</string>
+    <string name="util_photo">फोटो</string>
+
+</resources>

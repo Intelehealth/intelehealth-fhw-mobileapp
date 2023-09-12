@@ -738,28 +738,20 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         });
 
         btnOkCalendar.setOnClickListener(v -> {
-
             //for get the selected date - if calendar view called from activity
             if (listener != null) {
                 listener.getSelectedDate(selectedDate, "");
             }
-
-
             //for get the selected date - if calendar view called from fragment
             if (getTargetFragment() != null) {
                 Intent intent = new Intent()
                         .putExtra("selectedDate", selectedDate)
                         .putExtra("whichDate", whichDate);
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-
             }
-
-
             alertDialog.dismiss();
         });
-
         alertDialog.show();
-
         return alertDialog;
     }
 

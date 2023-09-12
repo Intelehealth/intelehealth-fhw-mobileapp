@@ -77,6 +77,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:elevation="8dip"
+                android:padding="1dp"
                 android:src="@drawable/cancel_btn_cross" />
 
         </LinearLayout>

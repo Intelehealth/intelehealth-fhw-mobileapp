@@ -5,13 +5,17 @@ import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPat
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -47,6 +51,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -101,6 +106,7 @@ public class AllAppointmentsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(getContext());
         ((MyAppointmentActivity)getActivity()).initUpdateFragmentOnEvent(1, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
@@ -117,11 +123,31 @@ public class AllAppointmentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setLocale(getContext());
         parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2,
                 container, false);
         initUI();
         clickListeners();
         return parentView;
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 
     private void setFiltersToTheGroup(FilterOptionsModel inputModel) {

@@ -63,7 +63,7 @@ public class DateRangeAchievementsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //sessionManager = ((MyAchievementsFragment) requireParentFragment()).sessionManager;
+        setLocale(getContext());
         sessionManager = new SessionManager(requireActivity());
     }
 

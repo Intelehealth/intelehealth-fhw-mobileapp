@@ -234,10 +234,8 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
             }
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
-                cpd.dismiss();
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()));
-                    //Toast.makeText(context, "Password changed successfully", Toast.LENGTH_SHORT).show();
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -276,6 +274,7 @@ public class ForgotPasswordActivity_New extends AppCompatActivity {
 
             @Override
             public void onComplete() {
+                cpd.dismiss();
                 Logger.logD(TAG, "completed");
             }
         });
