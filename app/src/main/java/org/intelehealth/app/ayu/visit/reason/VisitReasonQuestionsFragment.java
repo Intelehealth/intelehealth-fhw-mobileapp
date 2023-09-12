@@ -169,11 +169,11 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
                     //linearLayoutManager.setStackFromEnd(false);
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
-                        mQuestionsListingAdapter.addItem(mCurrentNode);
+                        mQuestionsListingAdapter.addItem(mCurrentNode, mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
                     mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                 } else {
                     //linearLayoutManager.setStackFromEnd(false);
-                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
                 }
 
                 VisitUtils.scrollNow(recyclerView, 300, 0, 500);
@@ -211,7 +211,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
 
         recyclerView.setAdapter(mQuestionsListingAdapter);
         mQuestionsListingAdapter.setRootNodeIndex(mCurrentComplainNodeIndex);
-        mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+        mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
 
         if (mIsEditMode) {
             boolean pendingForAddAll = true;
@@ -228,12 +228,12 @@ public class VisitReasonQuestionsFragment extends Fragment {
                 if (mRootComplainBasicInfoHashMap.get(mCurrentComplainNodeIndex).isAssociateSymptom()) {
                     //linearLayoutManager.setStackFromEnd(false);
                     if (!mQuestionsListingAdapter.isIsAssociateSymptomsLoaded())
-                        mQuestionsListingAdapter.addItem(mCurrentNode);
+                        mQuestionsListingAdapter.addItem(mCurrentNode, mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
                     mQuestionsListingAdapter.setAssociateSymptomsLoaded(true);
                     pendingForAddAll = false;
                 } else {
                     //linearLayoutManager.setStackFromEnd(true);
-                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex));
+                    mQuestionsListingAdapter.addItem(mCurrentNode.getOptionsList().get(mCurrentComplainNodeOptionsIndex), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getEngineVersion());
                 }
             }
         }

@@ -27,6 +27,7 @@ public class PhysicalExam extends Node {
     private List<Node> selectedNodes;
     private int totalExams;
     private List<String> pageTitles, pageTitlesLocale;
+    private String engineVersion;
 
     public PhysicalExam(JSONObject jsonObject, ArrayList<String> selection) {
         super(jsonObject);
@@ -405,6 +406,13 @@ public class PhysicalExam extends Node {
         this.pageTitlesLocale = pageTitlesLocale;
     }
     /*Node Engine - 3.0 support with new UI*/
+    public String getEngineVersion() {
+        return engineVersion;
+    }
+
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
 
     /*End*/
 

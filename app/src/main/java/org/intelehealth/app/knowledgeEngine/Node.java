@@ -3307,7 +3307,7 @@ public class Node implements Serializable {
     public void setImageUploaded(boolean imageUploaded) {
         isImageUploaded = imageUploaded;
     }
-
+    /*Node Engine - 3.0 support with new UI*/
     public String getEngineVersion() {
         return engineVersion;
     }
@@ -3315,7 +3315,7 @@ public class Node implements Serializable {
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
-    /*Node Engine - 3.0 support with new UI*/
+
     /*End*/
 }
 

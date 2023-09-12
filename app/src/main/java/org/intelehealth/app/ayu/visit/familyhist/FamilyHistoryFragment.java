@@ -45,6 +45,15 @@ public class FamilyHistoryFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private String engineVersion;
+    public String getEngineVersion() {
+        return engineVersion;
+    }
+
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
+
 
     // TODO: Rename and change types and number of parameters
     public static FamilyHistoryFragment newInstance(Intent intent, boolean isEditMode, Node node) {
@@ -125,7 +134,7 @@ public class FamilyHistoryFragment extends Fragment {
                     if (mCurrentComplainNodeOptionsIndex < mCurrentRootOptionList.size() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
 
-                        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+                        mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
                     /*recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -175,7 +184,7 @@ public class FamilyHistoryFragment extends Fragment {
                 mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
                 mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size() - 1;
             } else {
-                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+                mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
 
             }
         } else {

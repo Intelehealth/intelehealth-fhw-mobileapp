@@ -80,6 +80,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     RecyclerView mRecyclerView;
     private int mLastImageCaptureSelectedNodeIndex = 0;
 
+
     public void addImageInLastNode(String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
         Log.v("showCameraView", "addImageInLastNode mLastImageCaptureSelectedNodeIndex - " + mLastImageCaptureSelectedNodeIndex);
@@ -126,6 +127,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private HashMap<Integer, Integer> mIndexMappingHashMap = new HashMap<>();
     private boolean mIsEditMode;
 
+    private HashMap<Integer, String> mMindMapVersionMappingHashMap = new HashMap<>();
+
     public QuestionsListingAdapter(RecyclerView recyclerView, Context context, boolean isFromAssociatedSymptoms, boolean isPhyExam, PhysicalExam physicalExam, int rootIndex, HashMap<Integer, ComplainBasicInfo> complainBasicInfoHashMap, boolean editMode, OnItemSelection onItemSelection) {
         mContext = context;
         mIsFromAssociatedSymptoms = isFromAssociatedSymptoms;
@@ -152,12 +155,15 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
 
-    public void addItem(Node node) {
+    public void addItem(Node node, String engineVersion) {
         Log.v(TAG, "addItem()");
         mItemList.add(node);
         int key = mItemList.size() - 1;
-        if (!mIndexMappingHashMap.containsKey(key))
-            mIndexMappingHashMap.put(key, mRootIndex);
+        if (!mIndexMappingHashMap.containsKey(key)) mIndexMappingHashMap.put(key, mRootIndex);
+
+        if (!mMindMapVersionMappingHashMap.containsKey(key))
+            mMindMapVersionMappingHashMap.put(key, engineVersion);
+
         Log.v(TAG, "mIndexMappingHashMap - " + new Gson().toJson(mIndexMappingHashMap));
         notifyItemInserted(key);
     }
@@ -166,8 +172,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         mItemList = nodes;
 
         for (int i = 0; i < mItemList.size(); i++) {
-            if (!mIndexMappingHashMap.containsKey(i))
-                mIndexMappingHashMap.put(i, mRootIndex);
+            if (!mIndexMappingHashMap.containsKey(i)) mIndexMappingHashMap.put(i, mRootIndex);
         }
 
         notifyDataSetChanged();
@@ -180,8 +185,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ui2_question_main_root, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ui2_question_main_root, parent, false);
         /**
          * First item's entrance animations.
          */
@@ -402,8 +406,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
-                && node.getLanguage().equalsIgnoreCase(" to ")) {
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && node.getLanguage().equalsIgnoreCase(" to ")) {
             String[] vals = node.getLanguage().split(" to ");
             rangeTextView.setText(vals[0] + " " + mContext.getString(R.string.to) + " " + vals[1]);
             List<Float> list = new ArrayList<>();
@@ -1394,8 +1397,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             data[i] = String.valueOf(i);
         }
 
-        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext,
-                R.layout.simple_spinner_item_1, data);
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data);
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         numberRangeSpinner.setAdapter(adaptador);
@@ -1419,13 +1421,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
 
         // add a list
-        final String[] data1 = new String[]{mContext.getString(R.string.duration_type),
-                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
-                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
-                mContext.getString(R.string.Years)};
+        final String[] data1 = new String[]{mContext.getString(R.string.duration_type), mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
 
-        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext,
-                R.layout.simple_spinner_item_1, data1);
+        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data1);
         adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         durationTypeSpinner.setAdapter(adaptador1);
@@ -1535,10 +1533,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         builder.setTitle(mContext.getString(R.string.select_duration_type_title));
 
         // add a list
-        final String[] data = new String[]{
-                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
-                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
-                mContext.getString(R.string.Years)};
+        final String[] data = new String[]{mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
 
         builder.setItems(data, new DialogInterface.OnClickListener() {
             @Override
@@ -1568,8 +1563,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             //  editText.setText(node.getLanguage());
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
-            else
-                editText.setText(node.getLanguage());
+            else editText.setText(node.getLanguage());
         }
         String oldValue = editText.getText().toString().trim();
         editText.addTextChangedListener(new TextWatcher() {

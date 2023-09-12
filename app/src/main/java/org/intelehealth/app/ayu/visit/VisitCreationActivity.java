@@ -572,6 +572,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         Log.v(TAG, "selectedExamsList- " + new Gson().toJson(selectedExamsList));
         physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, fileLocation), selectedExamsList);
         physicalExamMap.refreshOnlyLocaleTitle();
+        physicalExamMap.setEngineVersion(filterNode.getEngineVersion());
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
             /*if (i == 0) {

@@ -144,7 +144,7 @@ public class PhysicalExaminationFragment extends Fragment {
                         //}
 
 
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0));
+                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0),physicalExam.getEngineVersion());
                    /* recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -193,13 +193,13 @@ public class PhysicalExaminationFragment extends Fragment {
             recyclerView.setAdapter(mQuestionsListingAdapter);
             mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).
 
-                    getOption(0));
+                    getOption(0),physicalExam.getEngineVersion());
             showSanityDialog();
             if (mIsEditMode) {
                 while (true) {
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0));
+                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0),physicalExam.getEngineVersion());
 
 
                     } else {

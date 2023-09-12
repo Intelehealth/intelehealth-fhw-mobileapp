@@ -46,6 +46,16 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     private List<Node> mItemList = new ArrayList<Node>();
     private RecyclerView mRootRecyclerView, mRecyclerView;
     private boolean mIsEditMode;
+    private String engineVersion;
+    public String getEngineVersion() {
+        return engineVersion;
+    }
+
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
+
+
 
     public interface AssociateSymptomsOnItemSelection {
         public void onSelect(Node data);
@@ -170,9 +180,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                     genericViewHolder.currentComplainNodeOptionsIndex++;
                                     //genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
                                     if (genericViewHolder.isHavingDirectOption)
-                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position));
+                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position),getEngineVersion());
                                     else
-                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
+                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex),getEngineVersion());
                                 } /*else {
                                     genericViewHolder.currentComplainNodeOptionsIndex = 0;
 
@@ -205,9 +215,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         //for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
                         // genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(i));
                         if (genericViewHolder.isHavingDirectOption)
-                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position));
+                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position),getEngineVersion());
                         else
-                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
+                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
 
                         //}
                     } else {

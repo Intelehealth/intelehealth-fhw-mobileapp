@@ -77,6 +77,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     RecyclerView mRecyclerView, mRootRecyclerView;
     private int mLastImageCaptureSelectedNodeIndex = 0;
     private boolean mIsEditMode;
+    private String engineVersion;
+    public String getEngineVersion() {
+        return engineVersion;
+    }
+
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
+
+
 
     public void addImageInLastNode(String image) {
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);

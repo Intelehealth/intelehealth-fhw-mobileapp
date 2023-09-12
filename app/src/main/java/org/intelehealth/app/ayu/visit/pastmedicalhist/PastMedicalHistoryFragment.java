@@ -44,6 +44,14 @@ public class PastMedicalHistoryFragment extends Fragment {
     public PastMedicalHistoryFragment() {
         // Required empty public constructor
     }
+    private String engineVersion;
+    public String getEngineVersion() {
+        return engineVersion;
+    }
+
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
 
 
     // TODO: Rename and change types and number of parameters
@@ -125,7 +133,7 @@ public class PastMedicalHistoryFragment extends Fragment {
                     mCurrentComplainNodeOptionsIndex++;
 
 
-                    mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+                    mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
                     /*recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -175,7 +183,7 @@ public class PastMedicalHistoryFragment extends Fragment {
             mQuestionsListingAdapter.addItemAll(mCurrentRootOptionList);
             mCurrentComplainNodeOptionsIndex = mCurrentRootOptionList.size() - 1;
         } else {
-            mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex));
+            mQuestionsListingAdapter.addItem(mCurrentRootOptionList.get(mCurrentComplainNodeOptionsIndex),getEngineVersion());
 
         }
         return view;
