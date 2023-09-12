@@ -143,8 +143,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                         }else{
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
                         }
-                        String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM,hh:mm a");
-                        holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + " " + followupDate);
+                        String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM, hh:mm a");
+                        holder.fu_date_txtview.setText(context.getString(R.string.follow_up_on) + "\n" + followupDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
