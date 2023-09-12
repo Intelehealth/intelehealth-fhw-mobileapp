@@ -30,6 +30,6 @@ public class MedicineViewHolder extends BaseViewHolder {
 
     public void expandDetails(boolean isExpanded) {
         binding.includeMedicineDetails.getRoot().setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-        binding.btnExpandCollapseIndicator.setRotation(isExpanded ? 0 : 270);
+        binding.btnExpandCollapseIndicator.setRotation(isExpanded ? 270 : 0);
     }
 }

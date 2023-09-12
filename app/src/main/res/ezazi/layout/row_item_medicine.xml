@@ -41,7 +41,7 @@
             android:contentDescription="@string/content_expand_collapse_indicator"
             android:paddingStart="@dimen/list_container_padding"
             android:paddingEnd="@dimen/list_container_padding"
-            android:rotation="270"
+            android:rotation="0"
             app:icon="@drawable/ic_dropdown_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

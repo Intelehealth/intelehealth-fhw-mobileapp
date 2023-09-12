@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|start"
                     android:text="@string/lbl_add"
-                    app:drawableEndCompat="@drawable/ic_baseline_expand_more_24"
+                    app:drawableEndCompat="@drawable/ic_keyboard_arrow_right"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

@@ -1,7 +1,6 @@
 package org.intelehealth.ezazi.partogram.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -24,15 +23,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.databinding.DialogIvfluidOptionsBinding;
-import org.intelehealth.ezazi.databinding.MedicineDetailsBinding;
 import org.intelehealth.ezazi.databinding.PartoLablRadioViewMedicineBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewEzaziBinding;
 import org.intelehealth.ezazi.databinding.PartoLblRadioViewOxytocinBinding;
@@ -46,12 +42,7 @@ import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
-import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
-import org.intelehealth.ezazi.ui.validation.RangeInputFilter;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
