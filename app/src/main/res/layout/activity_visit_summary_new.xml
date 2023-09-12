@@ -483,7 +483,6 @@
                                 android:layout_height="1dp"
                                 android:layout_marginStart="@dimen/fu_margin_start"
                                 android:layout_marginEnd="@dimen/fu_margin_start"
-                                android:layout_marginBottom="@dimen/fu_card_margin_updown"
                                 android:background="@color/notifi_divider_color" />
 
                             <!--Personal Sub-Child-->
@@ -500,7 +499,6 @@
                                 android:layout_marginBottom="@dimen/margin_16dp"
                                 app:counterEnabled="true"
                                 app:counterMaxLength="1000"
-
                                 android:gravity="top">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -524,11 +522,12 @@
                             <TextView
                                 android:id="@+id/tvAddNotesValueVS"
                                 android:visibility="gone"
-                                tools:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/divider"
                                 android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginTop="@dimen/fu_margin_start"
                                 android:layout_marginEnd="@dimen/fu_margin_start"
                                 android:layout_marginBottom="@dimen/margin_16dp"
                                 tools:text= "@string/no_notes_added_for_doctor" />
