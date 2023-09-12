@@ -297,12 +297,14 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             checkInternetAndUpdateProfile();
         });
 
+/*
         tvDob.setOnClickListener(v -> {
             CustomCalendarViewUI2 customCalendarViewUI2 = new CustomCalendarViewUI2(MyProfileActivity.this, MyProfileActivity.this);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 customCalendarViewUI2.showDatePicker(MyProfileActivity.this, "");
             }
         });
+*/
 
         tvChangePhoto.setOnClickListener(v -> checkPerm());
 

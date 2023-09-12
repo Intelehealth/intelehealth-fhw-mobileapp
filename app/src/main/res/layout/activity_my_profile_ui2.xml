@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    tools:layout_marginTop="-300dp"
     tools:context=".profile.MyProfileActivity">
 
     <LinearLayout
@@ -386,9 +387,9 @@
                     android:id="@+id/tv_date_of_birth_profile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_fieldnew"
                     android:layout_weight="0.6"
-                    android:background="@drawable/ui2_background_input_field_new"
-                    android:drawableEnd="@drawable/ui2_ic_calendar"
+                    android:enabled="false"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/profile_text_line_spacing"
                     android:paddingStart="@dimen/dob_date_padding_start"
@@ -396,25 +397,23 @@
                     android:paddingEnd="@dimen/dob_date_padding_end"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:text="May 10, 2022"
-                    android:textColor="@color/textColorBlack"
+                    android:textColor="@color/edittext_hint_color"
                     android:textSize="@dimen/common_info_text_size" />
 
                 <TextView
                     android:id="@+id/tv_age_profile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_fieldnew"
+                    android:textColor="@color/edittext_hint_color"
                     android:layout_marginStart="@dimen/dob_age_margin_start"
                     android:layout_weight="0.4"
-                    android:background="@drawable/ui2_background_input_field_new"
-                    android:drawableEnd="@drawable/ui2_ic_calendar"
-                    android:drawableTint="@color/transparent"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/profile_text_line_spacing"
                     android:paddingStart="@dimen/dob_date_padding_start"
                     android:paddingTop="@dimen/common_edittext_padding_top"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:text="28"
-                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/common_info_text_size" />
             </LinearLayout>
 
