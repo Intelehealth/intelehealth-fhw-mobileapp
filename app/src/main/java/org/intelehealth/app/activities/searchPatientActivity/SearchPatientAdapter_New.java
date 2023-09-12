@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -81,9 +82,9 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
             //  3. Priority Tag
             if (model.isEmergency())
-                holder.priority_tag_imgview.setVisibility(View.VISIBLE);
+                holder.fl_priority.setVisibility(View.VISIBLE);
             else
-                holder.priority_tag_imgview.setVisibility(View.GONE);
+                holder.fl_priority.setVisibility(View.GONE);
 
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
@@ -162,12 +163,14 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
         PatientDTO patientDTO;
         CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
+        FrameLayout fl_priority;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
             search_gender = itemView.findViewById(R.id.search_gender);
             search_name = itemView.findViewById(R.id.search_name);
+            fl_priority = itemView.findViewById(R.id.fl_priority);
             priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
             search_date_relative = itemView.findViewById(R.id.search_date_relative);

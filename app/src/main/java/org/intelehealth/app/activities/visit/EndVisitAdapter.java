@@ -209,7 +209,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
         if(model.getPhone_number()!=null)
-        editText.setText(model.getPhone_number());
+            editText.setText(model.getPhone_number());
+
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();

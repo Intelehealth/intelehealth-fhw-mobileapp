@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -145,9 +146,9 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
             // Emergency - start
             if (model.isEmergency())
-                holder.fu_priority_tag.setVisibility(View.VISIBLE);
+                holder.fl_priority.setVisibility(View.VISIBLE);
             else
-                holder.fu_priority_tag.setVisibility(View.GONE);
+                holder.fl_priority.setVisibility(View.GONE);
             // Emergency - end
 
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +194,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         private TextView name, fu_date_txtview, search_gender;
         private ImageView profile_image, fu_priority_tag;
         private LinearLayout shareicon;
+        private FrameLayout fl_priority;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -202,6 +204,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fl_priority = itemView.findViewById(R.id.fl_priority);
             shareicon = itemView.findViewById(R.id.shareiconLL);
         }
     }
