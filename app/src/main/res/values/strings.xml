@@ -1081,4 +1081,19 @@
     <string name="lbl_type">Type</string>
     <string name="error_medicine">Please add at least 1 medicine\n\nOR\n\nSelect \"No\" to continue.</string>
 
+    <string name="baseline_fhr_range">Please enter baseline FHR between 90 and 220</string>
+    <string name="pulse_range">Please enter pulse between 30 and 240</string>
+    <string name="systolic_bp_range">Please enter Systolic BP between 50 and 250</string>
+    <string name="diastolic_bp_range">Please enter Diastolic BP between 30 and 150.\n Diastolic BP should be less than Systolic BP</string>
+    <string name="temperature_range">Please enter temperature between 32 and 42.8</string>
+    <string name="contraction_duration_range">Please enter duration of contraction between 0 and 100</string>
+
+    <!--<string name="baseline_fhr_range">Baseline FHR should be in between %1$s and %2$s</string>
+    <string name="pulse_range">Pulse should be in between %1$s and %2$s</string>
+    <string name="systolic_bp_range">Systolic BP should be in between %1$s and %2$s</string>
+    <string name="diastolic_bp_range">Diastolic BP should be in between %1$s and %2$s</string>
+    <string name="contraction_duration_range">Duration of contraction should be in between %1$s and %2$s</string>
+-->
+    <string name="medicine_name">Medicine name</string>
+
 </resources>

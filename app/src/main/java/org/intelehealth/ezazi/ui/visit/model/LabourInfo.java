@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.ui.visit.model;
 
+import org.intelehealth.ezazi.utilities.UuidDictionary;
+
 /**
  * Created by Vaghela Mithun R. on 17-08-2023 - 22:57.
  * Email : mithun@intelehealth.org
@@ -94,5 +96,49 @@ public class LabourInfo {
                 && gender == null && babyStatus == null
                 && motherStatus == null && otherComment == null
                 && motherDeceasedReason == null;
+    }
+
+
+    public boolean isValidSystolicBP(String systolicBP) {
+        if (systolicBP != null && !systolicBP.isEmpty()) {
+            int value = Integer.parseInt(systolicBP);
+            return value >= 50 && value <= 250;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean isValidDiastolicBP(String systolicBp, String diastolicBp) {
+        if (diastolicBp != null && systolicBp != null && !diastolicBp.isEmpty() && !systolicBp.isEmpty()) {
+            int value = Integer.parseInt(diastolicBp);
+            int systolicBpValue = Integer.parseInt(systolicBp);
+            return value >= 30 && value <= 150 && value < systolicBpValue;
+        } else {
+            return true;
+        }
+    }
+
+
+    public boolean isValidParameter(String enteredValue, String conceptUUID) {
+        double value;
+        boolean result = true;
+        if (enteredValue != null && !enteredValue.isEmpty()) {
+            value = Double.parseDouble(enteredValue);
+            switch (conceptUUID) {
+                case UuidDictionary.BASELINE_FHR:
+                    result = value >= 90 && value <= 220;
+                    break;
+                case UuidDictionary.PULSE:
+                    result = value >= 30 && value <= 240;
+                    break;
+                case UuidDictionary.TEMPERATURE:
+                    result = value >= 32 && value <= 42.8;
+                    break;
+                case UuidDictionary.DURATION_OF_CONTRACTION:
+                    result = value >= 0 && value <= 100;
+                    break;
+            }
+        }
+        return result;
     }
 }

@@ -48,14 +48,21 @@ public class AppConstants {
     public static final String MINIMUM_BP_DSYS = "30";
     public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
-    public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
-    public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
+    public static final String MAXIMUM_TEMPERATURE_CELSIUS = "42.8";
+    public static final String MINIMUM_TEMPERATURE_CELSIUS = "32";
     public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";
     public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "1";
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
+
+    public static final String MAXIMUM_CONTRACTION_DURATION = "100";
+    public static final String MINIMUM_CONTRACTION_DURATION = "0";
+
+    public static final String MAXIMUM_BASELINE_FHR = "220";
+    public static final String MINIMUM_BASELINE_FHR = "90";
+
 
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
@@ -135,6 +142,7 @@ public class AppConstants {
     public static final String OTHER_OPTION = "Other";
 
     public static final int INPUT_MAX_LENGTH = 300;
+
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }

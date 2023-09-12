@@ -40,6 +40,7 @@ import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
+import org.intelehealth.ezazi.ui.visit.model.LabourInfo;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
@@ -295,6 +296,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
     private void saveObs() throws DAOException {
         ObsDAO obsDAO = new ObsDAO();
+        LabourInfo labourInfo = new LabourInfo();
 
         // validation
         Log.v("PartogramData", new Gson().toJson(mItemList));
@@ -304,6 +306,13 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         boolean isValidIVFluid = true;
         boolean isValidOxytocin = true;
         boolean isValidMedicine = true;
+        boolean isValidBaselineFHR = true;
+        boolean isValidPulse = true;
+        boolean isValidSystolicBP = true;
+        boolean isValidDiastolicBP = true;
+        boolean isValidTemperature = true;
+        boolean isValidDuration = true;
+
         List<String> voidedMedicines = new ArrayList<>();
         for (int i = 0; i < mItemList.size(); i++) {
             for (int j = 0; j < mItemList.get(i).getParamInfoList().size(); j++) {
@@ -325,6 +334,32 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
                     if (info.getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
                         isValidOxytocin = info.isValidJson();
+                    }
+                    if (info.getConceptUUID().equals(UuidDictionary.BASELINE_FHR)) {
+                        isValidBaselineFHR = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.BASELINE_FHR);
+                        //   isValidBaselineFHR = labourInfo.isValidBaselineFHR(info.getCapturedValue());
+
+                    }
+                    if (info.getConceptUUID().equals(UuidDictionary.PULSE)) {
+                        isValidPulse = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.PULSE);
+
+                        //isValidPulse = labourInfo.isValidPulse(info.getCapturedValue());
+                    }
+                    if (info.getConceptUUID().equals(UuidDictionary.SYSTOLIC_BP)) {
+                        isValidSystolicBP = labourInfo.isValidSystolicBP(info.getCapturedValue());
+                    }
+                    if (info.getConceptUUID().equals(UuidDictionary.DIASTOLIC_BP)) {
+                        isValidDiastolicBP = labourInfo.isValidDiastolicBP(systolicBp, diastolicBp);
+                    }
+                    if (info.getConceptUUID().equals(UuidDictionary.TEMPERATURE)) {
+                        isValidTemperature = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
+
+                        //isValidTemperature = labourInfo.isValidTemperature(info.getCapturedValue());
+                    }
+                    if (info.getConceptUUID().equals(UuidDictionary.DURATION_OF_CONTRACTION)) {
+                        isValidDuration = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.DURATION_OF_CONTRACTION);
+
+                        // isValidDuration = labourInfo.isValidDurationOfContraction(info.getCapturedValue());
                     }
 
                     if (info.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
@@ -357,15 +392,27 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         if (obsDTOList.isEmpty()) {
             showErrorDialog(R.string.please_enter_field_value);
-        } else if (systolicBp != null && systolicBp.length() > 0
+        } /*else if (systolicBp != null && systolicBp.length() > 0
                 && (diastolicBp == null || diastolicBp.length() == 0)) {
             showErrorDialog(R.string.error_diastolic_require);
-        } else if (!isValidOxytocin) {
+        } */ else if (!isValidOxytocin) {
             showErrorDialog(R.string.error_oxytocin);
         } else if (!isValidIVFluid) {
             showErrorDialog(R.string.error_iv_fluid);
         } else if (!isValidMedicine) {
             showErrorDialog(R.string.error_medicine);
+        } else if (!isValidBaselineFHR) {
+            showErrorDialog(R.string.baseline_fhr_range);
+        } else if (!isValidPulse) {
+            showErrorDialog(R.string.pulse_range);
+        } else if (!isValidSystolicBP) {
+            showErrorDialog(R.string.systolic_bp_range);
+        } else if (!isValidDiastolicBP) {
+            showErrorDialog(R.string.diastolic_bp_range);
+        } else if (!isValidTemperature) {
+            showErrorDialog(R.string.temperature_range);
+        } else if (!isValidDuration) {
+            showErrorDialog(R.string.contraction_duration_range);
         } else {
 
             try {

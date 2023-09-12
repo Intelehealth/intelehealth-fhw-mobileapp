@@ -266,4 +266,18 @@ public class ParamInfo implements Serializable {
         }
         return voided;
     }
+
+    public boolean isValidBaselineFHR() {
+        Log.e("ParamInfo", "isValidJson: " + getParamName() + " checked: " + checkedRadioOption);
+        if (getConceptUUID().equals(UuidDictionary.BASELINE_FHR)) {
+            if (getCapturedValue() == null) return true;
+            else if (checkedRadioOption == RadioOptions.NO_VALUE) return true;
+            else {
+             if (checkedRadioOption != null && getConceptUUID().equals(UuidDictionary.OXYTOCIN_UL_DROPS_MIN)) {
+                    return getMedication().isValidOxytocin();
+                }
+            }
+        }
+        return true;
+    }
 }
