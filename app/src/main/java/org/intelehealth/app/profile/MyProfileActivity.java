@@ -462,34 +462,33 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     private void userFeedbackMsg() {
         etUsername.setOnClickListener(v -> {
             showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
-//            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
         });
         etFirstName.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         etMiddleName.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         etLastName.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         rgGroupGender.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         rbMale.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         rbFemale.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         rbOther.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         tvDob.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
         tvAge.setOnClickListener(v -> {
-            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+            showSnackBarAndRemoveLater(getResources().getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details));
         });
 
     }
