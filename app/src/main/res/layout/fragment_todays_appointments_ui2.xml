@@ -53,13 +53,11 @@
         </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone">
 
             <AutoCompleteTextView
-                android:id="@+id/autotv_search_patient_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_fieldnew"

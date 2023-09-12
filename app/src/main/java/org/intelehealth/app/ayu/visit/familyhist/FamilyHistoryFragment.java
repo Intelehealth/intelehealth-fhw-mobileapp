@@ -109,7 +109,7 @@ public class FamilyHistoryFragment extends Fragment {
                 });
             }
 
-            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
+            mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, false, null, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                     // avoid the scroll for old data change
@@ -165,7 +165,7 @@ public class FamilyHistoryFragment extends Fragment {
                 }
 
                 @Override
-                public void onImageRemoved(int index, String image) {
+                public void onImageRemoved(int nodeIndex,int imageIndex, String image) {
 
                 }
             });

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    tools:layout_marginTop="-1200dp"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity_New">
 
     <!-- Toolbar - start-->
@@ -21,7 +22,6 @@
 
         <!-- Frame 100167 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10016"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_toolbat_txt_height"
             android:layout_alignParentLeft="true"
@@ -35,7 +35,6 @@
 
             <!-- Frame 100116 -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_10011"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
@@ -181,7 +180,6 @@
                                 android:orientation="vertical">
 
                                 <LinearLayout
-                                    android:id="@+id/frame_10033"
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
@@ -212,7 +210,6 @@
                                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                                     <ImageView
-                                        android:id="@+id/icons8_edit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
@@ -383,16 +380,19 @@
                 android:id="@+id/add_notes_relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fu_card_margin_sides"
                 android:layout_below="@+id/vitalsRelativeLayout">
 
                 <!--Visit Summary-->
+
                 <RelativeLayout
                     android:id="@+id/vs_add_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="gone">
 
                     <TextView
                         android:id="@+id/add_notes_title"
@@ -403,7 +403,6 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/additional_notes_edittext"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/vs_notes_big_edittext_height"
                         android:layout_below="@+id/add_notes_title"
@@ -418,18 +417,19 @@
 
                 </RelativeLayout>
 
+
                 <!--Visit Details - start-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/addnotes_vd_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/add_doc_relative"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_5"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:elevation="16dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    tools:visibility="visible"
                     app:cardCornerRadius="@dimen/margin_5"
                     app:cardElevation="@dimen/margin_5">
 
@@ -488,15 +488,50 @@
 
                             <!--Personal Sub-Child-->
 
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilAdditionalNotesVS"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/divider"
+                                android:scrollbars="vertical"
+                                android:fadeScrollbars="false"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/margin_16dp"
+                                app:counterEnabled="true"
+                                app:counterMaxLength="1000"
+                                android:gravity="top">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etAdditionalNotesVS"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minLines="3"
+                                    android:background="@drawable/edittext_border"
+                                    android:inputType="textMultiLine"
+                                    android:gravity="top"
+                                    android:padding="@dimen/fu_margin_start"
+                                    android:hint="@string/leave_a_note_for_doctor"
+                                    android:maxLength="1000"
+                                    android:textColorHint="@color/edittext_hint_color"
+                                    android:textSize="@dimen/find_patient_hint_size"
+                                    />
+
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
                             <TextView
-                                android:id="@+id/vd_addnotes_value"
+                                android:id="@+id/tvAddNotesValueVS"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/divider"
                                 android:layout_marginStart="@dimen/fu_margin_start"
                                 android:layout_marginEnd="@dimen/fu_margin_start"
                                 android:layout_marginBottom="@dimen/margin_16dp"
-                                android:text="Notes shared by doctor will be shown here." />
+                                tools:text= "@string/no_notes_added_for_doctor" />
 
                         </RelativeLayout>
 
@@ -714,7 +749,6 @@
 
             <!--            Priority Visit-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/priority_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/bottom_btn_relative"
@@ -884,7 +918,6 @@
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -897,7 +930,6 @@
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

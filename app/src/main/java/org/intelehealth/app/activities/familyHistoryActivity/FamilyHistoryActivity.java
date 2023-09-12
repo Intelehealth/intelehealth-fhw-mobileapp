@@ -61,7 +61,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
@@ -116,7 +115,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         filePath = new File(AppConstants.IMAGE_PATH);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -286,7 +285,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     private String getFamilyHistoryVisitData() {
         String result = "";
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         String[] columns = {"value", " conceptuuid"};
 
@@ -375,7 +374,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(insertion);
 
-            Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+         /*   Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -386,7 +385,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
-            startActivity(intent);
+            startActivity(intent);*/
         } else {
 
             if (flag == true) {

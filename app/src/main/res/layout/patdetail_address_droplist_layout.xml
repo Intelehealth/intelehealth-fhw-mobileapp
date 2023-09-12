@@ -70,7 +70,6 @@
             android:layout_below="@+id/divider">
 
             <TextView
-                android:id="@+id/details_personal_txtview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
@@ -292,6 +291,37 @@
 
                     <TextView
                         android:id="@+id/address1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="444, Kathe lane, Dwarka, Nasik"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_address_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:text="@string/_corresponding_address_2"
+                        android:drawablePadding="5dp"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/find_patient_hint_size" />
+
+                    <TextView
+                        android:id="@+id/addr2View"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

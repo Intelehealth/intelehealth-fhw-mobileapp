@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nscPendingPrescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -14,7 +15,6 @@
 
         <!-- Frame 2608676 -->
         <RelativeLayout
-            android:id="@+id/frame_26086"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -157,7 +157,6 @@
                         />
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/filter_priority_relative"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/filter_header"

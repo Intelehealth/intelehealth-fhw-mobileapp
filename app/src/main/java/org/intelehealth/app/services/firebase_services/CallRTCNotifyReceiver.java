@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 
 

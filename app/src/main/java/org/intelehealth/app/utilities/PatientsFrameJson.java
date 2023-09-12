@@ -250,7 +250,7 @@ public class PatientsFrameJson {
      */
     private boolean speciality_row_exist_check(String uuid) {
         boolean isExists = false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
                 new String[]{uuid});

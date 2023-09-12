@@ -32,6 +32,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -47,7 +48,7 @@ import okhttp3.ResponseBody;
  */
 public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatientAdapter_New.SearchHolderView> {
     private Context context;
-    private List<PatientDTO> patientDTOS;
+    List<PatientDTO> patientDTOS = new ArrayList<>();
     private String profileImage = "";
     String profileImage1 = "";
     private ImagesDAO imagesDAO = new ImagesDAO();
@@ -55,7 +56,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
-        this.patientDTOS = patientDTOS;
+        this.patientDTOS.addAll(patientDTOS);
     }
 
     @NonNull
@@ -86,26 +87,34 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
-                holder.fu_item_calendar.setVisibility(View.VISIBLE);
-                holder.search_date_relative.setText(model.getVisit_startdate());
-            } else {
-                holder.fu_item_calendar.setVisibility(View.GONE);
-                holder.search_date_relative.setText(R.string.no_visit_created);
-            }
-
-            //  5. Prescription received/pending tag display.
-            if (model.getVisit_startdate() != null) {
                 if (model.isPrescription_exists()) {
                     holder.presc_receivingCV.setVisibility(View.VISIBLE);
                     holder.presc_pendingCV.setVisibility(View.GONE);
-                }
-                else {
+                } else if (!model.isPrescription_exists()) {
                     holder.presc_pendingCV.setVisibility(View.VISIBLE);
                     holder.presc_receivingCV.setVisibility(View.GONE);
                 }
+
+                //  5. Checking visit uploaded or not and Prescription received/pending tag display. - start
+                if (model.getVisitDTO() != null) {
+                    if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
+                        holder.visitNotUploadCV.setVisibility(View.GONE);
+                    } else {
+                        holder.visitNotUploadCV.setVisibility(View.VISIBLE);
+                        holder.presc_pendingCV.setVisibility(View.GONE);
+                        holder.presc_receivingCV.setVisibility(View.GONE);
+                    }
+                }
+                // checking visit uploaded or not - end
+
+                holder.fu_item_calendar.setVisibility(View.VISIBLE);
+                holder.search_date_relative.setText(model.getVisit_startdate());
             } else {
                 holder.presc_pendingCV.setVisibility(View.GONE);
                 holder.presc_receivingCV.setVisibility(View.GONE);
+
+                holder.fu_item_calendar.setVisibility(View.GONE);
+                holder.search_date_relative.setText(R.string.no_visit_created);
             }
 
             //  6. Patient Profile Pic
@@ -152,7 +161,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         TextView search_gender, search_name, search_date_relative;
         ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
         PatientDTO patientDTO;
-        CardView presc_pendingCV, presc_receivingCV;
+        CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
@@ -165,6 +174,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             profile_imgview = itemView.findViewById(R.id.profile_imgview);
             presc_pendingCV = itemView.findViewById(R.id.presc_pending_CV);
             presc_receivingCV = itemView.findViewById(R.id.presc_received_CV);
+            visitNotUploadCV = itemView.findViewById(R.id.presc_visit_not_uploaded_CV);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -9,6 +9,7 @@ import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
+import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
@@ -91,6 +92,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -124,6 +127,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -176,7 +180,7 @@ import okhttp3.ResponseBody;
 public class VisitSummaryActivity_New extends AppCompatActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
-    SQLiteDatabase db;
+    //SQLiteDatabase db;
     Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header,
@@ -187,7 +191,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             vs_visitreason_header_expandview, vs_phyexam_header_expandview, vs_medhist_header_expandview, vd_addnotes_header_expandview,
             vs_add_notes, parentLayout;
     private LinearLayout btn_bottom_printshare, btn_bottom_vs;
-    private EditText additional_notes_edittext;
+    private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
     String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID,
             medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
@@ -267,8 +271,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
-    TextView add_docs_title, vd_addnotes_value, reminder, incomplete_act, archieved_notifi;
+    TextView add_docs_title, tvAddNotesValueVS, reminder, incomplete_act, archieved_notifi;
     String addnotes_value = "";
+    private TextInputLayout tilAdditionalNotesVS;
 
     TextView respiratory;
     TextView respiratoryText;
@@ -414,7 +419,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             getWindow().setStatusBarColor(Color.WHITE);
         }
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -531,6 +536,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 String visitIDorderBy = "startdate";
                 String visitIDSelection = "uuid = ?";
                 String[] visitIDArgs = {visitUuid};
+                SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
                 final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
                 if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
                     visitIDCursor.moveToFirst();
@@ -578,14 +584,20 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 doc_speciality_card.setVisibility(View.GONE);
                 special_vd_card.setVisibility(View.VISIBLE);
                 // vs_add_notes.setVisibility(View.GONE);
-                //addnotes_vd_card.setVisibility(View.VISIBLE);
 
+                addnotes_vd_card.setVisibility(View.VISIBLE);
+                tilAdditionalNotesVS.setVisibility(View.GONE);
+                tvAddNotesValueVS.setVisibility(View.VISIBLE);
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
-                    vd_addnotes_value.setText(addnotes_value);
+                    if (addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
+                        tvAddNotesValueVS.setText(getString(R.string.no_notes_added_for_doctor));
+                    }
+                    else
+                        tvAddNotesValueVS.setText(addnotes_value);
                 } else {
-                    addnotes_value = "No notes added for Doctor.";
-                    vd_addnotes_value.setText(addnotes_value);
+                    addnotes_value = getString(R.string.no_notes_added_for_doctor);  // "No notes added for Doctor."
+                    tvAddNotesValueVS.setText(addnotes_value);
                 }
             } else {
                 //TODO : Hide for beta release
@@ -614,7 +626,11 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 doc_speciality_card.setVisibility(View.VISIBLE);
                 special_vd_card.setVisibility(View.GONE);
                 // vs_add_notes.setVisibility(View.VISIBLE);
-                addnotes_vd_card.setVisibility(View.GONE);
+
+                addnotes_vd_card.setVisibility(View.VISIBLE);
+                tilAdditionalNotesVS.setVisibility(View.VISIBLE);
+                tvAddNotesValueVS.setVisibility(View.GONE);
+
             }
             // Edit btn visibility based on user coming from Visit Details screen - End
 
@@ -2042,12 +2058,25 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     }
 
     // Permission - end
-
+    private AlertDialog mImagePickerAlertDialog;
     /**
      * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.additional_doc_image_picker_title), new DialogUtils.ImagePickerDialogListener() {
+            @Override
+            public void onActionDone(int action) {
+                mImagePickerAlertDialog.dismiss();
+                if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
+                    checkPerm(action);
+
+                } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
+                    checkPerm(action);
+                }
+            }
+        });
+
+        /*final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity_New.this);
         builder.setTitle(R.string.additional_doc_image_picker_title);
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -2069,7 +2098,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
         int width = VisitSummaryActivity_New.this.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();
+        alertDialog.show();*/
 
     }
 
@@ -2098,7 +2127,9 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
         visitView = findViewById(R.id.textView_visit_value);
-        additional_notes_edittext = findViewById(R.id.additional_notes_edittext);
+
+        tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
+        etAdditionalNotesVS = findViewById(R.id.etAdditionalNotesVS);
         // textview - end
 
         // up-down btn - start
@@ -2126,7 +2157,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         vd_special_header_expandview = findViewById(R.id.vd_special_header_expandview);
         vd_addnotes_header_expandview = findViewById(R.id.vd_addnotes_header_expandview);
         vs_add_notes = findViewById(R.id.vs_add_notes);
-        vd_addnotes_value = findViewById(R.id.vd_addnotes_value);
+        tvAddNotesValueVS = findViewById(R.id.tvAddNotesValueVS);
         // up-down btn - end
 
         // vitals ids
@@ -2523,6 +2554,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     }
 
     private void visitUploadBlock() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Log.d("visitUUID", "upload_click: " + visitUUID);
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
@@ -2541,15 +2573,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
             // Additional Notes - Start
             try {
-                String addnotes = additional_notes_edittext.getText().toString();
+                String addnotes = etAdditionalNotesVS.getText().toString().trim();
                 Log.v("addnotes", "addnotes: " + addnotes);
                 if (!addnotes.equalsIgnoreCase("") && addnotes != null)
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
                 else
-                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No Data", ADDITIONAL_NOTES);
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);
+                // keeping raw string as we dont want regional lang data to be stored in DB.
             } catch (DAOException e) {
                 e.printStackTrace();
-                Log.v("hospitalType", "hospitalType: " + e.getMessage());
+                Log.v("addnotes", "addnotes - error: " + e.getMessage());
             }
             // Additional Notes - End
 
@@ -2618,6 +2651,12 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         SyncUtils syncUtils = new SyncUtils();
                         boolean isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
+                            // remove the local cache
+                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
                             visitSentSuccessDialog(context, getResources().getDrawable(R.drawable.dialog_visit_sent_success_icon),
                                     getResources().getString(R.string.visit_successfully_sent),
@@ -2787,6 +2826,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // download presc default
     public void downloadPrescriptionDefault() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? AND voided = ?";
@@ -2824,6 +2864,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // downlaod doctor details
     private void downloadDoctorDetails() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? ";
@@ -3074,6 +3115,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
      * @return void
      */
     public void queryData(String dataString) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
 
@@ -3410,6 +3452,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
     // handle message
     private void handleMessage(Intent msg) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Log.i(TAG, "handleMessage: Entered");
         Bundle data = msg.getExtras();
         int check = 0;
@@ -3499,7 +3542,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         boolean isExists = false;
 
         if (uuid != null) {
-            SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
             Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
                     new String[]{uuid});
@@ -3744,7 +3787,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -3921,7 +3964,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
                     remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
                 }
-                followUpDateStr = parse_DateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
+                followUpDateStr = parse_DateToddMMyyyy_new(spiltFollowDate[0]) + ", " + remainingStr;
             } else {
                 followUpDateStr = followUpDate;
             }
@@ -4235,7 +4278,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         String visitIDorderBy = "startdate";
         String visitIDSelection = "uuid = ?";
         String[] visitIDArgs = {visitUuid};
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
@@ -4848,7 +4891,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
-        SQLiteDatabase db = db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -5043,8 +5086,16 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                         patientReports = reports[1];
                         patientDenies = assoValueBlock[1];
                         complaintView.setText(Html.fromHtml(valueArray[0])); // todo: uncomment later
-                    } else if (valueArray[0].contains("• Patient reports")) {
+                    } else if (valueArray[1].contains("• Patient reports")) {
                         // todo: handle later -> comment added on 14 nov 2022
+                        String reports[] = valueArray[1].replace("• Patient reports -<br>", "• Patient reports -<br/>")
+                                .split("• Patient reports -<br/>");
+                        patientReports = reports[1];
+                    }else if (valueArray[1].contains("• Patient denies")) {
+                        // todo: handle later -> comment added on 14 nov 2022
+                        String assoValueBlock[] = valueArray[1].replace("• Patient denies -<br>", "• Patient denies -<br/>")
+                                .split("• Patient denies -<br/>");
+                        patientDenies = assoValueBlock[1];
                     }
 
                 }
@@ -5471,7 +5522,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 complainLabelTextView.setText(_complain);
                 complainLabelTextView.setVisibility(View.GONE);
                 vv.setVisibility(View.GONE);
-                view.findViewById(R.id.tv_change).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.tv_change).setVisibility(View.GONE);
                 RecyclerView recyclerView = view.findViewById(R.id.rcv_qa);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
                 List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();

@@ -3,7 +3,6 @@ package org.intelehealth.app.activities.searchPatientActivity;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.getQueryPatients;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
-import static org.intelehealth.app.utilities.StringUtils.inputFilter_Others;
 import static org.intelehealth.app.utilities.StringUtils.inputFilter_SearchBar;
 
 import android.content.Context;
@@ -13,13 +12,11 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.LocaleList;
 import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,8 +29,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexDirection;
@@ -45,6 +45,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.adapter.SearchChipsPreviewGridAdapter;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.dto.PatientDTO;
@@ -83,6 +84,11 @@ public class SearchPatientActivity_New extends AppCompatActivity {
 
     private RecyclerView mSearchHistoryRecyclerView;
 
+    private final int limit = 50;
+    private int start = 0, end = start + limit;
+    private boolean isFullyLoaded = false;
+    List<PatientDTO> patientDTOList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +96,10 @@ public class SearchPatientActivity_New extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
+        LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
+        search_recycelview.setLayoutManager(lm);
+        initializeRecyclerView(lm);
+
         mSearchEditText = findViewById(R.id.search_txt_enter);
         mSearchEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_SearchBar}); //maxlength 25
 
@@ -129,8 +139,6 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             public void onClick(View view) {
                 if (!mSearchEditText.getText().toString().isEmpty()) {
                     mSearchEditText.setText("");
-                    view.setVisibility(View.GONE);
-                    iconSearch.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -154,24 +162,32 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-                mSearchEditText.requestFocus();
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+               /* mSearchEditText.requestFocus();
                 iconClear.setVisibility(View.GONE);
-                iconSearch.setVisibility(View.VISIBLE);
+                iconSearch.setVisibility(View.VISIBLE);*/
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().isEmpty()) {
-                    allPatientsTV.setText(getString(R.string.all_patients_txt));
-                    query = "";
-                    doQuery(query);
                     iconClear.setVisibility(View.GONE);
                     iconSearch.setVisibility(View.VISIBLE);
+                    allPatientsTV.setText(getString(R.string.all_patients_txt));
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                             query = "";
+                            doQuery(query);
+                        }
+                    }, 100);
+
+                } else {
+                    iconClear.setVisibility(View.VISIBLE);
+                    iconSearch.setVisibility(View.GONE);
                 }
-//                else
-//                    iconClear.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -235,16 +251,18 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void queryAllPatients() {
-        List<PatientDTO> patientDTOList = PatientsDAO.getAllPatientsFromDB(500, 0);
+        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
+        Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
+
         if (patientDTOList.size() > 0) { // ie. the entered text is present in db
             patientDTOList = fetchDataforTags(patientDTOList);
             Log.v(TAG, "size: " + patientDTOList.size());
             searchData_Available();
             try {
                 adapter = new SearchPatientAdapter_New(this, patientDTOList);
-                fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
-
+                start = end;
+                end += limit;
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 Logger.logE("doquery", "doquery", e);
@@ -279,7 +297,6 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void previous_SearchResults() {
-
         String previousSearchText = sessionManager.getPreviousSearchQuery();
         List<String> raWPreviousSearchList = new ArrayList<>();
         List<String> retrievedPreviousSearchList = new ArrayList<>();
@@ -319,7 +336,6 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         });
         mSearchHistoryRecyclerView.setAdapter(searchChipsPreviewGridAdapter);
 
-
     }
 
     private void doQuery(String query) {
@@ -345,7 +361,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private List<PatientDTO> fetchDataforTags(List<PatientDTO> patientDTOList) {
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         /**
          * 1. Check first if visit is present for this patient or not if yes than do other code logic.
@@ -387,6 +403,11 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 } else {
                     patientDTOList.get(i).setPrescription_exists(false);
                 }
+
+                // checking if visit is uploaded or not - start
+                patientDTOList.get(i).setVisitDTO(visitDTO);
+                // checking if visit is uploaded or not - end
+
             } else {
                 /**
                  * no visit for this patient.
@@ -426,4 +447,39 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         view.setVisibility(View.GONE);
     }
 
+    private void initializeRecyclerView(LinearLayoutManager linearLayoutManager) {
+        search_recycelview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (patientDTOList != null && patientDTOList.size() == 0) {
+                    isFullyLoaded = true;
+                    return;
+                }
+                if (!isFullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        linearLayoutManager.findLastVisibleItemPosition() == adapter.getItemCount() - 1) {
+                    Toast.makeText(SearchPatientActivity_New.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                    setMoreDataIntoRecyclerView();
+                }
+            }
+        });
     }
+
+    // This method will be accessed every time the person scrolls the recyclerView further.
+    private void setMoreDataIntoRecyclerView() {
+
+        if (patientDTOList != null && patientDTOList.size() == 0) {
+            isFullyLoaded = true;
+            return;
+        }
+
+        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+        Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
+        adapter.patientDTOS.addAll(patientDTOList);
+        adapter.notifyDataSetChanged();
+        start = end;
+        end += limit;
+    }
+
+}

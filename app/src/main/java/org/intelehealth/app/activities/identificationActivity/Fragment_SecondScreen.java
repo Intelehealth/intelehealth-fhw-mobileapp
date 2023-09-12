@@ -824,9 +824,8 @@ public class Fragment_SecondScreen extends Fragment {
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
                 getActivity().startActivity(intent);
-            }/* else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
-            }*/
+                getActivity().finish();
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

@@ -50,7 +50,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
-
+    public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -61,6 +61,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public void onCreate() {
         super.onCreate();
         sIntelehealthApplication = this;
+        inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
         //For Vector Drawables Backward Compatibility(<API 21)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();

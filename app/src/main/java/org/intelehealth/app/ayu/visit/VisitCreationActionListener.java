@@ -9,5 +9,5 @@ public interface VisitCreationActionListener {
 
     public void onManualClose();
     public void onCameraOpenRequest();
-    void onImageRemoved(int index, String image);
+    void onImageRemoved(int nodeIndex, int imageIndex, String image);
 }

@@ -104,8 +104,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    //Permission library
-    //implementation 'gun0912.ted:tedpermission:2.2.2'
 
     implementation "com.squareup.okhttp3:logging-interceptor:3.8.0"
 
@@ -133,14 +131,13 @@ dependencies {
     implementation 'com.github.hotchemi:permissionsdispatcher:2.3.2'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
 
-//    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
     implementation 'com.google.firebase:firebase-analytics:18.0.0'
     implementation "com.google.firebase:firebase-core:17.4.3"
     //Targeting S+ (version 31 and above)
     implementation 'com.google.firebase:firebase-messaging:23.0.0'
     implementation "com.google.firebase:firebase-iid:21.1.0"
-//    implementation 'com.google.firebase:firebase-crash:16.2.1'
+
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
@@ -161,7 +158,7 @@ dependencies {
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    implementation 'com.github.EusebiuCandrea:ToolTipPopupWordTV:1.0.1'
+    implementation 'com.github.EusebiuCandrea:ToolTipPopupWordTV:1.0.1'//
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

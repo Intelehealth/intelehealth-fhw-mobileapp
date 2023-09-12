@@ -24,10 +24,9 @@
 
         <!-- Frame 100116 -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/frame_10011"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:orientation="horizontal">
 
             <!-- arrow-right -->
@@ -62,7 +61,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:orientation="horizontal">
 
             <ImageButton
@@ -81,7 +80,8 @@
                 android:layout_marginEnd="@dimen/margin_6"
                 android:layout_weight="1"
                 android:background="@null"
-                android:src="@drawable/download_icon_toolbar" />
+                android:src="@drawable/download_icon_toolbar"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/filter"
@@ -168,7 +168,6 @@
                                 android:orientation="vertical">
 
                                 <LinearLayout
-                                    android:id="@+id/frame_10033"
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_weight="1"
@@ -199,7 +198,6 @@
                                         android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                                     <ImageView
-                                        android:id="@+id/icons8_edit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
@@ -281,8 +279,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/chw_worker"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/chw_worker"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -312,8 +310,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/visitID"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/visitID"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -414,7 +412,6 @@
                             android:layout_marginEnd="@dimen/fu_margin_start">
 
                             <TextView
-                                android:id="@+id/details_personal_txtview"
                                 style="@style/vs_title_head_14sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -422,29 +419,29 @@
                                 android:textStyle="bold" />
 
                             <LinearLayout
+                                android:id="@+id/imagebutton_edit_vitals"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/edit_change_patdetail"
                                 android:layout_alignParentEnd="true"
-                                android:visibility="gone"
+                                android:background="@drawable/edit_change_patdetail"
                                 android:paddingHorizontal="4dp"
-                                android:id="@+id/imagebutton_edit_vitals">
+                                android:visibility="gone">
 
                                 <ImageView
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
-                                    android:src="@drawable/edit"/>
+                                    android:src="@drawable/edit" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/change"
-                                    android:textSize="12sp"
-                                    android:textAlignment="center"
                                     android:layout_gravity="center"
                                     android:fontFamily="@font/lato_bold"
-                                    android:textColor="#2E1E91"/>
+                                    android:text="@string/change"
+                                    android:textAlignment="center"
+                                    android:textColor="#2E1E91"
+                                    android:textSize="12sp" />
 
                             </LinearLayout>
 
@@ -473,8 +470,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/name"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/name"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -538,8 +535,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/qualification"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/qualification"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -569,8 +566,8 @@
                                     android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_weight="1"
                                     android:drawableStart="@drawable/bullet_gray"
-                                    android:text="@string/speciality"
                                     android:drawablePadding="5dp"
+                                    android:text="@string/speciality"
                                     android:textAppearance="@style/caption"
                                     android:textColor="@color/hint_text_color"
                                     android:textSize="@dimen/find_patient_hint_size" />
@@ -754,7 +751,6 @@
                             android:layout_marginTop="@dimen/margin_16dp">
 
                             <TextView
-                                android:id="@+id/tv_drug_name_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -763,7 +759,6 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_dosage_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -772,7 +767,6 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_days_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -781,7 +775,6 @@
                                 android:textColor="@color/hint_text_color" />
 
                             <TextView
-                                android:id="@+id/tv_remarks_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -862,7 +855,6 @@
                             android:text="@string/advice" />
 
                         <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:id="@+id/btnup_advice_header"
                             android:layout_width="@dimen/fu_icon_width"
                             android:layout_height="@dimen/fu_icon_height"
                             android:layout_alignParentEnd="true"
@@ -1081,7 +1073,6 @@
 
             <!--Follow up - start -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/followupCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/specialityCard"

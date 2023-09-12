@@ -55,7 +55,6 @@ import java.util.UUID;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -130,7 +129,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         sessionManager = new SessionManager(this);
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);

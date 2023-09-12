@@ -15,6 +15,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -31,7 +32,7 @@ public class VisitsDAO {
 
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
 
@@ -76,7 +77,7 @@ public class VisitsDAO {
     public boolean insertPatientToDB(VisitDTO visit) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         List<VisitAttributeDTO> visitAttributeDTOS = new ArrayList<>();
@@ -146,7 +147,7 @@ public class VisitsDAO {
         Log.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
 
        */
-/* SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+/* SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT value FROM tbl_dr_speciality WHERE value = ?",
                 new String[]{spinner_value});
@@ -164,7 +165,7 @@ public class VisitsDAO {
 
 
 
-        SQLiteDatabase db_update = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db_update = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db_update.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -204,7 +205,7 @@ public class VisitsDAO {
         //To re-check and confirm that the records are updated & stored in the local db, below is
         //the code....
       */
-/*  SQLiteDatabase db_aa = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+/*  SQLiteDatabase db_aa = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db_aa.beginTransaction();
         Cursor idCursor_aa = db_aa.rawQuery("SELECT speciality_uuid, speciality_value FROM tbl_visit WHERE uuid = ?", new String[]{visitUUID});
 
@@ -231,7 +232,7 @@ public class VisitsDAO {
 
     public List<VisitDTO> unsyncedVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
         VisitDTO visitDTO = new VisitDTO();
@@ -283,8 +284,8 @@ public class VisitsDAO {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
         // VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
 
 //        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
 //                new String[]{/*"0", */visit_uuid});
@@ -301,16 +302,16 @@ public class VisitsDAO {
             }
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
 
         return list;
     }
 
     public List<VisitDTO> getAllVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit", null);
         VisitDTO visitDTO = new VisitDTO();
         if (idCursor.getCount() != 0) {
@@ -327,8 +328,8 @@ public class VisitsDAO {
             }
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
         db.close();
         return visitDTOList;
     }
@@ -336,7 +337,7 @@ public class VisitsDAO {
     public boolean updateVisitSync(String uuid, String synced) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("visitdao", "updatesynv visit " + uuid + synced);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -363,7 +364,7 @@ public class VisitsDAO {
     public boolean updateVisitEnddate(String uuid, String enddate) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("visitdao", "updatesynv visit " + uuid + enddate);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -388,8 +389,8 @@ public class VisitsDAO {
 
     public String patientUuidByViistUuid(String visituuid) {
         String patientUuidByViistUuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_visit where uuid = ? ", new String[]{visituuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -397,8 +398,8 @@ public class VisitsDAO {
             }
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
 
 
         return patientUuidByViistUuid;
@@ -407,7 +408,7 @@ public class VisitsDAO {
     public boolean isUpdatedDownloadColumn(String visitUuid, boolean isupdated) throws DAOException {
         boolean isUpdated = false;
         int updatedcount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -433,8 +434,8 @@ public class VisitsDAO {
     public String getDownloadedValue(String visituuid) throws DAOException {
         String isDownloaded = null;
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
 
         try {
             Cursor cursor = db.rawQuery("SELECT isdownloaded FROM tbl_visit where uuid = ? ", new String[]{visituuid});
@@ -449,8 +450,8 @@ public class VisitsDAO {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.setTransactionSuccessful();
-            db.endTransaction();
+            //db.setTransactionSuccessful();
+            //db.endTransaction();
         }
         return isDownloaded;
     }
@@ -464,8 +465,8 @@ public class VisitsDAO {
     public static PrescriptionModel isVisitNotEnded(String visitUUID) {
         PrescriptionModel model = new PrescriptionModel();
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit where uuid = ? and (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND " +
                 "voided = 0 AND enddate is null", new String[]{visitUUID});  // enddate is null ie. visit is not yet ended.
@@ -479,8 +480,8 @@ public class VisitsDAO {
         }
 
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         return model;
     }
@@ -491,10 +492,11 @@ public class VisitsDAO {
      */
     public static List<PrescriptionModel> recentNotEndedVisits(int limit, int offset) {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name,p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
+                        " v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND " +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
@@ -510,17 +512,113 @@ public class VisitsDAO {
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+            //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+
+                try {
+                    model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
         }
 
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
+
+        return arrayList;
+    }
+
+    public static List<PrescriptionModel> allNotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+              //  " v.startdate > DATETIME('now', '-4 day') " +
+               // " AND v.enddate IS NULL ORDER BY v.startdate DESC",
+                "v.enddate IS NULL ORDER BY v.startdate DESC",
+                new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+            //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+
+                try {
+                    model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
+
+        return arrayList;
+    }
+    public static List<PrescriptionModel> recentNotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND" +
+//                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
+                " v.startdate > DATETIME('now', '-4 day')" +
+                " AND v.enddate IS NULL ORDER BY v.startdate DESC",
+                new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         return arrayList;
     }
@@ -528,12 +626,51 @@ public class VisitsDAO {
     /**
      * This Weeks Visits that are not Ended.
      */
+    public static List<PrescriptionModel> olderNotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+//                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
+//                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
+                " v.startdate < DATETIME('now', '-4 day') AND " +
+                "v.enddate IS NULL ORDER BY v.startdate DESC",
+                new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
+
+        return arrayList;
+    }
     public static List<PrescriptionModel> olderNotEndedVisits(int limit, int offset) {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
+                        " v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                 "v.voided = 0 AND " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
@@ -550,17 +687,28 @@ public class VisitsDAO {
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));
+             //   model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10)); // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                try {
+                    model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
+                } catch (DAOException e) {
+                    throw new RuntimeException(e);
+                }
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
         }
 
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         return arrayList;
     }
@@ -570,8 +718,8 @@ public class VisitsDAO {
      */
     public static List<PrescriptionModel> thisMonths_NotEndedVisits() {
         List<PrescriptionModel> arrayList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, p.phone_number, v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
@@ -597,8 +745,8 @@ public class VisitsDAO {
         }
 
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         return arrayList;
     }
@@ -606,8 +754,8 @@ public class VisitsDAO {
     public static String fetchVisitModifiedDateForPrescPending(String visitUUID) {
         String modifiedDate = "";
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
 
         if (visitUUID != null) {
             final Cursor cursor = db.rawQuery("select p.first_name, p.last_name, o.obsservermodifieddate from tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o where " +
@@ -628,8 +776,8 @@ public class VisitsDAO {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            db.setTransactionSuccessful();
-            db.endTransaction();
+//            db.setTransactionSuccessful();
+//            db.endTransaction();
         }
 
         return modifiedDate;
@@ -643,8 +791,8 @@ public class VisitsDAO {
     public static int getTotalCounts_EndVisit() {
         int total = 0;
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
 
         // Todays cursor
      /*   final Cursor today_cursor = db.rawQuery("SELECT count(*) FROM  tbl_visit  where (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND " +
@@ -681,8 +829,8 @@ public class VisitsDAO {
         }
         month_cursor.close();
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         Log.v("totalCount", "totalCountsEndVisit: " + total);
 
@@ -692,7 +840,7 @@ public class VisitsDAO {
     public static boolean isVisitUploaded(String visitUUID) {
         boolean isUploaded = false;
         String query = "SELECT sync FROM tbl_visit WHERE uuid = ? LIMIT 1";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
         Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
         cursor.moveToFirst();
@@ -710,7 +858,7 @@ public class VisitsDAO {
     public static boolean isVisitEnded(String visitUUID) {
         boolean isVisitEnded = false;
         String query = "SELECT enddate FROM tbl_visit WHERE uuid = ? LIMIT 1";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
         Cursor cursor = db.rawQuery(query, new String[]{visitUUID});
         cursor.moveToFirst();
@@ -724,4 +872,45 @@ public class VisitsDAO {
         db.endTransaction();
         return isVisitEnded;
     }
+
+    public static int getPendingPrescCount() {
+        int count = 0;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+                " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
+                " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
+                " v.enddate is null and" +
+                " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0" +
+                " group by e.visituuid ORDER BY v.startdate DESC", new String[]{});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
+                try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  //
+                    count++;
+                }
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
+
+        Log.d("TAG", "getPendingPrescCount: " + String.valueOf(count));
+        return count;
+    }
+
+
 }

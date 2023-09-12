@@ -125,7 +125,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             }
             mRootComplainBasicInfoHashMap.put(i, complainBasicInfo);
         }
-        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap,mIsEditMode, new OnItemSelection() {
+        mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, getActivity(), false,false, null, mCurrentComplainNodeIndex, mRootComplainBasicInfoHashMap,mIsEditMode, new OnItemSelection() {
             @Override
             public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
                 Log.v("onSelect QuestionsListingAdapter", "index - " + index + " \t mCurrentComplainNodeOptionsIndex - " + mCurrentComplainNodeOptionsIndex);
@@ -204,7 +204,7 @@ public class VisitReasonQuestionsFragment extends Fragment {
             }
 
             @Override
-            public void onImageRemoved(int index, String image) {
+            public void onImageRemoved(int nodeIndex,int imageIndex, String image) {
 
             }
         });

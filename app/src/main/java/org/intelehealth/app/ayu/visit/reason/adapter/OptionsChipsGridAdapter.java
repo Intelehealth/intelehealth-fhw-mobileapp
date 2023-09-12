@@ -128,7 +128,12 @@ public class OptionsChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
                         } else {
                             for (int i = 0; i < mItemList.size(); i++) {
-                                mItemList.get(i).setSelected(i == index);
+                                if(i==index) {
+                                    //mItemList.get(i).setSelected(i == index);
+                                    mItemList.get(index).setSelected(!mItemList.get(index).isSelected());
+                                }else {
+                                    mItemList.get(i).setSelected(false);
+                                }
                             }
                         }
                     } else {

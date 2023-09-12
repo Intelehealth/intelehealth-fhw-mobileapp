@@ -71,6 +71,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,8 +95,8 @@ import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivi
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
@@ -143,13 +144,13 @@ import okhttp3.ResponseBody;
 public class PatientDetailActivity2 extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
-            postalcode, patientcountry, patientstate, patientdistrict, village, address1,
+            postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID;
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
     PatientsDAO patientsDAO = new PatientsDAO();
     private boolean hasLicense = false;
-    SQLiteDatabase db = null;
+    //SQLiteDatabase db = null;
     private PatientDTO patientDTO;
     String profileImage = "";
     String profileImage1 = "";
@@ -179,6 +180,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
     String tag = "";
+    private TableRow trAddress2;
 
     @Override
     public void onBackPressed() {
@@ -203,7 +205,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         filter = new IntentFilter("OpenmrsID");
         reMyreceive = new Myreceiver();
 
@@ -217,7 +219,6 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         Intent intent = getIntent();
         if (intent != null) {
             tag = intent.getStringExtra("tag");
-
             if (intent.hasExtra("BUNDLE")) {
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
@@ -236,11 +237,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             intent2.putExtra("patientUuid", patientDTO.getUuid());
             intent2.putExtra("ScreenEdit", "personal_edit");
             intent2.putExtra("patient_detail", true);
-
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
+            finish();
         });
 
         address_edit.setOnClickListener(v -> {
@@ -248,11 +249,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             intent2.putExtra("patientUuid", patientDTO.getUuid());
             intent2.putExtra("ScreenEdit", "address_edit");
             intent2.putExtra("patient_detail", true);
-
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
+            finish();
         });
 
         others_edit.setOnClickListener(v -> {
@@ -260,16 +261,17 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
             intent2.putExtra("patientUuid", patientDTO.getUuid());
             intent2.putExtra("ScreenEdit", "others_edit");
             intent2.putExtra("patient_detail", true);
-
             Bundle args = new Bundle();
             args.putSerializable("patientDTO", (Serializable) patientDTO);
             intent2.putExtra("BUNDLE", args);
             startActivity(intent2);
+            finish();
         });
 
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
             startActivity(i);
+            finish();
         });
 
         startVisitBtn.setOnClickListener(v -> {
@@ -458,9 +460,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
         String patientUuid = patientDTO.getUuid();
         intent2.putExtra("patientUuid", patientUuid);
-
         VisitDTO visitDTO = new VisitDTO();
-
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patientDTO.getUuid());
         visitDTO.setStartdate(thisDate);
@@ -488,6 +488,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         intent2.putExtra("tag", "new");
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         startActivity(intent2);
+        finish();
     }
 
 
@@ -511,6 +512,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         patientdistrict = findViewById(R.id.district);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
+        trAddress2 = findViewById(R.id.tr_address_2);
+        addr2View = findViewById(R.id.addr2View);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
@@ -543,8 +546,11 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     private List<PastVisitData> mCurrentVisitDataList = new ArrayList<PastVisitData>();
 
     private void initForOpenVisit() {
+        if (patientDTO == null || patientDTO.getUuid() == null) {
+            return;
+        }
         mCurrentVisitDataList.clear();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientDTO.getUuid()};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
@@ -664,7 +670,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
                                 }
                                 StringBuilder stringBuilder = new StringBuilder();
-                                for (int i = 0; i < list.size(); i++) {
+                                int size = list.size() == 1 ? list.size() : list.size() - 1;
+                                for (int i = 0; i < size; i++) {
                                     String complainName = "";
                                     List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                                     String[] spt1 = list.get(i).split("●");
@@ -743,7 +750,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
     }
 
     public void setDisplay(String dataString) {
-
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
@@ -1084,11 +1091,12 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         } else {
             address1.setText(patientDTO.getAddress1());
         }
-       /* if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { // todo: as per figma not needed.
-            addr2Row.setVisibility(View.GONE);
+
+        if (patientDTO.getAddress2() == null || patientDTO.getAddress2().equals("")) { //
+            trAddress2.setVisibility(View.GONE);
         } else {
             addr2View.setText(patientDTO.getAddress2());
-        }*/
+        }
 
         // setting country
         String country;
@@ -1572,12 +1580,13 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         });
 
         positive_btn.setOnClickListener(v -> {
-            checkVisitOrStartNewVisit();
+          //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
         });
 
         alertDialog.show();
     }
 
+/*
     private void checkVisitOrStartNewVisit() {
         // before starting, we determine if it is new visit for a returning patient
         // extract both FH and PMH
@@ -1652,9 +1661,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         Intent intent2 = new Intent(PatientDetailActivity2.this, VitalsActivity.class);
         String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
         intent2.putExtra("patientUuid", patientDTO.getUuid());
-
         VisitDTO visitDTO = new VisitDTO();
-
         visitDTO.setUuid(uuid);
         visitDTO.setPatientuuid(patientDTO.getUuid());
         visitDTO.setStartdate(thisDate);
@@ -1683,6 +1690,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
         intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
         startActivity(intent2);
     }
+*/
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
@@ -1696,7 +1704,7 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
     private void initForPastVisit() {
         mPastVisitDataList.clear();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
         String[] visitArgs = {patientDTO.getUuid()};
         String[] visitColumns = {"uuid", "startdate", "enddate"};
@@ -1812,7 +1820,8 @@ public class PatientDetailActivity2 extends AppCompatActivity implements Network
 
                                     }
                                     StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; i < list.size(); i++) {
+                                    int size = list.size() == 1 ? list.size() : list.size() - 1;
+                                    for (int i = 0; i < size; i++) {
                                         String complainName = "";
                                         List<VisitSummaryData> visitSummaryDataList = new ArrayList<>();
                                         String[] spt1 = list.get(i).split("●");

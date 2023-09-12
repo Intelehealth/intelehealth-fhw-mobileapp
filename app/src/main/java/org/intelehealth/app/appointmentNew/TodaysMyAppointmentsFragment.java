@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.api.ApiClientAppointment;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
@@ -99,7 +100,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getAppointments();
+        //getAppointments();
     }
 
     private void initUI() {
@@ -116,7 +117,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             requireActivity().getResources().updateConfiguration(config, getActivity().getResources().getDisplayMetrics());
         }
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         //initialize all the views
         rvUpcomingApp = view.findViewById(R.id.rv_upcoming_appointments);
@@ -181,6 +182,11 @@ public class TodaysMyAppointmentsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
                     ivClearText.setVisibility(View.VISIBLE);
                 } else {
@@ -189,11 +195,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     ivClearText.setVisibility(View.GONE);
 
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
 
         });
@@ -380,7 +381,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
         rvCompletedApp.setVisibility(View.VISIBLE);
         noDataFoundForCompleted.setVisibility(View.GONE);
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         //check if visit is present or not
         for (int i = 0; i < appointmentsDaoList.size(); i++) {
@@ -427,7 +428,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private String getPatientProfile(String patientUuid) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         String imagePath = "";
 

@@ -19,7 +19,6 @@
 
         <!-- Frame 100116 -->
         <RelativeLayout
-            android:id="@+id/frame_10011"
             android:layout_width="wrap_content"
             android:layout_height="?actionBarSize"
             android:paddingHorizontal="@dimen/toolbar_margin_left">
@@ -74,7 +73,6 @@
     <!--card view-->
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/notifi_relative"
@@ -101,7 +99,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/notifi_arrow_margin_end"
                     android:layout_marginEnd="@dimen/notifi_arrow_margin_end"
-                    android:background="@null"
+                    android:background="@null" android:visibility="gone"
                     android:src="@drawable/arrow_right_icon8" />
 
                 <ImageView
@@ -128,7 +126,6 @@
                     android:textSize="@dimen/fu_name_txt_size" />
 
                 <TextView
-                    android:id="@+id/notifi_sub_header_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/notifi_header_title"

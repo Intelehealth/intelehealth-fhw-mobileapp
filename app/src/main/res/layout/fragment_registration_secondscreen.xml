@@ -35,7 +35,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/postalcode_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -85,7 +84,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/country_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -132,7 +130,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/state_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -205,7 +202,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/district_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -268,7 +264,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/city_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
@@ -278,7 +273,6 @@
                         android:textSize="@null" />
 
                     <Spinner
-                        android:id="@+id/city_spinner"
                         style="@style/AppTheme"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edittext_height_44dp"
@@ -335,7 +329,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/address1_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -376,7 +369,6 @@
 
             <!--Address 2-->
             <LinearLayout
-                android:id="@+id/linear_address2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_address1"
@@ -384,7 +376,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/address2_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
@@ -438,7 +429,6 @@
         android:layout_marginBottom="@dimen/margin_24">
 
         <LinearLayout
-            android:id="@+id/linear_secondscreen_nxt_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

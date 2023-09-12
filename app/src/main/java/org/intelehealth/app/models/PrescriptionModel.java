@@ -11,6 +11,7 @@ public class PrescriptionModel {
     String patientUuid;
     String openmrs_id;
     String first_name;
+    String middle_name;
     String last_name;
     String phone_number;
     String gender;
@@ -55,6 +56,14 @@ public class PrescriptionModel {
 
     public void setOpenmrs_id(String openmrs_id) {
         this.openmrs_id = openmrs_id;
+    }
+
+    public String getMiddle_name() {
+        return middle_name;
+    }
+
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
     }
 
     public String getFirst_name() {

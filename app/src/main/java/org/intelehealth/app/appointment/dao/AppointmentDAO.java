@@ -34,7 +34,7 @@ public class AppointmentDAO {
     public void insert(AppointmentInfo appointmentInfo) throws DAOException {
 
         AppointmentInfo checkAppointmentInfo = getAppointmentByVisitId(appointmentInfo.getVisitUuid());
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
 
@@ -78,7 +78,7 @@ public class AppointmentDAO {
 
     public void updateAppointmentSync(String uuid, String synced) throws DAOException {
         Log.v(TAG, "updateAppointmentSync uuid- " + uuid + "\t synced - " + synced);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         String whereClause = "visit_uuid=?";
         String[] whereArgs = {uuid};
@@ -94,7 +94,7 @@ public class AppointmentDAO {
     public void insertAppointmentToDb(BookAppointmentRequest bookAppointmentRequest) throws DAOException {
         Log.v(TAG, "insertAppointmentToDb bookAppointmentRequest - " + new Gson().toJson(bookAppointmentRequest));
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         try {
             ContentValues values = new ContentValues();
@@ -129,8 +129,8 @@ public class AppointmentDAO {
     public AppointmentInfo getAppointmentByVisitId(String visitUUID) {
         Log.v(TAG, "getByVisitUUID - visitUUID - " + visitUUID);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments where visit_uuid = ?", new String[]{visitUUID});
         AppointmentInfo appointmentInfo = null;
         if (idCursor.getCount() != 0) {
@@ -157,8 +157,8 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
         //db.close();
 
         return appointmentInfo;
@@ -167,7 +167,7 @@ public class AppointmentDAO {
 
 //    public List<AppointmentInfo> getAppointments() {
 //        List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 //        db.beginTransaction();
 //        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments", new String[]{});
 //
@@ -206,7 +206,7 @@ public class AppointmentDAO {
 
     public void deleteAppointmentByVisitId(String visitUuid) {
         Log.v(TAG, "deleteAppointmentByVisitId - visitUUID - " + visitUuid);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         db.delete("tbl_appointments", "visit_uuid=?", new String[]{visitUuid});
         db.setTransactionSuccessful();
@@ -216,7 +216,7 @@ public class AppointmentDAO {
 
     public void deleteAllAppointments() {
         Log.v(TAG, "deleteAllAppointments ");
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         db.delete("tbl_appointments", null, null);
         db.setTransactionSuccessful();
@@ -227,8 +227,8 @@ public class AppointmentDAO {
 
     public List<AppointmentInfo> getAppointments() {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments", new String[]{});
         EncounterDAO encounterDAO = new EncounterDAO();
 
@@ -265,8 +265,8 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
         //db.close();
 
         return appointmentInfos;
@@ -276,8 +276,8 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor;
         String table = "tbl_appointments";
 
@@ -337,8 +337,8 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
         //db.close();
 
         return appointmentInfos;
@@ -348,8 +348,8 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor;
         String table = "tbl_appointments";
 
@@ -409,19 +409,20 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
         //db.close();
 
         return appointmentInfos;
     }
 
     public List<AppointmentInfo> getAppointmentsWithFiltersForToday(String searchPatientText, String currentDate) {
+        Log.v(TAG, "getAppointmentsWithFiltersForToday - "+currentDate);
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor;
 
 
@@ -434,7 +435,7 @@ public class AppointmentDAO {
 
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-
+        Log.v(TAG, "getAppointmentsWithFiltersForToday idCursor.getCount()  - "+idCursor.getCount() );
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 AppointmentInfo appointmentInfo = new AppointmentInfo();
@@ -468,8 +469,8 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
         //db.close();
 
         return appointmentInfos;
@@ -480,7 +481,7 @@ public class AppointmentDAO {
 
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         String whereclause = "visit_uuid = ? ";
         String[] whereargs = {visit_uuid};
@@ -511,8 +512,8 @@ public class AppointmentDAO {
     public AppointmentInfo getDetailsOfRescheduledAppointment(String visitUUID, String appointmentId) {
         Log.v(TAG, "getDetailsOfRescheduledAppointment - visitUUID - " + visitUUID);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments where appointment_id = ? and visit_uuid = ?", new String[]{appointmentId, visitUUID});
         AppointmentInfo appointmentInfo = null;
         if (idCursor.getCount() != 0) {
@@ -534,8 +535,8 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
         //db.close();
 
         return appointmentInfo;
@@ -545,8 +546,8 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
         Cursor idCursor;
 
 
@@ -602,8 +603,8 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
         //db.close();
 
         return appointmentInfos;
@@ -613,8 +614,8 @@ public class AppointmentDAO {
         String search = searchPatientText.trim().replaceAll("\\s", "");
 
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
         Cursor idCursor;
 
         if (!searchPatientText.isEmpty()) {
@@ -662,8 +663,8 @@ public class AppointmentDAO {
 
         }
         idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
         //db.close();
 
         return appointmentInfos;
@@ -672,7 +673,7 @@ public class AppointmentDAO {
     public List<BookAppointmentRequest> getUnsyncedAppointments() throws DAOException {
         List<BookAppointmentRequest> requestList = new ArrayList<>();
         BookAppointmentRequest bookAppointmentRequest = new BookAppointmentRequest();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
             Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
             if (idCursor.getCount() != 0) {

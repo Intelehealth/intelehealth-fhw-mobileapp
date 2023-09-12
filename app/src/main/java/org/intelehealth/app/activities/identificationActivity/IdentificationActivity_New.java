@@ -2,8 +2,12 @@ package org.intelehealth.app.activities.identificationActivity;
 
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -13,6 +17,7 @@ import android.os.LocaleList;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -23,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.models.Patient;
@@ -64,6 +71,17 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
     private Fragment_ThirdScreen thirdScreen;
     private ImageButton refresh;
     private NetworkUtils networkUtils;
+    Intent intentRx;
+    private ObjectAnimator syncAnimator;
+    private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
+                syncAnimator.cancel();
+                syncAnimator.end();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +101,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,
-                    getBaseContext().getResources().getDisplayMetrics());
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
         setContentView(R.layout.activity_identification_new);
@@ -98,17 +115,15 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         initUI();
         networkUtils = new NetworkUtils(this, this);
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            if (intent.hasExtra("patientUuid")) {
+        intentRx = this.getIntent(); // The intent was passed to the activity
+        if (intentRx != null) {
+            if (intentRx.hasExtra("patientUuid")) {
                 label.setText(R.string.update_patient_identification);
-                patientID_edit = intent.getStringExtra("patientUuid");
-                screenName = intent.getStringExtra("ScreenEdit");
+                patientID_edit = intentRx.getStringExtra("patientUuid");
+                screenName = intentRx.getStringExtra("ScreenEdit");
                 patient1.setUuid(patientID_edit);
-
-                Bundle args = intent.getBundleExtra("BUNDLE");
+                Bundle args = intentRx.getBundleExtra("BUNDLE");
                 patientdto = (PatientDTO) args.getSerializable("patientDTO");
-
                 if (screenName.equalsIgnoreCase("personal_edit")) {
                     setscreen(firstScreen);
                 } else if (screenName.equalsIgnoreCase("address_edit")) {
@@ -162,10 +177,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         bundle.putBoolean("patient_detail", true);
         fragment.setArguments(bundle); // passing data to Fragment
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_firstscreen, fragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, fragment).commit();
     }
 
     private void initUI() {
@@ -175,10 +187,11 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         refresh = findViewById(R.id.refresh);
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_firstscreen, new Fragment_FirstScreen())
-                .commit();
+        syncAnimator = ObjectAnimator.ofFloat(refresh, View.ROTATION, 0f, 359f).setDuration(1200);
+        syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        syncAnimator.setInterpolator(new LinearInterpolator());
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_firstscreen, new Fragment_FirstScreen()).commit();
 
     }
 
@@ -189,25 +202,32 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
 
 
     public void cancelRegistration(View view) {
-        patientRegistrationDialog(context,
-                getResources().getDrawable(R.drawable.close_patient_svg),
-                getResources().getString(R.string.close_patient_registration),
-                getResources().getString(R.string.sure_you_want_close_registration),
-                getResources().getString(R.string.yes),
-                getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
-                    @Override
-                    public void onDialogActionDone(int action) {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK)
-                            finish();
-                    }
-                });
+        if(!intentRx.hasExtra("patientUuid")) {
+            patientRegistrationDialog(context, getResources().getDrawable(R.drawable.close_patient_svg), getResources().getString(R.string.close_patient_registration), getResources().getString(R.string.sure_you_want_close_registration), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DialogUtils.CustomDialogListener() {
+                @Override
+                public void onDialogActionDone(int action) {
+                    if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) finish();
+                }
+            });
+        }
+        else
+        {
+            Intent intent = new Intent(this, PatientDetailActivity2.class);
+            intent.putExtra("patientUuid", patientID_edit);
+            intent.putExtra("tag", "searchPatient");
+            intent.putExtra("privacy", "false");
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
-//            Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
+        refresh.clearAnimation();
+        syncAnimator.start();
     }
 
     @Override
@@ -215,8 +235,7 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
-        }
-        else {
+        } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
         }
     }
@@ -225,12 +244,16 @@ public class IdentificationActivity_New extends AppCompatActivity implements Net
     public void onStart() {
         super.onStart();
         //register receiver for internet check
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        registerReceiver(syncBroadcastReceiver, filter);
         networkUtils.callBroadcastReceiver();
     }
+
     @Override
     public void onStop() {
         super.onStop();
         try {
+            unregisterReceiver(syncBroadcastReceiver);
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {

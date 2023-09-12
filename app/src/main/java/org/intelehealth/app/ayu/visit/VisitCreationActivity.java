@@ -59,6 +59,7 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -145,6 +146,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     // Family History
 
     private boolean mIsEditMode = false;
+    private boolean mIsEditTriggerFromVisitSummary = false;
     private int mEditFor = 0; // STEP_1_VITAL , STEP_2_VISIT_REASON, STEP_3_PHYSICAL_EXAMINATION, STEP_4_PAST_MEDICAL_HISTORY
 
     @Override
@@ -189,6 +191,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
             if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
+                mIsEditTriggerFromVisitSummary = true;
             }
             Log.v(TAG, "Patient ID: " + patientUuid);
             Log.v(TAG, "Visit ID: " + visitUuid);
@@ -234,6 +237,9 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         else makeReadyForEdit();
     }
 
+    public boolean isEditTriggerFromVisitSummary() {
+        return mIsEditTriggerFromVisitSummary;
+    }
 
     private void makeReadyForEdit() {
         findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
@@ -361,6 +367,15 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         showPastMedicalHistoryFragment(isEditMode);
                     } else if (caseNo == STEP_5_FAMILY_HISTORY) {
                         showFamilyHistoryFragment(isEditMode);
+                    }else if (caseNo == STEP_3_PHYSICAL_EXAMINATION){
+                        mStep3ProgressBar.setProgress(100);
+                        setTitle(getResources().getString(R.string._phy_examination));
+                        mSummaryFrameLayout.setVisibility(View.GONE);
+                        //mPhysicalExamNode =
+                        //loadPhysicalExam();
+                        getSupportFragmentManager().beginTransaction().
+                                replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(getIntent(), isEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
+                                commit();
                     }
                     // step 2
                     else if (caseNo == STEP_2_VISIT_REASON_QUESTION) {
@@ -705,8 +720,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
     @Override
-    public void onImageRemoved(int index, String image) {
-        deleteImageFromDatabase(index, image);
+    public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+        deleteImageFromDatabase(nodeIndex,imageIndex, image);
     }
 
     @Override
@@ -1179,13 +1194,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
 
-    private void deleteImageFromDatabase(int index, String imageName) {
+    private void deleteImageFromDatabase(int nodeIndex,int imageIndex, String imageName) {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
             String obsUUID = imageName.substring(imageName.lastIndexOf("/") + 1).split("\\.")[0];
             imagesDAO.deleteImageFromDatabase(obsUUID);
-            imageUtilsListener.onImageReadyForDelete(index, imageName);
+            imageUtilsListener.onImageReadyForDelete(nodeIndex,imageIndex, imageName);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1282,9 +1297,21 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
-
+    private AlertDialog mImagePickerAlertDialog;
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
+            @Override
+            public void onActionDone(int action) {
+                mImagePickerAlertDialog.dismiss();
+                if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
+                    cameraStart();
+
+                } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
+                    galleryStart();
+                }
+            }
+        });
+       /* final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(VisitCreationActivity.this);
         builder.setTitle(getResources().getString(R.string.add_image_by));
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -1301,7 +1328,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                 }
             }
         });
-        builder.show();
+        builder.show();*/
     }
 
 
@@ -1348,7 +1375,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public interface ImageUtilsListener {
         void onImageReady(Bundle bundle);
 
-        void onImageReadyForDelete(int index, String image);
+        void onImageReadyForDelete(int nodeIndex,int imageIndex, String imageName);
     }
 
     private ActivityResultLauncher<String> requestPermissionLauncher =

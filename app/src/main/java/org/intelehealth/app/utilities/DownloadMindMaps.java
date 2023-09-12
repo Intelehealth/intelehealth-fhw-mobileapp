@@ -1,11 +1,9 @@
 package org.intelehealth.app.utilities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -20,7 +18,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.setupActivity.SetupActivity;
 
 
 /**
@@ -133,7 +130,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
             if(screenStr.equalsIgnoreCase("setup")){
-                ((SetupActivity)context).showMindmapFailedAlert();
+              //  ((SetupActivity)context).showMindmapFailedAlert();    // Prajwal - commenting this line as it is using old java context. Not sure on what change is needed so commenting it out.
             }else if(screenStr.equalsIgnoreCase("home")){
                 SessionManager sessionManager=new SessionManager(context);
                 sessionManager.setLicenseKey("");

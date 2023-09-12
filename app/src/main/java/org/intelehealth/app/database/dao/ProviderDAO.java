@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -26,7 +27,7 @@ public class ProviderDAO {
     public boolean insertProviders(List<ProviderDTO> providerDTOS) throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             for (ProviderDTO provider : providerDTOS) {
@@ -77,8 +78,8 @@ public class ProviderDAO {
 
     public List<String> getProvidersList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
             Cursor cursor = db.rawQuery(query, new String[]{});
@@ -89,12 +90,12 @@ public class ProviderDAO {
                 }
             }
             cursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
 
         }
         return providersList;
@@ -103,7 +104,7 @@ public class ProviderDAO {
 
     public List<String> getProvidersUuidList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
@@ -130,7 +131,7 @@ public class ProviderDAO {
     public String getProviderGiven_Lastname(String uuid) throws DAOException {
         String fullname = "";
         String givenname = "", familyname = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             String query = "select * from tbl_provider where uuid = ?";
@@ -160,7 +161,7 @@ public class ProviderDAO {
     }
 
     public ProviderDTO getLoginUserDetails(String uuid) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ProviderDTO providerDTO = null;
 
         db.beginTransaction();
@@ -199,7 +200,7 @@ public class ProviderDAO {
     }
 
     public ProviderDTO getProviderInfo(String uuid) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ProviderDTO providerDTO = null;
 
         db.beginTransaction();
@@ -239,7 +240,7 @@ public class ProviderDAO {
 
 
     public boolean updateProfileDetails(ProviderDTO provider) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
         int updatedCount = 0;
@@ -274,7 +275,7 @@ public class ProviderDAO {
 
     public boolean updateProviderProfileSync(String uuid, String synced) throws DAOException {
         boolean isUpdated = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -300,7 +301,7 @@ public class ProviderDAO {
     public List<ProviderDTO> unsyncedProviderDetails(String uuid) throws DAOException {
         Log.d(TAG, "unsyncedProviderDetails: uuid : " + uuid);
         List<ProviderDTO> providerDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT * FROM tbl_provider where  uuid=? AND (sync = ? OR sync=?) COLLATE NOCASE", new String[]{uuid, "0", "false"});
@@ -339,7 +340,7 @@ public class ProviderDAO {
 
         boolean isUpdated = false;
         long isupdate = 0;
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
         String whereclause = "uuid = ?";

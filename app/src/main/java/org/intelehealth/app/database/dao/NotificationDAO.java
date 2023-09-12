@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -24,7 +25,7 @@ public class NotificationDAO {
 
     public static boolean insertNotifications(List<NotificationModel> notificationModels) throws DAOException {
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             for (NotificationModel model : notificationModels) {
@@ -66,8 +67,8 @@ public class NotificationDAO {
 
     public static NotificationModel showOnly_NonDeletedNotification(NotificationModel model, String date) {
         NotificationModel notificationModel = new NotificationModel();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_notifications WHERE isdeleted = 'false' AND obs_server_modified_date = ?",
                 new String[] {date});
@@ -79,15 +80,15 @@ public class NotificationDAO {
             }
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
 
         return notificationModel;
     }
 
     public static boolean deleteNotification(NotificationModel models) {
         boolean isDeleted = false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
@@ -111,8 +112,8 @@ public class NotificationDAO {
     public static boolean fetchAllFrom_NotificationTbl(NotificationModel model) {
         boolean value = false;
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
 
         Cursor cursor_count = db.rawQuery("SELECT * FROM tbl_notifications", new String[] {});
         if (cursor_count.getCount() > 0) {
@@ -143,8 +144,8 @@ public class NotificationDAO {
         }*/
 
         cursor_count.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
 
         return value;
     }

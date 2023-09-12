@@ -961,22 +961,24 @@ public class CompleteActivity extends AppCompatActivity {
                 new MediaConstraints.KeyValuePair("OfferToReceiveAudio", "true"));
         sdpMediaConstraints.mandatory.add(
                 new MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"));
-        peerConnection.createOffer(new SimpleSdpObserver() {
-            @Override
-            public void onCreateSuccess(SessionDescription sessionDescription) {
-                Log.d(TAG, "createOffer onCreateSuccess:()");
-                peerConnection.setLocalDescription(new SimpleSdpObserver(), sessionDescription);
-                JSONObject message = new JSONObject();
-                try {
-                    message.put("type", "offer");
-                    message.put("sdp", sessionDescription.description);
-                    sendMessage(message);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if(peerConnection!=null) {
+            peerConnection.createOffer(new SimpleSdpObserver() {
+                @Override
+                public void onCreateSuccess(SessionDescription sessionDescription) {
+                    Log.d(TAG, "createOffer onCreateSuccess:()");
+                    peerConnection.setLocalDescription(new SimpleSdpObserver(), sessionDescription);
+                    JSONObject message = new JSONObject();
+                    try {
+                        message.put("type", "offer");
+                        message.put("sdp", sessionDescription.description);
+                        sendMessage(message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }, sdpMediaConstraints);
-        startStreamingVideo();
+            }, sdpMediaConstraints);
+            startStreamingVideo();
+        }
     }
 
     private void sendMessage(Object message) {

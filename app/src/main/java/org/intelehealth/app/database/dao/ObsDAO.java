@@ -37,7 +37,7 @@ public class ObsDAO {
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
             db.beginTransaction();
             Logger.logD("insert", " insert obs");
@@ -88,7 +88,7 @@ public class ObsDAO {
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -119,7 +119,7 @@ public class ObsDAO {
 
 
     public boolean updateObs(ObsDTO obsDTO) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         int updatedCount = 0;
         ContentValues values = new ContentValues();
@@ -160,7 +160,7 @@ public class ObsDAO {
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -193,7 +193,7 @@ public class ObsDAO {
 
     public List<ObsDTO> obsDTOList(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //take All obs except image obs
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false'", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
         ObsDTO obsDTO = new ObsDTO();
@@ -214,7 +214,7 @@ public class ObsDAO {
 
     public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
         List<String> rawStrings = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? AND voided='0'", new String[]{conceptuuid, encounterUuidAdultIntials});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -229,7 +229,7 @@ public class ObsDAO {
 
     public String getObsuuid(String encounterUuid, String conceptUuid) throws DAOException {
         String obsuuid = null;
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date,obsservermodifieddate desc limit 1 ", new String[]{conceptUuid, encounterUuid});
         try {
             if (obsCursoursor.getCount() != 0) {
@@ -252,7 +252,7 @@ public class ObsDAO {
     public List<PrescDataModel> fetchAllObsPrescData(String encounterVisitNote, String CONCEPTUUID, String sync) {
         List<PrescDataModel> prescDataModelList = new ArrayList<>();
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=? and voided =?",
                 new String[]{CONCEPTUUID, encounterVisitNote, sync, "0"});
         try {
@@ -286,7 +286,7 @@ public class ObsDAO {
     public boolean insertPrescObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -322,8 +322,8 @@ public class ObsDAO {
     public static String getFollowupDataForVisitUUID(String visitUUID) {
         String result = null;
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
 
         if(visitUUID != null) {
             final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " +
@@ -343,8 +343,8 @@ public class ObsDAO {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            db.setTransactionSuccessful();
-            db.endTransaction();
+//            db.setTransactionSuccessful();
+//            db.endTransaction();
         }
 
         return result;
@@ -357,8 +357,8 @@ public class ObsDAO {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
 
         String encounterIDSelection = "visituuid = ? ";
         String[] encounterIDArgs = {visitUuid};
@@ -388,8 +388,8 @@ public class ObsDAO {
         }
         visitCursor.close();
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
         return dbValue;
         // fetch dr details from local db - end

@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -102,7 +103,7 @@ public class OverallAchievementsFragment extends Fragment {
     // get the overall number of visits that were ended by the current health worker
     private void setOverallPatientsCreated() {
         String patientsCreatedTodayQuery = "SELECT COUNT(DISTINCT patientuuid) FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"84f94425-789d-4293-a0d8-9dc01dbb4f07\" AND value = ?";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor overallPatientsCreatedCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID()});
         overallPatientsCreatedCursor.moveToFirst();
         String overallPatientsCreatedCount = overallPatientsCreatedCursor.getString(overallPatientsCreatedCursor.getColumnIndex(overallPatientsCreatedCursor.getColumnName(0)));
@@ -113,7 +114,7 @@ public class OverallAchievementsFragment extends Fragment {
     // get the overall patient satisfaction score for the health worker
     private void setOverallVisitsEnded() {
         String visitsEndedTodayQuery = "SELECT COUNT(DISTINCT visituuid) FROM tbl_encounter WHERE provider_uuid = ? AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor overallVisitsEndedCursor = db.rawQuery(visitsEndedTodayQuery, new String[]{sessionManager.getProviderID()});
 
         overallVisitsEndedCursor.moveToFirst();
@@ -127,7 +128,7 @@ public class OverallAchievementsFragment extends Fragment {
         double averageScore = 0.0, totalScore = 0.0;
 
         String overallAverageSatisfactionScoreQuery = "SELECT value FROM tbl_obs WHERE conceptuuid = \"78284507-fb71-4354-9b34-046ab205e18f\" AND encounteruuid IN (SELECT uuid FROM tbl_encounter WHERE provider_uuid = ?)";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor satisfactionScoreCursor = db.rawQuery(overallAverageSatisfactionScoreQuery, new String[]{sessionManager.getProviderID()});
 
         if (satisfactionScoreCursor.moveToFirst()) {

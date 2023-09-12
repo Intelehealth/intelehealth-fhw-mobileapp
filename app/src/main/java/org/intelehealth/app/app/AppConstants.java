@@ -95,7 +95,7 @@ public class AppConstants {
 
 
     //functions constants
-    public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
+    
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();

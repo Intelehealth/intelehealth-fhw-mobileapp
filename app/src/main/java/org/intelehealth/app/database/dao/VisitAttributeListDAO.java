@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -31,7 +32,7 @@ public class VisitAttributeListDAO {
             throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
@@ -90,8 +91,8 @@ public class VisitAttributeListDAO {
 
         if (VISITUUID != null) {
             Log.d("specc", "spec_fun: " + VISITUUID);
-            SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-            db.beginTransaction();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            //db.beginTransaction();
 
             Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and " +
                             "visit_attribute_type_uuid = ? and voided = 0",
@@ -106,8 +107,8 @@ public class VisitAttributeListDAO {
                 isValue = "";
             }
             cursor.close();
-            db.setTransactionSuccessful();
-            db.endTransaction();
+            //db.setTransactionSuccessful();
+            //db.endTransaction();
             db.close();
 
             Log.d("specc", "spec_4: " + isValue);
@@ -132,7 +133,7 @@ public class VisitAttributeListDAO {
         Log.d("SPINNER", "SPINNER_Selected_visituuid_logs: " + visitUuid);
         Log.d("SPINNER", "SPINNER_Selected_value_logs: " + value);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
@@ -169,8 +170,8 @@ public class VisitAttributeListDAO {
      */
     public static String fetchSpecialityValue(String visitUUID) {
         String specialityValue = "No data found";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        //db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT distinct(value) FROM tbl_visit_attribute WHERE visit_uuid=? and visit_attribute_type_uuid = ? and voided = 0",
                 new String[]{visitUUID, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
@@ -181,8 +182,8 @@ public class VisitAttributeListDAO {
             }
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
 
         return specialityValue;
     }

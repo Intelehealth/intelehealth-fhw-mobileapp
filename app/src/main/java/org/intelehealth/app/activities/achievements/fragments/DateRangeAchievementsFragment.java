@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.ObsImageModel.Encounter;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -148,7 +149,7 @@ public class DateRangeAchievementsFragment extends Fragment {
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         String patientsCreatedTodayQuery = "SELECT DISTINCT(patientuuid), value FROM tbl_patient_attribute WHERE patientuuid IN (SELECT DISTINCT(patientuuid) FROM tbl_patient_attribute WHERE person_attribute_type_uuid = \"84f94425-789d-4293-a0d8-9dc01dbb4f07\" AND value = ?) AND person_attribute_type_uuid = \"ffc8ebee-f70c-4743-bc3c-2fe4ac843245\" ";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor rangePatientsCreatedCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID()});
 
         if (rangePatientsCreatedCursor.moveToFirst()) {
@@ -177,7 +178,7 @@ public class DateRangeAchievementsFragment extends Fragment {
 
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         String visitEndedQuery = "SELECT DISTINCT visituuid, modified_date FROM tbl_encounter WHERE provider_uuid = ?  AND encounter_type_uuid = \"629a9d0b-48eb-405e-953d-a5964c88dc30\"";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor rangePatientsCreatedCursor = db.rawQuery(visitEndedQuery, new String[]{sessionManager.getProviderID()});
 
         if (rangePatientsCreatedCursor.moveToFirst()) {
@@ -203,7 +204,7 @@ public class DateRangeAchievementsFragment extends Fragment {
     private void setAveragePatientSatisfactionScore() {
         List<ObsDTO> obsList = new ArrayList<>();
         String query = "SELECT value, modified_date FROM tbl_obs WHERE conceptuuid = \"78284507-fb71-4354-9b34-046ab205e18f\" AND encounteruuid IN (SELECT uuid FROM tbl_encounter WHERE provider_uuid = ?)";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         final Cursor rangeAverageSatisfactionCursor = db.rawQuery(query, new String[]{sessionManager.getProviderID()});
         double averageScore = 0.0;
 

@@ -2,6 +2,8 @@ package org.intelehealth.app.appointmentNew;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -94,7 +97,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     String app_start_date, app_start_time, app_start_day;
     String rescheduleReason;
     NetworkUtils networkUtils;
-    ImageView ivIsInternet;
+    ImageView ivIsInternet, ivBackArrow;
+
+    private ObjectAnimator syncAnimator;
 
     private SessionManager sessionManager;
     String patientAge, patientGender, patientPic;
@@ -118,6 +123,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         View toolbar = findViewById(R.id.toolbar_schedule_appointments);
         TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
         ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
+
+        syncAnimator = ObjectAnimator.ofFloat(ivIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
+        syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        syncAnimator.setInterpolator(new LinearInterpolator());
 
         tvTitle.setText(getResources().getString(R.string.schedule_appointment));
 
@@ -181,8 +190,17 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
                 } else {
                     Log.v(TAG, "Sync Done!");
-                    recreate();
+//                    recreate();
+                    Intent newIntent = getIntent();
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(newIntent);
+                    overridePendingTransition(0, 0);
+                    finish();
                 }
+
+                ivIsInternet.clearAnimation();
+                syncAnimator.cancel();
             }
         };
         IntentFilter filterSend = new IntentFilter();
@@ -199,7 +217,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     }
 
 //    private void fetchDataFromDB() {
-//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 //
 //        String patientSelection = "uuid = ?";
 //        String[] patientArgs = {patientUuid};
@@ -256,6 +274,9 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
 
             }
         });
+
+        ivBackArrow = findViewById(R.id.iv_back_arrow_common);
+        ivBackArrow.setOnClickListener(v -> finish());
 
         //rvMorningSlots.setHasFixedSize(true);
         rvMorningSlots.setLayoutManager(new GridLayoutManager(this, 3));
@@ -820,6 +841,15 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
 
+    }
+
+    public void syncNow(View view) {
+        if (NetworkConnection.isOnline(this)) {
+            new SyncUtils().syncBackground();
+            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+            ivIsInternet.clearAnimation();
+            syncAnimator.start();
+        }
     }
 
 }

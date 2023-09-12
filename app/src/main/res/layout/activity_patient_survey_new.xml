@@ -23,7 +23,6 @@
 
                 <!-- Label -->
                 <TextView
-                    android:id="@+id/feedback_txtview"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:lineSpacingExtra="1sp"

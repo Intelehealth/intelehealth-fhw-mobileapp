@@ -50,7 +50,7 @@ public class AdapterUtils {
 
     public static void setToDisable(Button button){
         button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
-        button.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
+        button.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg_1);
         button.setClickable(false);
         button.setEnabled(false);
     }

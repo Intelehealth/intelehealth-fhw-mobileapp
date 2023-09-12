@@ -85,7 +85,6 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -488,7 +487,6 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview1"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -642,7 +640,6 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -839,7 +836,6 @@
                         android:layout_marginEnd="@dimen/fu_margin_start">
 
                         <TextView
-                            android:id="@+id/details_personal_txtview"
                             style="@style/vs_title_head_14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -932,7 +928,6 @@
 
         <!--    Medical History Card-->
         <androidx.cardview.widget.CardView
-            android:id="@+id/medHistCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/physExamCard"

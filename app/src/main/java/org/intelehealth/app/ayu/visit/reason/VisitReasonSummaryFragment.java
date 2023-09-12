@@ -96,7 +96,7 @@ public class VisitReasonSummaryFragment extends Fragment {
         view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mIsEditMode) {
+                if (mIsEditMode&& ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()){
                     getActivity().setResult(Activity.RESULT_OK);
                     getActivity().finish();
                 } else
@@ -187,13 +187,19 @@ public class VisitReasonSummaryFragment extends Fragment {
                             String key = "";
                             String lastString = "";
                             for (int j = 0; j < qa.length; j++) {
-                                String v1 = qa[j];
+
+                                String v1 = qa[j].trim();
+                                System.out.println(v1);
                                 if (lastString.equals(v1)) continue;
                                 //if (!stringBuilder.toString().isEmpty()) stringBuilder.append("\n");
                                 stringBuilder.append(v1);
                                 lastString = v1;
                                 if (j % 2 != 0) {
                                     String v = qa[j].trim();
+                                    if( j== qa.length-2){
+                                        v = v + Node.bullet_arrow +qa[j+1];
+                                    }
+
                                     VisitSummaryData summaryData = new VisitSummaryData();
                                     summaryData.setQuestion(key);
                                     summaryData.setDisplayValue(v);

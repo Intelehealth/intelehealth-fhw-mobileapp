@@ -71,6 +71,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -724,22 +725,12 @@ public class Fragment_ThirdScreen extends Fragment {
                 intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
                 intent.putExtra("tag", "newPatient");
                 intent.putExtra("hasPrescription", "false");
-                //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
-                //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
                 Bundle args = new Bundle();
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
-                //    intent.putExtra("patientUuid", patientID_edit);
-                //   if (patient_detail) {
                 getActivity().startActivity(intent);
-                //   }
-                //startActivity(intent);
-                //  getActivity().finish();
-            }/* else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.error_adding_data), Toast.LENGTH_SHORT).show();
-            }*/
+                getActivity().finish();
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -747,7 +738,7 @@ public class Fragment_ThirdScreen extends Fragment {
 
 
     private void setscreen(String str) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Log.v(TAG, "relation: " + str);
 
         String patientSelection = "uuid=?";

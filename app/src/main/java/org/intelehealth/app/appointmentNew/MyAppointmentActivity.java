@@ -75,6 +75,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
     }
 
     private void loadAllAppointments() {
+        Log.v(TAG, "loadAllAppointments" );
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
         int tabIndex = tabLayout.getSelectedTabPosition();
         if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex))
@@ -88,6 +89,7 @@ public class MyAppointmentActivity extends AppCompatActivity implements UpdateAp
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
                         if (response.body() == null) return;
+                        Log.v(TAG, "onResponse - " + new Gson().toJson(response.body()));
                         AppointmentListingResponse slotInfoResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
                         appointmentDAO.deleteAllAppointments();

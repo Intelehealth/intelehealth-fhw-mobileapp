@@ -19,7 +19,6 @@ import java.security.NoSuchAlgorithmException;
 
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -98,6 +97,8 @@ public class OfflineLogin {
         Log.i(TAG, "Password Hash: " + hash);
     }
 
+    // this was already not being used anywhere so commented it as this class is also used in new ui so not deleting it.
+/*
     public void login(String username, String password) {
         Log.i(TAG, "Checking Offline Login!");
         if (mSharedPreference.contains(mContext.getString(R.string.offline_login_username_key)) &&
@@ -144,6 +145,7 @@ public class OfflineLogin {
             Toast.makeText(mContext, mContext.getString(R.string.offline_credentials_unavailable), Toast.LENGTH_LONG).show();
         }
     }
+*/
 
     public void invalidateLoginCredentials() {
         mSharedPreference.edit().clear().apply();
@@ -166,7 +168,7 @@ public class OfflineLogin {
 
     public void offline_login(String username, String password)
     {
-        SQLiteDatabase db_1 = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db_1 = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor c = db_1.rawQuery("SELECT * FROM tbl_user_credentials",null);
 
         String hash_de_password = null;
@@ -197,7 +199,7 @@ public class OfflineLogin {
         String[] cols = {username,hash_de_password};
         Log.d("Column","Column: "+username+" "+hash_de_password);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 "tbl_user_credentials",
                 null,

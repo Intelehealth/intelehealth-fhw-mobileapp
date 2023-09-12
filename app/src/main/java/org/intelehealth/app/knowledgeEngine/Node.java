@@ -921,7 +921,7 @@ public class Node implements Serializable {
                 if (node_opt.isSelected()) {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
-                            (associatedTest.trim().equals("H/o specific illness")) ||
+                            //(associatedTest.trim().equals("H/o specific illness")) ||
                             (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
                             (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
                             || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
@@ -1007,7 +1007,7 @@ public class Node implements Serializable {
         if (isSelected()) {
             String associatedTest = getText();
             if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
-                    (associatedTest.trim().equals("H/o specific illness")) ||
+                    //(associatedTest.trim().equals("H/o specific illness")) ||
                     (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
                     (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
                     || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
