@@ -220,6 +220,18 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             dataEditText.setText("");
         }
 
+        dataEditText.setTag(R.id.etvData, mItemList.get(position).getParamInfoList().get(positionChild));
+        dataEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            ParamInfo info = (ParamInfo) v.getTag(R.id.etvData);
+            if (!hasFocus && info.getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
+                EditText editText = (EditText) v;
+                if (editText.getText().length() < 2) {
+                    editText.setText("");
+                    Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         if (positionChild == currentChildFocusedIndex) {
             dataEditText.requestFocus();
             String lastAdded = mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue();
@@ -265,17 +277,19 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().trim().isEmpty() && !s.toString().startsWith(".") && mItemList.get(position).getParamInfoList()
-                        .get(positionChild).getParamName().equalsIgnoreCase("Temperature(C)")) {
-
-                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                        //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                        Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
-                        dataEditText.requestFocus();
-                        return;
-                    }
-                }
+                validatedTemperature(s.toString(), mItemList.get(position).getParamInfoList()
+                        .get(positionChild), dataEditText);
+//                if (!s.toString().trim().isEmpty() && !s.toString().startsWith(".") && mItemList.get(position).getParamInfoList()
+//                        .get(positionChild).getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
+//
+//                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+//                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+//                        //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+//                        Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
+//                        dataEditText.requestFocus();
+//                        return;
+//                    }
+//                }
             }
 
             @Override
@@ -291,6 +305,21 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 }
             }
         });
+    }
+
+    private void validatedTemperature(String value, ParamInfo info, EditText dataEditText) {
+        if (!value.trim().isEmpty() && value.length() == 2 && !value.startsWith(".")
+                && info.getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
+
+            if (Double.parseDouble(value) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+                    Double.parseDouble(value) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
+                dataEditText.setText("");
+                dataEditText.requestFocus();
+                return;
+            }
+        }
     }
 
     private void showRadioOptionBox(final View tempView, final int position, final int positionChild) {

@@ -1,6 +1,6 @@
 package org.intelehealth.ezazi.partogram;
 
-import androidx.annotation.NonNull;
+import static org.intelehealth.ezazi.utilities.UuidDictionary.TEMPERATURE;
 
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
@@ -45,7 +45,9 @@ public class PartogramConstants {
     public enum Params {
         SYSTOLIC_BP("Systolic BP"),
         DIASTOLIC_BP("Diastolic BP"),
-        IV_FLUID("IV Fluids");
+        IV_FLUID("IV Fluids"),
+
+        TEMPERATURE("Temperature(C)");
         public final String value;
 
         Params(String value) {
@@ -188,7 +190,7 @@ public class PartogramConstants {
 
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[2]);
-        paramInfo.setParamName("Temperature(C)"); // in centigrade i.e. C
+        paramInfo.setParamName(Params.TEMPERATURE.value); // in centigrade i.e. C
         paramInfo.setParamDateType(INPUT_DOUBLE_4_DIG_TYPE);
         paramInfo.setConceptUUID("5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         stringList.add(paramInfo);
