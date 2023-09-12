@@ -337,13 +337,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.BASELINE_FHR)) {
                         isValidBaselineFHR = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.BASELINE_FHR);
-                        //   isValidBaselineFHR = labourInfo.isValidBaselineFHR(info.getCapturedValue());
-
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.PULSE)) {
                         isValidPulse = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.PULSE);
-
-                        //isValidPulse = labourInfo.isValidPulse(info.getCapturedValue());
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.SYSTOLIC_BP)) {
                         isValidSystolicBP = labourInfo.isValidSystolicBP(info.getCapturedValue());
@@ -353,13 +349,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.TEMPERATURE)) {
                         isValidTemperature = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
-
-                        //isValidTemperature = labourInfo.isValidTemperature(info.getCapturedValue());
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.DURATION_OF_CONTRACTION)) {
                         isValidDuration = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.DURATION_OF_CONTRACTION);
-
-                        // isValidDuration = labourInfo.isValidDurationOfContraction(info.getCapturedValue());
                     }
 
                     if (info.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
