@@ -131,10 +131,10 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
                     try {
                         Log.v("getFollowup_date", model.getFollowup_date());
-                        String followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                        String followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
                         Log.v("getFollowup_date", followupDateTimeRaw+"OK");
-                        String followupDateTime = followupDateTimeRaw.replace(", Time:", "");
-                        Log.v("getFollowup_date", followupDateTime);
+                        String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
+                        Log.v("getFollowup_date", "final followupDate " + followupDateTime);
 
                         Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(followupDateTime);
                         Date nowDate = new Date();
@@ -215,7 +215,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             profile_image = itemView.findViewById(R.id.profile_image);
             rootView = itemView;
 
-            fu_date_txtview.setText("22 June"); // todo: testing.
+         //   fu_date_txtview.setText("22 June"); // todo: testing.
         }
 
         public View getRootView() {
