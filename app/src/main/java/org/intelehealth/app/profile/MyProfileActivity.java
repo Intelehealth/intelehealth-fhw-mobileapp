@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -79,7 +80,6 @@ import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
 import org.intelehealth.app.models.hwprofile.ProfileUpdateAttribute;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -109,8 +109,9 @@ import okhttp3.ResponseBody;
 
 public class MyProfileActivity extends AppCompatActivity implements SendSelectedDateInterface, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "MyProfileActivity";
-    TextInputEditText etUsername, etFirstName, etMiddleName, etLastName, etEmail, etMobileNo;
-    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob;
+    TextInputEditText etEmail, etMobileNo;
+    TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob,
+    etUsername, etFirstName, etMiddleName, etLastName;
     LinearLayout layoutParent;
     String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
     ImageView ivProfileImage, ivIsInternet, refresh;
@@ -134,11 +135,13 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     RelativeLayout layoutChangePassword;
     RadioGroup rgGroupGender;
     ImageView ivBack;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile_ui2);
+        context = MyProfileActivity.this;
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -180,10 +183,10 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         tvTitle.setText(getResources().getString(R.string.my_profile));
 
         //initialize all input fields
-        etUsername = findViewById(R.id.et_username_profile);
-        etFirstName = findViewById(R.id.et_first_name_profile);
-        etMiddleName = findViewById(R.id.et_middle_name_profile);
-        etLastName = findViewById(R.id.et_last_name_profile);
+        etUsername = findViewById(R.id.tv_username_profile);
+        etFirstName = findViewById(R.id.tv_first_name_profile);
+        etMiddleName = findViewById(R.id.tv_middle_name_profile);
+        etLastName = findViewById(R.id.tv_last_name_profile);
         etEmail = findViewById(R.id.et_email_profile);
         etMobileNo = findViewById(R.id.et_mobile_no_profile);
         tvDob = findViewById(R.id.tv_date_of_birth_profile);
@@ -210,7 +213,6 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     }
 
     private void manageListeners() {
-        Context context = MyProfileActivity.this;
 
         refresh.setOnClickListener(v -> {
             isSynced = syncNow(MyProfileActivity.this, refresh, syncAnimator);
@@ -254,6 +256,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             }
         });
 
+/*
         rgGroupGender.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton checkedRadioButton = group.findViewById(checkedId);
             boolean isChecked = checkedRadioButton.isChecked();
@@ -285,6 +288,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 
             }
         });
+*/
 
         layoutChangePassword.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChangePasswordActivity_New.class);
@@ -307,6 +311,9 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
 */
 
         tvChangePhoto.setOnClickListener(v -> checkPerm());
+
+        userFeedbackMsg();
+
 
         etFirstName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -431,6 +438,40 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         });
 
         fetchUserDetails();
+    }
+
+    private void userFeedbackMsg() {
+        etUsername.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        etFirstName.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        etMiddleName.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        etLastName.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        rgGroupGender.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        rbMale.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        rbFemale.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        rbOther.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        tvDob.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+        tvAge.setOnClickListener(v -> {
+            Toast.makeText(context, getString(R.string.please_contact_your_system_administrator_to_change_these_profile_details), Toast.LENGTH_LONG).show();
+        });
+
     }
 
     private void checkInternetAndUpdateProfile() {
