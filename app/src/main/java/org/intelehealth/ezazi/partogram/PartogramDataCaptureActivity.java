@@ -347,9 +347,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                     if (info.getConceptUUID().equals(UuidDictionary.DIASTOLIC_BP)) {
                         isValidDiastolicBP = labourInfo.isValidDiastolicBP(systolicBp, diastolicBp);
                     }
-                    if (info.getConceptUUID().equals(UuidDictionary.TEMPERATURE)) {
-                        isValidTemperature = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
-                    }
+//                    if (info.getConceptUUID().equals(UuidDictionary.TEMPERATURE)) {
+//                        isValidTemperature = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
+//                    }
                     if (info.getConceptUUID().equals(UuidDictionary.DURATION_OF_CONTRACTION)) {
                         isValidDuration = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.DURATION_OF_CONTRACTION);
                     }
@@ -401,9 +401,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             showErrorDialog(R.string.systolic_bp_range);
         } else if (!isValidDiastolicBP) {
             showErrorDialog(R.string.diastolic_bp_range);
-        } else if (!isValidTemperature) {
+        }/* else if (!isValidTemperature) {
             showErrorDialog(R.string.temperature_range);
-        } else if (!isValidDuration) {
+        }*/ else if (!isValidDuration) {
             showErrorDialog(R.string.contraction_duration_range);
         } else {
 

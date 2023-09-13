@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.ui.visit.model;
 
+import android.util.Log;
+
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 
 /**
@@ -131,9 +133,9 @@ public class LabourInfo {
                 case UuidDictionary.PULSE:
                     result = value >= 30 && value <= 240;
                     break;
-                case UuidDictionary.TEMPERATURE:
+               /* case UuidDictionary.TEMPERATURE:
                     result = value >= 32 && value <= 42.8;
-                    break;
+                    break;*/
                 case UuidDictionary.DURATION_OF_CONTRACTION:
                     result = value >= 0 && value <= 100;
                     break;
