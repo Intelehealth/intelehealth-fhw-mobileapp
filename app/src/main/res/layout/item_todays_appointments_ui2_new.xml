@@ -48,7 +48,9 @@
             android:lineSpacingExtra="3sp"
             android:text="Anthony Gonsalves"
             android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/item_ta_tv_name_text_size1" />
+            android:textSize="@dimen/item_ta_tv_name_text_size1"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <TextView
             android:id="@+id/tv_dr_name_todays"
