@@ -74,6 +74,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
+
     private Context mContext;
     private List<Node> mItemList = new ArrayList<Node>();
     //private int mTotalQuery = 0;
@@ -987,7 +988,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
 
             //if (havingNestedQuestion) {
-            if (isSuperNested) {
+            if (isSuperNested && mMindMapVersionMappingHashMap.get(mRootIndex).equals("4.0")) {
 
                 //questionTextView.setText(options.get(0).findDisplay());
                 holder.nestedQuestionsListingAdapter.clearItems();
@@ -1016,10 +1017,67 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.submitButton.setVisibility(View.GONE);
                 holder.skipButton.setVisibility(View.GONE);
                 VisitUtils.scrollNow(mRecyclerView, 1000, 0, 600);
-            } /*else if (isSuperNested) {
-                nestedQuestionsListingAdapter.addItem(selectedNode);
-                holder.nestedRecyclerView.setVisibility(View.VISIBLE);
-            }*/ else {
+            } else if (isSuperNested && mMindMapVersionMappingHashMap.get(mRootIndex).equals("3.0")) {
+                int caseType = selectedNode.foundTheNestedQuestionType();
+                if(caseType == Node.DIRECT_USER_INPUT_CHILD){
+                    Node node = selectedNode.getOption(0);
+                    String type = node.getInputType() == null ? "" : node.getInputType();
+
+                    if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
+                        type = "options";
+                    }
+                    Log.v(TAG, "Type - " + type);
+                    switch (type) {
+                        case "text":
+                            // askText(questionNode, context, adapter);
+                            addTextEnterView(node, holder, index);
+                            break;
+                        case "date":
+                            //askDate(questionNode, context, adapter);
+                            addDateView(node, holder, index);
+                            break;
+                        case "location":
+                            //askLocation(questionNode, context, adapter);
+                            break;
+                        case "number":
+                            // askNumber(questionNode, context, adapter);
+                            addNumberView(node, holder, index);
+                            break;
+                        case "area":
+                            // askArea(questionNode, context, adapter);
+                            break;
+                        case "duration":
+                            // askDuration(questionNode, context, adapter);
+                            addDurationView(node, holder, index);
+                            break;
+                        case "range":
+                            // askRange(questionNode, context, adapter);
+                            addRangeView(node, holder, index);
+                            break;
+                        case "frequency":
+                            //askFrequency(questionNode, context, adapter);
+                            addFrequencyView(node, holder, index);
+                            break;
+                        case "camera":
+                            // openCamera(context, imagePath, imageName);
+                            Log.v("showCameraView", "showOptionsData 1");
+                            showCameraView(node, holder, index);
+                            break;
+
+                        case "options":
+                            // openCamera(context, imagePath, imageName);
+                            //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
+                            break;
+                        default:
+                            holder.submitButton.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                }else if(caseType == Node.CHILD_OPTIONS){
+
+                }else if(caseType == Node.CHILD_QUESTION){
+
+                }
+            } else {
                 holder.nextRelativeLayout.setVisibility(View.GONE);
                 Log.v(TAG, "showOptionsData multiple option");
                 holder.tvQuestionDesc.setVisibility(View.VISIBLE);

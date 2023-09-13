@@ -3315,6 +3315,18 @@ public class Node implements Serializable {
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
+    public static final int DIRECT_USER_INPUT_CHILD = 0;
+    public static final int CHILD_OPTIONS = 1;
+    public static final int CHILD_QUESTION = 2;
+    public int foundTheNestedQuestionType() {
+            int type = -1;
+            if(getOptionsList()!=null && getOptionsList().size()==1){
+                type = DIRECT_USER_INPUT_CHILD;
+            }else {
+
+            }
+            return type;
+    }
 
     /*End*/
 }
