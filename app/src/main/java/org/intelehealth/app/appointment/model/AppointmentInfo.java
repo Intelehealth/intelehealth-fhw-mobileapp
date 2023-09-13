@@ -62,6 +62,9 @@ public class AppointmentInfo implements Serializable {
     @SerializedName("createdAt")
     private String createdAt;
 
+    private String patientDob;
+    private String patientGender;
+
 
     public List<RescheduledAppointmentsModel> getRescheduledAppointments() {
         return rescheduledAppointments;
@@ -280,5 +283,21 @@ public class AppointmentInfo implements Serializable {
 
     public void setPrescription_exists(boolean prescription_exists) {
         this.prescription_exists = prescription_exists;
+    }
+
+    public String getPatientDob() {
+        return patientDob;
+    }
+
+    public void setPatientDob(String patientDob) {
+        this.patientDob = patientDob;
+    }
+
+    public String getPatientGender() {
+        return patientGender;
+    }
+
+    public void setPatientGender(String patientGender) {
+        this.patientGender = patientGender;
     }
 }

@@ -79,6 +79,10 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 }
             }
 
+            // Set Age and Gender - start
+            String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
+            holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);
+            // Set Age and Gender - end
 
             if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
                 Glide.with(context)
@@ -233,7 +237,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent;
-        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView;
+        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView, search_gender;
         ImageView ivProfileImage, ivTime, IvPriorityTag;
 
 
@@ -248,6 +252,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             tvPatientId = itemView.findViewById(R.id.tv_patient_id_todays);
             tvPrescRecStatus = itemView.findViewById(R.id.tv_presc_rec_status);
             doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
+            search_gender = itemView.findViewById(R.id.search_gender);
 
 
         }
