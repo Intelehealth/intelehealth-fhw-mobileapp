@@ -117,8 +117,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                             if (hours > 24) {
 
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                                holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
-                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
+//                                holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
+//                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
 
                                 timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ", " + context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
                                 holder.tvDate.setText(timeText);
@@ -127,7 +127,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 }
                             } else {
                                 timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at) + " " + appointmentInfoModel.getSlotTime();
-                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
+                              //  holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
 
@@ -138,7 +138,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                             }
                         } else {
                             timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minute);
-                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
+                         //   holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                             holder.tvDate.setText(timeText);
@@ -161,7 +161,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 //hide  : ivTime, tvDate, tvPatientId
                 //show :  tvPrescRecStatus
 
-                holder.ivTime.setVisibility(View.GONE);
+             //   holder.ivTime.setVisibility(View.GONE);
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
                 holder.tvPrescRecStatus.setVisibility(View.VISIBLE);
@@ -178,7 +178,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
             if (whichAppointments.equalsIgnoreCase("cancelled")) {
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                holder.ivTime.setVisibility(View.VISIBLE);
+             //   holder.ivTime.setVisibility(View.VISIBLE);
                 holder.tvDate.setVisibility(View.VISIBLE);
                 holder.tvPrescRecStatus.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
@@ -238,7 +238,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent;
         TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView, search_gender;
-        ImageView ivProfileImage, ivTime, IvPriorityTag;
+        ImageView ivProfileImage, /*ivTime,*/ IvPriorityTag;
 
 
         public MyViewHolder(View itemView) {
@@ -247,7 +247,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             tvPatientName = itemView.findViewById(R.id.tv_patient_name_todays);
             ivProfileImage = itemView.findViewById(R.id.profile_image_todays);
             tvDate = itemView.findViewById(R.id.tv_date_appointment_todays);
-            ivTime = itemView.findViewById(R.id.iv_time_todays);
+          //  ivTime = itemView.findViewById(R.id.iv_time_todays);
             IvPriorityTag = itemView.findViewById(R.id.iv_priority_tag1_todays);
             tvPatientId = itemView.findViewById(R.id.tv_patient_id_todays);
             tvPrescRecStatus = itemView.findViewById(R.id.tv_presc_rec_status);
