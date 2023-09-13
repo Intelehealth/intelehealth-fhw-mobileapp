@@ -140,7 +140,8 @@
             android:gravity="center"
             android:lineSpacingExtra="0sp"
             android:src="@drawable/ui2_frame_priority"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         </RelativeLayout>
 
