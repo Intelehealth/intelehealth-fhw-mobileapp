@@ -252,33 +252,43 @@
                 android:textSize="@null"
                 android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/middle_name"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
-
-            <TextView
-                android:id="@+id/tv_middle_name_profile"
+            <LinearLayout
+                android:id="@+id/ll_middlename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/et_new_pass_margin_top"
-                android:background="@drawable/bg_input_fieldnew"
-                android:hint="@string/enter_middle_name"
-                android:textColorHint="@color/edittext_hint_color"
-                android:textColor="@color/edittext_hint_color"
-                android:imeOptions="actionNext"
-                android:paddingStart="@dimen/common_edittext_padding_left"
-                android:paddingTop="@dimen/common_edittext_padding_top"
-                android:paddingEnd="@dimen/common_edittext_padding_right"
-                android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                android:singleLine="true"
-                android:textSize="@dimen/common_hint_text_size"
-                />
+                android:orientation="vertical"
+                android:visibility="visible"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/middle_name"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_middle_name_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                    android:background="@drawable/bg_input_fieldnew"
+                    android:hint="@string/enter_middle_name"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textColor="@color/edittext_hint_color"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size"
+                    />
+            </LinearLayout>
+
 
 <!--
             <com.google.android.material.textfield.TextInputLayout

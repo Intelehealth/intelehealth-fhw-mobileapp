@@ -114,7 +114,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
     TextInputEditText etEmail, etMobileNo;
     TextView tvDob, tvAge, tvChangePhoto, tvErrorFirstName, tvErrorLastName, tvErrorMobileNo, tvErrorDob,
     etUsername, etFirstName, etMiddleName, etLastName;
-    LinearLayout layoutParent;
+    LinearLayout layoutParent, ll_middlename;
     String selectedGender, profileImagePAth = "", errorMsg = "", mSelectedCountryCode = "", dobToDb;
     ImageView ivProfileImage, ivIsInternet, refresh;
     SessionManager sessionManager;
@@ -192,6 +192,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         etUsername = findViewById(R.id.tv_username_profile);
         etFirstName = findViewById(R.id.tv_first_name_profile);
         etMiddleName = findViewById(R.id.tv_middle_name_profile);
+        ll_middlename = findViewById(R.id.ll_middlename);
         etLastName = findViewById(R.id.tv_last_name_profile);
         etEmail = findViewById(R.id.et_email_profile);
         etMobileNo = findViewById(R.id.et_mobile_no_profile);
@@ -1100,11 +1101,18 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
             @Override
             public void onNext(Profile profile) {
                 if (profile != null) {
+                    Log.d(TAG, "fetchUserDetails: " + profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
+
                     personUuid = profile.getResults().get(0).getPerson().getUuid();
                     if (profile.getResults().get(0).getPerson().getPreferredName().getGivenName() != null)
                         etFirstName.setText(profile.getResults().get(0).getPerson().getPreferredName().getGivenName());
-                    if (profile.getResults().get(0).getPerson().getPreferredName().getMiddleName() != null)
+                    if (profile.getResults().get(0).getPerson().getPreferredName().getMiddleName() != null) {
+                        ll_middlename.setVisibility(View.VISIBLE);
                         etMiddleName.setText(profile.getResults().get(0).getPerson().getPreferredName().getMiddleName());
+                    }
+                    else {
+                        ll_middlename.setVisibility(View.GONE);
+                    }
                     if (profile.getResults().get(0).getPerson().getPreferredName().getFamilyName() != null)
                         etLastName.setText(profile.getResults().get(0).getPerson().getPreferredName().getFamilyName());
                     if (sessionManager.getChwname() != null)
