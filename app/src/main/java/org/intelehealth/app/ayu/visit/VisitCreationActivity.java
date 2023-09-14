@@ -182,14 +182,14 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
             String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
             mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
             if (Integer.parseInt(temp[0]) == 0) {
-                mAgeAndMonth = temp[1] + " Months";
+                mAgeAndMonth = temp[1] + " "  + getResources().getString(R.string.months);
             } else if (Integer.parseInt(temp[0]) == 0) {
-                mAgeAndMonth = temp[0] + " Years";
+                mAgeAndMonth = temp[0] + " "  + getResources().getString(R.string.years);
             } else {
-                mAgeAndMonth = temp[0] + " Years " + temp[1] + " Months";
+                mAgeAndMonth = temp[0] + " "  + getResources().getString(R.string.years) + " " + temp[1] + " "  + getResources().getString(R.string.months);
             }
 
-            if (intentTag.equalsIgnoreCase("edit")) {
+        if (intentTag.equalsIgnoreCase("edit")) {
                 mIsEditMode = true;
                 mIsEditTriggerFromVisitSummary = true;
             }

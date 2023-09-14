@@ -1063,7 +1063,6 @@
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
                             android:text="@string/no_information"
-                            android:textColor="@color/hint_text_color"
                             android:textSize="@dimen/find_patient_hint_size" />
                     </RelativeLayout>
 
@@ -1151,7 +1150,6 @@
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
                             android:text="@string/no_follow_up_suggested"
-                            android:textColor="@color/hint_text_color"
                             android:textSize="@dimen/find_patient_hint_size"
                             android:visibility="gone"
                             tools:visibility="visible" />

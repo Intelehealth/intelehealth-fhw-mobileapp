@@ -43,6 +43,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -147,6 +148,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
                 Log.v("startdate", "startDAte: " + startDate);
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    startDate = StringUtils.en_hi_dob_three(startDate);
                 holder.fu_date_txtview.setText(startDate);
             }
 

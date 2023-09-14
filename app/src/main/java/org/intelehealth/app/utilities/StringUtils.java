@@ -1680,6 +1680,25 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en_hi_dob_three(String dob) { //English dob is replaced to Hindi text.
+        String mdob_text = dob
+                .replace("Jan", "जनवरी")
+                .replace("Feb", "फ़रवरी")
+                .replace("Mar", "मार्च")
+                .replace("Apr", "अप्रैल")
+                .replace("May", "मई")
+                .replace("Jun", "जून")
+                .replace("Jul", "जुलाई")
+                .replace("Aug", "अगस्त")
+                .replace("Sep", "सितंबर")
+                .replace("Oct", "अक्टूबर")
+                .replace("Nov", "नवंबर")
+                .replace("Dec", "दिसंबर");
+
+        return mdob_text;
+    }
+
+
     public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
         String mdob_text = dob
                 .replace("January", "જાન્યુઆરી")
@@ -2265,8 +2284,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static String switch_hi_en_country(String val, String locale)
-    {
+    public static String switch_hi_en_country(String val, String locale) {
         if (locale.equalsIgnoreCase("hi")) {
             switch (val) {
                 case "India":
@@ -2404,7 +2422,7 @@ public final class StringUtils {
                     val = "पश्चिम बंगाल";
                     break;
 
-                    //us states
+                //us states
 
                 case "Alabama":
                     val = "अलाबामा";
@@ -2898,8 +2916,7 @@ public final class StringUtils {
                     break;
             }
 
-        }
-        else {
+        } else {
             return val;
         }
         return val;
