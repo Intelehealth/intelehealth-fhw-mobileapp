@@ -15,7 +15,8 @@ public enum CompletedVisitStatus {
     SHIFT_TO_C_SECTION(ReferType.SHIFT_TO_C_SECTION.value),
     REFER_TO_HIGH_ICU(ReferType.REFER_TO_ICU.value),
     OTHER_COMMENT(ReferType.OTHER.value),
-    OUT_OF_TIME(OutOfTime.OUT_OF_TIME.value);
+    OUT_OF_TIME(OutOfTime.OUT_OF_TIME.value),
+    MOVE_TO_STAGE2(ReferType.MOVE_TO_STAGE2.value);
 
     public final String label;
 
@@ -123,7 +124,9 @@ public enum CompletedVisitStatus {
         REFER_TO_ICU(UuidDictionary.REFER_TYPE, "Refer to high dependency unit / ICU", "Referred / ICU"),
         SELF_DISCHARGE(UuidDictionary.REFER_TYPE, "Self discharge against Medical Advice", "Self Discharged"),
 
-        OTHER(UuidDictionary.REFER_TYPE, "Other", "Other");
+        OTHER(UuidDictionary.REFER_TYPE, "Other", "Other"),
+        MOVE_TO_STAGE2(UuidDictionary.ENCOUNTER_TYPE, "Move to Stage 2", "Moved to Stage 2");
+
         private final String value;
         private final String uuid;
         private final String sortValue;

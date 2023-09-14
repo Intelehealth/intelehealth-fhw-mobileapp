@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/list_container_padding">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvMoveToStage2"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@{CompletedVisitStatus.MOVE_TO_STAGE2.label}"
+                tools:text="@string/move_to_stage2" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvReferToOtherHospital"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@{CompletedVisitStatus.REFER_TO_HOSPITAL.label}"
+                tools:text="@string/refer_to_other_hospital" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvSelfDischarge"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@{CompletedVisitStatus.SELF_DISCHARGE.label}"
+                tools:text="@string/self_discharge_medical_advice" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvShiftToSection"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@{CompletedVisitStatus.SHIFT_TO_C_SECTION.label}"
+                tools:text="@string/shift_to_c_section" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvReferToICU"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@{CompletedVisitStatus.REFER_TO_HIGH_ICU.label}"
+                tools:text="@string/refer_to_icu" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvMotherDeceased"
+                style="@style/Theme.EZazi.Text.Dialog.Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding"
+                android:text="@{CompletedVisitStatus.MOTHER_DECEASED.label}"
+                tools:text="@string/mother_death" />
+
+<!--
+            <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
+                android:id="@+id/etOutOfTimeReasonLayout"
+                style="@style/Theme.EZazi.Input.Login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:maxLength="300"
+                app:boxStrokeColor="@color/colorLoginInputStroke"
+                app:boxStrokeWidth="@dimen/input_stroke_size"
+                app:counterEnabled="true"
+                app:counterMaxLength="300"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etOtherCommentOutcomes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:gravity="start"
+                    android:hint="@string/enter_other_comment"
+                    android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="@dimen/std_4dp"
+                    android:lines="5"
+                    android:maxLength="300"
+                    android:textColor="@color/colorInputText"
+                    android:textSize="@dimen/input_inner_size" />
+
+            </org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout>
+-->
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -61,6 +61,7 @@ import org.intelehealth.ezazi.ui.rtc.call.CallInitializer;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.visit.activity.VisitLabourActivity;
 import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEnd2StageDialog;
+import org.intelehealth.ezazi.ui.visit.dialog.CompleteVisitOnEndStage1Dialog;
 import org.intelehealth.ezazi.ui.visit.dialog.ReferTypeHelper;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
 import org.intelehealth.ezazi.ui.visit.model.VisitOutcome;
@@ -405,7 +406,19 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         // clicking on this open dialog to confirm and start stage 2 | If stage 2 already open then ends visit.
         endStageButton.setOnClickListener(v -> {
             if (stageNo == 1) {
-                showEndShiftDialog();
+                // showEndShiftDialog(); //old flow
+
+                new CompleteVisitOnEndStage1Dialog(this, visitUuid, (isEndStage1) -> {
+                    if (isEndStage1) {
+                        //for end stage 1 option
+                        cancelStage1ConfirmationDialog();
+                    } else {
+                        //for all refer options and mother deceased
+                        showToastAndUploadVisitForStage1(true, getResources().getString(R.string.data_added_successfully));
+
+                    }
+
+                }).buildDialog();
             } else if (stageNo == 2) {
                 // show dialog and add birth outcome also show extra options like: Refer to other hospital & Self Discharge
                 new CompleteVisitOnEnd2StageDialog(this, visitUuid, (hasLabour, hasMotherDeceased) -> {
@@ -955,4 +968,16 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         }
     };
 
+    private void showToastAndUploadVisitForStage1(boolean isCompleteVisitCall, String message) {
+        isVisitCompleted = isCompleteVisitCall;
+        if (NetworkConnection.isOnline(getApplication())) {
+            Toast.makeText(context, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+            SyncUtils syncUtils = new SyncUtils();
+            syncUtils.syncForeground(TAG);
+        } else {
+            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+        }
+     /*   Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        checkInternetAndUploadVisitEncounter(true);*/
+    }
 }
