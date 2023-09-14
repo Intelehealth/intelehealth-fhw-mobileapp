@@ -783,9 +783,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
                 try {
                     boolean isUpdated = providerDAO.updateProfileDetails(inputDTO);
                     if (isUpdated)
-
-                        snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new));
-
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new), true);
                     SyncDAO syncDAO = new SyncDAO();
                     syncDAO.pushDataApi();
 
@@ -867,7 +865,7 @@ public class MyProfileActivity extends AppCompatActivity implements SendSelected
         try {
             boolean isUpdated = providerProfileDao.updateLoggedInUserProfileImage(imagePath, sessionManager.getProviderID());
             if (isUpdated) {
-                snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_photo_updated_new));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_photo_updated_new), true);
 
             }
         } catch (DAOException e) {

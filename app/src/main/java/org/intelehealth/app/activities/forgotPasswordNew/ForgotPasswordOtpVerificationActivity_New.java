@@ -169,7 +169,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage());
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, forgotPasswordApiResponseModel_new.getMessage(), true);
                     Intent intent = new Intent(ForgotPasswordOtpVerificationActivity_New.this, ResetPasswordActivity_New.class);
                     intent.putExtra("otp", otp);
                     intent.putExtra("userUuid", userUuid);
@@ -186,7 +186,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.otp_verification_failed));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.otp_verification_failed), false);
                 etPin6.requestFocus();
                 buttonVerifyOtp.setEnabled(true);
 
@@ -218,10 +218,10 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             @Override
             public void onNext(ForgotPasswordApiResponseModel_New forgotPasswordApiResponseModel_new) {
                 if (forgotPasswordApiResponseModel_new.getSuccess()) {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()));
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(ForgotPasswordOtpVerificationActivity_New.this, layoutParent, StringUtils.getMessageTranslated(forgotPasswordApiResponseModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                     etPin1.requestFocus();
                 } else {
-                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp));
+                    snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
                 }
                 tvResendOtp.setEnabled(true);
             }
@@ -229,7 +229,7 @@ public class ForgotPasswordOtpVerificationActivity_New extends AppCompatActivity
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_send_otp), false);
                 tvResendOtp.setEnabled(true);
             }
 

@@ -558,10 +558,7 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
-
                 if (isNetworkConnected()) {
-//                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                     imageViewIsInternet.clearAnimation();
                     syncAnimator.start();
                     syncUtils.syncForeground("home");
@@ -1165,7 +1162,6 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
