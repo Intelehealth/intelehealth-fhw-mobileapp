@@ -1447,5 +1447,6 @@
     <string name="select_image_hdr">छवि चुने</string>
     <string name="no_additional_data">कोई डेटा नहीं</string>
     <string name="no_notes_added_for_doctor">डॉक्टर के लिए कोई नोट नहीं जोड़ा गया.</string>
-    <string name="please_contact_your_system_administrator_to_change_these_profile_details">Please contact your system administrator to change these profile details</string>
+    <string name="please_contact_your_system_administrator_to_change_these_profile_details">कृपया इन प्रोफ़ाइल विवरणों को बदलने के लिए अपने सिस्टम व्यवस्थापक से संपर्क करें।</string>
+    <string name="old_password_and_new_password_cannot_be_same">पुराना पासवर्ड और नया पासवर्ड एक समान नहीं हो सकते.</string>
 </resources>

@@ -81,4 +81,5 @@
     <string name="no_additional_data">No Data</string>
     <string name="no_notes_added_for_doctor">No notes added for Doctor.</string>
     <string name="please_contact_your_system_administrator_to_change_these_profile_details">Please contact your system administrator to change these profile details</string>
+    <string name="old_password_and_new_password_cannot_be_same">Old password and new password cannot be same.</string>
 </resources>
