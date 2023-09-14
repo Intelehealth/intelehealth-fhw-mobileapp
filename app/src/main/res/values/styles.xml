@@ -11,24 +11,63 @@
         <item name="buttonStyle">@style/RobotoButtonStyle</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
-        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">#212121</item>
         <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
         <item name="fontFamily">@font/lato_regular</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/primary_text</item>
-        <item name="android:editTextColor">@color/primary_text</item>
-        <item name="android:background">@color/white</item>
+    <!--    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">-->
+    <!--            <item name="colorAccent">@color/colorAccent</item>-->
+    <!--            <item name="android:textColorPrimary">@color/primary_text</item>-->
+    <!--            <item name="android:editTextColor">@color/primary_text</item>-->
+    <!--            <item name="android:background">@color/white</item>-->
+    <!--            <item name="android:fontFamily">@font/lato_regular</item>-->
+    <!--            <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>-->
+    <!--    </style>-->
+
+    <style name="AlertDialogStyle" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/AppCompatNegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppCompatPositiveButtonStyle</item>
+        <!--        <item name="colorAccent">@color/colorAccent</item>-->
+        <!--        <item name="android:textColorPrimary">@color/primary_text</item>-->
+        <!--        <item name="android:editTextColor">@color/primary_text</item>-->
+        <!--        <item name="android:background">@color/white</item>-->
+        <!--        <item name="android:fontFamily">@font/lato_regular</item>-->
+        <!--        <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>-->
+    </style>
+
+    <style name="AppCompatNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#f00</item>
+    </style>
+
+    <style name="AppCompatPositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#00f</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!--        <item name="android:textColorPrimary">@color/primary_text</item>-->
+        <!--        <item name="android:editTextColor">@color/primary_text</item>-->
+        <!--        <item name="android:background">@color/white</item>-->
         <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="CameraActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -43,9 +82,9 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
@@ -83,6 +122,7 @@
         <item name="fontFamily">@font/lato_medium</item>
         <item name="android:textSize">16sp</item>
     </style>
+
     <style name="ScrollingPagerIndicator">
         <item name="spi_dotColor">@android:color/darker_gray</item>
         <item name="spi_dotSelectedColor">@android:color/darker_gray</item>
@@ -93,6 +133,7 @@
         <item name="spi_visibleDotThreshold">2</item>
         <item name="spi_looped">false</item>
     </style>
+
     <style name="DatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorPrimary</item>

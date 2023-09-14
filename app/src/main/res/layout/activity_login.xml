@@ -97,7 +97,6 @@
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
             android:textColorHint="@color/font_black_5"
-            android:theme="@style/MyEditTextTheme"
             app:passwordToggleTint="@color/white"
             app:startIconDrawable="@drawable/ic_avatar">
 
@@ -110,7 +109,6 @@
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:maxLength="100"
-                android:textColor="@color/white"
                 android:textColorHint="@color/font_black_5"
                 android:textSize="16sp"
                 android:theme="@style/MyEditTextTheme" />
@@ -125,7 +123,6 @@
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
             android:textColorHint="@color/font_black_5"
-            android:theme="@style/MyEditTextTheme"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary"
             app:startIconDrawable="@drawable/ic_lock">
@@ -141,7 +138,6 @@
                 android:maxLength="50"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@color/white"
                 android:textColorHint="@color/font_black_5"
                 android:textSize="16sp" />
 

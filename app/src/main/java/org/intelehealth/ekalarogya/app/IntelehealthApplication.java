@@ -122,6 +122,7 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         startRealTimeObserverAndSocket();
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
         }
