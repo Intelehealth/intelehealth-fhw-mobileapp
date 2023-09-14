@@ -2301,22 +2301,27 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         btnAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!priorityVisit) {
-                    if (isVisitSpecialityExists) {
-                        Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
-                        in.putExtra("visitUuid", visitUuid);
-                        in.putExtra("patientUuid", patientUuid);
-                        in.putExtra("patientName", patientName);
-                        in.putExtra("appointmentId", 0);
-                        in.putExtra("actionTag", "new_schedule");
-                        in.putExtra("openMrsId", patient.getOpenmrs_id());
-                        in.putExtra("speciality", speciality_selected);
-                        mStartForScheduleAppointment.launch(in);
-                    } else
-                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
 
+                if (NetworkConnection.isOnline(context)) {
+                    if (!priorityVisit) {
+                        if (isVisitSpecialityExists) {
+                            Intent in = new Intent(VisitSummaryActivity_New.this, ScheduleAppointmentActivity_New.class);
+                            in.putExtra("visitUuid", visitUuid);
+                            in.putExtra("patientUuid", patientUuid);
+                            in.putExtra("patientName", patientName);
+                            in.putExtra("appointmentId", 0);
+                            in.putExtra("actionTag", "new_schedule");
+                            in.putExtra("openMrsId", patient.getOpenmrs_id());
+                            in.putExtra("speciality", speciality_selected);
+                            mStartForScheduleAppointment.launch(in);
+                        } else
+                            Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(VisitSummaryActivity_New.this, getResources().getString(R.string.no_appointment_for_priority), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(context, R.string.this_feature_is_not_available_in_offline_mode, Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -4257,8 +4262,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         Log.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_common_primary_bg));
         } else {
             refresh.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
+            btnAppointment.setBackground(getDrawable(R.drawable.ui2_bg_disabled_time_slot));
         }
     }
 
