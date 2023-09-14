@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
@@ -151,12 +152,14 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.fl_priority.setVisibility(View.GONE);
             // Emergency - end
 
+/*
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                 }
             });
+*/
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
@@ -273,10 +276,18 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         alertdialogBuilder.setView(convertView);
         EditText editText = convertView.findViewById(R.id.editText_mobileno);
         Button sharebtn = convertView.findViewById(R.id.sharebtn);
+
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
-        if(model.getPhone_number()!=null)
-            editText.setText(model.getPhone_number());
+
+        try {
+            String phoneNo = phoneNumber(model.getPatientUuid());
+            editText.setText(phoneNo);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();
