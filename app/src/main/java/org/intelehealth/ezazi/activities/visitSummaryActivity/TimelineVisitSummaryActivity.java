@@ -29,6 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -407,6 +408,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         endStageButton.setOnClickListener(v -> {
             if (stageNo == 1) {
                 // showEndShiftDialog(); //old flow
+                FragmentManager fragmentManager = getSupportFragmentManager();
 
                 new CompleteVisitOnEndStage1Dialog(this, visitUuid, (isEndStage1) -> {
                     if (isEndStage1) {
@@ -415,10 +417,9 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
                     } else {
                         //for all refer options and mother deceased
                         showToastAndUploadVisitForStage1(true, getResources().getString(R.string.data_added_successfully));
-
                     }
-
-                }).buildDialog();
+                }).buildDialogSingleSelection(fragmentManager); //for single selection
+                //buildDialog();  //for custom dialog
             } else if (stageNo == 2) {
                 // show dialog and add birth outcome also show extra options like: Refer to other hospital & Self Discharge
                 new CompleteVisitOnEnd2StageDialog(this, visitUuid, (hasLabour, hasMotherDeceased) -> {
