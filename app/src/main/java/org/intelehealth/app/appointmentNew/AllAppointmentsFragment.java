@@ -52,6 +52,7 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -94,6 +95,7 @@ public class AllAppointmentsFragment extends Fragment {
     int totalUpcomingApps = 0;
     int totalCancelled = 0;
     int totalCompleted = 0;
+    SessionManager sessionManager;
 
     @Override
     public void onResume() {
@@ -190,11 +192,14 @@ public class AllAppointmentsFragment extends Fragment {
 
             FilterOptionsModel filterOptionsModel = filtersList.get(index);
             final String tagName = filterOptionsModel.getFilterValue();
+            String tagName1 = filterOptionsModel.getFilterValue();
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                tagName1 = StringUtils.en_hi_dob_updated(tagName);
             int paddingDp = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 10,
                     getResources().getDisplayMetrics()
             );
-            chip.setText(tagName);
+            chip.setText(tagName1);
             chip.setCloseIconEnabled(true);
             chip.setBackground(getResources().getDrawable(R.drawable.ui2_ic_selcted_chip_bg));
 
@@ -240,9 +245,7 @@ public class AllAppointmentsFragment extends Fragment {
 
 
     private void initUI() {
-
-        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-
+        sessionManager = new SessionManager(getContext());
         rvUpcomingApp = parentView.findViewById(R.id.rv_all_upcoming_appointments);
         rvCancelledApp = parentView.findViewById(R.id.rv_all_cancelled_appointments);
         rvCompletedApp = parentView.findViewById(R.id.rv_all_completed_appointments);
@@ -300,14 +303,9 @@ public class AllAppointmentsFragment extends Fragment {
             tvResultsFor.setVisibility(View.GONE);
             scrollChips.setVisibility(View.GONE);
         }
-
         filtersList = new ArrayList<>();
         filtersListNew = new ArrayList<>();
-
-
         updateCardBackgrounds("upcoming");
-        //getSlots();
-//        getAppointments();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -899,7 +897,7 @@ public class AllAppointmentsFragment extends Fragment {
 
             if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
                 fromDate = selectedDate;
-                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
+                String dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate));
                 if (!fromDate.isEmpty()) {
                     String[] splitedDate = fromDate.split("/");
                     tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
@@ -912,7 +910,7 @@ public class AllAppointmentsFragment extends Fragment {
             if (!whichDate.isEmpty() && whichDate.equals("todate")) {
 
                 toDate = selectedDate;
-                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
+                String dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate));
                 if (!toDate.isEmpty()) {
                     String[] splitedDate = toDate.split("/");
                     tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);

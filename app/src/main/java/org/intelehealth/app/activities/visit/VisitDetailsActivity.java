@@ -35,6 +35,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,7 +100,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
-    private ImageView priorityTag, profile_image, icon_presc_details;
+    private ImageView profile_image, icon_presc_details;
+    LinearLayout priorityTag;
     public static final String TAG = "VisitDetailsActivity";
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
@@ -351,7 +353,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         openmrsID_txt.setText(openmrsID);
 
         // priority - start
-        priorityTag = findViewById(R.id.priority_tag);
+        priorityTag = findViewById(R.id.llPriorityTagVisitDetails);
         if (isEmergency)
             priorityTag.setVisibility(View.VISIBLE);
         else

@@ -49,6 +49,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -665,6 +666,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
         String infoText = getResources().getString(R.string.sure_to_book_appointment, selectedDateTime);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            infoText = StringUtils.en__hi_dob(infoText);
         tvInfo.setText(Html.fromHtml(infoText));
 
         alertDialog = alertdialogBuilder.create();

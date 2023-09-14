@@ -74,6 +74,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
@@ -103,7 +104,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     View layoutSummaryBtns;
     FloatingActionButton fabHelp;
     int appointment_id = 0;
-    private ImageView priorityTag;
+    private LinearLayout priorityTag;
     private boolean isEmergency, hasPrescription;
     private String patientName, patientUuid, gender, age, openmrsID,
             visitID, visit_speciality, followupDate, patient_photo_path, app_start_date,
@@ -193,7 +194,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         layoutEndVisit = findViewById(R.id.layout_end_visit);
         layoutVisitSummary = findViewById(R.id.layout_visit_summary);
         ivProfileImage = findViewById(R.id.profile_image_app_details);
-        priorityTag = findViewById(R.id.priority_tag_app_details);
+        priorityTag = findViewById(R.id.llPriorityTagAppointmentDetails);
         tvPatientName = findViewById(R.id.patname_txt);
         tvOpenMrsID = findViewById(R.id.openmrsID_txt);
         tvGenderAgeText = findViewById(R.id.gender_age_txt);
@@ -677,11 +678,13 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 if (minutes >= 60) {
                     long hours = minutes / 60;
                     if (hours > 12) {
-
                         timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
+                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     } else {
                         timeText =  getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
-
+                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            timeText = hours + " " + getResources().getString(R.string.hours) + " " + getResources().getString(R.string.in) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     }
                 } else {
                     if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))

@@ -193,7 +193,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     public class Myholder extends RecyclerView.ViewHolder {
         private CardView fu_cardview_item;
         private TextView name, fu_date_txtview, search_gender;
-        private ImageView profile_image, fu_priority_tag;
+        private ImageView profile_image;
+        LinearLayout fu_priority_tag;
         private LinearLayout shareicon;
 
         public Myholder(@NonNull View itemView) {
@@ -203,7 +204,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             search_gender = itemView.findViewById(R.id.search_gender);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
-            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
         }
     }

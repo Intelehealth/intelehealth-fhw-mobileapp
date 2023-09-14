@@ -1200,6 +1200,7 @@
     <string name="at">पर</string>
     <string name="in">में</string>
     <string name="hours_at">घंटे, पर</string>
+    <string name="hours">घंटे</string>
     <string name="completed_0">पूर्ण (0)</string>
     <string name="cancelled_0">रद्द (0)</string>
     <string name="starts">शुरू होता है</string>

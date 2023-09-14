@@ -1571,6 +1571,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="at">at</string>
     <string name="in">In</string>
     <string name="hours_at">hours, at</string>
+    <string name="hours">hours</string>
     <string name="upcoming_0">Upcoming (0)</string>
     <string name="completed_0">Completed (0)</string>
     <string name="cancelled_0">Cancelled (0)</string>

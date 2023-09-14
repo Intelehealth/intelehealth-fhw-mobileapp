@@ -727,8 +727,6 @@ public class DateAndTimeUtils {
             if (!month.isEmpty() && month.length() == 1) {
                 month = "0" + month;
             }
-
-
             String monthString = "";
             switch (month) {
                 case "01":
@@ -771,8 +769,6 @@ public class DateAndTimeUtils {
             }
 
             finalDate = day + " " + monthString;
-
-
         }
         return finalDate;
 

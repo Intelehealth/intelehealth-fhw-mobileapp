@@ -246,13 +246,31 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/fu_card_margin_updown">
 
-                    <ImageView
-                        android:id="@+id/priority_tag"
-                        android:layout_width="@dimen/btn_prioirty_w_60dp"
-                        android:layout_height="@dimen/btn_prioirty_h_20dp"
+                    <LinearLayout
+                        android:id="@+id/llPriorityTagVisitDetails"
+                        android:contentDescription="Visit Details Screen Priority Tag Linear Layout"
+                        android:layout_marginEnd="@dimen/cp_margin_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="@dimen/fu_margin_start"
-                        android:src="@drawable/ui2_frame_priority" />
+                        android:background="@drawable/ui2_frame_priority"
+                        android:layout_gravity="top">
+
+                        <TextView
+                            android:id="@+id/fu_priority_tag"
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="0sp"
+                            android:text="@string/priority"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:textAllCaps="true"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/chief_complaint_txt"
