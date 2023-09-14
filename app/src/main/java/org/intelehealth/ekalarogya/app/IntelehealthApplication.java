@@ -21,6 +21,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
@@ -57,6 +58,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
     public String webrtcTempCallId = "";
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
@@ -116,6 +118,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         startRealTimeObserverAndSocket();
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree());
+        }
     }
 
     private void configureCrashReporting() {

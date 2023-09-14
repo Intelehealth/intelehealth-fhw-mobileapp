@@ -21,7 +21,7 @@ public class MyDatePicker extends DialogFragment {
         int year = mCalendar.get(Calendar.YEAR);
         int month = mCalendar.get(Calendar.MONTH);
         int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DatePicker_Theme, (DatePickerDialog.OnDateSetListener)
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.AlertDialogTheme, (DatePickerDialog.OnDateSetListener)
                 getActivity(), year, month, dayOfMonth);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + 1000);
         return datePickerDialog ;

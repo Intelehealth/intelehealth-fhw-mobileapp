@@ -18,7 +18,7 @@ import javax.inject.Inject
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-open class SocketManager @Inject constructor(){
+open class SocketManager @Inject constructor() {
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
     var activeUsers = HashMap<String, ActiveUser>()
@@ -61,7 +61,6 @@ open class SocketManager @Inject constructor(){
     private fun emitter(event: String) = Emitter.Listener {
         val json: String? = Gson().toJson(it)
         Timber.e { "$TAG => $event => $json" }
-        Timber.e { "$TAG => $event => ${Calendar.getInstance().time}" }
         if (event == EVENT_CALL_TIME_UP) {
             isCallTimeUp = true
         }
@@ -70,23 +69,38 @@ open class SocketManager @Inject constructor(){
             json?.let { array -> parseAndSaveToLocal(JSONArray(array)); }
         } else if (event == EVENT_UPDATE_MESSAGE) {
             json?.let { array -> ackMsgReceived(JSONArray(array)) }
-            json?.let { array -> notifyIfNotActiveRoom(JSONArray(array)); }
+            json?.let { array ->
+                notifyIfNotActiveRoom(JSONArray(array)) {
+                    emitterListener?.invoke(event)?.call(it)
+                };
+            }
+        } else {
+            if (isCallTimeUp && event == EVENT_CALL_CANCEL_BY_DR) return@Listener
+            emitterListener?.invoke(event)?.call(it)
         }
-
-        if (isCallTimeUp && event == EVENT_CALL_CANCEL_BY_DR) return@Listener
-        emitterListener?.invoke(event)?.call(it)
-
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }
 
-    private fun notifyIfNotActiveRoom(jsonArray: JSONArray) {
+    private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: () -> Unit) {
         if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
             val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
             Gson().fromJson(json, ChatMessage::class.java)?.let {
                 Timber.e { "activeRoomId => $activeRoomId" }
-                if (it.patientId.equals(activeRoomId).not()) showChatNotification(it)
+                Timber.e { "roomId => ${it.roomId}" }
+
+                activeRoomId?.let { roomId ->
+                    if (isUnknownDoctorMessage(it, roomId)) block.invoke()
+                    else if (it.roomId.equals(activeRoomId)) block.invoke()
+                    else showChatNotification(it)
+                } ?: showChatNotification(it)
             }
         }
+    }
+
+    private fun isUnknownDoctorMessage(message: ChatMessage, roomId: String): Boolean {
+        val ids = roomId.split("_")
+        return ids[0].isEmpty() && ids[1].equals(message.patientId, false)
+                && ids[2].equals(message.toUser, false)
     }
 
     private fun ackMsgReceived(jsonArray: JSONArray) {

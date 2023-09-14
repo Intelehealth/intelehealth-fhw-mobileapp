@@ -200,6 +200,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (message.getPatientId().equalsIgnoreCase(mPatientUUid)) {
                     if (mToUUId.isEmpty()) {
                         mToUUId = message.getFromUser();
+                        SocketManager.getInstance().setActiveRoomId(getRoomId());
                         getAllMessages(false);
                     } else {
                         message.setMessageStatus(MessageStatus.RECEIVED.getValue());
@@ -270,7 +271,6 @@ public class ChatActivity extends AppCompatActivity {
         mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         if (getIntent().hasExtra("patientUuid")) {
             mPatientUUid = getIntent().getStringExtra("patientUuid");
-            SocketManager.getInstance().setActiveRoomId(mPatientUUid);
         }
         if (getIntent().hasExtra("fromUuid")) {
             mFromUUId = getIntent().getStringExtra("fromUuid");
@@ -284,6 +284,7 @@ public class ChatActivity extends AppCompatActivity {
         if (getIntent().hasExtra("patientName")) {
             mPatientName = getIntent().getStringExtra("patientName");
         }
+        SocketManager.getInstance().setActiveRoomId(getRoomId());
         Log.v("mPatientUUid", String.valueOf(mPatientUUid));
         Log.v("mFromUUId", String.valueOf(mFromUUId));
         Log.v("mToUUId", String.valueOf(mToUUId));
@@ -567,10 +568,14 @@ public class ChatActivity extends AppCompatActivity {
 //        mChatListingAdapter.refresh(list);
     }
 
+    private String getRoomId() {
+        return mToUUId + "_" + mPatientUUid + "_" + mFromUUId;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        SocketManager.getInstance().setActiveRoomId(mPatientUUid);
+        SocketManager.getInstance().setActiveRoomId(getRoomId());
         SocketManager.getInstance().setEmitterListener(emitter);
         getAllMessages(false);
     }

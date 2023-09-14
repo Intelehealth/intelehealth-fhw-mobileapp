@@ -1,0 +1,3 @@
+1. SocketManager => cancel_dr => ["webapp"]
+Initiate call from doctor side, received on HW side, accepted by HW, after few second call end by
+doctor, getting above event in this scenario. Here only need to disconnect room, no need to call above event

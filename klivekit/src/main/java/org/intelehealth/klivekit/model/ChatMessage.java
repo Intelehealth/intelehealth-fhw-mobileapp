@@ -207,4 +207,8 @@ public class ChatMessage implements ItemHeader {
     public boolean isHeader() {
         return false;
     }
+
+    public String getRoomId() {
+        return mFromUser + "_" + mPatientId + "_" + mToUser;
+    }
 }

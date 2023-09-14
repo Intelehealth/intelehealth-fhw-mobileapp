@@ -4,7 +4,7 @@
     <string name="call_canceled_by">Call canceled by %1$s</string>
     <string name="call_rejected_by">Call rejected by %1$s</string>
     <string name="call_time_up">Call time up</string>
-    <string name="left_the_call">%1$s left the call</string>
+    <string name="left_the_call">Call left by %1$s</string>
     <string name="you_declined_call">You declined call</string>
     <string name="reason_not_initiated">Call disconnected due to not initiated</string>
     <string name="reason_duplicated_identity">Call disconnected due to duplicated identity</string>
