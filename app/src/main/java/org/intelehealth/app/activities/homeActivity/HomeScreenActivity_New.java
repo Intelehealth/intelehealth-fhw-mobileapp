@@ -334,13 +334,15 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
         tvEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-
-               /* tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_profile));
-                Fragment fragment = new MyProfileFragment_New();
-                loadFragment(fragment);*/
-                Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
-                startActivity(intent);
+                if (isNetworkConnected()) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent(HomeScreenActivity_New.this, MyProfileActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    showSnackBarAndRemoveLater(getString(R.string.this_feature_is_not_available_in_offline_mode));
+                }
             }
         });
 
@@ -595,7 +597,10 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void showSnackBarAndRemoveLater(String text) {
         survey_snackbar_cv.setVisibility(View.VISIBLE);
         TextView textView = findViewById(R.id.snackbar_text);
+        ImageView snackbar_icon = findViewById(R.id.snackbar_icon);
+
         textView.setText(text);
+        snackbar_icon.setImageDrawable(getDrawable(R.drawable.ui2_ic_exit_app));
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
