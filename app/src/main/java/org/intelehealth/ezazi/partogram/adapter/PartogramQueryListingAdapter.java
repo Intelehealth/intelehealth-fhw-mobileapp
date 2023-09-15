@@ -57,6 +57,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private Context mContext;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private TextView selectedTextview;
+    boolean isToastShownTemperature, isToastShownPulse, isToastShownContraction, isToastShownFHR;
+
     //    private static JSONObject ivFluidsJsonObject = new JSONObject();
 //    private static JSONObject oxytocinDataObject = new JSONObject();
 //
@@ -85,8 +87,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.parto_list_item_view_ezazi, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.parto_list_item_view_ezazi, parent, false);
         return new GenericViewHolder(itemView);
     }
 
@@ -105,11 +106,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             genericViewHolder.containerLinearLayout.removeAllViews();
             for (int i = 0; i < genericViewHolder.partogramItemData.getParamInfoList().size(); i++) {
                 ParamInfo paramInfo = genericViewHolder.partogramItemData.getParamInfoList().get(i);
-                if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_TXT_TYPE)
-                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_DOUBLE_4_DIG_TYPE)
-                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_1_DIG_TYPE)
-                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_2_DIG_TYPE)
-                        || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_3_DIG_TYPE)) {
+                if (paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_TXT_TYPE) || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_DOUBLE_4_DIG_TYPE) || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_1_DIG_TYPE) || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_2_DIG_TYPE) || paramInfo.getParamDateType().equalsIgnoreCase(PartogramConstants.INPUT_INT_3_DIG_TYPE)) {
                     View tempView = View.inflate(mContext, R.layout.parto_lbl_etv_view_ezazi, null);
                     tempView.setTag(genericViewHolder.containerLinearLayout);
                     showUserInputBox(tempView, position, i, paramInfo.getParamDateType());
@@ -174,8 +171,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
 
-        if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null &&
-                !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
+        if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dataEditText.setText(String.valueOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()));
         }
 
@@ -212,7 +208,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         }
 
         dataEditText.setTag(R.id.etvData, mItemList.get(position).getParamInfoList().get(positionChild));
-        dataEditText.setOnFocusChangeListener((v, hasFocus) -> {
+
+      /*  dataEditText.setOnFocusChangeListener((v, hasFocus) -> {
             ParamInfo info = (ParamInfo) v.getTag(R.id.etvData);
             if (!hasFocus && info.getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
                 EditText editText = (EditText) v;
@@ -221,7 +218,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
 
         if (positionChild == currentChildFocusedIndex) {
             dataEditText.requestFocus();
@@ -239,8 +236,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     if (source.toString().matches("[a-zA-Z 0-9]+")) {
                         return source;
                     } else return "";
-                }
-                });
+                }});
             } else if (conceptId.equals("9d316d82-538f-11e6-9cfe-86f436325720")) {
                 dataEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
             }
@@ -260,6 +256,16 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 dataEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
             }
         }
+
+        showDataRangeMessage(dataEditText, position, positionChild);
+    }
+
+    private void showDataRangeMessage(EditText dataEditText, int position, int positionChild) {
+        isToastShownContraction = false;
+        isToastShownTemperature = false;
+        isToastShownFHR = false;
+        isToastShownPulse = false;
+
         dataEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -268,19 +274,19 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                validatedTemperature(s.toString(), mItemList.get(position).getParamInfoList()
-                        .get(positionChild), dataEditText);
-//                if (!s.toString().trim().isEmpty() && !s.toString().startsWith(".") && mItemList.get(position).getParamInfoList()
-//                        .get(positionChild).getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
-//
-//                    if (Double.parseDouble(s.toString()) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-//                            Double.parseDouble(s.toString()) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-//                        //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-//                        Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
-//                        dataEditText.requestFocus();
-//                        return;
-//                    }
-//                }
+                ParamInfo info = (ParamInfo) dataEditText.getTag(R.id.etvData);
+                if (!s.toString().isEmpty()) {
+                    //int enteredValue = Integer.parseInt(s.toString());
+                    if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
+                        validatedTemperature(s.toString(), mItemList.get(position).getParamInfoList().get(positionChild), dataEditText);
+                    } else if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.BASELINE_FHR.value)) {
+                        validateBaseLineFHR(dataEditText);
+                    } else if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.PULSE.value)) {
+                        validatePulse(dataEditText);
+                    } else if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.DURATION_OF_CONTRACTION.value)) {
+                        validateDurationOfContraction(dataEditText);
+                    }
+                }
             }
 
             @Override
@@ -296,21 +302,22 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 }
             }
         });
+
     }
 
     private void validatedTemperature(String value, ParamInfo info, EditText dataEditText) {
-        if (!value.trim().isEmpty() && value.length() == 2 && !value.startsWith(".")
-                && info.getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
+        //if (!value.trim().isEmpty() && value.length() == 2 && !value.startsWith(".") && info.getParamName().equalsIgnoreCase(PartogramConstants.Params.TEMPERATURE.value)) {
 
-            if (Double.parseDouble(value) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                    Double.parseDouble(value) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
-                dataEditText.setText("");
-                dataEditText.requestFocus();
-                return;
-            }
+        //if (Double.parseDouble(value) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) || Double.parseDouble(value) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+        //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+        if (!isToastShownTemperature) {
+            Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
+            //dataEditText.setText("");
+            dataEditText.requestFocus();
+            isToastShownTemperature = true;
         }
+        //}
+        // }
     }
 
     private void showRadioOptionBox(final View tempView, final int position, final int positionChild) {
@@ -339,8 +346,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         PartoLablRadioViewMedicineBinding binding = PartoLablRadioViewMedicineBinding.bind(tempView);
 
         binding.clMedicineCountView.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n")
-            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), (updated, deleted) -> {
+            @SuppressLint("SetTextI18n") MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), (updated, deleted) -> {
                 info.setMedicines(updated);
                 info.setDeletedMedicines(deleted);
                 setupMedicineCountView(binding.tvMedicineCount, updated);
@@ -364,10 +370,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     @SuppressLint("SetTextI18n")
     private void setupMedicineCountView(TextView textView, List<Medicine> updated) {
-        if (updated.size() == 0)
-            textView.setText(mContext.getString(R.string.lbl_add));
-        else
-            textView.setText("" + updated.size());
+        if (updated.size() == 0) textView.setText(mContext.getString(R.string.lbl_add));
+        else textView.setText("" + updated.size());
     }
 
     private void showRadioOptionBoxForIVFluid(View tempView, ParamInfo info, TextView selected, String title) {
@@ -410,8 +414,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0)
-                    uncheckAllOptions(binding);
+                if (s.length() > 0) uncheckAllOptions(binding);
             }
 
             @Override
@@ -434,12 +437,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
         });
 
-        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(mContext)
-                .title(title)
-                .positiveButtonLabel(R.string.save_button)
-                .negativeButtonLabel(R.string.cancel)
-                .view(binding.getRoot())
-                .build();
+        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(mContext).title(title).positiveButtonLabel(R.string.save_button).negativeButtonLabel(R.string.cancel).view(binding.getRoot()).build();
 
         dialog.requireValidationBeforeDismiss(true);
         dialog.setListener(new CustomViewDialogFragment.OnConfirmationActionListener() {
@@ -495,8 +493,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0)
-                    uncheckAllOptions(binding);
+                if (s.length() > 0) uncheckAllOptions(binding);
             }
 
             @Override
@@ -555,11 +552,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         ParamInfo info = mItemList.get(position).getParamInfoList().get(positionChild);
         dropdownTextView.setTag(info);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
-        if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null &&
-                !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
-            dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()
-                    [Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues())
-                    .indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
+        if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
+            dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues()).indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
         }
 
         dropdownTextView.setOnClickListener(v -> {
@@ -579,10 +573,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                     }
 
                     String title = "Select for " + mItemList.get(position).getParamInfoList().get(positionChild).getParamName();
-                    SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
-                            .title(title)
-                            .content(choiceItems)
-                            .build();
+                    SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext).title(title).content(choiceItems).build();
 
                     dialog.setListener(item -> {
                         ParamInfo paramInfo = mItemList.get(position).getParamInfoList().get(positionChild);
@@ -688,10 +679,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             choiceItems.add(item);
         }
 
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext)
-                .title(title)
-                .content(choiceItems)
-                .build();
+        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(mContext).title(title).content(choiceItems).build();
 
         dialog.setListener(item -> {
             manageSelectionSingleChoiceSelection(info, item, selected);
@@ -702,9 +690,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     private void handleRadioCheckListener(final View tempView, final ParamInfo info, OnRadioCheckedListener listener) {
         RadioGroup radioGroup = tempView.findViewById(R.id.radioYesNoGroup);
-        if (info.getCapturedValue() != null &&
-                !TextUtils.isEmpty(info.getCapturedValue())
-                && !info.getCapturedValue().equalsIgnoreCase("NO")) {
+        if (info.getCapturedValue() != null && !TextUtils.isEmpty(info.getCapturedValue()) && !info.getCapturedValue().equalsIgnoreCase("NO")) {
             radioGroup.check(R.id.radioYes);
             info.setCheckedRadioOption(ParamInfo.RadioOptions.YES);
             listener.onCheckedYes();
@@ -817,6 +803,30 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             info.saveJson();
             TextView selected = view.findViewById(R.id.tvData);
             selected.setText(item.getItem());
+        }
+    }
+
+    private void validateBaseLineFHR(EditText dataEditText) {
+        if (!isToastShownFHR) {
+            Toast.makeText(mContext, mContext.getString(R.string.baseline_fhr_err, AppConstants.MINIMUM_BASELINE_FHR, AppConstants.MAXIMUM_BASELINE_FHR), Toast.LENGTH_LONG).show();
+            dataEditText.requestFocus();
+            isToastShownFHR = true;
+        }
+    }
+
+    private void validatePulse(EditText dataEditText) {
+        if (!isToastShownPulse) {
+            Toast.makeText(mContext, mContext.getString(R.string.pulse_err, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE), Toast.LENGTH_LONG).show();
+            dataEditText.requestFocus();
+            isToastShownPulse = true;
+        }
+    }
+
+    private void validateDurationOfContraction(EditText dataEditText) {
+        if (!isToastShownContraction) {
+            Toast.makeText(mContext, mContext.getString(R.string.contraction_duration_err, AppConstants.MINIMUM_CONTRACTION_DURATION, AppConstants.MAXIMUM_CONTRACTION_DURATION), Toast.LENGTH_LONG).show();
+            dataEditText.requestFocus();
+            isToastShownContraction = true;
         }
     }
 }

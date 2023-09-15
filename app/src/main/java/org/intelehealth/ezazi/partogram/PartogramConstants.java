@@ -47,7 +47,13 @@ public class PartogramConstants {
         DIASTOLIC_BP("Diastolic BP"),
         IV_FLUID("IV Fluids"),
 
-        TEMPERATURE("Temperature(C)");
+        TEMPERATURE("Temperature(C)"),
+        BASELINE_FHR("Baseline FHR"),
+        PULSE("Pulse"),
+        DURATION_OF_CONTRACTION("Duration of contractions");
+
+
+
         public final String value;
 
         Params(String value) {
@@ -230,7 +236,7 @@ public class PartogramConstants {
         paramInfo = new ParamInfo();
         paramInfo.setParamSectionName(SECTION_LIST[3]);
         paramInfo.setParamName("Duration of contractions");
-        paramInfo.setParamDateType(INPUT_INT_2_DIG_TYPE);
+        paramInfo.setParamDateType(INPUT_INT_3_DIG_TYPE);
         paramInfo.setHalfHourField(true);
         paramInfo.setFifteenMinField(true);
         paramInfo.setConceptUUID("9d3169af-538f-11e6-9cfe-86f436325720");

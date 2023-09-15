@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.epartogramActivity.EpartogramViewActivity;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
 import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.PatientsDAO;
@@ -32,6 +33,7 @@ import org.intelehealth.ezazi.partogram.adapter.PartogramQueryListingAdapter;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
+import org.intelehealth.ezazi.partogram.model.ValidatePartogramFields;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.shared.BaseActionBarActivity;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -296,7 +298,6 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
     private void saveObs() throws DAOException {
         ObsDAO obsDAO = new ObsDAO();
-        LabourInfo labourInfo = new LabourInfo();
 
         // validation
         Log.v("PartogramData", new Gson().toJson(mItemList));
@@ -336,22 +337,22 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         isValidOxytocin = info.isValidJson();
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.BASELINE_FHR)) {
-                        isValidBaselineFHR = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.BASELINE_FHR);
+                        isValidBaselineFHR = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.BASELINE_FHR);
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.PULSE)) {
-                        isValidPulse = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.PULSE);
+                        isValidPulse = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.PULSE);
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.SYSTOLIC_BP)) {
-                        isValidSystolicBP = labourInfo.isValidSystolicBP(info.getCapturedValue());
+                        isValidSystolicBP = ValidatePartogramFields.isValidSystolicBP(info.getCapturedValue());
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.DIASTOLIC_BP)) {
-                        isValidDiastolicBP = labourInfo.isValidDiastolicBP(systolicBp, diastolicBp);
+                        isValidDiastolicBP = ValidatePartogramFields.isValidDiastolicBP(systolicBp, diastolicBp);
                     }
-//                    if (info.getConceptUUID().equals(UuidDictionary.TEMPERATURE)) {
-//                        isValidTemperature = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
-//                    }
+                    if (info.getConceptUUID().equals(UuidDictionary.TEMPERATURE)) {
+                    isValidTemperature = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
+                    }
                     if (info.getConceptUUID().equals(UuidDictionary.DURATION_OF_CONTRACTION)) {
-                        isValidDuration = labourInfo.isValidParameter(info.getCapturedValue(), UuidDictionary.DURATION_OF_CONTRACTION);
+                        isValidDuration = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.DURATION_OF_CONTRACTION);
                     }
 
                     if (info.getConceptUUID().equals(UuidDictionary.MEDICINE)) {
@@ -394,21 +395,20 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         } else if (!isValidMedicine) {
             showErrorDialog(R.string.error_medicine);
         } else if (!isValidBaselineFHR) {
-            showErrorDialog(R.string.baseline_fhr_range);
+            showErrorDialogForValidations(getString(R.string.baseline_fhr_err, AppConstants.MINIMUM_BASELINE_FHR, AppConstants.MAXIMUM_BASELINE_FHR));
         } else if (!isValidPulse) {
-            showErrorDialog(R.string.pulse_range);
+            showErrorDialogForValidations(getString(R.string.pulse_err, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
         } else if (!isValidSystolicBP) {
             showErrorDialog(R.string.systolic_bp_range);
         } else if (!isValidDiastolicBP) {
             showErrorDialog(R.string.diastolic_bp_range);
-        }/* else if (!isValidTemperature) {
-            showErrorDialog(R.string.temperature_range);
-        }*/ else if (!isValidDuration) {
-            showErrorDialog(R.string.contraction_duration_range);
+        } else if (!isValidTemperature) {
+            showErrorDialogForValidations(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+        }else if (!isValidDuration) {
+            showErrorDialogForValidations(getString(R.string.contraction_duration_err, AppConstants.MINIMUM_CONTRACTION_DURATION, AppConstants.MAXIMUM_CONTRACTION_DURATION));
         } else {
 
             try {
-                Log.d(TAG, "saveObs: main list size : " + obsDTOList.size());
                 if (mIsEditMode) {
 
                     //new logic
@@ -586,5 +586,11 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    private void showErrorDialogForValidations(String errorString) {
+        ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
+                .content(errorString)
+                .hideNegativeButton(true)
+                .positiveButtonLabel(R.string.okay).build();
+        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+    }
 }
