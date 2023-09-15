@@ -131,7 +131,14 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
                     try {
                         Log.v("getFollowup_date", model.getFollowup_date());
-                        String followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
+                        String followupDateTimeRaw = "";
+                        try {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
+                        }
+                        catch (Exception e) {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                        }
+
                         Log.v("getFollowup_date", followupDateTimeRaw+"OK");
                         String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
                         Log.v("getFollowup_date", "final followupDate " + followupDateTime);
