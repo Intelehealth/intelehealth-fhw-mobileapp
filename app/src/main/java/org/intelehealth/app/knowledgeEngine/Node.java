@@ -65,13 +65,18 @@ import java.util.Locale;
 public class Node implements Serializable {
 
 
-    public boolean isNeedToHide() {
-        return needToHide;
-    }
-
-    public void setNeedToHide(boolean needToHide) {
-        this.needToHide = needToHide;
-    }
+    public static final int TAKE_IMAGE_FOR_NODE = 507;
+    public static final String TAG = Node.class.getSimpleName();
+    public static final int DIRECT_USER_INPUT_CHILD = 0;
+    public static final int CHILD_OPTIONS = 1;
+    public static final int CHILD_QUESTION = 2;
+    public static String bullet = "\u2022";
+    public static String big_bullet = "\u25CF";
+    //    public static String bullet_hollow = "\u25CB";
+    public static String bullet_hollow = "\u2022";
+    public static String bullet_arrow = "\u25BA";
+    public static String next_line = "<br/>";
+    String space = "\t";
     private String engineVersion;
     private boolean needToHide;
     private String compareDuplicateNode;
@@ -81,21 +86,20 @@ public class Node implements Serializable {
     private boolean isDataCaptured;
     private boolean isImageUploaded;
     private boolean optional;
+    //telugu
     private String id;
     private String text;
     private String display;
+    ;
     private String display_oriya;
     private String display_cebuno;
     private String display_gujarati;
     private String display_bengali;
     private String display_tamil;
     private String display_hindi;
-    //telugu
-
     private String display_telugu;
     private String display_kannada;
     private String display_malyalam;
-    ;
     private String display_marathi;
     private String display_assamese;
     private String language;
@@ -114,14 +118,11 @@ public class Node implements Serializable {
     private String max_age;
     private boolean isMultiChoice = false;
     private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
-
     //for Associated Complaints and medical history only
     private String positiveCondition;
     private String negativeCondition;
-
     //These are specific for physical exams
     private boolean rootNode;
-
     private boolean complaint;
     private boolean required = false;
     private boolean terminal;
@@ -132,23 +133,12 @@ public class Node implements Serializable {
     private boolean hasPhysicalExams;
     private boolean hasPopUp;
     private boolean subPopUp;
-    private int associated_symptoms = 0;
-
-    private boolean isNoSelected;
-
-    private List<String> imagePathList = new ArrayList<>();
-
-    public static String bullet = "\u2022";
-    public static String big_bullet = "\u25CF";
-    //    public static String bullet_hollow = "\u25CB";
-    public static String bullet_hollow = "\u2022";
-    public static String bullet_arrow = "\u25BA";
-    public static String next_line = "<br/>";
-    String space = "\t";
 
 
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
-
+    private int associated_symptoms = 0;
+    private boolean isNoSelected;
+    private List<String> imagePathList = new ArrayList<>();
     private String imagePath;
 
     /**
@@ -524,336 +514,6 @@ public class Node implements Serializable {
 
     }
 
-    // check the answer status for the Associated_symptoms
-    public int getAssociated_symptoms() {
-        return associated_symptoms;
-    }
-
-    public void setAssociated_symptoms(int associated_symptoms) {
-        this.associated_symptoms = associated_symptoms;
-    }
-
-    //Terminal nodes are important to identify to know so that the org does not keep looking for sub-nodes.
-    public boolean isTerminal() {
-        return terminal;
-    }
-
-    public void setTerminal(boolean terminal) {
-        this.terminal = terminal;
-    }
-
-    //Only complaints should be presented to the user at Complaint Select.
-    public boolean isComplaint() {
-        return complaint;
-    }
-
-    //In certain instances, the input is added to the starter language given to the user.
-    public void addLanguage(String newText) {
-        //Log.d("Node", language);
-        if (language.contains("_")) {
-            language = language.replace("_", newText);
-            //Log.d("Node", language);
-        } else {
-            language = newText;
-            //Log.d("Node", language);
-        }
-    }
-
-
-    public String findDisplay() {
-
-        SessionManager sessionManager = null;
-        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-
-//        String locale = Locale.getDefault().getLanguage();
-        String locale = sessionManager.getCurrentLang();
-
-        switch (locale) {
-            case "en": {
-                //Log.i(TAG, "findDisplay: eng");
-                if (display != null && display.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: eng txt");
-                    return text;
-                } else {
-                    //Log.i(TAG, "findDisplay: eng dis");
-                    return display;
-                }
-            }
-            case "gu": {
-                if (display_gujarati != null && !display_gujarati.isEmpty()) {
-                    return display_gujarati;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "bn": {
-                if (display_bengali != null && !display_bengali.isEmpty()) {
-                    return display_bengali;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "ta": {
-                if (display_tamil != null && !display_tamil.isEmpty()) {
-                    return display_tamil;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "or": {
-                //Log.i(TAG, "findDisplay: ori");
-                if (display_oriya != null && !display_oriya.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: ori dis");
-                    return display_oriya;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-
-            }
-            case "hi": {
-                //Log.i(TAG, "findDisplay: cb");
-                if (display_hindi != null && !display_hindi.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: cb ");
-                    return display_hindi;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "te": {
-                if (display_telugu != null && !display_telugu.isEmpty()) {
-                    return display_telugu;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
-            case "mr": {
-                if (display_marathi != null && !display_marathi.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: mr ");
-                    return display_marathi;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }  //Assamese language support...
-            case "as": {
-                if (display_assamese != null && !display_assamese.isEmpty()) {
-                    return display_assamese;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
-                }
-            }
-
-            //Malyalam language support...
-            case "ml": {
-                if (display_malyalam != null && !display_malyalam.isEmpty()) {
-                    return display_malyalam;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
-                }
-            }
-            case "kn": {
-                if (display_kannada != null && !display_kannada.isEmpty()) {
-                    return display_kannada;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
-                }
-            }
-
-            default: {
-                {
-                    if (display != null && display.isEmpty()) {
-                        return text;
-                    } else {
-                        return display;
-                    }
-                }
-            }
-        }
-    }
-
-    public String getPositiveCondition() {
-        return positiveCondition;
-    }
-
-    public void setPositiveCondition(String positiveCondition) {
-        this.positiveCondition = positiveCondition;
-    }
-
-    public String getNegativeCondition() {
-        return negativeCondition;
-    }
-
-    public void setNegativeCondition(String negativeCondition) {
-        this.negativeCondition = negativeCondition;
-    }
-
-    public int size() {
-        return optionsList.size();
-    }
-
-    public boolean hasAssociations() {
-        return hasAssociations;
-    }
-
-    public boolean isHasPhysicalExams() {
-        return hasPhysicalExams;
-    }
-
-    public String getAssociatedComplaint() {
-        return associatedComplaint;
-    }
-
-    public boolean isAidAvailable() {
-        return aidAvailable;
-    }
-
-
-    public List<Node> getOptionsList() {
-        return optionsList;
-    }
-
-    public Node getOptionByName(String name) {
-        Node foundNode = null;
-        if (optionsList != null) {
-            for (Node node : optionsList) {
-                if (node.getText().equals(name)) {
-                    foundNode = node;
-                }
-            }
-        }
-        if (foundNode == null) Log.i(TAG, "getOptionByName [Not Found]: " + name);
-        return foundNode;
-    }
-
-    public Node getOption(int i) {
-        return optionsList.get(i);
-    }
-
-    public void addOptions(Node node) {
-        optionsList.add(node);
-    }
-
-    public String getJobAidFile() {
-        return jobAidFile;
-    }
-
-    public String getJobAidType() {
-        return jobAidType;
-    }
-
-    public String getPop_up() {
-        return pop_up;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public boolean isNoSelected() {
-        return isNoSelected;
-    }
-
-    public void setNoSelected(boolean noSelected) {
-        isNoSelected = noSelected;
-    }
-
-    public void setUnselected() {
-        selected = false;
-    }
-
-    public void toggleSelected() {
-        selected = !selected;
-    }
-
-    public void setSelected(boolean isSelectedStatus) {
-        selected = isSelectedStatus;
-    }
-
-    public boolean anySubSelected() {
-        if (!terminal) {
-            for (int i = 0; i < optionsList.size(); i++) {
-                if (optionsList.get(i).isSelected()) {
-                    subSelected = true;
-                    break;
-                } else {
-                    subSelected = false;
-                }
-            }
-            return subSelected;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean anySubPopUp() {
-        if (!terminal) {
-            for (int i = 0; i < optionsList.size(); i++) {
-                if (optionsList.get(i).isSelected()) {
-                    subPopUp = true;
-                    break;
-                } else {
-                    subPopUp = false;
-                }
-            }
-            return subPopUp;
-        } else {
-            return false;
-        }
-    }
-
     public static void askText(final Node node, Activity context, final QuestionsAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
@@ -912,217 +572,6 @@ public class Node implements Serializable {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    public String generateLanguage() {
-
-        String raw = "";
-        List<Node> mOptions = optionsList;
-        if (optionsList != null && !optionsList.isEmpty()) {
-            for (Node node_opt : mOptions) {
-                if (node_opt.isSelected()) {
-                    String associatedTest = node_opt.getText();
-                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
-                            //(associatedTest.trim().equals("H/o specific illness")) ||
-                            (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
-
-                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
-                                (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                                (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
-                                (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                                || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                                || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
-                            if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
-                                //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                                //raw = raw.substring(6);
-                                raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                                Log.e("FinalText= ", raw);
-                            } else {
-                                Log.e("FinalText= ", raw);
-
-                            }
-                        } else {
-                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                        }
-
-                    } else {
-                        if (!node_opt.getLanguage().isEmpty()) {
-                            if (node_opt.getLanguage().equals("%")) {
-                                raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
-                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
-                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
-                            } else {
-                                raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
-                            }
-                        }
-                    }
-                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
-
-                } else {
-                    String associatedTest = node_opt.getText();
-                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                            || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
-                        if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
-                            //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                            //raw = raw.substring(6);
-                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                            Log.e("FinalText= ", raw);
-                        } else {
-                            Log.e("FinalText= ", raw);
-                        }
-                    }
-                }
-                Log.v("node", raw);
-            }
-        }
-
-        String formatted;
-        if (!raw.isEmpty()) {
-            Log.i(TAG, "generateLanguage: " + raw);
-            if (Character.toString(raw.charAt(0)).equals(",")) {
-                formatted = raw.substring(2);
-            } else {
-                formatted = raw;
-            }
-            formatted = formatted.replaceAll("\\. -", ".");
-            formatted = formatted.replaceAll("\\.,", ", ");
-            Log.i(TAG, "generateLanguage: " + formatted);
-            return formatted;
-        }
-        return null;
-    }
-
-    public String generateLanguageSingleNode() {
-
-        String raw = "";
-        if (isSelected()) {
-            String associatedTest = getText();
-            if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
-                    //(associatedTest.trim().equals("H/o specific illness")) ||
-                    (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                    (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                    || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                    || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                    || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                    || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
-
-                if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
-                        (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
-                        (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
-                        (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                        || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                        || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                        || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
-                    if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
-                        //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                        //raw = raw.substring(6);
-                        raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
-                        Log.e("FinalText= ", raw);
-                    } else {
-                        Log.e("FinalText= ", raw);
-
-                    }
-                } else {
-                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
-                }
-
-            } else {
-                if (!getLanguage().isEmpty()) {
-                    if (getLanguage().equals("%")) {
-                        raw = raw + bullet + " " + formLanguage() + next_line;
-                    } else if (getLanguage().substring(0, 1).equals("%")) {
-                        raw = raw + (bullet + " " + getLanguage().substring(1) + " - " + formLanguage()) + next_line;
-                    } else {
-                        raw = raw + (bullet + " " + getLanguage() + " - " + formLanguage()) + next_line;
-                    }
-                }
-            }
-            //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
-
-        } else {
-            String associatedTest = getText();
-            if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                    || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
-                    (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
-                    || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
-                    || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
-                    || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
-                    || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
-                if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
-                    //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                    //raw = raw.substring(6);
-                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
-                    Log.e("FinalText= ", raw);
-                } else {
-                    Log.e("FinalText= ", raw);
-                }
-            }
-        }
-        Log.v("node", raw);
-
-
-        String formatted;
-        if (!raw.isEmpty()) {
-            Log.i(TAG, "generateLanguage: " + raw);
-            if (Character.toString(raw.charAt(0)).equals(",")) {
-                formatted = raw.substring(2);
-            } else {
-                formatted = raw;
-            }
-            formatted = formatted.replaceAll("\\. -", ".");
-            formatted = formatted.replaceAll("\\.,", ", ");
-            Log.i(TAG, "generateLanguage: " + formatted);
-            return formatted;
-        }
-        return null;
-    }
-
-    //TODO: Check this, as associated complaints are not being triggered.
-    public ArrayList<String> getSelectedAssociations() {
-        ArrayList<String> selectedAssociations = new ArrayList<>();
-        List<Node> mOptions = optionsList;
-        for (int i = 0; i < mOptions.size(); i++) {
-            if (mOptions.get(i).isSelected() & mOptions.get(i).hasAssociations()) {
-                selectedAssociations.add(mOptions.get(i).getAssociatedComplaint());
-                if (!mOptions.get(i).isTerminal()) {
-                    selectedAssociations.addAll(mOptions.get(i).getSelectedAssociations());
-                }
-            }
-        }
-        return selectedAssociations;
-    }
-
-
-    public ArrayList<String> getPhysicalExamList() {
-        ArrayList<String> selectedExams = new ArrayList<>();
-        List<Node> mOptions = optionsList;
-        for (int i = 0; i < mOptions.size(); i++) {
-            if (mOptions.get(i).isSelected() & mOptions.get(i).isHasPhysicalExams()) {
-                String rawExams = mOptions.get(i).getPhysicalExams();
-                if (!rawExams.trim().isEmpty()) {
-                    String[] splitExams = rawExams.split(";");
-                    selectedExams.addAll(Arrays.asList(splitExams));
-                }
-                if (!mOptions.get(i).isTerminal()) {
-                    selectedExams.addAll(mOptions.get(i).getPhysicalExamList());
-                }
-            }
-        }
-        return selectedExams;
-    }
-
-    public static final int TAKE_IMAGE_FOR_NODE = 507;
-    public static final String TAG = Node.class.getSimpleName();
-
     public static void askDate(final Node node, final Activity context, final QuestionsAdapter adapter) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
@@ -1166,82 +615,6 @@ public class Node implements Serializable {
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
-    }
-
-    public String findPopup() {
-
-        SessionManager sessionManager = null;
-        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String locale = sessionManager.getCurrentLang();
-
-        switch (locale) {
-            case "or": {
-                if (pop_up_or != null && !pop_up_or.isEmpty()) {
-                    return pop_up_or;
-                } else {
-                    return pop_up;
-                }
-
-            }
-            case "hi": {
-                if (pop_up_hi != null && !pop_up_hi.isEmpty()) {
-                    return pop_up_hi;
-                } else {
-                    return pop_up;
-                }
-            }
-            default: {
-                return pop_up;
-            }
-        }
-    }
-
-    public void generatePopUp(final Activity context) {
-        SessionManager sessionManager = null;
-        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-
-        HashSet<String> messages = new HashSet<String>();
-        List<Node> mOptions = optionsList;
-        if (optionsList != null && !optionsList.isEmpty()) {
-            for (Node node_opt : mOptions) {
-                if (node_opt.isSelected() && node_opt.hasPopUp) {
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        messages.add(node_opt.pop_up_hi);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        messages.add(node_opt.pop_up_or);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                        messages.add(node_opt.pop_up_or);
-                    }
-//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-//                        messages.add(node_opt.pop_up_or);
-//                    }
-                    else {
-                        messages.add(node_opt.pop_up);
-                    }
-
-                }
-            }
-        }
-
-        String finalMessage = "";
-        Iterator<String> i = messages.iterator();
-        while (i.hasNext()) {
-            finalMessage = i.next() + "\n";
-        }
-
-        if (!finalMessage.isEmpty()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
-            alertDialogBuilder.setMessage(finalMessage);
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
-        }
     }
 
     public static void handleQuestion(Node questionNode, final Activity context, final QuestionsAdapter adapter,
@@ -1815,7 +1188,6 @@ public class Node implements Serializable {
         return unit;
     }
 
-
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
@@ -1917,7 +1289,6 @@ public class Node implements Serializable {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
-
 
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter, final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
@@ -2175,6 +1546,650 @@ public class Node implements Serializable {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
+    public boolean isNeedToHide() {
+        return needToHide;
+    }
+
+    public void setNeedToHide(boolean needToHide) {
+        this.needToHide = needToHide;
+    }
+
+    // check the answer status for the Associated_symptoms
+    public int getAssociated_symptoms() {
+        return associated_symptoms;
+    }
+
+    public void setAssociated_symptoms(int associated_symptoms) {
+        this.associated_symptoms = associated_symptoms;
+    }
+
+    //Terminal nodes are important to identify to know so that the org does not keep looking for sub-nodes.
+    public boolean isTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(boolean terminal) {
+        this.terminal = terminal;
+    }
+
+    //Only complaints should be presented to the user at Complaint Select.
+    public boolean isComplaint() {
+        return complaint;
+    }
+
+    public void setComplaint(boolean complaint) {
+        this.complaint = complaint;
+    }
+
+    //In certain instances, the input is added to the starter language given to the user.
+    public void addLanguage(String newText) {
+        //Log.d("Node", language);
+        if (language.contains("_")) {
+            language = language.replace("_", newText);
+            //Log.d("Node", language);
+        } else {
+            language = newText;
+            //Log.d("Node", language);
+        }
+    }
+
+    public String findDisplay() {
+
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+//        String locale = Locale.getDefault().getLanguage();
+        String locale = sessionManager.getCurrentLang();
+
+        switch (locale) {
+            case "en": {
+                //Log.i(TAG, "findDisplay: eng");
+                if (display != null && display.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: eng txt");
+                    return text;
+                } else {
+                    //Log.i(TAG, "findDisplay: eng dis");
+                    return display;
+                }
+            }
+            case "gu": {
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    return display_gujarati;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "bn": {
+                if (display_bengali != null && !display_bengali.isEmpty()) {
+                    return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "ta": {
+                if (display_tamil != null && !display_tamil.isEmpty()) {
+                    return display_tamil;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "or": {
+                //Log.i(TAG, "findDisplay: ori");
+                if (display_oriya != null && !display_oriya.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: ori dis");
+                    return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+
+            }
+            case "hi": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_hindi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "te": {
+                if (display_telugu != null && !display_telugu.isEmpty()) {
+                    return display_telugu;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: mr ");
+                    return display_marathi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }  //Assamese language support...
+            case "as": {
+                if (display_assamese != null && !display_assamese.isEmpty()) {
+                    return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Malyalam language support...
+            case "ml": {
+                if (display_malyalam != null && !display_malyalam.isEmpty()) {
+                    return display_malyalam;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+            case "kn": {
+                if (display_kannada != null && !display_kannada.isEmpty()) {
+                    return display_kannada;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            default: {
+                {
+                    if (display != null && display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+        }
+    }
+
+    public String getPositiveCondition() {
+        return positiveCondition;
+    }
+
+    public void setPositiveCondition(String positiveCondition) {
+        this.positiveCondition = positiveCondition;
+    }
+
+    public String getNegativeCondition() {
+        return negativeCondition;
+    }
+
+    public void setNegativeCondition(String negativeCondition) {
+        this.negativeCondition = negativeCondition;
+    }
+
+    public int size() {
+        return optionsList.size();
+    }
+
+    public boolean hasAssociations() {
+        return hasAssociations;
+    }
+
+    public boolean isHasPhysicalExams() {
+        return hasPhysicalExams;
+    }
+
+    public String getAssociatedComplaint() {
+        return associatedComplaint;
+    }
+
+    public boolean isAidAvailable() {
+        return aidAvailable;
+    }
+
+    public List<Node> getOptionsList() {
+        return optionsList;
+    }
+
+    public void setOptionsList(List<Node> optionsList) {
+        this.optionsList = optionsList;
+    }
+
+    public Node getOptionByName(String name) {
+        Node foundNode = null;
+        if (optionsList != null) {
+            for (Node node : optionsList) {
+                if (node.getText().equals(name)) {
+                    foundNode = node;
+                }
+            }
+        }
+        if (foundNode == null) Log.i(TAG, "getOptionByName [Not Found]: " + name);
+        return foundNode;
+    }
+
+    public Node getOption(int i) {
+        return optionsList.get(i);
+    }
+
+    public void addOptions(Node node) {
+        optionsList.add(node);
+    }
+
+    public String getJobAidFile() {
+        return jobAidFile;
+    }
+
+    public String getJobAidType() {
+        return jobAidType;
+    }
+
+    public String getPop_up() {
+        return pop_up;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean isSelectedStatus) {
+        selected = isSelectedStatus;
+    }
+
+    public boolean isNoSelected() {
+        return isNoSelected;
+    }
+
+    public void setNoSelected(boolean noSelected) {
+        isNoSelected = noSelected;
+    }
+
+    public void setUnselected() {
+        selected = false;
+    }
+
+    public void toggleSelected() {
+        selected = !selected;
+    }
+
+    public boolean anySubSelected() {
+        if (!terminal) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                if (optionsList.get(i).isSelected()) {
+                    subSelected = true;
+                    break;
+                } else {
+                    subSelected = false;
+                }
+            }
+            return subSelected;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean anySubPopUp() {
+        if (!terminal) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                if (optionsList.get(i).isSelected()) {
+                    subPopUp = true;
+                    break;
+                } else {
+                    subPopUp = false;
+                }
+            }
+            return subPopUp;
+        } else {
+            return false;
+        }
+    }
+
+    public String generateLanguage() {
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
+                            //(associatedTest.trim().equals("H/o specific illness")) ||
+                            (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
+                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
+                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
+                                (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
+                                (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
+                                (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                                || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                                || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                            if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                                //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                //raw = raw.substring(6);
+                                raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                Log.e("FinalText= ", raw);
+                            } else {
+                                Log.e("FinalText= ", raw);
+
+                            }
+                        } else {
+                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
+                            } else {
+                                raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
+                            }
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+
+                } else {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
+                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                            || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
+                            || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                            || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                        if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                            //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            //raw = raw.substring(6);
+                            raw = raw + (Node.bullet_arrow + "<b> " + node_opt.getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            Log.e("FinalText= ", raw);
+                        } else {
+                            Log.e("FinalText= ", raw);
+                        }
+                    }
+                }
+                Log.v("node", raw);
+            }
+        }
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            Log.i(TAG, "generateLanguage: " + raw);
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
+    public String generateLanguageSingleNode() {
+
+        String raw = "";
+        if (isSelected()) {
+            String associatedTest = getText();
+            if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
+                    //(associatedTest.trim().equals("H/o specific illness")) ||
+                    (associatedTest.trim().equals("హ / ఓ నిర్దిష్ట అనారోగ్యం")) || (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
+                    (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                    || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                    || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
+                    || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                    || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+
+                if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") ||
+                        (associatedTest.trim().equals("అనుబంధ లక్షణాలు")) ||
+                        (associatedTest.trim().equals("জড়িত লক্ষণগুলি")) ||
+                        (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                        || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                        || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                        || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                    if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
+                        //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                        //raw = raw.substring(6);
+                        raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                        Log.e("FinalText= ", raw);
+                    } else {
+                        Log.e("FinalText= ", raw);
+
+                    }
+                } else {
+                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                }
+
+            } else {
+                if (!getLanguage().isEmpty()) {
+                    if (getLanguage().equals("%")) {
+                        raw = raw + bullet + " " + formLanguage() + next_line;
+                    } else if (getLanguage().substring(0, 1).equals("%")) {
+                        raw = raw + (bullet + " " + getLanguage().substring(1) + " - " + formLanguage()) + next_line;
+                    } else {
+                        raw = raw + (bullet + " " + getLanguage() + " - " + formLanguage()) + next_line;
+                    }
+                }
+            }
+            //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+
+        } else {
+            String associatedTest = getText();
+            if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                    || associatedTest.trim().equals("जुड़े लक्षण") || associatedTest.trim().equals("అనుబంధ లక్షణాలు") ||
+                    (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("संबंधित लक्षणे"))
+                    || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))
+                    || (associatedTest.trim().equals("জড়িত লক্ষণগুলি"))
+                    || (associatedTest.trim().equals("தொடர்புடைய அறிகுறிகள்"))
+                    || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                if (!generateAssociatedSymptomsOrHistory(this).isEmpty()) {
+                    //raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                    //raw = raw.substring(6);
+                    raw = raw + (Node.bullet_arrow + "<b> " + getLanguage() + "</b>: " + generateAssociatedSymptomsOrHistory(this)) + next_line;
+                    Log.e("FinalText= ", raw);
+                } else {
+                    Log.e("FinalText= ", raw);
+                }
+            }
+        }
+        Log.v("node", raw);
+
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            Log.i(TAG, "generateLanguage: " + raw);
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
+    //TODO: Check this, as associated complaints are not being triggered.
+    public ArrayList<String> getSelectedAssociations() {
+        ArrayList<String> selectedAssociations = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected() & mOptions.get(i).hasAssociations()) {
+                selectedAssociations.add(mOptions.get(i).getAssociatedComplaint());
+                if (!mOptions.get(i).isTerminal()) {
+                    selectedAssociations.addAll(mOptions.get(i).getSelectedAssociations());
+                }
+            }
+        }
+        return selectedAssociations;
+    }
+
+    public ArrayList<String> getPhysicalExamList() {
+        ArrayList<String> selectedExams = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected() & mOptions.get(i).isHasPhysicalExams()) {
+                String rawExams = mOptions.get(i).getPhysicalExams();
+                if (!rawExams.trim().isEmpty()) {
+                    String[] splitExams = rawExams.split(";");
+                    selectedExams.addAll(Arrays.asList(splitExams));
+                }
+                if (!mOptions.get(i).isTerminal()) {
+                    selectedExams.addAll(mOptions.get(i).getPhysicalExamList());
+                }
+            }
+        }
+        return selectedExams;
+    }
+
+
+
+   /* public ArrayList<String> getPhysicalExams() {
+        ArrayList<String> selectedAssociations = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected() & mOptions.get(i).hasAssociations()) {
+                selectedAssociations.add(mOptions.get(i).getAssociatedComplaint());
+                if (!mOptions.get(i).isTerminal()) {
+                    selectedAssociations.addAll(mOptions.get(i).getSelectedAssociations());
+                }
+            }
+        }
+        return selectedAssociations;
+    }
+    */
+
+    public String findPopup() {
+
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String locale = sessionManager.getCurrentLang();
+
+        switch (locale) {
+            case "or": {
+                if (pop_up_or != null && !pop_up_or.isEmpty()) {
+                    return pop_up_or;
+                } else {
+                    return pop_up;
+                }
+
+            }
+            case "hi": {
+                if (pop_up_hi != null && !pop_up_hi.isEmpty()) {
+                    return pop_up_hi;
+                } else {
+                    return pop_up;
+                }
+            }
+            default: {
+                return pop_up;
+            }
+        }
+    }
+
+    public void generatePopUp(final Activity context) {
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+        HashSet<String> messages = new HashSet<String>();
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected() && node_opt.hasPopUp) {
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        messages.add(node_opt.pop_up_hi);
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        messages.add(node_opt.pop_up_or);
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                        messages.add(node_opt.pop_up_or);
+                    }
+//                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+//                        messages.add(node_opt.pop_up_or);
+//                    }
+                    else {
+                        messages.add(node_opt.pop_up);
+                    }
+
+                }
+            }
+        }
+
+        String finalMessage = "";
+        Iterator<String> i = messages.iterator();
+        while (i.hasNext()) {
+            finalMessage = i.next() + "\n";
+        }
+
+        if (!finalMessage.isEmpty()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
+            alertDialogBuilder.setMessage(finalMessage);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
+        }
+    }
+
     /**
      * Takes a JSON Array from a knowledgeEngine and creates the sub-nodes to store within it.
      * This is how we handle recursive construction.
@@ -2346,23 +2361,6 @@ public class Node implements Serializable {
 
     }
 
-
-
-   /* public ArrayList<String> getPhysicalExams() {
-        ArrayList<String> selectedAssociations = new ArrayList<>();
-        List<Node> mOptions = optionsList;
-        for (int i = 0; i < mOptions.size(); i++) {
-            if (mOptions.get(i).isSelected() & mOptions.get(i).hasAssociations()) {
-                selectedAssociations.add(mOptions.get(i).getAssociatedComplaint());
-                if (!mOptions.get(i).isTerminal()) {
-                    selectedAssociations.addAll(mOptions.get(i).getSelectedAssociations());
-                }
-            }
-        }
-        return selectedAssociations;
-    }
-    */
-
     public String getPhysicalExams() {
         return physicalExams;
     }
@@ -2373,6 +2371,10 @@ public class Node implements Serializable {
 
     public String getText() {
         return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getId() {
@@ -2475,14 +2477,6 @@ public class Node implements Serializable {
         this.display_malyalam = display_malyalam;
     }
 
-    public void setOptionsList(List<Node> optionsList) {
-        this.optionsList = optionsList;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public String getLanguage() {
         return language;
     }
@@ -2525,10 +2519,6 @@ public class Node implements Serializable {
 
     public String getInputType() {
         return inputType;
-    }
-
-    public void setComplaint(boolean complaint) {
-        this.complaint = complaint;
     }
 
     public String getChoiceType() {
@@ -2588,7 +2578,6 @@ public class Node implements Serializable {
     public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
         isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
-
 
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
 
@@ -2700,7 +2689,6 @@ public class Node implements Serializable {
         return final_language;
 
     }
-
 
     public String formQuestionAnswer(int level) {
         List<String> stringsList = new ArrayList<>();
@@ -2819,7 +2807,6 @@ public class Node implements Serializable {
 
         return mLanguage;
     }
-
 
     @Override
     public String toString() {
@@ -3105,7 +3092,6 @@ public class Node implements Serializable {
 
     }
 
-
     // removes options specific to index from the json
     public void remove(List<Node> no, int index) {
         no.remove(index);
@@ -3307,6 +3293,7 @@ public class Node implements Serializable {
     public void setImageUploaded(boolean imageUploaded) {
         isImageUploaded = imageUploaded;
     }
+
     /*Node Engine - 3.0 support with new UI*/
     public String getEngineVersion() {
         return engineVersion;
@@ -3315,17 +3302,30 @@ public class Node implements Serializable {
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
-    public static final int DIRECT_USER_INPUT_CHILD = 0;
-    public static final int CHILD_OPTIONS = 1;
-    public static final int CHILD_QUESTION = 2;
-    public int foundTheNestedQuestionType() {
-            int type = -1;
-            if(getOptionsList()!=null && getOptionsList().size()==1){
-                type = DIRECT_USER_INPUT_CHILD;
-            }else {
 
+    public int foundTheNestedQuestionType() {
+        int type = -1;
+        if (getOptionsList() != null && getOptionsList().size() == 1) {
+            type = DIRECT_USER_INPUT_CHILD;
+        } else {
+            for (int i = 0; i < getOptionsList().size(); i++) {
+                Node n1 = getOptionsList().get(i);
+                if (n1.getOptionsList().size() != 0) {
+                    for (int j = 0; j < n1.getOptionsList().size(); j++) {
+                        Node n2 = n1.getOptionsList().get(i);
+                        if (n2.getOptionsList().size() != 1) {
+                            type = CHILD_OPTIONS;
+                            break;
+                        } else {
+                            if (n2.getOptionsList() != null && n2.getOptionsList().get(0).getOptionsList().size() != 0) {
+                                type = CHILD_QUESTION;
+                            }
+                        }
+                    }
+                }
             }
-            return type;
+        }
+        return type;
     }
 
     /*End*/

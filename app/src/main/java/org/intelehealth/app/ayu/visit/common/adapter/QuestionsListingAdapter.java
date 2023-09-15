@@ -1073,8 +1073,188 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             break;
                     }
                 }else if(caseType == Node.CHILD_OPTIONS){
+                    OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+                        @Override
+                        public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                            if (!isLoadingForNestedEditData)
+                                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+                            ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
+                            if (!isLoadingForNestedEditData) {
+                                mItemList.get(index).setSelected(false);
+                                mItemList.get(index).setDataCaptured(false);
+                            }
+                            for (int i = 0; i < options.size(); i++) {
+                                if (options.get(i).isSelected()) {
+                                    mItemList.get(index).setSelected(true);
+                                    //mItemList.get(index).setDataCaptured(true);
+                                    break;
+                                }
+                            }
+                            //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+                            String type = node.getInputType();
 
+                            if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                                type = "options";
+                            }
+                            if (!type.isEmpty() && node.isSelected()) {
+
+                                holder.singleComponentContainer.removeAllViews();
+                                holder.singleComponentContainer.setVisibility(View.VISIBLE);
+
+                            } else {
+                                holder.singleComponentContainer.removeAllViews();
+                                //holder.superNestedContainerLinearLayout.removeAllViews();
+                                boolean isAnyOtherOptionSelected = false;
+                                for (int i = 0; i < options.size(); i++) {
+                                    if (options.get(i).isSelected()) {
+                                        isAnyOtherOptionSelected = true;
+                                        break;
+                                    }
+                                }
+
+                                if (isLoadingForNestedEditData) {
+                                    if (selectedNode.isDataCaptured()) {
+                                        AdapterUtils.setToDisable(holder.skipButton);
+                                        AdapterUtils.setToDisable(holder.submitButton);
+                                    } else {
+                                        AdapterUtils.setToDefault(holder.skipButton);
+                                        AdapterUtils.setToDefault(holder.submitButton);
+                                    }
+                                } else {
+                                    AdapterUtils.setToDefault(holder.submitButton);
+                                    AdapterUtils.setToDefault(holder.skipButton);
+
+                                }
+                                if (mIsFromAssociatedSymptoms) {
+                                    Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
+                                    Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
+                                }
+                                 if (mItemList.get(index).isMultiChoice()) {
+                                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                                    if (!isAnyOtherOptionSelected)
+                                        holder.submitButton.setVisibility(View.VISIBLE);
+                                } else {
+                                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                                    holder.submitButton.setVisibility(View.GONE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (!isLoadingForNestedEditData) {
+
+                                                notifyItemChanged(index);
+                                            }
+                                        }
+                                    }, 100);
+                                    if (!isLoadingForNestedEditData) {
+                                        mOnItemSelection.onSelect(node, index, false, selectedNode);
+                                        AdapterUtils.setToDisable(holder.skipButton);
+                                    }
+                                }
+
+                                if (mItemList.get(index).isRequired()) {
+                                    holder.skipButton.setVisibility(View.GONE);
+                                } else {
+                                    if (!isAnyOtherOptionSelected)
+                                        holder.skipButton.setVisibility(View.VISIBLE);
+                                }
+
+                                if (node.isExcludedFromMultiChoice()) {
+                                    holder.nestedRecyclerView.setVisibility(View.GONE);
+                                    if (!isLoadingForNestedEditData) {
+                                        notifyItemChanged(index);
+                                        VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
+                                    }
+                                }
+                                return;
+                            }
+
+                            switch (type) {
+                                case "text":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askText(questionNode, context, adapter);
+                                    addTextEnterView(node, holder, index);
+                                    break;
+                                case "date":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    //askDate(questionNode, context, adapter);
+                                    addDateView(node, holder, index);
+                                    break;
+                                case "location":
+                                    //askLocation(questionNode, context, adapter);
+                                    break;
+                                case "number":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askNumber(questionNode, context, adapter);
+                                    addNumberView(node, holder, index);
+                                    break;
+                                case "area":
+                                    // askArea(questionNode, context, adapter);
+                                    break;
+                                case "duration":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askDuration(questionNode, context, adapter);
+                                    addDurationView(node, holder, index);
+                                    break;
+                                case "range":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // askRange(questionNode, context, adapter);
+                                    addRangeView(node, holder, index);
+                                    break;
+                                case "frequency":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    //askFrequency(questionNode, context, adapter);
+                                    addFrequencyView(node, holder, index);
+                                    break;
+                                case "camera":
+                                    holder.submitButton.setVisibility(View.GONE);
+                                    holder.skipButton.setVisibility(View.GONE);
+                                    // openCamera(context, imagePath, imageName);
+                                    Log.v("showCameraView", "showOptionsData 2");
+                                    showCameraView(node, holder, index);
+                                    break;
+
+                                case "options":
+                                     showOptionsData(node, holder, node.getOptionsList(), index, true);
+                                    break;
+                            }
+
+                        }
+                    });
+                    holder.recyclerView.setAdapter(optionsChipsGridAdapter);
                 }else if(caseType == Node.CHILD_QUESTION){
+                    holder.isParallelMultiNestedNode = options.size() > 1;
+
+                    if (holder.isParallelMultiNestedNode) {
+                        //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+                        holder.nextRelativeLayout.setVisibility(View.GONE);
+                    } else {
+                        holder.nextRelativeLayout.setVisibility(View.GONE);
+                    }
+                    holder.nestedRecyclerView.setVisibility(View.VISIBLE);
+                    holder.submitButton.setVisibility(View.GONE);
+                    holder.skipButton.setVisibility(View.GONE);
+
+                    holder.nestedQuestionsListingAdapter.clearItems();
+                    if (mIsEditMode) {
+                        for (int i = 0; i < options.size(); i++) {
+                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                        }
+                    } else if (holder.selectedNestedOptionIndex > 0) {
+                        for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
+                            if (options.size() < i) {
+                                holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+                            }
+                        }
+                    } else {
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                    }
 
                 }
             } else {
