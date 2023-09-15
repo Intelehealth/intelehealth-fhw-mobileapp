@@ -7,6 +7,7 @@ import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUU
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.animation.ObjectAnimator;
@@ -101,7 +102,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     int appointment_id = 0;
     private ImageView priorityTag;
     private boolean isEmergency, hasPrescription;
-    private String patientName, patientUuid, gender, age, openmrsID,
+    private String patientName, patientUuid, gender, age, openmrsID, dob,
             visitID, visit_speciality, followupDate, patient_photo_path, app_start_date,
             app_start_time, app_start_day, prescription_received_time, appointmentStatus;
     SQLiteDatabase db;
@@ -120,6 +121,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
     private PatientDTO patientDTO;
     String patientPhoneNo = "";
     private TextView mScheduleAppointmentTextView;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
         setContentView(R.layout.activity_appointment_details_ui2);
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         sessionManager = new SessionManager(this);
+        context = AppointmentDetailsActivity.this;
         appointmentDAO = new AppointmentDAO();
         networkUtils = new NetworkUtils(AppointmentDetailsActivity.this, this);
 
@@ -213,6 +216,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             patientName = intent.getStringExtra("patientname");
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
+            dob = intent.getStringExtra("dob");
             age = intent.getStringExtra("age");
             openmrsID = intent.getStringExtra("openmrsID");
             visitID = intent.getStringExtra("visit_ID");
@@ -239,9 +243,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             String[] DobAndGender = PatientsDAO.getPatientDobAgeGender(patientUuid);
             if (DobAndGender.length > 0) {
                 String age1 = DateAndTimeUtils.getAge_FollowUp(DobAndGender[1], this);
-                tvGenderAgeText.setText(DobAndGender[0] + " " + age1);
+//                tvGenderAgeText.setText(DobAndGender[0] + " " + age1);
+
                 gender = DobAndGender[0];
                 age = DobAndGender[1];
+
+                setGenderAgeLocal(context, tvGenderAgeText, dob, gender, sessionManager);
             }
 
             //get patient phone number from local db

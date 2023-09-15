@@ -85,7 +85,7 @@
     <string name="identification_screen_prompt_phone_number">फ़ोन नंबर</string>
     <string name="admin_password_dialog_heading" translatable="false">व्यवस्थापक पासवर्ड दर्ज करें</string>
     <string name="identification_screen_prompt_gender" translatable="false">लिंग *</string>
-    <string name="identification_screen_checkbox_male">पुरुष </string>
+    <string name="identification_screen_checkbox_male">पुरुष</string>
     <string name="identification_screen_checkbox_female">महिला</string>
     <string name="identification_screen_checkbox_other">अन्य</string>
     <string name="identification_screen_prompt_birthday">जन्म की तारीख*</string>

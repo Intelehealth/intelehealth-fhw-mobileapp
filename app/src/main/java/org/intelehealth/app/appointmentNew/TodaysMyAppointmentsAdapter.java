@@ -1,5 +1,7 @@
 package org.intelehealth.app.appointmentNew;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -50,12 +52,13 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
     Context context;
     List<AppointmentInfo> appointmentInfoList;
     String whichAppointments;
+    SessionManager sessionManager;
 
     public TodaysMyAppointmentsAdapter(Context context, List<AppointmentInfo> appointmentInfoList, String whichAppointments) {
         this.context = context;
         this.appointmentInfoList = appointmentInfoList;
         this.whichAppointments = whichAppointments;
-
+        sessionManager = new SessionManager(context);
     }
 
     @Override
@@ -80,8 +83,10 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             }
 
             // Set Age and Gender - start
-            String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
-            holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);
+            /*String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
+            holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
+                    appointmentInfoModel.getPatientGender(), sessionManager);
             // Set Age and Gender - end
 
             if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
@@ -200,6 +205,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     intent.putExtra("patientname", appointmentInfoModel.getPatientName());
                     intent.putExtra("patientUuid", appointmentInfoModel.getPatientId());
                     intent.putExtra("gender", "");
+                    intent.putExtra("dob", appointmentInfoModel.getPatientDob());
                     //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
                     intent.putExtra("age", "");
                     intent.putExtra("priority_tag", "");

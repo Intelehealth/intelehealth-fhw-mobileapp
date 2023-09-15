@@ -166,6 +166,7 @@
                                     android:layout_marginStart="@dimen/fu_male_margin_start"
                                     android:layout_toEndOf="@+id/patname_txt"
                                     android:text="@string/misc_txt"
+                                    tools:text="पुरुष 50"
                                     android:textAppearance="@style/label_misc_txt_14sp"
                                     android:textColor="@null"
                                     android:textSize="@dimen/fu_name_txt_size" />

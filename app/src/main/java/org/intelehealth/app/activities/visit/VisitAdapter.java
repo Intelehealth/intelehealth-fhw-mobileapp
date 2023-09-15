@@ -169,6 +169,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
+                intent.putExtra("dob", model.getDob());
                 String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
                 intent.putExtra("age", age1);
                 intent.putExtra("priority_tag", model.isEmergency());
