@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -88,6 +90,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     private int start = 0, end = start + limit;
     private boolean isFullyLoaded = false;
     List<PatientDTO> patientDTOList;
+    List<PatientDTO> recent = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +141,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!mSearchEditText.getText().toString().isEmpty()) {
+                    recent.clear();
                     mSearchEditText.setText("");
                 }
             }
@@ -339,15 +343,19 @@ public class SearchPatientActivity_New extends AppCompatActivity {
     }
 
     private void doQuery(String query) {
-        List<PatientDTO> patientDTOList = getQueryPatients(query);  // fetches all the list of patients.
+        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
 
-        if (patientDTOList.size() > 0) { // ie. the entered text is present in db
-            patientDTOList = fetchDataforTags(patientDTOList);
-            Log.v(TAG, "size: " + patientDTOList.size());
+        recent.clear();
+        recent = getQueryPatients(query);  // fetches all the list of patients.
+
+        if (recent.size() > 0) { // ie. the entered text is present in db
+            recent = fetchDataforTags(recent);
+            Log.v(TAG, "size: " + recent.size());
 
             searchData_Available();
             try {
-                adapter = new SearchPatientAdapter_New(this, patientDTOList);
+                adapter = new SearchPatientAdapter_New(this, recent);
                 fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
 
@@ -459,8 +467,14 @@ public class SearchPatientActivity_New extends AppCompatActivity {
                 }
                 if (!isFullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
                         linearLayoutManager.findLastVisibleItemPosition() == adapter.getItemCount() - 1) {
-                    Toast.makeText(SearchPatientActivity_New.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
-                    setMoreDataIntoRecyclerView();
+                    if (recent != null) {
+                        if (recent.size() > 0) {
+
+                        } else {
+                            Toast.makeText(SearchPatientActivity_New.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                            setMoreDataIntoRecyclerView();
+                        }
+                    }
                 }
             }
         });
@@ -468,18 +482,25 @@ public class SearchPatientActivity_New extends AppCompatActivity {
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setMoreDataIntoRecyclerView() {
+        if (recent.size() > 0) {    // on scroll, new data loads issue fix.
 
-        if (patientDTOList != null && patientDTOList.size() == 0) {
-            isFullyLoaded = true;
-            return;
+        } else {
+            if (patientDTOList != null && patientDTOList.size() == 0) {
+                isFullyLoaded = true;
+                return;
+            }
+
+         //   patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                patientDTOList.addAll(tempList);
+                Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
+                adapter.patientDTOS.addAll(tempList);
+                adapter.notifyDataSetChanged();
+                start = end;
+                end += limit;
+            }
         }
-
-        patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
-        adapter.patientDTOS.addAll(patientDTOList);
-        adapter.notifyDataSetChanged();
-        start = end;
-        end += limit;
     }
 
 }
