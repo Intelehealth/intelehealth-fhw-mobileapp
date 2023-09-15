@@ -337,7 +337,7 @@ public class DateAndTimeUtils {
     }
 
     public String getcurrentDateTime(String localeCode) {
-        DateFormat date = new SimpleDateFormat("hh:mm a, dd MMMM yyyy", new Locale(localeCode));
+        DateFormat date = new SimpleDateFormat("hh:mm a, dd MMMM yyyy", Locale.ENGLISH);
         Date todayDate = new Date();
         return date.format(todayDate);
     }
