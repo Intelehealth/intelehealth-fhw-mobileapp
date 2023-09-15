@@ -109,7 +109,7 @@ public class LabourCompletionFragment extends Fragment {
         binding.etLayoutDeceasedReason.setVisibility(hasMotherDeceased ? View.VISIBLE : View.GONE);
         binding.etLayoutDeceasedReason.setMultilineInputEndIconGravity();
         binding.etLayoutOtherComment.setMultilineInputEndIconGravity();
-        binding.etMotherStatus.setVisibility(hasMotherDeceased ? View.GONE : View.VISIBLE);
+        binding.etLayoutMotherStatus.setVisibility(hasMotherDeceased ? View.GONE : View.VISIBLE);
 //        binding.bottomSheetAppBar.toolbar.setTitle(getString(R.string.complete_visit));
 //        binding.bottomSheetAppBar.toolbar.setNavigationOnClickListener(v -> dismiss());
         binding.btnLabourSubmit.setOnClickListener(v -> {
