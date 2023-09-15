@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidF
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
@@ -73,6 +74,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList) {
         this.context = context;
         this.arrayList.addAll(arrayList);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -92,8 +94,9 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
 
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+            /*String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDob(), model.getGender(), sessionManager);
 
             // share icon visibility
             /*String encounteruuid = getStartVisitNoteEncounterByVisitUUID(model.getVisitUuid());
@@ -274,7 +277,6 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     }
 
     public void profilePicDownloaded(PrescriptionModel model, EndVisitAdapter.Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
         Logger.logD("TAG", "profileimage url" + url);

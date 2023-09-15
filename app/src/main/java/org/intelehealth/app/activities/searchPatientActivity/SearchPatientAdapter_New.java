@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.searchPatientActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,6 +60,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
         this.patientDTOS.addAll(patientDTOS);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -73,9 +76,11 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         final PatientDTO model = patientDTOS.get(position);
         holder.patientDTO = model;
         if (model != null) {
+
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+            /*String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDateofbirth(), model.getGender(), sessionManager);
 
             //  2. Name
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname());
@@ -202,7 +207,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public void profilePicDownloaded(PatientDTO model, SearchPatientAdapter_New.SearchHolderView holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
         Logger.logD("TAG", "profileimage url" + url);
