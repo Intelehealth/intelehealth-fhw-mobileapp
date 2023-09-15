@@ -129,7 +129,6 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.RTCConnectionDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
@@ -895,7 +894,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         nameView.setText(patientName);
 
         gender_tv = patientGender;
-        setgender(genderView);
+        setGenderAgeLocal(genderView, patient, sessionManager);
 
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
@@ -2455,89 +2454,113 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
     }
 
-    private void setgender(TextView genderView) {
+    private void setGenderAgeLocal(TextView genderView, Patient patient, SessionManager sessionManager) {
+        //  1. Age
+        String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), context);
+        String gender = patient.getGender();
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            }  else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            if (gender_tv.equalsIgnoreCase("M")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-            } else if (gender_tv.equalsIgnoreCase("F")) {
-                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            if (gender.equalsIgnoreCase("M")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male) + " " + age);
+            } else if (gender.equalsIgnoreCase("F")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female) + " " + age);
+            } else if (gender.equalsIgnoreCase("O")) {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_other) + " " + age);
             } else {
-                genderView.setText(gender_tv);
+                genderView.setText(gender + " " + age);
             }
         } else {
-            genderView.setText(gender_tv);
+            genderView.setText(gender + " " + age);
         }
     }
 
