@@ -130,7 +130,7 @@ public class CompleteVisitOnEnd2StageDialog extends ReferTypeHelper implements V
         } else if (binding.cbLabourCompleted.isChecked()) {
             listener.onVisitCompleted(true, binding.cbMotherDeceased.isChecked());
         } else if (binding.cbMotherDeceased.isChecked()) {
-            showMotherDeceasedDialog();
+            showMotherDeceasedDialog(() -> listener.onVisitCompleted(false, true));
         } else if (Objects.requireNonNull(binding.etOtherCommentOutcomes.getText()).length() > 0) {
             String value = binding.etOtherCommentOutcomes.getText().toString();
             String conceptId = (String) binding.etOtherCommentOutcomes.getTag();
@@ -258,33 +258,33 @@ public class CompleteVisitOnEnd2StageDialog extends ReferTypeHelper implements V
 //        return isInserted;
 //    }
 
-    private void showMotherDeceasedDialog() {
-        MotherDeceasedDialogBinding binding = MotherDeceasedDialogBinding.inflate(inflater, null, false);
-        binding.etLayoutMotherDeceased.setMultilineInputEndIconGravity();
-        binding.etMotherDeceasedReason.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
-        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(context)
-                .title(R.string.mother_deceased)
-                .positiveButtonLabel(R.string.yes)
-                .negativeButtonLabel(R.string.no)
-                .view(binding.getRoot())
-                .build();
-
-        dialog.requireValidationBeforeDismiss(true);
-        dialog.setListener(() -> {
-            if (Objects.requireNonNull(binding.etMotherDeceasedReason.getText()).length() > 0) {
-                String value = binding.etMotherDeceasedReason.getText().toString();
-                String encounterId = insertVisitCompleteEncounter();
-                if (encounterId != null && encounterId.length() > 0) {
-                    boolean isInserted = addMotherDeceasedObs(encounterId, true, value);
-                    if (isInserted) listener.onVisitCompleted(false, true);
-                    dialog.dismiss();
-                }
-            } else {
-                Toast.makeText(context, context.getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-
-    }
+//    private void showMotherDeceasedDialog() {
+//        MotherDeceasedDialogBinding binding = MotherDeceasedDialogBinding.inflate(inflater, null, false);
+//        binding.etLayoutMotherDeceased.setMultilineInputEndIconGravity();
+//        binding.etMotherDeceasedReason.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
+//        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(context)
+//                .title(R.string.mother_deceased)
+//                .positiveButtonLabel(R.string.yes)
+//                .negativeButtonLabel(R.string.no)
+//                .view(binding.getRoot())
+//                .build();
+//
+//        dialog.requireValidationBeforeDismiss(true);
+//        dialog.setListener(() -> {
+//            if (Objects.requireNonNull(binding.etMotherDeceasedReason.getText()).length() > 0) {
+//                String value = binding.etMotherDeceasedReason.getText().toString();
+//                String encounterId = insertVisitCompleteEncounter();
+//                if (encounterId != null && encounterId.length() > 0) {
+//                    boolean isInserted = addMotherDeceasedObs(encounterId, true, value);
+//                    if (isInserted) listener.onVisitCompleted(false, true);
+//                    dialog.dismiss();
+//                }
+//            } else {
+//                Toast.makeText(context, context.getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//
+//    }
 }

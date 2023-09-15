@@ -94,7 +94,7 @@ public class CompleteVisitOnEndStage1Dialog extends ReferTypeHelper implements V
     private void manageSelection() {
         if (selectedView != null) {
             if (selectedView.getText().toString().equalsIgnoreCase(context.getString(R.string.mother_deceased))) {
-                showMotherDeceasedDialog();
+                showMotherDeceasedDialog(() -> listener.onVisitCompleted(false));
             } else if (selectedView.getText().toString().equalsIgnoreCase(context.getString(R.string.move_to_stage2))) {
                 listener.onVisitCompleted(true);
             } else {
@@ -112,35 +112,40 @@ public class CompleteVisitOnEndStage1Dialog extends ReferTypeHelper implements V
         completeVisitWithReferType(value, conceptId, () -> listener.onVisitCompleted(false));
     }
 
-    private void showMotherDeceasedDialog() {
-        MotherDeceasedDialogBinding binding = MotherDeceasedDialogBinding.inflate(inflater, null, false);
-        binding.etLayoutMotherDeceased.setMultilineInputEndIconGravity();
-        binding.etMotherDeceasedReason.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
-        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(context).title(R.string.mother_deceased).positiveButtonLabel(R.string.yes).negativeButtonLabel(R.string.no).view(binding.getRoot()).build();
-
-        dialog.requireValidationBeforeDismiss(true);
-        dialog.setListener(() -> {
-            if (Objects.requireNonNull(binding.etMotherDeceasedReason.getText()).length() > 0) {
-                String value = binding.etMotherDeceasedReason.getText().toString();
-                String encounterId = insertVisitCompleteEncounter();
-                if (encounterId != null && encounterId.length() > 0) {
-                    boolean isInserted = addMotherDeceasedObs(encounterId, true, value);
-                    if (isInserted) listener.onVisitCompleted(false);
-                    dialog.dismiss();
-                }
-            } else {
-                Toast.makeText(context, context.getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-
-    }
+//    private void showMotherDeceasedDialog() {
+//        MotherDeceasedDialogBinding binding = MotherDeceasedDialogBinding.inflate(inflater, null, false);
+//        binding.etLayoutMotherDeceased.setMultilineInputEndIconGravity();
+//        binding.etMotherDeceasedReason.setFilters(new InputFilter[]{new FirstLetterUpperCaseInputFilter(), new InputFilter.LengthFilter(INPUT_MAX_LENGTH)});
+//        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(context).title(R.string.mother_deceased).positiveButtonLabel(R.string.yes).negativeButtonLabel(R.string.no).view(binding.getRoot()).build();
+//
+//        dialog.requireValidationBeforeDismiss(true);
+//        dialog.setListener(() -> {
+//            if (Objects.requireNonNull(binding.etMotherDeceasedReason.getText()).length() > 0) {
+//                String value = binding.etMotherDeceasedReason.getText().toString();
+//                String encounterId = insertVisitCompleteEncounter();
+//                if (encounterId != null && encounterId.length() > 0) {
+//                    boolean isInserted = addMotherDeceasedObs(encounterId, true, value);
+//                    if (isInserted) listener.onVisitCompleted(false);
+//                    dialog.dismiss();
+//                }
+//            } else {
+//                Toast.makeText(context, context.getString(R.string.please_enter_reason), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//
+//    }
 
     public void buildDialogSingleSelection(FragmentManager fragmentManager) {
         List<ConceptsDetailsModel> conceptsList = new ArrayList<>();
 
-        String[] conceptNames = {context.getString(R.string.move_to_stage2), context.getString(R.string.refer_to_other_hospital), context.getString(R.string.self_discharge_medical_advice), context.getString(R.string.shift_to_c_section), context.getString(R.string.refer_to_icu), context.getString(R.string.mother_death)};
+        String[] conceptNames = {context.getString(R.string.move_to_stage2),
+                context.getString(R.string.refer_to_other_hospital),
+                context.getString(R.string.self_discharge_medical_advice),
+                context.getString(R.string.shift_to_c_section),
+                context.getString(R.string.refer_to_icu),
+                context.getString(R.string.mother_death)};
 
         String referTypeUUid = CompletedVisitStatus.ReferType.conceptUuid(); //refer type - common concept uuid
 
@@ -175,7 +180,7 @@ public class CompleteVisitOnEndStage1Dialog extends ReferTypeHelper implements V
             listener.onVisitCompleted(true);
         } else if (conceptUuid.equals(CompletedVisitStatus.MotherDeceased.MOTHER_DECEASED_REASON.uuid())) {
             //for mother deceased
-            showMotherDeceasedDialog();
+            showMotherDeceasedDialog(() -> listener.onVisitCompleted(false));
         } else if (conceptUuid.equals(CompletedVisitStatus.ReferType.conceptUuid())) {
             //for refer options
             completeVisitWithReferType(value, conceptUuid, () -> listener.onVisitCompleted(false));
