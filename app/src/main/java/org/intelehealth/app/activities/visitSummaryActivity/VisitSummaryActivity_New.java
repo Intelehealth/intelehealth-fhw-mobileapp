@@ -10,6 +10,7 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
@@ -894,7 +895,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         nameView.setText(patientName);
 
         gender_tv = patientGender;
-        setGenderAgeLocal(genderView, patient, sessionManager);
+        setGenderAgeLocal(context, genderView, patient.getDate_of_birth(), patient.getGender(), sessionManager);
 
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
@@ -2454,9 +2455,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         }
     }
 
-    private void setGenderAgeLocal(TextView genderView, Patient patient, SessionManager sessionManager) {
+/*
+    private void setGenderAgeLocal(Context context, TextView genderView, Patient patient, SessionManager sessionManager) {
         //  1. Age
-        String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), context);
+        String age = DateAndTimeUtils.getAge_FollowUp(patient.getDate_of_birth(), this.context);
         String gender = patient.getGender();
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -2563,6 +2565,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
             genderView.setText(gender + " " + age);
         }
     }
+*/
 
     private void visitSendDialog(Context context, Drawable drawable, String title, String subTitle,
                                  String positiveBtnTxt, String negativeBtnTxt) {

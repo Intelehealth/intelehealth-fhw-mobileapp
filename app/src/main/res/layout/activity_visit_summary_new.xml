@@ -207,7 +207,7 @@
                                         android:text="@string/misc_txt"
                                         android:textAppearance="@style/label_misc_txt_14sp"
                                         android:textColor="@null"
-                                        android:textSize="@dimen/txtsize_patdetail_16sp" />
+                                        android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                                     <ImageView
                                         android:layout_width="wrap_content"

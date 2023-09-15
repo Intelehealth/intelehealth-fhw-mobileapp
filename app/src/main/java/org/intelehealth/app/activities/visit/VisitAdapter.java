@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
@@ -72,6 +73,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     public VisitAdapter(Context context, List<PrescriptionModel> list) {
         this.context = context;
         this.list.addAll(list);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -98,8 +100,9 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+           /* String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDob(), model.getGender(), sessionManager);
 
             // Patient Photo
             //1.
@@ -214,7 +217,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
     // profile downlaod
     public void profilePicDownloaded(PrescriptionModel model, VisitAdapter.Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
         Logger.logD("TAG", "profileimage url" + url);
