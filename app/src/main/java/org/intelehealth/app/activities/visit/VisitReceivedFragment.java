@@ -73,13 +73,15 @@ public class VisitReceivedFragment extends Fragment {
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
-    private final int recentLimit = 15, olderLimit = 15;
+    private int recentLimit = 15, olderLimit = 15;
     private int recentStart = 0, recentEnd = recentStart + recentLimit;
     private boolean isRecentFullyLoaded = false;
 
     private int olderStart = 0, olderEnd = olderStart + olderLimit;
     private boolean isolderFullyLoaded = false;
     NestedScrollView nestedscrollview;
+    List<PrescriptionModel> recent = new ArrayList<>();
+    List<PrescriptionModel> older = new ArrayList<>();
 
     @Nullable
     @Override
@@ -178,8 +180,14 @@ public class VisitReceivedFragment extends Fragment {
                             return;
                         }
                         if (!isolderFullyLoaded) {
-                            Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
-                            setOlderMoreDataIntoRecyclerView();
+                            if (recent != null && older != null) {
+                                if (recent.size() > 0 || older.size() > 0) {
+
+                                } else {
+                                    Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
+                                    setOlderMoreDataIntoRecyclerView();
+                                }
+                            }
                         }
                     }
                 }
@@ -338,7 +346,31 @@ public class VisitReceivedFragment extends Fragment {
         else
             older_nodata.setVisibility(View.GONE);
     }
+
+    private void initLimits() {
+        recentLimit = 15;
+        olderLimit = 15;
+        recentStart = 0;
+        recentEnd = recentStart + recentLimit;
+        olderStart = 0;
+        olderEnd = olderStart + olderLimit;
+    }
+
+
     private void resetData() {
+        initLimits();
+        recent.clear();
+        older.clear();
+
+        recentList = recentVisits(recentLimit, recentStart);
+        olderList = olderVisits(olderLimit, olderStart);
+
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+
+        //
         recent_older_visibility(recentList, olderList);
         Log.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
 
@@ -361,8 +393,8 @@ public class VisitReceivedFragment extends Fragment {
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
 
-        List<PrescriptionModel> recent = new ArrayList<>();
-        List<PrescriptionModel> older = new ArrayList<>();
+//        List<PrescriptionModel> recent = new ArrayList<>();
+//        List<PrescriptionModel> older = new ArrayList<>();
 
         String finalQuery = query;
 
@@ -379,7 +411,7 @@ public class VisitReceivedFragment extends Fragment {
 
                     // recent - start
                     if (allRecentList.size() > 0) {
-                        for (PrescriptionModel model : recentList) {
+                        for (PrescriptionModel model : allRecentList) {
                             if (model.getMiddle_name() != null) {
                                 String firstName = model.getFirst_name().toLowerCase();
                                 String middleName = model.getMiddle_name().toLowerCase();
@@ -410,7 +442,7 @@ public class VisitReceivedFragment extends Fragment {
 
                     // older - start
                     if (allOlderList.size() > 0) {
-                        for (PrescriptionModel model : olderList) {
+                        for (PrescriptionModel model : allOlderList) {
                             if (model.getMiddle_name() != null) {
                                 String firstName = model.getFirst_name().toLowerCase();
                                 String middleName = model.getMiddle_name().toLowerCase();
@@ -531,35 +563,53 @@ public class VisitReceivedFragment extends Fragment {
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
-        if (recentList != null && recentList.size() == 0) {
-            isRecentFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentList.size());
-        recent_adapter.list.addAll(recentList);
-        recent_adapter.notifyDataSetChanged();
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
+        }
+        else {
+            if (recentList != null && recentList.size() == 0) {
+                isRecentFullyLoaded = true;
+                return;
+            }
+
+          //  recentList = recentVisits(recentLimit, recentStart);
+            List<PrescriptionModel> tempList = recentVisits(recentLimit, recentStart);  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                recentList.addAll(tempList);
+                Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentList.size());
+                recent_adapter.list.addAll(tempList);
+                recent_adapter.notifyDataSetChanged();
+                recentStart = recentEnd;
+                recentEnd += recentLimit;
+            }
+        }
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
-        if (olderList != null && olderList.size() == 0) {
-            isolderFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {
 
-        olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderList.size());
-        older_adapter.list.addAll(olderList);
-        older_adapter.notifyDataSetChanged();
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
+        }
+        else {
+            if (olderList != null && olderList.size() == 0) {
+                isolderFullyLoaded = true;
+                return;
+            }
+
+          //  olderList = olderVisits(olderLimit, olderStart);
+            List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                olderList.addAll(tempList);
+                Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderList.size());
+                older_adapter.list.addAll(tempList);
+                older_adapter.notifyDataSetChanged();
+                olderStart = olderEnd;
+                olderEnd += olderLimit;
+            }
+        }
     }
 
     private List<PrescriptionModel> recentVisits(int limit, int offset) {
-        recentList = new ArrayList<>();
+        List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
         // ie. visit is active and presc is given.
@@ -685,7 +735,7 @@ public class VisitReceivedFragment extends Fragment {
 
 
     private List<PrescriptionModel> olderVisits(int limit, int offset) {
-        olderList = new ArrayList<>();
+        List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
         // ie. visit is active and presc is given.
