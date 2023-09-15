@@ -136,7 +136,7 @@
             android:hint="@string/type_text_here_str"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:maxLines="4"
+            android:maxLength="1000"
             android:minHeight="36dip"
             android:padding="16dip"
             android:textColor="@color/gray_4"

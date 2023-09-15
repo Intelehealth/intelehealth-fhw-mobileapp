@@ -29,7 +29,7 @@
         android:layout_marginLeft="36dip"
         android:background="@drawable/chat_right_bg"
         android:gravity="center_vertical"
-        android:maxLines="4"
+        android:maxLength="1000"
         android:minHeight="36dip"
         android:padding="16dip"
         android:text="@string/dummy_text_1"
