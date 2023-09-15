@@ -212,10 +212,12 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             iconSearch.setVisibility(View.GONE);
             iconClear.setVisibility(View.VISIBLE);
             String text = searchText;
+
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 allPatientsTV.setText("\"" + text + "\"" + " " + getResources().getString(R.string.results_for));
             else
                 allPatientsTV.setText(getResources().getString(R.string.results_for) + " \"" + text + "\"");
+
             mSearchEditText.setTextColor(getResources().getColor(R.color.white));
             managePreviousSearchStorage(text);
             query = text;
@@ -347,6 +349,18 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         in.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
 
         recent.clear();
+        if (query.equalsIgnoreCase("")) {
+            try {
+                adapter = new SearchPatientAdapter_New(this, patientDTOList);
+                fullyLoaded = true;
+                search_recycelview.setAdapter(adapter);
+
+            } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Logger.logE("doquery", "doquery", e);
+            }
+            return;
+        }
         recent = getQueryPatients(query);  // fetches all the list of patients.
 
         if (recent.size() > 0) { // ie. the entered text is present in db
