@@ -351,6 +351,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
         recent.clear();
         if (query.equalsIgnoreCase("")) {
             try {
+                searchData_Available();
                 adapter = new SearchPatientAdapter_New(this, patientDTOList);
                 fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
@@ -361,6 +362,7 @@ public class SearchPatientActivity_New extends AppCompatActivity {
             }
             return;
         }
+
         recent = getQueryPatients(query);  // fetches all the list of patients.
 
         if (recent.size() > 0) { // ie. the entered text is present in db
