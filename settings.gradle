@@ -5,3 +5,4 @@ pluginManagement {
 }
 include ':app'
 include ':klivekit'
+include ':fcm'

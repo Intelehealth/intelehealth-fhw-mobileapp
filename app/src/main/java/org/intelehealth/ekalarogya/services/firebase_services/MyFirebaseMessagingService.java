@@ -1,5 +1,6 @@
 package org.intelehealth.ekalarogya.services.firebase_services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -30,6 +32,10 @@ import org.intelehealth.ekalarogya.webrtc.notification.AppNotification;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * Created by Dexter Barretto on 5/25/17.
  * Github : @dbarretto
@@ -51,94 +57,96 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //It is optional
         //Log.d(TAG, "From: " + remoteMessage.getFrom());
         //Log.d(TAG, "Notification Message Title: " + remoteMessage.getNotification().getTitle());
-        //Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-        Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
+        Log.d(TAG, "Notification Message Notification: " + new Gson().toJson(remoteMessage.getNotification()));
+        Log.d(TAG, "Notification Message Data: " + new Gson().toJson(remoteMessage.getData()));
         //  {nurseId=28cea4ab-3188-434a-82f0-055133090a38, doctorName=doctor1, roomId=b60263f2-5716-4047-aaf5-7c13199b7f0c}
-
-        if (remoteMessage.getData().containsKey("actionType")) {
-            if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
-                Log.d(TAG, "actionType : VIDEO_CALL");
-                Intent in = new Intent(this, EkalVideoActivity.class);
-                String roomId = remoteMessage.getData().get("roomId");
-                String doctorName = remoteMessage.getData().get("doctorName");
-                String nurseId = remoteMessage.getData().get("nurseId");
-                in.putExtra("roomId", roomId);
-                in.putExtra("isInComingRequest", true);
-                in.putExtra("doctorname", doctorName);
-                in.putExtra("nurseId", nurseId);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                if (callState == TelephonyManager.CALL_STATE_IDLE) {
-                    startActivity(in);
-                } else {
-                    sendNotification(remoteMessage, null);
-                }
-
-            } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
-                try {
-                    Log.d(TAG, "actionType : TEXT_CHAT");
-                    Gson gson = new Gson();
-                    ChatMessage chatMessage = gson.fromJson(gson.toJson(remoteMessage.getData()), ChatMessage.class);
-                    RtcArgs args = new RtcArgs();
-                    args.setPatientName(chatMessage.getPatientName());
-                    args.setPatientId(chatMessage.getPatientId());
-                    args.setVisitId(chatMessage.getVisitId());
-                    args.setNurseId(chatMessage.getToUser());
-                    args.setDoctorId(chatMessage.getFromUser());
-
-                    try {
-                        String title = new ProviderDAO().getProviderName(args.getDoctorId());
-                        new AppNotification.Builder(this)
-                                .title(title)
-                                .body(chatMessage.getMessage())
-                                .pendingIntent(EkalChatActivity.getPendingIntent(this, args))
-                                .send();
-                    } catch (DAOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-
-//                    String fromUUId = remoteMessage.getData().get("toUser");
-//                    String toUUId = remoteMessage.getData().get("fromUser");
-//                    String patientUUid = remoteMessage.getData().get("patientId");
-//                    String visitUUID = remoteMessage.getData().get("visitId");
-//                    String patientName = remoteMessage.getData().get("patientName");
-//                    JSONObject connectionInfoObject = new JSONObject();
-//                    connectionInfoObject.put("fromUUID", fromUUId);
-//                    connectionInfoObject.put("toUUID", toUUId);
-//                    connectionInfoObject.put("patientUUID", patientUUid);
+        showIncomingCallNotification(remoteMessage.getData());
+//        if (remoteMessage.getData().containsKey("actionType")) {
+//            if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
+//                Log.d(TAG, "actionType : VIDEO_CALL");
+//                Intent in = new Intent(this, EkalVideoActivity.class);
+//                String roomId = remoteMessage.getData().get("roomId");
+//                String doctorName = remoteMessage.getData().get("doctorName");
+//                String nurseId = remoteMessage.getData().get("nurseId");
+//                in.putExtra("roomId", roomId);
+//                in.putExtra("isInComingRequest", true);
+//                in.putExtra("doctorname", doctorName);
+//                in.putExtra("nurseId", nurseId);
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                }
+//                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+//                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+//                    startActivity(in);
+//                } else {
+//                    sendNotification(remoteMessage, null);
+//                }
+//
+//            } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
+//                try {
+//                    Log.d(TAG, "actionType : TEXT_CHAT");
+//                    Gson gson = new Gson();
+//                    ChatMessage chatMessage = gson.fromJson(gson.toJson(remoteMessage.getData()), ChatMessage.class);
+//                    RtcArgs args = new RtcArgs();
+//                    args.setPatientName(chatMessage.getPatientName());
+//                    args.setPatientId(chatMessage.getPatientId());
+//                    args.setVisitId(chatMessage.getVisitId());
+//                    args.setNurseId(chatMessage.getToUser());
+//                    args.setDoctorUuid(chatMessage.getFromUser());
+//
+//                    try {
+//                        String title = new ProviderDAO().getProviderName(args.getDoctorUuid());
+//                        new AppNotification.Builder(this)
+//                                .title(title)
+//                                .body(chatMessage.getMessage())
+//                                .pendingIntent(EkalChatActivity.getPendingIntent(this, args))
+//                                .send();
+//                    } catch (DAOException e) {
+//                        throw new RuntimeException(e);
+//                    }
 //
 //
-//                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
-//                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    chatIntent.putExtra("patientName", patientName);
-//                    chatIntent.putExtra("visitUuid", visitUUID);
-//                    chatIntent.putExtra("patientUuid", patientUUid);
-//                    chatIntent.putExtra("fromUuid", fromUUId);
-//                    chatIntent.putExtra("toUuid", toUUId);
-//                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
-//                            NotificationUtils.getPendingIntentFlag());
-//                    sendNotification(remoteMessage, pendingIntent);
+////                    String fromUUId = remoteMessage.getData().get("toUser");
+////                    String toUUId = remoteMessage.getData().get("fromUser");
+////                    String patientUUid = remoteMessage.getData().get("patientId");
+////                    String visitUUID = remoteMessage.getData().get("visitId");
+////                    String patientName = remoteMessage.getData().get("patientName");
+////                    JSONObject connectionInfoObject = new JSONObject();
+////                    connectionInfoObject.put("fromUUID", fromUUId);
+////                    connectionInfoObject.put("toUUID", toUUId);
+////                    connectionInfoObject.put("patientUUID", patientUUid);
+////
+////
+////                    Intent chatIntent = new Intent(this, EzaziChatActivity.class);
+////                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////                    chatIntent.putExtra("patientName", patientName);
+////                    chatIntent.putExtra("visitUuid", visitUUID);
+////                    chatIntent.putExtra("patientUuid", patientUUid);
+////                    chatIntent.putExtra("fromUuid", fromUUId);
+////                    chatIntent.putExtra("toUuid", toUUId);
+////                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
+////                            NotificationUtils.getPendingIntentFlag());
+////                    sendNotification(remoteMessage, pendingIntent);
+////
+////
+////                    Intent intent = new Intent(ACTION_NAME);
+////                    intent.putExtra("visit_uuid", visitUUID);
+////                    intent.putExtra("connection_info", connectionInfoObject.toString());
+////                    intent.setComponent(new ComponentName("org.intelehealth.ezazi", "org.intelehealth.ezazi.utilities.RTCMessageReceiver"));
+////                    getApplicationContext().sendBroadcast(intent);
 //
 //
-//                    Intent intent = new Intent(ACTION_NAME);
-//                    intent.putExtra("visit_uuid", visitUUID);
-//                    intent.putExtra("connection_info", connectionInfoObject.toString());
-//                    intent.setComponent(new ComponentName("org.intelehealth.ezazi", "org.intelehealth.ezazi.utilities.RTCMessageReceiver"));
-//                    getApplicationContext().sendBroadcast(intent);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        } else {
+//            parseMessage(remoteMessage);
+//        }
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else {
-            parseMessage(remoteMessage);
-        }
 //        if (remoteMessage.getData().containsKey("actionType")) {
 //            if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
 //                Log.d(TAG, "actionType : VIDEO_CALL");
@@ -283,5 +291,57 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(1, notificationBuilder.build());
 
+    }
+
+    private void showIncomingCallNotification(Map<String, String> data) {
+
+        createChannel();
+        NotificationCompat.Builder notificationBuilder = null;
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (data != null) {
+            // Uri ringUri= Settings.System.DEFAULT_RINGTONE_URI;
+            notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("Incoming Call")
+                    .setContentText(data.get("doctorName"))
+                    .setSmallIcon(R.drawable.ic_round_app)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_CALL)
+                    .addAction(R.drawable.ic_call_decline, getString(R.string.reject_call), null)
+                    .addAction(R.drawable.ic_call_accept, getString(R.string.answer_call), null)
+                    .setAutoCancel(true);
+            //.setSound(ringUri)
+
+        }
+
+        Notification incomingCallNotification = null;
+        if (notificationBuilder != null) {
+            incomingCallNotification = notificationBuilder.build();
+            notificationManager.notify(1, incomingCallNotification);
+        }
+    }
+
+
+    private String CHANNEL_ID;
+    private String CHANNEL_NAME;
+
+    public void createChannel() {
+        CHANNEL_ID = getString(R.string.app_name) + "CallChannel";
+        CHANNEL_NAME = getString(R.string.app_name) + "Call Channel";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                Uri ringUri = Settings.System.DEFAULT_RINGTONE_URI;
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+                channel.setDescription("Call Notifications");
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+           /* channel.setSound(ringUri,
+                    new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .setLegacyStreamType(AudioManager.STREAM_RING)
+                            .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION).build());*/
+                Objects.requireNonNull(getSystemService(NotificationManager.class)).createNotificationChannel(channel);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

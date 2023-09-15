@@ -3,6 +3,7 @@ package org.intelehealth.klivekit.ui.activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -21,7 +22,17 @@ import org.intelehealth.klivekit.databinding.ActivityVideoCallBinding
  **/
 class VideoCallActivity : CoreVideoCallActivity() {
     private lateinit var binding: ActivityVideoCallBinding
+
+    private fun applyKeepScreenOnFlags() {
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyKeepScreenOnFlags()
         binding = ActivityVideoCallBinding.inflate(layoutInflater)
         setContentView(binding.root)
         super.onCreate(savedInstanceState)

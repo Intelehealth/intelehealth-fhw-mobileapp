@@ -1160,4 +1160,6 @@
         <string name="fetching_details_please_wait">Fetching details. Please wait...</string>
         <string name="prescription_is_not_yet_provided_by_doctor">Prescription is not yet provided by doctor.</string>
         <string name="download_prescription_first">Download prescription first.</string>
+        <string name="answer_call">Answer</string>
+        <string name="reject_call">Decline</string>
     </resources>
