@@ -879,7 +879,7 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(new Date());
     }
 
-    private static Date convertStringToDateObject(String date, String format, String localeCode) {
+    public static Date convertStringToDateObject(String date, String format, String localeCode) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
         Date parsedDate = null;
 
@@ -1019,5 +1019,27 @@ public class DateAndTimeUtils {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static String extractDateFromString(String followUpString) {
+        String result = "";
+        String regex = "(\\d{4}-\\d{2}-\\d{2})";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(followUpString);
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+        return result;
+    }
+
+    public static boolean isDateInCurrentWeek(Date date) {
+        Calendar currentCalendar = Calendar.getInstance();
+        int week = currentCalendar.get(Calendar.WEEK_OF_YEAR);
+        int year = currentCalendar.get(Calendar.YEAR);
+        Calendar targetCalendar = Calendar.getInstance();
+        targetCalendar.setTime(date);
+        int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
+        int targetYear = targetCalendar.get(Calendar.YEAR);
+        return week == targetWeek && year == targetYear;
     }
 }

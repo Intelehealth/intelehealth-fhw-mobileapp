@@ -39,6 +39,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -50,6 +51,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Prajwal Waingankar on 21/08/22.
@@ -181,6 +184,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 searchOperation(query);
                 return false;   // setting to false will close the keyboard when clicked on search btn.
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.equalsIgnoreCase("")) {
@@ -203,7 +207,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     }
 
     private void resetData() {
-      //  recent_older_visibility(todays_modelList, weeks_modelList, months_modelList);
+        //  recent_older_visibility(todays_modelList, weeks_modelList, months_modelList);
         Log.d("TAG", "resetData followup: " + todays_modelList.size() + ", " + weeks_modelList.size() + ", " + months_modelList.size());
 
         adapter_new = new FollowUpPatientAdapter_New(todays_modelList, this);
@@ -386,7 +390,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                              */
                             int allCount = todays.size() + weeks.size() + months.size();
                             allCountVisibility(allCount);
-                         //   recent_older_visibility(recent, older);
+                            //   recent_older_visibility(recent, older);
                         }
                     }
                 });
@@ -396,10 +400,111 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     }
 
     private void followup_data() {
-        todays_FollowupVisits();
-        thisWeeks_FollowupVisits();
-        thisMonths_FollowupVisits();
-        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+        fetchAndSegregateData();
+
+//        todays_FollowupVisits();
+//        thisWeeks_FollowupVisits();
+//        thisMonths_FollowupVisits();
+//        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
+    }
+
+    private void fetchAndSegregateData() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth();
+
+            if (initialFollowUpPatients.isEmpty()) {
+                runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
+            } else {
+                List<FollowUpModel> finalMonthsFollowUpDates = initialFollowUpPatients;
+                runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
+                getChiefComplaint(initialFollowUpPatients);
+
+                List<FollowUpModel> todaysFollowUpDates = getTodaysVisitsFromList(initialFollowUpPatients);
+                List<FollowUpModel> weeksFollowUpDates = getWeeksVisitsFromList(initialFollowUpPatients);
+                finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
+                finalMonthsFollowUpDates.removeAll(weeksFollowUpDates);
+
+                runOnUiThread(() -> {
+                    setTodaysDatesInRecyclerView(todaysFollowUpDates);
+                    setWeeksDatesInRecyclerView(weeksFollowUpDates);
+                    setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                });
+            }
+        });
+    }
+
+    private void setTodaysDatesInRecyclerView(List<FollowUpModel> todaysFollowUpDates) {
+        if (todaysFollowUpDates.isEmpty()) {
+            today_nodata.setVisibility(View.VISIBLE);
+        } else {
+            today_nodata.setVisibility(View.GONE);
+            adapter_new = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
+            rv_today.setNestedScrollingEnabled(false);
+            rv_today.setAdapter(adapter_new);
+        }
+    }
+
+    private void setWeeksDatesInRecyclerView(List<FollowUpModel> weeksFollowUpDates) {
+        if (weeksFollowUpDates.isEmpty()) {
+            week_nodata.setVisibility(View.VISIBLE);
+        } else {
+            week_nodata.setVisibility(View.GONE);
+            adapter_new = new FollowUpPatientAdapter_New(weeksFollowUpDates, this);
+            rv_week.setNestedScrollingEnabled(false);
+            rv_week.setAdapter(adapter_new);
+        }
+    }
+
+    private void setMonthsDatesInRecyclerView(List<FollowUpModel> monthFollowUpDates) {
+        if (monthFollowUpDates.isEmpty()) {
+            month_nodata.setVisibility(View.VISIBLE);
+        } else {
+            month_nodata.setVisibility(View.GONE);
+            adapter_new = new FollowUpPatientAdapter_New(monthFollowUpDates, this);
+            rv_month.setNestedScrollingEnabled(false);
+            rv_month.setAdapter(adapter_new);
+        }
+    }
+
+    private List<FollowUpModel> getWeeksVisitsFromList(List<FollowUpModel> followUpList) {
+        List<FollowUpModel> weekFollowUpList = new ArrayList<>();
+
+        for (FollowUpModel followUpModel : followUpList) {
+            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
+            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
+            if (DateAndTimeUtils.isDateInCurrentWeek(followUpDateObject)) {
+                weekFollowUpList.add(followUpModel);
+            }
+        }
+
+        return weekFollowUpList;
+    }
+
+    private List<FollowUpModel> getTodaysVisitsFromList(List<FollowUpModel> followUpList) {
+        List<FollowUpModel> todaysFollowUpList = new ArrayList<>();
+        Date todaysDate = new Date();
+
+        for (FollowUpModel followUpModel : followUpList) {
+            String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
+            Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
+            if (todaysDate.getTime() == followUpDateObject.getTime()) {
+                todaysFollowUpList.add(followUpModel);
+            }
+        }
+
+        return todaysFollowUpList;
+    }
+
+    private void shouldShowNoDataTextViewForAllRecyclerViews(boolean isVisible) {
+        if (isVisible) {
+            today_nodata.setVisibility(View.VISIBLE);
+            week_nodata.setVisibility(View.VISIBLE);
+            month_nodata.setVisibility(View.VISIBLE);
+        } else {
+            today_nodata.setVisibility(View.GONE);
+            week_nodata.setVisibility(View.GONE);
+            month_nodata.setVisibility(View.GONE);
+        }
     }
 
     private void todays_FollowupVisits() {
