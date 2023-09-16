@@ -76,6 +76,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     private RelativeLayout no_patient_found_block;
     private LinearLayout main_block;
     List<FollowUpModel> todays_modelList, weeks_modelList, months_modelList;
+    private List<FollowUpModel> todaysFollowUpDates, weeksFollowUpDates, finalMonthsFollowUpDates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,17 +209,17 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
     private void resetData() {
         //  recent_older_visibility(todays_modelList, weeks_modelList, months_modelList);
-        Log.d("TAG", "resetData followup: " + todays_modelList.size() + ", " + weeks_modelList.size() + ", " + months_modelList.size());
+//        Log.d("TAG", "resetData followup: " + todays_modelList.size() + ", " + weeks_modelList.size() + ", " + months_modelList.size());
 
-        adapter_new = new FollowUpPatientAdapter_New(todays_modelList, this);
+        adapter_new = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
         rv_today.setNestedScrollingEnabled(false);
         rv_today.setAdapter(adapter_new);
 
-        adapter_new = new FollowUpPatientAdapter_New(weeks_modelList, this);
+        adapter_new = new FollowUpPatientAdapter_New(weeksFollowUpDates, this);
         rv_week.setNestedScrollingEnabled(false);
         rv_week.setAdapter(adapter_new);
 
-        adapter_new = new FollowUpPatientAdapter_New(months_modelList, this);
+        adapter_new = new FollowUpPatientAdapter_New(finalMonthsFollowUpDates, this);
         rv_month.setNestedScrollingEnabled(false);
         rv_month.setAdapter(adapter_new);
     }
@@ -262,18 +263,19 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<FollowUpModel> todayList = getAllPatientsFromDB_Today();
-                todayList = getChiefComplaint(todayList);
+//                List<FollowUpModel> todayList = getAllPatientsFromDB_Today();
+//                todayList = getChiefComplaint(todayList);
+//
+//                List<FollowUpModel> weekList = getAllPatientsFromDB_thisWeek();
+//                weekList = getChiefComplaint(weekList);
+//
+//                List<FollowUpModel> monthList = getAllPatientsFromDB_thisMonth();
+//                monthList = getChiefComplaint(monthList);
 
-                List<FollowUpModel> weekList = getAllPatientsFromDB_thisWeek();
-                weekList = getChiefComplaint(weekList);
 
-                List<FollowUpModel> monthList = getAllPatientsFromDB_thisMonth();
-                monthList = getChiefComplaint(monthList);
-
-                List<FollowUpModel> finalTodayList = todayList;
-                List<FollowUpModel> finalWeekList = weekList;
-                List<FollowUpModel> finalMonthList = monthList;
+                List<FollowUpModel> finalTodayList = todaysFollowUpDates;
+                List<FollowUpModel> finalWeekList = weeksFollowUpDates;
+                List<FollowUpModel> finalMonthList = finalMonthsFollowUpDates;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -289,8 +291,7 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                                         String fullPartName = firstName + " " + lastName;
                                         String fullName = firstName + " " + middleName + " " + lastName;
 
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
-                                                lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
                                             todays.add(model);
                                         } else {
                                             // dont add in list value.
@@ -415,12 +416,12 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
             if (initialFollowUpPatients.isEmpty()) {
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
             } else {
-                List<FollowUpModel> finalMonthsFollowUpDates = initialFollowUpPatients;
+                finalMonthsFollowUpDates = initialFollowUpPatients;
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
                 getChiefComplaint(initialFollowUpPatients);
 
-                List<FollowUpModel> todaysFollowUpDates = getTodaysVisitsFromList(initialFollowUpPatients);
-                List<FollowUpModel> weeksFollowUpDates = getWeeksVisitsFromList(initialFollowUpPatients);
+                todaysFollowUpDates = getTodaysVisitsFromList(initialFollowUpPatients);
+                weeksFollowUpDates = getWeeksVisitsFromList(initialFollowUpPatients);
                 finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
                 finalMonthsFollowUpDates.removeAll(weeksFollowUpDates);
 
