@@ -313,12 +313,20 @@
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
         <service
-            android:name=".services.firebase_services.MyFirebaseMessagingService"
+            android:name=".services.FCMMessageService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver
+            android:name=".webrtc.receiver.FCMNotificationReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="org.intelehealth.ekalarogya.FCM_BACKGROUND_BROADCAST_ACTION" />
+            </intent-filter>
+        </receiver>
         <!--
 <service android:name=".services.firebase_services.MyFirebaseInstanceIdService">
             <intent-filter>
