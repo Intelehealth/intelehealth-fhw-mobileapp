@@ -1042,4 +1042,13 @@ public class DateAndTimeUtils {
         int targetYear = targetCalendar.get(Calendar.YEAR);
         return week == targetWeek && year == targetYear;
     }
+
+    public static Date getCurrentDateWithoutTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        try {
+            return formatter.parse(formatter.format(new Date()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
