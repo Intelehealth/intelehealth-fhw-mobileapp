@@ -1,5 +1,6 @@
 package org.intelehealth.ekalarogya.activities.homeActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -44,6 +45,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivity;
@@ -320,6 +322,7 @@ public class HomeActivity extends BaseActivity {
         showProgressbar();
 
         HeartBitApi();
+        showAppInfo();
     }
 
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
@@ -1089,6 +1092,13 @@ public class HomeActivity extends BaseActivity {
             Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
             ContextCompat.startForegroundService(this, serviceIntent);
         }
+    }
+
+    private void showAppInfo() {
+        TextView tvSetupLocation = findViewById(R.id.tvAppUserLocation);
+        tvSetupLocation.setText(getString(R.string.location_setup, sessionManager.getLocationName()));
+        TextView tvUserAppInfo = findViewById(R.id.tvAppVersionName);
+        tvUserAppInfo.setText(getString(R.string.app_version_string, sessionManager.getChwname(), BuildConfig.VERSION_NAME));
     }
 
 }

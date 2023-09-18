@@ -1,6 +1,7 @@
 package org.intelehealth.ekalarogya.activities.splash_activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextClock;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +53,7 @@ public class SplashActivity extends AppCompatActivity {
     //    ProgressDialog TempDialog;
     int i = 5;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +76,9 @@ public class SplashActivity extends AppCompatActivity {
             TokenRefreshUtils.refreshToken(this);
 
         initFirebaseRemoteConfig();
+
+        TextView versionName = findViewById(R.id.tvSplashAppVersionName);
+        versionName.setText("Version: " + BuildConfig.VERSION_NAME);
     }
 
     private void initFirebaseRemoteConfig() {

@@ -1,695 +1,694 @@
+<resources>
+    <string name="app_name" translatable="false">Ekal Arogya</string>
 
-    <resources>
-        <string name="app_name" translatable="false">Ekal Arogya</string>
-
-        //Generic
-        <string name="generic_the_flipping_word_next" translatable="false">Next</string>
-        <string name="hint_required" translatable="false">Required</string>
-        <string name="hint_optional" translatable="false">Optional</string>
-        <string name="tag_optional" translatable="false">optional</string>
-        <string name="generic_ok">OK</string>
-        <string name="generic_cancel">Cancel</string>
-        <string name="generic_yes">Yes</string>
-        <string name="generic_no">No</string>
-        <string name="generic_back" translatable="false">Back</string>
-        <string name="generic_coming_soon" translatable="false">Coming Soon.....</string>
-        <string name="action_print" translatable="false">Print</string>
-        <string name="action_sms" translatable="false">Sms</string>
-        <string name="action_home" translatable="false">Home</string>
-        <string name="action_settings" translatable="false">Settings</string>
-        <string name="generic_warning" translatable="false">Warning!</string>
-        <string name="generic_update" translatable="false">Update</string>
-        <string name="generic_deleted" translatable="false">Deleted</string>
+    //Generic
+    <string name="generic_the_flipping_word_next" translatable="false">Next</string>
+    <string name="hint_required" translatable="false">Required</string>
+    <string name="hint_optional" translatable="false">Optional</string>
+    <string name="tag_optional" translatable="false">optional</string>
+    <string name="generic_ok">OK</string>
+    <string name="generic_cancel">Cancel</string>
+    <string name="generic_yes">Yes</string>
+    <string name="generic_no">No</string>
+    <string name="generic_back" translatable="false">Back</string>
+    <string name="generic_coming_soon" translatable="false">Coming Soon.....</string>
+    <string name="action_print" translatable="false">Print</string>
+    <string name="action_sms" translatable="false">Sms</string>
+    <string name="action_home" translatable="false">Home</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="generic_warning" translatable="false">Warning!</string>
+    <string name="generic_update" translatable="false">Update</string>
+    <string name="generic_deleted" translatable="false">Deleted</string>
 
 
-        //Database Schema Names
-        <string name="db_first_name" translatable="false">first_name</string>
-        <string name="db_middle_name" translatable="false">middle_name</string>
-        <string name="db_last_name" translatable="false">last_name</string>
-        <string name="db_dob" translatable="false">date_of_birth</string>
-        <string name="db_phone_number" translatable="false">phone_number</string>
-        <string name="db_address_line1" translatable="false">address1</string>
-        <string name="db_address_line2" translatable="false">address2</string>
-        <string name="db_city" translatable="false">city_village</string>
-        <string name="db_state" translatable="false">state_province</string>
-        <string name="db_postal_code" translatable="false">postal_code</string>
-        <string name="db_country" translatable="false">country</string>
-        <string name="db_gender" translatable="false">gender</string>
-        <string name="db_patient_id1" translatable="false">patient_identifier1</string>
-        <string name="db_patient_id2" translatable="false">patient_identifier2</string>
-        <string name="db_patient_id3" translatable="false">patient_identifier3</string>
+    //Database Schema Names
+    <string name="db_first_name" translatable="false">first_name</string>
+    <string name="db_middle_name" translatable="false">middle_name</string>
+    <string name="db_last_name" translatable="false">last_name</string>
+    <string name="db_dob" translatable="false">date_of_birth</string>
+    <string name="db_phone_number" translatable="false">phone_number</string>
+    <string name="db_address_line1" translatable="false">address1</string>
+    <string name="db_address_line2" translatable="false">address2</string>
+    <string name="db_city" translatable="false">city_village</string>
+    <string name="db_state" translatable="false">state_province</string>
+    <string name="db_postal_code" translatable="false">postal_code</string>
+    <string name="db_country" translatable="false">country</string>
+    <string name="db_gender" translatable="false">gender</string>
+    <string name="db_patient_id1" translatable="false">patient_identifier1</string>
+    <string name="db_patient_id2" translatable="false">patient_identifier2</string>
+    <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
-        //Login Screen
-        <string name="title_activity_login" translatable="false">Ekal Arogya</string>
-        <string name="prompt_email" translatable="false">Username</string>
-        <string name="prompt_password" translatable="false">Password</string>
-        <string name="prompt_admin_password" translatable="false">Admin Password</string>
-        <string name="action_sign_in" translatable="false">Login</string>
-        <string name="action_sign_in_short" translatable="false">Sign in</string>
-        <string name="url_invalid" translatable="false">Check your URL.</string>
-        <string name="prefix_invalid" translatable="false">Select a different prefix!</string>
-        <string name="error_invalid_email" translatable="false">This username is invalid</string>
-        <string name="error_invalid_password" translatable="false">This password is too short</string>
-        <string name="error_incorrect_password" translatable="false">please check username and password entered</string>
-        <string name="error_field_required" translatable="false">This field is required</string>
-        <string name="error_network" translatable="false">Network Error</string>
-        <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>
-        <string name="error_location_not_fetched" translatable="false">Unable to fetch locations</string>
-        <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
+    //Login Screen
+    <string name="title_activity_login" translatable="false">Ekal Arogya</string>
+    <string name="prompt_email" translatable="false">Username</string>
+    <string name="prompt_password" translatable="false">Password</string>
+    <string name="prompt_admin_password" translatable="false">Admin Password</string>
+    <string name="action_sign_in" translatable="false">Login</string>
+    <string name="action_sign_in_short" translatable="false">Sign in</string>
+    <string name="url_invalid" translatable="false">Check your URL.</string>
+    <string name="prefix_invalid" translatable="false">Select a different prefix!</string>
+    <string name="error_invalid_email" translatable="false">This username is invalid</string>
+    <string name="error_invalid_password" translatable="false">This password is too short</string>
+    <string name="error_incorrect_password" translatable="false">please check username and password entered</string>
+    <string name="error_field_required" translatable="false">This field is required</string>
+    <string name="error_network" translatable="false">Network Error</string>
+    <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>
+    <string name="error_location_not_fetched" translatable="false">Unable to fetch locations</string>
+    <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
     </string>
-        <string name="device_id" translatable="false">Device ID:</string>
+    <string name="device_id" translatable="false">Device ID:</string>
 
 
-        <string name="cant_login_user" translatable="false">Can\'t log in?</string>
-        <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
-        <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
+    <string name="cant_login_user" translatable="false">Can\'t log in?</string>
+    <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
+    <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
 
-        //Home Screen (after login)
-        <string name="title_home_screen" translatable="false">Home</string>
-        <string name="button_new_pt">New Patient</string>
-        <string name="button_find_pt" translatable="false">Find Patient</string>
-        <string name="button_diagnostic_tests" translatable="false">Diagnostic Tests</string>
-        <string name="button_active_pt" translatable="false">Active Patients</string>
-        <string name="menu_option_sync" translatable="false">Refresh Data</string>
-        <string name="menu_option_settings" translatable="false">Settings</string>
-        <string name="menu_option_end_of_day" translatable="false">End of Day</string>
-        <string name="menu_option_logout" translatable="false">Logout</string>
-        <string name="menu_option_hw_profile" translatable="false">User Profile</string>
-
-
-        //Identification Screen
-        <string name="title_activity_identification" translatable="false">Add New Patient</string>
-        <string name="identification_screen_prompt_first_name">First name *</string>
-        <string name="identification_screen_prompt_middle_name">Middle name</string>
-        <string name="identification_screen_prompt_last_name">Last name *</string>
-        <string name="identification_screen_prompt_address">Address line 1</string>
-        <string name="identification_screen_prompt_address2">Address line 2</string>
-        <string name="identification_screen_prompt_phone_number">Phone number *</string>
-        <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
-        <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
-        <string name="identification_screen_checkbox_male">Male</string>
-        <string name="identification_screen_checkbox_female">Female</string>
-        <string name="identification_screen_prompt_birthday">Date of birth*</string>
-        <string name="identification_screen_prompt_age">Age:</string>
-        <string name="identification_screen_prompt_time">Time:</string>
-        <string name="identification_screen_prompt_city">Village/Town/City *</string>
-        <string name="identification_screen_prompt_state">State *</string>
-        <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
-        <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
-        <string name="identification_screen_prompt_education" translatable="false">Education level</string>
-        <string name="identification_screen_prompt_country" translatable="false">Country *</string>
-        <string name="identification_screen_prompt_postal_code" translatable="false">Postal code</string>
-        <string name="identification_screen_prompt_relationship" translatable="false">Son/Daughter/Wife of</string>
-        <string name="identification_screen_prompt_occupation" translatable="false">Occupation</string>
-        <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
-        <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
-        <string name="identification_screen_dialog_age" translatable="false">Please enter age in years</string>
-        <string name="identification_screen_dialog_error_dob" translatable="false">Date of birth is set for date after today</string>
-        <string name="identification_screen_dialog_error_gender" translatable="false">Gender is not selected</string>
-        <string name="identification_screen_required_fields" translatable="false">Please enter required fields</string>
-        <string name="identification_screen_error_dob" translatable="false">Enter a valid DOB</string>
-        <string name="identification_screen_error_age" translatable="false">Enter a valid age</string>
-        <string name="identification_screen_text_years" translatable="false"> years </string>
-        <string name="identification_screen_text_months" translatable="false"> months</string>
-        <string name="identification_screen_picker_years" translatable="false">years</string>
-        <string name="identification_screen_picker_hours" translatable="false">hours</string>
-        <string name="identification_screen_picker_months" translatable="false">months</string>
-        <string name="identification_screen_picker_minute" translatable="false">minute</string>
-
-        //Active Patients Screen
-        <string name="title_activity_active_patient" translatable="false">Active Visits</string>
-
-        //Patient History Screen
-        <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
-        <string name="title_activity_search_patient" translatable="false">Patient Lookup</string>
-
-        //Complaint Node Screen
-        <string name="title_activity_complaint_select" translatable="false">Select Complaints</string>
-        <string name="title_activity_complaint_questions" translatable="false">Answer All Questions</string>
-        <string name="title_activity_complaint_node">Select Complaints</string>
-        <string name="complaint_category_selected" translatable="false">Selected Categories:</string>
-        <string name="complaint_complaint_selected" translatable="false">Selected Complaints:</string>
-        <string name="complaint_dialog_title">Reason for visit</string>
-        <string name="complaint_required" translatable="false">Complaint must be selected!</string>
-
-        //Question Node Screen
-        <string name="title_activity_question_node" translatable="false">QuestionNodeActivity</string>
-        <string name="complaint_change_selected" translatable="false">Modify</string>
-        <string name="question_answer_all" translatable="false">Are you sure you have answered all questions.</string>
-        <string name="question_answer_all_phy_exam" translatable="false">Please answer all general exam questions.</string>
-        <string name="question_duration_picker" translatable="false">Please enter duration</string>
-        <string name="question_text_input" translatable="false">Please enter text</string>
-        <string name="question_date_picker" translatable="false">Please select date</string>
-        <string name="question_location_picker" translatable="false">Please select locations</string>
-        <string name="question_number_picker" translatable="false">Please enter number</string>
-        <string name="question_area_picker" translatable="false">Please enter the area (width X length)</string>
-        <string name="question_range_picker" translatable="false">Please enter a range</string>
-        <string name="question_frequency_picker" translatable="false">Please enter how many times</string>
+    //Home Screen (after login)
+    <string name="title_home_screen" translatable="false">Home</string>
+    <string name="button_new_pt">New Patient</string>
+    <string name="button_find_pt" translatable="false">Find Patient</string>
+    <string name="button_diagnostic_tests" translatable="false">Diagnostic Tests</string>
+    <string name="button_active_pt" translatable="false">Active Patients</string>
+    <string name="menu_option_sync" translatable="false">Refresh Data</string>
+    <string name="menu_option_settings" translatable="false">Settings</string>
+    <string name="menu_option_end_of_day" translatable="false">End of Day</string>
+    <string name="menu_option_logout" translatable="false">Logout</string>
+    <string name="menu_option_hw_profile" translatable="false">User Profile</string>
 
 
-        //Table Exam Screen
-        <string name="title_activity_vitals" translatable="false">Vitals</string>
-        <string name="table_hw" translatable="false">Body Measurements</string>
-        <string name="table_height" translatable="false">Height (cm)</string>
-        <string name="table_weight" translatable="false">Weight (kg)</string>
-        <string name="table_bmi" translatable="false">BMI </string>
-        <string name="table_pulse" translatable="false">Pulse (bpm)</string>
-        <string name="table_bp" translatable="false">Vital Signs</string>
-        <string name="table_bpsys" translatable="false">BP Sys</string>
-        <string name="table_bpdia" translatable="false">BP Dia</string>
-        <string name="table_temp" translatable="false">Temperature (C)</string>
-        <string name="table_spo2" translatable="false">SpO2 (%)</string>
-        <string name="weight_loss_alert_msg">According to your height your weight is less.</string>
-        <string name="weight_gain_alert_msg">According to your height your weight is more</string>
-        <string name="doctor_advice_alert_msg">Do you want tele-consultation from Doctor?</string>
-        <string name="vital_alert_save_button">Save</string>
-        <string name="vital_alert_continue_button">Yes, Continue</string>
+    //Identification Screen
+    <string name="title_activity_identification" translatable="false">Add New Patient</string>
+    <string name="identification_screen_prompt_first_name">First name *</string>
+    <string name="identification_screen_prompt_middle_name">Middle name</string>
+    <string name="identification_screen_prompt_last_name">Last name *</string>
+    <string name="identification_screen_prompt_address">Address line 1</string>
+    <string name="identification_screen_prompt_address2">Address line 2</string>
+    <string name="identification_screen_prompt_phone_number">Phone number *</string>
+    <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
+    <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
+    <string name="identification_screen_checkbox_male">Male</string>
+    <string name="identification_screen_checkbox_female">Female</string>
+    <string name="identification_screen_prompt_birthday">Date of birth*</string>
+    <string name="identification_screen_prompt_age">Age:</string>
+    <string name="identification_screen_prompt_time">Time:</string>
+    <string name="identification_screen_prompt_city">Village/Town/City *</string>
+    <string name="identification_screen_prompt_state">State *</string>
+    <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
+    <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
+    <string name="identification_screen_prompt_education" translatable="false">Education level</string>
+    <string name="identification_screen_prompt_country" translatable="false">Country *</string>
+    <string name="identification_screen_prompt_postal_code" translatable="false">Postal code</string>
+    <string name="identification_screen_prompt_relationship" translatable="false">Son/Daughter/Wife of</string>
+    <string name="identification_screen_prompt_occupation" translatable="false">Occupation</string>
+    <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
+    <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
+    <string name="identification_screen_dialog_age" translatable="false">Please enter age in years</string>
+    <string name="identification_screen_dialog_error_dob" translatable="false">Date of birth is set for date after today</string>
+    <string name="identification_screen_dialog_error_gender" translatable="false">Gender is not selected</string>
+    <string name="identification_screen_required_fields" translatable="false">Please enter required fields</string>
+    <string name="identification_screen_error_dob" translatable="false">Enter a valid DOB</string>
+    <string name="identification_screen_error_age" translatable="false">Enter a valid age</string>
+    <string name="identification_screen_text_years" translatable="false"> years </string>
+    <string name="identification_screen_text_months" translatable="false"> months</string>
+    <string name="identification_screen_picker_years" translatable="false">years</string>
+    <string name="identification_screen_picker_hours" translatable="false">hours</string>
+    <string name="identification_screen_picker_months" translatable="false">months</string>
+    <string name="identification_screen_picker_minute" translatable="false">minute</string>
 
-        <string name="vital_alert_bp_dia_button">Your diastolic BP is not Normal.</string>
-        <string name="vital_alert_bp_sys_button">Your Systolic BP is not Normal.</string>
-        <string name="vital_alert_spo2_button">Your SpO2 is not Normal.</string>
-        <string name="vital_alert_pulse_button">Your Pulse is not Normal.</string>
-        <string name="vital_alert_resp_button">Your Respiratory rate is not Normal.</string>
-        <string name="vital_alert_temperature_button">Your Temprature is not Normal.</string>
-        <string name="vital_alert_hgb_button">Your HGB is not Normal.</string>
-        <string name="vital_alert_sugar_random_button">Your Sugar Random level is not Normal.</string>
-        <string name="vital_alert_sugar_fasting_button">Your Sugar Fasting level is not Normal.</string>
-        <string name="vital_alert_sugar_aftermeal_button">Your Sugar After Meal level is not Normal.</string>
-        <string name="vital_alert_required_field_button">Atleast One entry is required for submit</string>
+    //Active Patients Screen
+    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
 
-        //Patient Search Screen
-        <string name="search_hint" translatable="false">Type to search patient by name…</string>
-        <string name="action_search" translatable="false">Search</string>
-        <string name="alert_none_found" translatable="false">Please check username and pasword entered</string>
+    //Patient History Screen
+    <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
+    <string name="title_activity_search_patient" translatable="false">Patient Lookup</string>
 
-        //Past Medical History Screen
-        <string name="title_activity_patient_history" translatable="false">Past Medical History</string>
+    //Complaint Node Screen
+    <string name="title_activity_complaint_select" translatable="false">Select Complaints</string>
+    <string name="title_activity_complaint_questions" translatable="false">Answer All Questions</string>
+    <string name="title_activity_complaint_node">Select Complaints</string>
+    <string name="complaint_category_selected" translatable="false">Selected Categories:</string>
+    <string name="complaint_complaint_selected" translatable="false">Selected Complaints:</string>
+    <string name="complaint_dialog_title">Reason for visit</string>
+    <string name="complaint_required" translatable="false">Complaint must be selected!</string>
 
-        //Visit Summary Screen
-        <string name="title_activity_family_history" translatable="false">Family History</string>
-        <string name="title_activity_physical_exam" translatable="false">Physical Exam</string>
-        <string name="title_activity_patient_summary" translatable="false">Visit Summary</string>
-        <string name="visit_summary_temperature" translatable="false">Temperature(C)</string>
-        <string name="visit_summary_pulseox" translatable="false">SpO2 (%)</string>
-        <string name="visit_summary_hw_on_duty" translatable="false">CHW On Duty</string>
-        <string name="visit_summary_vitals_heading" translatable="false">Vitals</string>
-        <string name="visit_summary_height_heading" translatable="false">Height (cm)</string>
-        <string name="visit_summary_weight" translatable="false">Weight (kg)</string>
-        <string name="visit_summary_bmi" translatable="false">BMI</string>
-        <string name="visit_summary_bp" translatable="false">BP</string>
-        <string name="visit_summary_pulse" translatable="false">Pulse</string>
-        <string name="visit_summary_previous_reports" translatable="false">Previous Reports</string>
-        <string name="visit_summary_medical_history">Medical history</string>
-        <string name="visit_summary_family_history" translatable="false">Family history</string>
-        <string name="visit_summary_on_examination" translatable="false">On examination</string>
-        <string name="visit_summary_complaint" translatable="false">Reason for visit</string>
-        <string name="visit_summary_vitals" translatable="false">Vitals</string>
-        <string name="visit_summary_doctor_details" translatable="false">Doctor Details</string>
-        <string name="visit_summary_rx" translatable="false">Prescribed Medications</string>
-        <string name="visit_summary_diagnosis" translatable="false">Diagnosis</string>
-        <string name="visit_summary_advice" translatable="false">Medical Advice</string>
-        <string name="visit_summary_tests_prescribed" translatable="false">Tests/Referrals</string>
-        <string name="visit_summary_additional_comments" translatable="false">Additional Comments</string>
-        <string name="visit_summary_heading_name" translatable="false">Name</string>
-        <string name="visit_summary_heading_id" translatable="false">ID</string>
-        <string name="visit_summary_button_download" translatable="false">Download</string>
-        <string name="visit_summary_button_upload" translatable="false">Upload</string>
-        <string name="name_button_download" translatable="false">button_download</string>
-        <string name="visit_summary_follow_up_date" translatable="false">Follow Up Date</string>
-        <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
-        <string name="visit_summary_upload_reminder" translatable="false">Please upload first before attempting to end the visit.</string>
+    //Question Node Screen
+    <string name="title_activity_question_node" translatable="false">QuestionNodeActivity</string>
+    <string name="complaint_change_selected" translatable="false">Modify</string>
+    <string name="question_answer_all" translatable="false">Are you sure you have answered all questions.</string>
+    <string name="question_answer_all_phy_exam" translatable="false">Please answer all general exam questions.</string>
+    <string name="question_duration_picker" translatable="false">Please enter duration</string>
+    <string name="question_text_input" translatable="false">Please enter text</string>
+    <string name="question_date_picker" translatable="false">Please select date</string>
+    <string name="question_location_picker" translatable="false">Please select locations</string>
+    <string name="question_number_picker" translatable="false">Please enter number</string>
+    <string name="question_area_picker" translatable="false">Please enter the area (width X length)</string>
+    <string name="question_range_picker" translatable="false">Please enter a range</string>
+    <string name="question_frequency_picker" translatable="false">Please enter how many times</string>
 
 
-        //Diagnostic Tests Screen
-        <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
+    //Table Exam Screen
+    <string name="title_activity_vitals" translatable="false">Vitals</string>
+    <string name="table_hw" translatable="false">Body Measurements</string>
+    <string name="table_height" translatable="false">Height (cm)</string>
+    <string name="table_weight" translatable="false">Weight (kg)</string>
+    <string name="table_bmi" translatable="false">BMI </string>
+    <string name="table_pulse" translatable="false">Pulse (bpm)</string>
+    <string name="table_bp" translatable="false">Vital Signs</string>
+    <string name="table_bpsys" translatable="false">BP Sys</string>
+    <string name="table_bpdia" translatable="false">BP Dia</string>
+    <string name="table_temp" translatable="false">Temperature (C)</string>
+    <string name="table_spo2" translatable="false">SpO2 (%)</string>
+    <string name="weight_loss_alert_msg">According to your height your weight is less.</string>
+    <string name="weight_gain_alert_msg">According to your height your weight is more</string>
+    <string name="doctor_advice_alert_msg">Do you want tele-consultation from Doctor?</string>
+    <string name="vital_alert_save_button">Save</string>
+    <string name="vital_alert_continue_button">Yes, Continue</string>
 
-        //Physical Exam Dialog
-        <string name="wash_hands">Remember to wash your hands</string>
+    <string name="vital_alert_bp_dia_button">Your diastolic BP is not Normal.</string>
+    <string name="vital_alert_bp_sys_button">Your Systolic BP is not Normal.</string>
+    <string name="vital_alert_spo2_button">Your SpO2 is not Normal.</string>
+    <string name="vital_alert_pulse_button">Your Pulse is not Normal.</string>
+    <string name="vital_alert_resp_button">Your Respiratory rate is not Normal.</string>
+    <string name="vital_alert_temperature_button">Your Temprature is not Normal.</string>
+    <string name="vital_alert_hgb_button">Your HGB is not Normal.</string>
+    <string name="vital_alert_sugar_random_button">Your Sugar Random level is not Normal.</string>
+    <string name="vital_alert_sugar_fasting_button">Your Sugar Fasting level is not Normal.</string>
+    <string name="vital_alert_sugar_aftermeal_button">Your Sugar After Meal level is not Normal.</string>
+    <string name="vital_alert_required_field_button">Atleast One entry is required for submit</string>
+
+    //Patient Search Screen
+    <string name="search_hint" translatable="false">Type to search patient by name…</string>
+    <string name="action_search" translatable="false">Search</string>
+    <string name="alert_none_found" translatable="false">Please check username and pasword entered</string>
+
+    //Past Medical History Screen
+    <string name="title_activity_patient_history" translatable="false">Past Medical History</string>
+
+    //Visit Summary Screen
+    <string name="title_activity_family_history" translatable="false">Family History</string>
+    <string name="title_activity_physical_exam" translatable="false">Physical Exam</string>
+    <string name="title_activity_patient_summary" translatable="false">Visit Summary</string>
+    <string name="visit_summary_temperature" translatable="false">Temperature(C)</string>
+    <string name="visit_summary_pulseox" translatable="false">SpO2 (%)</string>
+    <string name="visit_summary_hw_on_duty" translatable="false">CHW On Duty</string>
+    <string name="visit_summary_vitals_heading" translatable="false">Vitals</string>
+    <string name="visit_summary_height_heading" translatable="false">Height (cm)</string>
+    <string name="visit_summary_weight" translatable="false">Weight (kg)</string>
+    <string name="visit_summary_bmi" translatable="false">BMI</string>
+    <string name="visit_summary_bp" translatable="false">BP</string>
+    <string name="visit_summary_pulse" translatable="false">Pulse</string>
+    <string name="visit_summary_previous_reports" translatable="false">Previous Reports</string>
+    <string name="visit_summary_medical_history">Medical history</string>
+    <string name="visit_summary_family_history" translatable="false">Family history</string>
+    <string name="visit_summary_on_examination" translatable="false">On examination</string>
+    <string name="visit_summary_complaint" translatable="false">Reason for visit</string>
+    <string name="visit_summary_vitals" translatable="false">Vitals</string>
+    <string name="visit_summary_doctor_details" translatable="false">Doctor Details</string>
+    <string name="visit_summary_rx" translatable="false">Prescribed Medications</string>
+    <string name="visit_summary_diagnosis" translatable="false">Diagnosis</string>
+    <string name="visit_summary_advice" translatable="false">Medical Advice</string>
+    <string name="visit_summary_tests_prescribed" translatable="false">Tests/Referrals</string>
+    <string name="visit_summary_additional_comments" translatable="false">Additional Comments</string>
+    <string name="visit_summary_heading_name" translatable="false">Name</string>
+    <string name="visit_summary_heading_id" translatable="false">ID</string>
+    <string name="visit_summary_button_download" translatable="false">Download</string>
+    <string name="visit_summary_button_upload" translatable="false">Upload</string>
+    <string name="name_button_download" translatable="false">button_download</string>
+    <string name="visit_summary_follow_up_date" translatable="false">Follow Up Date</string>
+    <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
+    <string name="visit_summary_upload_reminder" translatable="false">Please upload first before attempting to end the visit.</string>
 
 
-        //Patient Detail Screen
-        <string name="header_patient_detail" translatable="false">Patient information</string>
-        <string name="button_history" translatable="false">Patient History</string>
-        <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
-        <string name="header_medical_history" translatable="false">History</string>
-        <string name="button_new_visit" translatable="false">Start Doctor new advice</string>
-        <string name="button_sevika_advice" translatable="false">Start Sevika new advice</string>
-        <string name="header_previous_visits" translatable="false">Previous visits</string>
-        <string name="header_patient_history" translatable="false">Medical history</string>
-        <string name="header_family_history" translatable="false">Family history</string>
-        <string name="string_no_hist" translatable="false">No history of illness</string>
-        <string name="row_patient_id" translatable="false">Patient ID</string>
-        <string name="row_dob" translatable="false">DOB</string>
-        <string name="row_age" translatable="false">Age</string>
-        <string name="row_address">Address</string>
-        <string name="row_phone_number" translatable="false">Phone number</string>
-        <string name="row_open_visit" translatable="false">Click to open visit</string>
-        <string name="title_activity_settings" translatable="false">Settings</string>
+    //Diagnostic Tests Screen
+    <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
 
-        <!-- Strings related to Settings -->
+    //Physical Exam Dialog
+    <string name="wash_hands">Remember to wash your hands</string>
 
-        <!-- Example General settings -->
-        <string name="pref_header_general" translatable="false">General</string>
 
-        <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
-        <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact based on your message
+    //Patient Detail Screen
+    <string name="header_patient_detail" translatable="false">Patient information</string>
+    <string name="button_history" translatable="false">Patient History</string>
+    <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
+    <string name="header_medical_history" translatable="false">History</string>
+    <string name="button_new_visit" translatable="false">Start Doctor new advice</string>
+    <string name="button_sevika_advice" translatable="false">Start Sevika new advice</string>
+    <string name="header_previous_visits" translatable="false">Previous visits</string>
+    <string name="header_patient_history" translatable="false">Medical history</string>
+    <string name="header_family_history" translatable="false">Family history</string>
+    <string name="string_no_hist" translatable="false">No history of illness</string>
+    <string name="row_patient_id" translatable="false">Patient ID</string>
+    <string name="row_dob" translatable="false">DOB</string>
+    <string name="row_age" translatable="false">Age</string>
+    <string name="row_address">Address</string>
+    <string name="row_phone_number" translatable="false">Phone number</string>
+    <string name="row_open_visit" translatable="false">Click to open visit</string>
+    <string name="title_activity_settings" translatable="false">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general" translatable="false">General</string>
+
+    <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact based on your message
         history
     </string>
 
-        <string name="pref_title_display_name" translatable="false">Display name</string>
-        <string name="pref_default_display_name" translatable="false">John Smith</string>
+    <string name="pref_title_display_name" translatable="false">Display name</string>
+    <string name="pref_default_display_name" translatable="false">John Smith</string>
 
 
-        <!-- Example settings for Data & syncBackground -->
-        <string name="pref_header_data_sync" translatable="false">Data &amp; Refresh</string>
+    <!-- Example settings for Data & syncBackground -->
+    <string name="pref_header_data_sync" translatable="false">Data &amp; Refresh</string>
 
-        <string name="pref_title_server_url" translatable="false">Server URL</string>
-        <string name="pref_title_id_prefix" translatable="false">Location Prefix</string>
+    <string name="pref_title_server_url" translatable="false">Server URL</string>
+    <string name="pref_title_id_prefix" translatable="false">Location Prefix</string>
 
-        <!-- Example settings for Notifications -->
-        <string name="pref_header_notifications" translatable="false">Notifications</string>
-        <string name="pref_title_new_message_notifications" translatable="false">New message notifications</string>
-        <string name="pref_title_ringtone" translatable="false">Ringtone</string>
-        <string name="pref_ringtone_silent" translatable="false">Silent</string>
-        <string name="pref_title_vibrate" translatable="false">Vibrate</string>
-        <string name="toast_crash" translatable="false">Application error encountered; report sent</string>
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications" translatable="false">Notifications</string>
+    <string name="pref_title_new_message_notifications" translatable="false">New message notifications</string>
+    <string name="pref_title_ringtone" translatable="false">Ringtone</string>
+    <string name="pref_ringtone_silent" translatable="false">Silent</string>
+    <string name="pref_title_vibrate" translatable="false">Vibrate</string>
+    <string name="toast_crash" translatable="false">Application error encountered; report sent</string>
 
-        <string name="title_activity_setup" translatable="false">Setup</string>
-        <string name="error_login_str" translatable="false">Error Login</string>
-        <string name="enter_url_str" translatable="false">Enter Url</string>
+    <string name="title_activity_setup" translatable="false">Setup</string>
+    <string name="error_login_str" translatable="false">Error Login</string>
+    <string name="enter_url_str" translatable="false">Enter Url</string>
 
-        <string name="title_activity_camera" translatable="false">Camera</string>
-        <string name="title_activity_today_patient" translatable="false">Today\'s Visits</string>
-        <string name="title_activity_additional_documents">Additional Documents</string>
-        <string name="title_activity_video_library" translatable="false">Video Library</string>
-        <string name="visit_summary_patient_details" translatable="false">Visit details</string>
+    <string name="title_activity_camera" translatable="false">Camera</string>
+    <string name="title_activity_today_patient" translatable="false">Today\'s Visits</string>
+    <string name="title_activity_additional_documents">Additional Documents</string>
+    <string name="title_activity_video_library" translatable="false">Video Library</string>
+    <string name="visit_summary_patient_details" translatable="false">Visit details</string>
 
-        <!--Setup Activity-->
-        <string name="setup_internet" translatable="false">A strong Internet connection is required for setup.</string>
-        <string name="generic_manual_entry" translatable="false">Manual Entry</string>
-        <string name="generic_erase_redo" translatable="false">Erase and Re-Do</string>
-        <string name="visit_summary_edit_vitals" translatable="false">You can re-do the vitals from the vitals screen</string>
+    <!--Setup Activity-->
+    <string name="setup_internet" translatable="false">A strong Internet connection is required for setup.</string>
+    <string name="generic_manual_entry" translatable="false">Manual Entry</string>
+    <string name="generic_erase_redo" translatable="false">Erase and Re-Do</string>
+    <string name="visit_summary_edit_vitals" translatable="false">You can re-do the vitals from the vitals screen</string>
 
-        //Camera Permissions
-        <string name="permission_camera_rationale" translatable="false">Camera permission is needed to show the camera preview.</string>
-        <string name="permission_camera_denied" translatable="false">Camera permission was denied. Please consider granting it in order to access the camera!</string>
-        <string name="permission_camera_never_askagain" translatable="false">Camera permission was denied with never ask again.</string>
-        <string name="button_allow" translatable="false">Allow</string>
-        <string name="button_deny" translatable="false">Deny</string>
-        <string name="button_ok" translatable="false">OK</string>
-        <string name="button_cancel" translatable="false">Cancel</string>
-        <string name="picture_taken" translatable="false">Picture taken</string>
-        <string name="switch_flash" translatable="false">Switch flash</string>
-        <string name="switch_camera" translatable="false">Switch camera</string>
-        <string name="flash_auto" translatable="false">Flash auto</string>
-        <string name="flash_off" translatable="false">Flash off</string>
-        <string name="flash_on" translatable="false">Flash on</string>
+    //Camera Permissions
+    <string name="permission_camera_rationale" translatable="false">Camera permission is needed to show the camera preview.</string>
+    <string name="permission_camera_denied" translatable="false">Camera permission was denied. Please consider granting it in order to access the camera!</string>
+    <string name="permission_camera_never_askagain" translatable="false">Camera permission was denied with never ask again.</string>
+    <string name="button_allow" translatable="false">Allow</string>
+    <string name="button_deny" translatable="false">Deny</string>
+    <string name="button_ok" translatable="false">OK</string>
+    <string name="button_cancel" translatable="false">Cancel</string>
+    <string name="picture_taken" translatable="false">Picture taken</string>
+    <string name="switch_flash" translatable="false">Switch flash</string>
+    <string name="switch_camera" translatable="false">Switch camera</string>
+    <string name="flash_auto" translatable="false">Flash auto</string>
+    <string name="flash_off" translatable="false">Flash off</string>
+    <string name="flash_on" translatable="false">Flash on</string>
 
-        //SEND SMS Permissions
-        <string name="permission_sms_rationale" translatable="false">SMS permission is needed to send SMS.</string>
-        <string name="permission_sms_denied" translatable="false">SMS permission was denied. Please consider granting it in order to send sms from the application!</string>
-        <string name="permission_sms_never_askagain" translatable="false">SMS permission was denied with never ask again.</string>
+    //SEND SMS Permissions
+    <string name="permission_sms_rationale" translatable="false">SMS permission is needed to send SMS.</string>
+    <string name="permission_sms_denied" translatable="false">SMS permission was denied. Please consider granting it in order to send sms from the application!</string>
+    <string name="permission_sms_never_askagain" translatable="false">SMS permission was denied with never ask again.</string>
 
-        <string name="button_save" translatable="false">Save</string>
-        <string name="button_delete" translatable="false">Delete</string>
+    <string name="button_save" translatable="false">Save</string>
+    <string name="button_delete" translatable="false">Delete</string>
 
-        //Camera Dialog
-        <string name="camera_dialog_default" translatable="false">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
+    //Camera Dialog
+    <string name="camera_dialog_default" translatable="false">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
 
-        <!--Offline Login Errors-->
-        <string name="offline_credentials_unavailable" translatable="false">Offline Login is not available.</string>
-        <string name="offline_user_does_not_match" translatable="false">User does not match.</string>
-        <string name="offline_authentication_not_possible" translatable="false">Unable to authenticate offline.</string>
-        <string name="admin_authentication_not_possible" translatable="false">Unable to authenticate.</string>
+    <!--Offline Login Errors-->
+    <string name="offline_credentials_unavailable" translatable="false">Offline Login is not available.</string>
+    <string name="offline_user_does_not_match" translatable="false">User does not match.</string>
+    <string name="offline_authentication_not_possible" translatable="false">Unable to authenticate offline.</string>
+    <string name="admin_authentication_not_possible" translatable="false">Unable to authenticate.</string>
 
-        <string name="login_location_select" translatable="false">Select location</string>
-        <string name="prompt_licensekey" translatable="false">License key</string>
-        <string name="setup_use_demo_mindmap" translatable="false">Use demo protocols</string>
-        <string name="setup_download_mindmap" translatable="false">Download protocols</string>
+    <string name="login_location_select" translatable="false">Select location</string>
+    <string name="prompt_licensekey" translatable="false">License key</string>
+    <string name="setup_use_demo_mindmap" translatable="false">Use demo protocols</string>
+    <string name="setup_download_mindmap" translatable="false">Download protocols</string>
 
-        <string name="please_wait_progress" translatable="false">Please Wait</string>
-        <string name="downloading_protocols" translatable="false">Downloading protocols</string>
-        <string name="logging_in" translatable="false">Logging in</string>
-        <string name="error_downloading_protocols" translatable="false">Error Downloading Mind Maps</string>
+    <string name="please_wait_progress" translatable="false">Please Wait</string>
+    <string name="downloading_protocols" translatable="false">Downloading protocols</string>
+    <string name="logging_in" translatable="false">Logging in</string>
+    <string name="error_downloading_protocols" translatable="false">Error Downloading Mind Maps</string>
 
-        //Sync strings
-        <string name="sync_stopped" translatable="false">Stopped</string>
-        <string name="sync_in_progress" translatable="false">In progress</string>
-        <string name="sync_complete" translatable="false">Complete</string>
-        <string name="sync_error" translatable="false">Error : No such status</string>
+    //Sync strings
+    <string name="sync_stopped" translatable="false">Stopped</string>
+    <string name="sync_in_progress" translatable="false">In progress</string>
+    <string name="sync_complete" translatable="false">Complete</string>
+    <string name="sync_error" translatable="false">Error : No such status</string>
 
-        <string name="id_number" translatable="false">ID Number</string>
-        <string name="uploading" translatable="false">Uploading</string>
-        <string name="downloading" translatable="false">Downloading...</string>
+    <string name="id_number" translatable="false">ID Number</string>
+    <string name="uploading" translatable="false">Uploading</string>
+    <string name="downloading" translatable="false">Downloading...</string>
 
-        <string name="visit" translatable="false">Visit</string>
-        <string name="visit_update" translatable="false">Visit Update</string>
-        <string name="patient">Patient</string>
-        <string name="patient_update" translatable="false">Patient Update</string>
-        <string name="patient_images" translatable="false">Patient Profile Image</string>
-        <string name="visit_images" translatable="false">Visit Images</string>
-        <string name="prescription" translatable="false">Prescription</string>
+    <string name="visit" translatable="false">Visit</string>
+    <string name="visit_update" translatable="false">Visit Update</string>
+    <string name="patient">Patient</string>
+    <string name="patient_update" translatable="false">Patient Update</string>
+    <string name="patient_images" translatable="false">Patient Profile Image</string>
+    <string name="visit_images" translatable="false">Visit Images</string>
+    <string name="prescription" translatable="false">Prescription</string>
 
-        <string name="error_no_data" translatable="false">Please download first before attempting to end the visit.</string>
-        <string name="error_phone_number" translatable="false">Phone number can\'t be empty</string>
-        <string name="action_end_visit" translatable="false">End Visit</string>
+    <string name="error_no_data" translatable="false">Please download first before attempting to end the visit.</string>
+    <string name="error_phone_number" translatable="false">Phone number can\'t be empty</string>
+    <string name="action_end_visit" translatable="false">End Visit</string>
 
-        <string name="error_sms" translatable="false">SMS failed, please try again later!</string>
-        <string name="sms_success" translatable="false">SMS Sent!</string>
+    <string name="error_sms" translatable="false">SMS failed, please try again later!</string>
+    <string name="sms_success" translatable="false">SMS Sent!</string>
 
-        <string name="question_update_details" translatable="false">Do you want to update details?</string>
+    <string name="question_update_details" translatable="false">Do you want to update details?</string>
 
-        <string name="backup_completed" translatable="false">Backup Completed!</string>
+    <string name="backup_completed" translatable="false">Backup Completed!</string>
 
-        <string name="hide_text">HIDE</string>
-        <string name="show_text">SHOW</string>
+    <string name="hide_text">HIDE</string>
+    <string name="show_text">SHOW</string>
 
-        <string name="new_patient">New Patient</string>
-        <string name="find_patient">Find Patients</string>
-        <string name="video_library">Video Library</string>
+    <string name="new_patient">New Patient</string>
+    <string name="find_patient">Find Patients</string>
+    <string name="video_library">Video Library</string>
 
-        <string name="error_no_sd" translatable="false">This feature is only available to devices with SD cards.</string>
-        <string name="error_admin_password" translatable="false">Admin Password Wrong</string>
-        <string name="error_no_file" translatable="false">No Files in this directory</string>
-        <string name="error_no_camera" translatable="false">No camera installed.</string>
-        <string name="error_delete" translatable="false">Error in deleting</string>
-        <string name="error_offline_login" translatable="false">Offline Login Unsuccessful</string>
-        <string name="success_offline_login" translatable="false">Offline Login Successful</string>
-        <string name="invalidate_offline_login" translatable="false">Offline Login Invalidated</string>
+    <string name="error_no_sd" translatable="false">This feature is only available to devices with SD cards.</string>
+    <string name="error_admin_password" translatable="false">Admin Password Wrong</string>
+    <string name="error_no_file" translatable="false">No Files in this directory</string>
+    <string name="error_no_camera" translatable="false">No camera installed.</string>
+    <string name="error_delete" translatable="false">Error in deleting</string>
+    <string name="error_offline_login" translatable="false">Offline Login Unsuccessful</string>
+    <string name="success_offline_login" translatable="false">Offline Login Successful</string>
+    <string name="invalidate_offline_login" translatable="false">Offline Login Invalidated</string>
 
-        <string name="patient_upload_error" translatable="false">Patient has not been uploaded</string>
-        <string name="patient_not_registered" translatable="false">Patient not registered</string>
+    <string name="patient_upload_error" translatable="false">Patient has not been uploaded</string>
+    <string name="patient_not_registered" translatable="false">Patient not registered</string>
 
-        <string name="action_sync_all" translatable="false">Refresh Data</string>
+    <string name="action_sync_all" translatable="false">Refresh Data</string>
 
-        <!-- Vitals Screen Error-->
+    <!-- Vitals Screen Error-->
 
-        <string name="weight_error" translatable="false">Weight should be less than %1$s kg</string>
-        <string name="height_error" translatable="false">Height should be between 0 and %1$s cm</string>
-        <string name="spo2_error" translatable="false">SpO2 should be in between %1$s and %2$s</string>
-        <string name="pulse_error" translatable="false">Pulse should be in between %1$s and %2$s</string>
-        <string name="bpsys_error" translatable="false">Systolic pressure should be in between %1$s and %2$s</string>
-        <string name="bpdia_error" translatable="false">Diastolic pressure should be in between %1$s and %2$s</string>
-        <string name="resp_error" translatable="false">Respiratory rate should be in between %1$s and %2$s</string>
-        <string name="temp_error" translatable="false">Temperature should be in between %1$s and %2$s</string>
+    <string name="weight_error" translatable="false">Weight should be less than %1$s kg</string>
+    <string name="height_error" translatable="false">Height should be between 0 and %1$s cm</string>
+    <string name="spo2_error" translatable="false">SpO2 should be in between %1$s and %2$s</string>
+    <string name="pulse_error" translatable="false">Pulse should be in between %1$s and %2$s</string>
+    <string name="bpsys_error" translatable="false">Systolic pressure should be in between %1$s and %2$s</string>
+    <string name="bpdia_error" translatable="false">Diastolic pressure should be in between %1$s and %2$s</string>
+    <string name="resp_error" translatable="false">Respiratory rate should be in between %1$s and %2$s</string>
+    <string name="temp_error" translatable="false">Temperature should be in between %1$s and %2$s</string>
 
-        <string name="not_provided">Not provided</string>
+    <string name="not_provided">Not provided</string>
 
-        <!-- Patient Exit Survey -->
-        <string name="exit_survey_label" translatable="false">How was your experience?</string>
-        <string name="exit_survey_prompt" translatable="false">Enter your comments here</string>
-        <string name="exit_survey_skip" translatable="false">SKIP</string>
-        <string name="exit_survey_submit" translatable="false">Submit</string>
-        <string name="exit_survey_toast">Please select a smiley before submitting</string>
-
-
-        <!--DB Backup-->
-
-        <string name="db_backup_complete" translatable="false">Database Backup Complete!</string>
-        <string name="db_restore_complete" translatable="false">Database Restore Complete!</string>
-
-        <!--Cloud Backup-->
-
-        <string name="cloud_upload_header" translatable="false">Uploading database to cloud</string>
-        <string name="no_network" translatable="false">Internet connection not available</string>
-        <string name="no_data" translatable="false">No data to backup!</string>
-        <string name="local_backup_failed" translatable="false">Local backup not available</string>
-        <string name="local_backup_restore" translatable="false">Restoring from local backup</string>
-
-        <string name="cloud_restore_header" translatable="false">Restore form cloud</string>
-        <string name="restore_data" translatable="false">Restoring data</string>
-        <string name="error_existing_data" translatable="false">Database contains data, cannot restore!</string>
-        <string name="cloud_download_data" translatable="false">Downloading database from cloud</string>
-
-        <string name="force_restore_header" translatable="false">Restoring data from cloud(Forced)</string>
-
-        <string name="database_upload" translatable="false">Database Upload</string>
-        <string name="database_uploading" translatable="false">Database Uploading</string>
-        <string name="database_upload_complete" translatable="false">Database Upload Complete</string>
-        <string name="database_upload_failed" translatable="false">Database Upload Failed</string>
-
-        <string name="db_backup_unavailable" translatable="false">Database backup not available</string>
-        <string name="db_file_write_error" translatable="false">Error writing backup file</string>
-
-        <string name="local_restore_alert_title" translatable="false">Restore backup</string>
-        <string name="local_restore_alert_message" translatable="false">A local backup has been found. Do you want to restore?</string>
+    <!-- Patient Exit Survey -->
+    <string name="exit_survey_label" translatable="false">How was your experience?</string>
+    <string name="exit_survey_prompt" translatable="false">Enter your comments here</string>
+    <string name="exit_survey_skip" translatable="false">SKIP</string>
+    <string name="exit_survey_submit" translatable="false">Submit</string>
+    <string name="exit_survey_toast">Please select a smiley before submitting</string>
 
 
-        <!--Image Download Service-->
-        <string name="image_downloading_service_title" translatable="false">Downloading</string>
-        <string name="image_downloading_service_message" translatable="false">Downloading Image Data</string>
-        <string name="image_downloading_service_complete_title" translatable="false">Image Data Download Complete</string>
-        <string name="image_downloading_service_complete_message" translatable="false">All image files have been downloaded</string>
-        <string name="image_downloading_service_process_message" translatable="false">Downloaded</string>
-        <string name="error_img_unavailable" translatable="false">Image not available</string>
-        <string name="error_img_download_failed" translatable="false">Image Download failed</string>
+    <!--DB Backup-->
 
-        <!--Parse Validation User login-->
+    <string name="db_backup_complete" translatable="false">Database Backup Complete!</string>
+    <string name="db_restore_complete" translatable="false">Database Restore Complete!</string>
 
-        <string name="user_logged_in" translatable="false">Already logged in!</string>
-        <string name="user_logged_in_other_device" translatable="false">Already logged in.Please logout from other device.</string>
-        <string name="user_logged_out" translatable="false">Logged out from server</string>
-        <string name="user_login_check_success" translatable="false">Login Successful!</string>
-        <string name="user_login_error" translatable="false">Another user is logged into this location. Please contact admin</string>
-        <string name="user_server_unreachable" translatable="false">Device Offline. Cannot check server for login verification</string>
+    <!--Cloud Backup-->
 
-        <string name="title_activity_splash_acticity" translatable="false">SplashActicity</string>
-        <string name="title_activity_home" translatable="false">HomeActivity</string>
-        <string name="title_activity_sync" translatable="false">ActivityRefresh</string>
-        <string name="title_activity_privacy_notice" translatable="false">Privacy Notice</string>
-        <string name="title_activity_visit_summary" translatable="false">VisitSummaryActivity</string>
-        <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
-        <string name="title_activity_patient_survey" translatable="false">PatientSurveyActivity</string>
+    <string name="cloud_upload_header" translatable="false">Uploading database to cloud</string>
+    <string name="no_network" translatable="false">Internet connection not available</string>
+    <string name="no_data" translatable="false">No data to backup!</string>
+    <string name="local_backup_failed" translatable="false">Local backup not available</string>
+    <string name="local_backup_restore" translatable="false">Restoring from local backup</string>
 
-        <!--Privacy Notice Activity-->
-        <string name="privacy_toast">Please select an option</string>
-        <string name="temperature_f">Temperature (F)</string>
-        <string name="sync_now">Refresh Now</string>
-        <string name="lastsync">lastsync</string>
-        <string name="enter_password">Enter your password</string>
-        <string name="enter_username">Enter your username</string>
-        <string name="patient_denies">Patient denies</string>
-        <string name="patient_reports">Patient reports</string>
+    <string name="cloud_restore_header" translatable="false">Restore form cloud</string>
+    <string name="restore_data" translatable="false">Restoring data</string>
+    <string name="error_existing_data" translatable="false">Database contains data, cannot restore!</string>
+    <string name="cloud_download_data" translatable="false">Downloading database from cloud</string>
 
-        <string name="associated_symptoms">Associated symptoms</string>
-        <string name="enter_server_url">Enter Server URL</string>
-        <string name="enter_license_key"><b>Enter license key</b></string>
-        <string name="invalid_url">Invalid URL</string>
-        <string name="years">years</string>
-        <string name="months">months</string>
-        <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
-        <string name="patient_name">Patient name</string>
-        <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
-        <string name="occupation">Occupation</string>
-        <string name="economic_status">Economic status</string>
-        <string name="education_level">Education level</string>
-        <string name="caste">Caste</string>
-        <string name="previous_visits">Previous visits</string>
-        <string name="accept">Accept</string>
-        <string name="reject">Reject</string>
-        <string name="next">Next</string>
-        <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
-        <string name="enter_url">Enter URL</string>
-        <string name="choose_a_location_to_login">Choose a location to login</string>
-        <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
-        <string name="please_enter_your_username_and_password">Please enter your username and password</string>
-        <string name="android_id">Android Id:</string>
-        <string name="respiratory_rate">Respiratory Rate</string>
-        <string name="click_to_download_the_images">Click to download the images</string>
-        <string name="doctor">Doctor Details</string>
-        <string name="health_worker">Health worker</string>
-        <string name="priority">Priority</string>
-        <string name="server_url">Server url</string>
-        <string name="sync">Refresh</string>
-        <string name="update_protocols">Update Protocols</string>
-        <string name="end_all_visit">End All Visit</string>
-        <string name="filter_by_creator">Filter by creator</string>
-        <string name="planet_name">Planet Name</string>
-        <string name="ok">OK</string>
-        <string name="cancel">Cancel</string>
-        <string name="unable_to_end">Unable to end</string>
-        <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
-        <string name="active">Active</string>
-        <string name="closed">Closed</string>
+    <string name="force_restore_header" translatable="false">Restoring data from cloud(Forced)</string>
 
-        <string name="syncInProgress">Refresh in progress</string>
-        <string name="please_wait">Please wait...</string>
-        <string name="sync_notif_title">refresh</string>
-        <string name="sync_background_completed">refreshBackground Completed</string>
-        <string name="sync_not_available">Refresh not available</string>
-        <string name="please_connect_to_internet">Please connect to an internet connection!</string>
-        <string name="image_upload">ImageUpload</string>
-        <string name="image_upload_failed">ImageUpload failed</string>
-        <string name="sure_to_exit">Are you sure you want to EXIT?</string>
-        <string name="sure_to_logout">Are you sure you want to Logout?</string>
-        <string name="lastsync_normal">Last Refresh</string>
-        <string name="update_patient_identification">Update Patient</string>
-        <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
-        <string name="error">Error</string>
-        <string name="patient_data_upload">Patient Data Upload</string>
-        <string name="patient_image_download_notifi">Patient Image Download</string>
-        <string name="image_download_complete_notifi">\'s Image Download complete.</string>
-        <string name="no_prior_visits">No prior visits.</string>
-        <string name="end_visit_notif">End visit</string>
-        <string name="visit_ended_notif">Visit ended</string>
-        <string name="this_question_only_one_answer">This question can have only one answer.</string>
-        <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
-        <string name="visit_data_upload">Visit Data Upload</string>
-        <string name="uploading_visit_data_notif">Uploading visit data</string>
-        <string name="uploaded_visit_data_notif">Uploaded visit data</string>
-        <string name="failed_to_upload">failed to Uploaded</string>
-        <string name="upload_completed">Upload Completed</string>
-        <string name="check_your_connectivity">Check your connectivity</string>
-        <string name="download_from_doctor">Download from doctor</string>
-        <string name="prescription_downloaded">Prescription downloaded</string>
-        <string name="downloading_prescription">Downloading prescription</string>
-        <string name="visit_data_failed">Visit Data Failed</string>
-        <string name="patient_data_failed">Patient Data Failed</string>
-        <string name="privacy_notice_title">Privacy Notice</string>
-        <string name="no_data_active_patients">No patient records for this health worker found.</string>
-        <string name="syncing_visitDialog">Refreshing</string>
-        <string name="successfully_synced_notif">Successfully Refreshed</string>
-        <string name="languages">Languages</string>
-        <string name="current_language">Current Language</string>
+    <string name="database_upload" translatable="false">Database Upload</string>
+    <string name="database_uploading" translatable="false">Database Uploading</string>
+    <string name="database_upload_complete" translatable="false">Database Upload Complete</string>
+    <string name="database_upload_failed" translatable="false">Database Upload Failed</string>
 
-        <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
-        <string name="no_protocols_found">No protocols found</string>
-        <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
-        <string name="last_synced">Last Refreshed - </string>
-        <string name="today_visits">Today\'s Visits</string>
-        <string name="active_visits">Active Visits</string>
-        <string name="day">day</string>
-        <string name="hour">hour</string>
-        <string name="minute">minute</string>
-        <string name="s">s</string>
-        <string name="ago">ago</string>
-        <string name="successfully_synced">Successfully refreshed</string>
-        <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
-        <string name="visit_not_uploaded">Visit Not Uploaded</string>
-        <string name="upload_started">Uploading...</string>
-        <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
-        <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
-        <string name="visitID">Visit ID</string>
+    <string name="db_backup_unavailable" translatable="false">Database backup not available</string>
+    <string name="db_file_write_error" translatable="false">Error writing backup file</string>
 
-        <string name="end_visit_msg">Are you sure you want to end the visit?</string>
-        <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
-        <string name="privacy_reject_toast">You cannot register a patient without consent</string>
-        <string name="not_answered">Not answered</string>
-        <string name="new_update_available">New Update Available</string>
-        <string name="update_app_note">New version is available with new features please update app</string>
-        <string name="update">Update</string>
-        <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
-        <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
-
-        <!--New Ayu Related Changes-->
-        <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
-        <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
-        <string name="swipe_up">Swipe to Up for Next</string>
-        <string name="swipe_down">Swipe to Down for previous</string>
-        <string name="have_symptom">Do you have this Symptom?</string>
+    <string name="local_restore_alert_title" translatable="false">Restore backup</string>
+    <string name="local_restore_alert_message" translatable="false">A local backup has been found. Do you want to restore?</string>
 
 
-        <!--New UI changes 2.1-->
-        <string name="personal_information">Personal Information</string>
-        <string name="address_details">Address Details</string>
-        <string name="txt_others">Others</string>
-        <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
-        <string name="whatsapp_helpline">WhatsApp Helpline</string>
-        <string name="Whatsapp_Help_Cardview">Help</string>
-        <string name="skip">skip</string>
-        <string name="start">Start</string>
-        <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
-        <string name="custom_setup">Setup</string>
-        <string name="demo_version">Demo version</string>
-        <string name="sample_text">sample text</string>
-        <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
-        <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
-        <string name="active_defaultTag">Active</string>
-        <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
-        <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-        <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
-        <string name="hello_my_name_is">"Hello, my name is "</string>
-        <string name="i_need_assistance">" and I need some assistance."</string>
-        <string name="economic_values_missing">Economic values are missing</string>
-        <string name="education_values_missing">Education values are missing</string>
-        <string name="intelehealth_a_telemedicine_platform">Ekal Arogya is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-        <string name="intelehealth_name">Ekal Arogya</string>
-        <string name="Ayu_name">Ayu</string>
-        <string name="close_button">Close</string>
-        <string name="active_tag_patientDetail">Active</string>
-        <string name="associated_symptoms_patientDetail">Associated symptoms</string>
-        <string name="device_ID">Device Id: </string>
-        <string name="enter_valid_license_url">Enter valid License Url</string>
-        <string name="please_enter_url_and_key">Please enter URL and Key</string>
-        <string name="please_enter_valid_license_key">Please enter a valid license key</string>
-        <string name="permission_denied">Permission Denied\n</string>
-        <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
-        <string name="current_time"><![CDATA[\"Current time => \"]]></string>
-        <string name="temperature_C">"Temperature(C): "</string>
-        <string name="temperature_F">"Temperature(F): "</string>
-        <string name="no_history_family_found">No history of illness in family provided.</string>
-        <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
-        <string name="dr_registration_no">Registration No: </string>
-        <string name="dr_phone_number">Phone Number: </string>
-        <string name="dr_email">Email: </string>
-        <string name="_visit_summary"> Visit Summary</string>
-        <string name="patient_id_">Patient Id: </string>
-        <string name="patient_name_title">Patient Name: </string>
-        <string name="patient_DOB">Patient DOB: </string>
-        <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
-        <string name="download_protocols">Downloading Protocols</string>
-        <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
-        <string name="days">days</string>
-        <string name="contact">Contact</string>
-        <string name="has_a_new_prescription">has a new prescription</string>
-        <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
-        <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
-        <string name="share">Share</string>
-        <string name="please_enter_mobile_number">Please enter a mobile number</string>
-        <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-        <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
-        <string name="enter_10_digits">Enter 10 digits</string>
-        <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
-        <string name="view_print">View/Print</string>
-        <string name="refresh">Refresh</string>
-        <string name="family_member">Family Member</string>
-        <string name="no_family_member_registered">No Family Member Registered</string>
-        <string name="document_">"Document - "</string>
-        <string name="gender">Gender</string>
-        <string name="are_you_head_of_the_family">Are you Head of the Family?*</string>
-        <string name="what_is_your_occupation">What is your occupation?*</string>
-        <string name="do_you_have_a_bank_account">Do you have a bank account?*</string>
-        <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?*</string>
-        <string name="phone_ownership">Phone Ownership*</string>
-        <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?*</string>
-        <string name="total_number_of_members_in_the_household">Total number of members in the household*</string>
-        <string name="enter_number">Enter Number</string>
-        <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now*</string>
-        <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?*</string>
-        <string name="what_do_you_do_to_make_drinking_water_safer">What do you usually do to the water to make it safer to drink?*</string>
-        <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there, get water, and come back in one trip?*</string>
-        <string name="declined">Declined to answer</string>
-        <string name="enter_time">Enter Time</string>
-        <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">In the past two weeks, was the water from this source not available for at least one full day?*</string>
-        <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?*</string>
-        <string name="select_the_structure_of_house">Select the structure of house*</string>
-        <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?*</string>
-        <string name="enter_answer">Enter Answer</string>
-        <string name="enter_occupation">Enter Occupation</string>
-        <string name="select">Select</string>
-        <string name="Minute">Minutes</string>
-        <string name="Hours">Hours</string>
-        <string name="Days">Days</string>
-        <string name="Weeks">Weeks</string>
-        <string name="Months">Months</string>
-        <string name="Years">Years</string>
-        <string name="image_saved">Image saved successfully!</string>
-        <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>
-        <string name="per_Hour">per Hour</string>
-        <string name="per_Day">per Day</string>
-        <string name="per_Week">Per Week</string>
-        <string name="per_Month">per Month</string>
-        <string name="per_Year">per Year</string>
+    <!--Image Download Service-->
+    <string name="image_downloading_service_title" translatable="false">Downloading</string>
+    <string name="image_downloading_service_message" translatable="false">Downloading Image Data</string>
+    <string name="image_downloading_service_complete_title" translatable="false">Image Data Download Complete</string>
+    <string name="image_downloading_service_complete_message" translatable="false">All image files have been downloaded</string>
+    <string name="image_downloading_service_process_message" translatable="false">Downloaded</string>
+    <string name="error_img_unavailable" translatable="false">Image not available</string>
+    <string name="error_img_download_failed" translatable="false">Image Download failed</string>
+
+    <!--Parse Validation User login-->
+
+    <string name="user_logged_in" translatable="false">Already logged in!</string>
+    <string name="user_logged_in_other_device" translatable="false">Already logged in.Please logout from other device.</string>
+    <string name="user_logged_out" translatable="false">Logged out from server</string>
+    <string name="user_login_check_success" translatable="false">Login Successful!</string>
+    <string name="user_login_error" translatable="false">Another user is logged into this location. Please contact admin</string>
+    <string name="user_server_unreachable" translatable="false">Device Offline. Cannot check server for login verification</string>
+
+    <string name="title_activity_splash_acticity" translatable="false">SplashActicity</string>
+    <string name="title_activity_home" translatable="false">HomeActivity</string>
+    <string name="title_activity_sync" translatable="false">ActivityRefresh</string>
+    <string name="title_activity_privacy_notice" translatable="false">Privacy Notice</string>
+    <string name="title_activity_visit_summary" translatable="false">VisitSummaryActivity</string>
+    <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
+    <string name="title_activity_patient_survey" translatable="false">PatientSurveyActivity</string>
+
+    <!--Privacy Notice Activity-->
+    <string name="privacy_toast">Please select an option</string>
+    <string name="temperature_f">Temperature (F)</string>
+    <string name="sync_now">Refresh Now</string>
+    <string name="lastsync">lastsync</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="patient_denies">Patient denies</string>
+    <string name="patient_reports">Patient reports</string>
+
+    <string name="associated_symptoms">Associated symptoms</string>
+    <string name="enter_server_url">Enter Server URL</string>
+    <string name="enter_license_key"><b>Enter license key</b></string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="years">years</string>
+    <string name="months">months</string>
+    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
+    <string name="patient_name">Patient name</string>
+    <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
+    <string name="occupation">Occupation</string>
+    <string name="economic_status">Economic status</string>
+    <string name="education_level">Education level</string>
+    <string name="caste">Caste</string>
+    <string name="previous_visits">Previous visits</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="next">Next</string>
+    <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
+    <string name="enter_url">Enter URL</string>
+    <string name="choose_a_location_to_login">Choose a location to login</string>
+    <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
+    <string name="please_enter_your_username_and_password">Please enter your username and password</string>
+    <string name="android_id">Android Id:</string>
+    <string name="respiratory_rate">Respiratory Rate</string>
+    <string name="click_to_download_the_images">Click to download the images</string>
+    <string name="doctor">Doctor Details</string>
+    <string name="health_worker">Health worker</string>
+    <string name="priority">Priority</string>
+    <string name="server_url">Server url</string>
+    <string name="sync">Refresh</string>
+    <string name="update_protocols">Update Protocols</string>
+    <string name="end_all_visit">End All Visit</string>
+    <string name="filter_by_creator">Filter by creator</string>
+    <string name="planet_name">Planet Name</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="unable_to_end">Unable to end</string>
+    <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
+    <string name="active">Active</string>
+    <string name="closed">Closed</string>
+
+    <string name="syncInProgress">Refresh in progress</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="sync_notif_title">refresh</string>
+    <string name="sync_background_completed">refreshBackground Completed</string>
+    <string name="sync_not_available">Refresh not available</string>
+    <string name="please_connect_to_internet">Please connect to an internet connection!</string>
+    <string name="image_upload">ImageUpload</string>
+    <string name="image_upload_failed">ImageUpload failed</string>
+    <string name="sure_to_exit">Are you sure you want to EXIT?</string>
+    <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="lastsync_normal">Last Refresh</string>
+    <string name="update_patient_identification">Update Patient</string>
+    <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
+    <string name="error">Error</string>
+    <string name="patient_data_upload">Patient Data Upload</string>
+    <string name="patient_image_download_notifi">Patient Image Download</string>
+    <string name="image_download_complete_notifi">\'s Image Download complete.</string>
+    <string name="no_prior_visits">No prior visits.</string>
+    <string name="end_visit_notif">End visit</string>
+    <string name="visit_ended_notif">Visit ended</string>
+    <string name="this_question_only_one_answer">This question can have only one answer.</string>
+    <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
+    <string name="visit_data_upload">Visit Data Upload</string>
+    <string name="uploading_visit_data_notif">Uploading visit data</string>
+    <string name="uploaded_visit_data_notif">Uploaded visit data</string>
+    <string name="failed_to_upload">failed to Uploaded</string>
+    <string name="upload_completed">Upload Completed</string>
+    <string name="check_your_connectivity">Check your connectivity</string>
+    <string name="download_from_doctor">Download from doctor</string>
+    <string name="prescription_downloaded">Prescription downloaded</string>
+    <string name="downloading_prescription">Downloading prescription</string>
+    <string name="visit_data_failed">Visit Data Failed</string>
+    <string name="patient_data_failed">Patient Data Failed</string>
+    <string name="privacy_notice_title">Privacy Notice</string>
+    <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="syncing_visitDialog">Refreshing</string>
+    <string name="successfully_synced_notif">Successfully Refreshed</string>
+    <string name="languages">Languages</string>
+    <string name="current_language">Current Language</string>
+
+    <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
+    <string name="no_protocols_found">No protocols found</string>
+    <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
+    <string name="last_synced">Last Refreshed - </string>
+    <string name="today_visits">Today\'s Visits</string>
+    <string name="active_visits">Active Visits</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="s">s</string>
+    <string name="ago">ago</string>
+    <string name="successfully_synced">Successfully refreshed</string>
+    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
+    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="upload_started">Uploading...</string>
+    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
+    <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
+    <string name="visitID">Visit ID</string>
+
+    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
+    <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
+    <string name="privacy_reject_toast">You cannot register a patient without consent</string>
+    <string name="not_answered">Not answered</string>
+    <string name="new_update_available">New Update Available</string>
+    <string name="update_app_note">New version is available with new features please update app</string>
+    <string name="update">Update</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+
+    <!--New Ayu Related Changes-->
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
+    <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
+    <string name="swipe_up">Swipe to Up for Next</string>
+    <string name="swipe_down">Swipe to Down for previous</string>
+    <string name="have_symptom">Do you have this Symptom?</string>
+
+
+    <!--New UI changes 2.1-->
+    <string name="personal_information">Personal Information</string>
+    <string name="address_details">Address Details</string>
+    <string name="txt_others">Others</string>
+    <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
+    <string name="whatsapp_helpline">WhatsApp Helpline</string>
+    <string name="Whatsapp_Help_Cardview">Help</string>
+    <string name="skip">skip</string>
+    <string name="start">Start</string>
+    <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
+    <string name="custom_setup">Setup</string>
+    <string name="demo_version">Demo version</string>
+    <string name="sample_text">sample text</string>
+    <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
+    <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
+    <string name="active_defaultTag">Active</string>
+    <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="hello_my_name_is">"Hello, my name is "</string>
+    <string name="i_need_assistance">" and I need some assistance."</string>
+    <string name="economic_values_missing">Economic values are missing</string>
+    <string name="education_values_missing">Education values are missing</string>
+    <string name="intelehealth_a_telemedicine_platform">Ekal Arogya is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Ekal Arogya</string>
+    <string name="Ayu_name">Ayu</string>
+    <string name="close_button">Close</string>
+    <string name="active_tag_patientDetail">Active</string>
+    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
+    <string name="device_ID">Device Id: </string>
+    <string name="enter_valid_license_url">Enter valid License Url</string>
+    <string name="please_enter_url_and_key">Please enter URL and Key</string>
+    <string name="please_enter_valid_license_key">Please enter a valid license key</string>
+    <string name="permission_denied">Permission Denied\n</string>
+    <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
+    <string name="current_time"><![CDATA[\"Current time => \"]]></string>
+    <string name="temperature_C">"Temperature(C): "</string>
+    <string name="temperature_F">"Temperature(F): "</string>
+    <string name="no_history_family_found">No history of illness in family provided.</string>
+    <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
+    <string name="dr_registration_no">Registration No: </string>
+    <string name="dr_phone_number">Phone Number: </string>
+    <string name="dr_email">Email: </string>
+    <string name="_visit_summary"> Visit Summary</string>
+    <string name="patient_id_">Patient Id: </string>
+    <string name="patient_name_title">Patient Name: </string>
+    <string name="patient_DOB">Patient DOB: </string>
+    <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
+    <string name="download_protocols">Downloading Protocols</string>
+    <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
+    <string name="days">days</string>
+    <string name="contact">Contact</string>
+    <string name="has_a_new_prescription">has a new prescription</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
+    <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
+    <string name="share">Share</string>
+    <string name="please_enter_mobile_number">Please enter a mobile number</string>
+    <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
+    <string name="view_print">View/Print</string>
+    <string name="refresh">Refresh</string>
+    <string name="family_member">Family Member</string>
+    <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="document_">"Document - "</string>
+    <string name="gender">Gender</string>
+    <string name="are_you_head_of_the_family">Are you Head of the Family?*</string>
+    <string name="what_is_your_occupation">What is your occupation?*</string>
+    <string name="do_you_have_a_bank_account">Do you have a bank account?*</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?*</string>
+    <string name="phone_ownership">Phone Ownership*</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?*</string>
+    <string name="total_number_of_members_in_the_household">Total number of members in the household*</string>
+    <string name="enter_number">Enter Number</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now*</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">What do you usually do to the water to make it safer to drink?*</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there, get water, and come back in one trip?*</string>
+    <string name="declined">Declined to answer</string>
+    <string name="enter_time">Enter Time</string>
+    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">In the past two weeks, was the water from this source not available for at least one full day?*</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?*</string>
+    <string name="select_the_structure_of_house">Select the structure of house*</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?*</string>
+    <string name="enter_answer">Enter Answer</string>
+    <string name="enter_occupation">Enter Occupation</string>
+    <string name="select">Select</string>
+    <string name="Minute">Minutes</string>
+    <string name="Hours">Hours</string>
+    <string name="Days">Days</string>
+    <string name="Weeks">Weeks</string>
+    <string name="Months">Months</string>
+    <string name="Years">Years</string>
+    <string name="image_saved">Image saved successfully!</string>
+    <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>
+    <string name="per_Hour">per Hour</string>
+    <string name="per_Day">per Day</string>
+    <string name="per_Week">Per Week</string>
+    <string name="per_Month">per Month</string>
+    <string name="per_Year">per Year</string>
 
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
@@ -1006,7 +1005,7 @@
 
     <string name="what_is_your_marital_status">What is your marital status?*</string>
     <string name="currently_married">Currently Married</string>
-<!--    <string name="married_gauna_not_performed">Married</string>-->
+    <!--    <string name="married_gauna_not_performed">Married</string>-->
     <string name="married">Married</string>
     <string name="unmarried">Unmarried</string>
     <string name="widowed">Widowed</string>
@@ -1155,9 +1154,11 @@
     <string name="wash_before_cooking">Wash before cooking</string>
     <string name="wash_before_after_eating">Wash before and after eating</string>
     <string name="is_the_source_drinking_water_within_30_minutes">Is the source of drinking water within 30 minutes of round trip from the household?</string>
-        <string name="please_upload_first_before_attempting_to_download_the_prescription">Please upload first before attempting to download the prescription.</string>
-        <string name="prescription_is_already_downloaded">Prescription is already downloaded.</string>
-        <string name="fetching_details_please_wait">Fetching details. Please wait...</string>
-        <string name="prescription_is_not_yet_provided_by_doctor">Prescription is not yet provided by doctor.</string>
-        <string name="download_prescription_first">Download prescription first.</string>
-    </resources>
+    <string name="please_upload_first_before_attempting_to_download_the_prescription">Please upload first before attempting to download the prescription.</string>
+    <string name="prescription_is_already_downloaded">Prescription is already downloaded.</string>
+    <string name="fetching_details_please_wait">Fetching details. Please wait...</string>
+    <string name="prescription_is_not_yet_provided_by_doctor">Prescription is not yet provided by doctor.</string>
+    <string name="download_prescription_first">Download prescription first.</string>
+    <string name="location_setup">Location Setup %1$s</string>
+    <string name="app_version_string">User: %1$s, App Version: %2$s</string>
+</resources>
