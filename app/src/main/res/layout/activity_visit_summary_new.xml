@@ -178,55 +178,51 @@
                                 android:layout_toEndOf="@+id/profile"
                                 android:orientation="vertical">
 
-                                <LinearLayout
+                                <RelativeLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:weightSum="3"
-                                    android:orientation="horizontal">
+                                    android:layout_height="wrap_content">
 
                                     <TextView
                                         android:id="@+id/textView_name_value"
-                                        android:layout_width="0dp"
-                                        android:layout_weight="2"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/lato_bold"
+                                        android:maxWidth="120dp"
                                         android:maxLines="1"
-                                        tools:text="Srinivas Bandi Srinivas BB Bandi Srinivas B Bandi BBB Srinivas"
                                         android:ellipsize="end"
                                         android:gravity="center_vertical"
+                                        tools:text="Srinivas Bandi Srinivas BB Bandi Srinivas B Bandi BBB Srinivas"
                                         android:text="@string/fu_visit_name"
                                         android:textAppearance="@style/label_16sp"
                                         android:textColor="@null"
                                         android:textSize="@dimen/txtsize_patdetail_16sp"
                                         android:textStyle="bold" />
 
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_weight="1"
-                                        android:layout_height="wrap_content">
                                     <TextView
                                         android:id="@+id/textView_gender_value"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="@dimen/fu_male_margin_start"
                                         android:layout_toEndOf="@+id/textView_name_value"
-                                        android:gravity="center_vertical"
+                                        android:layout_centerVertical="true"
                                         android:text="@string/misc_txt"
+
                                         android:textAppearance="@style/label_misc_txt_14sp"
                                         android:textColor="@null"
-                                        android:textSize="@dimen/txtsize_patdetail_14sp" />
+                                        />
 
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
+                                        android:layout_toEndOf="@id/textView_gender_value"
                                         android:layout_marginStart="@dimen/fu_male_margin_start"
                                         android:onClick="editPatientInfo"
                                         android:padding="@dimen/margin_4"
                                         android:src="@drawable/ic_icno8_edit" />
-                                    </LinearLayout>
 
-                                </LinearLayout>
+
+                                </RelativeLayout>
 
                                 <!-- Caption -->
                                 <TextView
