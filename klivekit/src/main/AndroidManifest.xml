@@ -6,8 +6,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
+<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
 
     <uses-permission
         android:name="android.permission.BLUETOOTH"
@@ -22,17 +21,15 @@
         <activity
             android:name=".ui.activity.VideoCallActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:showOnLockScreen="true"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".chat.ui.activity.ChatActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
