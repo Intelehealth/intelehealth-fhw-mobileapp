@@ -51,7 +51,6 @@ public class DateRangeAchievementsFragment extends Fragment {
     private TextView tvRangeVisitsEnded;
     private TextView tvAveragePatientSatisfactionScore;
     private TextView tvTotalTimeSpentInRange;
-
     private String startDate;
     private String endDate;
 
@@ -105,15 +104,19 @@ public class DateRangeAchievementsFragment extends Fragment {
         tvAveragePatientSatisfactionScore = view.findViewById(R.id.tv_average_patient_satisfaction_score);
         tvTotalTimeSpentInRange = view.findViewById(R.id.tv_time_spent_in_range);
 
-        tvStartDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy", sessionManager.getAppLanguage()));
+        tvStartDate.setText(DateAndTimeUtils.getYesterdaysDateInRequiredFormat("dd MMM, yyyy", sessionManager.getAppLanguage()));
         tvEndDate.setText(DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMM, yyyy", sessionManager.getAppLanguage()));
 
-        selectStartDate.setOnClickListener(v -> selectDate(tvStartDate));
-        selectEndDate.setOnClickListener(v -> selectDate(tvEndDate));
+        selectStartDate.setOnClickListener(v -> selectDate(tvStartDate, "startDate"));
+        selectEndDate.setOnClickListener(v -> selectDate(tvEndDate, "endDate"));
         fetchAndSetUIData();
     }
 
-    private void selectDate(TextView textView) {
+    private void selectDate(TextView textView, String value) {
+        String maxDateforStart = tvEndDate.getText().toString();
+        String minDateforEnd = tvStartDate.getText().toString();
+        Calendar maxDateforStartCal = DateAndTimeUtils.convertStringToCalendarObject(maxDateforStart, "dd MMM, yyyy", sessionManager.getAppLanguage());
+        Calendar minDateforEndCal = DateAndTimeUtils.convertStringToCalendarObject(minDateforEnd, "dd MMM, yyyy", sessionManager.getAppLanguage());
         String date = textView.getText().toString();
         Calendar calendar = DateAndTimeUtils.convertStringToCalendarObject(date, "dd MMM, yyyy", sessionManager.getAppLanguage());
 
@@ -129,7 +132,12 @@ public class DateRangeAchievementsFragment extends Fragment {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
-        datePicker.setMaxDate(System.currentTimeMillis());
+        if(value.equalsIgnoreCase("startDate"))
+            datePicker.setMaxDate(maxDateforStartCal.getTimeInMillis());
+        else if(value.equalsIgnoreCase("endDate")) {
+            datePicker.setMaxDate(System.currentTimeMillis());
+            datePicker.setMinDate(minDateforEndCal.getTimeInMillis());
+        }
         datePickerDialog.show();
     }
 

@@ -871,9 +871,17 @@ public class DateAndTimeUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return simpleDateFormat.format(new Date());
     }
+
     public static String getTodaysDateInRequiredFormat(String format, String localeCode) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
         return simpleDateFormat.format(new Date());
+    }
+
+    public static String getYesterdaysDateInRequiredFormat(String format, String localeCode) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return simpleDateFormat.format(cal.getTime());
     }
 
     private static Date convertStringToDateObject(String date, String format, String localeCode) {
@@ -892,13 +900,22 @@ public class DateAndTimeUtils {
     public static Calendar convertStringToCalendarObject(String date, String format, String localeCode) {
         Calendar calendar = Calendar.getInstance();
         Date parsedDate = convertStringToDateObject(date, format, localeCode);
-
         if (parsedDate != null) {
             calendar.setTime(parsedDate);
         }
-
         return calendar;
     }
+
+    public static Calendar convertStringToCalendarObjectMinusOne(String date, String format, String localeCode) {
+        Calendar calendar = Calendar.getInstance();
+        Date parsedDate = convertStringToDateObject(date, format, localeCode);
+        if (parsedDate != null) {
+            calendar.setTime(parsedDate);
+            calendar.add(Calendar.DATE, -1);
+        }
+        return calendar;
+    }
+
 
     // method returns the 12 A.M. time of the current day in milliseconds
     public static long getTodaysDateInMilliseconds() {
