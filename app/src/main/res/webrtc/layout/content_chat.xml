@@ -69,6 +69,7 @@
             android:imeActionLabel="Send"
             android:imeOptions="actionSend"
             android:inputType="text"
+            android:maxLength="1000"
             android:padding="@dimen/std_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnSendMessage"
