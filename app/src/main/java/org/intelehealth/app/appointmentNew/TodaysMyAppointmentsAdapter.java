@@ -142,7 +142,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 }
                             }
                         } else {
-                            timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minute);
+                            timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
                          //   holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
