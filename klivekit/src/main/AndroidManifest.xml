@@ -34,15 +34,15 @@
         <activity
             android:name=".call.ui.activity.VideoCallActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".chat.ui.activity.ChatActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
     </application>

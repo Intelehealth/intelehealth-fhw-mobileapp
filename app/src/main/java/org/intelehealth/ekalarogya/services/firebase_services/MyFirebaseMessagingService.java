@@ -53,6 +53,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //Log.d(TAG, "Notification Message Title: " + remoteMessage.getNotification().getTitle());
         Log.d(TAG, "Notification Message getNotification: " + remoteMessage.getNotification());
         Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
+        //Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+        Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
         //  {nurseId=28cea4ab-3188-434a-82f0-055133090a38, doctorName=doctor1, roomId=b60263f2-5716-4047-aaf5-7c13199b7f0c}
 
         if (remoteMessage.getData().containsKey("actionType")) {
