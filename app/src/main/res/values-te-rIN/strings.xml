@@ -771,5 +771,6 @@
     <string name="please_contact_your_system_administrator_to_change_these_profile_details">Please contact your system administrator to change these profile details</string>
     <string name="old_password_and_new_password_cannot_be_same">Old password and new password cannot be same.</string>
     <string name="this_feature_is_not_available_in_offline_mode">This feature is not available in offline mode.</string>
+    <string name="hours">hours</string>
 
 </resources>

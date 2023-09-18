@@ -123,6 +123,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 if (minutes > 0) {
                     if (minutes >= 60) {
                         long hours = minutes / 60;
+                        long mins = minutes % 60;
                         if (hours > 12) {
 
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
@@ -135,12 +136,19 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                                 holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                             }
                         } else {
-                            timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at)+" " + appointmentInfoModel.getSlotTime();
-                            //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
-                            holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-
+                            if (hours > 1) {
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                        mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                        context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                            }
+                            else {
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
+                                        mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                        context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                            }
 
                             holder.tvDate.setText(timeText);
+                            holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                             }
