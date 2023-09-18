@@ -104,6 +104,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -143,6 +144,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -323,6 +325,8 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
     private View hl_2;
     private boolean priorityVisit = false;
     private ObjectAnimator syncAnimator;
+    TooltipWindow tipWindow;
+
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -428,6 +432,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         fetchingIntent();
         setViewsData();
         expandableCardVisibilityHandling();
+        tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
 
     }
 
@@ -2198,7 +2203,10 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
         priority_hint = findViewById(R.id.priority_hint);
 
         priority_hint.setOnClickListener(v -> {
-            Toast.makeText(context, R.string.priority_hint, Toast.LENGTH_SHORT).show();
+            if (!tipWindow.isTooltipShown())
+                tipWindow.showToolTip(priority_hint, getResources().getString(R.string.priority_hint));
+
+            //  Toast.makeText(context, R.string.priority_hint, Toast.LENGTH_SHORT).show();
 //            Snackbar.make(parentLayout, R.string.priority_hint, Snackbar.LENGTH_SHORT).show();
         });
 
