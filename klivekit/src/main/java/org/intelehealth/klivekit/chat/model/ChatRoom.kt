@@ -15,8 +15,8 @@ import kotlinx.parcelize.Parcelize
 data class ChatRoom(
     @PrimaryKey
     var roomId: String,
-    var roomName: String,
-    var roomPicture: String,
-    var senderId: String,
-    var receiverId: String,
+    var roomName: String? = null,
+    var roomPicture: String? = null,
+    var senderId: String? = null,
+    var receiverId: String? = null,
 ) : Parcelable

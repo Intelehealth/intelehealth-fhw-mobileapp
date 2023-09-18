@@ -1,9 +1,8 @@
 package org.intelehealth.klivekit.di
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.room.Room
-import com.codeglo.coyamore.api.WebRtcDatabase
+import org.intelehealth.klivekit.room.WebRtcDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +30,5 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideChatRoom(appDatabase: WebRtcDatabase) = appDatabase.chatRoom()
+    fun provideChatRoom(appDatabase: WebRtcDatabase) = appDatabase.chatRoomDao()
 }

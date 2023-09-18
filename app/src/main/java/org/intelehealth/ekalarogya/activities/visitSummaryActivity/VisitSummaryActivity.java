@@ -616,7 +616,7 @@ public class VisitSummaryActivity extends BaseActivity {
 //                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
 //                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
                         RtcArgs args = new RtcArgs();
-                        args.setDoctorUuid("");
+                        args.setDoctorId("");
                         args.setPatientId(patientUuid);
                         args.setPatientName(patientName);
                         args.setVisitId(visitUUID);

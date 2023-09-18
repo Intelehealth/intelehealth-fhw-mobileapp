@@ -1014,7 +1014,7 @@ public class HomeActivity extends BaseActivity {
                     args.setPatientId(patientUUid);
                     args.setVisitId(visitUUID);
                     args.setNurseId(fromUUId);
-                    args.setDoctorUuid(toUUId);
+                    args.setDoctorId(toUUId);
                     EkalChatActivity.startChatActivity(this, args);
 
                 } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {

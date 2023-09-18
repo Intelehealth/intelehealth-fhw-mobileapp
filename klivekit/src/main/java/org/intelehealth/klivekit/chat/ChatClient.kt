@@ -12,10 +12,9 @@ import javax.inject.Singleton
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Singleton
-class ChatClient @Inject constructor(
-    private val chatSocket: ChatSocket,
-    private val messageHandler: MessageHandler
+class ChatClient(
+    private val chatSocket: ChatSocket = ChatSocket(),
+    private val messageHandler: MessageHandler = MessageHandler()
 ) : ConnectionListener {
 
     init {

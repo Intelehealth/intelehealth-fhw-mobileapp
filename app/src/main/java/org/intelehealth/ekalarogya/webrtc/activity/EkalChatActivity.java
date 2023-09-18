@@ -37,7 +37,7 @@ public class EkalChatActivity extends ChatActivity {
         chatIntent.putExtra("patientUuid", args.getPatientId());
         chatIntent.putExtra("fromUuid", args.getNurseId()); // provider uuid
         chatIntent.putExtra("isForVideo", false);
-        chatIntent.putExtra("toUuid", args.getDoctorUuid());
+        chatIntent.putExtra("toUuid", args.getDoctorId());
         return chatIntent;
     }
 

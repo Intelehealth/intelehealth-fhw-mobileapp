@@ -1,4 +1,4 @@
-package com.codeglo.coyamore.api
+package org.intelehealth.klivekit.room
 
 import android.content.Context
 import androidx.room.Database
@@ -7,12 +7,14 @@ import androidx.room.RoomDatabase
 import org.intelehealth.klivekit.room.dao.ChatDao
 import org.intelehealth.klivekit.chat.model.ChatMessage
 import org.intelehealth.klivekit.chat.model.ChatRoom
+import org.intelehealth.klivekit.room.dao.ChatRoomDao
+import org.webrtc.EglBase10
 
-@Database(entities = [ChatMessage::class], version = 1)
+@Database(entities = [ChatMessage::class, ChatRoom::class], version = 1, exportSchema = true)
 abstract class WebRtcDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
 
-    abstract fun chatRoom(): ChatRoom
+    abstract fun chatRoomDao(): ChatRoomDao
 
     companion object {
 

@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.chat.socket
 
 import com.codeglo.coyamore.agora.extensions.fromJson
+import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -27,8 +28,9 @@ import javax.inject.Singleton
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Singleton
-class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
+class ChatSocket(
+    private val socketManager: SocketManager = SocketManager.instance
+) {
     var messageListener: MessageListener? = null
     var conversationListener: ConversationListener? = null
     var connectionListener: ConnectionListener? = null
@@ -44,6 +46,7 @@ class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
     fun isConnected() = socketManager.isConnected()
 
     private fun emitter(event: String) = Emitter.Listener {
+        Timber.d { "ChatSocket =>${it}" }
         when (event) {
             EVENT_UPDATE_MESSAGE -> onMessageReceived(it)
             EVENT_IS_READ -> onMessageRead(it)
@@ -77,6 +80,7 @@ class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
     }
 
     private fun onMessageRead(it: Array<Any>?) {
+        Timber.d { "onMessageRead=>${gson.toJson(it)}" }
         it?.let {
             val json = JSONArray(it[0]).getJSONArray(0).getJSONObject(0).toString()
             val message = gson.fromJson<ChatMessage>(json)
@@ -85,6 +89,7 @@ class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
     }
 
     private fun onMessageDeliver(it: Array<Any>?) {
+        Timber.d { "onMessageDeliver=>${gson.toJson(it)}" }
         it?.let {
             val json = JSONArray(it[0]).getJSONArray(0).getJSONObject(0).toString()
             val message = gson.fromJson<ChatMessage>(json)
@@ -103,6 +108,7 @@ class ChatSocket @Inject constructor(private val socketManager: SocketManager) {
     }
 
     private fun onMessageReceived(it: Array<Any>?) {
+        Timber.d { "onMessageReceived=>${gson.toJson(it)}" }
         it?.let {
             val jsonObject = JSONArray(gson.toJson(it[0]))
                 .getJSONObject(0)

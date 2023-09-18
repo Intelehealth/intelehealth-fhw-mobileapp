@@ -10,7 +10,8 @@ import org.intelehealth.klivekit.databinding.RowMsgItemSenderBinding
  **/
 class SenderViewHolder(val binding: RowMsgItemSenderBinding) : BaseViewHolder(binding.root) {
 
-    fun bind(chatMessage: ChatMessage){
+    fun bind(chatMessage: ChatMessage) {
         binding.chatMessage = chatMessage
+        binding.textTv.tag = adapterPosition
     }
 }

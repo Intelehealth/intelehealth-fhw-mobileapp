@@ -17,13 +17,13 @@ import org.intelehealth.klivekit.chat.model.ChatRoom
 @Dao
 interface ChatRoomDao {
     @Query("SELECT * FROM tbl_chat_room")
-    fun getChatRooms(): Flow<List<ChatMessage>>
+    fun getChatRooms(): Flow<List<ChatRoom>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(chatRooms: List<ChatRoom>)
+    suspend fun insertAll(chatRooms: List<ChatRoom>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addChatRoom(newRoom: ChatRoom)
+    suspend fun addChatRoom(newRoom: ChatRoom): Long
 
     @Query("DELETE FROM tbl_chat_room")
     suspend fun deleteAll()

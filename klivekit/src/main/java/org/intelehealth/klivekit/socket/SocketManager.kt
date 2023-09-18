@@ -19,8 +19,7 @@ import javax.inject.Singleton
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@Singleton
-open class SocketManager @Inject constructor(){
+open class SocketManager {
     var socket: Socket? = null
     var emitterListener: ((event: String) -> Emitter.Listener)? = null
     var activeUsers = HashMap<String, ActiveUser>()

@@ -56,7 +56,8 @@
                 android:background="@drawable/chat_left_bg"
                 android:padding="8dip"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_doctor_ioc" />
+                android:src="@drawable/img_doctor_ioc"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rl_loader"

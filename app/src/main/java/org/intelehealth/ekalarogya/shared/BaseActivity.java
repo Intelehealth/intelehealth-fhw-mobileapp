@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.intelehealth.ekalarogya.database.dao.ProviderDAO;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
+import org.intelehealth.ekalarogya.webrtc.activity.EkalChatMessageActivity;
 import org.intelehealth.ekalarogya.webrtc.notification.AppNotification;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
@@ -36,14 +37,14 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
         args.setPatientId(chatMessage.getPatientId());
         args.setVisitId(chatMessage.getVisitId());
         args.setNurseId(chatMessage.getToUser());
-        args.setDoctorUuid(chatMessage.getFromUser());
+        args.setDoctorId(chatMessage.getFromUser());
         Log.e(TAG, "showNotification: " + args.toJson());
         try {
-            String title = new ProviderDAO().getProviderName(args.getDoctorUuid());
+            String title = new ProviderDAO().getProviderName(args.getDoctorId());
             new AppNotification.Builder(this)
                     .title(title)
                     .body(chatMessage.getMessage())
-                    .pendingIntent(EkalChatActivity.getPendingIntent(this, args))
+                    .pendingIntent(EkalChatMessageActivity.getPendingIntent(this, args))
                     .send();
         } catch (DAOException e) {
             throw new RuntimeException(e);

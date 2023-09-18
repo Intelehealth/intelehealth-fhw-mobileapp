@@ -19,9 +19,8 @@ import javax.inject.Inject
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class MessageHandler @Inject constructor(
-    private val chatRepository: ChatRepository,
-    private val preferenceHelper: PreferenceHelper
+class MessageHandler(
+    private val chatRepository: ChatRepository = ChatRepository()
 ) : MessageListener, ConversationListener {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)

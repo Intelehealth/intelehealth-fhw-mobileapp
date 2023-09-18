@@ -898,7 +898,7 @@ public class ChatActivity extends AppCompatActivity {
         args.setPatientId(mPatientUUid);
         args.setPatientName(mPatientName);
         args.setPatientPersonUuid(mPatientUUid);
-        args.setDoctorUuid(mToUUId);
+        args.setDoctorId(mToUUId);
         args.setIncomingCall(false);
         args.setNurseId(mFromUUId);
         args.setRoomId(mPatientUUid);

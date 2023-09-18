@@ -133,7 +133,7 @@ class SocketViewModel @Inject constructor(private val socketManager: SocketManag
 
     fun buildOutGoingCallParams(args: RtcArgs) = JSONObject().apply {
         put("patientId", args.patientId)
-        put("connectToDrId", args.doctorUuid)
+        put("connectToDrId", args.doctorId)
         put("visitId", args.visitId)
         put("nurseName", args.nurseName)
         put("patientName", args.patientName)

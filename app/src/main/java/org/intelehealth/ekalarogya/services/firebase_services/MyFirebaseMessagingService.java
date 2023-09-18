@@ -87,10 +87,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     args.setPatientId(chatMessage.getPatientId());
                     args.setVisitId(chatMessage.getVisitId());
                     args.setNurseId(chatMessage.getToUser());
-                    args.setDoctorUuid(chatMessage.getFromUser());
+                    args.setDoctorId(chatMessage.getFromUser());
 
                     try {
-                        String title = new ProviderDAO().getProviderName(args.getDoctorUuid());
+                        String title = new ProviderDAO().getProviderName(args.getDoctorId());
                         new AppNotification.Builder(this)
                                 .title(title)
                                 .body(chatMessage.getMessage())

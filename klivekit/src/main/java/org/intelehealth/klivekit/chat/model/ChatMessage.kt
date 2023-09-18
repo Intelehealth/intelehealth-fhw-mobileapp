@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.chat.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -57,7 +58,7 @@ data class ChatMessage(
         return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_TIME_FORMAT)
     }
 
-    fun getMessageDay(): String? {
+    fun getMessageDay(): String {
         val date = DateTimeUtils.parseUTCDate(createdDate(), DateTimeUtils.DB_FORMAT)
         return DateTimeUtils.formatIsdDate(date, DateTimeUtils.MESSAGE_DAY_FORMAT)
     }

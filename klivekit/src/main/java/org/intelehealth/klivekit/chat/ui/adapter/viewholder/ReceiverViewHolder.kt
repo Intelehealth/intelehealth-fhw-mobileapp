@@ -11,5 +11,6 @@ import org.intelehealth.klivekit.databinding.RowMsgItemReceiverBinding
 class ReceiverViewHolder(val binding: RowMsgItemReceiverBinding) : BaseViewHolder(binding.root) {
     fun bind(chatMessage: ChatMessage) {
         binding.chatMessage = chatMessage
+        binding.textTv.tag = adapterPosition
     }
 }

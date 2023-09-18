@@ -1,10 +1,13 @@
 package org.intelehealth.klivekit.chat.data
 
+import org.intelehealth.klivekit.RtcApp
 import org.intelehealth.klivekit.room.dao.ChatDao
 import org.intelehealth.klivekit.chat.model.ChatMessage
 import org.intelehealth.klivekit.chat.model.ChatRoom
 import org.intelehealth.klivekit.chat.model.MessageStatus
+import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.room.dao.ChatRoomDao
+import org.webrtc.EglBase10.Context
 import javax.inject.Inject
 
 /**
@@ -12,10 +15,10 @@ import javax.inject.Inject
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class ChatRepository @Inject constructor(
-    private val chatDao: ChatDao,
-    private val chatRoomDao: ChatRoomDao,
-    private val dataSource: ChatDataSource
+class ChatRepository(
+    private val chatDao: ChatDao = RtcApp.database.chatDao(),
+    private val chatRoomDao: ChatRoomDao = RtcApp.database.chatRoomDao(),
+    private val dataSource: ChatDataSource = ChatDataSource()
 ) {
 
     suspend fun addMessage(message: ChatMessage) = chatDao.addMessage(message)
@@ -25,10 +28,10 @@ class ChatRepository @Inject constructor(
     fun getAllMessages(chatRoomId: String) = chatDao.getAll(chatRoomId)
 
     suspend fun changeMessageStatus(messageId: Int, messageStatus: MessageStatus) =
-        chatDao.changeMessageStatus(messageId, messageStatus.name)
+        chatDao.changeMessageStatusByMessageId(messageId, messageStatus.name)
 
     suspend fun changeMessageStatus(messageIds: List<Int>, messageStatus: MessageStatus) =
-        chatDao.changeMessageStatus(messageIds, messageStatus.name)
+        chatDao.changeMessageStatusByListOfMessageId(messageIds, messageStatus.name)
 
     suspend fun sendMessage(message: ChatMessage) = dataSource.sendMessage(message)
 

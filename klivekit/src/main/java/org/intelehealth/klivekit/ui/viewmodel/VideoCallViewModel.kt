@@ -10,11 +10,24 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.github.ajalt.timberkt.Timber
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.livekit.android.LiveKit
+import io.livekit.android.LiveKitOverrides
+import io.livekit.android.RoomOptions
 import io.livekit.android.audio.AudioSwitchHandler
 import io.livekit.android.room.Room
+import okhttp3.OkHttpClient
+import org.intelehealth.klivekit.di.qulifier.RtcClient
+import org.intelehealth.klivekit.httpclient.OkHttpClientProvider
+import org.intelehealth.klivekit.provider.LiveKitProvider
+import org.intelehealth.klivekit.provider.RetrofitProvider
 import org.intelehealth.klivekit.utils.AwsS3Utils
 import org.intelehealth.klivekit.utils.extensions.hide
+import org.webrtc.EglBase
+import org.webrtc.HardwareVideoEncoderFactory
 import javax.inject.Inject
 
 /**
@@ -22,11 +35,12 @@ import javax.inject.Inject
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-@HiltViewModel
-class VideoCallViewModel @Inject constructor(
-    room: Room,
-    audioHandler: AudioSwitchHandler
-) : CallViewModel(room, audioHandler) {
+class VideoCallViewModel(
+    context: Context,
+    audioHandler: AudioSwitchHandler = LiveKitProvider.provideAudioSwitchHandler(context),
+) : CallViewModel(
+    LiveKitProvider.getRoom(context), audioHandler
+) {
 
     private val callEndData = MutableLiveData(false)
     val callEnd = callEndData.hide()

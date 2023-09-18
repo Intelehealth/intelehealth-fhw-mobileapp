@@ -21,6 +21,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
@@ -29,15 +30,18 @@ import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.klivekit.RtcApp;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.Manager;
 
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
+public class IntelehealthApplication extends RtcApp implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -57,6 +61,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private static IntelehealthApplication sIntelehealthApplication;
     public String refreshedFCMTokenID = "";
     public String webrtcTempCallId = "";
+
     public static IntelehealthApplication getInstance() {
         return sIntelehealthApplication;
     }
@@ -74,6 +79,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     @Override
     public void onCreate() {
+        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         super.onCreate();
         sIntelehealthApplication = this;
         //For Vector Drawables Backward Compatibility(<API 21)
@@ -116,6 +122,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         startRealTimeObserverAndSocket();
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree());
+        }
     }
 
     private void configureCrashReporting() {

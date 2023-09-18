@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import org.intelehealth.klivekit.chat.model.ChatMessage
+import org.jetbrains.annotations.NotNull
 
 
 /**
@@ -19,16 +20,19 @@ interface ChatDao {
     fun getAll(chatRoomId: String): Flow<List<ChatMessage>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(messages: List<ChatMessage>)
+    suspend fun insertAll(messages: List<ChatMessage>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMessage(message: ChatMessage)
+    suspend fun addMessage(message: ChatMessage): Long
 
     @Query("UPDATE tbl_chat_message SET messageStatus= :status where messageId =:messageId")
-    suspend fun changeMessageStatus(messageId: Int, status: String)
+    suspend fun changeMessageStatusByMessageId(messageId: Int, status: String): Int
 
     @Query("UPDATE tbl_chat_message SET messageStatus= :status where messageId IN (:messageIds)")
-    suspend fun changeMessageStatus(messageIds: List<Int>, status: String)
+    suspend fun changeMessageStatusByListOfMessageId(
+        messageIds: List<Int>,
+        status: String
+    ): Int
 
     @Query("DELETE FROM tbl_chat_message")
     suspend fun deleteAll()

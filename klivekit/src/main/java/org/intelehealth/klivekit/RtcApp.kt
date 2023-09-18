@@ -1,6 +1,9 @@
 package org.intelehealth.klivekit
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+import org.intelehealth.klivekit.chat.ChatClient
+import org.intelehealth.klivekit.room.WebRtcDatabase
 import org.intelehealth.klivekit.socket.SocketManager
 
 /**
@@ -9,12 +12,13 @@ import org.intelehealth.klivekit.socket.SocketManager
  * Mob   : +919727206702
  **/
 open class RtcApp : Application() {
-    protected val socketManager = SocketManager()
-    override fun onCreate() {
-        super.onCreate()
+    companion object {
+        lateinit var database: WebRtcDatabase
     }
 
-    override fun onTerminate() {
-        super.onTerminate()
+    override fun onCreate() {
+        super.onCreate()
+        database = WebRtcDatabase.getInstance(this)
+        ChatClient()
     }
 }

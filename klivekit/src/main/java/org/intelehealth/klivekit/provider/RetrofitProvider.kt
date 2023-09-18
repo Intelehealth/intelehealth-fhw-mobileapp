@@ -1,30 +1,40 @@
-package org.intelehealth.klivekit.di
+package org.intelehealth.klivekit.provider
 
-import org.intelehealth.klivekit.restapi.AuthInterceptor
 import com.google.gson.Gson
-import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.intelehealth.klivekit.BuildConfig
-import org.intelehealth.klivekit.di.qulifier.ApiClient
-import org.intelehealth.klivekit.di.qulifier.RtcClient
+import org.intelehealth.klivekit.restapi.AuthInterceptor
 import org.intelehealth.klivekit.restapi.WebRtcApiClient
 import org.intelehealth.klivekit.utils.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
-@Module
-class NetworkModule {
+/**
+ * Created by Vaghela Mithun R. on 16-09-2023 - 20:04.
+ * Email : mithun@intelehealth.org
+ * Mob   : +919727206702
+ **/
+object RetrofitProvider {
+    private var apiClient: WebRtcApiClient? = null
 
-    @Singleton
-    @Provides
-    @ApiClient
+    fun getApiClient(): WebRtcApiClient = apiClient ?: synchronized(this) {
+        apiClient ?: buildWebRtcClient().also {
+            apiClient = it
+        }
+    }
+
+    private fun buildWebRtcClient(): WebRtcApiClient {
+        return provideWebRtcApiClient(
+            provideRetrofitBuilder(
+                provideOkHttpRtcClient(provideOkHttpBuilder(provideHttpLoggingInterceptor())),
+                provideGsonConverterFactory(provideGson())
+            )
+        )
+    }
+
     fun provideOkHttpApiClient(
         okHttpBuilder: OkHttpClient.Builder,
         authInterceptor: AuthInterceptor
@@ -34,40 +44,28 @@ class NetworkModule {
         okHttpBuilder.build()
     }
 
-    @Singleton
-    @Provides
-    @RtcClient
-    fun provideOkHttpRtcClient(okHttpBuilder: OkHttpClient.Builder): OkHttpClient =
+    private fun provideOkHttpRtcClient(okHttpBuilder: OkHttpClient.Builder): OkHttpClient =
         okHttpBuilder.build()
 
-    @Singleton
-    @Provides
-    fun provideOkHttpBuilder(interceptor: HttpLoggingInterceptor) =
+    private fun provideOkHttpBuilder(interceptor: HttpLoggingInterceptor) =
         OkHttpClient.Builder().retryOnConnectionFailure(true)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
 
-    @Singleton
-    @Provides
-    fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
+    private fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
         level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
         else HttpLoggingInterceptor.Level.NONE
     }
 
-    @Singleton
-    @Provides
-    fun provideGson(): Gson = Gson()
+    private fun provideGson(): Gson = Gson()
 
-    @Singleton
-    @Provides
-    fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
+
+    private fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
         GsonConverterFactory.create(gson)
 
-    @Singleton
-    @Provides
-    fun provideRetrofitBuilder(
+    private fun provideRetrofitBuilder(
         okhttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit.Builder = Retrofit.Builder()
@@ -75,10 +73,13 @@ class NetworkModule {
         .addConverterFactory(gsonConverterFactory)
 
 
-    @Provides
-    fun provideWebRtcApiClient(
+    private fun provideWebRtcApiClient(
         retrofitBuilder: Retrofit.Builder
     ): WebRtcApiClient = retrofitBuilder.baseUrl(Constants.BASE_URL)
         .build()
         .create(WebRtcApiClient::class.java)
+
+    fun getOkHttpClient() = provideOkHttpRtcClient(
+        provideOkHttpBuilder(provideHttpLoggingInterceptor())
+    )
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
+import androidx.lifecycle.ViewModelProvider
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.klivekit.chat.model.ChatMessage
@@ -17,7 +18,9 @@ import org.intelehealth.klivekit.model.RtcArgs
  * Mob   : +919727206702
  **/
 abstract class CoreChatActivity : AppCompatActivity() {
-    protected val chatViewModel: ChatViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by lazy {
+        ViewModelProvider(this)[ChatViewModel::class.java]
+    }
     protected lateinit var args: RtcArgs
 
     companion object {
@@ -49,6 +52,7 @@ abstract class CoreChatActivity : AppCompatActivity() {
 
     private fun initChatObserver() {
         if (::args.isInitialized && args.doctorId != null) {
+            Timber.d { "roomId => ${getChatRoomId()}" }
             chatViewModel.getAllMessages(getChatRoomId()).observe(this) {
                 it?.let { messages -> onMessagesLoad(messages) } ?: onMessageListEmpty()
             }

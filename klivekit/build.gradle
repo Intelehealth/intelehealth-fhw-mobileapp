@@ -1,21 +1,28 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.kapt'
     id 'kotlin-parcelize'
+//    id 'kotlin-kapt'
 }
 
 android {
     namespace 'org.intelehealth.klivekit'
-    compileSdkVersion 33
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdk 21
+        targetSdk 34
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -26,12 +33,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_9
-        targetCompatibility JavaVersion.VERSION_1_9
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     buildFeatures {
@@ -46,7 +53,7 @@ android {
 
 dependencies {
 
-    api 'androidx.core:core-ktx:1.10.1'
+    api 'androidx.core:core-ktx:1.12.0'
     api 'androidx.appcompat:appcompat:1.6.1'
     api 'com.google.android.material:material:1.9.0'
     api "androidx.activity:activity-ktx:1.7.2"
@@ -56,10 +63,10 @@ dependencies {
     api "com.google.protobuf:protobuf-javalite:3.23.3"
 
     // Lifecycle
-    api "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    api "androidx.lifecycle:lifecycle-common-java8:2.6.1"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
+    api "androidx.lifecycle:lifecycle-common-java8:2.6.2"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2"
 
     // Preference
     api 'androidx.preference:preference-ktx:1.2.1'
@@ -92,7 +99,7 @@ dependencies {
     api "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // To use Kotlin annotation processing tool (kapt)
-//    kapt "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
 
     //Retrofit
     api 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -116,7 +123,7 @@ dependencies {
     androidTestApi 'androidx.test.ext:junit:1.1.5'
     androidTestApi 'androidx.test.espresso:espresso-core:3.5.1'
 }
-
-kapt {
-    correctErrorTypes true
-}
+//
+//kapt {
+//    correctErrorTypes true
+//}
