@@ -305,6 +305,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         yearToCompare = String.valueOf(currentYear);
         SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
         String month_name = month_date.format(calendarInstance.getTime());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            month_name = StringUtils.en__hi_dob(month_name);
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
         monthToCompare = String.valueOf(currentMonth);
@@ -589,6 +591,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             if (monthYear.length > 0) {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedPrevMonth = StringUtils.en__hi_dob(selectedPrevMonth);
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
                     enableDisablePreviousButton(false);
@@ -629,7 +633,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 selectedNextMonth = monthYear[0];
                 selectedMonthYear = monthYear[1];
                 String[] dateSplit = formateDate.split("/");
-
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedNextMonth = StringUtils.en__hi_dob(selectedNextMonth);
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
             }
