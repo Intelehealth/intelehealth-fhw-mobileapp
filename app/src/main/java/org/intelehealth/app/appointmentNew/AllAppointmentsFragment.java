@@ -912,7 +912,7 @@ public class AllAppointmentsFragment extends Fragment {
             if (!whichDate.isEmpty() && whichDate.equals("todate")) {
 
                 toDate = selectedDate;
-                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
+                String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     dateToshow1 = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate));
                 if (!toDate.isEmpty()) {
