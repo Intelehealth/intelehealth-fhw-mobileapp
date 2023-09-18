@@ -728,7 +728,16 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 "o.value is NOT NULL GROUP BY a.patientuuid";
 */
         // TODO: end date is removed later add it again. --> Added...
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, " + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info," + "b.patient_photo, a.enddate, b.uuid, b.first_name, " + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, o.obsservermodifieddate " + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE " + "a.uuid = c.visit_uuid AND   a.enddate is NOT NULL AND a.patientuuid = b.uuid AND " + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND " + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND " + "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND " + "o.value is NOT NULL GROUP BY a.patientuuid";
+        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
+                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
+                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
+                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
+                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
+                + "a.uuid = c.visit_uuid AND   a.enddate is NOT NULL AND a.patientuuid = b.uuid AND "
+                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND "
+                + "STRFTIME('%Y',date(substr(o.value, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
+                + "STRFTIME('%m',date(substr(o.value, 1, 10))) = STRFTIME('%m',DATE('now')) AND "
+                + "o.value is NOT NULL GROUP BY a.patientuuid";
 
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
