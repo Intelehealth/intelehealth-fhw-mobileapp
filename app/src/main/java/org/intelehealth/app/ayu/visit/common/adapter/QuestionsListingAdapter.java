@@ -58,6 +58,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -756,1037 +757,1037 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
-        holder.nextRelativeLayout.setVisibility(View.GONE);
-        holder.isParallelMultiNestedNode = false;
-        holder.singleComponentContainer.removeAllViews();
-        Log.v(TAG, "showOptionsData selectedNode - " + new Gson().toJson(selectedNode));
-        Log.v(TAG, "showOptionsData options - " + options.size());
-        Log.v(TAG, "showOptionsData index - " + index);
-        Log.v(TAG, "showOptionsData isSuperNested - " + isSuperNested);
-        if (!isSuperNested && options != null && options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
-            Log.v(TAG, "showOptionsData single option");
-            /*if (isSuperNested)
-                holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
-            else
-                holder.superNestedContainerLinearLayout.setVisibility(View.GONE);*/
-            holder.submitButton.setVisibility(View.GONE);
-            holder.skipButton.setVisibility(View.GONE);
-            // it seems that inside the options only one view and its simple component like text,date, number, area, duration, range, frequency, camera, etc
-            // we we have add same in linear layout dynamically instead of adding in to recyclerView
-            holder.singleComponentContainer.setVisibility(View.VISIBLE);
-            holder.tvQuestionDesc.setVisibility(View.GONE);
-            Node node = options.get(0);
-            String type = node.getInputType() == null ? "" : node.getInputType();
-
-            if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
-                type = "options";
-            }
-            Log.v(TAG, "Type - " + type);
-            switch (type) {
-                case "text":
-                    // askText(questionNode, context, adapter);
-                    addTextEnterView(options.get(0), holder, index);
-                    break;
-                case "date":
-                    //askDate(questionNode, context, adapter);
-                    addDateView(options.get(0), holder, index);
-                    break;
-                case "location":
-                    //askLocation(questionNode, context, adapter);
-                    break;
-                case "number":
-                    // askNumber(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
-                    break;
-                case "area":
-                    // askArea(questionNode, context, adapter);
-                    break;
-                case "duration":
-                    // askDuration(questionNode, context, adapter);
-                    addDurationView(options.get(0), holder, index);
-                    break;
-                case "range":
-                    // askRange(questionNode, context, adapter);
-                    addRangeView(options.get(0), holder, index);
-                    break;
-                case "frequency":
-                    //askFrequency(questionNode, context, adapter);
-                    addFrequencyView(options.get(0), holder, index);
-                    break;
-                case "camera":
-                    // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "showOptionsData 1");
-                    showCameraView(options.get(0), holder, index);
-                    break;
-
-                case "options":
-                    // openCamera(context, imagePath, imageName);
-                    //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
-                    break;
-                default:
-                    holder.submitButton.setVisibility(View.VISIBLE);
-                    break;
-            }
-
-        } else {
-
-            holder.tvQuestionDesc.setVisibility(View.VISIBLE);
-            holder.recyclerView.setVisibility(View.VISIBLE);
-
-            if (mItemList.get(index).isMultiChoice()) {
-                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                holder.submitButton.setVisibility(View.VISIBLE);
-                holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-                if (mItemList.get(index).isDataCaptured()) {
-                    AdapterUtils.setToDisable(holder.skipButton);
-                } else {
-                    AdapterUtils.setToDefault(holder.skipButton);
-                }
-            } else {
-                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                holder.submitButton.setVisibility(View.GONE);
-                if (mItemList.get(index).isDataCaptured()) {
-                    AdapterUtils.setToDisable(holder.skipButton);
-                } else {
-                    AdapterUtils.setToDefault(holder.skipButton);
-                }
-            }
-
-            if (mItemList.get(index).isRequired()) {
-                holder.skipButton.setVisibility(View.GONE);
-            } else {
-                holder.skipButton.setVisibility(View.VISIBLE);
-            }
-            //if (isSuperNested) {
-            boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
-            Log.v(TAG, "showOptionsData havingNestedQuestion - " + havingNestedQuestion);
-
-                /*//holder.superNestedContainerLinearLayout.removeAllViews();
-                View v1 = View.inflate(mContext, R.layout.nested_recycle_view, null);
-                v1.setTag(selectedNode.getId());
-                for (int i = 0; i < holder.superNestedContainerLinearLayout.getChildCount(); i++) {
-                    if (String.valueOf(holder.superNestedContainerLinearLayout.getChildAt(i).getTag()).equalsIgnoreCase(selectedNode.getId())) {
-                        return;
-                    }
-                }
-
-                RecyclerView recyclerView = v1.findViewById(R.id.rcv_nested_container);
-                TextView questionTextView = v1.findViewById(R.id.tv_question);
-                LinearLayout singleComponentContainerLinearLayout = v1.findViewById(R.id.ll_single_component_container);
-                LinearLayout othersContainerLinearLayout = v1.findViewById(R.id.ll_others_container);
-                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
-                layoutManager.setFlexDirection(FlexDirection.ROW);
-                layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-                recyclerView.setLayoutManager(layoutManager);
-                TextView tvQuestionDesc = v1.findViewById(R.id.tv_question_desc);
-
-                if (selectedNode.isMultiChoice()) {
-                    tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                    holder.submitButton.setVisibility(View.VISIBLE);
-                } else {
-                    tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                    holder.submitButton.setVisibility(View.GONE);
-
-                }*/
-
-                /*if (mItemList.get(index).isRequired()) {
-                    skipButton.setVisibility(View.GONE);
-                } else {
-                    skipButton.setVisibility(View.VISIBLE);
-                }*/
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-            linearLayoutManager.setStackFromEnd(false);
-            linearLayoutManager.setSmoothScrollbarEnabled(true);
-            holder.nestedRecyclerView.setLayoutManager(linearLayoutManager);
-
-
-            //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
-            //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
-            //}else {
-            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
-                @Override
-                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.findDisplay());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
-                   /* if(parentNode.isHavingNestedQuestion()) {
-                        boolean isMoreNestedLevel = true;
-                        for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
-                            if (selectedNode.getOptionsList().get(i).getId().equalsIgnoreCase(node.getId())) {
-                                isMoreNestedLevel = false;
-                            }else{
-
-                            }
-                        }
-                        if (isMoreNestedLevel) {
-                            holder.isParallelMultiNestedNode = true;
-                            holder.nextRelativeLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.nextRelativeLayout.setVisibility(View.GONE);
-                        }
-                    }*/
-                    if (parentNode != null && parentNode.isHavingNestedQuestion()) {
-                        holder.isParallelMultiNestedNode = true;
-                        //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
-                        holder.nextRelativeLayout.setVisibility(View.GONE);
-                    }
-                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400);
-                    ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
-                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
-                    if (isSkipped) {
-                        if (options.size() == 1) {
-                            Log.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
-                            mItemList.get(index).setSelected(false);
-                            mItemList.get(index).setDataCaptured(false);
-                            selectedNode.setSelected(false);
-                            selectedNode.setDataCaptured(false);
-                            selectedNode.unselectAllNestedNode();
-                            notifyItemChanged(index);
-                            if (selectedNode.isRequired()) return;
-                        } else {
-                            if (isLastNodeSubmit)
-                                holder.selectedNestedOptionIndex = holder.selectedNestedOptionIndex - 1;
-                        }
-
-                    }
-
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
-                    if (!holder.isParallelMultiNestedNode || isLastNodeSubmit)
-                        mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
-                    else {
-                        holder.selectedNestedOptionIndex += 1;
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
-                    }
-                    //VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
-                }
-
-                @Override
-                public void needTitleChange(String title) {
-
-                }
-
-                @Override
-                public void onAllAnswered(boolean isAllAnswered) {
-
-                }
-
-                @Override
-                public void onCameraRequest() {
-
-                }
-
-                @Override
-                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
-
-                }
-            });
-            holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
-            // }
-            holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
-
-            //if (havingNestedQuestion) {
-            if (isSuperNested && mMindMapVersionMappingHashMap.get(mRootIndex).equals("4.0")) {
-
-                //questionTextView.setText(options.get(0).findDisplay());
-                holder.nestedQuestionsListingAdapter.clearItems();
-                if (mIsEditMode) {
-                    for (int i = 0; i < options.size(); i++) {
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
-                    }
-                } else if (holder.selectedNestedOptionIndex > 0) {
-                    for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
-                        if (options.size() < i) {
-                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
-                        }
-                    }
-                } else {
-                    holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
-                }
-                holder.isParallelMultiNestedNode = options.size() > 1;
-
-                if (holder.isParallelMultiNestedNode) {
-                    //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
-                    holder.nextRelativeLayout.setVisibility(View.GONE);
-                } else {
-                    holder.nextRelativeLayout.setVisibility(View.GONE);
-                }
-                holder.nestedRecyclerView.setVisibility(View.VISIBLE);
-                holder.submitButton.setVisibility(View.GONE);
-                holder.skipButton.setVisibility(View.GONE);
-                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 600);
-            } else if (isSuperNested && mMindMapVersionMappingHashMap.get(mRootIndex).equals("3.0")) {
-                int caseType = selectedNode.foundTheNestedQuestionType();
-                if(caseType == Node.DIRECT_USER_INPUT_CHILD){
-                    Node node = selectedNode.getOption(0);
-                    String type = node.getInputType() == null ? "" : node.getInputType();
-
-                    if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
-                        type = "options";
-                    }
-                    Log.v(TAG, "Type - " + type);
-                    switch (type) {
-                        case "text":
-                            // askText(questionNode, context, adapter);
-                            addTextEnterView(node, holder, index);
-                            break;
-                        case "date":
-                            //askDate(questionNode, context, adapter);
-                            addDateView(node, holder, index);
-                            break;
-                        case "location":
-                            //askLocation(questionNode, context, adapter);
-                            break;
-                        case "number":
-                            // askNumber(questionNode, context, adapter);
-                            addNumberView(node, holder, index);
-                            break;
-                        case "area":
-                            // askArea(questionNode, context, adapter);
-                            break;
-                        case "duration":
-                            // askDuration(questionNode, context, adapter);
-                            addDurationView(node, holder, index);
-                            break;
-                        case "range":
-                            // askRange(questionNode, context, adapter);
-                            addRangeView(node, holder, index);
-                            break;
-                        case "frequency":
-                            //askFrequency(questionNode, context, adapter);
-                            addFrequencyView(node, holder, index);
-                            break;
-                        case "camera":
-                            // openCamera(context, imagePath, imageName);
-                            Log.v("showCameraView", "showOptionsData 1");
-                            showCameraView(node, holder, index);
-                            break;
-
-                        case "options":
-                            // openCamera(context, imagePath, imageName);
-                            //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
-                            break;
-                        default:
-                            holder.submitButton.setVisibility(View.VISIBLE);
-                            break;
-                    }
-                }else if(caseType == Node.CHILD_OPTIONS){
-                    OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
-                        @Override
-                        public void onSelect(Node node, boolean isLoadingForNestedEditData) {
-                            if (!isLoadingForNestedEditData)
-                                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
-                            ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
-                            if (!isLoadingForNestedEditData) {
-                                mItemList.get(index).setSelected(false);
-                                mItemList.get(index).setDataCaptured(false);
-                            }
-                            for (int i = 0; i < options.size(); i++) {
-                                if (options.get(i).isSelected()) {
-                                    mItemList.get(index).setSelected(true);
-                                    //mItemList.get(index).setDataCaptured(true);
-                                    break;
-                                }
-                            }
-                            //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
-                            String type = node.getInputType();
-
-                            if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
-                                type = "options";
-                            }
-                            if (!type.isEmpty() && node.isSelected()) {
-
-                                holder.singleComponentContainer.removeAllViews();
-                                holder.singleComponentContainer.setVisibility(View.VISIBLE);
-
-                            } else {
-                                holder.singleComponentContainer.removeAllViews();
-                                //holder.superNestedContainerLinearLayout.removeAllViews();
-                                boolean isAnyOtherOptionSelected = false;
-                                for (int i = 0; i < options.size(); i++) {
-                                    if (options.get(i).isSelected()) {
-                                        isAnyOtherOptionSelected = true;
-                                        break;
-                                    }
-                                }
-
-                                if (isLoadingForNestedEditData) {
-                                    if (selectedNode.isDataCaptured()) {
-                                        AdapterUtils.setToDisable(holder.skipButton);
-                                        AdapterUtils.setToDisable(holder.submitButton);
-                                    } else {
-                                        AdapterUtils.setToDefault(holder.skipButton);
-                                        AdapterUtils.setToDefault(holder.submitButton);
-                                    }
-                                } else {
-                                    AdapterUtils.setToDefault(holder.submitButton);
-                                    AdapterUtils.setToDefault(holder.skipButton);
-
-                                }
-                                if (mIsFromAssociatedSymptoms) {
-                                    Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
-                                    Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
-                                }
-                                 if (mItemList.get(index).isMultiChoice()) {
-                                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                                    if (!isAnyOtherOptionSelected)
-                                        holder.submitButton.setVisibility(View.VISIBLE);
-                                } else {
-                                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                                    holder.submitButton.setVisibility(View.GONE);
-
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (!isLoadingForNestedEditData) {
-
-                                                notifyItemChanged(index);
-                                            }
-                                        }
-                                    }, 100);
-                                    if (!isLoadingForNestedEditData) {
-                                        mOnItemSelection.onSelect(node, index, false, selectedNode);
-                                        AdapterUtils.setToDisable(holder.skipButton);
-                                    }
-                                }
-
-                                if (mItemList.get(index).isRequired()) {
-                                    holder.skipButton.setVisibility(View.GONE);
-                                } else {
-                                    if (!isAnyOtherOptionSelected)
-                                        holder.skipButton.setVisibility(View.VISIBLE);
-                                }
-
-                                if (node.isExcludedFromMultiChoice()) {
-                                    holder.nestedRecyclerView.setVisibility(View.GONE);
-                                    if (!isLoadingForNestedEditData) {
-                                        notifyItemChanged(index);
-                                        VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
-                                    }
-                                }
-                                return;
-                            }
-
-                            switch (type) {
-                                case "text":
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    holder.skipButton.setVisibility(View.GONE);
-                                    // askText(questionNode, context, adapter);
-                                    addTextEnterView(node, holder, index);
-                                    break;
-                                case "date":
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    holder.skipButton.setVisibility(View.GONE);
-                                    //askDate(questionNode, context, adapter);
-                                    addDateView(node, holder, index);
-                                    break;
-                                case "location":
-                                    //askLocation(questionNode, context, adapter);
-                                    break;
-                                case "number":
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    holder.skipButton.setVisibility(View.GONE);
-                                    // askNumber(questionNode, context, adapter);
-                                    addNumberView(node, holder, index);
-                                    break;
-                                case "area":
-                                    // askArea(questionNode, context, adapter);
-                                    break;
-                                case "duration":
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    holder.skipButton.setVisibility(View.GONE);
-                                    // askDuration(questionNode, context, adapter);
-                                    addDurationView(node, holder, index);
-                                    break;
-                                case "range":
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    holder.skipButton.setVisibility(View.GONE);
-                                    // askRange(questionNode, context, adapter);
-                                    addRangeView(node, holder, index);
-                                    break;
-                                case "frequency":
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    holder.skipButton.setVisibility(View.GONE);
-                                    //askFrequency(questionNode, context, adapter);
-                                    addFrequencyView(node, holder, index);
-                                    break;
-                                case "camera":
-                                    holder.submitButton.setVisibility(View.GONE);
-                                    holder.skipButton.setVisibility(View.GONE);
-                                    // openCamera(context, imagePath, imageName);
-                                    Log.v("showCameraView", "showOptionsData 2");
-                                    showCameraView(node, holder, index);
-                                    break;
-
-                                case "options":
-                                     showOptionsData(node, holder, node.getOptionsList(), index, true);
-                                    break;
-                            }
-
-                        }
-                    });
-                    holder.recyclerView.setAdapter(optionsChipsGridAdapter);
-                }else if(caseType == Node.CHILD_QUESTION){
-                    holder.isParallelMultiNestedNode = options.size() > 1;
-
-                    if (holder.isParallelMultiNestedNode) {
-                        //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
-                        holder.nextRelativeLayout.setVisibility(View.GONE);
-                    } else {
-                        holder.nextRelativeLayout.setVisibility(View.GONE);
-                    }
-                    holder.nestedRecyclerView.setVisibility(View.VISIBLE);
-                    holder.submitButton.setVisibility(View.GONE);
-                    holder.skipButton.setVisibility(View.GONE);
-
-                    holder.nestedQuestionsListingAdapter.clearItems();
-                    if (mIsEditMode) {
-                        for (int i = 0; i < options.size(); i++) {
-                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
-                        }
-                    } else if (holder.selectedNestedOptionIndex > 0) {
-                        for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
-                            if (options.size() < i) {
-                                holder.nestedQuestionsListingAdapter.addItem(options.get(i));
-                            }
-                        }
-                    } else {
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
-                    }
-
-                }
-            } else {
-                holder.nextRelativeLayout.setVisibility(View.GONE);
-                Log.v(TAG, "showOptionsData multiple option");
-                holder.tvQuestionDesc.setVisibility(View.VISIBLE);
-                holder.recyclerView.setVisibility(View.VISIBLE);
-                holder.nestedRecyclerView.setVisibility(View.GONE);
-                //holder.superNestedContainerLinearLayout.setVisibility(View.GONE);
-                if (mItemList.get(index).isMultiChoice()) {
-                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                    holder.submitButton.setVisibility(View.VISIBLE);
-                    holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-                    if (mItemList.get(index).isDataCaptured()) {
-                        AdapterUtils.setToDisable(holder.skipButton);
-                    } else {
-                        AdapterUtils.setToDefault(holder.skipButton);
-                    }
-                } else {
-                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                    holder.submitButton.setVisibility(View.GONE);
-                    if (mItemList.get(index).isDataCaptured()) {
-                        AdapterUtils.setToDisable(holder.skipButton);
-                    } else {
-                        AdapterUtils.setToDefault(holder.skipButton);
-                    }
-                }
-
-                if (mItemList.get(index).isRequired()) {
-                    holder.skipButton.setVisibility(View.GONE);
-                } else {
-                    holder.skipButton.setVisibility(View.VISIBLE);
-                }
-                //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
-                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
-                layoutManager.setFlexDirection(FlexDirection.ROW);
-                layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-                holder.recyclerView.setLayoutManager(layoutManager);
-
-                //**********
-                // Avoid the duplicate options asking to user in connected questions
-                //**************
-                String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
-                Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
-                if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
-                    int sourceIndex = 0;
-                    Node toCompareWithNode = null;
-                    for (int i = 0; i < mItemList.size(); i++) {
-                        if (mItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
-                            toCompareWithNode = mItemList.get(i);
-                            Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
-                            break;
-                        }
-                    }
-                    NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
-                }
-                VisitUtils.scrollNow(mRecyclerView, 1400, 0, 600);
-                // *****************
-                OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
-                    @Override
-                    public void onSelect(Node node, boolean isLoadingForNestedEditData) {
-                        if (!isLoadingForNestedEditData)
-                            VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
-                        ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
-                        if (!isLoadingForNestedEditData) {
-                            mItemList.get(index).setSelected(false);
-                            mItemList.get(index).setDataCaptured(false);
-                        }
-                        for (int i = 0; i < options.size(); i++) {
-                            if (options.get(i).isSelected()) {
-                                mItemList.get(index).setSelected(true);
-                                //mItemList.get(index).setDataCaptured(true);
-                                break;
-                            }
-                        }
-                        //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
-                        String type = node.getInputType();
-
-                        if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
-                            type = "options";
-                        }
-                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
-                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
-                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
-                        if (!type.isEmpty() && node.isSelected()) {
-
-                            holder.singleComponentContainer.removeAllViews();
-                            holder.singleComponentContainer.setVisibility(View.VISIBLE);
-
-                        } else {
-                            holder.singleComponentContainer.removeAllViews();
-                            //holder.superNestedContainerLinearLayout.removeAllViews();
-                            boolean isAnyOtherOptionSelected = false;
-                            for (int i = 0; i < options.size(); i++) {
-                                if (options.get(i).isSelected()) {
-                                    isAnyOtherOptionSelected = true;
-                                    break;
-                                }
-                            }
-
-                            if (isLoadingForNestedEditData) {
-                                if (selectedNode.isDataCaptured()) {
-                                    AdapterUtils.setToDisable(holder.skipButton);
-                                    AdapterUtils.setToDisable(holder.submitButton);
-                                } else {
-                                    AdapterUtils.setToDefault(holder.skipButton);
-                                    AdapterUtils.setToDefault(holder.submitButton);
-                                }
-                            } else {
-                                AdapterUtils.setToDefault(holder.submitButton);
-                                AdapterUtils.setToDefault(holder.skipButton);
-
-                            }
-                            if (mIsFromAssociatedSymptoms) {
-                                Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
-                                Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
-                            }
-                            /*AdapterUtils.setToDefault(holder.submitButton);
-                            AdapterUtils.setToDefault(holder.skipButton);*/
-                            /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
-                            holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
-
-                            if (mItemList.get(index).isMultiChoice()) {
-                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                                if (!isAnyOtherOptionSelected)
-                                    holder.submitButton.setVisibility(View.VISIBLE);
-                            } else {
-                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                                holder.submitButton.setVisibility(View.GONE);
-
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (!isLoadingForNestedEditData) {
-
-                                            notifyItemChanged(index);
-                                        }
-                                    }
-                                }, 100);
-                                if (!isLoadingForNestedEditData) {
-                                    mOnItemSelection.onSelect(node, index, false, selectedNode);
-                                    AdapterUtils.setToDisable(holder.skipButton);
-                                }
-                            }
-
-                            if (mItemList.get(index).isRequired()) {
-                                holder.skipButton.setVisibility(View.GONE);
-                            } else {
-                                if (!isAnyOtherOptionSelected)
-                                    holder.skipButton.setVisibility(View.VISIBLE);
-                            }
-
-                            if (node.isExcludedFromMultiChoice()) {
-                                holder.nestedRecyclerView.setVisibility(View.GONE);
-                                if (!isLoadingForNestedEditData) {
-                                    notifyItemChanged(index);
-                                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
-                                }
-                            }
-                            return;
-                        }
-
-                        switch (type) {
-                            case "text":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askText(questionNode, context, adapter);
-                                addTextEnterView(node, holder, index);
-                                break;
-                            case "date":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                //askDate(questionNode, context, adapter);
-                                addDateView(node, holder, index);
-                                break;
-                            case "location":
-                                //askLocation(questionNode, context, adapter);
-                                break;
-                            case "number":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askNumber(questionNode, context, adapter);
-                                addNumberView(node, holder, index);
-                                break;
-                            case "area":
-                                // askArea(questionNode, context, adapter);
-                                break;
-                            case "duration":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askDuration(questionNode, context, adapter);
-                                addDurationView(node, holder, index);
-                                break;
-                            case "range":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // askRange(questionNode, context, adapter);
-                                addRangeView(node, holder, index);
-                                break;
-                            case "frequency":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                //askFrequency(questionNode, context, adapter);
-                                addFrequencyView(node, holder, index);
-                                break;
-                            case "camera":
-                                holder.submitButton.setVisibility(View.GONE);
-                                holder.skipButton.setVisibility(View.GONE);
-                                // openCamera(context, imagePath, imageName);
-                                Log.v("showCameraView", "showOptionsData 2");
-                                showCameraView(node, holder, index);
-                                break;
-
-                            case "options":
-                                // openCamera(context, imagePath, imageName);
-                                //holder.superNestedContainerLinearLayout.removeAllViews();
-                                showOptionsData(node, holder, node.getOptionsList(), index, true);
-                                break;
-                        }
-                        //notifyDataSetChanged();
-                    }
-                });
-                holder.recyclerView.setAdapter(optionsChipsGridAdapter);
-
-
-            }
-            /*for (int i = 0; i < options.size(); i++) {
-                String type = options.get(i).getInputType();
-                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
-                    // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
-                    showCameraView(options.get(i), holder, index);
-                }
-            }*/
-        }
-
-    }
-
-    private void showCameraView(Node node, GenericViewHolder holder, int index) {
-        Log.v("showCameraView", "QLA " + new Gson().toJson(node));
-        Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
-        holder.otherContainerLinearLayout.removeAllViews();
-        View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
-        Button submitButton = view.findViewById(R.id.btn_submit);
-        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
-        submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
-        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
-        //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
-        newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //openCamera(getImagePath(), "");
-                node.setImageUploaded(false);
-                node.setDataCaptured(false);
-                mLastImageCaptureSelectedNodeIndex = index;
-                mOnItemSelection.onCameraRequest();
-            }
-        });
-        view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //openCamera(getImagePath(), "");
-                node.setImageUploaded(false);
-                node.setDataCaptured(false);
-                mLastImageCaptureSelectedNodeIndex = index;
-                mOnItemSelection.onCameraRequest();
-            }
-        });
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
-                    @Override
-                    public void onFinish() {
-                        node.setImageUploaded(true);
-                        mOnItemSelection.onSelect(node, index, false, null);
-
-                    }
-                });
-            }
-        });
-
-        RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
-        imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-
-        if (node.getImagePathList().isEmpty()) {
-            Log.v("showCameraView", "QLA Images check - empty");
-            newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
-            submitButton.setVisibility(View.GONE);
-            imagesRcv.setVisibility(View.GONE);
-        } else {
-            Log.v("showCameraView", "QLA Images check - having data");
-            newImageCaptureLinearLayout.setVisibility(View.GONE);
-            submitButton.setVisibility(View.VISIBLE);
-            imagesRcv.setVisibility(View.VISIBLE);
-        }
-
-        if (!node.getImagePathList().isEmpty()) {
-            ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
-                @Override
-                public void onImageRemoved(int imageIndex, String image) {
-                    node.setImageUploaded(false);
-                    node.setDataCaptured(false);
-                    mOnItemSelection.onImageRemoved(index, imageIndex, image);
-                }
-
-                @Override
-                public void onNewImageRequest() {
-                    node.setImageUploaded(false);
-                    node.setDataCaptured(false);
-                    mLastImageCaptureSelectedNodeIndex = index;
-                    mOnItemSelection.onCameraRequest();
-                }
-            });
-            imagesRcv.setAdapter(imageGridAdapter);
-            imageGridAdapter.addNull();
-            Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
-            if (node.getImagePathList().size() >= 4) {
-                imagesRcv.smoothScrollToPosition(imagesRcv.getAdapter().getItemCount() - 1);
-            }
-        }
-
-
-        holder.otherContainerLinearLayout.addView(view);
-        holder.otherContainerLinearLayout.setVisibility(View.VISIBLE);
-        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
-        Log.v("showCameraView", "otherContainerLinearLayout getChildCount - " + holder.otherContainerLinearLayout.getChildCount());
-    }
-
-
-    /**
-     * Time duration
-     *
-     * @param node
-     * @param holder
-     * @param index
-     */
-    private void addDurationView(Node node, GenericViewHolder holder, int index) {
-        Log.v(TAG, "addDurationView - " + new Gson().toJson(node));
-        holder.singleComponentContainer.removeAllViews();
-        holder.singleComponentContainer.setVisibility(View.VISIBLE);
-        View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
-        final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
-        final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
-        Button submitButton = view.findViewById(R.id.btn_submit);
-        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
-        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
-        Button skipButton = view.findViewById(R.id.btn_skip);
-        if (node.isDataCaptured()) {
-            AdapterUtils.setToDisable(skipButton);
-        } else {
-            AdapterUtils.setToDefault(skipButton);
-        }
-        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
-        else skipButton.setVisibility(View.GONE);
-        String oldDataNumber = "", oldDataType = "";
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
-                    @Override
-                    public void onFinish() {
-                        node.setSelected(false);
-                        mOnItemSelection.onSelect(node, index, true, null);
-                    }
-                });
-
-            }
-        });
-
-        // add a list
-        int i = 0;
-        int max = 100;
-        final String[] data = new String[max + 1];
-        data[0] = mContext.getString(R.string.number_label);
-        for (i = 1; i <= max; i++) {
-            data[i] = String.valueOf(i);
-        }
-
-        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data);
-        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-
-        numberRangeSpinner.setAdapter(adaptador);
-        numberRangeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
-
-        String finalOldDataNumber1 = oldDataNumber;
-        numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-                String newNumber = numberRangeSpinner.getSelectedItem().toString();
-                if (!newNumber.equals(finalOldDataNumber1)) {
-                    AdapterUtils.setToDefault(submitButton);
-                    AdapterUtils.setToDefault(skipButton);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        // add a list
-        final String[] data1 = new String[]{mContext.getString(R.string.duration_type), mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
-
-        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data1);
-        adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
-
-        durationTypeSpinner.setAdapter(adaptador1);
-        durationTypeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
-
-        String finalOldDataType = oldDataType;
-        durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
-                String newType = durationTypeSpinner.getSelectedItem().toString();
-                if (!newType.equals(finalOldDataType)) {
-                    AdapterUtils.setToDefault(submitButton);
-                    AdapterUtils.setToDefault(skipButton);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        if (!node.getLanguage().isEmpty()) {
-            String[] val = node.getLanguage().trim().split(" ");
-            if (val.length == 2) {
-                oldDataNumber = val[0];
-                oldDataType = val[1];
-                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(oldDataNumber));
-                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(oldDataType));
-            }
-        }
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (numberRangeSpinner.getSelectedItemPosition() == 0 || numberRangeSpinner.getSelectedItem().toString().isEmpty()) {
-                    Toast.makeText(mContext, mContext.getString(R.string.duration_validation_txt), Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (durationTypeSpinner.getSelectedItemPosition() == 0 || durationTypeSpinner.getSelectedItem().toString().isEmpty()) {
-                    Toast.makeText(mContext, mContext.getString(R.string.duration_type_validation_txt), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String durationString = numberRangeSpinner.getSelectedItem().toString() + " " + durationTypeSpinner.getSelectedItem().toString();
-
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", durationString));
-                } else {
-                    node.addLanguage(" " + durationString);
-                    node.setText(durationString);
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                }
-
-                node.setSelected(true);
-                holder.node.setSelected(true);
-
-                node.setDataCaptured(true);
-                holder.node.setDataCaptured(true);
-
-                //notifyDataSetChanged();
-                AdapterUtils.setToDisable(skipButton);
-                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
-                    @Override
-                    public void onFinish() {
-                        mOnItemSelection.onSelect(node, index, false, null);
-
-                    }
-                });
-            }
-        });
-        /*if (node.isDataCaptured() && node.isDataCaptured()) {
-            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
-        } else {
-            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }*/
-
-        holder.singleComponentContainer.addView(view);
-        Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
-        Log.v(TAG, "addDurationView holder.singleComponentContainer VISIBLE - " + (holder.singleComponentContainer.getVisibility() == View.VISIBLE));
-    }
-
-    private void showNumberListing(final TextView textView, String title, int i, int max) {
-        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(title);
-
-        // add a list
-        final String[] data = new String[max];
-        for (; i < max; i++) {
-            data[i] = String.valueOf(i);
-        }
-        builder.setItems(data, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                textView.setText(data[which]);
-
-            }
-        });
-
-        // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void showDurationTypes(final TextView textView) {
-        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(mContext.getString(R.string.select_duration_type_title));
-
-        // add a list
-        final String[] data = new String[]{mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
-
-        builder.setItems(data, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                textView.setText(data[which]);
-
-            }
-        });
-
-        // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-
+//    /*private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+//        holder.nextRelativeLayout.setVisibility(View.GONE);
+//        holder.isParallelMultiNestedNode = false;
+//        holder.singleComponentContainer.removeAllViews();
+//        Log.v(TAG, "showOptionsData selectedNode - " + new Gson().toJson(selectedNode));
+//        Log.v(TAG, "showOptionsData options - " + options.size());
+//        Log.v(TAG, "showOptionsData index - " + index);
+//        Log.v(TAG, "showOptionsData isSuperNested - " + isSuperNested);
+//        if (!isSuperNested && options != null && options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
+//            Log.v(TAG, "showOptionsData single option");
+//            *//*if (isSuperNested)
+//                holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
+//            else
+//                holder.superNestedContainerLinearLayout.setVisibility(View.GONE);*//*
+//            holder.submitButton.setVisibility(View.GONE);
+//            holder.skipButton.setVisibility(View.GONE);
+//            // it seems that inside the options only one view and its simple component like text,date, number, area, duration, range, frequency, camera, etc
+//            // we we have add same in linear layout dynamically instead of adding in to recyclerView
+//            holder.singleComponentContainer.setVisibility(View.VISIBLE);
+//            holder.tvQuestionDesc.setVisibility(View.GONE);
+//            Node node = options.get(0);
+//            String type = node.getInputType() == null ? "" : node.getInputType();
+//
+//            if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
+//                type = "options";
+//            }
+//            Log.v(TAG, "Type - " + type);
+//            switch (type) {
+//                case "text":
+//                    // askText(questionNode, context, adapter);
+//                    addTextEnterView(options.get(0), holder, index);
+//                    break;
+//                case "date":
+//                    //askDate(questionNode, context, adapter);
+//                    addDateView(options.get(0), holder, index);
+//                    break;
+//                case "location":
+//                    //askLocation(questionNode, context, adapter);
+//                    break;
+//                case "number":
+//                    // askNumber(questionNode, context, adapter);
+//                    addNumberView(options.get(0), holder, index);
+//                    break;
+//                case "area":
+//                    // askArea(questionNode, context, adapter);
+//                    break;
+//                case "duration":
+//                    // askDuration(questionNode, context, adapter);
+//                    addDurationView(options.get(0), holder, index);
+//                    break;
+//                case "range":
+//                    // askRange(questionNode, context, adapter);
+//                    addRangeView(options.get(0), holder, index);
+//                    break;
+//                case "frequency":
+//                    //askFrequency(questionNode, context, adapter);
+//                    addFrequencyView(options.get(0), holder, index);
+//                    break;
+//                case "camera":
+//                    // openCamera(context, imagePath, imageName);
+//                    Log.v("showCameraView", "showOptionsData 1");
+//                    showCameraView(options.get(0), holder, index);
+//                    break;
+//
+//                case "options":
+//                    // openCamera(context, imagePath, imageName);
+//                    //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
+//                    break;
+//                default:
+//                    holder.submitButton.setVisibility(View.VISIBLE);
+//                    break;
+//            }
+//
+//        } else {
+//
+//            holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+//            holder.recyclerView.setVisibility(View.VISIBLE);
+//
+//            if (mItemList.get(index).isMultiChoice()) {
+//                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+//                holder.submitButton.setVisibility(View.VISIBLE);
+//                holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+//                if (mItemList.get(index).isDataCaptured()) {
+//                    AdapterUtils.setToDisable(holder.skipButton);
+//                } else {
+//                    AdapterUtils.setToDefault(holder.skipButton);
+//                }
+//            } else {
+//                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+//                holder.submitButton.setVisibility(View.GONE);
+//                if (mItemList.get(index).isDataCaptured()) {
+//                    AdapterUtils.setToDisable(holder.skipButton);
+//                } else {
+//                    AdapterUtils.setToDefault(holder.skipButton);
+//                }
+//            }
+//
+//            if (mItemList.get(index).isRequired()) {
+//                holder.skipButton.setVisibility(View.GONE);
+//            } else {
+//                holder.skipButton.setVisibility(View.VISIBLE);
+//            }
+//            //if (isSuperNested) {
+//            boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+//            Log.v(TAG, "showOptionsData havingNestedQuestion - " + havingNestedQuestion);
+//
+//                *//*//*/holder.superNestedContainerLinearLayout.removeAllViews();
+//                View v1 = View.inflate(mContext, R.layout.nested_recycle_view, null);
+//                v1.setTag(selectedNode.getId());
+//                for (int i = 0; i < holder.superNestedContainerLinearLayout.getChildCount(); i++) {
+//                    if (String.valueOf(holder.superNestedContainerLinearLayout.getChildAt(i).getTag()).equalsIgnoreCase(selectedNode.getId())) {
+//                        return;
+//                    }
+//                }
+//
+//                RecyclerView recyclerView = v1.findViewById(R.id.rcv_nested_container);
+//                TextView questionTextView = v1.findViewById(R.id.tv_question);
+//                LinearLayout singleComponentContainerLinearLayout = v1.findViewById(R.id.ll_single_component_container);
+//                LinearLayout othersContainerLinearLayout = v1.findViewById(R.id.ll_others_container);
+//                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+//                layoutManager.setFlexDirection(FlexDirection.ROW);
+//                layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+//                recyclerView.setLayoutManager(layoutManager);
+//                TextView tvQuestionDesc = v1.findViewById(R.id.tv_question_desc);
+//
+//                if (selectedNode.isMultiChoice()) {
+//                    tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+//                    holder.submitButton.setVisibility(View.VISIBLE);
+//                } else {
+//                    tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+//                    holder.submitButton.setVisibility(View.GONE);
+//
+//                }*//*
+//
+//                *//*if (mItemList.get(index).isRequired()) {
+//                    skipButton.setVisibility(View.GONE);
+//                } else {
+//                    skipButton.setVisibility(View.VISIBLE);
+//                }*//*
+//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+//            linearLayoutManager.setStackFromEnd(false);
+//            linearLayoutManager.setSmoothScrollbarEnabled(true);
+//            holder.nestedRecyclerView.setLayoutManager(linearLayoutManager);
+//
+//
+//            //if (holder.nestedRecyclerView.getAdapter() != null && mItemList.get(index).isMultiChoice()) {
+//            //   nestedQuestionsListingAdapter = (NestedQuestionsListingAdapter) holder.nestedRecyclerView.getAdapter();
+//            //}else {
+//            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRecyclerView, holder.nestedRecyclerView, selectedNode, 0, index, mIsEditMode, new OnItemSelection() {
+//                @Override
+//                public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+//                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + index + " isSkipped = " + isSkipped);
+//                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.findDisplay());
+//                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode - " + selectedNode.getId());
+//                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
+//                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
+//                   *//* if(parentNode.isHavingNestedQuestion()) {
+//                        boolean isMoreNestedLevel = true;
+//                        for (int i = 0; i < selectedNode.getOptionsList().size(); i++) {
+//                            if (selectedNode.getOptionsList().get(i).getId().equalsIgnoreCase(node.getId())) {
+//                                isMoreNestedLevel = false;
+//                            }else{
+//
+//                            }
+//                        }
+//                        if (isMoreNestedLevel) {
+//                            holder.isParallelMultiNestedNode = true;
+//                            holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+//                        } else {
+//                            holder.nextRelativeLayout.setVisibility(View.GONE);
+//                        }
+//                    }*//*
+//                    if (parentNode != null && parentNode.isHavingNestedQuestion()) {
+//                        holder.isParallelMultiNestedNode = true;
+//                        //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+//                        holder.nextRelativeLayout.setVisibility(View.GONE);
+//                    }
+//                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400);
+//                    ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
+//                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+//                    if (isSkipped) {
+//                        if (options.size() == 1) {
+//                            Log.v(TAG, "NestedQuestionsListingAdapter onSelect isSkipped && options.size() == 1 ");
+//                            mItemList.get(index).setSelected(false);
+//                            mItemList.get(index).setDataCaptured(false);
+//                            selectedNode.setSelected(false);
+//                            selectedNode.setDataCaptured(false);
+//                            selectedNode.unselectAllNestedNode();
+//                            notifyItemChanged(index);
+//                            if (selectedNode.isRequired()) return;
+//                        } else {
+//                            if (isLastNodeSubmit)
+//                                holder.selectedNestedOptionIndex = holder.selectedNestedOptionIndex - 1;
+//                        }
+//
+//                    }
+//
+//                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect mOnItemSelection.onSelect holder.selectedNestedOptionIndex - " + holder.selectedNestedOptionIndex);
+//                    if (!holder.isParallelMultiNestedNode || isLastNodeSubmit)
+//                        mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
+//                    else {
+//                        holder.selectedNestedOptionIndex += 1;
+//                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+//                    }
+//                    //VisitUtils.scrollNow(holder.nestedRecyclerView, 1000, 0, 300);
+//                }
+//
+//                @Override
+//                public void needTitleChange(String title) {
+//
+//                }
+//
+//                @Override
+//                public void onAllAnswered(boolean isAllAnswered) {
+//
+//                }
+//
+//                @Override
+//                public void onCameraRequest() {
+//
+//                }
+//
+//                @Override
+//                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+//
+//                }
+//            });
+//            holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
+//            // }
+//            holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
+//
+//            //if (havingNestedQuestion) {
+//            if (isSuperNested && mMindMapVersionMappingHashMap.get(mRootIndex).equals("4.0")) {
+//
+//                //questionTextView.setText(options.get(0).findDisplay());
+//                holder.nestedQuestionsListingAdapter.clearItems();
+//                if (mIsEditMode) {
+//                    for (int i = 0; i < options.size(); i++) {
+//                        holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+//                    }
+//                } else if (holder.selectedNestedOptionIndex > 0) {
+//                    for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
+//                        if (options.size() < i) {
+//                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+//                        }
+//                    }
+//                } else {
+//                    holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+//                }
+//                holder.isParallelMultiNestedNode = options.size() > 1;
+//
+//                if (holder.isParallelMultiNestedNode) {
+//                    //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+//                    holder.nextRelativeLayout.setVisibility(View.GONE);
+//                } else {
+//                    holder.nextRelativeLayout.setVisibility(View.GONE);
+//                }
+//                holder.nestedRecyclerView.setVisibility(View.VISIBLE);
+//                holder.submitButton.setVisibility(View.GONE);
+//                holder.skipButton.setVisibility(View.GONE);
+//                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 600);
+//            } else if (isSuperNested && mMindMapVersionMappingHashMap.get(mRootIndex).equals("3.0")) {
+//                int caseType = selectedNode.foundTheNestedQuestionType();
+//                if(caseType == Node.DIRECT_USER_INPUT_CHILD){
+//                    Node node = selectedNode.getOption(0);
+//                    String type = node.getInputType() == null ? "" : node.getInputType();
+//
+//                    if (node.getOptionsList() != null && !node.getOptionsList().isEmpty()) {
+//                        type = "options";
+//                    }
+//                    Log.v(TAG, "Type - " + type);
+//                    switch (type) {
+//                        case "text":
+//                            // askText(questionNode, context, adapter);
+//                            addTextEnterView(node, holder, index);
+//                            break;
+//                        case "date":
+//                            //askDate(questionNode, context, adapter);
+//                            addDateView(node, holder, index);
+//                            break;
+//                        case "location":
+//                            //askLocation(questionNode, context, adapter);
+//                            break;
+//                        case "number":
+//                            // askNumber(questionNode, context, adapter);
+//                            addNumberView(node, holder, index);
+//                            break;
+//                        case "area":
+//                            // askArea(questionNode, context, adapter);
+//                            break;
+//                        case "duration":
+//                            // askDuration(questionNode, context, adapter);
+//                            addDurationView(node, holder, index);
+//                            break;
+//                        case "range":
+//                            // askRange(questionNode, context, adapter);
+//                            addRangeView(node, holder, index);
+//                            break;
+//                        case "frequency":
+//                            //askFrequency(questionNode, context, adapter);
+//                            addFrequencyView(node, holder, index);
+//                            break;
+//                        case "camera":
+//                            // openCamera(context, imagePath, imageName);
+//                            Log.v("showCameraView", "showOptionsData 1");
+//                            showCameraView(node, holder, index);
+//                            break;
+//
+//                        case "options":
+//                            // openCamera(context, imagePath, imageName);
+//                            //showOptionsData(genericViewHolder, genericViewHolder.node.getOptionsList());
+//                            break;
+//                        default:
+//                            holder.submitButton.setVisibility(View.VISIBLE);
+//                            break;
+//                    }
+//                }else if(caseType == Node.CHILD_OPTIONS){
+//                    OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+//                        @Override
+//                        public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+//                            if (!isLoadingForNestedEditData)
+//                                VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+//                            ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
+//                            if (!isLoadingForNestedEditData) {
+//                                mItemList.get(index).setSelected(false);
+//                                mItemList.get(index).setDataCaptured(false);
+//                            }
+//                            for (int i = 0; i < options.size(); i++) {
+//                                if (options.get(i).isSelected()) {
+//                                    mItemList.get(index).setSelected(true);
+//                                    //mItemList.get(index).setDataCaptured(true);
+//                                    break;
+//                                }
+//                            }
+//                            //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+//                            String type = node.getInputType();
+//
+//                            if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+//                                type = "options";
+//                            }
+//                            if (!type.isEmpty() && node.isSelected()) {
+//
+//                                holder.singleComponentContainer.removeAllViews();
+//                                holder.singleComponentContainer.setVisibility(View.VISIBLE);
+//
+//                            } else {
+//                                holder.singleComponentContainer.removeAllViews();
+//                                //holder.superNestedContainerLinearLayout.removeAllViews();
+//                                boolean isAnyOtherOptionSelected = false;
+//                                for (int i = 0; i < options.size(); i++) {
+//                                    if (options.get(i).isSelected()) {
+//                                        isAnyOtherOptionSelected = true;
+//                                        break;
+//                                    }
+//                                }
+//
+//                                if (isLoadingForNestedEditData) {
+//                                    if (selectedNode.isDataCaptured()) {
+//                                        AdapterUtils.setToDisable(holder.skipButton);
+//                                        AdapterUtils.setToDisable(holder.submitButton);
+//                                    } else {
+//                                        AdapterUtils.setToDefault(holder.skipButton);
+//                                        AdapterUtils.setToDefault(holder.submitButton);
+//                                    }
+//                                } else {
+//                                    AdapterUtils.setToDefault(holder.submitButton);
+//                                    AdapterUtils.setToDefault(holder.skipButton);
+//
+//                                }
+//                                if (mIsFromAssociatedSymptoms) {
+//                                    Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
+//                                    Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
+//                                }
+//                                 if (mItemList.get(index).isMultiChoice()) {
+//                                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+//                                    if (!isAnyOtherOptionSelected)
+//                                        holder.submitButton.setVisibility(View.VISIBLE);
+//                                } else {
+//                                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+//                                    holder.submitButton.setVisibility(View.GONE);
+//
+//                                    new Handler().postDelayed(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            if (!isLoadingForNestedEditData) {
+//
+//                                                notifyItemChanged(index);
+//                                            }
+//                                        }
+//                                    }, 100);
+//                                    if (!isLoadingForNestedEditData) {
+//                                        mOnItemSelection.onSelect(node, index, false, selectedNode);
+//                                        AdapterUtils.setToDisable(holder.skipButton);
+//                                    }
+//                                }
+//
+//                                if (mItemList.get(index).isRequired()) {
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                } else {
+//                                    if (!isAnyOtherOptionSelected)
+//                                        holder.skipButton.setVisibility(View.VISIBLE);
+//                                }
+//
+//                                if (node.isExcludedFromMultiChoice()) {
+//                                    holder.nestedRecyclerView.setVisibility(View.GONE);
+//                                    if (!isLoadingForNestedEditData) {
+//                                        notifyItemChanged(index);
+//                                        VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
+//                                    }
+//                                }
+//                                return;
+//                            }
+//
+//                            switch (type) {
+//                                case "text":
+//                                    holder.submitButton.setVisibility(View.GONE);
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                    // askText(questionNode, context, adapter);
+//                                    addTextEnterView(node, holder, index);
+//                                    break;
+//                                case "date":
+//                                    holder.submitButton.setVisibility(View.GONE);
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                    //askDate(questionNode, context, adapter);
+//                                    addDateView(node, holder, index);
+//                                    break;
+//                                case "location":
+//                                    //askLocation(questionNode, context, adapter);
+//                                    break;
+//                                case "number":
+//                                    holder.submitButton.setVisibility(View.GONE);
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                    // askNumber(questionNode, context, adapter);
+//                                    addNumberView(node, holder, index);
+//                                    break;
+//                                case "area":
+//                                    // askArea(questionNode, context, adapter);
+//                                    break;
+//                                case "duration":
+//                                    holder.submitButton.setVisibility(View.GONE);
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                    // askDuration(questionNode, context, adapter);
+//                                    addDurationView(node, holder, index);
+//                                    break;
+//                                case "range":
+//                                    holder.submitButton.setVisibility(View.GONE);
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                    // askRange(questionNode, context, adapter);
+//                                    addRangeView(node, holder, index);
+//                                    break;
+//                                case "frequency":
+//                                    holder.submitButton.setVisibility(View.GONE);
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                    //askFrequency(questionNode, context, adapter);
+//                                    addFrequencyView(node, holder, index);
+//                                    break;
+//                                case "camera":
+//                                    holder.submitButton.setVisibility(View.GONE);
+//                                    holder.skipButton.setVisibility(View.GONE);
+//                                    // openCamera(context, imagePath, imageName);
+//                                    Log.v("showCameraView", "showOptionsData 2");
+//                                    showCameraView(node, holder, index);
+//                                    break;
+//
+//                                case "options":
+//                                     showOptionsData(node, holder, node.getOptionsList(), index, true);
+//                                    break;
+//                            }
+//
+//                        }
+//                    });
+//                    holder.recyclerView.setAdapter(optionsChipsGridAdapter);
+//                }else if(caseType == Node.CHILD_QUESTION){
+//                    holder.isParallelMultiNestedNode = options.size() > 1;
+//
+//                    if (holder.isParallelMultiNestedNode) {
+//                        //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
+//                        holder.nextRelativeLayout.setVisibility(View.GONE);
+//                    } else {
+//                        holder.nextRelativeLayout.setVisibility(View.GONE);
+//                    }
+//                    holder.nestedRecyclerView.setVisibility(View.VISIBLE);
+//                    holder.submitButton.setVisibility(View.GONE);
+//                    holder.skipButton.setVisibility(View.GONE);
+//
+//                    holder.nestedQuestionsListingAdapter.clearItems();
+//                    if (mIsEditMode) {
+//                        for (int i = 0; i < options.size(); i++) {
+//                            holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+//                        }
+//                    } else if (holder.selectedNestedOptionIndex > 0) {
+//                        for (int i = 0; i <= holder.selectedNestedOptionIndex; i++) {
+//                            if (options.size() < i) {
+//                                holder.nestedQuestionsListingAdapter.addItem(options.get(i));
+//                            }
+//                        }
+//                    } else {
+//                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+//                    }
+//
+//                }
+//            } else {
+//                holder.nextRelativeLayout.setVisibility(View.GONE);
+//                Log.v(TAG, "showOptionsData multiple option");
+//                holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+//                holder.recyclerView.setVisibility(View.VISIBLE);
+//                holder.nestedRecyclerView.setVisibility(View.GONE);
+//                //holder.superNestedContainerLinearLayout.setVisibility(View.GONE);
+//                if (mItemList.get(index).isMultiChoice()) {
+//                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+//                    holder.submitButton.setVisibility(View.VISIBLE);
+//                    holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+//                    if (mItemList.get(index).isDataCaptured()) {
+//                        AdapterUtils.setToDisable(holder.skipButton);
+//                    } else {
+//                        AdapterUtils.setToDefault(holder.skipButton);
+//                    }
+//                } else {
+//                    holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+//                    holder.submitButton.setVisibility(View.GONE);
+//                    if (mItemList.get(index).isDataCaptured()) {
+//                        AdapterUtils.setToDisable(holder.skipButton);
+//                    } else {
+//                        AdapterUtils.setToDefault(holder.skipButton);
+//                    }
+//                }
+//
+//                if (mItemList.get(index).isRequired()) {
+//                    holder.skipButton.setVisibility(View.GONE);
+//                } else {
+//                    holder.skipButton.setVisibility(View.VISIBLE);
+//                }
+//                //holder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, options.size() == 1 ? 1 : 2));
+//                FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+//                layoutManager.setFlexDirection(FlexDirection.ROW);
+//                layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+//                holder.recyclerView.setLayoutManager(layoutManager);
+//
+//                //**********
+//                // Avoid the duplicate options asking to user in connected questions
+//                //**************
+//                String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
+//                Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
+//                if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+//                    int sourceIndex = 0;
+//                    Node toCompareWithNode = null;
+//                    for (int i = 0; i < mItemList.size(); i++) {
+//                        if (mItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
+//                            toCompareWithNode = mItemList.get(i);
+//                            Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
+//                            break;
+//                        }
+//                    }
+//                    NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
+//                }
+//                VisitUtils.scrollNow(mRecyclerView, 1400, 0, 600);
+//                // *****************
+//                OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.recyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+//                    @Override
+//                    public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+//                        if (!isLoadingForNestedEditData)
+//                            VisitUtils.scrollNow(mRecyclerView, 1000, 0, 300);
+//                        ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
+//                        if (!isLoadingForNestedEditData) {
+//                            mItemList.get(index).setSelected(false);
+//                            mItemList.get(index).setDataCaptured(false);
+//                        }
+//                        for (int i = 0; i < options.size(); i++) {
+//                            if (options.get(i).isSelected()) {
+//                                mItemList.get(index).setSelected(true);
+//                                //mItemList.get(index).setDataCaptured(true);
+//                                break;
+//                            }
+//                        }
+//                        //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+//                        String type = node.getInputType();
+//
+//                        if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+//                            type = "options";
+//                        }
+//                        Log.v(TAG, "optionsChipsGridAdapter - Type - " + type);
+//                        Log.v(TAG, "optionsChipsGridAdapter - isLoadingForNestedEditData - " + isLoadingForNestedEditData);
+//                        Log.v(TAG, "optionsChipsGridAdapter - Node - " + node.findDisplay() + " isSelected - " + node.isSelected() + " isExcludedFromMultiChoice - " + node.isExcludedFromMultiChoice());
+//                        if (!type.isEmpty() && node.isSelected()) {
+//
+//                            holder.singleComponentContainer.removeAllViews();
+//                            holder.singleComponentContainer.setVisibility(View.VISIBLE);
+//
+//                        } else {
+//                            holder.singleComponentContainer.removeAllViews();
+//                            //holder.superNestedContainerLinearLayout.removeAllViews();
+//                            boolean isAnyOtherOptionSelected = false;
+//                            for (int i = 0; i < options.size(); i++) {
+//                                if (options.get(i).isSelected()) {
+//                                    isAnyOtherOptionSelected = true;
+//                                    break;
+//                                }
+//                            }
+//
+//                            if (isLoadingForNestedEditData) {
+//                                if (selectedNode.isDataCaptured()) {
+//                                    AdapterUtils.setToDisable(holder.skipButton);
+//                                    AdapterUtils.setToDisable(holder.submitButton);
+//                                } else {
+//                                    AdapterUtils.setToDefault(holder.skipButton);
+//                                    AdapterUtils.setToDefault(holder.submitButton);
+//                                }
+//                            } else {
+//                                AdapterUtils.setToDefault(holder.submitButton);
+//                                AdapterUtils.setToDefault(holder.skipButton);
+//
+//                            }
+//                            if (mIsFromAssociatedSymptoms) {
+//                                Log.v(TAG, "optionsChipsGridAdapter - mItemList.get(index) - " + new Gson().toJson(mItemList.get(index)));
+//                                Log.v(TAG, "optionsChipsGridAdapter - index - " + index);
+//                            }
+//                            *//*AdapterUtils.setToDefault(holder.submitButton);
+//                            AdapterUtils.setToDefault(holder.skipButton);*//*
+//                            *//*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+//                            holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*//*
+//
+//                            if (mItemList.get(index).isMultiChoice()) {
+//                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+//                                if (!isAnyOtherOptionSelected)
+//                                    holder.submitButton.setVisibility(View.VISIBLE);
+//                            } else {
+//                                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+//                                holder.submitButton.setVisibility(View.GONE);
+//
+//                                new Handler().postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        if (!isLoadingForNestedEditData) {
+//
+//                                            notifyItemChanged(index);
+//                                        }
+//                                    }
+//                                }, 100);
+//                                if (!isLoadingForNestedEditData) {
+//                                    mOnItemSelection.onSelect(node, index, false, selectedNode);
+//                                    AdapterUtils.setToDisable(holder.skipButton);
+//                                }
+//                            }
+//
+//                            if (mItemList.get(index).isRequired()) {
+//                                holder.skipButton.setVisibility(View.GONE);
+//                            } else {
+//                                if (!isAnyOtherOptionSelected)
+//                                    holder.skipButton.setVisibility(View.VISIBLE);
+//                            }
+//
+//                            if (node.isExcludedFromMultiChoice()) {
+//                                holder.nestedRecyclerView.setVisibility(View.GONE);
+//                                if (!isLoadingForNestedEditData) {
+//                                    notifyItemChanged(index);
+//                                    VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1000);
+//                                }
+//                            }
+//                            return;
+//                        }
+//
+//                        switch (type) {
+//                            case "text":
+//                                holder.submitButton.setVisibility(View.GONE);
+//                                holder.skipButton.setVisibility(View.GONE);
+//                                // askText(questionNode, context, adapter);
+//                                addTextEnterView(node, holder, index);
+//                                break;
+//                            case "date":
+//                                holder.submitButton.setVisibility(View.GONE);
+//                                holder.skipButton.setVisibility(View.GONE);
+//                                //askDate(questionNode, context, adapter);
+//                                addDateView(node, holder, index);
+//                                break;
+//                            case "location":
+//                                //askLocation(questionNode, context, adapter);
+//                                break;
+//                            case "number":
+//                                holder.submitButton.setVisibility(View.GONE);
+//                                holder.skipButton.setVisibility(View.GONE);
+//                                // askNumber(questionNode, context, adapter);
+//                                addNumberView(node, holder, index);
+//                                break;
+//                            case "area":
+//                                // askArea(questionNode, context, adapter);
+//                                break;
+//                            case "duration":
+//                                holder.submitButton.setVisibility(View.GONE);
+//                                holder.skipButton.setVisibility(View.GONE);
+//                                // askDuration(questionNode, context, adapter);
+//                                addDurationView(node, holder, index);
+//                                break;
+//                            case "range":
+//                                holder.submitButton.setVisibility(View.GONE);
+//                                holder.skipButton.setVisibility(View.GONE);
+//                                // askRange(questionNode, context, adapter);
+//                                addRangeView(node, holder, index);
+//                                break;
+//                            case "frequency":
+//                                holder.submitButton.setVisibility(View.GONE);
+//                                holder.skipButton.setVisibility(View.GONE);
+//                                //askFrequency(questionNode, context, adapter);
+//                                addFrequencyView(node, holder, index);
+//                                break;
+//                            case "camera":
+//                                holder.submitButton.setVisibility(View.GONE);
+//                                holder.skipButton.setVisibility(View.GONE);
+//                                // openCamera(context, imagePath, imageName);
+//                                Log.v("showCameraView", "showOptionsData 2");
+//                                showCameraView(node, holder, index);
+//                                break;
+//
+//                            case "options":
+//                                // openCamera(context, imagePath, imageName);
+//                                //holder.superNestedContainerLinearLayout.removeAllViews();
+//                                showOptionsData(node, holder, node.getOptionsList(), index, true);
+//                                break;
+//                        }
+//                        //notifyDataSetChanged();
+//                    }
+//                });
+//                holder.recyclerView.setAdapter(optionsChipsGridAdapter);
+//
+//
+//            }
+//            *//*for (int i = 0; i < options.size(); i++) {
+//                String type = options.get(i).getInputType();
+//                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
+//                    // openCamera(context, imagePath, imageName);
+//                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
+//                    showCameraView(options.get(i), holder, index);
+//                }
+//            }*//*
+//        }
+//
+//    }*/
+
+//    private void showCameraView(Node node, GenericViewHolder holder, int index) {
+//        Log.v("showCameraView", "QLA " + new Gson().toJson(node));
+//        Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+//        holder.otherContainerLinearLayout.removeAllViews();
+//        View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
+//        Button submitButton = view.findViewById(R.id.btn_submit);
+//        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+//        submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+//        submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
+//        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
+//        //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+//        newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //openCamera(getImagePath(), "");
+//                node.setImageUploaded(false);
+//                node.setDataCaptured(false);
+//                mLastImageCaptureSelectedNodeIndex = index;
+//                mOnItemSelection.onCameraRequest();
+//            }
+//        });
+//        view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //openCamera(getImagePath(), "");
+//                node.setImageUploaded(false);
+//                node.setDataCaptured(false);
+//                mLastImageCaptureSelectedNodeIndex = index;
+//                mOnItemSelection.onCameraRequest();
+//            }
+//        });
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+//                    @Override
+//                    public void onFinish() {
+//                        node.setImageUploaded(true);
+//                        mOnItemSelection.onSelect(node, index, false, null);
+//
+//                    }
+//                });
+//            }
+//        });
+//
+//        RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
+//        imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+//
+//        if (node.getImagePathList().isEmpty()) {
+//            Log.v("showCameraView", "QLA Images check - empty");
+//            newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+//            submitButton.setVisibility(View.GONE);
+//            imagesRcv.setVisibility(View.GONE);
+//        } else {
+//            Log.v("showCameraView", "QLA Images check - having data");
+//            newImageCaptureLinearLayout.setVisibility(View.GONE);
+//            submitButton.setVisibility(View.VISIBLE);
+//            imagesRcv.setVisibility(View.VISIBLE);
+//        }
+//
+//        if (!node.getImagePathList().isEmpty()) {
+//            ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
+//                @Override
+//                public void onImageRemoved(int imageIndex, String image) {
+//                    node.setImageUploaded(false);
+//                    node.setDataCaptured(false);
+//                    mOnItemSelection.onImageRemoved(index, imageIndex, image);
+//                }
+//
+//                @Override
+//                public void onNewImageRequest() {
+//                    node.setImageUploaded(false);
+//                    node.setDataCaptured(false);
+//                    mLastImageCaptureSelectedNodeIndex = index;
+//                    mOnItemSelection.onCameraRequest();
+//                }
+//            });
+//            imagesRcv.setAdapter(imageGridAdapter);
+//            imageGridAdapter.addNull();
+//            Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
+//            if (node.getImagePathList().size() >= 4) {
+//                imagesRcv.smoothScrollToPosition(imagesRcv.getAdapter().getItemCount() - 1);
+//            }
+//        }
+//
+//
+//        holder.otherContainerLinearLayout.addView(view);
+//        holder.otherContainerLinearLayout.setVisibility(View.VISIBLE);
+//        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+//        Log.v("showCameraView", "otherContainerLinearLayout getChildCount - " + holder.otherContainerLinearLayout.getChildCount());
+//    }
+
+//
+//    /**
+//     * Time duration
+//     *
+//     * @param node
+//     * @param holder
+//     * @param index
+//     */
+//    private void addDurationView(Node node, GenericViewHolder holder, int index) {
+//        Log.v(TAG, "addDurationView - " + new Gson().toJson(node));
+//        holder.singleComponentContainer.removeAllViews();
+//        holder.singleComponentContainer.setVisibility(View.VISIBLE);
+//        View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
+//        final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
+//        final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
+//        Button submitButton = view.findViewById(R.id.btn_submit);
+//        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+//        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+//        Button skipButton = view.findViewById(R.id.btn_skip);
+//        if (node.isDataCaptured()) {
+//            AdapterUtils.setToDisable(skipButton);
+//        } else {
+//            AdapterUtils.setToDefault(skipButton);
+//        }
+//        if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+//        else skipButton.setVisibility(View.GONE);
+//        String oldDataNumber = "", oldDataType = "";
+//        skipButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+//                    @Override
+//                    public void onFinish() {
+//                        node.setSelected(false);
+//                        mOnItemSelection.onSelect(node, index, true, null);
+//                    }
+//                });
+//
+//            }
+//        });
+//
+//        // add a list
+//        int i = 0;
+//        int max = 100;
+//        final String[] data = new String[max + 1];
+//        data[0] = mContext.getString(R.string.number_label);
+//        for (i = 1; i <= max; i++) {
+//            data[i] = String.valueOf(i);
+//        }
+//
+//        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data);
+//        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+//
+//        numberRangeSpinner.setAdapter(adaptador);
+//        numberRangeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+//
+//        String finalOldDataNumber1 = oldDataNumber;
+//        numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+//                String newNumber = numberRangeSpinner.getSelectedItem().toString();
+//                if (!newNumber.equals(finalOldDataNumber1)) {
+//                    AdapterUtils.setToDefault(submitButton);
+//                    AdapterUtils.setToDefault(skipButton);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+//
+//        // add a list
+//        final String[] data1 = new String[]{mContext.getString(R.string.duration_type), mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
+//
+//        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data1);
+//        adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+//
+//        durationTypeSpinner.setAdapter(adaptador1);
+//        durationTypeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+//
+//        String finalOldDataType = oldDataType;
+//        durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+//                String newType = durationTypeSpinner.getSelectedItem().toString();
+//                if (!newType.equals(finalOldDataType)) {
+//                    AdapterUtils.setToDefault(submitButton);
+//                    AdapterUtils.setToDefault(skipButton);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+//
+//        if (!node.getLanguage().isEmpty()) {
+//            String[] val = node.getLanguage().trim().split(" ");
+//            if (val.length == 2) {
+//                oldDataNumber = val[0];
+//                oldDataType = val[1];
+//                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(oldDataNumber));
+//                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(oldDataType));
+//            }
+//        }
+//
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (numberRangeSpinner.getSelectedItemPosition() == 0 || numberRangeSpinner.getSelectedItem().toString().isEmpty()) {
+//                    Toast.makeText(mContext, mContext.getString(R.string.duration_validation_txt), Toast.LENGTH_SHORT).show();
+//                    return;
+//                } else if (durationTypeSpinner.getSelectedItemPosition() == 0 || durationTypeSpinner.getSelectedItem().toString().isEmpty()) {
+//                    Toast.makeText(mContext, mContext.getString(R.string.duration_type_validation_txt), Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                String durationString = numberRangeSpinner.getSelectedItem().toString() + " " + durationTypeSpinner.getSelectedItem().toString();
+//
+//                if (node.getLanguage().contains("_")) {
+//                    node.setLanguage(node.getLanguage().replace("_", durationString));
+//                } else {
+//                    node.addLanguage(" " + durationString);
+//                    node.setText(durationString);
+//                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+//                }
+//
+//                node.setSelected(true);
+//                holder.node.setSelected(true);
+//
+//                node.setDataCaptured(true);
+//                holder.node.setDataCaptured(true);
+//
+//                //notifyDataSetChanged();
+//                AdapterUtils.setToDisable(skipButton);
+//                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+//                    @Override
+//                    public void onFinish() {
+//                        mOnItemSelection.onSelect(node, index, false, null);
+//
+//                    }
+//                });
+//            }
+//        });
+//        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+//            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+//        } else {
+//            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//        }*/
+//
+//        holder.singleComponentContainer.addView(view);
+//        Log.v(TAG, "addDurationView holder.singleComponentContainer count child - " + holder.singleComponentContainer.getChildCount());
+//        Log.v(TAG, "addDurationView holder.singleComponentContainer VISIBLE - " + (holder.singleComponentContainer.getVisibility() == View.VISIBLE));
+//    }
+//
+//    private void showNumberListing(final TextView textView, String title, int i, int max) {
+//        // setup the alert builder
+//        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//        builder.setTitle(title);
+//
+//        // add a list
+//        final String[] data = new String[max];
+//        for (; i < max; i++) {
+//            data[i] = String.valueOf(i);
+//        }
+//        builder.setItems(data, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                textView.setText(data[which]);
+//
+//            }
+//        });
+//
+//        // create and show the alert dialog
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
+//
+//    private void showDurationTypes(final TextView textView) {
+//        // setup the alert builder
+//        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//        builder.setTitle(mContext.getString(R.string.select_duration_type_title));
+//
+//        // add a list
+//        final String[] data = new String[]{mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
+//
+//        builder.setItems(data, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                textView.setText(data[which]);
+//
+//            }
+//        });
+//
+//        // create and show the alert dialog
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
+
+/*
     private void addNumberView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
@@ -1899,16 +1900,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
-        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+        *//*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }*/
+        }*//*
 
         holder.singleComponentContainer.addView(view);
-    }
+    }*/
 
-    private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
+   /* private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
         Log.v(TAG, "addTextEnterView");
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
@@ -2018,16 +2019,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         editText.setHint(mContext.getString(R.string.describe_hint_txt));
         editText.setMinHeight(320);
 
-        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+        *//*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
-*/
+*//*
         holder.singleComponentContainer.addView(view);
-    }
+    }*/
 
-    private void addDateView(Node node, GenericViewHolder holder, int index) {
+  /*  private void addDateView(Node node, GenericViewHolder holder, int index) {
         holder.singleComponentContainer.removeAllViews();
         View view = View.inflate(mContext, R.layout.visit_reason_date, null);
         final Button submitButton = view.findViewById(R.id.btn_submit);
@@ -2090,11 +2091,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (!d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
-                    /*Calendar cal = Calendar.getInstance();
+                    *//*Calendar cal = Calendar.getInstance();
                     cal.setTimeInMillis(0);
                     cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
                     Date date = cal.getTime();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*//*
 
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", d));
@@ -2121,13 +2122,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
         });
-        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+        *//*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }*/
+        }*//*
         holder.singleComponentContainer.addView(view);
-    }
+    }*/
 
 
     @Override
@@ -2250,6 +2251,1142 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
     }
 
+    private void routeByType(GenericViewHolder genericViewHolder, Node parentNode, Node currentNode, int position, boolean isSuperNested) {
+        String type = currentNode.getInputType();
+        Log.v(TAG, "onBindViewHolder Type - " + type);
+        Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(currentNode));
+        genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
+        genericViewHolder.tvQuestionDesc.setVisibility(View.GONE);
+        genericViewHolder.submitButton.setVisibility(View.GONE);
+        genericViewHolder.skipButton.setVisibility(View.GONE);
+        //genericViewHolder.superNestedRecyclerView.removeAllViews();
 
+
+        if (type == null || type.isEmpty() && (currentNode.getOptionsList() != null && !currentNode.getOptionsList().isEmpty())) {
+            type = "options";
+            genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
+            genericViewHolder.tvQuestionDesc.setVisibility(View.VISIBLE);
+        }
+        switch (type) {
+            case "text":
+                genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
+                addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "date":
+                addDateView(genericViewHolder, parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "location":
+                //askLocation(questionNode, context, adapter);
+                break;
+            case "number":
+                addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "area":
+                // askArea(questionNode, context, adapter);
+                break;
+            case "duration":
+                addDurationView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "range":
+                addRangeView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "frequency":
+                addFrequencyView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "camera":
+                showCameraView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "options":
+
+                // check for end node or custom input node
+                if (currentNode.getOptionsList().size() == 1 &&
+                        (currentNode.getOptionsList().get(0).getOptionsList() == null || currentNode.getOptionsList().get(0).getOptionsList().isEmpty())) {
+                    routeByType(genericViewHolder, currentNode, currentNode.getOptionsList().get(0), position, isSuperNested);
+                } else {
+                    showOptionsData(currentNode, genericViewHolder, currentNode.getOptionsList(), position, isSuperNested);
+                }
+                break;
+        }
+    }
+
+
+    private void addNumberView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+        containerLayout.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        final EditText editText = view.findViewById(R.id.actv_reasons);
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+        Button skipButton = view.findViewById(R.id.btn_skip);
+
+        if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
+            if (node.getLanguage().contains(" : "))
+                editText.setText(node.getLanguage().split(" : ")[1]);
+        }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+        });
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+        /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);*/
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                node.setSelected(false);
+                node.setDataCaptured(false);
+                //holder.node.setDataCaptured(true);
+                parentNode.setSelected(false);
+                parentNode.setDataCaptured(false);
+
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
+                WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (editText.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
+                } else {
+
+                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else {
+                            node.addLanguage(editText.getText().toString());
+                        }
+                        node.setSelected(true);
+                        //holder.node.setSelected(true);
+
+                        node.setDataCaptured(true);
+                        parentNode.setSelected(true);
+                        parentNode.setDataCaptured(true);
+                        //holder.node.setDataCaptured(true);
+                    } else {
+                        node.setDataCaptured(false);
+                        //holder.node.setDataCaptured(false);
+
+
+                        //if (node.isRequired()) {
+                        node.setSelected(false);
+
+                        parentNode.setSelected(false);
+                        parentNode.setDataCaptured(false);
+                        //holder.node.setSelected(false);
+                        //} else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        //   node.setSelected(true);
+                        //}
+                    }
+                    //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+
+                        }
+                    });
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+                }
+            }
+        });
+
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }*/
+
+        containerLayout.addView(view);
+    }
+
+    private void addTextEnterView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+        Log.v(TAG, "addTextEnterView");
+        containerLayout.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        final EditText editText = view.findViewById(R.id.actv_reasons);
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
+            if (node.getLanguage().contains(" : "))
+                editText.setText(node.getLanguage().split(" : ")[1]);
+            else
+                editText.setText(node.getLanguage());
+
+        }
+        String oldValue = editText.getText().toString().trim();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().trim().equals(oldValue)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+        });
+
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+        /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);*/
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                node.setSelected(false);
+                node.setDataCaptured(false);
+
+                parentNode.setSelected(false);
+                parentNode.setDataCaptured(false);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
+                WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editText.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_enter_the_value), Toast.LENGTH_SHORT).show();
+                } else {
+
+                    if (!editText.getText().toString().equalsIgnoreCase("")) {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
+                        } else {
+                            node.addLanguage(editText.getText().toString());
+                        }
+                        node.setSelected(true);
+                        //holder.node.setSelected(true);
+
+                        node.setDataCaptured(true);
+                        //holder.node.setDataCaptured(true);
+
+                        parentNode.setSelected(true);
+                        parentNode.setDataCaptured(true);
+
+                    } else {
+                        node.setDataCaptured(false);
+                        //holder.node.setDataCaptured(false);
+                        //if (node.isRequired()) {
+                        node.setSelected(false);
+                        parentNode.setSelected(false);
+                        parentNode.setDataCaptured(false);
+                        //holder.node.setSelected(false);
+                        //} else {
+                        if (node.getLanguage().contains("_")) {
+                            node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                        } else {
+                            node.addLanguage("Question not answered");
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                        }
+                        //   node.setSelected(true);
+                        //}
+                    }
+                    //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+
+                        }
+                    });
+                    WindowsUtils.hideSoftKeyboard((AppCompatActivity) mContext);
+                }
+
+            }
+
+        });
+
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setMinLines(5);
+        editText.setLines(5);
+        editText.setHorizontallyScrolling(false);
+        editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        editText.setMinHeight(320);
+
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
+*/
+        containerLayout.addView(view);
+    }
+
+    private void addDateView(GenericViewHolder genericViewHolder, Node parentNode, Node node, LinearLayout containerLayout, int index) {
+        containerLayout.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_date, null);
+        final Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        final TextView displayDateButton = view.findViewById(R.id.btn_view_date);
+        final CalendarView calendarView = view.findViewById(R.id.cav_date);
+        calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+        Log.v(TAG, "addDateView - " + node.getLanguage());
+        String langVal = node.getLanguage();
+        Button skipButton = view.findViewById(R.id.btn_skip);
+
+        boolean isToDate = genericViewHolder.node.getText().equalsIgnoreCase("To");
+        String fromDate = "";
+        if (isToDate) {
+            if (mParentNode.getOptionsList() != null && mParentNode.getOptionsList().size() >= 1) {
+                fromDate = mParentNode.getOption(1).getOption(0).getLanguage();
+            }
+        }
+        Log.v("DataSubmit", "fromDate - " + fromDate);
+
+        Date fromDateFormat = null;
+        if (!fromDate.isEmpty() && !fromDate.equalsIgnoreCase("%")) {
+            //22/Aug/2023
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+            try {
+                fromDateFormat = simpleDateFormat.parse(fromDate);
+                calendarView.setMinDate(fromDateFormat.getTime() + 1000);
+                calendarView.setMaxDate(System.currentTimeMillis() + 1000);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+        if (langVal != null && !langVal.isEmpty() && !langVal.equals("%") && node.isDataCaptured()) {
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+            Date date = null;
+            try {
+                date = simpleDateFormat.parse(langVal.trim());
+                SimpleDateFormat simpleDateFormatLocal = new SimpleDateFormat("dd/MMM/yyyy", new Locale(new SessionManager(mContext).getAppLanguage()));
+                String dateString = simpleDateFormat.format(date);
+                displayDateButton.setText(simpleDateFormatLocal.format(date));
+                displayDateButton.setTag(dateString);
+
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // display the selected date by using a toast
+                int m = month + 1;
+                //String d = (dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth))
+                //       + "-" + (m < 10 ? "0" + m : String.valueOf(m)) + "-" + String.valueOf(year);
+
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(0);
+                //cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                cal.set(year, month, dayOfMonth);
+                Date date = cal.getTime();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormatLocal = new SimpleDateFormat("dd/MMM/yyyy", new Locale(new SessionManager(mContext).getAppLanguage()));
+                String dateString = simpleDateFormat.format(date);
+                displayDateButton.setText(simpleDateFormatLocal.format(date));
+                displayDateButton.setTag(dateString);
+                VisitUtils.scrollNow(mRootRecyclerView, 400, 0, 400);
+                AdapterUtils.setToDefault(submitButton);
+                AdapterUtils.setToDefault(skipButton);
+            }
+        });
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+        //holder.skipButton.setVisibility(View.GONE);
+        /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);*/
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                node.setSelected(false);
+                parentNode.setSelected(false);
+                parentNode.setDataCaptured(false);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
+            }
+        });
+
+        final Date finalFromDateFormat = fromDateFormat;
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get from data
+
+                String fromDate = "";
+                if (isToDate) {
+                    if (mParentNode.getOptionsList() != null && mParentNode.getOptionsList().size() >= 1) {
+                        fromDate = mParentNode.getOption(1).getOption(0).getLanguage();
+                    }
+                }
+                Log.v("DataSubmit", "fromDate - " + fromDate);
+
+
+                String d = (String) displayDateButton.getTag();
+                if (d == null || d.equalsIgnoreCase("null") || d.isEmpty() || !d.contains("/")) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
+                } else {
+                    Date fromDateFormat = null;
+                    Date toDateFormat = null;
+                    Date currentDateFormat = new Date();
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
+                    try {
+                        Log.v("DataSubmit", "d - " + d);
+                        if (!fromDate.isEmpty() && !fromDate.equalsIgnoreCase("%"))
+                            fromDateFormat = simpleDateFormat.parse(fromDate);
+                        toDateFormat = simpleDateFormat.parse(d);
+
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Log.v("DataSubmit", "finalFromDateFormat - " + finalFromDateFormat);
+                    Log.v("DataSubmit", "toDateFormat - " + toDateFormat);
+                    if (fromDateFormat != null && fromDateFormat.after(toDateFormat)) {
+                        Toast.makeText(mContext, mContext.getString(R.string.to_date_validation), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    /*Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(0);
+                    cal.set(Integer.parseInt(d.split("-")[2]), Integer.parseInt(d.split("-")[1]) - 1, Integer.parseInt(d.split("-")[0]));
+                    Date date = cal.getTime();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);*/
+
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", d));
+                    } else {
+                        node.addLanguage(d);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    //holder.node.setSelected(true);
+
+                    node.setDataCaptured(true);
+                    //holder.node.setDataCaptured(true);
+                    parentNode.setSelected(true);
+                    parentNode.setDataCaptured(true);
+
+                    //notifyDataSetChanged();
+                    AdapterUtils.setToDisable(skipButton);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                        }
+                    });
+
+                }
+            }
+        });
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }*/
+        containerLayout.addView(view);
+    }
+
+    private void addRangeView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+        containerLayout.removeAllViews();
+        View view = View.inflate(mContext, R.layout.ui2_visit_number_range, null);
+        RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
+        //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
+        TextView rangeTextView = view.findViewById(R.id.btn_values);
+        TextView submitTextView = view.findViewById(R.id.btn_submit);
+
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);*/
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                parentNode.setSelected(false);
+                parentNode.setDataCaptured(false);
+                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                notifyItemChanged(index);
+            }
+        });
+
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
+                && node.getLanguage().equalsIgnoreCase(" to ")) {
+            String[] vals = node.getLanguage().split(" to ");
+            rangeTextView.setText(vals[0] + " " + mContext.getString(R.string.to) + " " + vals[1]);
+            List<Float> list = new ArrayList<>();
+            list.add(Float.valueOf(vals[0]));
+            list.add(Float.valueOf(vals[1]));
+            rangeSlider.setValues(list);
+        }
+        submitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
+                    Toast.makeText(mContext, mContext.getString(R.string.please_select_range), Toast.LENGTH_SHORT).show();
+                } else {
+                    List<Float> values = rangeSlider.getValues();
+                    int x = values.get(0).intValue();
+                    int y = values.get(1).intValue();
+                    String durationString = x + " " + mContext.getString(R.string.to) + " " + y;
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(" " + durationString);
+                        node.setText(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    parentNode.setSelected(true);
+                    parentNode.setDataCaptured(true);
+                    notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                }
+            }
+        });
+        rangeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStartTrackingTouch(@NonNull RangeSlider slider) {
+
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStopTrackingTouch(@NonNull RangeSlider slider) {
+                List<Float> values = rangeSlider.getValues();
+                int x = values.get(0).intValue();
+                int y = values.get(1).intValue();
+                rangeTextView.setText(String.format(x + " " + mContext.getString(R.string.to) + " " + y));
+            }
+        });
+        containerLayout.addView(view);
+    }
+
+    private void addFrequencyView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+        containerLayout.removeAllViews();
+        final View view = View.inflate(mContext, R.layout.ui2_visit_number_slider_with_icon, null);
+        Slider rangeSlider = view.findViewById(R.id.number_slider);
+        //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
+        TextView rangeTextView = view.findViewById(R.id.btn_values);
+        TextView submitTextView = view.findViewById(R.id.btn_submit);
+
+        Button skipButton = view.findViewById(R.id.btn_skip);
+       /* if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);*/
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setSelected(false);
+                parentNode.setSelected(false);
+                parentNode.setDataCaptured(false);
+                mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                notifyItemChanged(index);
+            }
+        });
+
+
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && TextUtils.isDigitsOnly(node.getLanguage())) {
+            int i = Integer.parseInt(node.getLanguage());
+            rangeTextView.setText(mContext.getString(R.string.level) + " " + i);
+            rangeSlider.setValue(i);
+        }
+        submitTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
+                    Toast.makeText(mContext, mContext.getString(R.string.drag_to_select), Toast.LENGTH_SHORT).show();
+                } else {
+                    int x = (int) rangeSlider.getValue();
+                    String durationString = String.valueOf(x);
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
+                    } else {
+                        node.addLanguage(" " + durationString);
+                        node.setText(durationString);
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                    node.setSelected(true);
+                    parentNode.setSelected(true);
+                    parentNode.setDataCaptured(true);
+                    notifyItemChanged(index);
+                    mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                }
+            }
+        });
+        rangeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) value);
+            }
+        });
+        rangeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int x = (int) rangeSlider.getValue();
+                rangeTextView.setText(mContext.getString(R.string.level) + " " + x);
+                updateCustomEmojiSliderUI(view, x);
+            }
+        });
+
+        updateCustomEmojiSliderUI(view, 0);
+        containerLayout.addView(view);
+    }
+
+    private void addDurationView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+        Log.v("addDurationView", new Gson().toJson(node));
+        containerLayout.removeAllViews();
+        View view = View.inflate(mContext, R.layout.ui2_visit_reason_time_range, null);
+        final Spinner numberRangeSpinner = view.findViewById(R.id.sp_number_range);
+        final Spinner durationTypeSpinner = view.findViewById(R.id.sp_duration_type);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        Button skipButton = view.findViewById(R.id.btn_skip);
+        String oldDataNumber = "", oldDataType = "";
+        String finalOldDataNumber = oldDataNumber;
+        String finalOldDataType = oldDataType;
+
+        if (node.isDataCaptured()) {
+            AdapterUtils.setToDisable(skipButton);
+        } else {
+            AdapterUtils.setToDefault(skipButton);
+        }
+
+        /*if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
+        else skipButton.setVisibility(View.GONE);*/
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                node.setSelected(false);
+                parentNode.setSelected(false);
+                parentNode.setDataCaptured(false);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, true, parentNode);
+                        notifyItemChanged(index);
+                    }
+                });
+
+            }
+        });
+
+        // add a list
+        int i = 0;
+        int max = 100;
+        final String[] data = new String[max + 1];
+        data[0] = mContext.getString(R.string.number_label);
+        for (i = 1; i <= max; i++) {
+            data[i] = String.valueOf(i);
+        }
+
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext,
+                R.layout.simple_spinner_item_1, data);
+        adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+
+        numberRangeSpinner.setAdapter(adaptador);
+        numberRangeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+
+        numberRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+                String newNumber = numberRangeSpinner.getSelectedItem().toString();
+                if (!newNumber.equals(finalOldDataNumber)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // add a list
+        final String[] data1 = new String[]{mContext.getString(R.string.duration_type),
+                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
+                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
+                mContext.getString(R.string.Years)};
+
+        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext,
+                R.layout.simple_spinner_item_1, data1);
+        adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
+
+        durationTypeSpinner.setAdapter(adaptador1);
+        durationTypeSpinner.setPopupBackgroundDrawable(mContext.getDrawable(R.drawable.popup_menu_background));
+
+        durationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int which, long l) {
+                String newType = durationTypeSpinner.getSelectedItem().toString();
+                if (!newType.equals(finalOldDataType)) {
+                    AdapterUtils.setToDefault(submitButton);
+                    AdapterUtils.setToDefault(skipButton);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        if (!node.getLanguage().isEmpty()) {
+            String[] val = node.getLanguage().trim().split(" ");
+            if (val.length == 2) {
+                oldDataNumber = val[0];
+                oldDataType = val[1];
+                numberRangeSpinner.setSelection(Arrays.asList(data).indexOf(oldDataNumber));
+                durationTypeSpinner.setSelection(Arrays.asList(data1).indexOf(oldDataType));
+            }
+        }
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (numberRangeSpinner.getSelectedItemPosition() == 0 || numberRangeSpinner.getSelectedItem().toString().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.duration_validation_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (durationTypeSpinner.getSelectedItemPosition() == 0 || durationTypeSpinner.getSelectedItem().toString().isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.duration_type_validation_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String durationString = numberRangeSpinner.getSelectedItem().toString() + " " + durationTypeSpinner.getSelectedItem().toString();
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+
+                node.setSelected(true);
+                //holder.node.setSelected(true);
+
+                node.setDataCaptured(true);
+                //holder.node.setDataCaptured(true);
+
+                parentNode.setSelected(true);
+                parentNode.setDataCaptured(true);
+
+                //notifyDataSetChanged();
+                AdapterUtils.setToDisable(skipButton);
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+                    }
+                });
+
+            }
+        });
+        /*if (node.isDataCaptured() && node.isDataCaptured()) {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
+        } else {
+            submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }*/
+
+        containerLayout.addView(view);
+    }
+
+    private void showCameraView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
+        Log.v("showCameraView", "Start method - " + new Gson().toJson(node));
+        Log.v("showCameraView", "ImagePathList - " + new Gson().toJson(node.getImagePathList()));
+        containerLayout.removeAllViews();
+        View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setText(mContext.getString(R.string.visit_summary_button_upload));
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() && node.isImageUploaded() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        LinearLayout newImageCaptureLinearLayout = view.findViewById(R.id.ll_emptyView);
+        //newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+        newImageCaptureLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openCamera(getImagePath(), "");
+                mLastImageCaptureSelectedNodeIndex = index;
+                mOnItemSelection.onCameraRequest();
+            }
+        });
+        view.findViewById(R.id.btn_1st_capture).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                node.setImageUploaded(false);
+                //openCamera(getImagePath(), "");
+                node.setImageUploaded(false);
+                node.setDataCaptured(false);
+                mLastImageCaptureSelectedNodeIndex = index;
+                mOnItemSelection.onCameraRequest();
+            }
+        });
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                    @Override
+                    public void onFinish() {
+                        node.setImageUploaded(true);
+                        mOnItemSelection.onSelect(node, mRootIndex, false, parentNode);
+
+                    }
+                });
+            }
+        });
+
+        RecyclerView imagesRcv = view.findViewById(R.id.rcv_added_image);
+        imagesRcv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+
+        if (!node.getImagePathList().isEmpty()) {
+            ImageGridAdapter imageGridAdapter = new ImageGridAdapter(imagesRcv, mContext, node.getImagePathList(), new ImageGridAdapter.OnImageAction() {
+                @Override
+                public void onImageRemoved(int imageIndex, String image) {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
+                    mOnItemSelection.onImageRemoved(index, imageIndex, image);
+                }
+
+                @Override
+                public void onNewImageRequest() {
+                    node.setImageUploaded(false);
+                    node.setDataCaptured(false);
+                    mLastImageCaptureSelectedNodeIndex = index;
+                    mOnItemSelection.onCameraRequest();
+                }
+            });
+            imagesRcv.setAdapter(imageGridAdapter);
+            imageGridAdapter.addNull();
+            Log.v("showCameraView", "ImagePathList recyclerView - " + imagesRcv.getAdapter().getItemCount());
+        }
+
+
+        if (node.getImagePathList().isEmpty()) {
+            newImageCaptureLinearLayout.setVisibility(View.VISIBLE);
+            submitButton.setVisibility(View.GONE);
+            imagesRcv.setVisibility(View.GONE);
+        } else {
+            newImageCaptureLinearLayout.setVisibility(View.GONE);
+            submitButton.setVisibility(View.VISIBLE);
+            imagesRcv.setVisibility(View.VISIBLE);
+        }
+
+        containerLayout.addView(view);
+        containerLayout.setVisibility(View.VISIBLE);
+
+    }
+
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+
+        holder.singleComponentContainer.removeAllViews();
+        holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+        //holder.optionRecyclerView.setVisibility(View.VISIBLE);
+
+        if (selectedNode.isMultiChoice()) {
+            holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+            holder.submitButton.setVisibility(View.VISIBLE);
+            holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+            if (selectedNode.isDataCaptured()) {
+                AdapterUtils.setToDisable(holder.skipButton);
+            } else {
+                AdapterUtils.setToDefault(holder.skipButton);
+            }
+        } else {
+            holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+            holder.submitButton.setVisibility(View.GONE);
+            if (selectedNode.isDataCaptured()) {
+                AdapterUtils.setToDisable(holder.skipButton);
+            } else {
+                AdapterUtils.setToDefault(holder.skipButton);
+            }
+        }
+
+        if (selectedNode.isRequired()) {
+            holder.skipButton.setVisibility(View.GONE);
+        } else {
+            holder.skipButton.setVisibility(View.VISIBLE);
+        }
+
+
+        boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+
+
+                /*if (mItemList.get(index).isRequired()) {
+                    skipButton.setVisibility(View.GONE);
+                } else {
+                    skipButton.setVisibility(View.VISIBLE);
+                }*/
+        //mNestedLevel= mNestedLevel + 1;
+        Log.v(TAG, "NestedQuestionsListingAdapter mNestedLevel - " + mNestedLevel);
+        if (havingNestedQuestion) {
+            //if (isSuperNested) {
+            //if(mNestedLevel%2==0){
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            linearLayoutManager.setStackFromEnd(false);
+            linearLayoutManager.setSmoothScrollbarEnabled(true);
+            holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
+            int nestedLevel = mNestedLevel + 1;
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapterOld(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, new OnItemSelection() {
+                @Override
+                public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + indexSelected);
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode- " + selectedNode.findDisplay());
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + nestedLevel);
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + selectedNode.isHavingNestedQuestion());
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + selectedNode.getOptionsList());
+
+
+                    if (isSkipped) {
+                        if (options.size() == 1) {
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                            selectedNode.setSelected(false);
+                            selectedNode.setDataCaptured(false);
+                            selectedNode.unselectAllNestedNode();
+                            notifyItemChanged(index);
+                        }/* else {
+                            return;
+                        }*/
+                    }
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
+
+                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+
+                    if (isLastNodeSubmit)
+                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
+
+                    else {
+                        holder.selectedNestedOptionIndex += 1;
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                    }
+                }
+
+                @Override
+                public void needTitleChange(String title) {
+
+                }
+
+                @Override
+                public void onAllAnswered(boolean isAllAnswered) {
+
+                }
+
+                @Override
+                public void onCameraRequest() {
+
+                }
+
+                @Override
+                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+
+                }
+            });
+            holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
+            if (mIsEditMode) {
+                holder.nestedQuestionsListingAdapter.addItemAll(options);
+            } else {
+                holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+            }
+            holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
+            holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
+            holder.submitButton.setVisibility(View.GONE);
+            holder.skipButton.setVisibility(View.GONE);
+        } else {
+
+            holder.superNestedRecyclerView.setVisibility(View.GONE);
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+            holder.optionRecyclerView.setLayoutManager(layoutManager);
+            //**********
+            // Avoid the duplicate options asking to user in connected questions
+            //**************
+            String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
+            Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
+            if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+                int sourceIndex = 0;
+                Node toCompareWithNode = null;
+                for (int i = 0; i < mSuperItemList.size(); i++) {
+                    Log.v(TAG, "toCompareWithNode - " + mSuperItemList.get(i).getText());
+                    if (mSuperItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
+                        toCompareWithNode = mSuperItemList.get(i);
+                        Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
+                        break;
+                    }
+                }
+                NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
+            }
+            // *****************
+            OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+                @Override
+                public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                    if (!isLoadingForNestedEditData)
+                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+                    if (!isLoadingForNestedEditData) {
+                        mItemList.get(index).setSelected(false);
+                        mItemList.get(index).setDataCaptured(false);
+                    }
+                    for (int i = 0; i < options.size(); i++) {
+                        if (options.get(i).isSelected()) {
+                            mItemList.get(index).setSelected(true);
+                            mItemList.get(index).setDataCaptured(true);
+                            break;
+                        }
+                    }
+                    if(isLoadingForNestedEditData){
+                        if (selectedNode.isDataCaptured()) {
+                            AdapterUtils.setToDisable(holder.skipButton);
+                            AdapterUtils.setToDisable(holder.submitButton);
+                        } else {
+                            AdapterUtils.setToDefault(holder.skipButton);
+                            AdapterUtils.setToDefault(holder.submitButton);
+                        }
+                    }else{
+                        AdapterUtils.setToDefault(holder.submitButton);
+                        AdapterUtils.setToDefault(holder.skipButton);
+
+                    }
+                     /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+                    holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
+
+                    String type = node.getInputType();
+
+                    if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                        type = "options";
+                    }
+                    Log.v(TAG, "Type - " + type);
+                    if (!type.isEmpty() && node.isSelected()) {
+                        //holder.singleComponentContainer.removeAllViews();
+                        //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.singleComponentContainer.removeAllViews();
+                        //holder.superNestedContainerLinearLayout.removeAllViews();
+                        if (mItemList.get(index).isMultiChoice()) {
+                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                            holder.submitButton.setVisibility(View.VISIBLE);
+                        } else {
+                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                            holder.submitButton.setVisibility(View.GONE);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                            AdapterUtils.setToDisable(holder.skipButton);
+                        }
+
+                        if (mItemList.get(index).isRequired()) {
+                            holder.skipButton.setVisibility(View.GONE);
+                        } else {
+                            holder.skipButton.setVisibility(View.VISIBLE);
+                        }
+                        return;
+                    }
+
+                    routeByType(holder, selectedNode, node, index, true);
+                }
+            });
+            holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
+        }
+
+            /*for (int i = 0; i < options.size(); i++) {
+                String type = options.get(i).getInputType();
+                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
+                    // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
+                    showCameraView(options.get(i), holder, index);
+                }
+            }*/
+
+
+    }
+    private int mNestedLevel = 0;
+    private int mNodeLevel = 0;
 }
 
