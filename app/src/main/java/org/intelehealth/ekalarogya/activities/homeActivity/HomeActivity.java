@@ -1104,4 +1104,11 @@ public class HomeActivity extends BaseActivity {
         tvUserAppInfo.setText(getString(R.string.app_version_string, sessionManager.getChwname(), BuildConfig.VERSION_NAME));
     }
 
+    private void showAppInfo() {
+        TextView tvSetupLocation = findViewById(R.id.tvAppUserLocation);
+        tvSetupLocation.setText(getString(R.string.location_setup, sessionManager.getLocationName()));
+        TextView tvUserAppInfo = findViewById(R.id.tvAppVersionName);
+        tvUserAppInfo.setText(getString(R.string.app_version_string, sessionManager.getChwname(), BuildConfig.VERSION_NAME));
+    }
+
 }
