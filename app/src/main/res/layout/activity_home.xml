@@ -515,51 +515,51 @@
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
-               <!-- <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_help_whatsapp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="16dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
+                <!-- <androidx.cardview.widget.CardView
+                     android:id="@+id/cardview_help_whatsapp"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:background="@color/white"
+                     android:foreground="?android:attr/selectableItemBackground"
+                     android:padding="16dp"
+                     app:cardCornerRadius="5dp"
+                     app:cardElevation="5dp"
+                     app:cardUseCompatPadding="true">
 
-                        <RelativeLayout
-                            android:id="@+id/help_relative"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="16dp">
+                         <RelativeLayout
+                             android:id="@+id/help_relative"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:gravity="center_vertical"
+                             android:padding="16dp">
 
-                            <ImageView
-                                android:id="@+id/iv_whatsapp_helpline"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="TODO"
-                                app:srcCompat="@drawable/ic_icons8_whatsapp" />
+                             <ImageView
+                                 android:id="@+id/iv_whatsapp_helpline"
+                                 android:layout_width="30dp"
+                                 android:layout_height="30dp"
+                                 android:layout_centerVertical="true"
+                                 android:contentDescription="TODO"
+                                 app:srcCompat="@drawable/ic_icons8_whatsapp" />
 
-                            <TextView
-                                android:id="@+id/help_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_toEndOf="@+id/iv_whatsapp_helpline"
-                                android:text="@string/Whatsapp_Help_Cardview"
-                                android:includeFontPadding="false"
-                                android:fontFamily="@font/lato_medium"
-                                android:textSize="28sp"/>
+                             <TextView
+                                 android:id="@+id/help_textview"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginStart="10dp"
+                                 android:layout_toEndOf="@+id/iv_whatsapp_helpline"
+                                 android:text="@string/Whatsapp_Help_Cardview"
+                                 android:includeFontPadding="false"
+                                 android:fontFamily="@font/lato_medium"
+                                 android:textSize="28sp"/>
 
-                            &lt;!&ndash; Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>&ndash;&gt;
-
-
-                        </RelativeLayout>
+                             &lt;!&ndash; Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>&ndash;&gt;
 
 
+                         </RelativeLayout>
 
-                </androidx.cardview.widget.CardView>-->
+
+
+                 </androidx.cardview.widget.CardView>-->
 
                 <!--<androidx.cardview.widget.CardView
                     android:id="@+id/cardview_home"
@@ -756,6 +756,7 @@
 
                 </LinearLayout>
 
+                <include layout="@layout/view_app_version_info" />
             </LinearLayout>
 
         </ScrollView>
