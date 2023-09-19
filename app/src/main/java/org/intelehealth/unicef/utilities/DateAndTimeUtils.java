@@ -952,10 +952,10 @@ public class DateAndTimeUtils {
         return createdDateObject.getTime() >= startDateObject.getTime() && createdDateObject.getTime() <= endDateObject.getTime();
     }
 
-    public static String convertMillisecondsToHoursAndMinutes(long timeInMilliseconds) {
+    public static String convertMillisecondsToHoursAndMinutes(long timeInMilliseconds, String hourString, String minuteString) {
         int minutes = (int) ((timeInMilliseconds / (1000 * 60)) % 60);
         int hours = (int) ((timeInMilliseconds / (1000 * 60 * 60)) % 24);
-        return String.format(Locale.ENGLISH, "%dh %dm", hours, minutes);
+        return String.format(Locale.ENGLISH, "%d%s %d%s", hours, hourString, minutes, minuteString);
     }
 
     public static String convert12HoursTimeTo24Hours(String twelveHourTime, String inputFormat, String outputFormat) {
