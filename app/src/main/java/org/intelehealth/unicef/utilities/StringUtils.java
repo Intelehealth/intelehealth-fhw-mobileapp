@@ -3672,4 +3672,36 @@ public final class StringUtils {
         }
         return cityName;
     }
+
+    public static String translateShortHandMonths(String monthName) {
+        if (monthName.equalsIgnoreCase("Jan")) return "янв.";
+        if (monthName.equalsIgnoreCase("Feb")) return "февр.";
+        if (monthName.equalsIgnoreCase("Mar")) return "март.";
+        if (monthName.equalsIgnoreCase("Apr")) return "апр.";
+        if (monthName.equalsIgnoreCase("May")) return "май.";
+        if (monthName.equalsIgnoreCase("Jun")) return "июнь";
+        if (monthName.equalsIgnoreCase("Jul")) return "июль";
+        if (monthName.equalsIgnoreCase("Aug")) return "авг.";
+        if (monthName.equalsIgnoreCase("Sep")) return "сент.";
+        if (monthName.equalsIgnoreCase("Oct")) return "окт.";
+        if (monthName.equalsIgnoreCase("Nov")) return "нояб.";
+        if (monthName.equalsIgnoreCase("Dec")) return "дек.";
+        return monthName;
+    }
+
+    public static String translateShortHandMonthsEdit(String monthName) {
+        if (monthName.equalsIgnoreCase("янв.")) return "Jan";
+        if (monthName.equalsIgnoreCase("февр.")) return "Feb";
+        if (monthName.equalsIgnoreCase("март.")) return "Mar";
+        if (monthName.equalsIgnoreCase("апр.")) return "Apr";
+        if (monthName.equalsIgnoreCase("май.")) return "May";
+        if (monthName.equalsIgnoreCase("июнь")) return "Jun";
+        if (monthName.equalsIgnoreCase("июль")) return "Jul";
+        if (monthName.equalsIgnoreCase("авг.")) return "Aug";
+        if (monthName.equalsIgnoreCase("сент.")) return "Sep";
+        if (monthName.equalsIgnoreCase("окт.")) return "Oct";
+        if (monthName.equalsIgnoreCase("нояб.")) return "Nov";
+        if (monthName.equalsIgnoreCase("дек.")) return "Dec";
+        return monthName;
+    }
 }
