@@ -83,5 +83,6 @@
     <string name="old_password_and_new_password_cannot_be_same">Old password and new password cannot be same.</string>
     <string name="this_feature_is_not_available_in_offline_mode">This feature is not available in offline mode.</string>
     <string name="hours">hours</string>
+    <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
 
 </resources>
