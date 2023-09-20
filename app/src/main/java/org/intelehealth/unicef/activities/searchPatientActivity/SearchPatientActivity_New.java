@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,7 +56,8 @@ public class SearchPatientActivity_New extends BaseActivity {
     RecyclerView search_recycelview;
     SearchPatientAdapter_New adapter;
     EditText mSearchEditText;
-    TextView search_hint_text, allPatientsTV, addPatientTV;
+    TextView search_hint_text, allPatientsTV;
+    LinearLayout addPatientTV;
     String query;
     boolean fullyLoaded = false;
     RelativeLayout view_nopatientfound;

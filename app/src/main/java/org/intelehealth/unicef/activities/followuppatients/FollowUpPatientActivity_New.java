@@ -375,13 +375,17 @@ public class FollowUpPatientActivity_New extends BaseActivity {
 
     private void fetchAndSegregateData() {
         AlertDialog commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), "");
+        commonLoadingDialog.setCancelable(false);
         commonLoadingDialog.show();
 
         Executors.newSingleThreadExecutor().execute(() -> {
             List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth();
 
             if (initialFollowUpPatients.isEmpty()) {
-                runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
+                runOnUiThread(() -> {
+                    shouldShowNoDataTextViewForAllRecyclerViews(true);
+                    commonLoadingDialog.dismiss();
+                });
             } else {
                 finalMonthsFollowUpDates = initialFollowUpPatients;
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
