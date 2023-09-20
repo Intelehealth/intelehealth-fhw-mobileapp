@@ -3212,7 +3212,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             linearLayoutManager.setStackFromEnd(false);
             linearLayoutManager.setSmoothScrollbarEnabled(true);
-            holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
+            //holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
             int nestedLevel = mNestedLevel + 1;
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapterOld(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, new OnItemSelection() {
                 @Override
@@ -3236,7 +3236,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             return;
                         }*/
                     }
-                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
+                    //VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
 
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
@@ -3270,30 +3270,30 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 }
             });
-            holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
+            //holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
             if (mIsEditMode) {
                 holder.nestedQuestionsListingAdapter.addItemAll(options);
             } else {
                 holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
             }
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
-            holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
+            //holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
             holder.submitButton.setVisibility(View.GONE);
             holder.skipButton.setVisibility(View.GONE);
         } else {
 
-            holder.superNestedRecyclerView.setVisibility(View.GONE);
+            //holder.superNestedRecyclerView.setVisibility(View.GONE);
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
 
-            holder.optionRecyclerView.setLayoutManager(layoutManager);
+            //holder.optionRecyclerView.setLayoutManager(layoutManager);
             //**********
             // Avoid the duplicate options asking to user in connected questions
             //**************
             String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
             Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
-            if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+            /*if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
                 int sourceIndex = 0;
                 Node toCompareWithNode = null;
                 for (int i = 0; i < mSuperItemList.size(); i++) {
@@ -3305,7 +3305,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 }
                 NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
-            }
+            }*/
             // *****************
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
@@ -3346,8 +3346,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     Log.v(TAG, "Type - " + type);
                     if (!type.isEmpty() && node.isSelected()) {
-                        //holder.singleComponentContainer.removeAllViews();
-                        //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                        holder.singleComponentContainer.removeAllViews();
+                        holder.singleComponentContainer.setVisibility(View.VISIBLE);
                     } else {
                         holder.singleComponentContainer.removeAllViews();
                         //holder.superNestedContainerLinearLayout.removeAllViews();
@@ -3372,17 +3372,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     routeByType(holder, selectedNode, node, index, true);
                 }
             });
-            holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
+            //holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
         }
 
-            /*for (int i = 0; i < options.size(); i++) {
-                String type = options.get(i).getInputType();
-                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
-                    // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
-                    showCameraView(options.get(i), holder, index);
-                }
-            }*/
 
 
     }

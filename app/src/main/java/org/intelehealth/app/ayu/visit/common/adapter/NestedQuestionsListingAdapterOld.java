@@ -639,7 +639,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
     }
 
 
-    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index) {
 
         holder.singleComponentContainer.removeAllViews();
         holder.tvQuestionDesc.setVisibility(View.VISIBLE);
@@ -692,11 +692,6 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
             holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapterOld(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect index- " + indexSelected);
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNode- " + selectedNode.findDisplay());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + nestedLevel);
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + selectedNode.isHavingNestedQuestion());
-                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect nestedLevel- " + selectedNode.getOptionsList());
 
 
                     if (isSkipped) {
@@ -782,6 +777,21 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
                 NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
             }
             // *****************
+            showChips(holder, index, options, selectedNode);
+        }
+            /*for (int i = 0; i < options.size(); i++) {
+                String type = options.get(i).getInputType();
+                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
+                    // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
+                    showCameraView(options.get(i), holder, index);
+                }
+            }*/
+
+
+    }
+
+    private void showChips(GenericViewHolder holder, int index,List<Node> options, Node selectedNode) {
             OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
                 @Override
                 public void onSelect(Node node, boolean isLoadingForNestedEditData) {
@@ -821,8 +831,8 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
                     }
                     Log.v(TAG, "Type - " + type);
                     if (!type.isEmpty() && node.isSelected()) {
-                        //holder.singleComponentContainer.removeAllViews();
-                        //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                        holder.singleComponentContainer.removeAllViews();
+                        holder.singleComponentContainer.setVisibility(View.VISIBLE);
                     } else {
                         holder.singleComponentContainer.removeAllViews();
                         //holder.superNestedContainerLinearLayout.removeAllViews();
@@ -848,19 +858,9 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
                 }
             });
             holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
-        }
-
-            /*for (int i = 0; i < options.size(); i++) {
-                String type = options.get(i).getInputType();
-                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
-                    // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
-                    showCameraView(options.get(i), holder, index);
-                }
-            }*/
-
 
     }
+
 
     private void showCameraView(Node parentNode, Node node, LinearLayout containerLayout, int index) {
         Log.v("showCameraView", "Start method - " + new Gson().toJson(node));
