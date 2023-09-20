@@ -40,6 +40,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -122,7 +123,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 // Patient Name section
                 Log.v("Followup", new Gson().toJson(model));
                 String fullName = model.getFirst_name() + " " + model.getLast_name();
-                String displayName = fullName.length()>10 ? fullName.substring(0, 10) : fullName;
+                String displayName = fullName.length() > 10 ? fullName.substring(0, 10) : fullName;
                 if (model.getOpenmrs_id() != null) {
                     holder.fu_patname_txtview.setText(String.format("%s, %s", displayName, model.getOpenmrs_id()));
                 } else {
@@ -133,16 +134,23 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
                     try {
                         Log.v("getFollowup_date", model.getFollowup_date());
-                        String followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
-                        Log.v("getFollowup_date", followupDateTimeRaw+"OK");
-                        String followupDateTime = followupDateTimeRaw.replace(", Time:", "");
-                        Log.v("getFollowup_date", followupDateTime);
 
-                        Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(followupDateTime);
+                        String followupDateTimeRaw = "";
+                        try {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
+                        } catch (Exception e) {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                        }
+
+                        Log.v("getFollowup_date", followupDateTimeRaw + "OK");
+                        String followupDateTime = followupDateTimeRaw.trim().replace(", Time:", "");
+                        Log.v("getFollowup_date", "final followupDate " + followupDateTime);
+
+                        Date fDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(followupDateTime);
                         Date nowDate = new Date();
                         if (fDate.getTime() >= nowDate.getTime()) {
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.gray_3));
-                        }else{
+                        } else {
                             holder.fu_date_txtview.setTextColor(context.getColor(R.color.red));
                         }
                         String followupDate = DateAndTimeUtils.date_formatter(followupDateTime, "yyyy-MM-dd hh:mm a", "dd MMMM,hh:mm a");
@@ -191,7 +199,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
                 //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                
+
                 context.startActivity(intent);
             });
         }
@@ -219,7 +227,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             profile_image = itemView.findViewById(R.id.profile_image);
             rootView = itemView;
 
-            fu_date_txtview.setText("22 June"); // todo: testing.
+//            fu_date_txtview.setText("22 June"); // todo: testing.
         }
 
         public View getRootView() {

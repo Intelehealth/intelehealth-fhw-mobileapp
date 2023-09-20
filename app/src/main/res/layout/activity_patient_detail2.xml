@@ -181,65 +181,6 @@
                 android:layout_marginBottom="@dimen/margin_10"
                 android:orientation="vertical">
 
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_open_visits"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="@dimen/margin_20"
-                    app:cardCornerRadius="@dimen/margin_8"
-                    app:cardElevation="@dimen/margin_5">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/padding_20">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/padding_12"
-                            android:layout_marginTop="@dimen/padding_12"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:background="@drawable/ic_baseline_lens_24_light"
-                                android:padding="12dip"
-                                android:src="@drawable/icons8_activity_history_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/margin_8"
-                                android:gravity="center_vertical"
-                                android:lineSpacingExtra="3sp"
-                                android:text="@string/open_visit"
-                                android:textAppearance="@style/patdetail_header1" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dip"
-                            android:layout_marginVertical="@dimen/padding_12"
-                            android:background="@color/gray_1" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcv_open_visits"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/padding_12" />
-
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_past_visits"
                     android:layout_width="match_parent"
@@ -299,10 +240,70 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_open_visits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    app:cardCornerRadius="@dimen/margin_8"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/padding_20">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/padding_12"
+                            android:layout_marginTop="@dimen/padding_12"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/ic_baseline_lens_24_light"
+                                android:padding="12dip"
+                                android:src="@drawable/icons8_activity_history_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_8"
+                                android:gravity="center_vertical"
+                                android:lineSpacingExtra="3sp"
+                                android:text="@string/open_visit"
+                                android:textAppearance="@style/patdetail_header1" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dip"
+                            android:layout_marginVertical="@dimen/padding_12"
+                            android:background="@color/gray_1" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcv_open_visits"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/padding_12" />
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
             </LinearLayout>
 
 
         </RelativeLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout

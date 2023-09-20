@@ -1506,15 +1506,21 @@ public class PrescriptionActivity extends AppCompatActivity implements NetworkUt
                 if (no_followup_txt.getVisibility() == View.VISIBLE) {
                     no_followup_txt.setVisibility(View.GONE);
                 }
-                Log.i("TAG", "followUpDate: " + followUpDate);
                 String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
                 followup_date_txt.setText(followUpDate_format);
-                String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on,followUpDate_format);
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                    followUpSubText = StringUtils.en__hi_dob(followUpSubText);
-                followup_subtext.setText(followUpSubText);
+
+                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDate, "yyyy-MM-dd")) {
+                    String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        followUpSubText = StringUtils.en__hi_dob(followUpSubText);
+                    }
+                    followup_subtext.setText(followUpSubText);
+                } else {
+                    followup_subtext.setText(getResources().getString(R.string.follow_up_date_arrived));
+                }
+
                 //checkForDoctor();
                 break;
             }
