@@ -418,6 +418,7 @@ public class VisitReceivedFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
@@ -593,6 +594,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
@@ -760,6 +762,8 @@ public class VisitReceivedFragment extends Fragment {
                 model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));

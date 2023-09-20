@@ -72,16 +72,65 @@
 
     </RelativeLayout>
 
+    <!--Search-->
+    <RelativeLayout
+        android:id="@+id/search_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frame_10021"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:layout_marginTop="@dimen/margin_32dp"
+        android:layout_marginEnd="@dimen/fu_margin_start">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchview_received"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/filter_icon"
+            android:background="@drawable/ui2_common_input_bg"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColorHint="@color/textColorLightGary"
+            android:textSize="@dimen/txtsize_patdetail_14sp"
+            app:iconifiedByDefault="false"
+            app:queryHint="@string/search_patient" />
+
+        <ImageButton
+            android:id="@+id/filter_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:background="@null"
+            android:src="@drawable/visit_filter_icon"
+            android:visibility="gone" />
+    </RelativeLayout>
+    <!--ScrollView - start -->
+
+    <!--No Patient Found - Start -->
+    <include
+        android:id="@+id/no_patient_found_block"
+        layout="@layout/no_patient_found_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_relative"
+        android:layout_marginTop="90dp"
+        android:visibility="gone" />
+    <!--No Patient Found - End -->
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frame_10021"
+        android:layout_below="@+id/search_relative"
+        android:layout_marginTop="@dimen/fu_margin_start"
         android:fillViewport="true">
 
         <!-- Frame 2608676 -->
         <LinearLayout
-            android:id="@+id/frame_26086"
+            android:id="@+id/main_block"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"

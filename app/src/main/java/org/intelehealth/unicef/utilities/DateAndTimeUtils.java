@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class DateAndTimeUtils {
@@ -884,7 +886,7 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(new Date());
     }
 
-    private static Date convertStringToDateObject(String date, String format) {
+    public static Date convertStringToDateObject(String date, String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         Date parsedDate = null;
 
@@ -960,5 +962,36 @@ public class DateAndTimeUtils {
 
     public static String convert12HoursTimeTo24Hours(String twelveHourTime, String inputFormat, String outputFormat) {
         return LocalTime.parse(twelveHourTime, DateTimeFormatter.ofPattern(inputFormat, Locale.ENGLISH)).format(DateTimeFormatter.ofPattern(outputFormat));
+    }
+
+    public static String extractDateFromString(String followUpString) {
+        String result = "";
+        String regex = "(\\d{4}-\\d{2}-\\d{2})";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(followUpString);
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+        return result;
+    }
+
+    public static boolean isDateInCurrentWeek(Date date) {
+        Calendar currentCalendar = Calendar.getInstance();
+        int week = currentCalendar.get(Calendar.WEEK_OF_YEAR);
+        int year = currentCalendar.get(Calendar.YEAR);
+        Calendar targetCalendar = Calendar.getInstance();
+        targetCalendar.setTime(date);
+        int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
+        int targetYear = targetCalendar.get(Calendar.YEAR);
+        return week == targetWeek && year == targetYear;
+    }
+
+    public static Date getCurrentDateWithoutTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        try {
+            return formatter.parse(formatter.format(new Date()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

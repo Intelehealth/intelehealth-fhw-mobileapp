@@ -1539,8 +1539,8 @@
     <string name="next_new">Дальше</string>
     <string name="prescription_consultation_details">Информация о консультации</string>
 
-    <string name="achievements_hours">часов</string>
-    <string name="achievements_minutes">минут</string>
+    <string name="achievements_hours">ч.</string>
+    <string name="achievements_minutes">мин.</string>
     <string name="wait_for_the_doctor_message">Пожалуйста, дождитесь сообщения от врача!</string>
     <string name="some_issue_with_mindmap">Возникла проблема с протоколом.</string>
 
