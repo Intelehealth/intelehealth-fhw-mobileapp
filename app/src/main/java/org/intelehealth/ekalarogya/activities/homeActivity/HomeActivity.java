@@ -927,6 +927,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 Log.e("Error", "" + e);
+                System.out.println(e.toString());
             }
         }));
 

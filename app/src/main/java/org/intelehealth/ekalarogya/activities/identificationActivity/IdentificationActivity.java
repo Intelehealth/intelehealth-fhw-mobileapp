@@ -2519,7 +2519,7 @@ public class IdentificationActivity extends AppCompatActivity implements
 
     public void generateUuid() {
 
-        patientUuid = uuidGenerator.UuidGenerator();
+        patientUuid = uuidGenerator.generateUuid();
 
     }
 

@@ -604,32 +604,15 @@ public class VisitSummaryActivity extends BaseActivity {
                 EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
                 RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
                 RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
-
-//                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
-//                chatIntent.putExtra("patientName", patientName);
-//                chatIntent.putExtra("visitUuid", visitUuid);
-//                chatIntent.putExtra("patientUuid", patientUuid);
-//                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
-
-//                if (rtcConnectionDTO != null) {
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
-//                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
                 RtcArgs args = new RtcArgs();
-                args.setDoctorUuid("");
+                if (rtcConnectionDTO != null)
+                    args.setDoctorUuid(rtcConnectionDTO.getConnectionInfo());
+                else args.setDoctorUuid("");
                 args.setPatientId(patientUuid);
                 args.setPatientName(patientName);
                 args.setVisitId(visitUUID);
                 args.setNurseId(encounterDTO.getProvideruuid());
                 EkalChatActivity.startChatActivity(VisitSummaryActivity.this, args);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-
-//                } else {
-//                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
-//                }
-//                startActivity(chatIntent);
             }
         });
 

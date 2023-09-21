@@ -18,18 +18,18 @@ public class RTCMessageReceiver extends BroadcastReceiver {
         Logger.logV(TAG, "onReceive");
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
-        if (intent != null) {
-            RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
-            RTCConnectionDTO rtcConnectionDTO = new RTCConnectionDTO();
-            rtcConnectionDTO.setUuid(new UuidGenerator().UuidGenerator());
-            rtcConnectionDTO.setVisitUUID(intent.getStringExtra("visit_uuid"));
-            rtcConnectionDTO.setConnectionInfo(intent.getStringExtra("connection_info"));
-            try {
-                rtcConnectionDAO.insert(rtcConnectionDTO);
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (intent != null) {
+//            RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+//            RTCConnectionDTO rtcConnectionDTO = new RTCConnectionDTO();
+//            rtcConnectionDTO.setUuid(new UuidGenerator().generateUuid());
+//            rtcConnectionDTO.setVisitUUID(intent.getStringExtra("visit_uuid"));
+//            rtcConnectionDTO.setConnectionInfo(intent.getStringExtra("connection_info"));
+//            try {
+//                rtcConnectionDAO.insert(rtcConnectionDTO);
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }
 }

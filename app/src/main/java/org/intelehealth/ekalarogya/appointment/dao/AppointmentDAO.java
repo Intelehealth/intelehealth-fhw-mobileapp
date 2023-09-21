@@ -31,7 +31,7 @@ public class AppointmentDAO {
         try {
 
             ContentValues values = new ContentValues();
-            values.put("uuid", checkAppointmentInfo != null ? checkAppointmentInfo.getUuid() : new UuidGenerator().UuidGenerator());
+            values.put("uuid", checkAppointmentInfo != null ? checkAppointmentInfo.getUuid() : new UuidGenerator().generateUuid());
             values.put("appointment_id", appointmentInfo.getId());
             values.put("slot_day", appointmentInfo.getSlotDay());
             values.put("slot_date", appointmentInfo.getSlotDate());

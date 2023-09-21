@@ -7,13 +7,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+
 import org.intelehealth.ekalarogya.database.dao.ProviderDAO;
+import org.intelehealth.ekalarogya.database.dao.RTCConnectionDAO;
+import org.intelehealth.ekalarogya.models.dto.RTCConnectionDTO;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.webrtc.activity.EkalChatActivity;
 import org.intelehealth.ekalarogya.webrtc.notification.AppNotification;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
+
+import java.util.UUID;
 
 /**
  * Created by Vaghela Mithun R. on 03-06-2023 - 19:29.
@@ -45,8 +51,18 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
                     .body(chatMessage.getMessage())
                     .pendingIntent(EkalChatActivity.getPendingIntent(this, args))
                     .send();
+
+            saveChatInfoLog(args);
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void saveChatInfoLog(RtcArgs args) throws DAOException {
+        RTCConnectionDTO rtcDto = new RTCConnectionDTO();
+        rtcDto.setUuid(UUID.randomUUID().toString());
+        rtcDto.setVisitUUID(args.getVisitId());
+        rtcDto.setConnectionInfo(args.getDoctorUuid());
+        new RTCConnectionDAO().insert(rtcDto);
     }
 }

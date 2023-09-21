@@ -15,7 +15,12 @@ public class RTCConnectionDAO {
     private long createdRecordsCount = 0;
 
     public boolean insert(RTCConnectionDTO connectionDTO) throws DAOException {
-        if (getByVisitUUID(connectionDTO.getVisitUUID()) != null) return false;
+        RTCConnectionDTO exist = getByVisitUUID(connectionDTO.getVisitUUID());
+        if (exist != null) {
+            connectionDTO.setUuid(exist.getUuid());
+            return update(connectionDTO);
+        }
+
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -38,6 +43,28 @@ public class RTCConnectionDAO {
         return isInserted;
     }
 
+    public boolean update(RTCConnectionDTO connectionDTO) throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        String whereClause = "uuid = ?";
+        try {
+            ContentValues values = new ContentValues();
+            values.put("connection_info", connectionDTO.getConnectionInfo());
+
+            createdRecordsCount = db.update("tbl_rtc_connection_log", values, whereClause, new String[]{connectionDTO.getUuid()});
+            db.setTransactionSuccessful();
+
+        } catch (SQLException e) {
+            isUpdated = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+
+        }
+        return isUpdated;
+    }
+
     public RTCConnectionDTO getByVisitUUID(String visitUUID) {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -55,7 +82,7 @@ public class RTCConnectionDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-      //  db.close();   // no need to close db instance this causes the issue of Sqlite object being closed.
+        //  db.close();   // no need to close db instance this causes the issue of Sqlite object being closed.
 
         return connectionDTO;
     }
