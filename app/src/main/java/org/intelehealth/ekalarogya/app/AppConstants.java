@@ -10,7 +10,6 @@ import androidx.work.PeriodicWorkRequest;
 
 
 import java.io.File;
-import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
@@ -66,7 +65,7 @@ public class AppConstants {
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
-    public static String NEW_UUID = new UuidGenerator().UuidGenerator();
+    public static String NEW_UUID = new UuidGenerator().generateUuid();
     public static NotificationUtils notificationUtils = new NotificationUtils();
     public static final String DOCTOR_NOT_NEEDED="Specialist doctor not needed";
 

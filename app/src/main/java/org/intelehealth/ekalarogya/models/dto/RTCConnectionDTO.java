@@ -2,6 +2,7 @@ package org.intelehealth.ekalarogya.models.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 public class RTCConnectionDTO {
     @SerializedName("uuid")
     @Expose
@@ -9,11 +10,9 @@ public class RTCConnectionDTO {
     @SerializedName("visit_uuid")
     @Expose
     private String visitUUID;
-    @SerializedName("visit_uuid")
-    @Expose
-    private String connectionInfo;
 
     @SerializedName("connection_info")
+    private String connectionInfo;
 
 
     public String getUuid() {

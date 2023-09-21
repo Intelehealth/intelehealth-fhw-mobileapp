@@ -20,8 +20,10 @@ import com.google.gson.Gson;
 
 import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.app.AppConstants;
+import org.intelehealth.ekalarogya.models.dto.RTCConnectionDTO;
 import org.intelehealth.ekalarogya.services.firebase_services.CallRTCNotifyReceiver;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
+import org.intelehealth.ekalarogya.utilities.UuidGenerator;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
 
@@ -32,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.UUID;
 
 /**
  * Created by Vaghela Mithun R. on 28-06-2023 - 18:07.
@@ -77,7 +80,7 @@ public class RealTimeDataChangedObserver {
         RtcArgs rtcArgs = gson.fromJson(gson.toJson(value), RtcArgs.class);
         rtcArgs.setNurseName(sessionManager.getChwname());
         if (rtcArgs == null) return null;
-        if(rtcArgs.getDoctorName().contains("\"")) rtcArgs.getDoctorName().replace("\"", "");
+        if (rtcArgs.getDoctorName().contains("\"")) rtcArgs.getDoctorName().replace("\"", "");
         rtcArgs.setUrl(BuildConfig.LIVE_KIT_URL);
         rtcArgs.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseName());
         rtcArgs.setActionType("VIDEO_CALL");
