@@ -33,6 +33,7 @@ import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.klivekit.RtcApp;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.Manager;
+import org.intelehealth.klivekit.utils.Constants;
 
 
 import dagger.hilt.android.HiltAndroidApp;
@@ -79,7 +80,6 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
 
     @Override
     public void onCreate() {
-        Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         super.onCreate();
         sIntelehealthApplication = this;
         //For Vector Drawables Backward Compatibility(<API 21)
