@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.gson.Gson;
 
 import org.intelehealth.ekalarogya.database.dao.ProviderDAO;
@@ -45,6 +46,7 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
         args.setNurseId(chatMessage.getToUser());
         args.setDoctorId(chatMessage.getFromUser());
         Log.e(TAG, "showNotification: " + args.toJson());
+        args.setDoctorUuid(chatMessage.getFromUser());
         try {
             String title = new ProviderDAO().getProviderName(args.getDoctorId());
             new AppNotification.Builder(this)
@@ -53,17 +55,26 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
                     .pendingIntent(EkalChatMessageActivity.getPendingIntent(this, args))
                     .send();
 
-            saveChatInfoLog(args);
+            saveChatInfoLog(args.getVisitId(), args.getDoctorUuid());
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void saveChatInfoLog(RtcArgs args) throws DAOException {
+    private void saveChatInfoLog(String visitId, String doctorId) throws DAOException {
         RTCConnectionDTO rtcDto = new RTCConnectionDTO();
         rtcDto.setUuid(UUID.randomUUID().toString());
-        rtcDto.setVisitUUID(args.getVisitId());
-        rtcDto.setConnectionInfo(args.getDoctorUuid());
+        rtcDto.setVisitUUID(visitId);
+        rtcDto.setConnectionInfo(doctorId);
         new RTCConnectionDAO().insert(rtcDto);
+    }
+
+    @Override
+    public void saveTheDoctor(@NonNull ChatMessage chatMessage) {
+        try {
+            saveChatInfoLog(chatMessage.getVisitId(), chatMessage.getFromUser());
+        } catch (DAOException e) {
+            Timber.tag(TAG).e(e.getThwStack(), "saveTheDoctor: ");
+        }
     }
 }

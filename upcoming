@@ -3,3 +3,8 @@ Web / Chat dialog remove the horizontal scroll from long text message and show f
 - Share apk with sagar
 - Force update with Firebase checking
 - Play store upload planning
+
+Enhancement
+- Remove display on top permission
+- Remove foreground service, not in use
+- Voice detector not working in video

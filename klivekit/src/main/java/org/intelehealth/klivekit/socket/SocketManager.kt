@@ -28,6 +28,7 @@ open class SocketManager @Inject constructor() {
 
     interface NotificationListener {
         fun showNotification(chatMessage: ChatMessage)
+        fun saveTheDoctor(chatMessage: ChatMessage)
     }
 
     fun connect(url: String?) {
@@ -70,7 +71,8 @@ open class SocketManager @Inject constructor() {
         } else if (event == EVENT_UPDATE_MESSAGE) {
             json?.let { array -> ackMsgReceived(JSONArray(array)) }
             json?.let { array ->
-                notifyIfNotActiveRoom(JSONArray(array)) {
+                notifyIfNotActiveRoom(JSONArray(array)) { message ->
+                    notificationListener?.saveTheDoctor(message)
                     emitterListener?.invoke(event)?.call(it)
                 };
             }
@@ -81,7 +83,7 @@ open class SocketManager @Inject constructor() {
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }
 
-    private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: () -> Unit) {
+    private fun notifyIfNotActiveRoom(jsonArray: JSONArray, block: (ChatMessage) -> Unit) {
         if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
             val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
             Gson().fromJson(json, ChatMessage::class.java)?.let {
@@ -89,8 +91,8 @@ open class SocketManager @Inject constructor() {
                 Timber.e { "roomId => ${it.roomId}" }
 
                 activeRoomId?.let { roomId ->
-                    if (isUnknownDoctorMessage(it, roomId)) block.invoke()
-                    else if (it.roomId.equals(activeRoomId)) block.invoke()
+                    if (isUnknownDoctorMessage(it, roomId)) block.invoke(it)
+                    else if (it.roomId.equals(activeRoomId)) block.invoke(it)
                     else showChatNotification(it)
                 } ?: showChatNotification(it)
             }
