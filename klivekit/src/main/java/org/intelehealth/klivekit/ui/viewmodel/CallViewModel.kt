@@ -23,6 +23,10 @@ import io.livekit.android.room.track.LocalScreencastVideoTrack
 import io.livekit.android.room.track.LocalVideoTrack
 import io.livekit.android.room.track.LocalVideoTrackOptions
 import io.livekit.android.room.track.Track
+import io.livekit.android.room.track.VideoCodec
+import io.livekit.android.room.track.VideoPreset
+import io.livekit.android.room.track.VideoPreset169
+import io.livekit.android.room.track.VideoPreset43
 import io.livekit.android.room.track.VideoTrack
 import io.livekit.android.util.LoggingLevel
 import io.livekit.android.util.flow
@@ -437,13 +441,13 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
 ////
 //            localParticipant.publishAudioTrack(audioTrack)
 
-            val videoTrack = localParticipant.createVideoTrack(
-                "video", LocalVideoTrackOptions(
-                    position = CameraPosition.FRONT
-                )
-            )
+//            val videoTrack = localParticipant.createVideoTrack(
+//                "video", LocalVideoTrackOptions(
+//                    position = CameraPosition.FRONT
+//                )
+//            )
 //
-            localParticipant.publishVideoTrack(videoTrack)
+//            localParticipant.publishVideoTrack(videoTrack)
 //            updateVideoTrack(localParticipant)
             mutableCameraPosition.postValue(CameraPosition.FRONT)
             mutableLocalVideoTrack.postValue(getVideoTrack(localParticipant))
@@ -563,9 +567,9 @@ open class CallViewModel(val room: Room, private val audioHandler: AudioSwitchHa
     fun reconnect() {
         Timber.e { "Reconnecting." }
         room.disconnect()
-//        viewModelScope.launch {
-//            connectToRoom()
-//        }
+        viewModelScope.launch {
+            connectToRoom()
+        }
     }
 
     fun disconnect() {
