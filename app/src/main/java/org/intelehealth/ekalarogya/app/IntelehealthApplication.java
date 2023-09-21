@@ -31,6 +31,7 @@ import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.firebase.RealTimeDataChangedObserver;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.Constants;
 
 
 import io.reactivex.plugins.RxJavaPlugins;
@@ -223,7 +224,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getCreatorID() != null && !sessionManager.getCreatorID().isEmpty()) {
-            String socketUrl = BuildConfig.SOCKET_URL + "?userId="
+            String socketUrl = Constants.BASE_URL + "?userId="
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();
             if (!socketManager.isConnected()) socketManager.connect(socketUrl);

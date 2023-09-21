@@ -25,6 +25,7 @@ import org.intelehealth.ekalarogya.services.firebase_services.CallRTCNotifyRecei
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UuidGenerator;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.utils.Constants;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
 
 import java.text.ParseException;
@@ -81,8 +82,10 @@ public class RealTimeDataChangedObserver {
         rtcArgs.setNurseName(sessionManager.getChwname());
         if (rtcArgs == null) return null;
         if (rtcArgs.getDoctorName().contains("\"")) rtcArgs.getDoctorName().replace("\"", "");
-        rtcArgs.setUrl(BuildConfig.LIVE_KIT_URL);
-        rtcArgs.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseName());
+        rtcArgs.setUrl("wss://" + sessionManager.getServerUrl() + ":9090");
+//        rtcArgs.setUrl(BuildConfig.LIVE_KIT_URL);
+        rtcArgs.setSocketUrl(Constants.BASE_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseName());
+//        rtcArgs.setSocketUrl(BuildConfig.SOCKET_URL + "?userId=" + rtcArgs.getNurseId() + "&name=" + rtcArgs.getNurseName());
         rtcArgs.setActionType("VIDEO_CALL");
         return rtcArgs;
     }
