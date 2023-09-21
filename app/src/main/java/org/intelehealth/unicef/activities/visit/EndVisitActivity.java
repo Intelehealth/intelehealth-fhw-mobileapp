@@ -91,7 +91,7 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         searchview_received = findViewById(R.id.searchview_received);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
         no_patient_found_block = findViewById(R.id.no_patient_found_block);
-        main_block = findViewById(R.id.main_block);
+        main_block = findViewById(R.id.frame_26086);
         ((TextView) findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
         LinearLayout addPatientTV = findViewById(R.id.add_new_patientTV);
         addPatientTV.setOnClickListener(new View.OnClickListener() {
