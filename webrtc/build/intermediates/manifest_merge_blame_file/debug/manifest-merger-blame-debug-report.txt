@@ -4,82 +4,82 @@
 4    package="org.intelehealth.apprtc" >
 5
 6    <uses-sdk android:minSdkVersion="19" />
-6-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+6-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 7
 8    <uses-feature android:name="android.hardware.camera" />
-8-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:5-60
-8-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:19-57
+8-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:5-60
+8-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:6:19-57
 9    <uses-feature android:name="android.hardware.camera.autofocus" />
-9-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:5-70
-9-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:19-67
+9-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:5-70
+9-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:7:19-67
 10    <uses-feature
-10-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:8:5-10:35
+10-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:8:5-10:35
 11        android:glEsVersion="0x00020000"
-11-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:9:9-41
+11-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:9:9-41
 12        android:required="true" />
-12-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:10:9-32
+12-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:10:9-32
 13
 14    <uses-permission android:name="android.permission.CAMERA" />
-14-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:5-65
-14-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:22-62
+14-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:5-65
+14-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:12:22-62
 15    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-15-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:5-79
-15-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:22-76
+15-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:5-79
+15-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:13:22-76
 16    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-16-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:5-80
-16-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:22-77
+16-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:5-80
+16-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:14:22-77
 17    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-17-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:5-71
-17-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:22-68
+17-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:5-71
+17-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:15:22-68
 18    <uses-permission android:name="android.permission.INTERNET" />
-18-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:5-67
-18-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:22-64
+18-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:5-67
+18-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:16:22-64
 19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-19-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:5-81
-19-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:22-78
+19-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:5-81
+19-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:18:22-78
 20    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-20-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:5-81
-20-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:22-78
+20-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:5-81
+20-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:19:22-78
 21    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-21-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:5-80
-21-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-77
+21-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:5-80
+21-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-77
 22    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-22-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-79
-22-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:22-76
+22-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-79
+22-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:22-76
 23    <uses-permission android:name="android.permission.BLUETOOTH" />
-23-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:5-68
-23-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:22-65
+23-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:5-68
+23-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:22-65
 24    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-24-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:5-75
-24-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:22-72
+24-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:5-75
+24-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:24:22-72
 25
 26    <application
-26-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:5-66:19
+26-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:5-66:19
 27        android:allowBackup="true"
-27-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-35
+27-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-35
 28        android:label="@string/app_name"
-28-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:28:9-41
+28-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:28:9-41
 29        android:requestLegacyExternalStorage="true"
-29-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:29:9-52
+29-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:29:9-52
 30        android:supportsRtl="true"
-30-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:9-35
+30-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:9-35
 31        android:theme="@style/AppTheme"
-31-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:9-40
+31-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:9-40
 32        tools:ignore="LockedOrientationActivity" >
-32-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:9-49
+32-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:9-49
 33        <activity android:name="org.intelehealth.ihutils.ui.CameraActivity" />
-33-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:33:9-79
-33-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:33:19-76
+33-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:33:9-79
+33-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:33:19-76
 34        <activity
-34-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:34:9-38:63
+34-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:34:9-38:63
 35            android:name="org.intelehealth.apprtc.ChatActivity"
-35-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:35:13-64
+35-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:35:13-64
 36            android:screenOrientation="portrait"
-36-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:36:13-49
+36-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:36:13-49
 37            android:theme="@style/AppTheme.NoActionBar"
-37-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:37:13-56
+37-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:37:13-56
 38            android:windowSoftInputMode="stateAlwaysHidden" />
-38-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:38:13-60
+38-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:38:13-60
 39        <!--
 40          <activity
 41              android:name="com.shivam.androidwebrtc.app_rtc_sample.main.AppRTCMainActivity"
@@ -104,13 +104,13 @@
 60        </activity>
 61        -->
 62        <activity
-62-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:62:9-65:59
+62-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:62:9-65:59
 63            android:name="org.intelehealth.apprtc.CompleteActivity"
-63-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:63:13-68
+63-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:63:13-68
 64            android:screenOrientation="portrait"
-64-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:64:13-49
+64-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:64:13-49
 65            android:theme="@style/AppTheme.NoActionBar" />
-65-->D:\Android Projects\Intelehealth\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:65:13-56
+65-->E:\Intelehealth_23_Aug_2023\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:65:13-56
 66    </application>
 67
 68</manifest>
