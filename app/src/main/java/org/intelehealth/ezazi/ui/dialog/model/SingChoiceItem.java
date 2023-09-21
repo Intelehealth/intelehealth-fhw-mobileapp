@@ -10,6 +10,8 @@ public class SingChoiceItem {
     private String item;
     private String itemId;
 
+    private String userUuid;
+
     private boolean selected;
 
     private String secondaryName;
@@ -36,6 +38,14 @@ public class SingChoiceItem {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    public void setUserUuid(String userUuid) {
+        this.userUuid = userUuid;
+    }
+
+    public String getUserUuid() {
+        return userUuid;
     }
 
     public void setSelected(boolean selected) {

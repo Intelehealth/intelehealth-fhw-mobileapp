@@ -143,6 +143,10 @@ public class AppConstants {
 
     public static final int INPUT_MAX_LENGTH = 300;
 
+    public static final String EVENT_SHIFT_CHANGED = "shiftChanged";
+
+    public static final String TO_HW_USER_UUID = "toHwUserUuid";
+
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }

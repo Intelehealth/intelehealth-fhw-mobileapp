@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.activities.homeActivity;
 
+import static org.intelehealth.ezazi.app.AppConstants.EVENT_SHIFT_CHANGED;
+import static org.intelehealth.ezazi.app.AppConstants.TO_HW_USER_UUID;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__gu_dob;
@@ -69,6 +71,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.activePatientsActivity.ActivePatientAdapter;
@@ -120,6 +123,7 @@ import org.intelehealth.ezazi.utilities.StringUtils;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.klivekit.model.RtcArgs;
+import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.RtcUtilsKt;
@@ -135,6 +139,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -828,6 +833,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                     SingChoiceItem item = new SingChoiceItem();
                     item.setItem(mProviderNurseList.get(i).getGivenName() + " " + mProviderNurseList.get(i).getFamilyName());
                     item.setItemId(mProviderNurseList.get(i).getUuid());
+                    item.setUserUuid(mProviderNurseList.get(i).getUserUuid());
                     item.setItemIndex(i);
                     choiceItems.add(item);
                 }
@@ -877,18 +883,21 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                 .build();
 
         dialog.isSearchable(true);
-        dialog.setListener(item -> assignNurseToPatient(visitUUIDList, item.getItemId()));
+        dialog.setListener(item -> assignNurseToPatient(visitUUIDList, item.getItemId(), item.getUserUuid()));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid) {
+    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid, String assigneeNurseUserUuid) {
         Log.e(TAG, "assignNurseToPatient: " + selectedNurseUuid);
         VisitAttributeListDAO visitsAttrsDAO = new VisitAttributeListDAO();
         for (int j = 0; j < visitUUIDList.size(); j++) {
             try {
                 visitsAttrsDAO.updateVisitTypeAttributeUuid(visitUUIDList.get(j), selectedNurseUuid);
                 new VisitsDAO().updateVisitSync(visitUUIDList.get(j), "0");
+                HashMap<String, String> assigneeMap = new HashMap<>();
+                assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);
+                SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }
