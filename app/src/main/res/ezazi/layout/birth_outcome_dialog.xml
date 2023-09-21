@@ -77,28 +77,6 @@
             <!--                    android:checked="false" />-->
             <!--            </RelativeLayout>-->
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dialog_input_margin_top"
-                android:background="@drawable/selector_dialog_list_item"
-                android:padding="@dimen/small_btn_horizontal_padding">
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cbMotherDeceased"
-                    style="@style/Theme.EZazi.Text.Dialog.Content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layoutDirection="rtl"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:text="@{CompletedVisitStatus.MOTHER_DECEASED.label}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/mother_deceased" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvReferToOtherHospital"
                 style="@style/Theme.EZazi.Text.Dialog.Content"
@@ -142,6 +120,28 @@
                 android:padding="@dimen/small_btn_horizontal_padding"
                 android:text="@{CompletedVisitStatus.REFER_TO_HIGH_ICU.label}"
                 tools:text="@string/refer_to_icu" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dialog_input_margin_top"
+                android:background="@drawable/selector_dialog_list_item"
+                android:padding="@dimen/small_btn_horizontal_padding">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbMotherDeceased"
+                    style="@style/Theme.EZazi.Text.Dialog.Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="@{CompletedVisitStatus.MOTHER_DECEASED.label}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/mother_deceased" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                 android:id="@+id/etOutOfTimeReasonLayout"
