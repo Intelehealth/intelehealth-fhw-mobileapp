@@ -1,4 +1,4 @@
-package com.codeglo.coyamore.agora.extensions
+package org.intelehealth.klivekit.utils.extensions
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

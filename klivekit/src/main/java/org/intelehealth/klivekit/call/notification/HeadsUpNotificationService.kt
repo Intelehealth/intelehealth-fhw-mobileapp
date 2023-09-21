@@ -156,7 +156,7 @@ class HeadsUpNotificationService : Service() {
         try {
             val receiveCallAction = Intent(
                 this,
-                CallNotificationActionReceiver::class.java
+                CallReceiver::class.java
             )
             receiveCallAction.putExtra(
                 "ConstantApp.CALL_RESPONSE_ACTION_KEY",
@@ -167,7 +167,7 @@ class HeadsUpNotificationService : Service() {
             receiveCallAction.action = "RECEIVE_CALL"
             val cancelCallAction = Intent(
                 this,
-                CallNotificationActionReceiver::class.java
+                CallReceiver::class.java
             )
             cancelCallAction.putExtra(
                 "ConstantApp.CALL_RESPONSE_ACTION_KEY",
@@ -178,7 +178,7 @@ class HeadsUpNotificationService : Service() {
             cancelCallAction.action = "CANCEL_CALL"
             val callDialogAction = Intent(
                 this,
-                CallNotificationActionReceiver::class.java
+                CallReceiver::class.java
             )
             callDialogAction.putExtra("ACTION_TYPE", "DIALOG_CALL")
             callDialogAction.putExtra("NOTIFICATION_ID", NOTIFICATION_ID)

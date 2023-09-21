@@ -10,7 +10,6 @@ import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
-import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -193,7 +192,7 @@ open class SocketManager @Inject constructor() {
         const val EVENT_READY = "ready"
         const val EVENT_LOG = "log"
         const val EVENT_MESSAGE = "message"
-        const val EVENT_HW_CALL_REJECT = "hw_call_reject"
+        const val EVENT_CALL_REJECT_BY_HW = "hw_call_reject"
         const val EVENT_CALL = "call"
         const val EVENT_CREATE_OR_JOIN_HW = "create_or_join_hw"
         const val EVENT_CREATE_OR_JOIN = "create or join"

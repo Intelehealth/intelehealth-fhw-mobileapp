@@ -343,7 +343,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
                 socketViewModel.buildOutGoingCallParams(args)
             )
         } else {
-            socketViewModel.emit(SocketManager.EVENT_HW_CALL_REJECT, args.doctorId)
+            socketViewModel.emit(SocketManager.EVENT_CALL_REJECT_BY_HW, args.doctorId)
         }
 
         stopRingtone()

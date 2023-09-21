@@ -2,6 +2,7 @@ package org.intelehealth.klivekit.chat.socket
 
 import com.codeglo.coyamore.agora.extensions.fromJson
 import com.github.ajalt.timberkt.Timber
+import org.intelehealth.klivekit.utils.extensions.fromJson
 import com.google.gson.Gson
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
