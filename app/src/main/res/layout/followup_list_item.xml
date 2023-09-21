@@ -5,21 +5,23 @@
     android:id="@+id/fu_cardview_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/margin_10"
     android:layout_marginHorizontal="@dimen/margin_5"
     android:layout_marginTop="@dimen/margin_5"
     android:layout_marginBottom="@dimen/margin_24"
-    app:cardCornerRadius="@dimen/margin_10"
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
-        android:id="@+id/frame_10014"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fu_margin_start"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/fu_margin_start"
+
+            android:layout_marginBottom="@dimen/fu_margin_start"
             android:layout_toStartOf="@+id/linear_icon">
 
             <androidx.cardview.widget.CardView
@@ -45,23 +47,53 @@
                 android:layout_marginStart="@dimen/fu_margin_start"
                 android:layout_toEndOf="@+id/fu_profile_imgv">
 
-                <!-- fu_patname_txtview -->
-                <TextView
-                    android:id="@+id/fu_patname_txtview"
+                <!-- Label -->
+                <RelativeLayout
+                    android:id="@+id/lll"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/fu_item_title"
-                    android:textAppearance="@style/label"
-                    android:textColor="@null"
-                    android:textSize="@dimen/fu_name_txt_size" />
+                    android:layout_height="wrap_content">
+
+                    <!-- fu_patname_txtview -->
+                    <TextView
+                        android:id="@+id/fu_patname_txtview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/fl_priority"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:maxLines="1"
+                        android:text="@string/fu_item_title"
+                        android:textAppearance="@style/label"
+                        android:textColor="@null"
+                        android:textSize="@dimen/fu_name_txt_size" />
+
+                    <FrameLayout
+                        android:id="@+id/fl_priority"
+                        android:layout_width="@dimen/btn_prioirty_w_60dp"
+                        android:layout_height="@dimen/btn_prioirty_h_20dp"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/fu_priority_tag"
+                            android:layout_width="@dimen/btn_prioirty_w_60dp"
+                            android:layout_height="@dimen/btn_prioirty_h_20dp"
+                            android:layout_gravity="top"
+                            android:gravity="center"
+                            android:lineSpacingExtra="0sp"
+                            android:src="@drawable/ui2_frame_priority" />
+
+                    </FrameLayout>
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/fu_item_calendar"
                     android:layout_width="@dimen/cal_size"
                     android:layout_height="@dimen/cal_size"
-                    android:layout_below="@+id/fu_patname_txtview"
+                    android:layout_below="@+id/lll"
                     android:layout_marginTop="@dimen/cal_margin_top"
                     android:src="@drawable/followup_item_calendar" />
 
@@ -69,7 +101,7 @@
                     android:id="@+id/fu_date_txtview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fu_patname_txtview"
+                    android:layout_below="@+id/lll"
                     android:layout_marginStart="@dimen/cal_margnin_start"
                     android:layout_marginTop="@dimen/cal_margnin_start"
                     android:layout_toEndOf="@+id/fu_item_calendar"
@@ -103,66 +135,59 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:orientation="vertical"
             android:layout_marginTop="@dimen/fu_margin_start"
-            android:layout_marginEnd="@dimen/fu_margin_start"
-            android:layout_marginBottom="@dimen/fu_margin_start"
-            android:orientation="vertical">
+            android:layout_marginEnd="@dimen/fu_margin_start">
 
-            <FrameLayout
-                android:layout_width="@dimen/btn_prioirty_w_60dp"
-                android:layout_height="@dimen/btn_prioirty_h_20dp"
-                android:layout_gravity="end">
-
-                <TextView
-                    android:id="@+id/fu_priority_tag"
-                    android:layout_width="@dimen/btn_prioirty_w_60dp"
-                    android:layout_height="@dimen/btn_prioirty_h_20dp"
-                    android:layout_gravity="top"
-                    android:background="@drawable/drawable_priority_background"
-                    android:fontFamily="@font/lato_bold"
-                    android:gravity="center"
-                    android:lineSpacingExtra="0sp"
-                    android:text="@string/priority_uppercase"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-            </FrameLayout>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/shareicon"
+            <TextView
+                android:id="@+id/search_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fu_margin_start"
-                android:gravity="bottom"
+                android:layout_marginStart="@dimen/cal_margnin_start"
+                android:layout_gravity="end"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/search_gender"
+                android:paddingRight="5dp"
+                android:textAppearance="@style/label_misc_txt_14sp"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_name_txt_size" />
+
+            <LinearLayout
+                android:id="@+id/shareiconLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_gravity="bottom">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_visit_share" />
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/prescription_icon_green" />
 
                 <TextView
-                    android:id="@+id/add_new_patientTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="true"
-                    android:elevation="8dip"
-                    android:fontFamily="@font/lato_medium"
-                    android:gravity="center_vertical"
-                    android:letterSpacing="0.04"
+                    android:layout_gravity="center"
+                    android:paddingRight="5dp"
                     android:text="@string/share"
-                    android:textColor="@color/share_button_color"
-                    android:textSize="@dimen/text_13sp"
-                    android:textStyle="bold" />
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/dm_sans"
+                    android:textColor="#0FD197"
+                    android:textSize="14sp" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
 
+            <ImageButton
+                android:layout_width="@dimen/btn_prioirty_w_60dp"
+                android:layout_height="@dimen/btn_prioirty_h_20dp"
+                android:src="@drawable/visit_share_presc_icon"
+                android:background="@null"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_gravity="bottom"/>
         </LinearLayout>
 
 

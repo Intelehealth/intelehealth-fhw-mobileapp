@@ -157,7 +157,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             name = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
-            shareicon = itemView.findViewById(R.id.shareicon);
+            shareicon = itemView.findViewById(R.id.shareiconLL);
 
             end_visit_btn.setVisibility(View.VISIBLE);
         }

@@ -40,6 +40,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.models.PrescriptionModel;
 import org.intelehealth.unicef.utilities.SessionManager;
@@ -73,17 +74,17 @@ public class VisitPendingFragment extends Fragment {
     private ProgressBar progress;
     private VisitCountInterface mlistener;
 
-    private final int recentLimit = 15, olderLimit = 15;
-    private final int finalRecentLimit = 15, finalOlderLimit = 15;
+    private int recentLimit = 15, olderLimit = 15;
     private int recentStart = 0, recentEnd = recentStart + recentLimit;
-    private final int finalRecentStart = 0;
     private boolean isRecentFullyLoaded = false;
 
     private int olderStart = 0, olderEnd = olderStart + olderLimit;
-    private final int finalOlderStart = 0;
     private boolean isolderFullyLoaded = false;
     NestedScrollView nestedscrollview;
-    private SessionManager sessionManager1;
+    List<PrescriptionModel> recent = new ArrayList<>();
+    List<PrescriptionModel> older = new ArrayList<>();
+    private SessionManager sessionManager;
+
 
     @Nullable
     @Override
@@ -99,14 +100,15 @@ public class VisitPendingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+     //   db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         defaultData();
         visitData();
     }
 
 
     public Context setLocale(Context context) {
-        sessionManager1 = new SessionManager(context);
-        String appLanguage = sessionManager1.getAppLanguage();
+        sessionManager = new SessionManager(context);
+        String appLanguage = sessionManager.getAppLanguage();
         Resources res = context.getResources();
         Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);
@@ -133,7 +135,7 @@ public class VisitPendingFragment extends Fragment {
         progress.setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
 
-        TextView addPatientTV = view.findViewById(R.id.add_new_patientTV);
+        LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,8 +189,14 @@ public class VisitPendingFragment extends Fragment {
                             return;
                         }
                         if (!isolderFullyLoaded) {
-                            Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
-                            setOlderMoreDataIntoRecyclerView();
+                            if (recent != null && older != null) {
+                                if (recent.size() > 0 || older.size() > 0) {
+
+                                } else {
+                                    Toast.makeText(getActivity(), getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
+                                    setOlderMoreDataIntoRecyclerView();
+                                }
+                            }
                         }
                     }
                 }
@@ -225,14 +233,14 @@ public class VisitPendingFragment extends Fragment {
 
     private void fetchOlderData() {
         // pagination - start
-        olderList = olderVisits(finalOlderLimit, finalOlderStart);
+        olderList = olderVisits(olderLimit, olderStart);
         Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
-        older_adapter = new VisitAdapter(getActivity(), olderList, sessionManager1.getAppLanguage());
+        older_adapter = new VisitAdapter(getActivity(), olderList, sessionManager.getAppLanguage());
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
 
-        olderStart = finalOlderStart;
-        olderEnd += finalOlderLimit;
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
         // pagination - end
 
         totalCounts_older = olderList.size();
@@ -243,14 +251,14 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void fetchRecentData() {
-        recentList = recentVisits(finalRecentLimit, finalRecentStart);
+        recentList = recentVisits(recentLimit, recentStart);
         // pagination - start
-        recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager1.getAppLanguage());
+        recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
-        recentStart = finalRecentStart;
-        recentEnd += finalRecentLimit;
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
         // pagination - end
 
         totalCounts_recent = recentList.size();
@@ -262,31 +270,49 @@ public class VisitPendingFragment extends Fragment {
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
-        if (recentList != null && recentList.size() == 0) {
-            isRecentFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
-        recent_adapter.list.addAll(recentList);
-        recent_adapter.notifyDataSetChanged();
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
+        }
+        else {
+            if (recentList != null && recentList.size() == 0) {
+                isRecentFullyLoaded = true;
+                return;
+            }
+
+            //  recentList = recentVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            List<PrescriptionModel> tempList = recentVisits(recentLimit, recentStart);  // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                recentList.addAll(tempList);
+                Log.d("TAG", "setPendingRecentMoreDataIntoRecyclerView: " + recentList.size());
+                recent_adapter.list.addAll(tempList);
+                recent_adapter.notifyDataSetChanged();
+                recentStart = recentEnd;
+                recentEnd += recentLimit;
+            }
+        }
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
-        if (olderList != null && olderList.size() == 0) {
-            isolderFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {
 
-        olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
-        older_adapter.list.addAll(olderList);
-        older_adapter.notifyDataSetChanged();
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
+        }
+        else {
+            if (olderList != null && olderList.size() == 0) {
+                isolderFullyLoaded = true;
+                return;
+            }
+
+            //  olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                olderList.addAll(tempList);
+                Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+                older_adapter.list.addAll(tempList);
+                older_adapter.notifyDataSetChanged();
+                olderStart = olderEnd;
+                olderEnd += olderLimit;
+            }
+        }
     }
 
     private void visitData() {
@@ -300,10 +326,10 @@ public class VisitPendingFragment extends Fragment {
             @Override
             public void run() {
                 int total = getPendingPrescCount();
-                getActivity().runOnUiThread(new Runnable() {
+                requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " " + "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
+                        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
                         pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
                     }
                 });
@@ -350,10 +376,10 @@ public class VisitPendingFragment extends Fragment {
         });
 
         closeButton.setOnClickListener(v -> {
-//            resetData();
+            resetData();
             no_patient_found_block.setVisibility(View.GONE);
             main_block.setVisibility(View.VISIBLE);
-            defaultData();
+//            defaultData();
             searchview_pending.setQuery("", false);
         });
         // Search - end
@@ -374,7 +400,7 @@ public class VisitPendingFragment extends Fragment {
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
-        recent_adapter = new VisitAdapter(getActivity(), prio_todays, sessionManager1.getAppLanguage());
+        recent_adapter = new VisitAdapter(getActivity(), prio_todays, sessionManager.getAppLanguage());
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
@@ -390,7 +416,7 @@ public class VisitPendingFragment extends Fragment {
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
-        older_adapter = new VisitAdapter(getActivity(), prio_weeks, sessionManager1.getAppLanguage());
+        older_adapter = new VisitAdapter(getActivity(), prio_weeks, sessionManager.getAppLanguage());
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
         // weeks - end
@@ -415,10 +441,10 @@ public class VisitPendingFragment extends Fragment {
 
     private List<PrescriptionModel> recentVisits(int limit, int offset) {
         // new
-        recentList = new ArrayList<>();
+        List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
@@ -467,6 +493,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -482,13 +509,12 @@ public class VisitPendingFragment extends Fragment {
         return recentList;
 
     }
-
     private List<PrescriptionModel> recentVisits() {
         // new
         List<PrescriptionModel> recentList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                 " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                 " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                 " v.enddate is null and" +
@@ -535,6 +561,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -556,7 +583,7 @@ public class VisitPendingFragment extends Fragment {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
@@ -603,6 +630,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -619,12 +647,11 @@ public class VisitPendingFragment extends Fragment {
 
         return olderList;
     }
-
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " v.enddate is null and" +
@@ -671,6 +698,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
                     model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                     model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                     model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -873,8 +901,8 @@ public class VisitPendingFragment extends Fragment {
         query = query.toLowerCase().trim();
         query = query.replaceAll(" {2}", " ");
 
-        List<PrescriptionModel> recent = new ArrayList<>();
-        List<PrescriptionModel> older = new ArrayList<>();
+//        List<PrescriptionModel> recent = new ArrayList<>();
+//        List<PrescriptionModel> older = new ArrayList<>();
 
         String finalQuery = query;
 
@@ -891,15 +919,29 @@ public class VisitPendingFragment extends Fragment {
                     recent.clear();
                     if (allRecentList.size() > 0) {
                         for (PrescriptionModel model : allRecentList) {
-                            String firstName = model.getFirst_name().toLowerCase();
-                            String lastName = model.getLast_name().toLowerCase();
-                            String fullName = firstName + " " + lastName;
-                            String openMrsID = model.getOpenmrs_id();
+                            if (model.getMiddle_name() != null) {
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String middleName = model.getMiddle_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullPartName = firstName + " " + lastName;
+                                String fullName = firstName + " " + middleName + " " + lastName;
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
-                                recent.add(model);
+                                if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
+                                        lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    recent.add(model);
+                                } else {
+                                    // dont add in list value.
+                                }
                             } else {
-                                // dont add in list value.
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullName = firstName + " " + lastName;
+
+                                if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    recent.add(model);
+                                } else {
+                                    // dont add in list value.
+                                }
                             }
                         }
                     }
@@ -909,15 +951,30 @@ public class VisitPendingFragment extends Fragment {
                     older.clear();
                     if (allOlderList.size() > 0) {
                         for (PrescriptionModel model : allOlderList) {
-                            String firstName = model.getFirst_name().toLowerCase();
-                            String lastName = model.getLast_name().toLowerCase();
-                            String fullName = firstName + " " + lastName;
-                            String openMrsID = model.getOpenmrs_id();
+                            if (model.getMiddle_name() != null) {
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String middleName = model.getMiddle_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullPartName = firstName + " " + lastName;
+                                String fullName = firstName + " " + middleName + " " + lastName;
 
-                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
-                                older.add(model);
-                            } else {
-                                // do nothing
+                                if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
+                                        || lastName.contains(finalQuery)  || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    older.add(model);
+                                } else {
+                                    // do nothing
+                                }
+                            }
+                            else {
+                                String firstName = model.getFirst_name().toLowerCase();
+                                String lastName = model.getLast_name().toLowerCase();
+                                String fullName = firstName + " " + lastName;
+
+                                if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                    older.add(model);
+                                } else {
+                                    // do nothing
+                                }
                             }
                         }
                     }
@@ -925,11 +982,11 @@ public class VisitPendingFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            recent_adapter = new VisitAdapter(getActivity(), recent, sessionManager1.getAppLanguage());
+                            recent_adapter = new VisitAdapter(getActivity(), recent, sessionManager.getAppLanguage());
                             recycler_recent.setNestedScrollingEnabled(false);
                             recycler_recent.setAdapter(recent_adapter);
 
-                            older_adapter = new VisitAdapter(getActivity(), older, sessionManager1.getAppLanguage());
+                            older_adapter = new VisitAdapter(getActivity(), older, sessionManager.getAppLanguage());
                             recycler_older.setNestedScrollingEnabled(false);
                             recycler_older.setAdapter(older_adapter);
 
@@ -970,15 +1027,37 @@ public class VisitPendingFragment extends Fragment {
             older_nodata.setVisibility(View.GONE);
     }
 
+    private void initLimits() {
+        recentLimit = 15;
+        olderLimit = 15;
+        recentStart = 0;
+        recentEnd = recentStart + recentLimit;
+        olderStart = 0;
+        olderEnd = olderStart + olderLimit;
+    }
+
     private void resetData() {
+        initLimits();
+        recent.clear();
+        older.clear();
+
+        recentList = recentVisits(recentLimit, recentStart);
+        olderList = olderVisits(olderLimit, olderStart);
+
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+
+        //
         recent_older_visibility(recentList, olderList);
         Log.d("TAG", "resetData: " + recentList.size() + ", " + olderList.size());
 
-        recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager1.getAppLanguage());
+        recent_adapter = new VisitAdapter(getActivity(), recentList, sessionManager.getAppLanguage());
         //  recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
 
-        older_adapter = new VisitAdapter(getActivity(), olderList, sessionManager1.getAppLanguage());
+        older_adapter = new VisitAdapter(getActivity(), olderList, sessionManager.getAppLanguage());
         //   recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
     }

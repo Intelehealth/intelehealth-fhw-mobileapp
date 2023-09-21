@@ -722,8 +722,9 @@ public class VisitsDAO {
 
     public static int getPendingPrescCount() {
         int count = 0;
+//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+//        db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                 " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
@@ -752,9 +753,10 @@ public class VisitsDAO {
         }
 
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
 
+        Log.d("TAG", "getPendingPrescCount: " + String.valueOf(count));
         return count;
     }
 }
