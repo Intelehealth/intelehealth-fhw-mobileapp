@@ -85,7 +85,6 @@ public class VisitPendingFragment extends Fragment {
     List<PrescriptionModel> older = new ArrayList<>();
     private SessionManager sessionManager;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,14 +98,16 @@ public class VisitPendingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+      //  db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-     //   db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         defaultData();
         visitData();
     }
 
 
     public Context setLocale(Context context) {
+//        SessionManager sessionManager1 = new SessionManager(context);
+//        String appLanguage = sessionManager1.getAppLanguage();
         sessionManager = new SessionManager(context);
         String appLanguage = sessionManager.getAppLanguage();
         Resources res = context.getResources();
@@ -645,6 +646,7 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
+        Log.d("TAG", "old count B: " + olderList.size());
         return olderList;
     }
     private List<PrescriptionModel> olderVisits() {
@@ -713,6 +715,7 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
+        Log.d("TAG", "old count A: " + olderList.size());
         return olderList;
     }
 

@@ -607,6 +607,8 @@ public class VisitReceivedFragment extends Fragment {
                 olderStart = olderEnd;
                 olderEnd += olderLimit;
             }
+            else
+                isolderFullyLoaded = true;
         }
     }
 
