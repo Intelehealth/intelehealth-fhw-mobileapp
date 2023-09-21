@@ -38,6 +38,7 @@ import org.intelehealth.ezazi.partogram.model.Medication;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.model.ParamInfo;
 import org.intelehealth.ezazi.partogram.model.PartogramItemData;
+import org.intelehealth.ezazi.partogram.model.ValidatePartogramFields;
 import org.intelehealth.ezazi.ui.dialog.CustomViewDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.SingleChoiceDialogFragment;
 import org.intelehealth.ezazi.ui.dialog.model.SingChoiceItem;
@@ -57,7 +58,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private Context mContext;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private TextView selectedTextview;
-    boolean isToastShownTemperature, isToastShownPulse, isToastShownContraction, isToastShownFHR;
+    boolean isToastShownTemperature, isToastShownPulse, isToastShownContraction, isToastShownFHR, isToastShownSysBP, isToastShownDysBP;
 
     //    private static JSONObject ivFluidsJsonObject = new JSONObject();
 //    private static JSONObject oxytocinDataObject = new JSONObject();
@@ -265,6 +266,8 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         isToastShownTemperature = false;
         isToastShownFHR = false;
         isToastShownPulse = false;
+        isToastShownSysBP = false;
+        isToastShownDysBP = false;
 
         dataEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -285,6 +288,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                         validatePulse(dataEditText);
                     } else if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.DURATION_OF_CONTRACTION.value)) {
                         validateDurationOfContraction(dataEditText);
+                    } else if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.SYSTOLIC_BP.value)) {
+                        validateSysBp(dataEditText);
+                    } else if (info.getParamName().equalsIgnoreCase(PartogramConstants.Params.DIASTOLIC_BP.value)) {
+                        validateDysBp(dataEditText);
                     }
                 }
             }
@@ -311,7 +318,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         //if (Double.parseDouble(value) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) || Double.parseDouble(value) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
         //dataEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
         if (!isToastShownTemperature) {
-            Toast.makeText(mContext, mContext.getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.temp_error_new, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS), Toast.LENGTH_LONG).show();
             //dataEditText.setText("");
             dataEditText.requestFocus();
             isToastShownTemperature = true;
@@ -827,6 +834,22 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
             Toast.makeText(mContext, mContext.getString(R.string.contraction_duration_err, AppConstants.MINIMUM_CONTRACTION_DURATION, AppConstants.MAXIMUM_CONTRACTION_DURATION), Toast.LENGTH_LONG).show();
             dataEditText.requestFocus();
             isToastShownContraction = true;
+        }
+    }
+
+    private void validateSysBp(EditText dataEditText) {
+        if (!isToastShownSysBP) {
+            Toast.makeText(mContext, mContext.getString(R.string.systolic_bp_range_toast_err, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS), Toast.LENGTH_LONG).show();
+            dataEditText.requestFocus();
+            isToastShownSysBP = true;
+        }
+    }
+
+    private void validateDysBp(EditText dataEditText) {
+        if (!isToastShownDysBP) {
+            Toast.makeText(mContext, mContext.getString(R.string.diastolic_bp_range_toast_err, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS), Toast.LENGTH_LONG).show();
+            dataEditText.requestFocus();
+            isToastShownDysBP = true;
         }
     }
 }

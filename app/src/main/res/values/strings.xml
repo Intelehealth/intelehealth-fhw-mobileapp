@@ -1080,14 +1080,13 @@
     <string name="hint_type">Type*</string>
     <string name="lbl_type">Type</string>
     <string name="error_medicine">Please add at least 1 medicine\n\nOR\n\nSelect \"No\" to continue.</string>
-    <string name="systolic_bp_range">Please enter Systolic BP between 50 and 250</string>
-    <string name="diastolic_bp_range">Please enter Diastolic BP between 30 and 150.\n Diastolic BP should be less than Systolic BP</string>
     <string name="medicine_name">Medicine name</string>
-    <string name="baseline_fhr_err">Baseline FHR should be in between %1$s and %2$s</string>
-    <string name="pulse_err">Pulse should be in between %1$s and %2$s</string>
-    <string name="systolic_bp_range_toast_err">Systolic BP should be in between %1$s and %2$s</string>
-    <string name="diastolic_bp_range_toast_err">Diastolic BP should be in between %1$s and %2$s</string>
-    <string name="contraction_duration_range_toast_err">Duration of contraction should be in between %1$s and %2$s</string>
-    <string name="contraction_duration_err">Duration of contraction should be in between %1$s and %2$s</string>
+    <string name="baseline_fhr_err">Please enter Baseline FHR in between %1$s and %2$s</string>
+    <string name="pulse_err">Please enter Pulse in between %1$s and %2$s</string>
+    <string name="systolic_bp_range_toast_err">Please enter Systolic BP in between %1$s and %2$s</string>
+    <string name="diastolic_bp_range_toast_err">Please enter Diastolic BP in between %1$s and %2$s. \n Diastolic BP should be less than Systolic BP</string>
+    <string name="contraction_duration_range_toast_err">Please enter Duration of contraction in between %1$s and %2$s</string>
+    <string name="contraction_duration_err">Please enter Duration of contraction in between %1$s and %2$s</string>
+    <string name="temp_error_new">Please enter Temperature in between %1$s and %2$s</string>
 
 </resources>

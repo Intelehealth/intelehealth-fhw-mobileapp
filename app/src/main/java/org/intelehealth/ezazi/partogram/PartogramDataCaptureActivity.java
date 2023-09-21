@@ -399,11 +399,15 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         } else if (!isValidPulse) {
             showErrorDialogForValidations(getString(R.string.pulse_err, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
         } else if (!isValidSystolicBP) {
-            showErrorDialog(R.string.systolic_bp_range);
+            //showErrorDialog(R.string.systolic_bp_range);
+            showErrorDialogForValidations(getString(R.string.systolic_bp_range_toast_err, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+
         } else if (!isValidDiastolicBP) {
-            showErrorDialog(R.string.diastolic_bp_range);
+           // showErrorDialog(R.string.diastolic_bp_range);
+            showErrorDialogForValidations(getString(R.string.diastolic_bp_range_toast_err, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+
         } else if (!isValidTemperature) {
-            showErrorDialogForValidations(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+            showErrorDialogForValidations(getString(R.string.temp_error_new, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
         }else if (!isValidDuration) {
             showErrorDialogForValidations(getString(R.string.contraction_duration_err, AppConstants.MINIMUM_CONTRACTION_DURATION, AppConstants.MAXIMUM_CONTRACTION_DURATION));
         } else {

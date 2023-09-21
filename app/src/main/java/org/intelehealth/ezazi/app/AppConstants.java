@@ -46,7 +46,7 @@ public class AppConstants {
     public static final String MINIMUM_BP_SYS = "50";
     public static final String MAXIMUM_BP_DSYS = "150";
     public static final String MINIMUM_BP_DSYS = "30";
-    public static final String MAXIMUM_PULSE = "200";
+    public static final String MAXIMUM_PULSE = "240";
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "42.8";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "32";
