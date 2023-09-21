@@ -12,41 +12,13 @@ android {
         applicationId "org.intelehealth.ekalarogya"
         minSdk 21
         targetSdk 34
-        versionCode 48
-        versionName '2.0.1'
+        versionCode 50
+        versionName '2.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         archivesBaseName = "Ekal-Arogya-" + versionName
         //vectorDrawables.useSupportLibrary = true
-
-        def serverUrl = "SERVER_URL"
-        def realTimeFbUrl = "REAL_TIME_FB_URL"
-        def liveKitUrl = "LIVE_KIT_URL"
-        def socketUrl = "SOCKET_URL"
-
-        def endPointPropertyFile = file('../endpoint.properties')
-        def property = new Properties()
-
-        if (endPointPropertyFile.canRead()) {
-            property.load(new FileInputStream(endPointPropertyFile))
-        }
-
-        String devServer = property['DEV_SERVER_URL'].toString()
-        String devRealTimeFb = property['DEV_REAL_TIME_FB_URL'].toString()
-        String devLiveKit = property['DEV_LIVE_KIT_URL'].toString()
-        String devSocket = property['DEV_SOCKET_URL'].toString()
-
-        println("SERVER_URL ----> $devServer")
-        println("REAL_TIME_FB_URL ------> $devRealTimeFb")
-        println("LIVE_KIT_URL ------> $devLiveKit")
-        println("SOCKET_URL ------> $devLiveKit")
-
-        buildConfigField "String", serverUrl, devServer
-        buildConfigField "String", realTimeFbUrl, devRealTimeFb
-        buildConfigField 'String', liveKitUrl, devLiveKit
-        buildConfigField 'String', socketUrl, devSocket
-
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -80,6 +52,60 @@ android {
     configurations.configureEach {
         resolutionStrategy {
             force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'
+        }
+    }
+
+    flavorDimensions = ["version"]
+
+    productFlavors {
+
+        def serverUrl = "SERVER_URL"
+        def realTimeFbUrl = "REAL_TIME_FB_URL"
+        def liveKitUrl = "LIVE_KIT_URL"
+        def socketUrl = "SOCKET_URL"
+
+        def endPointPropertyFile = file('../endpoint.properties')
+        def property = new Properties()
+
+        if (endPointPropertyFile.canRead()) {
+            property.load(new FileInputStream(endPointPropertyFile))
+        }
+
+
+        dev {
+            String devServer = property['DEV_SERVER_URL'].toString()
+            String devRealTimeFb = property['DEV_REAL_TIME_FB_URL'].toString()
+            String devLiveKit = property['DEV_LIVE_KIT_URL'].toString()
+            String devSocket = property['DEV_SOCKET_URL'].toString()
+
+            println("SERVER_URL ----> $devServer")
+            println("REAL_TIME_FB_URL ------> $devRealTimeFb")
+            println("LIVE_KIT_URL ------> $devLiveKit")
+            println("SOCKET_URL ------> $devLiveKit")
+
+            buildConfigField "String", serverUrl, devServer
+            buildConfigField "String", realTimeFbUrl, devRealTimeFb
+            buildConfigField 'String', liveKitUrl, devLiveKit
+            buildConfigField 'String', socketUrl, devSocket
+
+            getIsDefault().set(true)
+        }
+
+        production {
+            String devServer = property['PROD_SERVER_URL'].toString()
+            String devRealTimeFb = property['PROD_REAL_TIME_FB_URL'].toString()
+            String devLiveKit = property['PROD_LIVE_KIT_URL'].toString()
+            String devSocket = property['PROD_SOCKET_URL'].toString()
+
+            println("SERVER_URL ----> $devServer")
+            println("REAL_TIME_FB_URL ------> $devRealTimeFb")
+            println("LIVE_KIT_URL ------> $devLiveKit")
+            println("SOCKET_URL ------> $devLiveKit")
+
+            buildConfigField "String", serverUrl, devServer
+            buildConfigField "String", realTimeFbUrl, devRealTimeFb
+            buildConfigField 'String', liveKitUrl, devLiveKit
+            buildConfigField 'String', socketUrl, devSocket
         }
     }
 }
@@ -148,6 +174,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:18.4.3'
     implementation 'com.google.firebase:firebase-analytics:21.3.0'
     implementation "com.google.firebase:firebase-core:21.1.1"
+//    gmsImplementation ('com.google.firebase:firebase-core:21.1.1') {
+//        exclude group: 'com.google.android.gms', module: 'play-services-ads-identifier'
+//    }
     implementation 'com.google.firebase:firebase-messaging:23.2.1'
     implementation "com.google.firebase:firebase-iid:21.1.0"
 //    implementation 'com.google.firebase:firebase-crash:16.2.1'
