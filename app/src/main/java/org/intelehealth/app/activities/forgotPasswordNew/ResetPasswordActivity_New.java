@@ -180,7 +180,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
             @Override
             public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
                 cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                 if (resetPasswordResModel_new.getSuccess()) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -202,7 +202,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 e.printStackTrace();
                 cpd.dismiss();
-                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password));
+                snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password), false);
 
             }
 

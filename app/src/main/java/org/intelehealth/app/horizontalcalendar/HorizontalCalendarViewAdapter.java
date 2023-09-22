@@ -121,21 +121,6 @@ public class HorizontalCalendarViewAdapter extends RecyclerView.Adapter<Horizont
             tvDate = itemView.findViewById(R.id.tv_date_cal);
             tvDay = itemView.findViewById(R.id.tv_date_day);
             cardParent = itemView.findViewById(R.id.card_horizontal_view);
-       /* itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Triggers click upwards to the adapter on click
-                if (listener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(calendarModel);
-                        notifyItemChanged(selectedPos);
-                        selectedPos = getAdapterPosition();
-                        notifyItemChanged(selectedPos);
-                    }
-                }
-            }
-        });*/
         }
     }
 

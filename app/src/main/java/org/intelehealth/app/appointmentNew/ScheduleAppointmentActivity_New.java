@@ -9,11 +9,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +53,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidGenerator;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -109,6 +114,7 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(ScheduleAppointmentActivity_New.this);
         setContentView(R.layout.activity_schedule_appointment_new);
         networkUtils = new NetworkUtils(ScheduleAppointmentActivity_New.this, this);
         sessionManager = new SessionManager(this);
@@ -171,8 +177,6 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             Toast.makeText(this, getResources().getString(R.string.speciality_must_not_null), Toast.LENGTH_SHORT).show();
         }
 
-//        fetchDataFromDB();
-
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -216,46 +220,25 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         unregisterReceiver(mBroadcastReceiver);
     }
 
-//    private void fetchDataFromDB() {
-//        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-//
-//        String patientSelection = "uuid = ?";
-//        String[] patientArgs = {patientUuid};
-//        String table = "tbl_patient";
-//
-//        String[] columnsToReturn = {"date_of_birth", "gender", "patient_photo"};
-//        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
-//
-//        if (idCursor.moveToFirst()) {
-//            do {
-//                patientAge = DateAndTimeUtils.getAgeInYearMonth(idCursor.getString(idCursor.getColumnIndex("date_of_birth")), this);
-//                patientGender = idCursor.getString(idCursor.getColumnIndex("gender"));
-//                patientPic = idCursor.getString(idCursor.getColumnIndex("patient_photo"));
-//            } while (idCursor.moveToNext());
-//        }
-//
-//        idCursor.close();
-//
-//        String hwSelection = "uuid = ?";
-//        String[] hwArgs = {sessionManager.getProviderID()};
-//        String hwTable = "tbl_provider";
-//
-//        String[] hwColumnsToReturn = {"dateofbirth", "gender", "given_name", "middle_name", "family_name"};
-//        final Cursor providerCursor = db.query(hwTable, hwColumnsToReturn, hwSelection, hwArgs, null, null, null);
-//        if (providerCursor.moveToFirst()) {
-//            do {
-//                hwAge = DateAndTimeUtils.getAgeInYearMonth(providerCursor.getString(providerCursor.getColumnIndex("dateofbirth")), this);
-//                hwGender = providerCursor.getString(providerCursor.getColumnIndex("gender"));
-//
-//                String firstName = providerCursor.getString(providerCursor.getColumnIndex("given_name"));
-//                String middleName = providerCursor.getString(providerCursor.getColumnIndex("middle_name"));
-//                String lastName = providerCursor.getString(providerCursor.getColumnIndex("family_name"));
-//                hwName = firstName + " " + ((!TextUtils.isEmpty(middleName)) ? middleName : "") + " " + lastName;
-//            } while (providerCursor.moveToNext());
-//        }
-//
-//        providerCursor.close();
-//    }
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
+
 
     private void initUI() {
 
@@ -302,8 +285,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         currentYear = calendarInstance.get(Calendar.YEAR);
         monthToCompare = String.valueOf(currentMonth);
         yearToCompare = String.valueOf(currentYear);
-        SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+        SimpleDateFormat month_date = new SimpleDateFormat("MMMM", Locale.ENGLISH);
         String month_name = month_date.format(calendarInstance.getTime());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            month_name = StringUtils.en__hi_dob(month_name);
         tvSelectedMonthYear.setText(month_name + ", " + currentYear);
         currentMonth = calendarInstance.get(Calendar.MONTH) + 1;
         monthToCompare = String.valueOf(currentMonth);
@@ -575,10 +560,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         }
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
 
             String[] dateSplit = formateDate.split("/");
             yearToCompare = dateSplit[2];
@@ -588,6 +573,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
             if (monthYear.length > 0) {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedPrevMonth = StringUtils.en__hi_dob(selectedPrevMonth);
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear) {
                     enableDisablePreviousButton(false);
@@ -615,11 +602,10 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         calendarInstance.add(Calendar.MONTH, 1);
         Date monthNameNEw = calendarInstance.getTime();
         Date date = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.ENGLISH);
         try {
             date = formatter.parse(monthNameNEw.toString());
-            String formateDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
-
+            String formateDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
             String[] monthYear = DateAndTimeUtils.getMonthAndYearFromGivenDate(formateDate);
             String selectedNextMonth;
             String selectedMonthYear;
@@ -628,7 +614,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
                 selectedNextMonth = monthYear[0];
                 selectedMonthYear = monthYear[1];
                 String[] dateSplit = formateDate.split("/");
-
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedNextMonth = StringUtils.en__hi_dob(selectedNextMonth);
                 tvSelectedMonthYear.setText(selectedNextMonth + ", " + selectedMonthYear);
                 getAllDatesOfSelectedMonth(calendarInstance, calendarInstance.get(Calendar.MONTH) + 1 == currentMonth && calendarInstance.get(Calendar.YEAR) == currentYear, selectedNextMonth, selectedMonthYear, dateSplit[1]);
             }
@@ -665,6 +652,8 @@ public class ScheduleAppointmentActivity_New extends AppCompatActivity implement
         Button noButton = convertView.findViewById(R.id.button_no_appointment);
         Button yesButton = convertView.findViewById(R.id.btn_yes_appointment);
         String infoText = getResources().getString(R.string.sure_to_book_appointment, selectedDateTime);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            infoText = StringUtils.en__hi_dob(infoText);
         tvInfo.setText(Html.fromHtml(infoText));
 
         alertDialog = alertdialogBuilder.create();

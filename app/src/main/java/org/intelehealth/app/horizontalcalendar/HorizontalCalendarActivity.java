@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,23 +29,19 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
     RecyclerView rvHorizontalCal;
     int currentMonth;
     int currentYear;
-    // Calendar calendar;
     ImageView ivPrevMonth, ivNextMonth;
-    int monthNumber;
-    String monthNAmeFromNo;
     TextView tvSelectedMonthYear;
     Calendar calendarInstance;
     String yearToCompare = "";
     String monthToCompare = "";
+    SessionManager sessionManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_calendar);
-
         initUI();
-
     }
 
     private void initUI() {
@@ -53,12 +51,12 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
         ivPrevMonth = findViewById(R.id.iv_prev_month1);
         ivNextMonth = findViewById(R.id.iv_next_month1);
         tvSelectedMonthYear = findViewById(R.id.tv_selected_month_year);
-
         calendarInstance = Calendar.getInstance();
         currentMonth = calendarInstance.getActualMaximum(Calendar.MONTH);
         currentYear = calendarInstance.get(Calendar.YEAR);
         monthToCompare = String.valueOf(currentMonth);
         yearToCompare = String.valueOf(currentYear);
+        sessionManager = new SessionManager(HorizontalCalendarActivity.this);
 
         if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
             enableDisablePreviousButton(false);
@@ -154,6 +152,8 @@ public class HorizontalCalendarActivity extends AppCompatActivity {
             if (monthYear.length > 0) {
                 String selectedPrevMonth = monthYear[0];
                 String selectedPrevMonthYear = monthYear[1];
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    selectedPrevMonth = StringUtils.en__hi_dob(selectedPrevMonth);
                 tvSelectedMonthYear.setText(selectedPrevMonth + ", " + selectedPrevMonthYear);
                 if (monthToCompare.equals(String.valueOf(currentMonth)) && yearToCompare.equals(String.valueOf(currentYear))) {
                     enableDisablePreviousButton(false);

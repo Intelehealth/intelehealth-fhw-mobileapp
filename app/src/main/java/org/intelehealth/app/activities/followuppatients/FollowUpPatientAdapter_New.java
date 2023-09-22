@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -215,7 +216,8 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         CardView cardView;
         private View rootView;
         TextView fu_patname_txtview, fu_date_txtview;
-        ImageView fu_priority_tag, profile_image;
+        ImageView profile_image;
+        LinearLayout fu_priority_tag;
 
         public Myholder(View itemView) {
             super(itemView);
@@ -223,7 +225,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             cardView = itemView.findViewById(R.id.fu_cardview_item);
             fu_patname_txtview = itemView.findViewById(R.id.fu_patname_txtview);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
-            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem1);
             profile_image = itemView.findViewById(R.id.profile_image);
             rootView = itemView;
 

@@ -30,12 +30,14 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
     String tag = "unclicked";
     int currentDay, currentYear, currentMonth, currentMonthNew;
     int todayDatePosition = 100, count = 0;
+    String whichDate;
 
     public CalendarviewNewAdapter(Context context, List<CalendarviewModel> listOfDates,
-                                  CalendarviewNewAdapter.OnItemClickListener listener) {
+                                  CalendarviewNewAdapter.OnItemClickListener listener, String whichDate) {
         this.context = context;
         this.listOfDates = listOfDates;
         this.listener = listener;
+        this.whichDate = whichDate;
 
         calendar = Calendar.getInstance();
         currentDay = calendar.get(Calendar.DATE);
@@ -49,7 +51,6 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
     public CalendarviewNewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_calendarview_ui2, parent, false);
         CalendarviewNewAdapter.MyViewHolder myViewHolder = new CalendarviewNewAdapter.MyViewHolder(view);
-
         return myViewHolder;
     }
 
@@ -96,15 +97,19 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
         }
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() > currentMonthNew) {
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.edittextBorder));
-            holder.tvDate.setClickable(false);
-            holder.layoutParent.setClickable(false);
+            if(!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
+                holder.tvDate.setTextColor(context.getResources().getColor(R.color.edittextBorder));
+                holder.tvDate.setClickable(false);
+                holder.layoutParent.setClickable(false);
+            }
         }
 
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew && position > todayDatePosition) {
-            holder.tvDate.setTextColor(context.getResources().getColor(R.color.edittextBorder));
-            holder.tvDate.setClickable(false);
-            holder.layoutParent.setClickable(false);
+           if(!whichDate.equalsIgnoreCase("fromdate") && !whichDate.equalsIgnoreCase("todate")) {
+               holder.tvDate.setTextColor(context.getResources().getColor(R.color.edittextBorder));
+               holder.tvDate.setClickable(false);
+               holder.layoutParent.setClickable(false);
+           }
         }
 
     }

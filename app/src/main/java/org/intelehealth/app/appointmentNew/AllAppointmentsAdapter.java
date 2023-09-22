@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -33,6 +34,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -121,21 +123,26 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                             if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                 timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
                             else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                                timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ","  + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
+                                timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate())) + ","  + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             holder.tvDate.setText(timeText);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                             }
                         } else {
-                            timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at)+" " + appointmentInfoModel.getSlotTime();
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
+
+                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at)+" " + appointmentInfoModel.getSlotTime();
+                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                timeText = hours + " " + context.getString(R.string.hours)+ " " + context.getString(R.string.in)+ ", " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             holder.tvDate.setText(timeText);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                             }
                         }
-                    } else {
+                    }
+                    else {
                         if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                             timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
                         else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -169,8 +176,8 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
                 if (appointmentInfoModel.isPrescription_exists()) {
                     holder.cvPrescRx.setVisibility(View.VISIBLE);
-                    holder.cvPrescPending.setVisibility(View.GONE);                } else {
-                    //holder.ivTime.setVisibility(View.GONE);
+                    holder.cvPrescPending.setVisibility(View.GONE);
+                } else {
                     holder.tvDate.setVisibility(View.GONE);
                     holder.cvPrescPending.setVisibility(View.VISIBLE);
                     holder.cvPrescRx.setVisibility(View.GONE);
@@ -198,7 +205,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                 timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
             else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + ","  + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
+                timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate())) + ","  + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
             holder.tvDate.setText(timeText);
         }
 
@@ -244,7 +251,8 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent, cvPrescPending, cvPrescRx;
         TextView tvPatientName, tvDate, doctNameTextView;
-        ImageView ivProfileImage, IvPriorityTag/*, ivTime*/;
+        ImageView ivProfileImage;
+        LinearLayout IvPriorityTag;
 
 
         public MyViewHolder(View itemView) {
@@ -253,7 +261,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             tvPatientName = itemView.findViewById(R.id.tv_patient_name_all);
             ivProfileImage = itemView.findViewById(R.id.profile_image_all);
             tvDate = itemView.findViewById(R.id.tv_date_appointment_all);
-            IvPriorityTag = itemView.findViewById(R.id.iv_priority_tag1_all);
+            IvPriorityTag = itemView.findViewById(R.id.llPriorityTagAllAppointmentItem);
             cvPrescPending = itemView.findViewById(R.id.cvPrescPendingAllAppointment);
             cvPrescRx = itemView.findViewById(R.id.cvPrescRxAllAppointment);
             doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);

@@ -133,19 +133,11 @@ public class SyncDAO {
                         context.sendBroadcast(broadcast);
                         Log.d(TAG, "onResponse: sync : " + sync);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-
-//                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                            CalculateAgoTime(context);
-//                        }
-
                     }
-                    //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
                     else {
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }
-                    //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
                         if (response.body().getData() != null) {
@@ -231,12 +223,6 @@ public class SyncDAO {
                         broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                         context.sendBroadcast(broadcast);
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(sessionManager.getAppLanguage()));
-//                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                            CalculateAgoTime(context);
-//                        }
-//                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
-
                         if (fromActivity.equalsIgnoreCase("home")) {
                             //Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {

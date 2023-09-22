@@ -39,16 +39,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layout_button_privacy"
-        android:layout_below="@+id/ll_action_bar">
+        android:layout_below="@+id/ll_action_bar"
+        android:layout_marginHorizontal="@dimen/content_margin_start">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/content_margin_start"
             android:layout_toEndOf="@+id/iv_back_arrow_terms"
             android:autoLink="web"
             android:fontFamily="@font/lato_regular"
-            android:justificationMode="inter_word"
             android:text="@string/privacy_policy_content_old"
             android:textSize="@dimen/info_options_text_size" />
 

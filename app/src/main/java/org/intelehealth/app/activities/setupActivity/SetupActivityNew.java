@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -61,6 +62,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -83,7 +85,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class SetupActivityNew extends AppCompatActivity {
+public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "SetupActivityNew";
     private List<Location> mLocations = new ArrayList<>();
     private boolean isLocationFetched;
@@ -96,8 +98,7 @@ public class SetupActivityNew extends AppCompatActivity {
     String BASE_URL = "";
     private long createdRecordsCount = 0;
     Location location = null;
-    private RadioButton r1;
-    private RadioButton r2;
+    private RadioButton r1, r2;
     String key = null;
     String licenseUrl = null;
     CustomProgressDialog customProgressDialog;
@@ -105,10 +106,12 @@ public class SetupActivityNew extends AppCompatActivity {
     private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog;
     private String mindmapURL = "";
-    ///   AlertDialog dialogLoggingIn;
     ImageView questionIV;
-    private TextView mLocationErrorTextView, mUserNameErrorTextView, mPasswordErrorTextView;
+    private TextView mLocationErrorTextView, mUserNameErrorTextView, mPasswordErrorTextView, mNoInternetTextView, tvForgotPassword;
     TooltipWindow tipWindow;
+    Button btnSetup;
+    NetworkUtils networkUtils;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,17 +119,19 @@ public class SetupActivityNew extends AppCompatActivity {
         setContentView(R.layout.activity_setup_new_ui2);
         sessionManager = new SessionManager(this);
         context = SetupActivityNew.this;
+        networkUtils = new NetworkUtils(context, this);
         questionIV = findViewById(R.id.setup_info_question_mark);
         customProgressDialog = new CustomProgressDialog(context);
         autotvLocations = findViewById(R.id.autotv_select_location);
-        Button btnSetup = findViewById(R.id.btn_setup);
-        TextView tvForgotPassword = findViewById(R.id.tv_forgot_password1);
+        btnSetup = findViewById(R.id.btn_setup);
+        tvForgotPassword = findViewById(R.id.tv_forgot_password1);
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         etAdminPassword = findViewById(R.id.admin_password);
         mLocationErrorTextView = findViewById(R.id.tv_location_error);
         mUserNameErrorTextView = findViewById(R.id.tv_username_error);
         mPasswordErrorTextView = findViewById(R.id.tv_password_error);
+        mNoInternetTextView = findViewById(R.id.tvNoNetworkSetupScreen);
         mLocationErrorTextView.setVisibility(View.GONE);
         mUserNameErrorTextView.setVisibility(View.GONE);
         mPasswordErrorTextView.setVisibility(View.GONE);
@@ -162,8 +167,10 @@ public class SetupActivityNew extends AppCompatActivity {
             }
         });
 
-        getLocationFromServer();
-
+        if(isNetworkConnected()) {
+            mNoInternetTextView.setVisibility(View.GONE);
+            getLocationFromServer();
+        }
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,9 +178,6 @@ public class SetupActivityNew extends AppCompatActivity {
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(btnSetup.getWindowToken(), 0);
                 attemptLogin();
-                //progressBar.setVisibility(View.VISIBLE);
-                //progressBar.setProgress(0);
-
             }
         });
 
@@ -188,13 +192,28 @@ public class SetupActivityNew extends AppCompatActivity {
                 return false;
             }
         });
-
-
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        networkUtils.callBroadcastReceiver();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Context setLocale(Context context) {
@@ -220,6 +239,20 @@ public class SetupActivityNew extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (isInternetAvailable) {
+            mNoInternetTextView.setVisibility(View.GONE);
+            getLocationFromServer();
+            tvForgotPassword.setEnabled(true);
+            btnSetup.setEnabled(true);
+        } else {
+            mNoInternetTextView.setVisibility(View.VISIBLE);
+            tvForgotPassword.setEnabled(false);
+            btnSetup.setEnabled(false);
+        }
     }
 
     class MyTextWatcher implements TextWatcher {
@@ -265,15 +298,13 @@ public class SetupActivityNew extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-
         // Store values at the time of the login attempt.
         String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         String admin_password = etAdminPassword.getText().toString();
-
-
         boolean cancel = false;
         View focusView = null;
+
         if (TextUtils.isEmpty(autotvLocations.getText().toString())) {
             autotvLocations.requestFocus();
 
@@ -286,26 +317,23 @@ public class SetupActivityNew extends AppCompatActivity {
             autotvLocations.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-        // Check for a valid email address.
+        // Check for a valid username.
         if (TextUtils.isEmpty(userName)) {
             etUsername.requestFocus();
-
             mUserNameErrorTextView.setVisibility(View.VISIBLE);
             mUserNameErrorTextView.setText(getString(R.string.error_field_required));
             etUsername.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-
             return;
         } else {
             mUserNameErrorTextView.setVisibility(View.GONE);
             etUsername.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
+
         if (!isEmailValid(userName)) {
             etUsername.requestFocus();
-
             mUserNameErrorTextView.setVisibility(View.VISIBLE);
             mUserNameErrorTextView.setText(getString(R.string.error_field_required));
             etUsername.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-
             return;
         } else {
             mUserNameErrorTextView.setVisibility(View.GONE);
@@ -315,12 +343,9 @@ public class SetupActivityNew extends AppCompatActivity {
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
             etPassword.requestFocus();
-
             mPasswordErrorTextView.setVisibility(View.VISIBLE);
             mPasswordErrorTextView.setText(getString(R.string.error_field_required));
             etPassword.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-
-
             return;
         } else {
             mPasswordErrorTextView.setVisibility(View.GONE);
@@ -329,72 +354,35 @@ public class SetupActivityNew extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             etPassword.requestFocus();
-
             mPasswordErrorTextView.setVisibility(View.VISIBLE);
             mPasswordErrorTextView.setText(getString(R.string.error_invalid_password));
             etPassword.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-
-
             return;
         } else {
             mPasswordErrorTextView.setVisibility(View.GONE);
             etPassword.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
-/*
-        if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
-            mAdminPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mAdminPasswordView;
-            cancel = true;
-        }*/
 
-
-        //add state wise here...
-
-      /*  if (mDropdownLocation.getSelectedItemPosition() <= 0) {
-            cancel = true;
-            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
-        } else {
-            location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
-        }*/
-
-
-      /*  if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
-            etAdminPassword.setError(getString(R.string.error_invalid_password));
-            etAdminPassword.requestFocus();
-            return;
-        }*/
-
-
-        // Show a progress spinner, and kick off a background task to
-        // perform the user login attempt.
         if (location != null) {
             Log.i(TAG, location.getDisplay());
             TestSetup(AppConstants.DEMO_URL, userName, password, admin_password, location);
             Log.d(TAG, "attempting setup");
         }
+    }
 
-
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
         Log.d(TAG, "TestSetup: ");
-
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
-
         Log.d(TAG, "TestSetup: urlString : " + urlString);
         Log.d(TAG, "TestSetup: encoded : " + encoded);
         Log.d(TAG, "TestSetup: encodednew : " + "Basic " + encoded);
-
-
-        //    showLoggingInDialog();
-
-             /* ProgressDialog progress;
-        progress = new ProgressDialog(SetupActivityNew.this, R.style.AlertDialogStyle);
-        progress.setTitle(getString(R.string.please_wait_progress));
-        progress.setMessage(getString(R.string.logging_in));
-        progress.show();*/
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -402,7 +390,6 @@ public class SetupActivityNew extends AppCompatActivity {
         loginModelObservable.subscribe(new Observer<LoginModel>() {
             @Override
             public void onSubscribe(Disposable d) {
-
             }
 
             @Override
@@ -574,8 +561,6 @@ public class SetupActivityNew extends AppCompatActivity {
         isLocationFetched = false;
         String BASE_URL = "https://" + AppConstants.DEMO_URL + "/openmrs/ws/rest/v1/";
         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
-//                                value = getLocationFromServer(BASE_URL); //state wise locations...
-
             ApiClient.changeApiBaseUrl(BASE_URL);
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);
             try {
@@ -868,7 +853,6 @@ public class SetupActivityNew extends AppCompatActivity {
     }
 
     private void showProgressbar() {
-// instantiate it within the onCreate method
         mProgressDialog = new ProgressDialog(SetupActivityNew.this);
         mProgressDialog.setMessage(getString(R.string.download_protocols));
         mProgressDialog.setIndeterminate(true);
@@ -916,31 +900,6 @@ public class SetupActivityNew extends AppCompatActivity {
         Log.e("DOWNLOAD", "isSTARTED");
 
     }
- /*   public void showLoggingInDialog() {
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(SetupActivityNew.this);
-        builder.setCancelable(false);
-        LayoutInflater inflater = LayoutInflater.from(SetupActivityNew.this);
-        View customLayout = inflater.inflate(R.layout.ui2_layout_dialog_logging_in, null);
-        builder.setView(customLayout);
-
-        dialogLoggingIn = builder.create();
-        dialogLoggingIn.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        dialogLoggingIn.show();
-        int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
-
-        dialogLoggingIn.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-    }*/
-  /*  public void dismissLoggingInDialog() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialogLoggingIn.dismiss();
-            }
-        }, 3000);
-    }
-*/
 
     @Override
     protected void onResume() {

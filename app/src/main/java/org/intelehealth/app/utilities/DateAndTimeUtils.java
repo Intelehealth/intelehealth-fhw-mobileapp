@@ -339,7 +339,7 @@ public class DateAndTimeUtils {
     }
 
     public String getcurrentDateTime(String localeCode) {
-        DateFormat date = new SimpleDateFormat("hh:mm a, dd MMMM yyyy", new Locale(localeCode));
+        DateFormat date = new SimpleDateFormat("hh:mm a, dd MMMM yyyy", Locale.ENGLISH);
         Date todayDate = new Date();
         return date.format(todayDate);
     }
@@ -729,8 +729,6 @@ public class DateAndTimeUtils {
             if (!month.isEmpty() && month.length() == 1) {
                 month = "0" + month;
             }
-
-
             String monthString = "";
             switch (month) {
                 case "01":
@@ -773,8 +771,6 @@ public class DateAndTimeUtils {
             }
 
             finalDate = day + " " + monthString;
-
-
         }
         return finalDate;
 
@@ -883,6 +879,14 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(new Date());
     }
 
+    public static String getYesterdaysDateInRequiredFormat(String format, String localeCode) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return simpleDateFormat.format(cal.getTime());
+    }
+
+    private static Date convertStringToDateObject(String date, String format, String localeCode) {
     public static Date convertStringToDateObject(String date, String format, String localeCode) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
         Date parsedDate = null;
@@ -899,13 +903,22 @@ public class DateAndTimeUtils {
     public static Calendar convertStringToCalendarObject(String date, String format, String localeCode) {
         Calendar calendar = Calendar.getInstance();
         Date parsedDate = convertStringToDateObject(date, format, localeCode);
-
         if (parsedDate != null) {
             calendar.setTime(parsedDate);
         }
-
         return calendar;
     }
+
+    public static Calendar convertStringToCalendarObjectMinusOne(String date, String format, String localeCode) {
+        Calendar calendar = Calendar.getInstance();
+        Date parsedDate = convertStringToDateObject(date, format, localeCode);
+        if (parsedDate != null) {
+            calendar.setTime(parsedDate);
+            calendar.add(Calendar.DATE, -1);
+        }
+        return calendar;
+    }
+
 
     // method returns the 12 A.M. time of the current day in milliseconds
     public static long getTodaysDateInMilliseconds() {

@@ -393,7 +393,7 @@ public class CalendarViewDemoActivity extends AppCompatActivity implements SendS
                 String year = calendarModel1.getSelectedYear();
 
                 Toast.makeText(this, "Selected date : " + date + "-" + month + "-" + year, Toast.LENGTH_SHORT).show();*/
-            }));
+            },"noValue"));
 
 
         } else {

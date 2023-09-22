@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -57,6 +59,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
         this.patientDTOS.addAll(patientDTOS);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -108,7 +111,10 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 // checking visit uploaded or not - end
 
                 holder.fu_item_calendar.setVisibility(View.VISIBLE);
-                holder.search_date_relative.setText(model.getVisit_startdate());
+                String visitDate = model.getVisit_startdate();
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                    visitDate = StringUtils.en_hi_dob_three(visitDate);
+                holder.search_date_relative.setText(visitDate);
             } else {
                 holder.presc_pendingCV.setVisibility(View.GONE);
                 holder.presc_receivingCV.setVisibility(View.GONE);
@@ -159,7 +165,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
         TextView search_gender, search_name, search_date_relative;
-        ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
+        ImageView  fu_item_calendar, profile_imgview;
+        LinearLayout priority_tag_imgview;
         PatientDTO patientDTO;
         CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
 
@@ -168,7 +175,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
             search_gender = itemView.findViewById(R.id.search_gender);
             search_name = itemView.findViewById(R.id.search_name);
-            priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
+            priority_tag_imgview = itemView.findViewById(R.id.llPriorityTagSearchPatientListItem);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
             profile_imgview = itemView.findViewById(R.id.profile_imgview);
@@ -199,7 +206,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public void profilePicDownloaded(PatientDTO model, SearchPatientAdapter_New.SearchHolderView holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
         Logger.logD("TAG", "profileimage url" + url);
