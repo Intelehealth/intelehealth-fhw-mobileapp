@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.partogram;
 
 import static org.intelehealth.ezazi.partogram.PartogramConstants.STAGE_1;
 import static org.intelehealth.ezazi.partogram.PartogramConstants.STAGE_2;
+import static org.intelehealth.ezazi.partogram.PartogramConstants.TIMELINE_MODE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.StringRes;
+import androidx.core.content.IntentCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,7 +72,9 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     private int mQueryFor = HOURLY;
     private List<PartogramItemData> mItemList = new ArrayList<PartogramItemData>();
     private int mStageNumber = STAGE_1;
-    private boolean mIsEditMode = false;
+
+    private PartogramConstants.AccessMode accessMode;
+
     private Context context;
 
     @Override
@@ -86,11 +90,12 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
         mPatientUuid = getIntent().getStringExtra("patientUuid");
         mStageNumber = getIntent().getIntExtra("stage", STAGE_1);
         mQueryFor = getIntent().getIntExtra("type", 0);
-        mIsEditMode = getIntent().getBooleanExtra("isEditMode", false);
+        accessMode = (PartogramConstants.AccessMode) getIntent().getSerializableExtra(TIMELINE_MODE);
         context = PartogramDataCaptureActivity.this;
-        if (mIsEditMode) {
-            getSupportActionBar().setTitle("Edit : History Collection");
-            mSaveTextView.setText("Update");
+        if (accessMode != PartogramConstants.AccessMode.WRITE) {
+            String title = accessMode == PartogramConstants.AccessMode.EDIT ? "Edit : History Collection" : "History Collection";
+            getSupportActionBar().setTitle(title);
+            mSaveTextView.setText(accessMode == PartogramConstants.AccessMode.EDIT ? "Update" : "Save");
         }
 
         Log.v("visitUuid", mVisitUUID);
@@ -114,6 +119,8 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                 throw new RuntimeException(e);
             }
         });
+
+        mSaveTextView.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
 
         mEpartogramTextView.setOnClickListener(v -> {
 
@@ -349,7 +356,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
                         isValidDiastolicBP = ValidatePartogramFields.isValidDiastolicBP(systolicBp, diastolicBp);
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.TEMPERATURE)) {
-                    isValidTemperature = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
+                        isValidTemperature = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.TEMPERATURE);
                     }
                     if (info.getConceptUUID().equals(UuidDictionary.DURATION_OF_CONTRACTION)) {
                         isValidDuration = ValidatePartogramFields.isValidParameter(info.getCapturedValue(), UuidDictionary.DURATION_OF_CONTRACTION);
@@ -403,17 +410,17 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
             showErrorDialogForValidations(getString(R.string.systolic_bp_range_toast_err, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
 
         } else if (!isValidDiastolicBP) {
-           // showErrorDialog(R.string.diastolic_bp_range);
+            // showErrorDialog(R.string.diastolic_bp_range);
             showErrorDialogForValidations(getString(R.string.diastolic_bp_range_toast_err, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
 
         } else if (!isValidTemperature) {
             showErrorDialogForValidations(getString(R.string.temp_error_new, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-        }else if (!isValidDuration) {
+        } else if (!isValidDuration) {
             showErrorDialogForValidations(getString(R.string.contraction_duration_err, AppConstants.MINIMUM_CONTRACTION_DURATION, AppConstants.MAXIMUM_CONTRACTION_DURATION));
         } else {
 
             try {
-                if (mIsEditMode) {
+                if (accessMode == PartogramConstants.AccessMode.EDIT) {
 
                     //new logic
                     for (int i = 0; i < obsDTOList.size(); i++) {
@@ -466,7 +473,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
     private List<ObsDTO> mObsDTOList = new ArrayList<>();
 
     private void setEditData() {
-        if (mIsEditMode) {
+        if (accessMode != PartogramConstants.AccessMode.WRITE) {
             mObsDTOList = new ObsDAO().getOBSByEncounterUUID(mEncounterUUID);
             for (int i = 0; i < mObsDTOList.size(); i++) {
                 ObsDTO obsDTO = mObsDTOList.get(i);
@@ -590,6 +597,7 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     private void showErrorDialogForValidations(String errorString) {
         ConfirmationDialogFragment dialog = new ConfirmationDialogFragment.Builder(this)
                 .content(errorString)

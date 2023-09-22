@@ -250,5 +250,5 @@
     <dimen name="whatsapp_icon_size_new">@dimen/std_26dp</dimen>
     <dimen name="tab_margin_from_text">@dimen/std_24dp</dimen>
     <dimen name="dropdown_max_height_dialog">200dp</dimen>
-
+    <dimen name="list_item_icon_size">38dp</dimen>
 </resources>

@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.activities.visitSummaryActivity;
 
 import static org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity.TAG;
+import static org.intelehealth.ezazi.partogram.PartogramConstants.TIMELINE_MODE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import org.intelehealth.ezazi.database.dao.ObsDAO;
 import org.intelehealth.ezazi.database.dao.VisitsDAO;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
+import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.PartogramDataCaptureActivity;
 import org.intelehealth.ezazi.utilities.SessionManager;
 
@@ -94,7 +96,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             if (encounterDTOList.get(position).getEncounterTime() != null &&
                     !encounterDTOList.get(position).getEncounterTime().equalsIgnoreCase("")) {
 
-                // Stage 1
                 if (encounterDTOList.get(position).getEncounterTypeUuid()
                         .equalsIgnoreCase("ee560d18-34a1-4ad8-87c8-98aed99c663d")) {
                     holder.stage1start.setVisibility(View.VISIBLE);
@@ -107,14 +108,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     holder.stage1start.setVisibility(View.GONE);
                 }
 
-                // Stage 2
-//                if (encounterDTOList.get(position).getEncounterTypeUuid()
-//                        .equalsIgnoreCase("558cc1b8-c352-4b27-9ec2-131fc19c26f0")) {
-//                    holder.stage1start.setVisibility(View.VISIBLE);
-//                    holder.stage1start.setText(context.getResources().getText(R.string.stage_2));
-//                } else {
-//                    holder.stage1start.setVisibility(View.GONE);
-//                }
 
                 String time = encounterDTOList.get(position).getEncounterTime();
                 SimpleDateFormat longTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
@@ -156,6 +149,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
                     if (calendar.after(Calendar.getInstance())) { // ie. eg: 7:20 is after of current (6:30) eg.
                         holder.cardview.setClickable(true);
+                        holder.cardview.setTag(PartogramConstants.AccessMode.WRITE);
                         holder.cardview.setEnabled(true);
                         holder.cardview.setActivated(false);
                         holder.circle.setActivated(false);
@@ -184,6 +178,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                             holder.ivEdit.setVisibility(View.GONE);
                         } else if (status == EncounterDTO.Status.SUBMITTED) {
                             holder.cardview.setEnabled(true);
+                            holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
                             holder.cardview.setActivated(true);
                             holder.circle.setActivated(true);
                             holder.circle.setEnabled(true);
@@ -192,20 +187,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
                             holder.summary_textview.setActivated(true);
                             holder.ivEdit.setVisibility(View.VISIBLE);
-
-//                            Log.v("timeline", "minutes enc time: " + time);
-//                            Log.v("timeline", "minutes enc time: " + encounterTimeCalendar.getTime().toString());
-//                            long diff = Calendar.getInstance().getTimeInMillis() - encounterTimeCalendar.getTimeInMillis();//as given
-//
-//                            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-//                            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-//                            Log.v("timeline", "minutes : " + minutes);
-//                            int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
-//                            if (minutes <= limit) {
-//                                holder.ivEdit.setVisibility(View.VISIBLE);
-//                            } else {
-//                                holder.ivEdit.setVisibility(View.GONE);
-//                            }
                         }
                     }
 
@@ -253,6 +234,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         holder.cardview.setClickable(true);
                         holder.cardview.setEnabled(true);
                         holder.cardview.setActivated(true);
+                        holder.cardview.setTag(PartogramConstants.AccessMode.WRITE);
                         holder.circle.setEnabled(true);
                         holder.circle.setActivated(true);
                         //  holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.amber));
@@ -278,6 +260,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                         } else if (status == EncounterDTO.Status.SUBMITTED) {
                             holder.summary_textview.setEnabled(true);
                             holder.summary_textview.setActivated(true);
+                            holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
                             holder.cardview.setEnabled(true);
                             holder.cardview.setActivated(true);
                             holder.summary_textview.setText(context.getResources().getString(R.string.submitted_interval));
@@ -324,9 +307,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                     Log.v("timeline", "minutes : " + minutes);
                     int limit = encounterDTOList.get(position).getEncounterTypeName().toLowerCase().contains("stage2") ? 5 : 20;
                     if (minutes <= limit) {
+                        holder.cardview.setTag(PartogramConstants.AccessMode.EDIT);
                         holder.ivEdit.setVisibility(View.VISIBLE);
                     } else {
+                        holder.cardview.setTag(PartogramConstants.AccessMode.READ);
                         holder.ivEdit.setVisibility(View.GONE);
+                        holder.cardview.setClickable(true); // added by Mithun
+                        holder.cardview.setEnabled(true);
                     }
                 }
 
@@ -373,19 +360,20 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             ivEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    nextIntent(true);
+                    nextIntent(PartogramConstants.AccessMode.EDIT);
                 }
             });
             cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    nextIntent(false);
+                    PartogramConstants.AccessMode mode = (PartogramConstants.AccessMode) view.getTag();
+                    nextIntent(mode);
                 }
             });
         }
 
-        void nextIntent(boolean isEditMode) {
-            Log.v("nextIntent", "nextIntent isEditMode - " + isEditMode);
+        void nextIntent(PartogramConstants.AccessMode mode) {
+            Log.v("nextIntent", "nextIntent isEditMode - " + mode);
             String encounterType = encounterDTOList.get(getAbsoluteAdapterPosition()).getEncounterTypeName();
             Log.v("nextIntent", "encounterType - " + encounterType);
             int type = 10;
@@ -415,7 +403,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             i1.putExtra("encounterUuid", encounterDTOList.get(getAbsoluteAdapterPosition()).getUuid());
             i1.putExtra("type", type);
             i1.putExtra("stage", stage);
-            i1.putExtra("isEditMode", isEditMode);
+            i1.putExtra(TIMELINE_MODE, mode);
             context.startActivity(i1);
         }
     }

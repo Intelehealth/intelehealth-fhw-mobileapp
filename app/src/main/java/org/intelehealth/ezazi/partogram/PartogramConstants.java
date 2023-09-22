@@ -31,6 +31,12 @@ public class PartogramConstants {
     public static final int STAGE_1 = 1;
     public static final int STAGE_2 = 2;
 
+    public enum AccessMode {
+        WRITE, EDIT, READ
+    }
+
+    public static final String TIMELINE_MODE = "access_mode";
+
     public static String[] SECTION_LIST = {
             "Supportive care",
             "Baby",
@@ -51,7 +57,6 @@ public class PartogramConstants {
         BASELINE_FHR("Baseline FHR"),
         PULSE("Pulse"),
         DURATION_OF_CONTRACTION("Duration of contractions");
-
 
 
         public final String value;

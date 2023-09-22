@@ -283,5 +283,5 @@
     <dimen name="dialog_input_margin_top">10dp</dimen>
     <dimen name="tv_labour_margin_end">30dp</dimen>
     <dimen name="dropdown_max_height_dialog">140dp</dimen>
-
+    <dimen name="list_item_icon_size">24dp</dimen>
 </resources>
