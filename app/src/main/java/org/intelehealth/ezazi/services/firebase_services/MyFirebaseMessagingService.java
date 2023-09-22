@@ -3,7 +3,6 @@ package org.intelehealth.ezazi.services.firebase_services;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -22,17 +21,24 @@ import com.google.gson.Gson;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
+import org.intelehealth.ezazi.activities.visitSummaryActivity.ShiftChangeData;
+import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
+import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.utilities.AppNotification;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.OfflineLogin;
+import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
-import org.json.JSONException;
+import org.intelehealth.klivekit.utils.FirebaseUtils;
+import org.intelehealth.klivekit.utils.Manager;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * Created by Dexter Barretto on 5/25/17.
@@ -47,10 +53,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
+        saveToken();
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Log.d(TAG, "onMessageReceived:remote " + new Gson().toJson(remoteMessage));
+        Log.d(TAG, "onMessageReceived:notification " + remoteMessage.getNotification().getTitle());
+        Log.d(TAG, "onMessageReceived:notification " + remoteMessage.getNotification().getBody());
+
         //Displaying data in log
         //It is optional
         //Log.d(TAG, "From: " + remoteMessage.getFrom());
@@ -138,6 +149,40 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else if (remoteMessage.getData().get("actionType").equals("SHIFT_CHANGE")) {
+
+                // title : New patient for you.
+                // content : "patient_name" patient has been assigned to you by "HW1 name"
+
+                try {
+                    Log.d(TAG, "actionType : SHIFT_CHANGE");
+
+                    Gson gson = new Gson();
+                    ShiftChangeData shiftChangeData = gson.fromJson(gson.toJson(remoteMessage.getData()), ShiftChangeData.class);
+                    Log.d("onMessageReceivednoti :", new Gson().toJson(shiftChangeData));
+
+                    RtcArgs args = new RtcArgs();
+                    args.setPatientNameTimeline(shiftChangeData.getPatientNameTimeline());
+                    args.setPatientUuid(shiftChangeData.getPatientUuid());
+                    args.setVisitUuid(shiftChangeData.getVisitUuid());
+                    args.setProviderID(shiftChangeData.getProviderID());
+                    args.setTag(shiftChangeData.getTag());
+                    args.setAssignorNurseName(shiftChangeData.getAssignorNurse());
+
+
+                    // "patient_name" patient has been assigned to you by "HW1 name"
+
+                    String content = (shiftChangeData.getPatientNameTimeline()) + " patient has been assigned to you by " + shiftChangeData.getAssignorNurse();
+                    // String title = new ProviderDAO().getProviderName("shift change title");
+                    new AppNotification.Builder(this)
+                            .title("New patient for you")
+                            .body(content)
+                            .pendingIntent(TimelineVisitSummaryActivity.getPendingIntent(this, args))
+                            .send();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         } else {
@@ -209,5 +254,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(1, notificationBuilder.build());
 
+    }
+
+    private void saveToken() {
+        ProviderDAO providerDAO = new ProviderDAO();
+        SessionManager sessionManager = new SessionManager(this);
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        try {
+            FirebaseUtils.saveToken(this, providerDAO.getUserUuid(sessionManager.getProviderID()), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

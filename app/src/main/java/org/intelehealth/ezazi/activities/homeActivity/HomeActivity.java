@@ -79,6 +79,7 @@ import org.intelehealth.ezazi.activities.chooseLanguageActivity.ChooseLanguageAc
 import org.intelehealth.ezazi.activities.loginActivity.LoginActivity;
 import org.intelehealth.ezazi.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ezazi.activities.settingsActivity.SettingsActivity;
+import org.intelehealth.ezazi.activities.visitSummaryActivity.ShiftChangeData;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.EncounterDAO;
@@ -211,12 +212,19 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private Button mEndShiftTextView;
 
     private BottomNavigationView bottomNavigationView;
+
+    private List<VisitDTO> visitDTOList;
     /*eZazi End*/
 
     private void saveToken() {
+        ProviderDAO providerDAO = new ProviderDAO();
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
         // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        try {
+            FirebaseUtils.saveToken(this, providerDAO.getUserUuid(sessionManager.getProviderID()), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -472,7 +480,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                 try {
                     String providerId = new SessionManager(IntelehealthApplication.getAppContext()).getProviderID();
                     Logger.logV(TAG, "myCreatorUUID - " + providerId);
-                    final List<VisitDTO> visitDTOList = new VisitsDAO().getAllActiveVisitByProviderId(providerId);
+                    visitDTOList = new VisitsDAO().getAllActiveVisitByProviderId(providerId);
                     String[] patients = new String[visitDTOList.size()];
 
                     ArrayList<MultiChoiceItem> items = new ArrayList<>();
@@ -740,6 +748,14 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         }
 
         TokenRefreshUtils.refreshToken(this);
+
+        //call sync
+
+        // Check if the activity was opened from a notification click
+        if (getIntent() != null && getIntent().hasExtra("shiftChangeNotification")) {
+            Log.d(TAG, "onCreate: shiftChangeNotification");
+            sync();
+        }
     }
 
     private void showPatientChoiceDialog(ArrayList<MultiChoiceItem> items) {
@@ -768,7 +784,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                 Log.e(TAG, "Visit Uuid =>" + ((FamilyMemberRes) item).getVisitUuid());
             }
         }
-        showNurseAssignDialog(visitUuids);
+        showNurseAssignDialog(visitUuids, items);
     }
 
     private LinearLayoutManager getLayoutManager() {
@@ -819,7 +835,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private String mLastSelectedNurseUUID = "";
     private boolean mPendingForLogout = false;
 
-    private void showNurseAssignDialog(List<String> visitUUIDList) {
+    private void showNurseAssignDialog(List<String> visitUUIDList, List<MultiChoiceItem> patientsList) {
         try {
             ProviderDAO providerDAO = new ProviderDAO();
             String myCreatorUUID = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
@@ -839,7 +855,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                 }
             }
 
-            showNurseSelectionDialog(visitUUIDList, choiceItems);
+            showNurseSelectionDialog(visitUUIDList, choiceItems, patientsList);
 //            AlertDialog.Builder builder =
 //                    new AlertDialog.Builder(HomeActivity.this);
 //
@@ -875,7 +891,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         }
     }
 
-    private void showNurseSelectionDialog(List<String> visitUUIDList, ArrayList<SingChoiceItem> choiceItems) {
+    private void showNurseSelectionDialog(List<String> visitUUIDList, ArrayList<SingChoiceItem> choiceItems, List<MultiChoiceItem> patientsList) {
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_nurse)
                 .positiveButtonLabel(R.string.save_button)
@@ -883,21 +899,40 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                 .build();
 
         dialog.isSearchable(true);
-        dialog.setListener(item -> assignNurseToPatient(visitUUIDList, item.getItemId(), item.getUserUuid()));
+        dialog.setListener(item -> assignNurseToPatient(visitUUIDList, item.getItemId(), item.getUserUuid(), patientsList));
 
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid, String assigneeNurseUserUuid) {
+    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid, String assigneeNurseUserUuid, List<MultiChoiceItem> patientsList) {
+        PatientsDAO patientsDAO = new PatientsDAO();
         Log.e(TAG, "assignNurseToPatient: " + selectedNurseUuid);
+        Log.e(TAG, "assignNurseToPatient: assigneeNurseUserUuid check2 :: " + assigneeNurseUserUuid);
+
         VisitAttributeListDAO visitsAttrsDAO = new VisitAttributeListDAO();
         for (int j = 0; j < visitUUIDList.size(); j++) {
             try {
                 visitsAttrsDAO.updateVisitTypeAttributeUuid(visitUUIDList.get(j), selectedNurseUuid);
                 new VisitsDAO().updateVisitSync(visitUUIDList.get(j), "0");
-                HashMap<String, String> assigneeMap = new HashMap<>();
-                assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);
-                SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
+           /*     HashMap<String, String> assigneeMap = new HashMap<>();
+                assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);*/
+                FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(j).getPatientuuid());
+
+                ShiftChangeData shiftChangeData = new ShiftChangeData();
+                shiftChangeData.setToHwUserUuid(assigneeNurseUserUuid);
+                shiftChangeData.setPatientNameTimeline(patientNameInfo.getName());
+                shiftChangeData.setPatientUuid(visitDTOList.get(j).getPatientuuid());
+                shiftChangeData.setVisitUuid(visitUUIDList.get(j));
+                shiftChangeData.setProviderID(sessionManager.getProviderID());
+                shiftChangeData.setAssignorNurse(sessionManager.getChwname());
+                shiftChangeData.setTag("shiftChange");
+                Log.d("1122Shift", new Gson().toJson(shiftChangeData));
+                Log.v("1122visitDTOList", "visitDTOList: " + new Gson().toJson(visitDTOList));
+                //  SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
+
+
+                SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(shiftChangeData));
+
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }

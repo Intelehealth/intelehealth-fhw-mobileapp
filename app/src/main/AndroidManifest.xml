@@ -385,7 +385,7 @@
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
         <service
             android:name=".services.firebase_services.MyFirebaseMessagingService"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

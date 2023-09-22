@@ -18,8 +18,9 @@ public class FirebaseUtils {
     private static final String TAG = FirebaseUtils.class.getName();
 
     public static void saveToken(Context context, String userUUID, String fcmToken, String lang) {
-        Log.v(TAG, userUUID);
-        Log.v(TAG, fcmToken);
+        Log.d(TAG, "saveToken: fcmToken :: "+fcmToken);
+        Log.d(TAG, "saveToken: userUUID check1:: "+userUUID);
+
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Start the queue

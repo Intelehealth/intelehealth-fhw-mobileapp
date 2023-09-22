@@ -96,7 +96,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     private Intent intent;
     private String patientUuid;
     private String visitUuid;
-    private String whichScreenUserCameFromTag;
+    private String whichScreenUserCameFromTag = "";
     private String providerID;
     private SessionManager sessionManager;
     private final EncounterDAO encounterDAO = new EncounterDAO();
@@ -923,7 +923,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        if (whichScreenUserCameFromTag.equals("new")) {
+        if (whichScreenUserCameFromTag.equals("new") || whichScreenUserCameFromTag.equals("shiftChange")) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra(AppConstants.REFRESH_SCREEN_EVENT, true);
             startActivity(intent);
@@ -980,5 +980,22 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         }
      /*   Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         checkInternetAndUploadVisitEncounter(true);*/
+    }
+
+    public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
+        Intent shiftChangeIntent = new Intent(context, HomeActivity.class);
+        shiftChangeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        shiftChangeIntent.putExtra("shiftChangeNotification", true);
+
+        return PendingIntent.getActivity(context, 0, buildExtra(shiftChangeIntent, args),
+                NotificationUtils.getPendingIntentFlag());
+    }
+
+    private static Intent buildExtra(Intent shiftIntent, RtcArgs args) {
+        shiftIntent.putExtra("patientNameTimeline", args.getPatientNameTimeline());
+        shiftIntent.putExtra("patientUuid", args.getPatientUuid());
+        shiftIntent.putExtra("visitUuid", args.getVisitUuid());
+        shiftIntent.putExtra("providerID", args.getProviderID());
+        return shiftIntent;
     }
 }

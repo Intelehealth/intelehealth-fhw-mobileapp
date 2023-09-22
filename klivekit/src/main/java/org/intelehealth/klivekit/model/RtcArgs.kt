@@ -35,7 +35,15 @@ data class RtcArgs(
     var deviceToken: String? = "",
     var actionType: String = RemoteActionType.TEXT_CHAT.name,
     var callEnded: Boolean = false,
-    var timestamp: Long = 0
-) : Parcelable {
+    var timestamp: Long = 0,
+    @SerializedName("shift_change")
+    var patientNameTimeline: String? = "",
+    var patientUuid: String? = "",
+    //var actionType: String = RemoteActionType.SHIFT_CHANGE.name,
+    var visitUuid: String? = "",
+    var providerID: String? = "",
+    var tag: String? = "",
+    var assignorNurseName: String? = "",
+    ) : Parcelable {
     fun toJson(): String = Gson().toJson(this)
 }

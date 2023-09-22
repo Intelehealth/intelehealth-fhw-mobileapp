@@ -48,6 +48,7 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
+import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.models.DownloadMindMapRes;
 import org.intelehealth.ezazi.models.Location;
 import org.intelehealth.ezazi.models.OxytocinResponseModel;
@@ -69,6 +70,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.StringEncryption;
 import org.intelehealth.ezazi.utilities.TextThemeUtils;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
+import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.ezazi.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
@@ -1863,9 +1865,14 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private void saveToken() {
+        ProviderDAO providerDAO = new ProviderDAO();
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
         // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        try {
+            FirebaseUtils.saveToken(this, providerDAO.getUserUuid(sessionManager.getProviderID()), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
