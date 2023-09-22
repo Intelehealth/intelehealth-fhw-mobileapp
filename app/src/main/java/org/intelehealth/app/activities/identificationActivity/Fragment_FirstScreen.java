@@ -710,7 +710,7 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
                 break;
             case R.id.gender_other:
                 if (checked)
-                    mGender = "Other";
+                    mGender = "O";
                 Log.v(TAG, "gender: " + mGender);
                 break;
         }

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fu_margin_start"
             android:layout_marginTop="@dimen/fu_margin_start"
-            android:layout_marginEnd="@dimen/fu_margin_start"
+
             android:layout_marginBottom="@dimen/fu_margin_start"
             android:layout_toStartOf="@+id/linear_icon">
 

@@ -15,7 +15,7 @@ public class VisitUtils {
 
             if (followUpDate != null && !followUpDate.equalsIgnoreCase("")) {
 
-                new DialogUtils().showCommonDialog(activityContext, 0, activityContext.getResources().getString(R.string.alert_txt), activityContext.getString(R.string.visit_summary_follow_up_reminder) + " " + followUpDate, true, activityContext.getResources().getString(R.string.ok), activityContext.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                new DialogUtils().showCommonDialog(activityContext, R.drawable.ui2_ic_exit_app, activityContext.getResources().getString(R.string.alert_txt), activityContext.getString(R.string.visit_summary_follow_up_reminder) + " " + followUpDate, true, activityContext.getResources().getString(R.string.ok), activityContext.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
                     @Override
                     public void onDialogActionDone(int action) {
                         Intent intent = new Intent(activityContext, PatientSurveyActivity_New.class);

@@ -229,7 +229,7 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
             profile_image = itemView.findViewById(R.id.profile_image);
             rootView = itemView;
 
-//            fu_date_txtview.setText("22 June"); // todo: testing.
+         //   fu_date_txtview.setText("22 June"); // todo: testing.
         }
 
         public View getRootView() {

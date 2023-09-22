@@ -75,6 +75,8 @@
                             android:layout_height="@dimen/btn_prioirty_h_20dp"
                             android:layout_alignParentEnd="true"
                             android:layout_marginStart="@dimen/cal_margnin_start"
+                            android:visibility="gone"
+                            tools:visibility="gone"
                             android:gravity="center_vertical">
 
                             <LinearLayout

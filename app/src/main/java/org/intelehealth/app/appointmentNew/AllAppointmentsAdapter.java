@@ -1,5 +1,7 @@
 package org.intelehealth.app.appointmentNew;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -83,6 +85,13 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             }
         }
 
+        // Set Age and Gender - start
+       /* String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
+        holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);*/
+        setGenderAgeLocal(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
+                appointmentInfoModel.getPatientGender(), sessionManager);
+
+        // Set Age and Gender - end
 
         if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
             Glide.with(context)
@@ -117,6 +126,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 if (minutes > 0) {
                     if (minutes >= 60) {
                         long hours = minutes / 60;
+                        long mins = minutes % 60;
                         if (hours > 12) {
 
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
@@ -129,7 +139,16 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                                 holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                             }
                         } else {
-                            holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
+                            if (hours > 1) {
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                        mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                        context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                            }
+                            else {
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
+                                        mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                        context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                            }
 
 
                             if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
@@ -137,6 +156,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                             else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                 timeText = hours + " " + context.getString(R.string.hours)+ " " + context.getString(R.string.in)+ ", " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             holder.tvDate.setText(timeText);
+                            holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                             }
@@ -220,6 +240,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                 intent.putExtra("patientname", appointmentInfoModel.getPatientName());
                 intent.putExtra("patientUuid", appointmentInfoModel.getPatientId());
                 intent.putExtra("gender", "");
+                intent.putExtra("dob", appointmentInfoModel.getPatientDob());
                 //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
                 intent.putExtra("age", "");
                 intent.putExtra("priority_tag", "");
@@ -250,9 +271,9 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent, cvPrescPending, cvPrescRx;
-        TextView tvPatientName, tvDate, doctNameTextView;
         ImageView ivProfileImage;
         LinearLayout IvPriorityTag;
+        TextView tvPatientName, tvDate, tvPrescRecStatus,doctNameTextView, search_gender;
 
 
         public MyViewHolder(View itemView) {
@@ -265,6 +286,7 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
             cvPrescPending = itemView.findViewById(R.id.cvPrescPendingAllAppointment);
             cvPrescRx = itemView.findViewById(R.id.cvPrescRxAllAppointment);
             doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
+            search_gender = itemView.findViewById(R.id.search_gender);
 
         }
     }

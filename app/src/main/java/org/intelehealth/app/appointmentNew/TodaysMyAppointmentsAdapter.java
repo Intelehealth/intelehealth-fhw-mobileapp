@@ -1,5 +1,7 @@
 package org.intelehealth.app.appointmentNew;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -82,6 +84,12 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 }
             }
 
+            // Set Age and Gender - start
+            /*String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.getPatientDob(), context);
+            holder.search_gender.setText(appointmentInfoModel.getPatientGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, appointmentInfoModel.getPatientDob(),
+                    appointmentInfoModel.getPatientGender(), sessionManager);
+            // Set Age and Gender - end
 
             if (appointmentInfoModel.getPatientProfilePhoto() != null && !appointmentInfoModel.getPatientProfilePhoto().isEmpty()) {
                 Glide.with(context)
@@ -113,11 +121,12 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     if (minutes > 0) {
                         if (minutes >= 60) {
                             long hours = minutes / 60;
+                            long mins = minutes % 60;
                             if (hours > 24) {
 
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                                holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
-                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
+//                                holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
+//                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
 
                                 if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                     timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
@@ -129,6 +138,16 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                     holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
                                 }
                             } else {
+                                if (hours > 1) {
+                                    timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                            mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                            context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                }
+                                else {
+                                    timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
+                                            mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                            context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                }
                                 if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                     timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
                                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -136,8 +155,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
-
                                 holder.tvDate.setText(timeText);
+                                holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     holder.tvDate.setTextColor(context.getColor(R.color.colorPrimary1));
                                 }
@@ -170,7 +189,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                 //hide  : ivTime, tvDate, tvPatientId
                 //show :  tvPrescRecStatus
 
-                holder.ivTime.setVisibility(View.GONE);
+             //   holder.ivTime.setVisibility(View.GONE);
                 holder.tvDate.setVisibility(View.GONE);
                 holder.tvPatientId.setVisibility(View.GONE);
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
@@ -187,7 +206,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
             if (whichAppointments.equalsIgnoreCase("cancelled")) {
                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-                holder.ivTime.setVisibility(View.VISIBLE);
+             //   holder.ivTime.setVisibility(View.VISIBLE);
                 holder.tvDate.setVisibility(View.VISIBLE);
                 holder.cvPrescRx.setVisibility(View.GONE);
                 holder.cvPrescPending.setVisibility(View.GONE);
@@ -210,6 +229,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                     intent.putExtra("patientname", appointmentInfoModel.getPatientName());
                     intent.putExtra("patientUuid", appointmentInfoModel.getPatientId());
                     intent.putExtra("gender", "");
+                    intent.putExtra("dob", appointmentInfoModel.getPatientDob());
                     //String age = DateAndTimeUtils.getAge_FollowUp(appointmentInfoModel.get(), context);
                     intent.putExtra("age", "");
                     intent.putExtra("priority_tag", "");
@@ -247,7 +267,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardParent, cvPrescPending, cvPrescRx;
-        TextView tvPatientName, tvDate, tvPatientId, doctNameTextView;
+        TextView tvPatientName, tvDate, tvPatientId, tvPrescRecStatus, doctNameTextView, search_gender;
         ImageView ivProfileImage, ivTime;
         LinearLayout IvPriorityTag;
 
@@ -257,12 +277,13 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
             tvPatientName = itemView.findViewById(R.id.tv_patient_name_todays);
             ivProfileImage = itemView.findViewById(R.id.profile_image_todays);
             tvDate = itemView.findViewById(R.id.tv_date_appointment_todays);
-            ivTime = itemView.findViewById(R.id.iv_time_todays);
+          //  ivTime = itemView.findViewById(R.id.iv_time_todays);
             IvPriorityTag = itemView.findViewById(R.id.llPriorityTagTodayAppointmentItem);
             tvPatientId = itemView.findViewById(R.id.tv_patient_id_todays);
             cvPrescPending = itemView.findViewById(R.id.cvPrescPendingTodayAppointment);
             cvPrescRx = itemView.findViewById(R.id.cvPrescRxTodayAppointment);
             doctNameTextView = itemView.findViewById(R.id.tv_dr_name_todays);
+            search_gender = itemView.findViewById(R.id.search_gender);
         }
     }
 

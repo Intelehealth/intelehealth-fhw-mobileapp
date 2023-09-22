@@ -139,20 +139,20 @@
                             android:layout_toEndOf="@+id/profile"
                             android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
                                 <TextView
                                     android:id="@+id/patname_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center_horizontal|center_vertical"
+                                    android:layout_centerVertical="true"
+                                    android:gravity="center"
                                     android:lineSpacingExtra="-3sp"
+                                    android:maxWidth="70dp"
                                     android:maxLines="1"
+                                    android:ellipsize="end"
                                     android:text="@string/fu_visit_name"
                                     android:textAppearance="@style/label_16sp"
                                     android:textColor="@null"
@@ -162,10 +162,12 @@
                                     android:id="@+id/gender_age_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
+                                    android:layout_centerVertical="true"
+                                    android:gravity="center"
                                     android:layout_marginStart="@dimen/fu_male_margin_start"
                                     android:layout_toEndOf="@+id/patname_txt"
                                     android:text="@string/misc_txt"
+                                    tools:text="पुरुष 50"
                                     android:textAppearance="@style/label_misc_txt_14sp"
                                     android:textColor="@null"
                                     android:textSize="@dimen/fu_name_txt_size" />
@@ -173,13 +175,15 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
+                                    android:layout_centerVertical="true"
+                                    android:gravity="center"
                                     android:layout_marginStart="@dimen/fu_male_margin_start"
+                                    android:layout_toEndOf="@+id/gender_age_txt"
                                     android:onClick="editPatientInfo"
                                     android:padding="@dimen/margin_4"
                                     android:src="@drawable/ic_icno8_edit" />
 
-                            </LinearLayout>
+                            </RelativeLayout>
 
                             <!-- Caption -->
                             <TextView
