@@ -886,7 +886,6 @@ public class DateAndTimeUtils {
         return simpleDateFormat.format(cal.getTime());
     }
 
-    private static Date convertStringToDateObject(String date, String format, String localeCode) {
     public static Date convertStringToDateObject(String date, String format, String localeCode) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, new Locale(localeCode));
         Date parsedDate = null;
