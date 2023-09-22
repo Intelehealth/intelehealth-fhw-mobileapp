@@ -153,8 +153,8 @@ public class SearchPatientActivity_New extends BaseActivity {
         });
 
         flag.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            initializeRecyclerView(lm);
             resetData();
+            initializeRecyclerView(lm);
 
             if (isChecked) {
                 doQueryForProvider();
@@ -463,6 +463,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                 adapter = new SearchPatientAdapter_New(this, patientDTOList_default);
                 isFullyLoaded_default = true;
                 search_recycelview.setAdapter(adapter);
+
                 start_default = end_default;
                 end_default += limit_default;
             } catch (Exception e) {
@@ -684,10 +685,21 @@ public class SearchPatientActivity_New extends BaseActivity {
         limit = 15;
         start = 0;
         end = start + limit;
+
+        isFullyLoaded_default = false;
+        isFullyLoaded = false;
+
     }
 
     private void resetData() {
         initLimits();
+
+        if (patientDTOList != null && patientDTOList.size() > 0)
+            patientDTOList.clear();
+
+        if (patientDTOList_default != null && patientDTOList_default.size() > 0)
+            patientDTOList_default.clear();
+
         recent_default.clear();
         recent.clear();
        /*

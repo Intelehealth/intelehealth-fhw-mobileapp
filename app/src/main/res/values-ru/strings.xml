@@ -1538,7 +1538,7 @@
     <string name="select_language">Выберите язык</string>
     <string name="next_new">Дальше</string>
     <string name="prescription_consultation_details">Информация о консультации</string>
-    <string name="presc_received">Prescription received</string>
-    <string name="presc_pending">Prescription pending</string>
+    <string name="presc_received">Рецепт получен</string>
+    <string name="presc_pending">Ожидается рецепт</string>
 
 </resources>
