@@ -66,5 +66,7 @@
     <string name="describe_lbl">Describe</string>
     <string name="patinet_history">4/4. Medical history: Patient history</string>
     <string name="_1_4_vitals">1/4 Vitals</string>
+    <string name="presc_received">Prescription received</string>
+    <string name="presc_pending">Prescription pending</string>
 
 </resources>

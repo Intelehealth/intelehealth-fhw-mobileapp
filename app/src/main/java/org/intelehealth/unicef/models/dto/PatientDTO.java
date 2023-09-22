@@ -83,6 +83,7 @@ public class PatientDTO implements Serializable {
     private boolean emergency = false;
     private String visit_startdate;
     private boolean prescription_exists = false;
+    private VisitDTO visitDTO;
 
     public String getUuid() {
         return uuid;
@@ -331,6 +332,14 @@ public class PatientDTO implements Serializable {
 
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public VisitDTO getVisitDTO() {
+        return visitDTO;
+    }
+
+    public void setVisitDTO(VisitDTO visitDTO) {
+        this.visitDTO = visitDTO;
     }
 
     @Override

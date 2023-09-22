@@ -368,16 +368,16 @@ public class ProviderDAO {
         return isUpdated;
     }
 
-    public List<PatientDTO> doQueryWithProviders(String providerUUID) {
+    public List<PatientDTO> doQueryWithProviders(int limit, int offset, String providerUUID) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         List<PatientDTO> modelListwihtoutQuery = new ArrayList<>();
         String query = "SELECT b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth, b.gender " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                 "WHERE a.patientuuid = b.uuid AND c.visituuid=a.uuid AND c.provider_uuid = ?" +
-                "GROUP BY a.uuid order by b.modified_date ASC";
+                "GROUP BY a.uuid order by b.modified_date ASC limit ? offset ?";
         Logger.logD(TAG, query);
-        final Cursor cursor = db.rawQuery(query, new String[]{providerUUID});
+        final Cursor cursor = db.rawQuery(query, new String[]{providerUUID, String.valueOf(limit), String.valueOf(offset)});
         Logger.logD(TAG, "Cursour count" + cursor.getCount());
 
         try {

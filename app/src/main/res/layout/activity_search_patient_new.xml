@@ -65,6 +65,18 @@
                     android:textSize="@dimen/fu_name_txt_size" />
 
                 <ImageView
+                    android:id="@+id/icon_clear"
+                    android:layout_width="@dimen/search_icon_toolbar"
+                    android:layout_height="@dimen/search_icon_toolbar"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginEnd="@dimen/margin_12"
+                    android:layout_marginBottom="@dimen/margin_12"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_baseline_clear_20"
+                    android:visibility="gone"/>
+
+                <ImageView
                     android:id="@+id/icon_search"
                     android:layout_width="@dimen/search_icon_toolbar"
                     android:layout_height="@dimen/search_icon_toolbar"

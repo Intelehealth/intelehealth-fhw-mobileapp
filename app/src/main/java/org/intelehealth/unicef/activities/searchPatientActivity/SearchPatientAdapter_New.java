@@ -1,16 +1,20 @@
 package org.intelehealth.unicef.activities.searchPatientActivity;
 
+import static org.intelehealth.unicef.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +37,7 @@ import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -48,7 +53,7 @@ import okhttp3.ResponseBody;
  */
 public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatientAdapter_New.SearchHolderView> {
     private Context context;
-    private List<PatientDTO> patientDTOS;
+    List<PatientDTO> patientDTOS = new ArrayList<>();
     private String profileImage = "";
     String profileImage1 = "";
     private ImagesDAO imagesDAO = new ImagesDAO();
@@ -56,7 +61,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
-        this.patientDTOS = patientDTOS;
+        this.patientDTOS.addAll(patientDTOS);
         sessionManager = new SessionManager(context);
     }
 
@@ -73,52 +78,51 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         final PatientDTO model = patientDTOS.get(position);
         holder.patientDTO = model;
         if (model != null) {
+
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+            /*String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDateofbirth(), model.getGender(), sessionManager);
 
             //  2. Name
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname());
 
             //  3. Priority Tag
             if (model.isEmergency())
-                holder.priority_tag_imgview.setVisibility(View.VISIBLE);
+                holder.fl_priority.setVisibility(View.VISIBLE);
             else
-                holder.priority_tag_imgview.setVisibility(View.GONE);
+                holder.fl_priority.setVisibility(View.GONE);
 
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
-                holder.fu_item_calendar.setVisibility(View.VISIBLE);
-
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    String visitStartDateFullMonthName = StringUtils.getFullMonthName(model.getVisit_startdate());
-                    String translatedVisitStartDate = StringUtils.en__ru_dob(visitStartDateFullMonthName);
-                    translatedVisitStartDate = translatedVisitStartDate.replace("at", "на");
-                    holder.search_date_relative.setText(translatedVisitStartDate);
-                } else {
-                    holder.search_date_relative.setText(model.getVisit_startdate());
+                if (model.isPrescription_exists()) {
+                    holder.presc_receivingCV.setVisibility(View.VISIBLE);
+                    holder.presc_pendingCV.setVisibility(View.GONE);
+                } else if (!model.isPrescription_exists()) {
+                    holder.presc_pendingCV.setVisibility(View.VISIBLE);
+                    holder.presc_receivingCV.setVisibility(View.GONE);
                 }
+
+                //  5. Checking visit uploaded or not and Prescription received/pending tag display. - start
+                if (model.getVisitDTO() != null) {
+                    if (model.getVisitDTO().getSyncd() != null && model.getVisitDTO().getSyncd()) {
+                        holder.visitNotUploadCV.setVisibility(View.GONE);
+                    } else {
+                        holder.visitNotUploadCV.setVisibility(View.VISIBLE);
+                        holder.presc_pendingCV.setVisibility(View.GONE);
+                        holder.presc_receivingCV.setVisibility(View.GONE);
+                    }
+                }
+                // checking visit uploaded or not - end
+
+                holder.fu_item_calendar.setVisibility(View.VISIBLE);
+                holder.search_date_relative.setText(model.getVisit_startdate());
             } else {
+                holder.presc_pendingCV.setVisibility(View.GONE);
+                holder.presc_receivingCV.setVisibility(View.GONE);
+
                 holder.fu_item_calendar.setVisibility(View.GONE);
                 holder.search_date_relative.setText(R.string.no_visit_created);
-            }
-
-            //  5. Prescription received/pending tag display.
-            if (model.getVisit_startdate() != null) {
-//                holder.presc_tag_imgview.setVisibility(View.VISIBLE);
-                holder.rlPresBackground.setVisibility(View.VISIBLE);
-                if (model.isPrescription_exists()) {
-//                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_received));
-                    holder.rlPresBackground.setBackground(context.getDrawable(R.drawable.pres_received_drawable_rounded_corners));
-                    holder.presStatusText.setText(R.string.tag_prescription_received);
-                } else {
-//                    holder.presc_tag_imgview.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_presc_pending));
-                    holder.rlPresBackground.setBackground(context.getDrawable(R.drawable.pres_pending_drawable_rounded_corners));
-                    holder.presStatusText.setText(R.string.tag_prescription_pending);
-                }
-            } else {
-//                holder.presc_tag_imgview.setVisibility(View.GONE);
-                holder.rlPresBackground.setVisibility(View.GONE);
             }
 
             //  6. Patient Profile Pic
@@ -162,23 +166,25 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
-        TextView search_gender, search_name, search_date_relative, presStatusText, priority_tag_imgview;
-        ImageView fu_item_calendar, presc_tag_imgview, profile_imgview;
+        TextView search_gender, search_name, search_date_relative;
+        ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
         PatientDTO patientDTO;
-        RelativeLayout rlPresBackground;
+        CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
+        FrameLayout fl_priority;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
             search_gender = itemView.findViewById(R.id.search_gender);
             search_name = itemView.findViewById(R.id.search_name);
+            fl_priority = itemView.findViewById(R.id.fl_priority);
             priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
-            presc_tag_imgview = itemView.findViewById(R.id.presc_tag_imgview);
             profile_imgview = itemView.findViewById(R.id.profile_imgview);
-            presStatusText = itemView.findViewById(R.id.pres_status_text);
-            rlPresBackground = itemView.findViewById(R.id.prescription_background);
+            presc_pendingCV = itemView.findViewById(R.id.presc_pending_CV);
+            presc_receivingCV = itemView.findViewById(R.id.presc_received_CV);
+            visitNotUploadCV = itemView.findViewById(R.id.presc_visit_not_uploaded_CV);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -186,7 +192,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                     Intent intent = new Intent(context, PatientDetailActivity2.class);
                     intent.putExtra("patientUuid", patientDTO.getUuid());
                     intent.putExtra("patientName", patientDTO.getFirstname() + " " + patientDTO.getLastname());
-                    intent.putExtra("tag", "newPatient");
+                    intent.putExtra("tag", "searchPatient");
                     intent.putExtra("hasPrescription", "false");
                     //   i.putExtra("privacy", privacy_value); // todo: uncomment later.
                     //   Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.

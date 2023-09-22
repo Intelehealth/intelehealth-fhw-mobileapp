@@ -5,28 +5,26 @@
     android:id="@+id/fu_cardview_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/margin_10"
     android:layout_marginHorizontal="@dimen/margin_5"
     android:layout_marginTop="@dimen/margin_5"
     android:layout_marginBottom="24dp"
-    app:cardCornerRadius="@dimen/margin_10"
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
-        android:id="@+id/frame_10014"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fu_margin_start"
-                android:layout_weight="2.4">
+                android:layout_toStartOf="@+id/rlPrioritySearchRowItem">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profile"
@@ -51,20 +49,17 @@
                     android:layout_toEndOf="@+id/profile">
 
                     <!-- Label -->
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/lll"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/search_name"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_toStartOf="@id/fl_priority"
                             android:ellipsize="end"
-                            android:fontFamily="@font/lato_bold"
                             android:gravity="center_vertical"
                             android:lineSpacingExtra="3sp"
                             android:maxLines="1"
@@ -73,19 +68,27 @@
                             android:textColor="@null"
                             android:textSize="@dimen/fu_name_txt_size" />
 
-                        <TextView
-                            android:id="@+id/search_gender"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <FrameLayout
+                            android:id="@+id/fl_priority"
+                            android:layout_width="@dimen/btn_prioirty_w_60dp"
+                            android:layout_height="@dimen/btn_prioirty_h_20dp"
+                            android:layout_alignParentEnd="true"
                             android:layout_marginStart="@dimen/cal_margnin_start"
-                            android:layout_toEndOf="@+id/search_name"
-                            android:gravity="center_vertical"
-                            android:lineSpacingExtra="3sp"
-                            android:text="@string/search_gender"
-                            android:textAppearance="@style/label_misc_txt_14sp"
-                            android:textColor="@null"
-                            android:textSize="@dimen/fu_name_txt_size" />
-                    </LinearLayout>
+                            android:visibility="gone"
+                            tools:visibility="gone"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/priority_tag_imgview"
+                                android:layout_width="@dimen/btn_prioirty_w_60dp"
+                                android:layout_height="@dimen/btn_prioirty_h_20dp"
+                                android:layout_gravity="top"
+                                android:gravity="center"
+                                android:lineSpacingExtra="0sp"
+                                android:src="@drawable/ui2_frame_priority" />
+                        </FrameLayout>
+
+                    </RelativeLayout>
 
                     <ImageView
                         android:id="@+id/fu_item_calendar"
@@ -97,7 +100,7 @@
 
                     <TextView
                         android:id="@+id/search_date_relative"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/lll"
                         android:layout_marginStart="@dimen/cal_margnin_start"
@@ -109,67 +112,151 @@
                         android:textColor="@color/search_followup"
                         android:textSize="@dimen/fu_male_textsize" />
 
-                    <RelativeLayout
-                        android:id="@+id/prescription_background"
-                        android:layout_width="wrap_content"
-                        android:layout_height="26dp"
-                        android:layout_below="@+id/search_date_relative"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginTop="@dimen/fu_vs_margin_start"
-                        android:background="@drawable/pres_received_drawable_rounded_corners"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/pres_status_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="26dp"
-                            android:layout_centerInParent="true"
-                            android:fontFamily="@font/lato_regular"
-                            android:padding="@dimen/margin_3"
-                            android:paddingVertical="@dimen/padding_5"
-                            android:text="@string/tag_prescription_received"
-                            android:textAlignment="center"
-                            android:textColor="@color/ui2_black_text_color"
-                            android:textSize="@dimen/text_12sp"
-                            app:drawableStartCompat="@drawable/ic_pres_icon" />
-
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:id="@+id/presc_tag_imgview"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/presc_received_CV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/search_date_relative"
-                        android:layout_marginTop="@dimen/fu_vs_margin_start"
-                        android:src="@drawable/ic_presc_received"
-                        android:visibility="gone" />
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:visibility="gone"
+                        tools:visibility="gone"
+                        android:layout_marginHorizontal="2dp"
+                        app:cardCornerRadius="3dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/cardTintLightGreen"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="3dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/prescription_icon_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:paddingRight="3dp"
+                                android:text="@string/presc_received"
+                                android:textColor="#1B163A"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!--                    Visit not uploaded - start-->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/presc_visit_not_uploaded_CV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/search_date_relative"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginHorizontal="2dp"
+                        app:cardCornerRadius="3dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/cardTintLightOrange"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="3dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:padding="5dp"
+                                android:src="@drawable/fingerprint_dialog_error" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:paddingRight="3dp"
+                                android:text="@string/visit_not_uploaded"
+                                android:textColor="#1B163A"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    <!--                    Visit not uploaded - end -->
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/presc_pending_CV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/search_date_relative"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:visibility="gone"
+                        tools:visibility="gone"
+                        android:layout_marginHorizontal="2dp"
+                        app:cardCornerRadius="3dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/cardTintLightOrange"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="3dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/prescription_icon_blue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:paddingRight="5dp"
+                                android:text="@string/presc_pending"
+                                android:textColor="#1B163A"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/priority_tag_imgview"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/search_priority_tag"
-                android:layout_gravity="top|end|center"
+            <RelativeLayout
+                android:id="@+id/rlPrioritySearchRowItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="@dimen/fu_margin_start"
-                android:layout_marginEnd="@dimen/fu_margin_start"
-                android:layout_weight="0.6"
-                android:background="@drawable/drawable_priority_background"
-                android:fontFamily="@font/lato_bold"
-                android:gravity="center"
-                android:lineSpacingExtra="0sp"
-                android:text="@string/priority_uppercase"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="11sp"
-                tools:visibility="visible" />
+                android:layout_marginEnd="@dimen/fu_margin_start">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/search_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/cal_margnin_start"
+                    android:layout_gravity="end"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/search_gender"
+                    android:paddingRight="5dp"
+                    android:textAppearance="@style/label_misc_txt_14sp"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_name_txt_size"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
 
     </RelativeLayout>
+
 
 
 </androidx.cardview.widget.CardView>

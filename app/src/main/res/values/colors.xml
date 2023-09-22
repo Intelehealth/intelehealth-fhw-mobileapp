@@ -141,5 +141,6 @@
     <color name="reset_update_button_text_color">#2E1E91</color>
     <color name="about_us_background">#2E1E91</color>
 
+    <color name="cardTintLightOrange">#FFF0E8</color>
     <!--END-->
 </resources>
