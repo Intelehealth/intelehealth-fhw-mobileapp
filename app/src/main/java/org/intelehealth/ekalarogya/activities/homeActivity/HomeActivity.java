@@ -316,7 +316,7 @@ public class HomeActivity extends BaseActivity {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
-//            requestPermission();
+            requestPermission();
         }
 
         Logger.logD("Yojana", sessionManager.getJalJeevanYojanaScheme());
@@ -766,7 +766,7 @@ public class HomeActivity extends BaseActivity {
 
     private void hideSyncProgressBar(boolean isSuccess) {
         saveToken();
-//        requestPermission();
+        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
