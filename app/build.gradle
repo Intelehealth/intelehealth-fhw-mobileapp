@@ -16,9 +16,9 @@ android {
         applicationId 'org.intelehealth.unicef'
         minSdkVersion 26
         targetSdkVersion 33
-        versionCode 34
+        versionCode 35
         buildToolsVersion('30.0.3')
-        versionName '4.2.0'
+        versionName '5.0.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
