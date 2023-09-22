@@ -125,10 +125,8 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                             if (hours > 24) {
 
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-//                                holder.ivTime.setImageDrawable(context.getResources().getDrawable(R.drawable.ui2_ic_calendar));
-//                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.iconTintGray), PorterDuff.Mode.SRC_IN);
 
-                                if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                              if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                     timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
                                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                     timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate())) + ","  + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
@@ -139,14 +137,22 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 }
                             } else {
                                 if (hours > 1) {
-                                    timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                        timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
                                             mins + " " + context.getString(R.string.minutes_txt) + ", " +
                                             context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                    else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                        timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                                + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                                 }
                                 else {
-                                    timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
+                                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                        timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
                                             mins + " " + context.getString(R.string.minutes_txt) + ", " +
                                             context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                     else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                        timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                                + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                                 }
                                 if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                     timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);

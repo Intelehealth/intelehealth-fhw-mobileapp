@@ -1452,6 +1452,5 @@
     <string name="please_contact_your_system_administrator_to_change_these_profile_details">कृपया इन प्रोफ़ाइल विवरणों को बदलने के लिए अपने सिस्टम व्यवस्थापक से संपर्क करें।</string>
     <string name="old_password_and_new_password_cannot_be_same">पुराना पासवर्ड और नया पासवर्ड एक समान नहीं हो सकते.</string>
     <string name="this_feature_is_not_available_in_offline_mode">यह सुविधा ऑफ़लाइन मोड में उपलब्ध नहीं है.</string>
-    <string name="hours">घंटे</string>
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">आप संपर्क में नहीं हैं! कृपया वीडियो के लिए इंटरनेट से जुड़ें।</string>
 </resources>

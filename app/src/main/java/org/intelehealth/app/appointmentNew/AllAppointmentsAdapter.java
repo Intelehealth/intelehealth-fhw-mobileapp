@@ -140,14 +140,22 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                             }
                         } else {
                             if (hours > 1) {
+                                if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                 timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
                                         mins + " " + context.getString(R.string.minutes_txt) + ", " +
                                         context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                    timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                            + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             }
                             else {
-                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
+                                if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                    timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hour) + " " +
                                         mins + " " + context.getString(R.string.minutes_txt) + ", " +
                                         context.getString(R.string.at) + " " + appointmentInfoModel.getSlotTime();
+                                else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                    timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                            + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             }
 
 
@@ -168,7 +176,6 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                         else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             timeText = minutes + " " + context.getString(R.string.minutes_txt) + " " + context.getString(R.string.in) ;
 
-                        //holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                         holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                         holder.tvDate.setText(timeText);

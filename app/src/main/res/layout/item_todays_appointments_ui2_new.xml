@@ -90,7 +90,6 @@
             android:layout_marginTop="@dimen/item_ta_iv_name_margin_start"
             android:layout_toEndOf="@+id/card_member_image"
             android:src="@drawable/ui2_ic_time"
-            android:tint="@color/iconTintGray"
             android:visibility="gone" />
 
         <LinearLayout
@@ -224,6 +223,8 @@
                 android:textStyle="bold"/>
 
         </LinearLayout>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_block"
