@@ -1543,5 +1543,6 @@
     <string name="achievements_minutes">мин.</string>
     <string name="wait_for_the_doctor_message">Пожалуйста, дождитесь сообщения от врача!</string>
     <string name="some_issue_with_mindmap">Возникла проблема с протоколом.</string>
+    <string name="no_follow_up_data">Нет данных о последующем наблюдении</string>
 
 </resources>
