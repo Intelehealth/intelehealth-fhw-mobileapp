@@ -47,6 +47,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     private RecyclerView mRootRecyclerView, mRecyclerView;
     private boolean mIsEditMode;
     private String engineVersion;
+
     public String getEngineVersion() {
         return engineVersion;
     }
@@ -54,7 +55,6 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
-
 
 
     public interface AssociateSymptomsOnItemSelection {
@@ -156,8 +156,13 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             complainBasicInfo.setOptionSize(1);
                         else
                             complainBasicInfo.setOptionSize(mItemList.get(position).getOptionsList().size());
+
+                        if (!mItemList.get(position).isContainsTheQuestionBeforeOptions()) {
+                            complainBasicInfo.setOptionSize(1);
+                        }
                         rootComplainBasicInfoHashMap.put(0, complainBasicInfo);
-                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, true,false, null, 0, rootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
+
+                        genericViewHolder.questionsListingAdapter = new QuestionsListingAdapter(genericViewHolder.recyclerView, mContext, true, false, null, 0, rootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                             @Override
                             public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
 
@@ -175,18 +180,20 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                                     genericViewHolder.questionsListingAdapter.geItems().get(index).setDataCaptured(false);
                                     genericViewHolder.questionsListingAdapter.notifyItemChanged(index);
                                 }
-                                //Log.v("onSelect", "node - " + node.getText());
-                                if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {
-                                    genericViewHolder.currentComplainNodeOptionsIndex++;
-                                    //genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
-                                    if (genericViewHolder.isHavingDirectOption)
-                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position),getEngineVersion());
-                                    else
-                                        genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex),getEngineVersion());
-                                } /*else {
+                                if (mItemList.get(position).isContainsTheQuestionBeforeOptions()) {
+                                    //Log.v("onSelect", "node - " + node.getText());
+                                    if (genericViewHolder.currentComplainNodeOptionsIndex < mItemList.get(position).getOptionsList().size() - 1) {
+                                        genericViewHolder.currentComplainNodeOptionsIndex++;
+                                        //genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex));
+                                        if (genericViewHolder.isHavingDirectOption)
+                                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
+                                        else
+                                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
+                                    } /*else {
                                     genericViewHolder.currentComplainNodeOptionsIndex = 0;
 
                                 }*/
+                                }
                                 VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 600);
                             }
 
@@ -206,7 +213,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             }
 
                             @Override
-                            public void onImageRemoved(int nodeIndex,int imageIndex, String imagee) {
+                            public void onImageRemoved(int nodeIndex, int imageIndex, String imagee) {
 
                             }
                         });
@@ -214,11 +221,14 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                         genericViewHolder.recyclerView.setAdapter(genericViewHolder.questionsListingAdapter);
                         //for (int i = 0; i <genericViewHolder.currentRootOptionList.size(); i++) {
                         // genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(i));
-                        if (genericViewHolder.isHavingDirectOption)
-                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position),getEngineVersion());
-                        else
-                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
-
+                        if (!mItemList.get(position).isContainsTheQuestionBeforeOptions()) {
+                            genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
+                        } else {
+                            if (genericViewHolder.isHavingDirectOption)
+                                genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position), getEngineVersion());
+                            else
+                                genericViewHolder.questionsListingAdapter.addItem(mItemList.get(position).getOptionsList().get(genericViewHolder.currentComplainNodeOptionsIndex), getEngineVersion());
+                        }
                         //}
                     } else {
                         genericViewHolder.recyclerView.setVisibility(View.GONE);
@@ -315,9 +325,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
         Button skipButton = view.findViewById(R.id.btn_skip);
 
-        if(node.isDataCaptured()) {
+        if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
-        }else{
+        } else {
             AdapterUtils.setToDefault(skipButton);
         }
 
@@ -373,7 +383,7 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
 
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", editText.getText().toString()));
-                        } else{
+                        } else {
                             node.addLanguage(editText.getText().toString());
                         }
 
@@ -481,9 +491,9 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
         });
         //holder.skipButton.setVisibility(View.GONE);
 
-        if(node.isDataCaptured()) {
+        if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
-        }else{
+        } else {
             AdapterUtils.setToDefault(skipButton);
         }
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);

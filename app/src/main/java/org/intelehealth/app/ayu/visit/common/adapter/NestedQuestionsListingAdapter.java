@@ -639,8 +639,254 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
 
-    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    /**
+     *
+     * @param selectedNode
+     * @param holder
+     * @param options
+     * @param index
+     * @param isSuperNested
+     */
+    private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
 
+        holder.singleComponentContainer.removeAllViews();
+        holder.tvQuestionDesc.setVisibility(View.VISIBLE);
+        holder.optionRecyclerView.setVisibility(View.VISIBLE);
+
+        if (selectedNode.isMultiChoice()) {
+            holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+            holder.submitButton.setVisibility(View.VISIBLE);
+            holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+            if (selectedNode.isDataCaptured()) {
+                AdapterUtils.setToDisable(holder.skipButton);
+            } else {
+                AdapterUtils.setToDefault(holder.skipButton);
+            }
+        } else {
+            holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+            holder.submitButton.setVisibility(View.GONE);
+            if (selectedNode.isDataCaptured()) {
+                AdapterUtils.setToDisable(holder.skipButton);
+            } else {
+                AdapterUtils.setToDefault(holder.skipButton);
+            }
+        }
+
+        if (selectedNode.isRequired()) {
+            holder.skipButton.setVisibility(View.GONE);
+        } else {
+            holder.skipButton.setVisibility(View.VISIBLE);
+        }
+
+
+        boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+
+
+                /*if (mItemList.get(index).isRequired()) {
+                    skipButton.setVisibility(View.GONE);
+                } else {
+                    skipButton.setVisibility(View.VISIBLE);
+                }*/
+        //mNestedLevel= mNestedLevel + 1;
+        Log.v(TAG, "NestedQuestionsListingAdapter mNestedLevel - " + mNestedLevel);
+        if (havingNestedQuestion) {
+            //if (isSuperNested) {
+            //if(mNestedLevel%2==0){
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            linearLayoutManager.setStackFromEnd(false);
+            linearLayoutManager.setSmoothScrollbarEnabled(true);
+            holder.superNestedRecyclerView.setLayoutManager(linearLayoutManager);
+            int nestedLevel = mNestedLevel + 1;
+            holder.nestedQuestionsListingAdapter = new NestedQuestionsListingAdapter(mContext, mRootRecyclerView, holder.superNestedRecyclerView, selectedNode, nestedLevel, mRootIndex, mIsEditMode, new OnItemSelection() {
+                @Override
+                public void onSelect(Node node, int indexSelected, boolean isSkipped, Node parentNode) {
+                    Log.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect index- " + indexSelected);
+                    Log.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect selectedNode- " + selectedNode.findDisplay());
+                    Log.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect nestedLevel- " + nestedLevel);
+                    Log.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect nestedLevel- " + selectedNode.isHavingNestedQuestion());
+                    Log.v(TAG, "NestedQuestionsListingAdapter showOptionsDataV2 onSelect nestedLevel- " + selectedNode.getOptionsList());
+
+
+                    if (isSkipped) {
+                        if (options.size() == 1) {
+                            mItemList.get(index).setSelected(false);
+                            mItemList.get(index).setDataCaptured(false);
+                            selectedNode.setSelected(false);
+                            selectedNode.setDataCaptured(false);
+                            selectedNode.unselectAllNestedNode();
+                            notifyItemChanged(index);
+                        }/* else {
+                            return;
+                        }*/
+                    }
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
+                    Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
+
+                    boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
+
+                    if (isLastNodeSubmit)
+                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
+
+                    else {
+                        holder.selectedNestedOptionIndex += 1;
+                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                    }
+                }
+
+                @Override
+                public void needTitleChange(String title) {
+
+                }
+
+                @Override
+                public void onAllAnswered(boolean isAllAnswered) {
+
+                }
+
+                @Override
+                public void onCameraRequest() {
+
+                }
+
+                @Override
+                public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
+
+                }
+            });
+            holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
+            holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
+            if (mIsEditMode) {
+                holder.nestedQuestionsListingAdapter.addItemAll(options);
+            } else {
+                holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+            }
+            holder.nestedQuestionsListingAdapter.setSuperNodeList(mSuperItemList);
+            holder.superNestedRecyclerView.setVisibility(View.VISIBLE);
+            holder.submitButton.setVisibility(View.GONE);
+            holder.skipButton.setVisibility(View.GONE);
+        } else {
+
+            holder.superNestedRecyclerView.setVisibility(View.GONE);
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+            holder.optionRecyclerView.setLayoutManager(layoutManager);
+            //**********
+            // Avoid the duplicate options asking to user in connected questions
+            //**************
+            String duplicateCheckNodeNames = mItemList.get(index).getCompareDuplicateNode();
+            Log.v(TAG, "duplicateCheckNodeNames - " + duplicateCheckNodeNames);
+            if (duplicateCheckNodeNames != null && !duplicateCheckNodeNames.isEmpty()) {
+                int sourceIndex = 0;
+                Node toCompareWithNode = null;
+                for (int i = 0; i < mSuperItemList.size(); i++) {
+                    Log.v(TAG, "toCompareWithNode - " + mSuperItemList.get(i).getText());
+                    if (mSuperItemList.get(i).getText().equalsIgnoreCase(duplicateCheckNodeNames)) {
+                        toCompareWithNode = mSuperItemList.get(i);
+                        Log.v(TAG, "toCompareWithNode - " + new Gson().toJson(toCompareWithNode));
+                        break;
+                    }
+                }
+                NodeAdapterUtils.updateForHideShowFlag(mContext, mItemList.get(index), toCompareWithNode);
+            }
+            // *****************
+            for (int i = 0; i < options.size(); i++) {
+                options.get(i).setNestedLeve(options.get(i).getNestedLeve() + 1);
+            }
+            OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+                @Override
+                public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                    if (!isLoadingForNestedEditData)
+                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+                    if (!isLoadingForNestedEditData) {
+                        mItemList.get(index).setSelected(false);
+                        mItemList.get(index).setDataCaptured(false);
+                    }
+                    for (int i = 0; i < options.size(); i++) {
+                        if (options.get(i).isSelected()) {
+                            mItemList.get(index).setSelected(true);
+                            mItemList.get(index).setDataCaptured(true);
+                            break;
+                        }
+                    }
+                    if(isLoadingForNestedEditData){
+                        if (selectedNode.isDataCaptured()) {
+                            AdapterUtils.setToDisable(holder.skipButton);
+                            AdapterUtils.setToDisable(holder.submitButton);
+                        } else {
+                            AdapterUtils.setToDefault(holder.skipButton);
+                            AdapterUtils.setToDefault(holder.submitButton);
+                        }
+                    }else{
+                        AdapterUtils.setToDefault(holder.submitButton);
+                        AdapterUtils.setToDefault(holder.skipButton);
+
+                    }
+                     /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
+                    holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
+
+                    String type = node.getInputType();
+
+                    if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                        type = "options";
+                    }
+                    Log.v(TAG, "Type - " + type);
+                    if (!type.isEmpty() && node.isSelected()) {
+                        //holder.singleComponentContainer.removeAllViews();
+                        //holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.singleComponentContainer.removeAllViews();
+                        //holder.superNestedContainerLinearLayout.removeAllViews();
+                        if (mItemList.get(index).isMultiChoice()) {
+                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                            holder.submitButton.setVisibility(View.VISIBLE);
+                        } else {
+                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                            holder.submitButton.setVisibility(View.GONE);
+                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                            AdapterUtils.setToDisable(holder.skipButton);
+                        }
+
+                        if (mItemList.get(index).isRequired()) {
+                            holder.skipButton.setVisibility(View.GONE);
+                        } else {
+                            holder.skipButton.setVisibility(View.VISIBLE);
+                        }
+                        return;
+                    }
+
+                    routeByType(holder, selectedNode, node, index, true);
+                }
+            });
+            holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
+        }
+
+            /*for (int i = 0; i < options.size(); i++) {
+                String type = options.get(i).getInputType();
+                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
+                    // openCamera(context, imagePath, imageName);
+                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
+                    showCameraView(options.get(i), holder, index);
+                }
+            }*/
+
+
+    }
+
+    /**
+     *
+     * @param selectedNode
+     * @param holder
+     * @param options
+     * @param index
+     * @param isSuperNested
+     */
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+        if (getEngineVersion().equalsIgnoreCase("3.0")) {
+            showOptionsDataV2(selectedNode, holder, options, index, isSuperNested);
+            return;
+        }
         holder.singleComponentContainer.removeAllViews();
         holder.tvQuestionDesc.setVisibility(View.VISIBLE);
         holder.optionRecyclerView.setVisibility(View.VISIBLE);

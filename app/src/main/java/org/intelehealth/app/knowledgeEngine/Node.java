@@ -165,7 +165,7 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
-            this.engineVersion = jsonNode.getString("engineVersion");
+            this.engineVersion = jsonNode.optString("engineVersion");
             this.id = jsonNode.getString("id");
 
             this.isMultiChoice = jsonNode.optBoolean("multi-choice");
@@ -3303,29 +3303,41 @@ public class Node implements Serializable {
         this.engineVersion = engineVersion;
     }
 
+    private int nestedLeve = 0;
+
+    public int getNestedLeve() {
+        return nestedLeve;
+    }
+
+    public void setNestedLeve(int nestedLeve) {
+        this.nestedLeve = nestedLeve;
+    }
+
+
     public int foundTheNestedQuestionType() {
+        Log.v(TAG, "nestedLeve - " + getText() + " - " + nestedLeve);
         int type = -1;
-        if (getOptionsList() != null && getOptionsList().size() == 1) {
-            type = DIRECT_USER_INPUT_CHILD;
-        } else {
-            for (int i = 0; i < getOptionsList().size(); i++) {
-                Node n1 = getOptionsList().get(i);
-                if (n1.getOptionsList().size() != 0) {
-                    for (int j = 0; j < n1.getOptionsList().size(); j++) {
-                        Node n2 = n1.getOptionsList().get(i);
-                        if (n2.getOptionsList().size() != 1) {
-                            type = CHILD_OPTIONS;
-                            break;
-                        } else {
-                            if (n2.getOptionsList() != null && n2.getOptionsList().get(0).getOptionsList().size() != 0) {
-                                type = CHILD_QUESTION;
-                            }
-                        }
-                    }
-                }
+        if (getOptionsList() != null) {
+            if (getOptionsList().size() == 1) {
+                type = DIRECT_USER_INPUT_CHILD;
+            } else if (getOptionsList().size() >= 1 && nestedLeve == 0) {
+                type = CHILD_OPTIONS;
+            } else if (getOptionsList().size() >= 1 && nestedLeve != 0) {
+                type = CHILD_QUESTION;
             }
         }
+        Log.v(TAG, "type - " + type);
         return type;
+    }
+
+    public boolean isContainsTheQuestionBeforeOptions() {
+        Log.v(TAG, "isContainsTheQuestionBeforeOptions - " + getText());
+        boolean flag = false;
+        if (getOptionsList() != null) {
+            flag = getOptionsList().size() == 1;
+        }
+        Log.v(TAG, "isContainsTheQuestionBeforeOptions - " + flag);
+        return flag;
     }
 
 
