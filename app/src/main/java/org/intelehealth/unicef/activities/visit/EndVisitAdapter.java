@@ -2,31 +2,44 @@ package org.intelehealth.unicef.activities.visit;
 
 import static org.intelehealth.unicef.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.unicef.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
+import static org.intelehealth.unicef.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.unicef.utilities.StringUtils.setGenderAgeLocal;
+import static org.intelehealth.unicef.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.PatientsDAO;
+import org.intelehealth.unicef.database.dao.VisitAttributeListDAO;
 import org.intelehealth.unicef.models.PrescriptionModel;
+import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.DialogUtils;
 import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.Logger;
@@ -36,6 +49,7 @@ import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -51,7 +65,7 @@ import okhttp3.ResponseBody;
  */
 public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myholder> {
     private Context context;
-    private List<PrescriptionModel> arrayList;
+    List<PrescriptionModel> arrayList = new ArrayList<>();
     ImagesDAO imagesDAO = new ImagesDAO();
     String profileImage = "";
     String profileImage1 = "";
@@ -59,7 +73,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
     public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.arrayList.addAll(arrayList);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -76,6 +91,25 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         if (model != null) {
             // name
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
+
+
+            //  1. Age
+            /*String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDob(), model.getGender(), sessionManager);
+
+            // share icon visibility
+            /*String encounteruuid = getStartVisitNoteEncounterByVisitUUID(model.getVisitUuid());
+            if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
+                holder.shareicon.setVisibility(View.VISIBLE);
+            } else {
+                holder.shareicon.setVisibility(View.GONE);
+            }*/
+
+            if (model.isHasPrescription())
+                holder.shareicon.setVisibility(View.VISIBLE);
+            else
+                holder.shareicon.setVisibility(View.GONE);
 
             // Patient Photo
             //1.
@@ -112,10 +146,43 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             // photo - end
 
             // start date show
-            holder.fu_date_txtview.setText(model.getVisit_start_date());
+            if (!model.getVisit_start_date().equalsIgnoreCase("null") || !model.getVisit_start_date().isEmpty()) {
+                String startDate = model.getVisit_start_date();
+                startDate = DateAndTimeUtils.date_formatter(startDate,
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
+                Log.v("startdate", "startDAte: " + startDate);
+                holder.fu_date_txtview.setText(startDate);
+            }
+
+            //    holder.fu_date_txtview.setText(model.getVisit_start_date());
 
             holder.end_visit_btn.setOnClickListener(v -> {
                 showConfirmDialog(model);
+            });
+
+            holder.fu_cardview_item.setOnClickListener(v -> {
+                Intent intent = new Intent(context, VisitDetailsActivity.class);
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
+                intent.putExtra("patientUuid", model.getPatientUuid());
+                intent.putExtra("gender", model.getGender());
+                intent.putExtra("dob", model.getDob());
+                String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+                intent.putExtra("age", age1);
+                intent.putExtra("priority_tag", model.isEmergency());
+                intent.putExtra("hasPrescription", model.isHasPrescription());
+                intent.putExtra("openmrsID", model.getOpenmrs_id());
+                intent.putExtra("visit_ID", model.getVisitUuid());
+                intent.putExtra("visit_startDate", model.getVisit_start_date());
+                intent.putExtra("patient_photo", model.getPatient_photo());
+                intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+                context.startActivity(intent);
+            });
+
+            holder.shareicon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sharePresc(model);
+                }
             });
         }
     }
@@ -137,6 +204,53 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         });
     }
 
+    private void sharePresc(final PrescriptionModel model) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_sharepresc, null);
+        alertdialogBuilder.setView(convertView);
+        EditText editText = convertView.findViewById(R.id.editText_mobileno);
+        Button sharebtn = convertView.findViewById(R.id.sharebtn);
+        String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+        String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
+
+      /*  if(model.getPhone_number()!=null)
+            editText.setText(model.getPhone_number());*/
+
+        try {
+            String phoneNo = phoneNumber(model.getPatientUuid());
+            editText.setText(phoneNo);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+        sharebtn.setOnClickListener(v -> {
+            if (!editText.getText().toString().equalsIgnoreCase("")) {
+                String phoneNumber = /*"+91" +*/ editText.getText().toString();
+                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                        phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + context.getResources().getString(R.string.and_enter_your_patient_id)
+                                + model.getOpenmrs_id());
+                Log.v("whatsappMessage", whatsappMessage);
+                context.startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(whatsappMessage)));
+            } else {
+                Toast.makeText(context, context.getResources().getString(R.string.please_enter_mobile_number),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.show();
+    }
+
     @Override
     public int getItemCount() {
         return arrayList.size();
@@ -145,9 +259,9 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     public class Myholder extends RecyclerView.ViewHolder {
         Button end_visit_btn;
         private CardView fu_cardview_item;
-        private TextView name, fu_date_txtview;
+        private TextView name, fu_date_txtview,search_gender;
         private ImageView profile_image;
-        private LinearLayoutCompat shareicon;
+        private LinearLayout shareicon;
 
 
         public Myholder(@NonNull View itemView) {
@@ -155,16 +269,15 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             end_visit_btn = itemView.findViewById(R.id.end_visit_btn);
             fu_cardview_item = itemView.findViewById(R.id.fu_cardview_item);
             name = itemView.findViewById(R.id.fu_patname_txtview);
+            search_gender = itemView.findViewById(R.id.search_gender);
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             shareicon = itemView.findViewById(R.id.shareiconLL);
-
             end_visit_btn.setVisibility(View.VISIBLE);
         }
     }
 
     public void profilePicDownloaded(PrescriptionModel model, EndVisitAdapter.Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
         Logger.logD("TAG", "profileimage url" + url);
