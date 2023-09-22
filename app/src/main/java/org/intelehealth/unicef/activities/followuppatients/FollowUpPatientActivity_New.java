@@ -236,8 +236,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullPartName = firstName + " " + lastName;
                                         String fullName = firstName + " " + middleName + " " + lastName;
+                                        String openMrsID = model.getOpenmrs_id();
 
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                             todays.add(model);
                                         } else {
                                             // dont add in list value.
@@ -246,8 +247,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         String firstName = model.getFirst_name().toLowerCase();
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullName = firstName + " " + lastName;
+                                        String openMrsID = model.getOpenmrs_id();
 
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                             todays.add(model);
                                         } else {
                                             // dont add in list value.
@@ -266,8 +268,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullPartName = firstName + " " + lastName;
                                         String fullName = firstName + " " + middleName + " " + lastName;
+                                        String openMrsID = model.getOpenmrs_id();
 
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                             weeks.add(model);
                                         } else {
                                             // dont add in list value.
@@ -276,8 +279,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         String firstName = model.getFirst_name().toLowerCase();
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullName = firstName + " " + lastName;
+                                        String openMrsID = model.getOpenmrs_id();
 
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                             weeks.add(model);
                                         } else {
                                             // dont add in list value.
@@ -296,8 +300,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullPartName = firstName + " " + lastName;
                                         String fullName = firstName + " " + middleName + " " + lastName;
+                                        String openMrsID = model.getOpenmrs_id();
 
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                             months.add(model);
                                         } else {
                                             // dont add in list value.
@@ -306,8 +311,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         String firstName = model.getFirst_name().toLowerCase();
                                         String lastName = model.getLast_name().toLowerCase();
                                         String fullName = firstName + " " + lastName;
+                                        String openMrsID = model.getOpenmrs_id();
 
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery) || openMrsID.equalsIgnoreCase(finalQuery)) {
                                             months.add(model);
                                         } else {
                                             // dont add in list value.
