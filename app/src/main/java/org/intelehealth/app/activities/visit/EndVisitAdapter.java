@@ -3,6 +3,8 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
@@ -73,6 +75,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList) {
         this.context = context;
         this.arrayList.addAll(arrayList);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -92,8 +95,9 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
 
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+            /*String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDob(), model.getGender(), sessionManager);
 
             // share icon visibility
             /*String encounteruuid = getStartVisitNoteEncounterByVisitUUID(model.getVisitUuid());
@@ -164,6 +168,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
+                intent.putExtra("dob", model.getDob());
                 String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
                 intent.putExtra("age", age1);
                 intent.putExtra("priority_tag", model.isEmergency());
@@ -211,8 +216,19 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         Button sharebtn = convertView.findViewById(R.id.sharebtn);
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
-        if(model.getPhone_number()!=null)
-        editText.setText(model.getPhone_number());
+
+      /*  if(model.getPhone_number()!=null)
+            editText.setText(model.getPhone_number());*/
+
+        try {
+            String phoneNo = phoneNumber(model.getPatientUuid());
+            editText.setText(phoneNo);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();
@@ -265,7 +281,6 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     }
 
     public void profilePicDownloaded(PrescriptionModel model, EndVisitAdapter.Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
         Logger.logD("TAG", "profileimage url" + url);

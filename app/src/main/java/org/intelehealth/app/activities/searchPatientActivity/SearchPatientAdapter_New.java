@@ -1,11 +1,14 @@
 package org.intelehealth.app.activities.searchPatientActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,6 +60,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public SearchPatientAdapter_New(Context context, List<PatientDTO> patientDTOS) {
         this.context = context;
         this.patientDTOS.addAll(patientDTOS);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -72,18 +76,20 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         final PatientDTO model = patientDTOS.get(position);
         holder.patientDTO = model;
         if (model != null) {
+
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+            /*String age = DateAndTimeUtils.getAge_FollowUp(model.getDateofbirth(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDateofbirth(), model.getGender(), sessionManager);
 
             //  2. Name
             holder.search_name.setText(model.getFirstname() + " " + model.getLastname());
 
             //  3. Priority Tag
             if (model.isEmergency())
-                holder.priority_tag_imgview.setVisibility(View.VISIBLE);
+                holder.fl_priority.setVisibility(View.VISIBLE);
             else
-                holder.priority_tag_imgview.setVisibility(View.GONE);
+                holder.fl_priority.setVisibility(View.GONE);
 
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
@@ -162,12 +168,14 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
         PatientDTO patientDTO;
         CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
+        FrameLayout fl_priority;
 
         public SearchHolderView(@NonNull View itemView) {
             super(itemView);
 
             search_gender = itemView.findViewById(R.id.search_gender);
             search_name = itemView.findViewById(R.id.search_name);
+            fl_priority = itemView.findViewById(R.id.fl_priority);
             priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
@@ -199,7 +207,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public void profilePicDownloaded(PatientDTO model, SearchPatientAdapter_New.SearchHolderView holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getUuid());
         Logger.logD("TAG", "profileimage url" + url);

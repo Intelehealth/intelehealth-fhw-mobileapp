@@ -217,7 +217,6 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             tvErrorCurrentPassword.setVisibility(View.VISIBLE);
             etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 
-
         } else if (TextUtils.isEmpty(newPassword)) {
             result = false;
             tvErrorNewPassword.setVisibility(View.VISIBLE);
@@ -243,6 +242,18 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             result = false;
             etNewPasswordConfirm.setText("");
             tvErrorConfirmPassword.setText(getString(R.string.password_match));
+            tvErrorConfirmPassword.setVisibility(View.VISIBLE);
+            etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+        } else if (currentPassword.equals(newPassword)) {
+            result = false;
+            etNewPassword.setText("");
+            etNewPasswordConfirm.setText("");
+            tvErrorNewPassword.setText(getString(R.string.old_password_and_new_password_cannot_be_same));
+            tvErrorNewPassword.setVisibility(View.VISIBLE);
+            etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+
+            tvErrorConfirmPassword.setText(getString(R.string.old_password_and_new_password_cannot_be_same));
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
             etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
 

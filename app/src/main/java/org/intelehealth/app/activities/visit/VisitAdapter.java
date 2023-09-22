@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.visit;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,6 +74,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     public VisitAdapter(Context context, List<PrescriptionModel> list) {
         this.context = context;
         this.list.addAll(list);
+        sessionManager = new SessionManager(context);
     }
 
     @NonNull
@@ -97,8 +101,9 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
             //  1. Age
-            String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
-            holder.search_gender.setText(model.getGender() + " " + age);
+           /* String age = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
+            holder.search_gender.setText(model.getGender() + " " + age);*/
+            setGenderAgeLocal(context, holder.search_gender, model.getDob(), model.getGender(), sessionManager);
 
             // Patient Photo
             //1.
@@ -147,23 +152,26 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
             // Emergency - start
             if (model.isEmergency())
-                holder.fu_priority_tag.setVisibility(View.VISIBLE);
+                holder.fl_priority.setVisibility(View.VISIBLE);
             else
-                holder.fu_priority_tag.setVisibility(View.GONE);
+                holder.fl_priority.setVisibility(View.GONE);
             // Emergency - end
 
+/*
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                 }
             });
+*/
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
                 intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
+                intent.putExtra("dob", model.getDob());
                 String age1 = DateAndTimeUtils.getAge_FollowUp(model.getDob(), context);
                 intent.putExtra("age", age1);
                 intent.putExtra("priority_tag", model.isEmergency());
@@ -195,6 +203,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         private TextView name, fu_date_txtview, search_gender;
         private ImageView profile_image, fu_priority_tag;
         private LinearLayout shareicon;
+        private FrameLayout fl_priority;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -204,13 +213,13 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fu_date_txtview = itemView.findViewById(R.id.fu_date_txtview);
             profile_image = itemView.findViewById(R.id.profile_image);
             fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
+            fl_priority = itemView.findViewById(R.id.fl_priority);
             shareicon = itemView.findViewById(R.id.shareiconLL);
         }
     }
 
     // profile downlaod
     public void profilePicDownloaded(PrescriptionModel model, VisitAdapter.Myholder holder) {
-        sessionManager = new SessionManager(context);
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(model.getPatientUuid());
         Logger.logD("TAG", "profileimage url" + url);
@@ -272,10 +281,18 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         alertdialogBuilder.setView(convertView);
         EditText editText = convertView.findViewById(R.id.editText_mobileno);
         Button sharebtn = convertView.findViewById(R.id.sharebtn);
+
         String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
         String prescription_link = new VisitAttributeListDAO().getVisitAttributesList_specificVisit(model.getVisitUuid(), PRESCRIPTION_LINK);
-        if(model.getPhone_number()!=null)
-            editText.setText(model.getPhone_number());
+
+        try {
+            String phoneNo = phoneNumber(model.getPatientUuid());
+            editText.setText(phoneNo);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();

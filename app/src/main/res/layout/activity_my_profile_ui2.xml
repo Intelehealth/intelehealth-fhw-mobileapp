@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,15 +7,22 @@
     android:background="@color/white"
     tools:context=".profile.MyProfileActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingEnd="@dimen/layout_profile_padding">
 
+
         <include
             android:id="@+id/toolbar_common"
             layout="@layout/toolbar_common_ui2" />
+
 
         <LinearLayout
             android:id="@+id/layout_parent_profile"
@@ -136,6 +143,26 @@
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/common_label_text_size" />
 
+            <TextView
+                android:id="@+id/tv_username_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                android:background="@drawable/bg_input_fieldnew"
+                android:hint="@string/username"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textColor="@color/edittext_hint_color"
+                android:imeOptions="actionNext"
+                android:paddingStart="@dimen/common_edittext_padding_left"
+                android:paddingTop="@dimen/common_edittext_padding_top"
+                android:paddingEnd="@dimen/common_edittext_padding_right"
+                android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                android:singleLine="true"
+                android:textSize="@dimen/common_hint_text_size"
+                android:textStyle="bold"
+                />
+
+<!--
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,11 +170,10 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_username_profile"
+                    android:id="@+id/tv_username_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
-                    android:enabled="false"
                     android:hint="@string/username"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/common_edittext_padding_left"
@@ -158,6 +184,7 @@
                     android:textSize="@dimen/common_hint_text_size"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
+-->
 
 
             <TextView
@@ -170,6 +197,25 @@
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/common_label_text_size" />
 
+            <TextView
+                android:id="@+id/tv_first_name_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                android:background="@drawable/bg_input_fieldnew"
+                android:hint="@string/enter_first_name"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textColor="@color/edittext_hint_color"
+                android:imeOptions="actionNext"
+                android:paddingStart="@dimen/common_edittext_padding_left"
+                android:paddingTop="@dimen/common_edittext_padding_top"
+                android:paddingEnd="@dimen/common_edittext_padding_right"
+                android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                android:singleLine="true"
+                android:textSize="@dimen/common_hint_text_size"
+                />
+
+<!--
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,7 +223,7 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_first_name_profile"
+                    android:id="@+id/tv_first_name_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -191,6 +237,7 @@
                     android:singleLine="true"
                     android:textSize="@dimen/common_hint_text_size" />
             </com.google.android.material.textfield.TextInputLayout>
+-->
 
             <TextView
                 android:id="@+id/tv_firstname_error"
@@ -205,16 +252,45 @@
                 android:textSize="@null"
                 android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_middlename"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_tv_label_margin_top"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:text="@string/middle_name"
-                android:textColor="@color/textColorGray"
-                android:textSize="@dimen/common_label_text_size" />
+                android:orientation="vertical"
+                android:visibility="visible"
+                tools:visibility="visible">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/profile_tv_label_margin_top"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+                    android:text="@string/middle_name"
+                    android:textColor="@color/textColorGray"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_middle_name_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                    android:background="@drawable/bg_input_fieldnew"
+                    android:hint="@string/enter_middle_name"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textColor="@color/edittext_hint_color"
+                    android:imeOptions="actionNext"
+                    android:paddingStart="@dimen/common_edittext_padding_left"
+                    android:paddingTop="@dimen/common_edittext_padding_top"
+                    android:paddingEnd="@dimen/common_edittext_padding_right"
+                    android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                    android:singleLine="true"
+                    android:textSize="@dimen/common_hint_text_size"
+                    />
+            </LinearLayout>
+
+
+<!--
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -222,11 +298,12 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_middle_name_profile"
+                    android:id="@+id/tv_middle_name_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
                     android:hint="@string/enter_middle_name"
+                    android:textColorHint="@color/edittext_hint_color"
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:paddingStart="@dimen/common_edittext_padding_left"
@@ -236,6 +313,7 @@
                     android:singleLine="true"
                     android:textSize="@dimen/common_hint_text_size" />
             </com.google.android.material.textfield.TextInputLayout>
+-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -247,6 +325,25 @@
                 android:textColor="@color/textColorGray"
                 android:textSize="@dimen/common_label_text_size" />
 
+            <TextView
+                android:id="@+id/tv_last_name_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/et_new_pass_margin_top"
+                android:background="@drawable/bg_input_fieldnew"
+                android:hint="@string/enter_last_name"
+                android:textColorHint="@color/edittext_hint_color"
+                android:textColor="@color/edittext_hint_color"
+                android:imeOptions="actionNext"
+                android:paddingStart="@dimen/common_edittext_padding_left"
+                android:paddingTop="@dimen/common_edittext_padding_top"
+                android:paddingEnd="@dimen/common_edittext_padding_right"
+                android:paddingBottom="@dimen/common_edittext_padding_bottom"
+                android:singleLine="true"
+                android:textSize="@dimen/common_hint_text_size"
+                />
+
+<!--
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -254,7 +351,7 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_last_name_profile"
+                    android:id="@+id/tv_last_name_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_input_fieldnew"
@@ -268,6 +365,7 @@
                     android:singleLine="true"
                     android:textSize="@dimen/common_hint_text_size" />
             </com.google.android.material.textfield.TextInputLayout>
+-->
 
             <TextView
                 android:id="@+id/tv_lastname_error"
@@ -307,12 +405,12 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
                     android:paddingStart="@dimen/space_5dp"
-                    android:enabled="false"
                     android:layout_weight="1"
                     android:paddingEnd="@dimen/space_5dp"
                     android:drawableRight="@drawable/gender_male_svg"
                     android:text="@string/male"
                     android:textSize="@dimen/select_language"
+                    android:textColor="@color/edittext_hint_color"
                     android:theme="@style/RadioButtonStyleSelection" />
 
                 <RadioButton
@@ -322,13 +420,13 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:paddingStart="@dimen/space_5dp"
-                    android:enabled="false"
                     android:paddingEnd="@dimen/space_5dp"
                     android:layout_weight="1"
                     android:drawablePadding="5dp"
                     android:drawableRight="@drawable/gender_female_svg"
                     android:text="@string/female"
                     android:textSize="@dimen/select_language"
+                    android:textColor="@color/edittext_hint_color"
                     android:theme="@style/RadioButtonStyleSelection" />
 
                 <RadioButton
@@ -337,12 +435,12 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:layout_weight="1"
-                    android:enabled="false"
                     android:paddingStart="@dimen/space_5dp"
                     android:paddingEnd="@dimen/space_5dp"
                     android:drawableRight="@drawable/gender_other_svg"
                     android:text="@string/other"
                     android:textSize="@dimen/select_language"
+                    android:textColor="@color/edittext_hint_color"
                     android:theme="@style/RadioButtonStyleSelection" />
             </RadioGroup>
 
@@ -386,9 +484,8 @@
                     android:id="@+id/tv_date_of_birth_profile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_fieldnew"
                     android:layout_weight="0.6"
-                    android:background="@drawable/ui2_background_input_field_new"
-                    android:drawableEnd="@drawable/ui2_ic_calendar"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/profile_text_line_spacing"
                     android:paddingStart="@dimen/dob_date_padding_start"
@@ -396,25 +493,25 @@
                     android:paddingEnd="@dimen/dob_date_padding_end"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:text="May 10, 2022"
-                    android:textColor="@color/textColorBlack"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textColor="@color/edittext_hint_color"
                     android:textSize="@dimen/common_info_text_size" />
 
                 <TextView
                     android:id="@+id/tv_age_profile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_fieldnew"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textColor="@color/edittext_hint_color"
                     android:layout_marginStart="@dimen/dob_age_margin_start"
                     android:layout_weight="0.4"
-                    android:background="@drawable/ui2_background_input_field_new"
-                    android:drawableEnd="@drawable/ui2_ic_calendar"
-                    android:drawableTint="@color/transparent"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/profile_text_line_spacing"
                     android:paddingStart="@dimen/dob_date_padding_start"
                     android:paddingTop="@dimen/common_edittext_padding_top"
                     android:paddingBottom="@dimen/common_edittext_padding_bottom"
                     android:text="28"
-                    android:textColor="@color/textColorBlack"
                     android:textSize="@dimen/common_info_text_size" />
             </LinearLayout>
 
@@ -569,8 +666,29 @@
                 android:paddingBottom="@dimen/common_button_padding_bottom"
                 android:text="@string/save"
                 android:textSize="@dimen/common_button_text_size" />
+
+
         </LinearLayout>
+
 
     </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+
+        <include
+            android:id="@+id/snackbar_cv"
+            layout="@layout/custom_snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_24"
+            style="@style/Widget.Design.FloatingActionButton"
+            />
+
+
+
+</RelativeLayout>

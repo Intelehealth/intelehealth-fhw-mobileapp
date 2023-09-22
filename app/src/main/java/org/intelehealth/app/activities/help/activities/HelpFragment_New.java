@@ -30,6 +30,7 @@ import org.intelehealth.app.activities.help.adapter.MostSearchedVideosAdapter_Ne
 import org.intelehealth.app.activities.help.models.QuestionModel;
 import org.intelehealth.app.activities.help.models.YoutubeVideoList;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -42,12 +43,17 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     View view;
     ImageView ivInternet;
     private ObjectAnimator syncAnimator;
+    private RecyclerView rvSearchedVideos;
+    private TextView tvOfflineHintVideosHelpFragment;
+    private NetworkUtils networkUtils;
+    private LinearLayoutManager layoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_help_ui2, container, false);
         setLocale(getContext());
+        initUI();
         return view;
     }
 
@@ -55,8 +61,6 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     public void onResume() {
         super.onResume();
         setLocale(getContext());
-        initUI();
-
     }
 
     public Context setLocale(Context context) {
@@ -101,6 +105,9 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
         ivIsInternet.setLayoutParams(params);*/
         // tvLocation.setText(getResources().getString(R.string.help));
+
+        networkUtils = new NetworkUtils(getActivity(), this);
+
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
         bottomNav.setVisibility(View.VISIBLE);
@@ -108,7 +115,8 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
 
         View optionsView = view.findViewById(R.id.layout_buttons_options_help);
         TextView btnAll = optionsView.findViewById(R.id.btn_all_help);
-        RecyclerView rvSearchedVideos = view.findViewById(R.id.rv_most_searched_videos);
+        rvSearchedVideos = view.findViewById(R.id.rv_most_searched_videos);
+        tvOfflineHintVideosHelpFragment = view.findViewById(R.id.tvOfflineHintVideosHelpFragment);
         RecyclerView rvFaq = view.findViewById(R.id.rv_faq1);
         TextView tvMoreVideos = view.findViewById(R.id.tv_more_videos);
         TextView tvMoreFaq = view.findViewById(R.id.tv_faq_more);
@@ -143,10 +151,20 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvSearchedVideos.setLayoutManager(layoutManager);
-        MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), getVideoList());
-        rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
+
+        if (NetworkConnection.isOnline(getActivity().getApplicationContext())) {
+            tvOfflineHintVideosHelpFragment.setVisibility(View.GONE);
+            MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), getVideoList());
+            rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
+        }
+        else {
+            tvOfflineHintVideosHelpFragment.setVisibility(View.VISIBLE);
+            List<YoutubeVideoList> list = new ArrayList<>();
+            MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), list);
+            rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvFaq.setLayoutManager(linearLayoutManager);
@@ -193,12 +211,41 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        networkUtils.callBroadcastReceiver();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            networkUtils.unregisterNetworkReceiver();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         Log.d(TAG, "updateUIForInternetAvailability: ");
+        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rvSearchedVideos.setLayoutManager(layoutManager);
+
         if (isInternetAvailable) {
+            rvSearchedVideos.setVisibility(View.VISIBLE);
+            tvOfflineHintVideosHelpFragment.setVisibility(View.GONE);
+            MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), getVideoList());
+            rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
+
             ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_internet_available));
 
         } else {
+            rvSearchedVideos.setVisibility(View.GONE);
+            tvOfflineHintVideosHelpFragment.setVisibility(View.VISIBLE);
+            List<YoutubeVideoList> list = new ArrayList<>();
+            MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), list);
+            rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
+
             ivInternet.setImageDrawable(getResources().getDrawable(R.drawable.ui2_ic_no_internet));
 
         }

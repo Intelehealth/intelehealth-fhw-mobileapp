@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:layout_marginTop="-1200dp"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity_New">
 
     <!-- Toolbar - start-->
@@ -179,18 +178,20 @@
                                 android:layout_toEndOf="@+id/profile"
                                 android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
                                     <TextView
                                         android:id="@+id/textView_name_value"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/lato_bold"
+                                        android:maxWidth="120dp"
                                         android:maxLines="1"
+                                        android:ellipsize="end"
+                                        android:gravity="center_vertical"
+                                        tools:text="Srinivas Bandi Srinivas BB Bandi Srinivas B Bandi BBB Srinivas"
                                         android:text="@string/fu_visit_name"
                                         android:textAppearance="@style/label_16sp"
                                         android:textColor="@null"
@@ -200,25 +201,28 @@
                                     <TextView
                                         android:id="@+id/textView_gender_value"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
+                                        android:layout_height="wrap_content"
                                         android:layout_marginStart="@dimen/fu_male_margin_start"
                                         android:layout_toEndOf="@+id/textView_name_value"
-                                        android:gravity="center_vertical"
+                                        android:layout_centerVertical="true"
                                         android:text="@string/misc_txt"
+
                                         android:textAppearance="@style/label_misc_txt_14sp"
                                         android:textColor="@null"
-                                        android:textSize="@dimen/txtsize_patdetail_14sp" />
+                                        />
 
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
+                                        android:layout_toEndOf="@id/textView_gender_value"
                                         android:layout_marginStart="@dimen/fu_male_margin_start"
                                         android:onClick="editPatientInfo"
                                         android:padding="@dimen/margin_4"
                                         android:src="@drawable/ic_icno8_edit" />
 
-                                </LinearLayout>
+
+                                </RelativeLayout>
 
                                 <!-- Caption -->
                                 <TextView
@@ -483,7 +487,6 @@
                                 android:layout_height="1dp"
                                 android:layout_marginStart="@dimen/fu_margin_start"
                                 android:layout_marginEnd="@dimen/fu_margin_start"
-                                android:layout_marginBottom="@dimen/fu_card_margin_updown"
                                 android:background="@color/notifi_divider_color" />
 
                             <!--Personal Sub-Child-->
@@ -511,7 +514,6 @@
                                     android:inputType="textMultiLine"
                                     android:gravity="top"
                                     android:padding="@dimen/fu_margin_start"
-                                    android:hint="@string/leave_a_note_for_doctor"
                                     android:maxLength="1000"
                                     android:textColorHint="@color/edittext_hint_color"
                                     android:textSize="@dimen/find_patient_hint_size"
@@ -529,6 +531,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/divider"
                                 android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginTop="@dimen/fu_margin_start"
                                 android:layout_marginEnd="@dimen/fu_margin_start"
                                 android:layout_marginBottom="@dimen/margin_16dp"
                                 tools:text= "@string/no_notes_added_for_doctor" />
@@ -783,7 +786,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/margin_8"
+                        android:padding="@dimen/margin_8"
                         android:layout_toEndOf="@+id/doc_speciality_title_1"
                         android:background="@null"
                         android:src="@drawable/question_mark_helpicon" />
@@ -866,7 +869,7 @@
             android:orientation="horizontal"
             android:visibility="gone"
             android:weightSum="2"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <Button
                 android:id="@+id/btn_vs_appointment"
@@ -911,7 +914,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_45"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <include layout="@layout/notifi_filter_layout" />
 

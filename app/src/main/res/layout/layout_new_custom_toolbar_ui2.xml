@@ -32,13 +32,14 @@
         android:textColor="@color/textColorBlack"
         android:textSize="@dimen/toolbar_home_tv_title_size"
         android:textStyle="bold"
-        app:drawableEndCompat="@drawable/ui2_ic_location_home" />
+        app:drawableStartCompat="@drawable/ui2_ic_location_home" />
 
     <TextView
         android:id="@+id/tv_app_sync_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_user_location_home"
+        android:paddingStart="@dimen/home_location_drawable_padding"
         android:layout_marginTop="@dimen/find_patient_margin_top"
         android:layout_marginStart="@dimen/hamburger_margin_top"
         android:layout_toEndOf="@+id/iv_hamburger"

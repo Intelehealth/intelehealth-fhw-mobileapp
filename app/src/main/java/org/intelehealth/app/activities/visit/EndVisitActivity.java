@@ -68,6 +68,8 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
     private Context context = EndVisitActivity.this;
     private RelativeLayout no_patient_found_block, main_block;
+    List<PrescriptionModel> recent = new ArrayList<>();
+    List<PrescriptionModel> older = new ArrayList<>();
 
 
     @Override
@@ -147,6 +149,7 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
                 // Scroll Down
                 if (scrollY > oldScrollY) {
                     // update recent data as it will not go at very bottom of list.
+                    Log.d("TAG", "recentCloseVisitsList size: " + "A: " + recentCloseVisitsList.size());
                     if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
                         isRecentFullyLoaded = true;
                     }
@@ -161,8 +164,16 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
                             return;
                         }
                         if (!isolderFullyLoaded) {
-                            Toast.makeText(EndVisitActivity.this, getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
-                            setOlderMoreDataIntoRecyclerView();
+                            if (recent != null && older != null) {
+                                if (recent.size() > 0 || older.size() > 0) {
+
+                                }
+                                else {
+                                    Toast.makeText(EndVisitActivity.this, getString(R.string.loading_more), Toast.LENGTH_SHORT).show();
+                                    setOlderMoreDataIntoRecyclerView();
+                                }
+                            }
+
                         }
                     }
                 }
@@ -209,7 +220,19 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
     }
 
     private void resetData() {
+        initLimits();
+        recent.clear();
+        older.clear();
+        recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
+        olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart);
+
+        recentStart = recentEnd;
+        recentEnd += recentLimit;
+        olderStart = olderEnd;
+        olderEnd += olderLimit;
+
         recent_older_visibility(recentCloseVisitsList, olderCloseVisitsList);
+        Log.d("TAG", "recentCloseVisitsList size: " + "B: " + recentCloseVisitsList.size());
         Log.d("TAG", "resetData: " + recentCloseVisitsList.size() + ", " + olderCloseVisitsList.size());
 
         recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
@@ -238,6 +261,7 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
     private void recentCloseVisits() {
         recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart);
+        Log.d("TAG", "recentCloseVisitsList size: " + "C: " + recentCloseVisitsList.size());
         recentVisitsAdapter = new EndVisitAdapter(this, recentCloseVisitsList);
         recycler_recent.setNestedScrollingEnabled(false); // Note: use NestedScrollView in xml and in xml add nestedscrolling to false as well as in java for Recyclerview in case you are recyclerview and scrollview together.
         recycler_recent.setAdapter(recentVisitsAdapter);
@@ -270,31 +294,51 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
 
     // This method will be accessed every time the person scrolls the recyclerView further.
     private void setRecentMoreDataIntoRecyclerView() {
-        if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
-            isRecentFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {    // on scroll, new data loads issue fix.
 
-        recentCloseVisitsList = recentNotEndedVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentCloseVisitsList.size());
-        recentVisitsAdapter.arrayList.addAll(recentCloseVisitsList);
-        recentVisitsAdapter.notifyDataSetChanged();
-        recentStart = recentEnd;
-        recentEnd += recentLimit;
+        }
+        else {
+            Log.d("TAG", "recentCloseVisitsList size: " + "D: " + recentCloseVisitsList.size());
+            if (recentCloseVisitsList != null && recentCloseVisitsList.size() == 0) {
+                isRecentFullyLoaded = true;
+                return;
+            }
+
+            List<PrescriptionModel> tempList = recentNotEndedVisits(recentLimit, recentStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                recentCloseVisitsList.addAll(tempList);
+                Log.d("TAG", "recentCloseVisitsList size: " + "E: " + recentCloseVisitsList.size());
+                Log.d("TAG", "setRecentMoreDataIntoRecyclerView: " + recentCloseVisitsList.size());
+                recentVisitsAdapter.arrayList.addAll(tempList);
+                recentVisitsAdapter.notifyDataSetChanged();
+
+                recentStart = recentEnd;
+                recentEnd += recentLimit;
+            }
+        }
     }
 
     private void setOlderMoreDataIntoRecyclerView() {
-        if (olderCloseVisitsList != null && olderCloseVisitsList.size() == 0) {
-            isolderFullyLoaded = true;
-            return;
-        }
+        if (recent.size() > 0 || older.size() > 0) {
 
-        olderCloseVisitsList = olderNotEndedVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-        Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderCloseVisitsList.size());
-        olderVisitsAdapter.arrayList.addAll(olderCloseVisitsList);
-        olderVisitsAdapter.notifyDataSetChanged();
-        olderStart = olderEnd;
-        olderEnd += olderLimit;
+        }
+        else {
+            if (olderCloseVisitsList != null && olderCloseVisitsList.size() == 0) {
+                isolderFullyLoaded = true;
+                return;
+            }
+
+            List<PrescriptionModel> tempList = olderNotEndedVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            if (tempList.size() > 0) {
+                olderCloseVisitsList.addAll(tempList);
+                Log.d("TAG", "setOlderMoreDataIntoRecyclerView: " + olderCloseVisitsList.size());
+                olderVisitsAdapter.arrayList.addAll(tempList);
+                olderVisitsAdapter.notifyDataSetChanged();
+
+                olderStart = olderEnd;
+                olderEnd += olderLimit;
+            }
+        }
     }
 
     private void thisMonths_EndVisits() {
@@ -350,8 +394,8 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
         query = query.replaceAll(" {2}", " ");
         Log.d("TAG", "searchOperation: " + query);
 
-        List<PrescriptionModel> recent = new ArrayList<>();
-        List<PrescriptionModel> older = new ArrayList<>();
+//        List<PrescriptionModel> recent = new ArrayList<>();
+//        List<PrescriptionModel> older = new ArrayList<>();
 
         String finalQuery = query;
         new Thread(new Runnable() {
@@ -360,6 +404,7 @@ public class EndVisitActivity extends AppCompatActivity implements NetworkUtils.
               //  List<PrescriptionModel> allCloseList = allNotEndedVisits();
                 List<PrescriptionModel> allRecentList = recentNotEndedVisits();
                 List<PrescriptionModel> allOlderList = olderNotEndedVisits();
+                Log.d("TAG", "searchListReturned: " + allRecentList.size() + ", " + allOlderList.size());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

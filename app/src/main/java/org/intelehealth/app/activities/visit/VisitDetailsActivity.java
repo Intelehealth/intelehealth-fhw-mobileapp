@@ -10,6 +10,7 @@ import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpeci
 import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
+import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -94,7 +95,7 @@ import java.util.Locale;
  */
 
 public class VisitDetailsActivity extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
-    private String patientName, patientUuid, gender, age, openmrsID,
+    private String patientName, patientUuid, gender, age, dob, openmrsID,
             visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
@@ -114,6 +115,7 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
     private NetworkUtils networkUtils;
 
     private RecyclerView mPastVisitsRecyclerView;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,12 +130,14 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         }
 
         networkUtils = new NetworkUtils(this, this);
+        context = VisitDetailsActivity.this;
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientName = intent.getStringExtra("patientname");
             patientUuid = intent.getStringExtra("patientUuid");
             gender = intent.getStringExtra("gender");
+            dob = intent.getStringExtra("dob");
             age = intent.getStringExtra("age");
             Log.d("TAG", "getAge_FollowUp: s : " + age);
 
@@ -345,7 +349,8 @@ public class VisitDetailsActivity extends AppCompatActivity implements NetworkUt
         patName_txt.setText(patientName);
 
         gender_age_txt = findViewById(R.id.gender_age_txt);
-        gender_age_txt.setText(gender + " " + age);
+//        gender_age_txt.setText(gender + " " + age);
+        setGenderAgeLocal(context, gender_age_txt, dob, gender, sessionManager);
 
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
         openmrsID_txt.setText(openmrsID);

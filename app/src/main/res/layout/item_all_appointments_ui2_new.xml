@@ -16,7 +16,14 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/item_ta_card_padding">
 
-        <androidx.cardview.widget.CardView
+    <RelativeLayout
+        android:id="@+id/rl_block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/ll_block"
+        android:layout_alignParentStart="true">
+
+    <androidx.cardview.widget.CardView
             android:id="@+id/card_member_image_all"
             android:layout_width="@dimen/item_ta_member_image_width"
             android:layout_height="@dimen/item_ta_member_image_height"
@@ -41,17 +48,17 @@
             android:lineSpacingExtra="3sp"
             android:text="Sarrah Paul"
             android:textColor="@color/textColorBlack"
-            android:textSize="@dimen/item_ta_tv_name_text_size" />
+            android:textSize="@dimen/item_ta_tv_name_text_size"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <TextView
             android:id="@+id/tv_dr_name_todays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_patient_name_all"
-            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_toEndOf="@+id/card_member_image_all"
-            android:drawableStart="@drawable/ic_baseline_account_circle_14"
-            android:drawablePadding="@dimen/margin_8"
             android:gravity="center_vertical"
             android:lineSpacingExtra="3sp"
             android:text="Dr. Lincon"
@@ -76,14 +83,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_dr_name_todays"
-            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginStart="@dimen/item_ta_tv_name_margin_start"
             android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/iv_time_all"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_date_appointment_all"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/margin_8"
                 android:gravity="center_vertical"
@@ -188,6 +195,28 @@
             android:src="@drawable/ui2_frame_priority"
             android:visibility="gone" />
 
+    </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_block"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:id="@+id/search_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cal_margnin_start"
+                android:layout_gravity="end"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/search_gender"
+                android:paddingRight="5dp"
+                android:textAppearance="@style/label_misc_txt_14sp"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_name_txt_size" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

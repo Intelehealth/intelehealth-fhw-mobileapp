@@ -112,10 +112,24 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/tvOfflineHintVideosHelpFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/you_are_offline_please_connect_to_the_internet_for_videos"
+                android:layout_marginTop="@dimen/rv_help_videos_margin_top"
+                android:textColor="@color/edittext_hint_color"
+                android:visibility="gone"
+                />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_most_searched_videos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="visible"
+                tools:listitem="@layout/row_most_searched_videos_ui2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/rv_help_videos_margin_top" />
 
             <RelativeLayout
