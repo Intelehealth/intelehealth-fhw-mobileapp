@@ -486,7 +486,6 @@ public class VisitsDAO {
         return model;
     }
 
-
     /**
      * Todays Visits that are not Ended.
      */
@@ -812,6 +811,7 @@ public class VisitsDAO {
 
         return arrayList;
     }
+
     public static List<PrescriptionModel> olderNotEndedVisits(int limit, int offset) {
         List<PrescriptionModel> arrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

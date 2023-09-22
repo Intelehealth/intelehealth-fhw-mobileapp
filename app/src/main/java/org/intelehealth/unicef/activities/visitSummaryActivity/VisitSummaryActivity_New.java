@@ -122,6 +122,7 @@ import org.intelehealth.unicef.database.dao.ProviderAttributeLIstDAO;
 import org.intelehealth.unicef.database.dao.RTCConnectionDAO;
 import org.intelehealth.unicef.database.dao.SyncDAO;
 import org.intelehealth.unicef.database.dao.VisitAttributeListDAO;
+import org.intelehealth.unicef.database.dao.VisitsDAO;
 import org.intelehealth.unicef.knowledgeEngine.Node;
 import org.intelehealth.unicef.models.ClsDoctorDetails;
 import org.intelehealth.unicef.models.DocumentObject;
@@ -319,7 +320,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private static final int DIALOG_GALLERY_PERMISSION_REQUEST = 4000;
     Button btnAppointment;
     private FrameLayout filter_framelayout;
-    private View hl_2;
+    private View hl_2, hl_1;
 
     private ObjectAnimator syncAnimator;
 
@@ -437,6 +438,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 physicalExams.addAll(selectedExams);
             }
 
+
+            boolean isVisitEnded = VisitsDAO.isVisitEnded(visitUuid);
+            if (isVisitEnded) {
+                incomplete_act.setVisibility(View.GONE);
+                hl_1.setVisibility(View.GONE);
+            }
 /*
             Log.v(TAG, "inte_value: \n: " + patientUuid + "\n" +
                     visitUuid + "\n" +
@@ -2203,6 +2210,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         incomplete_act = findViewById(R.id.incomplete_act);
         incomplete_act.setText(getResources().getString(R.string.action_end_visit));
+        hl_1 = findViewById(R.id.hl_1);
 
         archieved_notifi = findViewById(R.id.archieved_notifi);
         archieved_notifi.setVisibility(View.GONE);
