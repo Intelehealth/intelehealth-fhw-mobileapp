@@ -458,7 +458,7 @@ public class EncounterDAO {
 
     public boolean isCompletedExitedSurvey(String visitUUID) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+//        db.beginTransaction();
 
         try {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
@@ -468,17 +468,17 @@ public class EncounterDAO {
                             "encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30')",  // ENCOUNTER_PATIENT_EXIT_SURVEY
                     new String[]{visitUUID});
             EncounterDTO encounterDTO = new EncounterDTO();
-            Log.v(TAG, "isCompletedExitedSurvey- visitUUID - " + visitUUID + "\t Count - " + idCursor.getCount());
+            Log.v(TAG, "isCompletedExitedSurvey- visitUUID - "+visitUUID+"\t Count - "+idCursor.getCount());
             if (idCursor.getCount() > 0) {
                 return true;
             }
             idCursor.close();
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
 
         return false;
@@ -486,7 +486,7 @@ public class EncounterDAO {
 
     public boolean isPrescriptionReceived(String visitUUID) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        //db.beginTransaction();
 
         try {
             // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
@@ -500,12 +500,12 @@ public class EncounterDAO {
                 return true;
             }
             idCursor.close();
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
         }
 
         return false;

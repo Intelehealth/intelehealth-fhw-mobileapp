@@ -598,6 +598,8 @@ public class VisitPendingFragment extends Fragment {
                 PrescriptionModel model = new PrescriptionModel();
                 model.setHasPrescription(false);
                 String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+                if (visitID.equalsIgnoreCase("8395c790-2ef3-4792-94ec-3a7fb2f4fa4f"))
+                    Log.d("TAG", "olderVisits: " + visitID);
 
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
@@ -646,9 +648,9 @@ public class VisitPendingFragment extends Fragment {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        Log.d("TAG", "old count B: " + olderList.size());
         return olderList;
     }
+
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
