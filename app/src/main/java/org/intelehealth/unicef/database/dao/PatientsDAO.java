@@ -612,7 +612,7 @@ public class PatientsDAO {
     }
 
     public static List<PatientDTO> getQueryPatients(String query) {
-        String search = query.trim().replaceAll("\\s", "");
+        String search = query/*.trim().replaceAll("\\s", "")*/;
         // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -643,8 +643,8 @@ public class PatientsDAO {
                         " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? " +
                         "OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) " +
                         "LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR " +
-                        "(first_name || last_name) LIKE '%" + search + "%' OR openmrs_id " +
-                        "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
+                        "(first_name || last_name) LIKE '%" + search + "%'" +
+                        "OR openmrs_id " + "LIKE '%" + search + "%' " + "ORDER BY first_name ASC", new String[]{patientUUID_List.get(i)});
                 //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
                 try {
                     if (searchCursor.moveToFirst()) {
@@ -673,8 +673,11 @@ public class PatientsDAO {
             final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' " +
                     "OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR " +
                     "(first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) " +
-                    "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR " +
-                    "openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
+                    "LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%'" +
+                    "OR first_name || ' ' || middle_name LIKE" + "'%" + search + "%' OR first_name || ' ' || middle_name || ' ' || last_name LIKE" + "'%" + search + "%' " +
+                    "OR middle_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
+                    "OR first_name || ' ' || last_name LIKE" + "'%" + search + "%'" +
+                    " OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
 
             //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
             try {
@@ -723,18 +726,30 @@ public class PatientsDAO {
 
     public static VisitDTO isVisitPresentForPatient_fetchVisitValues(String patientUUID) {
         VisitDTO visitDTO = new VisitDTO();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit WHERE patientuuid = ?", new String[]{patientUUID});
         try {
             if (idCursor.moveToFirst()) {
                 do {
                     visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                     visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                    String isSynced = idCursor.getString(idCursor.getColumnIndexOrThrow("sync"));
+                    boolean sync = false;
+                    if (isSynced != null) {
+                        if (isSynced.equalsIgnoreCase("0") || isSynced.toLowerCase().equalsIgnoreCase("false"))
+                            sync = false;
+                        else if (isSynced.equalsIgnoreCase("1") || isSynced.toLowerCase().equalsIgnoreCase("true"))
+                            sync = true;
+                    }
+                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: " + sync);
+                    visitDTO.setSyncd(sync);
+                    Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: visit: " + visitDTO);
                 }
                 while (idCursor.moveToNext());
             }
-        } catch (SQLException e) {
-
+        }
+        catch (SQLException e) {
+            Log.d("TAG", "isVisitPresentForPatient_fetchVisitValues: ");
         }
 
         return visitDTO;

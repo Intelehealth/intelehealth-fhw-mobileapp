@@ -518,6 +518,11 @@ public class SearchPatientActivity_New extends BaseActivity {
                 } else {
                     patientDTOList.get(i).setPrescription_exists(false);
                 }
+
+                // checking if visit is uploaded or not - start
+                patientDTOList.get(i).setVisitDTO(visitDTO);
+                // checking if visit is uploaded or not - end
+
             } else {
                 /**
                  * no visit for this patient.
@@ -642,8 +647,11 @@ public class SearchPatientActivity_New extends BaseActivity {
                 }
 
                 //   patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-                List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit_default, start_default); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+                List<PatientDTO> tempList = providerDAO.doQueryWithProviders(limit_default, start_default, sessionManager.getProviderID()); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
                 if (tempList.size() > 0) {
+                    tempList = fetchDataforTags(tempList);
+                    Log.v(TAG, "size: " + tempList.size());
+
                     patientDTOList_default.addAll(tempList);
                     Log.d(TAG, "queryAllPatients: " + patientDTOList_default.size());
                     adapter.patientDTOS.addAll(tempList);
@@ -665,6 +673,9 @@ public class SearchPatientActivity_New extends BaseActivity {
                 //   patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);    // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
                 List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
                 if (tempList.size() > 0) {
+                    tempList = fetchDataforTags(tempList);
+                    Log.v(TAG, "size: " + tempList.size());
+
                     patientDTOList.addAll(tempList);
                     Log.d(TAG, "queryAllPatients: " + patientDTOList.size());
                     adapter.patientDTOS.addAll(tempList);
@@ -688,7 +699,6 @@ public class SearchPatientActivity_New extends BaseActivity {
 
         isFullyLoaded_default = false;
         isFullyLoaded = false;
-
     }
 
     private void resetData() {
