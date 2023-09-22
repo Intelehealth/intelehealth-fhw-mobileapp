@@ -78,6 +78,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
     private int mLastImageCaptureSelectedNodeIndex = 0;
     private boolean mIsEditMode;
     private String engineVersion;
+
     public String getEngineVersion() {
         return engineVersion;
     }
@@ -85,7 +86,6 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
-
 
 
     public void addImageInLastNode(String image) {
@@ -185,8 +185,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ui2_nested_question_item_view, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ui2_nested_question_item_view, parent, false);
         /**
          * First item's entrance animations.
          */
@@ -224,11 +223,11 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
 
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
 
-           /* if (genericViewHolder.node.isDataCaptured() && genericViewHolder.node.isDataCaptured()) {
+            if (genericViewHolder.node.isDataCaptured() && genericViewHolder.node.isDataCaptured()) {
                 genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
             } else {
                 genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            }*/
+            }
             routeByType(genericViewHolder, mParentNode, mItemList.get(position), position, true);
             setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[mNestedLevel]);
             /*if (!mItemList.get(position).getImagePathList().isEmpty()) {
@@ -238,12 +237,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
         }
     }
 
-    private int[] mColors = new int[]{R.color.colorPrimary1,
-            R.color.ui2_bmi3,
-            R.color.ui2_bmi4,
-            R.color.ui2_bmi5,
-            R.color.ui2_bmi6,
-            R.color.colorPrimaryDark2, R.color.colorPrimaryDark2, R.color.colorPrimaryDark2, R.color.colorPrimaryDark2};
+    private int[] mColors = new int[]{R.color.colorPrimary1, R.color.ui2_bmi3, R.color.ui2_bmi4, R.color.ui2_bmi5, R.color.ui2_bmi6, R.color.colorPrimaryDark2, R.color.colorPrimaryDark2, R.color.colorPrimaryDark2, R.color.colorPrimaryDark2};
 
     private void setTextViewDrawableColor(TextView textView, int color) {
         for (Drawable drawable : textView.getCompoundDrawablesRelative()) {
@@ -301,8 +295,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
             case "options":
 
                 // check for end node or custom input node
-                if (currentNode.getOptionsList().size() == 1 &&
-                        (currentNode.getOptionsList().get(0).getOptionsList() == null || currentNode.getOptionsList().get(0).getOptionsList().isEmpty())) {
+                if (currentNode.getOptionsList().size() == 1 && (currentNode.getOptionsList().get(0).getOptionsList() == null || currentNode.getOptionsList().get(0).getOptionsList().isEmpty())) {
                     routeByType(genericViewHolder, currentNode, currentNode.getOptionsList().get(0), position, isSuperNested);
                 } else {
                     showOptionsData(currentNode, genericViewHolder, currentNode.getOptionsList(), position, isSuperNested);
@@ -348,8 +341,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
             }
         });
 
-        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
-                && node.getLanguage().equalsIgnoreCase(" to ")) {
+        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%") && node.getLanguage().equalsIgnoreCase(" to ")) {
             String[] vals = node.getLanguage().split(" to ");
             rangeTextView.setText(vals[0] + " " + mContext.getString(R.string.to) + " " + vals[1]);
             List<Float> list = new ArrayList<>();
@@ -674,11 +666,11 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
         boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
 
 
-                /*if (mItemList.get(index).isRequired()) {
-                    skipButton.setVisibility(View.GONE);
-                } else {
-                    skipButton.setVisibility(View.VISIBLE);
-                }*/
+        if (mItemList.get(index).isRequired()) {
+            skipButton.setVisibility(View.GONE);
+        } else {
+            skipButton.setVisibility(View.VISIBLE);
+        }
         //mNestedLevel= mNestedLevel + 1;
         Log.v(TAG, "NestedQuestionsListingAdapter mNestedLevel - " + mNestedLevel);
         if (havingNestedQuestion) {
@@ -702,9 +694,9 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
                             selectedNode.setDataCaptured(false);
                             selectedNode.unselectAllNestedNode();
                             notifyItemChanged(index);
-                        }/* else {
+                        } else {
                             return;
-                        }*/
+                        }
                     }
                     VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 400);
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect selectedNestedOptionIndex- " + holder.selectedNestedOptionIndex);
@@ -779,85 +771,85 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
             // *****************
             showChips(holder, index, options, selectedNode);
         }
-            /*for (int i = 0; i < options.size(); i++) {
-                String type = options.get(i).getInputType();
-                if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
-                    // openCamera(context, imagePath, imageName);
-                    Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
-                    showCameraView(options.get(i), holder, index);
-                }
-            }*/
+        for (int i = 0; i < options.size(); i++) {
+            String type = options.get(i).getInputType();
+            if (type.equalsIgnoreCase("camera") && options.get(i).isSelected()) {
+                // openCamera(context, imagePath, imageName);
+                Log.v("showCameraView", "showOptionsData - " + new Gson().toJson(options.get(i).getImagePathList()));
+                showCameraView(options.get(i), holder, index);
+            }
+        }
 
 
     }
 
-    private void showChips(GenericViewHolder holder, int index,List<Node> options, Node selectedNode) {
-            OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
-                @Override
-                public void onSelect(Node node, boolean isLoadingForNestedEditData) {
-                    if (!isLoadingForNestedEditData)
-                        VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
-                    if (!isLoadingForNestedEditData) {
-                        mItemList.get(index).setSelected(false);
-                        mItemList.get(index).setDataCaptured(false);
+    private void showChips(GenericViewHolder holder, int index, List<Node> options, Node selectedNode) {
+        OptionsChipsGridAdapter optionsChipsGridAdapter = new OptionsChipsGridAdapter(holder.optionRecyclerView, mContext, mItemList.get(index), options, new OptionsChipsGridAdapter.OnItemSelection() {
+            @Override
+            public void onSelect(Node node, boolean isLoadingForNestedEditData) {
+                if (!isLoadingForNestedEditData)
+                    VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300);
+//                    if (!isLoadingForNestedEditData) {
+//                        mItemList.get(index).setSelected(false);
+//                        mItemList.get(index).setDataCaptured(false);
+//                    }
+                for (int i = 0; i < options.size(); i++) {
+                    if (options.get(i).isSelected()) {
+                        mItemList.get(index).setSelected(true);
+                        mItemList.get(index).setDataCaptured(true);
+                        break;
                     }
-                    for (int i = 0; i < options.size(); i++) {
-                        if (options.get(i).isSelected()) {
-                            mItemList.get(index).setSelected(true);
-                            mItemList.get(index).setDataCaptured(true);
-                            break;
-                        }
-                    }
-                    if(isLoadingForNestedEditData){
-                        if (selectedNode.isDataCaptured()) {
-                            AdapterUtils.setToDisable(holder.skipButton);
-                            AdapterUtils.setToDisable(holder.submitButton);
-                        } else {
-                            AdapterUtils.setToDefault(holder.skipButton);
-                            AdapterUtils.setToDefault(holder.submitButton);
-                        }
-                    }else{
-                        AdapterUtils.setToDefault(holder.submitButton);
-                        AdapterUtils.setToDefault(holder.skipButton);
-
-                    }
-                     /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
-                    holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
-
-                    String type = node.getInputType();
-
-                    if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
-                        type = "options";
-                    }
-                    Log.v(TAG, "Type - " + type);
-                    if (!type.isEmpty() && node.isSelected()) {
-                        holder.singleComponentContainer.removeAllViews();
-                        holder.singleComponentContainer.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.singleComponentContainer.removeAllViews();
-                        //holder.superNestedContainerLinearLayout.removeAllViews();
-                        if (mItemList.get(index).isMultiChoice()) {
-                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
-                            holder.submitButton.setVisibility(View.VISIBLE);
-                        } else {
-                            //holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
-                            holder.submitButton.setVisibility(View.GONE);
-                            mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
-                            AdapterUtils.setToDisable(holder.skipButton);
-                        }
-
-                        if (mItemList.get(index).isRequired()) {
-                            holder.skipButton.setVisibility(View.GONE);
-                        } else {
-                            holder.skipButton.setVisibility(View.VISIBLE);
-                        }
-                        return;
-                    }
-
-                    routeByType(holder, selectedNode, node, index, true);
                 }
-            });
-            holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
+                if (isLoadingForNestedEditData) {
+                    if (selectedNode.isDataCaptured()) {
+                        AdapterUtils.setToDisable(holder.skipButton);
+                        AdapterUtils.setToDisable(holder.submitButton);
+                    } else {
+                        AdapterUtils.setToDefault(holder.skipButton);
+                        AdapterUtils.setToDefault(holder.submitButton);
+                    }
+                } else {
+                    AdapterUtils.setToDefault(holder.submitButton);
+                    AdapterUtils.setToDefault(holder.skipButton);
+
+                }
+                holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);
+
+                String type = node.getInputType();
+
+                if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
+                    type = "options";
+                }
+                Log.v(TAG, "Type - " + type);
+                if (!type.isEmpty() && node.isSelected()) {
+                    holder.singleComponentContainer.removeAllViews();
+                    holder.singleComponentContainer.setVisibility(View.VISIBLE);
+                } else {
+                    holder.singleComponentContainer.removeAllViews();
+                    holder.superNestedContainerLinearLayout.removeAllViews();
+                    if (mItemList.get(index).isMultiChoice()) {
+                        holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                        holder.submitButton.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                        holder.submitButton.setVisibility(View.GONE);
+                        mOnItemSelection.onSelect(node, mRootIndex, false, mItemList.get(index));
+                        AdapterUtils.setToDisable(holder.skipButton);
+                    }
+
+                    if (mItemList.get(index).isRequired()) {
+                        holder.skipButton.setVisibility(View.GONE);
+                    } else {
+                        holder.skipButton.setVisibility(View.VISIBLE);
+                    }
+                    return;
+                }
+
+                routeByType(holder, selectedNode, node, index, true);
+            }
+        });
+        holder.optionRecyclerView.setAdapter(optionsChipsGridAdapter);
 
     }
 
@@ -1004,8 +996,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
             data[i] = String.valueOf(i);
         }
 
-        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext,
-                R.layout.simple_spinner_item_1, data);
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data);
         adaptador.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         numberRangeSpinner.setAdapter(adaptador);
@@ -1028,13 +1019,9 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
         });
 
         // add a list
-        final String[] data1 = new String[]{mContext.getString(R.string.duration_type),
-                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
-                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
-                mContext.getString(R.string.Years)};
+        final String[] data1 = new String[]{mContext.getString(R.string.duration_type), mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
 
-        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext,
-                R.layout.simple_spinner_item_1, data1);
+        ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(mContext, R.layout.simple_spinner_item_1, data1);
         adaptador1.setDropDownViewResource(R.layout.ui2_custome_dropdown_item_view);
 
         durationTypeSpinner.setAdapter(adaptador1);
@@ -1144,10 +1131,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
         builder.setTitle(mContext.getString(R.string.select_duration_type_title));
 
         // add a list
-        final String[] data = new String[]{
-                mContext.getString(R.string.Hours), mContext.getString(R.string.Days),
-                mContext.getString(R.string.Weeks), mContext.getString(R.string.Months),
-                mContext.getString(R.string.Years)};
+        final String[] data = new String[]{mContext.getString(R.string.Hours), mContext.getString(R.string.Days), mContext.getString(R.string.Weeks), mContext.getString(R.string.Months), mContext.getString(R.string.Years)};
 
         builder.setItems(data, new DialogInterface.OnClickListener() {
             @Override
@@ -1305,8 +1289,7 @@ public class NestedQuestionsListingAdapterOld extends RecyclerView.Adapter<Recyc
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             if (node.getLanguage().contains(" : "))
                 editText.setText(node.getLanguage().split(" : ")[1]);
-            else
-                editText.setText(node.getLanguage());
+            else editText.setText(node.getLanguage());
 
         }
         String oldValue = editText.getText().toString().trim();
