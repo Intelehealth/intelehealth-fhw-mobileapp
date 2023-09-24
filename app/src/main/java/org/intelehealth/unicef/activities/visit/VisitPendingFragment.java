@@ -66,7 +66,7 @@ public class VisitPendingFragment extends Fragment {
     private ImageButton filter_icon, priority_cancel;
     private CardView filter_menu;
     private RelativeLayout filter_relative, no_patient_found_block, main_block;
-    private List<PrescriptionModel> recentList, olderList, monthsList;
+    private List<PrescriptionModel> recentList, /*olderList,*/ monthsList;
     private VisitAdapter recent_adapter, older_adapter /*, months_adapter*/;
     TextView recent_nodata, older_nodata, month_nodata;
     private androidx.appcompat.widget.SearchView searchview_pending;
@@ -83,6 +83,7 @@ public class VisitPendingFragment extends Fragment {
     NestedScrollView nestedscrollview;
     List<PrescriptionModel> recent = new ArrayList<>();
     List<PrescriptionModel> older = new ArrayList<>();
+    List<PrescriptionModel> olderList = new ArrayList<>();
     private SessionManager sessionManager;
 
     @Nullable
@@ -234,7 +235,7 @@ public class VisitPendingFragment extends Fragment {
 
     private void fetchOlderData() {
         // pagination - start
-        olderList = olderVisits(olderLimit, olderStart);
+        olderList = olderVisits(olderLimit, olderStart, true);
         Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
         older_adapter = new VisitAdapter(getActivity(), olderList, sessionManager.getAppLanguage());
         recycler_older.setNestedScrollingEnabled(false);
@@ -304,7 +305,7 @@ public class VisitPendingFragment extends Fragment {
             }
 
             //  olderList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-            List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
+            List<PrescriptionModel> tempList = olderVisits(olderLimit, olderStart, false); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
             if (tempList.size() > 0) {
                 olderList.addAll(tempList);
                 Log.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
@@ -580,8 +581,10 @@ public class VisitPendingFragment extends Fragment {
     }
 
 
-    private List<PrescriptionModel> olderVisits(int limit, int offset) {
-        List<PrescriptionModel> olderList = new ArrayList<>();
+    private List<PrescriptionModel> olderVisits(int limit, int offset, boolean isFirstTime) {
+        if (!isFirstTime)
+            olderList = new ArrayList<>();
+
         db.beginTransaction();
 
         Cursor cursor  = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
@@ -643,6 +646,17 @@ public class VisitPendingFragment extends Fragment {
                 }
             }
             while (cursor.moveToNext());
+        }
+
+        Log.d("TAG", "olderVisits: count: " + String.valueOf(cursor.getCount()));
+        if (isFirstTime) {
+            if (cursor.getCount() > 0) {    // ie. data is still present for these limits added.
+                if (olderList.size() < 15) {
+                    olderStart = olderEnd;
+                    olderEnd += olderLimit;
+                    olderVisits(olderLimit, olderStart, true);
+                }
+            }
         }
         cursor.close();
         db.setTransactionSuccessful();
@@ -1047,7 +1061,7 @@ public class VisitPendingFragment extends Fragment {
         older.clear();
 
         recentList = recentVisits(recentLimit, recentStart);
-        olderList = olderVisits(olderLimit, olderStart);
+        olderList = olderVisits(olderLimit, olderStart, true);
 
         recentStart = recentEnd;
         recentEnd += recentLimit;
