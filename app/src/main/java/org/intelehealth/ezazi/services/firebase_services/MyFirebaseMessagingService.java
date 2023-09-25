@@ -71,6 +71,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
         //  {nurseId=28cea4ab-3188-434a-82f0-055133090a38, doctorName=doctor1, roomId=b60263f2-5716-4047-aaf5-7c13199b7f0c}
 
+        if (new SessionManager(this).isLogout()) return;
+
+
         if (remoteMessage.getData().containsKey("actionType")) {
             if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
                 Log.d(TAG, "actionType : VIDEO_CALL");
