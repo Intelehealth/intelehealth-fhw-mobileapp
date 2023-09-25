@@ -96,6 +96,7 @@ public class AllAppointmentsFragment extends Fragment {
     int totalCancelled = 0;
     int totalCompleted = 0;
     SessionManager sessionManager;
+    String currentDate = "";
 
     @Override
     public void onResume() {
@@ -246,6 +247,9 @@ public class AllAppointmentsFragment extends Fragment {
 
     private void initUI() {
         sessionManager = new SessionManager(getContext());
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        currentDate = dateFormat1.format(new Date());
+
         rvUpcomingApp = parentView.findViewById(R.id.rv_all_upcoming_appointments);
         rvCancelledApp = parentView.findViewById(R.id.rv_all_cancelled_appointments);
         rvCompletedApp = parentView.findViewById(R.id.rv_all_completed_appointments);
@@ -606,7 +610,7 @@ public class AllAppointmentsFragment extends Fragment {
         //recyclerview for upcoming appointments
         tvUpcomingAppsCount.setText("0");
         tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText, currentDate);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
@@ -701,7 +705,7 @@ public class AllAppointmentsFragment extends Fragment {
 
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText);
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText, currentDate);
         List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
 
         try {
@@ -889,12 +893,10 @@ public class AllAppointmentsFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (data != null) {
             Bundle bundle = data.getExtras();
             String selectedDate = bundle.getString("selectedDate");
             String whichDate = bundle.getString("whichDate");
-
             if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
                 fromDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);

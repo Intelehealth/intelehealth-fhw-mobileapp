@@ -192,10 +192,8 @@ public class AppointmentDAO {
     public List<AppointmentInfo> getAppointments() {
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        //db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_appointments", new String[]{});
         EncounterDAO encounterDAO = new EncounterDAO();
-
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 AppointmentInfo appointmentInfo = new AppointmentInfo();
@@ -226,13 +224,8 @@ public class AppointmentDAO {
                 appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
                 appointmentInfos.add(appointmentInfo);
             }
-
         }
         idCursor.close();
-//        db.setTransactionSuccessful();
-//        db.endTransaction();
-        //db.close();
-
         return appointmentInfos;
     }
 
@@ -253,7 +246,7 @@ public class AppointmentDAO {
     }
 
 
-    public List<AppointmentInfo> getAppointmentsWithFilters(String fromDate, String toDate, String searchPatientText) {
+    public List<AppointmentInfo> getAppointmentsWithFilters(String fromDate, String toDate, String searchPatientText, String currentDate) {
         fromDate = getDateInFormat(fromDate);
         toDate = getDateInFormat(toDate);
         String search = searchPatientText.trim().replaceAll("\\s", "");
@@ -269,16 +262,14 @@ public class AppointmentDAO {
             Log.d(TAG, "getAppointments: 2selectQuery : " + selectQuery);
             idCursor = db.rawQuery(selectQuery, null);
         } else if (!searchPatientText.isEmpty()) {
-            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE " + "'%" + search + "%'";
+            String selectQuery = "select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE " + "'%" + search + "%'" + " and a.slot_date != '" + currentDate + "'";
             Log.d(TAG, "getAppointments: 3selectQuery : " + selectQuery);
 
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else {
-            idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id", new String[]{});
-
+            idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and a.slot_date != '" + currentDate + "'", new String[]{});
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 AppointmentInfo appointmentInfo = new AppointmentInfo();
@@ -311,26 +302,17 @@ public class AppointmentDAO {
                 appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
                 appointmentInfos.add(appointmentInfo);
             }
-
         }
         idCursor.close();
-        //db.setTransactionSuccessful();
-        //db.endTransaction();
-        //db.close();
-
         return appointmentInfos;
     }
 
     public List<AppointmentInfo> getAppointmentsWithFiltersV1(String fromDate, String toDate, String searchPatientText) {
         String search = searchPatientText.trim().replaceAll("\\s", "");
-
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        //db.beginTransaction();
         Cursor idCursor;
         String table = "tbl_appointments";
-
-
         if (!fromDate.isEmpty() && !toDate.isEmpty() && !searchPatientText.isEmpty()) {
             String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," + " a.slot_date, a.slot_day, substr(a.slot_js_date, 1, 10) as new_slot_date, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE " + "'%" + search + "%'  and new_slot_date BETWEEN '" + fromDate + "' and '" + toDate + "'";
             Log.d(TAG, "getAppointmentsWithFilters: 1selectQuery : " + selectQuery);
@@ -349,7 +331,6 @@ public class AppointmentDAO {
 
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 AppointmentInfo appointmentInfo = new AppointmentInfo();
@@ -380,13 +361,8 @@ public class AppointmentDAO {
                 appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
                 appointmentInfos.add(appointmentInfo);
             }
-
         }
         idCursor.close();
-//        db.setTransactionSuccessful();
-//        db.endTransaction();
-        //db.close();
-
         return appointmentInfos;
     }
 
@@ -451,7 +427,6 @@ public class AppointmentDAO {
 
         return appointmentInfos;
     }
-
 
     public boolean updatePreviousAppointmentDetails(String appointment_id, String visit_uuid, String prev_slot_day, String prev_slot_date, String prev_slot_time) throws DAOException {
 
@@ -540,10 +515,8 @@ public class AppointmentDAO {
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and a.status = 'cancelled' ", new String[]{});
-
         }
         EncounterDAO encounterDAO = new EncounterDAO();
-
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 AppointmentInfo appointmentInfo = new AppointmentInfo();
@@ -576,29 +549,18 @@ public class AppointmentDAO {
                 appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
                 appointmentInfos.add(appointmentInfo);
             }
-
         }
         idCursor.close();
-//        db.setTransactionSuccessful();
-//        db.endTransaction();
-        //db.close();
-
         return appointmentInfos;
     }
 
     public List<AppointmentInfo> getCancelledAppointmentsWithFiltersForToday(String searchPatientText, String currentDate) {
         String search = searchPatientText.trim().replaceAll("\\s", "");
-
         List<AppointmentInfo> appointmentInfos = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-//        db.beginTransaction();
         Cursor idCursor;
-
         if (!searchPatientText.isEmpty()) {
-
             String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id," + "a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id " + "and a.status = 'cancelled' and patient_name_new LIKE " + "'%" + search + "%' and a.slot_date = '" + currentDate + "'";
-
-
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else {
             idCursor = db.rawQuery("select p.patient_photo, p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and a.status = 'cancelled' and a.slot_date = '" + currentDate + "'", new String[]{});
@@ -638,13 +600,8 @@ public class AppointmentDAO {
                 appointmentInfo.setUpdatedAt(idCursor.getString(idCursor.getColumnIndexOrThrow("updated_at")));
                 appointmentInfos.add(appointmentInfo);
             }
-
         }
         idCursor.close();
-//        db.setTransactionSuccessful();
-//        db.endTransaction();
-        //db.close();
-
         return appointmentInfos;
     }
 
