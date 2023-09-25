@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_logo"
             android:gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_30"
             android:lineHeight="@dimen/tv_desc_line_height"
             android:lineSpacingExtra="@dimen/tv_desc_line_spacing"
             android:text="@string/splash_desc"
@@ -62,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_child1"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <View
             android:id="@+id/view"
