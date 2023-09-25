@@ -78,6 +78,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
 
     private OnItemSelection mOnItemSelection;
     private int currentChildFocusedIndex = -1;
+    private PartogramConstants.AccessMode accessMode;
 
     public PartogramQueryListingAdapter(RecyclerView recyclerView, Context context, List<PartogramItemData> itemList, OnItemSelection onItemSelection) {
         mContext = context;
@@ -85,6 +86,9 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         mOnItemSelection = onItemSelection;
     }
 
+    public void setAccessMode(PartogramConstants.AccessMode accessMode) {
+        this.accessMode = accessMode;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -166,6 +170,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showAutoComplete_EditText(final View tempView, final int position, final int positionChild, final String paramDateType) {
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         AutoCompleteTextView dataEditText = tempView.findViewById(R.id.etvData);
+        dataEditText.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         dataEditText.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
         dataEditText.setAdapter(new ArrayAdapter(mContext, R.layout.spinner_textview, mContext.getResources().getStringArray(R.array.medications)));
         dataEditText.setThreshold(1);
@@ -201,6 +206,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
     private void showUserInputBox(final View tempView, final int position, final int positionChild, final String paramDateType) {
         TextView paramNameTextView = tempView.findViewById(R.id.tvParamName);
         EditText dataEditText = tempView.findViewById(R.id.etvData);
+        dataEditText.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dataEditText.setText(String.valueOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue()));
@@ -353,11 +359,13 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         PartoLablRadioViewMedicineBinding binding = PartoLablRadioViewMedicineBinding.bind(tempView);
 
         binding.clMedicineCountView.setOnClickListener(v -> {
-            @SuppressLint("SetTextI18n") MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), (updated, deleted) -> {
+            @SuppressLint("SetTextI18n")
+            MedicineBottomSheetDialog dialog = MedicineBottomSheetDialog.getInstance(info.getMedicines(), (updated, deleted) -> {
                 info.setMedicines(updated);
                 info.setDeletedMedicines(deleted);
                 setupMedicineCountView(binding.tvMedicineCount, updated);
             });
+            dialog.setAccessMode(accessMode);
             dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), dialog.getClass().getCanonicalName());
         });
         handleRadioCheckListener(tempView, info, new OnRadioCheckedListener() {
@@ -558,6 +566,7 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         TextView dropdownTextView = tempView.findViewById(R.id.tvData);
         ParamInfo info = mItemList.get(position).getParamInfoList().get(positionChild);
         dropdownTextView.setTag(info);
+        dropdownTextView.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         paramNameTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getParamName());
         if (mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue() != null && !mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue().isEmpty()) {
             dropdownTextView.setText(mItemList.get(position).getParamInfoList().get(positionChild).getOptions()[Arrays.asList(mItemList.get(position).getParamInfoList().get(positionChild).getValues()).indexOf(mItemList.get(position).getParamInfoList().get(positionChild).getCapturedValue())]);
@@ -618,6 +627,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         });
 
         setInfusionRateTextChangeListener(ivInfusionRate, info);
+        boolean enable = accessMode != PartogramConstants.AccessMode.READ;
+        binding.ivFluidOptions.viewTypeOfIvFluid.tvData.setEnabled(enable);
+        binding.ivFluidOptions.viewInfusionRate.etvData.setEnabled(enable);
+        binding.ivFluidOptions.viewInfusionStatus.tvData.setEnabled(enable);
     }
 
     private void setInfusionRateTextChangeListener(EditText editText, ParamInfo info) {
@@ -721,6 +734,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
                 }
             }
         });
+
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            radioGroup.getChildAt(i).setEnabled(accessMode != PartogramConstants.AccessMode.READ);
+        }
     }
 
     private void showRadioOptionBoxForOxytocin(final View tempView, final ParamInfo info, TextView selected, String title) {
@@ -802,6 +819,10 @@ public class PartogramQueryListingAdapter extends RecyclerView.Adapter<RecyclerV
         });
 
         setInfusionRateTextChangeListener(binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData, info);
+        boolean enable = accessMode != PartogramConstants.AccessMode.READ;
+        binding.includeLayoutPartoOxytocin.viewStrength.etvData.setEnabled(enable);
+        binding.includeLayoutPartoOxytocin.viewInfusionRate.etvData.setEnabled(enable);
+        binding.includeLayoutPartoOxytocin.viewInfusionStatus.tvData.setEnabled(enable);
     }
 
     private void manageSelectionSingleChoiceSelection(ParamInfo info, SingChoiceItem item, TextView view) {

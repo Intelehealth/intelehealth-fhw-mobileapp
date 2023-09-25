@@ -9,7 +9,8 @@
         android:layout_height="match_parent"
         android:backgroundTint="@color/white"
         android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:enableEdgeToEdge="true"
+        app:layout_behavior="org.intelehealth.ezazi.partogram.behavior.LockableBottomSheetBehavior">
 
         <include
             android:id="@+id/bottomSheetAppBar"

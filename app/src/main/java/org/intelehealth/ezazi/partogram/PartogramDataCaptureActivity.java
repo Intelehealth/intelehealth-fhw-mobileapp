@@ -518,12 +518,10 @@ public class PartogramDataCaptureActivity extends BaseActionBarActivity {
 
         setEditData();
 
-        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, new PartogramQueryListingAdapter.OnItemSelection() {
-            @Override
-            public void onSelect(PartogramItemData partogramItemData) {
+        PartogramQueryListingAdapter partogramQueryListingAdapter = new PartogramQueryListingAdapter(mRecyclerView, this, mItemList, partogramItemData -> {
 
-            }
         });
+        partogramQueryListingAdapter.setAccessMode(accessMode);
         mRecyclerView.setAdapter(partogramQueryListingAdapter);
     }
 

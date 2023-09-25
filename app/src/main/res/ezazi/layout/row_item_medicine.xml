@@ -5,9 +5,17 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
+
         <variable
             name="medicine"
             type="org.intelehealth.ezazi.partogram.model.Medicine" />
+
+        <variable
+            name="accessMode"
+            type="org.intelehealth.ezazi.partogram.PartogramConstants.AccessMode" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,8 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/list_container_padding"
-        android:background="@drawable/selector_list_item"
-        android:paddingVertical="@dimen/screen_container_padding">
+        android:background="@drawable/selector_list_item">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvParamName"
@@ -27,7 +34,7 @@
             android:padding="@dimen/common_padding"
             android:text="@{medicine.name}"
             android:textColor="@color/gray_6"
-            android:textSize="@dimen/content_text_size"
+            android:textSize="@dimen/body"
             app:layout_constraintBottom_toBottomOf="@id/btnEditMedicine"
             app:layout_constraintEnd_toStartOf="@id/btnEditMedicine"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +62,7 @@
             android:contentDescription="@string/content_expand_collapse_indicator"
             android:paddingStart="@dimen/list_container_padding"
             android:paddingEnd="@dimen/list_container_padding"
+            android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
             app:icon="@drawable/ic_delete"
             app:layout_constraintEnd_toStartOf="@id/btnExpandCollapseIndicator"
             app:layout_constraintTop_toTopOf="parent" />
@@ -67,6 +75,7 @@
             android:contentDescription="@string/content_expand_collapse_indicator"
             android:paddingStart="@dimen/list_container_padding"
             android:paddingEnd="@dimen/list_container_padding"
+            android:visibility="@{accessMode != AccessMode.READ ? View.VISIBLE : View.GONE}"
             app:icon="@drawable/ic_mode_edit"
             app:layout_constraintEnd_toStartOf="@id/btnMedicineDelete"
             app:layout_constraintTop_toTopOf="parent" />
@@ -76,10 +85,9 @@
             layout="@layout/view_medicine_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/list_container_padding"
             android:paddingTop="@dimen/list_container_padding"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/tvParamName"
+            app:layout_constraintTop_toBottomOf="@id/btnMedicineDelete"
             bind:medDetails="@{medicine}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

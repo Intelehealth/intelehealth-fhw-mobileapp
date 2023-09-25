@@ -1,25 +1,31 @@
 package org.intelehealth.ezazi.partogram.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.ezazi.databinding.MedicinesListBottomSheetDialogBinding;
+import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.adapter.MedicineAdapter;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -31,6 +37,8 @@ import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Timer;
 
 /**
  * Created by Vaghela Mithun R. on 06-09-2023 - 17:49.
@@ -45,6 +53,12 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private List<Medicine> deletedMedicines;
     private MedicinesListBottomSheetDialogBinding binding;
     private MedicineAdapter adapter;
+
+    private PartogramConstants.AccessMode accessMode;
+
+    public void setAccessMode(PartogramConstants.AccessMode accessMode) {
+        this.accessMode = accessMode;
+    }
 
     public interface MedicineListChangeListener {
         void onMedicineListChanged(List<Medicine> updated, List<Medicine> deleted);
@@ -61,6 +75,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         return dialog;
     }
 
+
     public MedicineBottomSheetDialog() {
         super(R.layout.medicines_list_bottom_sheet_dialog);
     }
@@ -76,6 +91,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         binding.clMedicineDialogRoot.setMinHeight(ScreenUtils.getInstance(requireContext()).getHeight());
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) binding.clMedicineDialogRoot.getParent());
         behavior.setPeekHeight(ScreenUtils.getInstance(requireContext()).getHeight());
+
         setMedicineListView();
         setButtonClickListener();
         setToolbarNavClick();
@@ -83,6 +99,31 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         validateMedicineFormInput();
         setupInputFilter();
     }
+
+//    @NonNull
+//    @Override
+//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//        Dialog dialog = super.onCreateDialog(savedInstanceState);
+//        dialog.setOnShowListener(dialogInterface -> {
+//            BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialogInterface;
+//            setupFullWidth(bottomSheetDialog);
+//        });
+//        return dialog;
+//    }
+//
+//    private void setupFullWidth(BottomSheetDialog bottomSheetDialog) {
+//        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+//        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+//        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) binding.clMedicineDialogRoot.getParent());
+//        if (layoutParams != null) {
+//            layoutParams.width = ScreenUtils.getInstance(requireContext()).getWidth();
+//            layoutParams.height = ScreenUtils.getInstance(requireContext()).getHeight();
+//        } else {
+//            Log.e("MedicineBottomSheet", "setupFullWidth: null");
+//        }
+//        bottomSheet.setLayoutParams(layoutParams);
+//        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//    }
 
     private void setupInputFilter() {
         setInputFilter(binding.includeAddNewMedicineDialog.etMedicineType);
@@ -113,6 +154,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setOnClickListener(this);
         binding.includeAddNewMedicineDialog.btnAddMedicineCancel.setOnClickListener(this);
         binding.btnSaveMedicines.setOnClickListener(this);
+        binding.btnAddMoreMedicine.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
+        binding.btnSaveMedicines.setEnabled(accessMode != PartogramConstants.AccessMode.READ);
         binding.clAddNewMedicineRoot.setClickable(false);
         binding.clAddNewMedicineRoot.setOnTouchListener((v, event) -> true);
     }
@@ -122,6 +165,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         if (medicines.size() == 0) openNewMedicineDialog();
         binding.rvMedicines.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new MedicineAdapter(requireContext(), medicines);
+        adapter.setAccessMode(accessMode);
         adapter.setClickListener(this);
         binding.rvMedicines.setAdapter(adapter);
     }

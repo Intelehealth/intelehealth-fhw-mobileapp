@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ezazi.databinding.RowItemMedicineBinding;
+import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.partogram.viewholder.MedicineViewHolder;
 import org.intelehealth.klivekit.chat.ui.adapter.BaseRecyclerViewAdapter;
@@ -22,6 +23,12 @@ import java.util.List;
 public class MedicineAdapter extends BaseRecyclerViewAdapter<Medicine> {
     private BaseViewHolder.ViewHolderClickListener clickListener;
     private int expandedItemPosition = -1;
+
+    private PartogramConstants.AccessMode accessMode;
+
+    public void setAccessMode(PartogramConstants.AccessMode accessMode) {
+        this.accessMode = accessMode;
+    }
 
     public void setClickListener(BaseViewHolder.ViewHolderClickListener clickListener) {
         this.clickListener = clickListener;
@@ -55,6 +62,7 @@ public class MedicineAdapter extends BaseRecyclerViewAdapter<Medicine> {
         if (holder instanceof MedicineViewHolder) {
             MedicineViewHolder medicineViewHolder = (MedicineViewHolder) holder;
             medicineViewHolder.setViewClickListener(clickListener);
+            medicineViewHolder.setAccessMode(accessMode);
             medicineViewHolder.bind(getItem(position));
             medicineViewHolder.expandDetails(expandedItemPosition == position);
         }

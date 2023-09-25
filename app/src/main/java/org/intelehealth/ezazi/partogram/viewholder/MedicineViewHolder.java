@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import org.intelehealth.ezazi.databinding.RowItemMedicineBinding;
+import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
@@ -31,5 +32,9 @@ public class MedicineViewHolder extends BaseViewHolder {
     public void expandDetails(boolean isExpanded) {
         binding.includeMedicineDetails.getRoot().setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         binding.btnExpandCollapseIndicator.setRotation(isExpanded ? 270 : 0);
+    }
+
+    public void setAccessMode(PartogramConstants.AccessMode accessMode) {
+        binding.setAccessMode(accessMode);
     }
 }
