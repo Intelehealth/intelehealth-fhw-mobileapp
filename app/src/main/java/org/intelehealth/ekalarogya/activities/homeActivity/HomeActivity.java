@@ -63,7 +63,6 @@ import org.intelehealth.ekalarogya.models.CheckAppUpdateRes;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiClient;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiInterface;
-import org.intelehealth.ekalarogya.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.ekalarogya.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.ekalarogya.shared.BaseActivity;
 import org.intelehealth.ekalarogya.syncModule.SyncUtils;
@@ -316,7 +315,7 @@ public class HomeActivity extends BaseActivity {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
-            requestPermission();
+//            requestPermission();
         }
 
         Logger.logD("Yojana", sessionManager.getJalJeevanYojanaScheme());
@@ -329,19 +328,19 @@ public class HomeActivity extends BaseActivity {
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
 
     private void requestPermission() {
-        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            //CallListenerBackgroundService.getInstance().stopForegroundService();
-            ContextCompat.startForegroundService(this, serviceIntent);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
-            } else {
-                //Permission Granted-System will work
-            }
-        }
+//        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            //CallListenerBackgroundService.getInstance().stopForegroundService();
+//            ContextCompat.startForegroundService(this, serviceIntent);
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (!Settings.canDrawOverlays(this)) {
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+//                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+//            } else {
+//                //Permission Granted-System will work
+//            }
+//        }
 
     }
 
@@ -766,7 +765,7 @@ public class HomeActivity extends BaseActivity {
 
     private void hideSyncProgressBar(boolean isSuccess) {
         saveToken();
-        requestPermission();
+//        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
@@ -1089,11 +1088,11 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            ContextCompat.startForegroundService(this, serviceIntent);
-        }
+//        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+//        if (!CallListenerBackgroundService.isInstanceCreated()) {
+//            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+//            ContextCompat.startForegroundService(this, serviceIntent);
+//        }
     }
 
     private void showAppInfo() {
