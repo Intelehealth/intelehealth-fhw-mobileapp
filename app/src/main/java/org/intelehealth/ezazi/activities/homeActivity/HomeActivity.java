@@ -230,7 +230,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        setIntent(intent); // Update the intent with the new one
+//        setIntent(intent); // Update the intent with the new one
 
         Log.v(TAG, "HomeActivity => onNewIntent");
         if (intent != null && intent.hasExtra(AppConstants.REFRESH_SCREEN_EVENT)) {
@@ -331,9 +331,9 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                         startActivity(in);
                     }
                 }
-                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("SHIFT_CHANGE")) {
-                    sync();
-                }
+//                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("SHIFT_CHANGE")) {
+//                    sync();
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

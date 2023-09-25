@@ -25,6 +25,7 @@ import org.intelehealth.ezazi.activities.visitSummaryActivity.ShiftChangeData;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
+import org.intelehealth.ezazi.database.dao.SyncDAO;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziChatActivity;
 import org.intelehealth.ezazi.ui.rtc.activity.EzaziVideoCallActivity;
 import org.intelehealth.ezazi.utilities.AppNotification;
@@ -165,6 +166,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     args.setProviderID(shiftChangeData.getProviderID());
                     args.setTag(shiftChangeData.getTag());
                     args.setAssignorNurseName(shiftChangeData.getAssignorNurse());
+                    new SyncDAO().pullData_Background(this);
 
                    //sendNotification(remoteMessage, TimelineVisitSummaryActivity.getPendingIntent(this, args));
                     String content = (shiftChangeData.getPatientNameTimeline()) + " patient has been assigned to you by " + shiftChangeData.getAssignorNurse();
