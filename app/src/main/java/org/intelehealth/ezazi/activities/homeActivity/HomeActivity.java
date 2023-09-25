@@ -230,6 +230,8 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent); // Update the intent with the new one
+
         Log.v(TAG, "HomeActivity => onNewIntent");
         if (intent != null && intent.hasExtra(AppConstants.REFRESH_SCREEN_EVENT)) {
             boolean isRefreshEvent = intent.getBooleanExtra(AppConstants.REFRESH_SCREEN_EVENT, false);
@@ -329,9 +331,14 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
                         startActivity(in);
                     }
                 }
+                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("SHIFT_CHANGE")) {
+                    sync();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            Log.d(TAG, "catchFCMMessageData: getintent null");
         }
     }
 
@@ -752,6 +759,10 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         //call sync
 
         // Check if the activity was opened from a notification click
+        if (getIntent() != null) {
+            Log.d(TAG, "onCreate: shiftChangeNotification in if");
+
+        }
         if (getIntent() != null && getIntent().hasExtra("shiftChangeNotification")) {
             Log.d(TAG, "onCreate: shiftChangeNotification");
             sync();
@@ -1687,6 +1698,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     @Override
     protected void onResume() {
         super.onResume();
+        catchFCMMessageData();
         saveToken();
         //registerReceiver(reMyreceive, filter);
 //        checkAppVer();  //auto-update feature.

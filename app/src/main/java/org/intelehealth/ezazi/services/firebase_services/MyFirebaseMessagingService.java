@@ -155,12 +155,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 // content : "patient_name" patient has been assigned to you by "HW1 name"
 
                 try {
-                    Log.d(TAG, "actionType : SHIFT_CHANGE");
 
                     Gson gson = new Gson();
                     ShiftChangeData shiftChangeData = gson.fromJson(gson.toJson(remoteMessage.getData()), ShiftChangeData.class);
-                    Log.d("onMessageReceivednoti :", new Gson().toJson(shiftChangeData));
-
                     RtcArgs args = new RtcArgs();
                     args.setPatientNameTimeline(shiftChangeData.getPatientNameTimeline());
                     args.setPatientUuid(shiftChangeData.getPatientUuid());
@@ -169,17 +166,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     args.setTag(shiftChangeData.getTag());
                     args.setAssignorNurseName(shiftChangeData.getAssignorNurse());
 
-
-                    // "patient_name" patient has been assigned to you by "HW1 name"
-
+                   //sendNotification(remoteMessage, TimelineVisitSummaryActivity.getPendingIntent(this, args));
                     String content = (shiftChangeData.getPatientNameTimeline()) + " patient has been assigned to you by " + shiftChangeData.getAssignorNurse();
-                    // String title = new ProviderDAO().getProviderName("shift change title");
                     new AppNotification.Builder(this)
                             .title("New patient for you")
                             .body(content)
                             .pendingIntent(TimelineVisitSummaryActivity.getPendingIntent(this, args))
                             .send();
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
