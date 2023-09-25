@@ -26,6 +26,7 @@ public class MedicineViewHolder extends BaseViewHolder {
         binding.setMedicine(medicine);
         binding.btnEditMedicine.setOnClickListener(this);
         binding.btnMedicineDelete.setOnClickListener(this);
+        binding.btnExpandCollapseIndicator.setOnClickListener(this);
         binding.clMedicineRowItemRoot.setOnClickListener(this);
     }
 

@@ -35,10 +35,10 @@
             android:text="@{medicine.name}"
             android:textColor="@color/gray_6"
             android:textSize="@dimen/body"
-            app:layout_constraintBottom_toBottomOf="@id/btnEditMedicine"
+            app:layout_constraintBottom_toBottomOf="@id/btnExpandCollapseIndicator"
             app:layout_constraintEnd_toStartOf="@id/btnEditMedicine"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btnEditMedicine"
+            app:layout_constraintTop_toTopOf="@id/btnExpandCollapseIndicator"
             tools:text="Medicine Name" />
 
         <com.google.android.material.button.MaterialButton
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/list_container_padding"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/btnMedicineDelete"
+            app:layout_constraintTop_toBottomOf="@id/btnExpandCollapseIndicator"
             bind:medDetails="@{medicine}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

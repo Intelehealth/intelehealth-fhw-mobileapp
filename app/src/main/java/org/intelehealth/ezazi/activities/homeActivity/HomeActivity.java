@@ -1,6 +1,7 @@
 package org.intelehealth.ezazi.activities.homeActivity;
 
 import static org.intelehealth.ezazi.app.AppConstants.EVENT_SHIFT_CHANGED;
+import static org.intelehealth.ezazi.app.AppConstants.FROM_HW;
 import static org.intelehealth.ezazi.app.AppConstants.TO_HW_USER_UUID;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
@@ -925,29 +926,30 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             try {
                 visitsAttrsDAO.updateVisitTypeAttributeUuid(visitUUIDList.get(j), selectedNurseUuid);
                 new VisitsDAO().updateVisitSync(visitUUIDList.get(j), "0");
-           /*     HashMap<String, String> assigneeMap = new HashMap<>();
-                assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);*/
-                FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(j).getPatientuuid());
-
-                ShiftChangeData shiftChangeData = new ShiftChangeData();
-                shiftChangeData.setToHwUserUuid(assigneeNurseUserUuid);
-                shiftChangeData.setPatientNameTimeline(patientNameInfo.getName());
-                shiftChangeData.setPatientUuid(visitDTOList.get(j).getPatientuuid());
-                shiftChangeData.setVisitUuid(visitUUIDList.get(j));
-                shiftChangeData.setProviderID(sessionManager.getProviderID());
-                shiftChangeData.setAssignorNurse(sessionManager.getChwname());
-                shiftChangeData.setTag("shiftChange");
-                Log.d("1122Shift", new Gson().toJson(shiftChangeData));
-                Log.v("1122visitDTOList", "visitDTOList: " + new Gson().toJson(visitDTOList));
-                //  SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
-
-
-                SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(shiftChangeData));
-
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        HashMap<String, String> assigneeMap = new HashMap<>();
+        assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);
+        assigneeMap.put(FROM_HW, sessionManager.getChwname());
+//        FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(j).getPatientuuid());
+//
+//        ShiftChangeData shiftChangeData = new ShiftChangeData();
+//        shiftChangeData.setToHwUserUuid(assigneeNurseUserUuid);
+//        shiftChangeData.setPatientNameTimeline(patientNameInfo.getName());
+//        shiftChangeData.setPatientUuid(visitDTOList.get(j).getPatientuuid());
+//        shiftChangeData.setVisitUuid(visitUUIDList.get(j));
+//        shiftChangeData.setProviderID(sessionManager.getProviderID());
+//        shiftChangeData.setAssignorNurse(sessionManager.getChwname());
+//        shiftChangeData.setTag("shiftChange");
+//        Log.d("1122Shift", new Gson().toJson(shiftChangeData));
+//        Log.v("1122visitDTOList", "visitDTOList: " + new Gson().toJson(visitDTOList));
+        //  SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
+
+
+        SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
         mPendingForLogout = true;
         sync();
         Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();

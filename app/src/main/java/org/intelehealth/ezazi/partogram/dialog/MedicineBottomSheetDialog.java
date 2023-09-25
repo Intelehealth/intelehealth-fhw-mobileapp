@@ -183,6 +183,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
             showConfirmationDialog(position);
         } else if (view.getId() == R.id.clMedicineRowItemRoot) {
             adapter.setExpandedItemPosition(position);
+        }else if (view.getId() == R.id.btnExpandCollapseIndicator) {
+            adapter.setExpandedItemPosition(position);
         }
     }
 

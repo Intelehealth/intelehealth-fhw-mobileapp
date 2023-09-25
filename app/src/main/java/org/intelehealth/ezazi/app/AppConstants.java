@@ -147,6 +147,8 @@ public class AppConstants {
 
     public static final String TO_HW_USER_UUID = "toHwUserUuid";
 
+    public static final String FROM_HW = "from_hw";
+
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }

@@ -168,11 +168,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     args.setAssignorNurseName(shiftChangeData.getAssignorNurse());
                     new SyncDAO().pullData_Background(this);
 
-                   //sendNotification(remoteMessage, TimelineVisitSummaryActivity.getPendingIntent(this, args));
-                    String content = (shiftChangeData.getPatientNameTimeline()) + " patient has been assigned to you by " + shiftChangeData.getAssignorNurse();
+                    //sendNotification(remoteMessage, TimelineVisitSummaryActivity.getPendingIntent(this, args));
+//                    String content = (shiftChangeData.getPatientNameTimeline()) + " patient has been assigned to you by " + shiftChangeData.getAssignorNurse();
                     new AppNotification.Builder(this)
-                            .title("New patient for you")
-                            .body(content)
+                            .title(remoteMessage.getNotification().getTitle())
+                            .body(remoteMessage.getNotification().getBody())
                             .pendingIntent(TimelineVisitSummaryActivity.getPendingIntent(this, args))
                             .send();
                 } catch (Exception e) {
