@@ -7,6 +7,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
@@ -20,8 +21,10 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Vibrator
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import java.util.Objects
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -48,8 +51,9 @@ class HeadsUpNotificationService : Service() {
         var data: Bundle? = null
         var name: String? = ""
         var callType = ""
-        val NOTIFICATION_ID = 120try {
-            audioManager = getSystemService<Any>(Context.AUDIO_SERVICE) as AudioManager
+        val NOTIFICATION_ID = 120
+        try {
+            audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
             if (audioManager != null) {
                 when (audioManager!!.ringerMode) {
                     AudioManager.RINGER_MODE_NORMAL -> status = true
