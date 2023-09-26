@@ -1159,5 +1159,9 @@
     <string name="fetching_details_please_wait">বিস্তারিত আনা হচ্ছে। অনুগ্রহপূর্বক অপেক্ষা করুন...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">প্রেসক্রিপশন এখনও ডাক্তার দ্বারা প্রদান করা হয় না.</string>
     <string name="download_prescription_first">প্রথমে প্রেসক্রিপশন ডাউনলোড করুন।</string>
+    <string name="height_ft">Height(ft)</string>
+    <string name="ft">ft</string>
+    <string name="in">in</string>
+    <string name="please_select_patient_height">Please select patient height!</string>
 
 </resources>

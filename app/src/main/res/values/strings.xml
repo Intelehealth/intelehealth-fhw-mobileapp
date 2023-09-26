@@ -1161,4 +1161,8 @@
     <string name="download_prescription_first">Download prescription first.</string>
     <string name="location_setup">Location Setup %1$s</string>
     <string name="app_version_string">User: %1$s, App Version: %2$s</string>
+    <string name="height_ft">Height(ft)</string>
+    <string name="ft">ft</string>
+    <string name="in">in</string>
+    <string name="please_select_patient_height">Please select patient height!</string>
 </resources>
