@@ -86,6 +86,24 @@
         <item>Intradermal (ID)</item>
     </string-array>
 
+    <string-array name="dose_units">
+        <item>mL</item>
+        <item>mg</item>
+        <item>ug</item>
+        <item>%</item>
+        <item>IU</item>
+        <item>Tab</item>
+        <item>Cap</item>
+        <item>-</item>
+    </string-array>
+
+    <string-array name="medicine_form">
+        <item>Capsule</item>
+        <item>Tablet</item>
+        <item>Injection</item>
+        <item>IV Fluid</item>
+    </string-array>
+
     <string-array name="medicine_frequencies">
         <item>Once daily (OD)</item>
         <item>Twice daily (BD)</item>

@@ -9,3 +9,12 @@ Discussion points
   need to discuss with program team
 - Current nurse have the all right to update patient visit which is created by other nurse
   with same location.
+
+Medicine flow changes
+- Stage 1 max encounter is 15 and Stage 2 max is 5
+- Observation will keep with old implementation
+- After edit mode deactivated on next encounter generate allow user to show previous encounter history
+- Medicine will be activate in each encounter
+- Edit mode should be active until next encounter
+- Shared decision making in each encounter
+- Remove out of time and show alert dialog only, don't close visit
