@@ -930,48 +930,50 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mSugarAfterMeal);
 
         // Check to see if values were inputted.
-        if (!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
-            for (int i = 0; i < values.size(); i++) {
-/*                if (i == 0) {
-                    EditText et = values.get(i);
-                    String abc = et.getText().toString().trim();
-                    if (abc != null && !abc.isEmpty()) {
-                        if (Double.parseDouble(abc) > Double.parseDouble(AppConstants.MAXIMUM_HEIGHT)) {
-                            et.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else if (mheightSpinner.getText().toString().trim().length() < 1) {
-                            mheightSpinner.setError(getString(R.string.please_select_patient_height));
-                            focusView = mheightSpinner;
-                            cancel = true;
-                            return;
-                        } else {
-                            cancel = false;
-                        }
-//       }
-                    } else {
-                        cancel = false;
-                    }
-                } else */
-                if (i == 1) {
-                    EditText et = values.get(i);
-                    String abc1 = et.getText().toString().trim();
-                    if (abc1 != null && !abc1.isEmpty()) {
-                        if (Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT)) {
-                            et.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
-                            focusView = et;
-                            cancel = true;
-                            break;
-                        } else {
-                            cancel = false;
-                        }
-//       }
-                    } else {
-                        cancel = false;
-                    }
+     //   if (!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
 
-                } else if (i == 2) {
+            // start
+            // 1. weight
+            String w_value = mWeight.getText().toString().trim();
+            if (w_value != null && !w_value.isEmpty()) {
+                if (Double.parseDouble(w_value) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT)) {
+                    mWeight.requestFocus();
+                    mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
+                    return;
+                }
+            }
+            // end
+
+            // pulse - start
+            String p_value = mPulse.getText().toString().trim();
+                if (p_value != null && !p_value.isEmpty() && (!p_value.equals("0.0"))) {
+                    if ((Double.parseDouble(p_value) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
+                            (Double.parseDouble(p_value) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
+                        mPulse.requestFocus();
+                        mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                        return;
+                    }
+                }
+            // pulse - end
+
+        // 1. spo2
+        String spo2_value = mSpo2.getText().toString().trim();
+        if (spo2_value != null && !spo2_value.isEmpty()) {
+            if ((Double.parseDouble(spo2_value) < Double.parseDouble(AppConstants.MINIMUM_SPO2)) ||
+                    (Double.parseDouble(spo2_value) > Double.parseDouble(AppConstants.MAXIMUM_SPO2))) {
+                mSpo2.requestFocus();
+                mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                return;
+            }
+        }
+        // end
+
+       //     }
+
+
+/*
+            for (int i = 0; i < values.size(); i++) {
+ else if (i == 2) {
                     EditText et = values.get(i);
                     String abc2 = et.getText().toString().trim();
                     if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
@@ -1123,7 +1125,8 @@ public class VitalsActivity extends AppCompatActivity {
                     cancel = false;
                 }
             }
-        }
+*/
+     //   }
 
         if (cancel) {
             // There was an error - focus the first form field with an error.
