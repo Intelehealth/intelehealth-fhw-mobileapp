@@ -53,7 +53,7 @@ public class AppConstants {
     public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "85";
-    public static final String MAXIMUM_RESPIRATORY = "80";
+    public static final String MAXIMUM_RESPIRATORY = "30";
     public static final String MINIMUM_RESPIRATORY = "10";
     public static final String MAXIMUM_HEMOGLOBIN = "20";
     public static final String MINIMUM_HEMOGLOBIN = "1";
