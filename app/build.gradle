@@ -199,6 +199,8 @@ dependencies {
 
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation "androidx.camera:camera-extensions:${camerax_version}"
+
+    implementation 'com.github.Mamoon-Alhawamdeh:AmazingSpinner:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
