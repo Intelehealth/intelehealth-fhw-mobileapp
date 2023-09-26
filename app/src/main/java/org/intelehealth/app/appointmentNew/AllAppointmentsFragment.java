@@ -101,9 +101,6 @@ public class AllAppointmentsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
-
     }
 
     @Override
@@ -609,56 +606,65 @@ public class AllAppointmentsFragment extends Fragment {
     private void getUpcomingAppointments() {
         //recyclerview for upcoming appointments
         tvUpcomingAppsCount.setText("0");
-        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.completed_0));
+        tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText, currentDate);
+        List<AppointmentInfo> appointmentInfoListNew = new AppointmentDAO().getAppointmentsWithFiltersV1(fromDate, toDate, searchPatientText);
         List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
+        List<AppointmentInfo> upcomingAppointmentsListNew = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
-                rvUpcomingApp.setVisibility(View.VISIBLE);
-                noDataFoundForUpcoming.setVisibility(View.GONE);
                 for (int i = 0; i < appointmentInfoList.size(); i++) {
                     AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
                     String currentDateTime = dateFormat.format(new Date());
                     String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
-
                     long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
-
                     long second = diff / 1000;
                     long minutes = second / 60;
                     String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                     appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-
                     if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
                         upcomingAppointmentsList.add(appointmentInfo);
                     }
                 }
-
                 AllAppointmentsAdapter allAppointmentsAdapter = new
                         AllAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
                 rvUpcomingApp.setAdapter(allAppointmentsAdapter);
-
+            }
+            for (int i = 0; i < appointmentInfoListNew.size(); i++) {
+                AppointmentInfo appointmentInfo = appointmentInfoListNew.get(i);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                String currentDateTime = dateFormat.format(new Date());
+                String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+                long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+                long second = diff / 1000;
+                long minutes = second / 60;
+                if (appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
+                    upcomingAppointmentsListNew.add(appointmentInfo);
+                }
+            }
+            tvUpcomingAppsCount.setText(upcomingAppointmentsListNew.size() + "");
+            tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentsList.size() + ")");
+            if (upcomingAppointmentsList.size() > 0) {
+                rvUpcomingApp.setVisibility(View.VISIBLE);
+                noDataFoundForUpcoming.setVisibility(View.GONE);
             } else {
                 rvUpcomingApp.setVisibility(View.GONE);
                 noDataFoundForUpcoming.setVisibility(View.VISIBLE);
             }
-
-            tvUpcomingAppsCount.setText(upcomingAppointmentsList.size() + "");
-            tvUpcomingAppsCountTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentsList.size() + ")");
-
         } catch (
                 Exception e) {
         }
-
-
     }
 
     private void getCancelledAppointments() {
         //recyclerview for getCancelledAppointments appointments
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, searchPatientText);
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFilters(fromDate, toDate, searchPatientText, currentDate);
+        List<AppointmentInfo> appointmentInfoListNew = new AppointmentDAO().getCancelledAppointmentsWithFiltersV1();
         List<AppointmentInfo> cancelledAppointmentsList = new ArrayList<>();
+        List<AppointmentInfo> cancelledAppointmentsListNew = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
                 rvCancelledApp.setVisibility(View.VISIBLE);
@@ -668,33 +674,26 @@ public class AllAppointmentsFragment extends Fragment {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
                     String currentDateTime = dateFormat.format(new Date());
                     String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
-
                     long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
-
                     long second = diff / 1000;
                     long minutes = second / 60;
                     String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
                     appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-
                     cancelledAppointmentsList.add(appointmentInfo);
-
                 }
-
-                //recyclerview for cancelled appointments
-
                 AllAppointmentsAdapter allAppointmentsAdapter = new
                         AllAppointmentsAdapter(getActivity(), cancelledAppointmentsList, "cancelled");
                 rvCancelledApp.setAdapter(allAppointmentsAdapter);
-
             } else {
-
                 rvCancelledApp.setVisibility(View.GONE);
                 noDataFoundForCancelled.setVisibility(View.VISIBLE);
             }
-
-            tvCancelledAppsCount.setText(cancelledAppointmentsList.size() + "");
+            for (int i = 0; i < appointmentInfoListNew.size(); i++) {
+                AppointmentInfo appointmentInfo = appointmentInfoListNew.get(i);
+                cancelledAppointmentsListNew.add(appointmentInfo);
+            }
+            tvCancelledAppsCount.setText(cancelledAppointmentsListNew.size() + "");
             tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentsList.size() + ")");
-
         } catch (Exception e) {
         }
 
@@ -702,65 +701,62 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void getCompletedAppointments() {
-
         tvCompletedAppsCount.setText("0");
         tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFilters(fromDate, toDate, searchPatientText, currentDate);
+        List<AppointmentInfo> appointmentInfoListNew = new AppointmentDAO().getAppointmentsWithFiltersV1(fromDate, toDate, searchPatientText);
         List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
-
+        List<AppointmentInfo> completedAppointmentsListNew = new ArrayList<>();
         try {
             if (appointmentInfoList.size() > 0) {
                 for (int i = 0; i < appointmentInfoList.size(); i++) {
                     AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
-
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
                     String currentDateTime = dateFormat.format(new Date());
                     String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
-
                     long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
-
                     long second = diff / 1000;
                     long minutes = second / 60;
                     //for appointment is completed/ appointment time has been passed
                     if (appointmentInfo.getStatus().equalsIgnoreCase("visit closed")
                             || ((appointmentInfo.getStatus().equals("booked") && minutes <= 0))) {
-                        //check patient uuid in visit table
                         completedAppointmentsList.add(appointmentInfo);
                     }
                 }
             }
-
+            for (int i = 0; i < appointmentInfoListNew.size(); i++) {
+                AppointmentInfo appointmentInfo = appointmentInfoListNew.get(i);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                String currentDateTime = dateFormat.format(new Date());
+                String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+                long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+                long second = diff / 1000;
+                long minutes = second / 60;
+                //for appointment is completed/ appointment time has been passed
+                if (appointmentInfo.getStatus().equalsIgnoreCase("visit closed")
+                        || ((appointmentInfo.getStatus().equals("booked") && minutes <= 0))) {
+                    completedAppointmentsListNew.add(appointmentInfo);
+                }
+            }
             if (completedAppointmentsList.size() > 0) {
                 rvCompletedApp.setVisibility(View.VISIBLE);
                 noDataFoundForCompleted.setVisibility(View.GONE);
-
-                tvCompletedAppsCount.setText(completedAppointmentsList.size() + "");
-                tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentsList.size() + ")");
                 getDataForCompletedAppointments(completedAppointmentsList);
             } else {
-                //no data found
                 rvCompletedApp.setVisibility(View.GONE);
                 noDataFoundForCompleted.setVisibility(View.VISIBLE);
-
-                tvCompletedAppsCount.setText(completedAppointmentsList.size() + "");
-                tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentsList.size() + ")");
             }
+            tvCompletedAppsCount.setText(completedAppointmentsListNew.size() + "");
+            tvCompletedAppsCountTitle.setText(getResources().getString(R.string.completed) + " (" + completedAppointmentsList.size() + ")");
         } catch (Exception e) {
         }
 
     }
 
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
-        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-
-        //check if visit is present or not
-
-        for (int i = 0; i < appointmentsDaoList.size(); i++) {
+       for (int i = 0; i < appointmentsDaoList.size(); i++) {
             VisitDTO visitDTO = isVisitPresentForPatient_fetchVisitValues(appointmentsDaoList.get(i).getPatientId());
-
-            //get values from visit
             if (visitDTO.getUuid() != null && visitDTO.getStartdate() != null) {
-
                 String encounteruuid = getStartVisitNoteEncounterByVisitUUID(visitDTO.getUuid());
                 if (!encounteruuid.isEmpty() && !encounteruuid.equalsIgnoreCase("")) {
                     appointmentsDaoList.get(i).setPrescription_exists(true);
@@ -768,9 +764,7 @@ public class AllAppointmentsFragment extends Fragment {
                     appointmentsDaoList.get(i).setPrescription_exists(false);
                 }
                 String patientProfilePath = getPatientProfile(appointmentsDaoList.get(i).getPatientId());
-                // String patientProfilePath = getPatientProfile("984af313-83c7-479e-b8a7-8e72e7384346");
                 appointmentsDaoList.get(i).setPatientProfilePhoto(patientProfilePath);
-
                 try {
                     String encounterId = EncounterDAO.getEncounterIdForCompletedVisit(visitDTO.getUuid());
                     String prescReceivedTime = EncounterDAO.getPrescriptionReceivedTime(encounterId);
@@ -778,45 +772,33 @@ public class AllAppointmentsFragment extends Fragment {
                     if (prescReceivedTime != null && !prescReceivedTime.isEmpty()) {
                         appointmentsDaoList.get(i).setPresc_received_time(prescReceivedTime);
                     }
-
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-
             }
-
-
         }
-        //recyclerview for completed appointments
         AllAppointmentsAdapter allAppointmentsFragment = new
                 AllAppointmentsAdapter(getActivity(), appointmentsDaoList, "completed");
         rvCompletedApp.setAdapter(allAppointmentsFragment);
-
     }
 
     private String getPatientProfile(String patientUuid) {
         Log.d(TAG, "getPatientProfile: patientUuid : " + patientUuid);
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-
         String imagePath = "";
-
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ",
                 new String[]{patientUuid});
-
         if (idCursor.moveToFirst()) {
             do {
                 imagePath = idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo"));
-
             } while (idCursor.moveToNext());
             idCursor.close();
         }
         return imagePath;
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void selectDateRangeNew() {
-
         tvFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -868,17 +850,12 @@ public class AllAppointmentsFragment extends Fragment {
 
         } else if (whichAppointment.equals("cancelled") && !fromDate.isEmpty() && !toDate.isEmpty()) {
             getCancelledAppointments();
-
         }
-
-
     }
-
 
     private void dismissDateFilterDialog() {
         if (!fromDate.isEmpty() && !toDate.isEmpty()) {
             filterAsPerSelectedOptions();
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -905,14 +882,10 @@ public class AllAppointmentsFragment extends Fragment {
                 if (!fromDate.isEmpty()) {
                     String[] splitedDate = fromDate.split("/");
                     tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
-
-                } else {
                 }
-
                 dismissDateFilterDialog();
             }
             if (!whichDate.isEmpty() && whichDate.equals("todate")) {
-
                 toDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -920,9 +893,7 @@ public class AllAppointmentsFragment extends Fragment {
                 if (!toDate.isEmpty()) {
                     String[] splitedDate = toDate.split("/");
                     tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);
-                } else {
                 }
-
                 dismissDateFilterDialog();
             }
         }
@@ -944,6 +915,4 @@ public class AllAppointmentsFragment extends Fragment {
                     + " must implement OnFragmentCommunicationListener");
         }
     }
-
-
 }

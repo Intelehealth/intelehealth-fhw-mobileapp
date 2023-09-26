@@ -157,12 +157,6 @@ public class AllAppointmentsAdapter extends RecyclerView.Adapter<AllAppointments
                                     timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
                                             + context.getString(R.string.in) + " , " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             }
-
-
-                            if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours_at)+" " + appointmentInfoModel.getSlotTime();
-                            else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                                timeText = hours + " " + context.getString(R.string.hours)+ " " + context.getString(R.string.in)+ ", " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
                             holder.tvDate.setText(timeText);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

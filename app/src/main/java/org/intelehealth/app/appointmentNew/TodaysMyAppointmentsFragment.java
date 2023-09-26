@@ -321,9 +321,6 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         try {
             Log.v(TAG, "appointmentInfoList - " + appointmentInfoList.size());
             if (appointmentInfoList.size() > 0) {
-                rvUpcomingApp.setVisibility(View.VISIBLE);
-                noDataFoundForUpcoming.setVisibility(View.GONE);
-
                 for (int i = 0; i < appointmentInfoList.size(); i++) {
                     AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
@@ -342,11 +339,15 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     }
                 }
                 totalUpcomingApps = upcomingAppointmentsList.size();
-
                 TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
                         TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
                 rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
-            } else {
+            }
+            if(upcomingAppointmentsList.size()>0)
+            {
+                rvUpcomingApp.setVisibility(View.VISIBLE);
+                noDataFoundForUpcoming.setVisibility(View.GONE); }
+            else {
                 rvUpcomingApp.setVisibility(View.GONE);
                 noDataFoundForUpcoming.setVisibility(View.VISIBLE);
             }
