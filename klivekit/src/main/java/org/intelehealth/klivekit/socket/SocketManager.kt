@@ -11,6 +11,7 @@ import io.socket.emitter.Emitter
 import org.intelehealth.klivekit.model.ActiveUser
 import org.intelehealth.klivekit.model.ChatMessage
 import org.json.JSONArray
+import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -130,19 +131,41 @@ open class SocketManager @Inject constructor() {
     private fun parseAndSaveToLocal(jsonArray: JSONArray) {
         activeUsers.clear()
         if (jsonArray.length() > 0) {
-            val array: JSONArray = jsonArray.getJSONObject(0).getJSONArray("values")
-            if (array.length() > 0) {
-                for (i in 0 until array.length()) {
-                    val json = array.getJSONObject(i).getJSONObject("nameValuePairs");
-                    val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
-                    activeUser?.let {
-                        activeUser.uuid?.let { it1 ->
-                            activeUsers.put(it1, activeUser)
-                        };
-                    }
+            validValues(jsonArray) { array ->
+                array?.let { parseJson(it) }
+            }
+        }
+    }
+
+    private fun parseJson(array: JSONArray) {
+        if (array.length() > 0) {
+            for (i in 0 until array.length()) {
+                validPairs(array.getJSONObject(i)) {
+                    it?.let { json -> saveActiveUsers(json) }
                 }
             }
         }
+    }
+
+    private fun saveActiveUsers(json: JSONObject) {
+        val activeUser = Gson().fromJson(json.toString(), ActiveUser::class.java)
+        activeUser?.let {
+            activeUser.uuid?.let { it1 ->
+                activeUsers.put(it1, activeUser)
+            };
+        }
+    }
+
+    private fun validValues(jsonArray: JSONArray, block: (JSONArray?) -> Unit) {
+        if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("values"))
+            block.invoke(jsonArray.getJSONObject(0).getJSONArray("values"))
+        else block.invoke(null)
+    }
+
+    private fun validPairs(json: JSONObject, block: (JSONObject?) -> Unit) {
+        if (json.length() > 0 && json.has("nameValuePairs"))
+            block.invoke(json.getJSONObject("nameValuePairs"))
+        else block.invoke(null)
     }
 
     fun emit(event: String, args: Any? = null) {
