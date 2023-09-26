@@ -78,6 +78,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private int mLastImageCaptureSelectedNodeIndex = 0;
     private boolean mIsEditMode;
     private String engineVersion;
+
     public String getEngineVersion() {
         return engineVersion;
     }
@@ -85,7 +86,6 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
-
 
 
     public void addImageInLastNode(String image) {
@@ -230,7 +230,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 genericViewHolder.submitButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }*/
             routeByType(genericViewHolder, mParentNode, mItemList.get(position), position, true);
-            setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[mNestedLevel]);
+            setTextViewDrawableColor(genericViewHolder.tvQuestion, mColors[0]);
             /*if (!mItemList.get(position).getImagePathList().isEmpty()) {
                 Log.v("showCameraView", "onBindViewHolder 1");
                 showCameraView(mItemList.get(position), genericViewHolder, position);
@@ -243,7 +243,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             R.color.ui2_bmi4,
             R.color.ui2_bmi5,
             R.color.ui2_bmi6,
-            R.color.colorPrimaryDark2, R.color.colorPrimaryDark2, R.color.colorPrimaryDark2, R.color.colorPrimaryDark2};
+            R.color.colorPrimaryDark2,
+            R.color.colorPrimaryDark2,
+            R.color.colorPrimaryDark2,
+            R.color.colorPrimaryDark2};
 
     private void setTextViewDrawableColor(TextView textView, int color) {
         for (Drawable drawable : textView.getCompoundDrawablesRelative()) {
@@ -640,7 +643,6 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
     /**
-     *
      * @param selectedNode
      * @param holder
      * @param options
@@ -688,6 +690,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     skipButton.setVisibility(View.VISIBLE);
                 }*/
         //mNestedLevel= mNestedLevel + 1;
+        Log.v(TAG, "NestedQuestionsListingAdapter node - " + new Gson().toJson(selectedNode));
         Log.v(TAG, "NestedQuestionsListingAdapter mNestedLevel - " + mNestedLevel);
         if (havingNestedQuestion) {
             //if (isSuperNested) {
@@ -724,13 +727,18 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
 
-                    if (isLastNodeSubmit)
-                        mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
+                    if (!selectedNode.isContainsTheQuestionBeforeOptions()) {
+                        mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
+                    } else {
+                        if (isLastNodeSubmit)
+                            mOnItemSelection.onSelect(node, indexSelected, isSkipped, selectedNode);
 
-                    else {
-                        holder.selectedNestedOptionIndex += 1;
-                        holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        else {
+                            holder.selectedNestedOptionIndex += 1;
+                            holder.nestedQuestionsListingAdapter.addItem(options.get(holder.selectedNestedOptionIndex));
+                        }
                     }
+
                 }
 
                 @Override
@@ -810,7 +818,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             break;
                         }
                     }
-                    if(isLoadingForNestedEditData){
+                    if (isLoadingForNestedEditData) {
                         if (selectedNode.isDataCaptured()) {
                             AdapterUtils.setToDisable(holder.skipButton);
                             AdapterUtils.setToDisable(holder.submitButton);
@@ -818,7 +826,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             AdapterUtils.setToDefault(holder.skipButton);
                             AdapterUtils.setToDefault(holder.submitButton);
                         }
-                    }else{
+                    } else {
                         AdapterUtils.setToDefault(holder.submitButton);
                         AdapterUtils.setToDefault(holder.skipButton);
 
@@ -875,7 +883,6 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     }
 
     /**
-     *
      * @param selectedNode
      * @param holder
      * @param options
@@ -1044,7 +1051,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             break;
                         }
                     }
-                    if(isLoadingForNestedEditData){
+                    if (isLoadingForNestedEditData) {
                         if (selectedNode.isDataCaptured()) {
                             AdapterUtils.setToDisable(holder.skipButton);
                             AdapterUtils.setToDisable(holder.submitButton);
@@ -1052,7 +1059,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                             AdapterUtils.setToDefault(holder.skipButton);
                             AdapterUtils.setToDefault(holder.submitButton);
                         }
-                    }else{
+                    } else {
                         AdapterUtils.setToDefault(holder.submitButton);
                         AdapterUtils.setToDefault(holder.skipButton);
 

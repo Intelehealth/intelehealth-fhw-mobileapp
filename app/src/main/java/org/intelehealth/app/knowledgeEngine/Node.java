@@ -3340,6 +3340,16 @@ public class Node implements Serializable {
         return flag;
     }
 
+    public boolean isHavingMoreNestedQuestion() {
+        Log.v(TAG, "isHavingMoreNestedQuestion - " + getText());
+        boolean flag = false;
+        if (getOptionsList() != null) {
+            flag = getOptionsList().size() > 0;
+        }
+        Log.v(TAG, "isHavingMoreNestedQuestion - " + flag);
+        return flag;
+    }
+
 
     public String formQuestionAnswerV2(int level) {
         List<String> stringsList = new ArrayList<>();
