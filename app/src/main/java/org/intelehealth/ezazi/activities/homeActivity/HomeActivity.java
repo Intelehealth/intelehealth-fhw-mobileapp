@@ -944,9 +944,9 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             }
         }
 
-        HashMap<String, String> assigneeMap = new HashMap<>();
-        assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);
-        assigneeMap.put(FROM_HW, sessionManager.getChwname());
+//        HashMap<String, String> assigneeMap = new HashMap<>();
+//        assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);
+//        assigneeMap.put(FROM_HW, sessionManager.getChwname());
 //
         ShiftChangeData shiftChangeData = new ShiftChangeData();
         shiftChangeData.setToHwUserUuid(assigneeNurseUserUuid);
