@@ -225,7 +225,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.recyclerView.setVisibility(View.GONE);
             genericViewHolder.nestedRecyclerView.setVisibility(View.GONE);
-            genericViewHolder.nextRelativeLayout.setVisibility(View.GONE);
+            //genericViewHolder.nextRelativeLayout.setVisibility(View.GONE);
             //genericViewHolder.superNestedContainerLinearLayout.setVisibility(View.GONE);
 
             genericViewHolder.tvQuestionCounter.setText("");
@@ -769,7 +769,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
-        holder.nextRelativeLayout.setVisibility(View.GONE);
+        //holder.nextRelativeLayout.setVisibility(View.GONE);
         holder.isParallelMultiNestedNode = false;
         holder.singleComponentContainer.removeAllViews();
         Log.v(TAG, "showOptionsDataV2 selectedNode - " + new Gson().toJson(selectedNode));
@@ -871,7 +871,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.skipButton.setVisibility(View.VISIBLE);
             }
             //if (isSuperNested) {
-            boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+            boolean havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
             Log.v(TAG, "showOptionsDataV2 havingNestedQuestion - " + havingNestedQuestion);
 
                 /*//holder.superNestedContainerLinearLayout.removeAllViews();
@@ -925,10 +925,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect node - " + node.findDisplay());
                     Log.v(TAG, "NestedQuestionsListingAdapter onSelect options.size() - " + options.size());
 
-                    if (parentNode != null && parentNode.isHavingNestedQuestion()) {
+                    if (parentNode != null && parentNode.isHavingMoreNestedQuestion()) {
                         holder.isParallelMultiNestedNode = true;
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
-                        holder.nextRelativeLayout.setVisibility(View.GONE);
+                        //holder.nextRelativeLayout.setVisibility(View.GONE);
                     }
                     VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400);
                     ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
@@ -1015,12 +1015,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
                 holder.isParallelMultiNestedNode = options.size() > 1;
 
-                if (holder.isParallelMultiNestedNode) {
+                /*if (holder.isParallelMultiNestedNode) {
                     //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                     holder.nextRelativeLayout.setVisibility(View.GONE);
                 } else {
                     holder.nextRelativeLayout.setVisibility(View.GONE);
-                }
+                }*/
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
                 holder.submitButton.setVisibility(View.GONE);
                 holder.skipButton.setVisibility(View.GONE);
@@ -1029,7 +1029,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 nestedQuestionsListingAdapter.addItem(selectedNode);
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
             }*/ else {
-                holder.nextRelativeLayout.setVisibility(View.GONE);
+                //holder.nextRelativeLayout.setVisibility(View.GONE);
                 Log.v(TAG, "showOptionsDataV2 multiple option");
                 holder.tvQuestionDesc.setVisibility(View.VISIBLE);
                 holder.recyclerView.setVisibility(View.VISIBLE);
@@ -1273,7 +1273,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             showOptionsDataV2(selectedNode, holder, options, index, isSuperNested);
             return;
         }
-        holder.nextRelativeLayout.setVisibility(View.GONE);
+        //holder.nextRelativeLayout.setVisibility(View.GONE);
         holder.isParallelMultiNestedNode = false;
         holder.singleComponentContainer.removeAllViews();
         Log.v(TAG, "showOptionsData selectedNode - " + new Gson().toJson(selectedNode));
@@ -1375,7 +1375,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.skipButton.setVisibility(View.VISIBLE);
             }
             //if (isSuperNested) {
-            boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+            boolean havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
             Log.v(TAG, "showOptionsData havingNestedQuestion - " + havingNestedQuestion);
 
                 /*//holder.superNestedContainerLinearLayout.removeAllViews();
@@ -1444,10 +1444,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             holder.nextRelativeLayout.setVisibility(View.GONE);
                         }
                     }*/
-                    if (parentNode != null && parentNode.isHavingNestedQuestion()) {
+                    if (parentNode != null && parentNode.isHavingMoreNestedQuestion()) {
                         holder.isParallelMultiNestedNode = true;
                         //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
-                        holder.nextRelativeLayout.setVisibility(View.GONE);
+                        //holder.nextRelativeLayout.setVisibility(View.GONE);
                     }
                     VisitUtils.scrollNow(mRecyclerView, 1400, 0, 400);
                     ((LinearLayoutManager) Objects.requireNonNull(mRecyclerView.getLayoutManager())).setStackFromEnd(false);
@@ -1523,12 +1523,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
                 holder.isParallelMultiNestedNode = options.size() > 1;
 
-                if (holder.isParallelMultiNestedNode) {
+                /*if (holder.isParallelMultiNestedNode) {
                     //holder.nextRelativeLayout.setVisibility(View.VISIBLE);
                     holder.nextRelativeLayout.setVisibility(View.GONE);
                 } else {
                     holder.nextRelativeLayout.setVisibility(View.GONE);
-                }
+                }*/
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
                 holder.submitButton.setVisibility(View.GONE);
                 holder.skipButton.setVisibility(View.GONE);
@@ -1537,7 +1537,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 nestedQuestionsListingAdapter.addItem(selectedNode);
                 holder.nestedRecyclerView.setVisibility(View.VISIBLE);
             }*/ else {
-                holder.nextRelativeLayout.setVisibility(View.GONE);
+                //holder.nextRelativeLayout.setVisibility(View.GONE);
                 Log.v(TAG, "showOptionsData multiple option");
                 holder.tvQuestionDesc.setVisibility(View.VISIBLE);
                 holder.recyclerView.setVisibility(View.VISIBLE);
@@ -1776,6 +1776,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v("showCameraView", "QLA " + new Gson().toJson(node));
         Log.v("showCameraView", "QLA ImagePathList - " + new Gson().toJson(node.getImagePathList()));
         holder.otherContainerLinearLayout.removeAllViews();
+        holder.submitButton.setVisibility(View.GONE);
+        holder.skipButton.setVisibility(View.GONE);
         View view = View.inflate(mContext, R.layout.ui2_visit_image_capture_view, null);
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
@@ -2194,6 +2196,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }*/
 
         holder.singleComponentContainer.addView(view);
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
     }
 
     private void addTextEnterView(Node node, GenericViewHolder holder, int index) {
@@ -2432,9 +2435,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         LinearLayout singleComponentContainer, referenceContainerLinearLayout, otherContainerLinearLayout;//, superNestedContainerLinearLayout;
         SpinKitView spinKitView;
         LinearLayout bodyLayout;
-        Button submitButton, skipButton, nextButton;
+        Button submitButton, skipButton/*, nextButton*/;
         TextView knowMoreTextView;
-        RelativeLayout nextRelativeLayout;
+        //RelativeLayout nextRelativeLayout;
         boolean isParallelMultiNestedNode = false;
 
         NestedQuestionsListingAdapter nestedQuestionsListingAdapter = null;
@@ -2442,8 +2445,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         GenericViewHolder(View itemView) {
             super(itemView);
-            nextRelativeLayout = itemView.findViewById(R.id.rl_next_action);
-            nextButton = itemView.findViewById(R.id.btn_next);
+            //nextRelativeLayout = itemView.findViewById(R.id.rl_next_action);
+            //nextButton = itemView.findViewById(R.id.btn_next);
 
             knowMoreTextView = itemView.findViewById(R.id.tv_know_more);
             knowMoreTextView.setPaintFlags(knowMoreTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -2485,7 +2488,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
             });
-            nextButton.setOnClickListener(new View.OnClickListener() {
+            /*nextButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mItemList.get(index).isSelected())
@@ -2493,7 +2496,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     else
                         Toast.makeText(mContext, mContext.getString(R.string.select_at_least_one_option), Toast.LENGTH_SHORT).show();
                 }
-            });
+            });*/
 
             skipButton.setOnClickListener(new View.OnClickListener() {
                 @Override
