@@ -18,3 +18,5 @@ Medicine flow changes
 - Edit mode should be active until next encounter
 - Shared decision making in each encounter
 - Remove out of time and show alert dialog only, don't close visit
+
+`<Form> | <MedicineName> | <Strength> | <Dosage>::<DosageUnit> | <Frequency> | <RouteOfMedicine> | <Duration>::<DurationUnit> | <Remark>`

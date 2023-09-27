@@ -60,8 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "onMessageReceived:remote " + new Gson().toJson(remoteMessage));
-        Log.d(TAG, "onMessageReceived:notification " + remoteMessage.getNotification().getTitle());
-        Log.d(TAG, "onMessageReceived:notification " + remoteMessage.getNotification().getBody());
+        Log.d(TAG, "onMessageReceived:notification " + new Gson().toJson(remoteMessage.getNotification()));
 
         //Displaying data in log
         //It is optional
@@ -163,9 +162,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Gson gson = new Gson();
                     ShiftChangeData shiftChangeData = gson.fromJson(gson.toJson(remoteMessage.getData()), ShiftChangeData.class);
                     RtcArgs args = new RtcArgs();
-                    args.setPatientNameTimeline(shiftChangeData.getPatientNameTimeline());
-                    args.setPatientUuid(shiftChangeData.getPatientUuid());
-                    args.setVisitUuid(shiftChangeData.getVisitUuid());
                     args.setProviderID(shiftChangeData.getProviderID());
                     args.setTag(shiftChangeData.getTag());
                     args.setAssignorNurseName(shiftChangeData.getAssignorNurse());
@@ -174,8 +170,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     //sendNotification(remoteMessage, TimelineVisitSummaryActivity.getPendingIntent(this, args));
 //                    String content = (shiftChangeData.getPatientNameTimeline()) + " patient has been assigned to you by " + shiftChangeData.getAssignorNurse();
                     new AppNotification.Builder(this)
-                            .title(remoteMessage.getNotification().getTitle())
-                            .body(remoteMessage.getNotification().getBody())
+                            .title(shiftChangeData.getTitle())
+                            .body(shiftChangeData.getBody())
                             .pendingIntent(TimelineVisitSummaryActivity.getPendingIntent(this, args))
                             .send();
                 } catch (Exception e) {

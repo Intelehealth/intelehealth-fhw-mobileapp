@@ -789,14 +789,16 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
     private void showNextShiftNursesDialog(List<MultiChoiceItem> items) {
         List<String> visitUuids = new ArrayList<>();
+        List<FamilyMemberRes> patients = new ArrayList<>();
         Log.e(TAG, "Selected patients : " + items.size());
         for (MultiChoiceItem item : items) {
             if (item instanceof FamilyMemberRes) {
+                patients.add((FamilyMemberRes) item);
                 visitUuids.add(((FamilyMemberRes) item).getVisitUuid());
                 Log.e(TAG, "Visit Uuid =>" + ((FamilyMemberRes) item).getVisitUuid());
             }
         }
-        showNurseAssignDialog(visitUuids, items);
+        showNurseAssignDialog(visitUuids, patients);
     }
 
     private LinearLayoutManager getLayoutManager() {
@@ -847,7 +849,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     private String mLastSelectedNurseUUID = "";
     private boolean mPendingForLogout = false;
 
-    private void showNurseAssignDialog(List<String> visitUUIDList, List<MultiChoiceItem> patientsList) {
+    private void showNurseAssignDialog(List<String> visitUUIDList, List<FamilyMemberRes> patientsList) {
         try {
             ProviderDAO providerDAO = new ProviderDAO();
             String myCreatorUUID = new SessionManager(IntelehealthApplication.getAppContext()).getCreatorID();
@@ -903,7 +905,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         }
     }
 
-    private void showNurseSelectionDialog(List<String> visitUUIDList, ArrayList<SingChoiceItem> choiceItems, List<MultiChoiceItem> patientsList) {
+    private void showNurseSelectionDialog(List<String> visitUUIDList, ArrayList<SingChoiceItem> choiceItems, List<FamilyMemberRes> patientsList) {
         SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this)
                 .title(R.string.select_nurse)
                 .positiveButtonLabel(R.string.save_button)
@@ -916,7 +918,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid, String assigneeNurseUserUuid, List<MultiChoiceItem> patientsList) {
+    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid, String assigneeNurseUserUuid, List<FamilyMemberRes> patientsList) {
         PatientsDAO patientsDAO = new PatientsDAO();
         Log.e(TAG, "assignNurseToPatient: " + selectedNurseUuid);
         Log.e(TAG, "assignNurseToPatient: assigneeNurseUserUuid check2 :: " + assigneeNurseUserUuid);
@@ -934,22 +936,19 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         HashMap<String, String> assigneeMap = new HashMap<>();
         assigneeMap.put(TO_HW_USER_UUID, assigneeNurseUserUuid);
         assigneeMap.put(FROM_HW, sessionManager.getChwname());
-//        FamilyMemberRes patientNameInfo = patientsDAO.getPatientNameInfo(visitDTOList.get(j).getPatientuuid());
 //
-//        ShiftChangeData shiftChangeData = new ShiftChangeData();
-//        shiftChangeData.setToHwUserUuid(assigneeNurseUserUuid);
-//        shiftChangeData.setPatientNameTimeline(patientNameInfo.getName());
-//        shiftChangeData.setPatientUuid(visitDTOList.get(j).getPatientuuid());
-//        shiftChangeData.setVisitUuid(visitUUIDList.get(j));
-//        shiftChangeData.setProviderID(sessionManager.getProviderID());
-//        shiftChangeData.setAssignorNurse(sessionManager.getChwname());
-//        shiftChangeData.setTag("shiftChange");
-//        Log.d("1122Shift", new Gson().toJson(shiftChangeData));
+        ShiftChangeData shiftChangeData = new ShiftChangeData();
+        shiftChangeData.setToHwUserUuid(assigneeNurseUserUuid);
+        shiftChangeData.setProviderID(sessionManager.getProviderID());
+        shiftChangeData.setAssignorNurse(sessionManager.getChwname());
+        shiftChangeData.generatePatientsInfo(patientsList);
+        shiftChangeData.setTag("shiftChange");
+        Log.d("1122Shift", new Gson().toJson(shiftChangeData));
 //        Log.v("1122visitDTOList", "visitDTOList: " + new Gson().toJson(visitDTOList));
         //  SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
 
 
-        SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(assigneeMap));
+        SocketManager.getInstance().emit(EVENT_SHIFT_CHANGED, new Gson().toJson(shiftChangeData));
         mPendingForLogout = true;
         sync();
         Toast.makeText(context, getString(R.string.patient_assigned_successfully), Toast.LENGTH_SHORT).show();
