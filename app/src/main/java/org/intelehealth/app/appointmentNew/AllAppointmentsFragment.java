@@ -32,10 +32,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +51,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -78,11 +82,8 @@ public class AllAppointmentsFragment extends Fragment {
     HorizontalScrollView scrollChips;
     boolean isChipInit = false;
     LinearLayout layoutUpcoming, layoutCancelled, layoutCompleted, layoutParentAll;
-    boolean isNewType = false;
     TextView tvUpcomingAppsCount, tvCompletedAppsCount, tvUpcomingAppsCountTitle,
             tvCompletedAppsCountTitle, tvCancelledAppsCount, tvCancelledAppsCountTitle;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-    //private SQLiteDatabase db;
     String fromDate = "";
     String toDate = "";
     String whichAppointment = "";
@@ -121,11 +122,9 @@ public class AllAppointmentsFragment extends Fragment {
         });
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setLocale(getContext());
-        parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2,
-                container, false);
+        parentView = inflater.inflate(R.layout.fragment_all_appointments_ui2, container, false);
         initUI();
         clickListeners();
         return parentView;
@@ -151,31 +150,24 @@ public class AllAppointmentsFragment extends Fragment {
     }
 
     private void setFiltersToTheGroup(FilterOptionsModel inputModel) {
-        //fill the list
         boolean result = false;
         if (filtersList.size() > 0) {
-
             for (int i = 0; i < filtersList.size(); i++) {
                 FilterOptionsModel optionModel1 = filtersList.get(i);
-
                 if (optionModel1.getFilterType().equals(inputModel.getFilterType())) {
                     result = false;
-
                     filtersList.remove(optionModel1);
                     filtersList.add(inputModel);
                 } else {
                     result = true;
                 }
             }
-
             if (result) {
                 filtersList.add(inputModel);
             }
-
         } else {
             filtersList.add(inputModel);
         }
-
         if (filtersList.size() > 0) {
             tvResultsFor.setVisibility(View.VISIBLE);
             scrollChips.setVisibility(View.VISIBLE);
@@ -183,11 +175,8 @@ public class AllAppointmentsFragment extends Fragment {
         final ChipGroup chipGroup = parentView.findViewById(R.id.chipgroup_filter);
         isChipInit = true;
         chipGroup.removeAllViews();
-
-
         for (int index = 0; index < filtersList.size(); index++) {
             Chip chip = (Chip) getLayoutInflater().inflate(R.layout.chip_custom_ui2, chipGroup, false);
-
             FilterOptionsModel filterOptionsModel = filtersList.get(index);
             final String tagName = filterOptionsModel.getFilterValue();
             String tagName1 = filterOptionsModel.getFilterValue();
@@ -200,16 +189,12 @@ public class AllAppointmentsFragment extends Fragment {
             chip.setText(tagName1);
             chip.setCloseIconEnabled(true);
             chip.setBackground(getResources().getDrawable(R.drawable.ui2_ic_selcted_chip_bg));
-
             chipGroup.addView(chip);
-
             chip.setOnCloseIconClickListener(v -> {
                 filtersList.remove(filterOptionsModel);
                 chipGroup.removeView(chip);
-
                 if (tagName.contains("appointment")) {
                     manageUIAsPerChips("upcoming");
-
                 }
                 if (filtersList != null && filtersList.size() == 0) {
                     tvResultsFor.setVisibility(View.GONE);
@@ -218,29 +203,21 @@ public class AllAppointmentsFragment extends Fragment {
                     toDate = "";
                     whichAppointment = "";
                     getAppointments();
-
                 }
-
             });
-
         }
-
     }
 
     private void manageUIAsPerChips(String tagName) {
         String textToMatch = tagName.toLowerCase();
         if (textToMatch.contains("upcoming")) {
             updateMAinLayoutAsPerOptionSelected("upcoming");
-
         } else if (tagName.contains("cancelled")) {
             updateMAinLayoutAsPerOptionSelected("cancelled");
-
         } else if (tagName.contains("completed")) {
             updateMAinLayoutAsPerOptionSelected("completed");
-
         }
     }
-
 
     private void initUI() {
         sessionManager = new SessionManager(getContext());
@@ -255,14 +232,11 @@ public class AllAppointmentsFragment extends Fragment {
         cardCompletedAppointments = parentView.findViewById(R.id.card_completed_appointments1);
         layoutMainAppOptions = parentView.findViewById(R.id.layout_main_app_options1);
         layoutParent = parentView.findViewById(R.id.layout_parent_all_appointments);
-
         frameLayoutFilter = parentView.findViewById(R.id.filter_frame_all_appointments);
         ivFilterAllApp = parentView.findViewById(R.id.iv_filter_all_app);
         frameLayoutDateFilter = parentView.findViewById(R.id.filter_frame_date_appointments);
         tvFromDate = frameLayoutDateFilter.findViewById(R.id.tv_from_date_all_app);
         tvToDate = frameLayoutDateFilter.findViewById(R.id.tv_to_date_all_app);
-
-
         ivDateFilter = parentView.findViewById(R.id.iv_calendar_all_app);
         rgFilterAppointments = frameLayoutFilter.findViewById(R.id.rg_filter_appointments);
         rbUpcoming = frameLayoutFilter.findViewById(R.id.rb_upcoming_appointments);
@@ -270,19 +244,16 @@ public class AllAppointmentsFragment extends Fragment {
         rbCompleted = frameLayoutFilter.findViewById(R.id.rb_completed_appointments);
         tvResultsFor = parentView.findViewById(R.id.tv_results_for);
         scrollChips = parentView.findViewById(R.id.scroll_chips);
-
         layoutUpcoming = parentView.findViewById(R.id.layout_upcoming1);
         layoutCancelled = parentView.findViewById(R.id.layout_cancelled1);
         layoutCompleted = parentView.findViewById(R.id.layout_completed1);
         layoutParentAll = parentView.findViewById(R.id.layout_parent_all1);
-
         tvUpcomingAppsCount = parentView.findViewById(R.id.tv_upcoming_appointments_all);
         tvCompletedAppsCount = parentView.findViewById(R.id.tv_completed_appointments_all);
         tvUpcomingAppsCountTitle = parentView.findViewById(R.id.tv_upcoming_apps_title_all);
         tvCompletedAppsCountTitle = parentView.findViewById(R.id.tv_completed_apps_title_all);
         tvCancelledAppsCount = parentView.findViewById(R.id.tv_cancelled_appointments_all);
         tvCancelledAppsCountTitle = parentView.findViewById(R.id.tv_cancelled_apps_title_all);
-
         autotvSearch = parentView.findViewById(R.id.et_search_all);
         ivClearText = parentView.findViewById(R.id.iv_clear_all);
         ivClearText.setOnClickListener(v -> {
@@ -290,13 +261,9 @@ public class AllAppointmentsFragment extends Fragment {
             searchPatientText = "";
             getAppointments();
         });
-        //no data found
         noDataFoundForUpcoming = parentView.findViewById(R.id.layout_no_data_found_upcoming);
         noDataFoundForCompleted = parentView.findViewById(R.id.layout_no_data_found_completed);
         noDataFoundForCancelled = parentView.findViewById(R.id.layout_no_data_found_cancelled);
-
-
-        //make hide and visible results for textview and chips layout
         if (isChipInit) {
             tvResultsFor.setVisibility(View.VISIBLE);
             scrollChips.setVisibility(View.VISIBLE);
@@ -312,35 +279,29 @@ public class AllAppointmentsFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void clickListeners() {
         cardUpcomingAppointments.setOnClickListener(v -> {
-
             updateCardBackgrounds("upcoming");
             updateMAinLayoutAsPerOptionSelected("upcoming");
         });
         cardCancelledAppointments.setOnClickListener(v -> {
-
             updateCardBackgrounds("cancelled");
             updateMAinLayoutAsPerOptionSelected("cancelled");
-
         });
         cardCompletedAppointments.setOnClickListener(v -> {
-
             updateCardBackgrounds("completed");
             updateMAinLayoutAsPerOptionSelected("completed");
-
         });
 
-        //dismiss filter options layouts
         layoutParent.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (frameLayoutFilter.isShown())
                     frameLayoutFilter.setVisibility(View.GONE);
                 if (frameLayoutDateFilter.isShown())
                     frameLayoutDateFilter.setVisibility(View.GONE);
-
                 return true;
             }
             return false;
         });
+
         layoutParent.setOnClickListener(v -> {
             if (frameLayoutFilter.isShown())
                 frameLayoutFilter.setVisibility(View.GONE);

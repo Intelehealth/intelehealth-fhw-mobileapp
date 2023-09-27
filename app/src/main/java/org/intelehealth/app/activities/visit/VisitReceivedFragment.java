@@ -67,7 +67,7 @@ public class VisitReceivedFragment extends Fragment {
     private CardView filter_menu;
     private RelativeLayout filter_relative, no_patient_found_block, main_block;
     private List<PrescriptionModel> recentList, olderList, monthsList;
-    private VisitAdapter recent_adapter, older_adapter /*, months_adapter*/;
+    private VisitAdapter recent_adapter, older_adapter;
     TextView recent_nodata, older_nodata, month_nodata;
     private androidx.appcompat.widget.SearchView searchview_received;
     private ImageView closeButton;
@@ -76,7 +76,6 @@ public class VisitReceivedFragment extends Fragment {
     private int recentLimit = 15, olderLimit = 15;
     private int recentStart = 0, recentEnd = recentStart + recentLimit;
     private boolean isRecentFullyLoaded = false;
-
     private int olderStart = 0, olderEnd = olderStart + olderLimit;
     private boolean isolderFullyLoaded = false;
     NestedScrollView nestedscrollview;
@@ -130,7 +129,6 @@ public class VisitReceivedFragment extends Fragment {
         progress.setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
         LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
-
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,20 +145,17 @@ public class VisitReceivedFragment extends Fragment {
         visit_received_card_header = view.findViewById(R.id.visit_received_card_header);
         searchview_received = view.findViewById(R.id.searchview_received);
         closeButton = searchview_received.findViewById(R.id.search_close_btn);
-
         recent_nodata = view.findViewById(R.id.recent_nodata);
         older_nodata = view.findViewById(R.id.older_nodata);
         month_nodata = view.findViewById(R.id.month_nodata);
-
         recycler_recent = view.findViewById(R.id.recycler_recent);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_recent.setLayoutManager(reLayoutManager);
-
         recycler_older = view.findViewById(R.id.rv_older);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recycler_older.setLayoutManager(layoutManager);
-
         nestedscrollview = view.findViewById(R.id.rece_nestedscroll);
+
         nestedscrollview.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (v.getChildAt(v.getChildCount() - 1) != null) {
                 // Scroll Down
@@ -193,24 +188,13 @@ public class VisitReceivedFragment extends Fragment {
                 }
             }
         });
-
-
-
-        //recycler_month = view.findViewById(R.id.rv_thismonth);
         received_endvisit_no = view.findViewById(R.id.received_endvisit_no);
-
         filter_icon = view.findViewById(R.id.filter_icon);
         filter_menu = view.findViewById(R.id.filter_menu);
         allvisits_txt = view.findViewById(R.id.allvisits_txt);
         priority_visits_txt = view.findViewById(R.id.priority_visits_txt);
         filter_relative = view.findViewById(R.id.filter_relative);
         priority_cancel = view.findViewById(R.id.priority_cancel);
-     //   olderList = new ArrayList<>();
-
-//        visit_received_card_header.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), EndVisitActivity.class);
-//            startActivity(intent);
-//        });
     }
 
     private void defaultData() {
