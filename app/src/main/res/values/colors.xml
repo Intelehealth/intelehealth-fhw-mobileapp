@@ -45,6 +45,8 @@
     <color name="font_black_6">#e0e0e0</color>
 
     <color name="lite_red">#F3665C</color>
+    <color name="lite_yellow">#F8F3C6</color>
+    <color name="dark_yellow">#FBE626</color>
     <!--Home Screen Changes-->
     <color name="txt_sub_header_color">#333333</color>
 
