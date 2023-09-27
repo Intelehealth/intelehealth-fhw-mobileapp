@@ -68,6 +68,14 @@ public class AppConstants {
     public static final String SYS_YELLOW_MAX = "140";
     public static final String SYS_RED_MIN = "90";
     public static final String SYS_RED_MAX = "139";
+
+    // Diastolic color code.
+    public static final String DIA_GREEN_MIN = "80";
+  //  public static final String DIA_GREEN_MAX = "120";
+    public static final String DIA_YELLOW_MIN = "79";
+    public static final String DIA_YELLOW_MAX = "100";
+ //   public static final String DIA_RED_MIN = "90";
+    public static final String DIA_RED_MAX = "99";
     // SYS - DIA -- Color codes - end
 
 
