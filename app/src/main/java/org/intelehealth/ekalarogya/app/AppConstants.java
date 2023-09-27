@@ -38,13 +38,14 @@ public class AppConstants {
 
 
     //App vitals constants
-    public static final String MAXIMUM_BP_SYS = "250";
+
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
     public static int APP_VERSION_CODE = 26;
-    public static final String MINIMUM_BP_SYS = "50";
-    public static final String MAXIMUM_BP_DSYS = "150";
-    public static final String MINIMUM_BP_DSYS = "30";
+    public static final String MINIMUM_BP_SYS = "70";
+    public static final String MAXIMUM_BP_SYS = "220";
+    public static final String MAXIMUM_BP_DSYS = "120";
+    public static final String MINIMUM_BP_DSYS = "50";
     public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
