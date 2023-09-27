@@ -5,9 +5,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="patient"
             type="org.intelehealth.ezazi.models.FamilyMemberRes" />
+
+        <variable
+            name="hideDivider"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,9 +25,9 @@
             android:id="@+id/ivShiftedPatientIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tvShiftedPatientOpenMrsId"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvShiftedPatientName"
             app:srcCompat="@drawable/ic_patient" />
 
         <TextView
@@ -46,7 +52,8 @@
             android:layout_marginTop="@dimen/list_container_padding"
             android:maxLines="1"
             android:text="@{patient.openMRSID}"
-            android:textColor="@color/blue_1"
+            android:textColor="#FFB7CB"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivShiftedPatientIcon"
             app:layout_constraintTop_toBottomOf="@id/tvShiftedPatientName"
@@ -54,17 +61,16 @@
 
         <View
             android:id="@+id/tvShiftedPatientDivider"
-            style="@style/Theme.EZazi.Body"
             android:layout_width="0dp"
             android:layout_height="@dimen/stage_stroke_size"
             android:layout_marginStart="@dimen/screen_padding"
             android:layout_marginTop="@dimen/screen_container_padding"
+            android:layout_marginBottom="@dimen/screen_container_padding"
             android:background="@color/colorSelectedListItem"
-            android:maxLines="1"
-            android:text="@{patient.openMRSID}"
+            android:visibility="@{hideDivider ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivShiftedPatientIcon"
-            app:layout_constraintTop_toBottomOf="@id/tvShiftedPatientOpenMrsId"
-            tools:text="10LAM-3" />
+            app:layout_constraintTop_toBottomOf="@id/tvShiftedPatientOpenMrsId" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

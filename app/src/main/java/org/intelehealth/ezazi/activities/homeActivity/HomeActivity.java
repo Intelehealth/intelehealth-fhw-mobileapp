@@ -2,6 +2,7 @@ package org.intelehealth.ezazi.activities.homeActivity;
 
 import static org.intelehealth.ezazi.app.AppConstants.EVENT_SHIFT_CHANGED;
 import static org.intelehealth.ezazi.app.AppConstants.FROM_HW;
+import static org.intelehealth.ezazi.app.AppConstants.SHIFTED_DATA;
 import static org.intelehealth.ezazi.app.AppConstants.TO_HW_USER_UUID;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ezazi.utilities.StringUtils.en__bn_dob;
@@ -216,6 +217,16 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
     private List<VisitDTO> visitDTOList;
     /*eZazi End*/
+
+    public static PendingIntent getPendingIntent(Context context, ShiftChangeData data) {
+        Intent shiftChangeIntent = new Intent(context, HomeActivity.class);
+        shiftChangeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        shiftChangeIntent.putExtra("shiftChangeNotification", true);
+        shiftChangeIntent.putExtra(SHIFTED_DATA, data);
+
+        return PendingIntent.getActivity(context, 0, shiftChangeIntent,
+                NotificationUtils.getPendingIntentFlag());
+    }
 
     private void saveToken() {
         ProviderDAO providerDAO = new ProviderDAO();

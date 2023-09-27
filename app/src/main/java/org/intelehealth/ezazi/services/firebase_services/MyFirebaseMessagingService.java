@@ -1,5 +1,7 @@
 package org.intelehealth.ezazi.services.firebase_services;
 
+import static org.intelehealth.ezazi.app.AppConstants.SHIFTED_DATA;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,6 +16,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -23,6 +27,7 @@ import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.ShiftChangeData;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
+import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
 import org.intelehealth.ezazi.database.dao.SyncDAO;
@@ -153,27 +158,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     e.printStackTrace();
                 }
             } else if (remoteMessage.getData().get("actionType").equals("SHIFT_CHANGE")) {
-
-                // title : New patient for you.
-                // content : "patient_name" patient has been assigned to you by "HW1 name"
-
                 try {
 
                     Gson gson = new Gson();
                     ShiftChangeData shiftChangeData = gson.fromJson(gson.toJson(remoteMessage.getData()), ShiftChangeData.class);
-                    RtcArgs args = new RtcArgs();
-                    args.setProviderID(shiftChangeData.getProviderID());
-                    args.setTag(shiftChangeData.getTag());
-                    args.setAssignorNurseName(shiftChangeData.getAssignorNurse());
                     new SyncDAO().pullData_Background(this);
 
-                    //sendNotification(remoteMessage, TimelineVisitSummaryActivity.getPendingIntent(this, args));
-//                    String content = (shiftChangeData.getPatientNameTimeline()) + " patient has been assigned to you by " + shiftChangeData.getAssignorNurse();
-                    new AppNotification.Builder(this)
-                            .title(shiftChangeData.getTitle())
-                            .body(shiftChangeData.getBody())
-                            .pendingIntent(TimelineVisitSummaryActivity.getPendingIntent(this, args))
-                            .send();
+                    if (isAppInForeground()) {
+                        Intent shiftedPatientBroadcast = new Intent(AppConstants.getShiftedPatientReceiver());
+                        shiftedPatientBroadcast.putExtra(SHIFTED_DATA, shiftChangeData);
+                        sendBroadcast(shiftedPatientBroadcast);
+                    } else {
+                        new AppNotification.Builder(this)
+                                .title(shiftChangeData.getTitle())
+                                .body(shiftChangeData.getBody())
+                                .pendingIntent(HomeActivity.getPendingIntent(this, shiftChangeData))
+                                .send();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -182,6 +183,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } else {
             parseMessage(remoteMessage);
         }
+    }
+
+    private boolean isAppInForeground() {
+        return ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED);
     }
 
 

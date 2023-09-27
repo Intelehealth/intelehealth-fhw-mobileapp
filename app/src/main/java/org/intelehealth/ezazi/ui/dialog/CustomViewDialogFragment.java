@@ -17,6 +17,17 @@ public class CustomViewDialogFragment extends BaseDialogFragment<String> impleme
     private OnConfirmationActionListener listener;
     private View view;
 
+    private boolean isWrapContentDialog;
+
+    public void setWrapContentDialog(boolean wrapContentDialog) {
+        isWrapContentDialog = wrapContentDialog;
+    }
+
+    @Override
+    public boolean isWrapContentDialog() {
+        return isWrapContentDialog;
+    }
+
     public interface OnConfirmationActionListener {
         void onAccept();
 

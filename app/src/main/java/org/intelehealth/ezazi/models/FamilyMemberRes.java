@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.ui.dialog.model.MultiChoiceItem;
 
-public class FamilyMemberRes implements MultiChoiceItem {
+import java.io.Serializable;
+
+public class FamilyMemberRes implements MultiChoiceItem, Serializable {
 
     @SerializedName("openMRSID")
-    @Expose
     private String openMRSID;
     @SerializedName("name")
-    @Expose
     private String name;
 
     // Added by Mithun Vaghela

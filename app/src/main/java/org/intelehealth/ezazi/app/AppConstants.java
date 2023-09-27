@@ -149,12 +149,20 @@ public class AppConstants {
 
     public static final String FROM_HW = "from_hw";
 
+    public static final String SHIFTED_DATA = "shifted_data";
+
+    public static final String SHIFTED_PATIENT_RECEIVER = "SHIFTED_PATIENT_RECEIVER";
+
     public static String getFirebaseRTDBUrl() {
         return FIREBASE_REAL_TIME_DB_BASE_URL;
     }
 
     public static String getScreenRefreshEventReceiver() {
         return IntelehealthApplication.getAppContext().getPackageName() + "." + SCREEN_REFRESH_EVENT_RECEIVER;
+    }
+
+    public static String getShiftedPatientReceiver() {
+        return IntelehealthApplication.getAppContext().getPackageName() + "." + SHIFTED_PATIENT_RECEIVER;
     }
 
     public static String getFirebaseRTDBRootRef() {

@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.models.FamilyMemberRes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by Kaveri Zaware on 22-09-2023
  * email - kaveri@intelehealth.org
  **/
-public class ShiftChangeData {
+public class ShiftChangeData implements Serializable {
 
     @SerializedName("toHwUserUuid")
     private String toHwUserUuid;
@@ -48,6 +49,9 @@ public class ShiftChangeData {
     }
 
     public String getAssignorNurse() {
+        if (assignorNurse != null && assignorNurse.length() > 0) {
+            return assignorNurse.substring(0, 1).toUpperCase() + assignorNurse.substring(1);
+        }
         return assignorNurse;
     }
 
@@ -92,20 +96,17 @@ public class ShiftChangeData {
     }
 
     public String getBody() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(assignorNurse);
         if (patients != null && buildPatients().size() > 1)
-            builder.append(" has shifted some patients to you ");
-        else builder.append(" has shifted a patient to you ");
-        builder.append("\n");
-        for (FamilyMemberRes patient : buildPatients()) {
-            builder.append("•").append(" ").append(patient.getName())
-                    .append(" - ").append(patient.getOpenMRSID()).append("\n");
-        }
-        return builder.toString();
+            return getAssignorNurse() + " has shifted some patients to you ";
+        else return getAssignorNurse() + " has shifted a patient to you ";
+//        builder.append("\n");
+//        for (FamilyMemberRes patient : buildPatients()) {
+//            builder.append("•").append(" ").append(patient.getName())
+//                    .append(" - ").append(patient.getOpenMRSID()).append("\n");
+//        }
     }
 
-    public List<FamilyMemberRes> buildPatients() {
+    public ArrayList<FamilyMemberRes> buildPatients() {
         String[] names = this.patients.split(",");
         String[] visits = this.visitIds.split(",");
         String[] openMrsIds = this.openMrsIds.split(",");
@@ -117,8 +118,8 @@ public class ShiftChangeData {
         return new ArrayList<>();
     }
 
-    private List<FamilyMemberRes> getPatients(String[] names, String[] visits, String[] openMrsIds) {
-        List<FamilyMemberRes> patients = new ArrayList<>();
+    private ArrayList<FamilyMemberRes> getPatients(String[] names, String[] visits, String[] openMrsIds) {
+        ArrayList<FamilyMemberRes> patients = new ArrayList<>();
         for (int i = 0; i < names.length; i++) {
             FamilyMemberRes patient = new FamilyMemberRes();
             patient.setName(names[i]);
