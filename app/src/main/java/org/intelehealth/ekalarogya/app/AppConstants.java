@@ -44,8 +44,8 @@ public class AppConstants {
     public static int APP_VERSION_CODE = 26;
     public static final String MINIMUM_BP_SYS = "70";
     public static final String MAXIMUM_BP_SYS = "220";
-    public static final String MAXIMUM_BP_DSYS = "120";
     public static final String MINIMUM_BP_DSYS = "50";
+    public static final String MAXIMUM_BP_DSYS = "120";
     public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
@@ -60,6 +60,17 @@ public class AppConstants {
     public static final String MINIMUM_HEMOGLOBIN = "1";
     public static final String MAXIMUM_SUGAR = "600";
     public static final String MINIMUM_SUGAR = "10";
+
+    // SYS - DIA -- Color codes - start
+    public static final String SYS_GREEN_MIN = "89";
+    public static final String SYS_GREEN_MAX = "120";
+    public static final String SYS_YELLOW_MIN = "119";
+    public static final String SYS_YELLOW_MAX = "140";
+    public static final String SYS_RED_MIN = "90";
+    public static final String SYS_RED_MAX = "139";
+    // SYS - DIA -- Color codes - end
+
+
 
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());

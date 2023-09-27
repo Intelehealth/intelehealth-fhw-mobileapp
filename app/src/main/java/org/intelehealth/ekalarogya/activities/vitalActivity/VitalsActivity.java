@@ -1,5 +1,7 @@
 package org.intelehealth.ekalarogya.activities.vitalActivity;
 
+import static org.intelehealth.ekalarogya.app.AppConstants.*;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -535,9 +537,14 @@ public class VitalsActivity extends AppCompatActivity {
 
                 if (mBpSys.getText().toString().startsWith(".")) {
                     mBpSys.setText("");
-                } else {
-
+                    return;
                 }
+
+                // SYS - COLOR CODE - START
+//                bpSysColorCode(mBpSys.getText().toString().trim());
+                bpSysColorCode(mBpSys.getText().toString().trim());
+
+                // SYS - COLOR CODE - END
             }
         });
 
@@ -708,6 +715,27 @@ public class VitalsActivity extends AppCompatActivity {
         });
     }
 
+    private void bpSysColorCode(String bpSysValue) {
+        if (!bpSysValue.isEmpty()) {
+            Double bpSys = Double.valueOf(bpSysValue);
+
+            // red
+            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {
+                mBpSys.setTextColor(getResources().getColor(R.color.scale_1));
+            }
+            else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {
+                if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
+                    mBpSys.setTextColor(getResources().getColor(R.color.dark_yellow));
+            }
+            else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {
+                if (bpSys < Double.valueOf(SYS_GREEN_MAX))
+                    mBpSys.setTextColor(getResources().getColor(R.color.green));
+            }
+            else
+                mBpSys.setTextColor(null);
+        }
+    }
+
     public void calculateBMI() {
         if (flag_height == 1 && flag_weight == 1 ||
                 /*(mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/
@@ -790,6 +818,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mPulse.setText(value);
                 break;
             case UuidDictionary.SYSTOLIC_BP: //Systolic BP
+                bpSysColorCode(value);
                 mBpSys.setText(value);
                 break;
             case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
