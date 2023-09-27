@@ -938,11 +938,11 @@ public class VitalsActivity extends AppCompatActivity {
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
             if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
-                mBpSys.setError("Enter field");
+                mBpSys.setError(getString(R.string.enter_field));
                 return;
             } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
-                mBpDia.setError("Enter field");
+                mBpDia.setError(getString(R.string.enter_field));
                 return;
             }
         }
@@ -952,11 +952,11 @@ public class VitalsActivity extends AppCompatActivity {
                 !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
             if (mSugarFasting.getText().toString().isEmpty()) {
                 mSugarFasting.requestFocus();
-                mSugarFasting.setError("Enter field");
+                mSugarFasting.setError(getString(R.string.enter_field));
                 return;
             } else if (mSugarAfterMeal.getText().toString().isEmpty()) {
                 mSugarAfterMeal.requestFocus();
-                mSugarAfterMeal.setError("Enter field");
+                mSugarAfterMeal.setError(getString(R.string.enter_field));
                 return;
             }
         }
@@ -1047,7 +1047,7 @@ public class VitalsActivity extends AppCompatActivity {
             if (Double.parseDouble(bpsys_value) < Double.parseDouble(bpdia_value)) {
               //  mBpSys.setText("");
                 mBpSys.requestFocus();
-                mBpSys.setError("Systolic pressure cannot be lower than Diastolic pressure.");
+                mBpSys.setError(getString(R.string.systolic_pressure_cannot_be_lower_than_diastolic_pressure));
                 return;
             }
         }
