@@ -1,24 +1,19 @@
 package org.intelehealth.ezazi.partogram.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -31,17 +26,13 @@ import org.intelehealth.ezazi.partogram.model.GetMedicineData;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
-import org.intelehealth.ezazi.ui.validation.CheckValueInDropdown;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
-import org.intelehealth.ezazi.ui.validation.ValueInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Timer;
 
 /**
  * Created by Vaghela Mithun R. on 06-09-2023 - 17:49.
@@ -302,6 +293,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private void buildAddNewMedicineDialog() {
         setupMedicines();
         setupRoutes();
+        setupDoseUnits();
         setupFrequency();
         setupDurationUnits();
         setFormArray();
@@ -321,9 +313,10 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private void setupMedicines() {
         medicineDetailsList = new GetMedicineData().getMedicineDetails(getActivity());
 
-        String [] medicineItem = new String[medicineDetailsList.size()];
-        for(int i=0;i<medicineDetailsList.size();i++){
+        String[] medicineItem = new String[medicineDetailsList.size()];
+        for (int i = 0; i < medicineDetailsList.size(); i++) {
             Medicine medicine = medicineDetailsList.get(i);
+            medicine.setMedicineFullName(medicine.getForm() + " " + medicine.getName() + " " + medicine.getStrength());
             medicineItem[i] = medicine.getMedicineFullName();
         }
 
@@ -348,6 +341,12 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
             }
         }
         return filteredItems;
+    }
+
+    private void setupDoseUnits() {
+        String[] routes = requireContext().getResources().getStringArray(R.array.dose_units);
+        AutoCompleteTextView doseDropDown = binding.includeAddNewMedicineDialog.autoCompleteMedicineDosageUnit;
+        setupAutoCompleteAdapter(routes, doseDropDown);
     }
 
     private void setupRoutes() {
@@ -379,11 +378,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
 
                 for (Medicine medicine : medicineDetailsList) {
                     if (selectedItem.equalsIgnoreCase(medicine.getMedicineFullName())) {
-                        binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine.setText(medicine.getName());
-                        binding.includeAddNewMedicineDialog.autoCompleteMedicineForm.setText(medicine.getForm());
-                        binding.includeAddNewMedicineDialog.autoCompleteMedicineStrength.setText(medicine.getStrength());
-                        binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute.setText(medicine.getRoute());
-                        binding.includeAddNewMedicineDialog.autoCompleteMedicineDosageUnit.setText(medicine.getDosageUnit());
+                        binding.includeAddNewMedicineDialog.setMedicine(medicine);
                     }
                 }
             }
@@ -433,11 +428,13 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         AutoCompleteTextView durationUnitDropdown = binding.includeAddNewMedicineDialog.autoCompleteMedicineDurationUnit;
         setupAutoCompleteAdapter(durationUnitArray, durationUnitDropdown);
     }
+
     private void setFormArray() {
         formArray = requireContext().getResources().getStringArray(R.array.medicine_form);
         AutoCompleteTextView formDropdown = binding.includeAddNewMedicineDialog.autoCompleteMedicineForm;
         setupAutoCompleteAdapter(formArray, formDropdown);
     }
+
     private void setStrength() {
         String[] strengthArray = requireContext().getResources().getStringArray(R.array.medicine_strength);
         AutoCompleteTextView strengthDropdown = binding.includeAddNewMedicineDialog.autoCompleteMedicineStrength;

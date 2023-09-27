@@ -100,4 +100,17 @@ public class FileUtils {
 
     }
 
+    public static String getJsonFromAssets(Context context, String fileName) {
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            byte[] bytes = new byte[is.available()];
+            is.read(bytes, 0, bytes.length);
+            is.close();
+            return new String(bytes, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
+        }
+    }
+
 }

@@ -1071,12 +1071,12 @@
     <string name="iv_infusion_rate">IV Infusion Rate*\n(drops/minute)</string>
     <string name="strength_unit">Strength (U/L)*</string>
     <string name="list_of_medicines">List of medicines</string>
-    <string name="dosage">Dosage*</string>
-    <string name="lbl_dosage">Dosage</string>
+    <string name="dosage">Dose*</string>
+    <string name="lbl_dosage">Dose</string>
     <string name="route">Route*</string>
     <string name="lbl_route">Route</string>
     <string name="title_iv_infusion_status">IV Infusion Status</string>
-    <string name="dosage_unit">Dosage Unit*</string>
+    <string name="dosage_unit">Dose Unit*</string>
     <string name="hint_type">Type*</string>
     <string name="lbl_type">Type</string>
     <string name="error_medicine">Please add at least 1 medicine\n\nOR\n\nSelect \"No\" to continue.</string>

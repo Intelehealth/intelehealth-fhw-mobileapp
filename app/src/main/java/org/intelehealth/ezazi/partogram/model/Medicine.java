@@ -3,6 +3,7 @@ package org.intelehealth.ezazi.partogram.model;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
@@ -20,6 +21,7 @@ public class Medicine implements Serializable {
     private String name;
     private String strength;
     private String dosage;
+    @SerializedName("doseUnit")
     private String dosageUnit;
     private String route;
     private String frequency;
