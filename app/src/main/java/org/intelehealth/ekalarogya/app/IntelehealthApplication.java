@@ -34,6 +34,7 @@ import org.intelehealth.klivekit.RtcApp;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.klivekit.utils.Constants;
+import org.intelehealth.klivekit.utils.Manager;
 
 
 import dagger.hilt.android.HiltAndroidApp;
@@ -227,6 +228,7 @@ public class IntelehealthApplication extends RtcApp implements Application.Activ
     private void initSocketConnection() {
         Log.d(TAG, "initSocketConnection: ");
         if (sessionManager.getServerUrl() != null && !sessionManager.getServerUrl().isEmpty()) {
+            Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
             String socketUrl = "https://" + sessionManager.getServerUrl() + ":3004" + "?userId="
                     + sessionManager.getProviderID()
                     + "&name=" + sessionManager.getChwname();

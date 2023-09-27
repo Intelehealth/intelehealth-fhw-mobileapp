@@ -28,6 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
 import com.google.gson.Gson;
 
 import org.intelehealth.ekalarogya.BuildConfig;
@@ -110,7 +111,7 @@ public class SplashActivity extends AppCompatActivity {
                                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                                 }
                                 dialog.dismiss();
-                                FileUtils.deleteCache(IntelehealthApplication.getAppContext());
+//                                FileUtils.deleteCache(IntelehealthApplication.getAppContext());
                                 finish();
                             }
                         });
