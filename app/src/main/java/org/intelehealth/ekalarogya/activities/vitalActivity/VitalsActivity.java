@@ -956,7 +956,7 @@ public class VitalsActivity extends AppCompatActivity {
                 }
             // pulse - end
 
-        // 1. spo2
+        // *. spo2
         String spo2_value = mSpo2.getText().toString().trim();
         if (spo2_value != null && !spo2_value.isEmpty()) {
             if ((Double.parseDouble(spo2_value) < Double.parseDouble(AppConstants.MINIMUM_SPO2)) ||
@@ -967,6 +967,47 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
         // end
+
+        // *. BP - Systolic
+        String bp_sys_value = mBpSys.getText().toString().trim();
+        if (bp_sys_value != null && !bp_sys_value.isEmpty()) {
+            if ((Double.parseDouble(bp_sys_value) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS)) ||
+                    (Double.parseDouble(bp_sys_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS))) {
+                mBpSys.requestFocus();
+                mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+                return;
+            }
+        }
+        // end
+
+// *. BP - Diastolic
+        String bp_dia_value = mBpDia.getText().toString().trim();
+        if (bp_dia_value != null && !bp_dia_value.isEmpty()) {
+            if ((Double.parseDouble(bp_dia_value) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS)) ||
+                    (Double.parseDouble(bp_dia_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS))) {
+                mBpDia.requestFocus();
+                mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                return;
+            }
+        }
+        // end
+
+// *. BP - Sys < Dia
+        String bpsys_value = mBpSys.getText().toString().trim();
+        String bpdia_value = mBpDia.getText().toString().trim();
+
+        if (bpsys_value != null && !bpsys_value.isEmpty() && bpdia_value != null && !bpdia_value.isEmpty()) {
+            if (Double.parseDouble(bpsys_value) < Double.parseDouble(bpdia_value)) {
+              //  mBpSys.setText("");
+                mBpSys.requestFocus();
+                mBpSys.setError("Systolic pressure cannot be lower than Diastolic pressure.");
+                return;
+            }
+        }
+        // end
+
+
+
 
        //     }
 
