@@ -541,9 +541,7 @@ public class VitalsActivity extends AppCompatActivity {
                 }
 
                 // SYS - COLOR CODE - START
-//                bpSysColorCode(mBpSys.getText().toString().trim());
                 bpSysColorCode(mBpSys.getText().toString().trim());
-
                 // SYS - COLOR CODE - END
             }
         });
@@ -571,9 +569,10 @@ public class VitalsActivity extends AppCompatActivity {
 
                 if (mBpDia.getText().toString().startsWith(".")) {
                     mBpDia.setText("");
-                } else {
-
+                    return;
                 }
+
+                bpDiaColorCode(mBpDia.getText().toString().trim());
             }
         });
 
@@ -719,20 +718,38 @@ public class VitalsActivity extends AppCompatActivity {
         if (!bpSysValue.isEmpty()) {
             Double bpSys = Double.valueOf(bpSysValue);
 
-            // red
-            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {
+            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
                 mBpSys.setTextColor(getResources().getColor(R.color.scale_1));
             }
-            else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {
+            else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
                 if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
                     mBpSys.setTextColor(getResources().getColor(R.color.dark_yellow));
             }
-            else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {
+            else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
                 if (bpSys < Double.valueOf(SYS_GREEN_MAX))
                     mBpSys.setTextColor(getResources().getColor(R.color.green));
             }
             else
                 mBpSys.setTextColor(null);
+        }
+    }
+
+    private void bpDiaColorCode(String bpDiaValue) {
+        if (!bpDiaValue.isEmpty()) {
+            Double bpDia = Double.valueOf(bpDiaValue);
+
+            if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
+                mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
+            }
+            else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
+                if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
+                    mBpDia.setTextColor(getResources().getColor(R.color.dark_yellow));
+            }
+            else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+                mBpDia.setTextColor(getResources().getColor(R.color.green));
+            }
+            else
+                mBpDia.setTextColor(null);
         }
     }
 
@@ -822,6 +839,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mBpSys.setText(value);
                 break;
             case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
+                bpDiaColorCode(value);
                 mBpDia.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature

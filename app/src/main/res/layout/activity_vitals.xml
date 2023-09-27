@@ -247,6 +247,7 @@
                                         android:layout_height="wrap_content"
                                         android:backgroundTint="@android:color/transparent"
                                         android:focusable="true"
+                                        android:textStyle="bold"
                                         android:focusableInTouchMode="true"
                                         android:fontFamily="@font/lato_regular"
                                         android:hint="@string/table_bpdia"
