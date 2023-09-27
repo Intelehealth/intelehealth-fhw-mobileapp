@@ -27,10 +27,13 @@ import org.intelehealth.ezazi.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.ezazi.databinding.MedicinesListBottomSheetDialogBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.adapter.MedicineAdapter;
+import org.intelehealth.ezazi.partogram.model.GetMedicineData;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
 import org.intelehealth.ezazi.ui.shared.TextChangeListener;
+import org.intelehealth.ezazi.ui.validation.CheckValueInDropdown;
 import org.intelehealth.ezazi.ui.validation.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.ezazi.ui.validation.ValueInputFilter;
 import org.intelehealth.ezazi.utilities.ScreenUtils;
 import org.intelehealth.klivekit.chat.ui.adapter.viewholder.BaseViewHolder;
 
@@ -47,6 +50,7 @@ import java.util.Timer;
  **/
 public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         implements BaseViewHolder.ViewHolderClickListener, View.OnClickListener {
+    private static final String TAG = "MedicineBottomSheetDial";
     private List<Medicine> medicines;
 
     private MedicineListChangeListener medicineListChangeListener;
@@ -55,6 +59,8 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private MedicineAdapter adapter;
 
     private PartogramConstants.AccessMode accessMode;
+    private List<Medicine> medicineDetailsList;
+    private String[] formArray;
 
     public void setAccessMode(PartogramConstants.AccessMode accessMode) {
         this.accessMode = accessMode;
@@ -92,6 +98,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) binding.clMedicineDialogRoot.getParent());
         behavior.setPeekHeight(ScreenUtils.getInstance(requireContext()).getHeight());
 
+        setMedicinesAndItsDetails();
         setMedicineListView();
         setButtonClickListener();
         setToolbarNavClick();
@@ -100,6 +107,9 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         setupInputFilter();
     }
 
+    private void setMedicinesAndItsDetails() {
+
+    }
 //    @NonNull
 //    @Override
 //    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -126,13 +136,19 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
 //    }
 
     private void setupInputFilter() {
-        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineType);
-        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineStrength);
+        setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineForm);
+        setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineStrength);
         setInputFilter(binding.includeAddNewMedicineDialog.etMedicineDosage);
-        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineDosageUnit);
+        setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineDosageUnit);
         setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineFrequency);
         setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine);
         setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute);
+        setInputFilter(binding.includeAddNewMedicineDialog.autoCompleteMedicineDurationUnit);
+        setInputFilter(binding.includeAddNewMedicineDialog.etMedicineDuration);
+        setInputFilter(binding.includeAddNewMedicineDialog.etRemark);
+
+        //binding.includeAddNewMedicineDialog.autoCompleteMedicineForm.setFilters(new InputFilter[]{new ValueInputFilter(formArray)});
+
     }
 
     private void setInputFilter(TextInputEditText editText) {
@@ -183,7 +199,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
             showConfirmationDialog(position);
         } else if (view.getId() == R.id.clMedicineRowItemRoot) {
             adapter.setExpandedItemPosition(position);
-        }else if (view.getId() == R.id.btnExpandCollapseIndicator) {
+        } else if (view.getId() == R.id.btnExpandCollapseIndicator) {
             adapter.setExpandedItemPosition(position);
         }
     }
@@ -253,24 +269,32 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private void clearAddNewMedicineForm() {
         binding.includeAddNewMedicineDialog.setUpdatePosition(-1);
         binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine.setText("");
-        binding.includeAddNewMedicineDialog.etMedicineStrength.setText("");
+        binding.includeAddNewMedicineDialog.autoCompleteMedicineStrength.setText("");
         binding.includeAddNewMedicineDialog.etMedicineDosage.setText("");
-        binding.includeAddNewMedicineDialog.etMedicineType.setText("");
-        binding.includeAddNewMedicineDialog.etMedicineDosageUnit.setText("");
+        binding.includeAddNewMedicineDialog.autoCompleteMedicineForm.setText("");
+        binding.includeAddNewMedicineDialog.autoCompleteMedicineDosageUnit.setText("");
         binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute.setText("");
         binding.includeAddNewMedicineDialog.autoCompleteMedicineFrequency.setText("");
+        binding.includeAddNewMedicineDialog.autoCompleteMedicineDurationUnit.setText("");
+        binding.includeAddNewMedicineDialog.etMedicineDuration.setText("");
+        binding.includeAddNewMedicineDialog.etRemark.setText("");
+
         validateMedicineFormInput();
     }
 
     private Medicine validateMedicineFormInput() {
         Medicine medicine = new Medicine();
         medicine.setName(binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine.getText().toString());
-        medicine.setStrength(binding.includeAddNewMedicineDialog.etMedicineStrength.getText().toString());
+        medicine.setStrength(binding.includeAddNewMedicineDialog.autoCompleteMedicineStrength.getText().toString());
         medicine.setDosage(binding.includeAddNewMedicineDialog.etMedicineDosage.getText().toString());
-        medicine.setDosageUnit(binding.includeAddNewMedicineDialog.etMedicineDosageUnit.getText().toString());
+        medicine.setDosageUnit(binding.includeAddNewMedicineDialog.autoCompleteMedicineDosageUnit.getText().toString());
         medicine.setRoute(binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute.getText().toString());
-        medicine.setType(binding.includeAddNewMedicineDialog.etMedicineType.getText().toString());
+        medicine.setForm(binding.includeAddNewMedicineDialog.autoCompleteMedicineForm.getText().toString());
         medicine.setFrequency(binding.includeAddNewMedicineDialog.autoCompleteMedicineFrequency.getText().toString());
+        medicine.setDurationUnit(binding.includeAddNewMedicineDialog.autoCompleteMedicineDurationUnit.getText().toString());
+        medicine.setDuration(binding.includeAddNewMedicineDialog.etMedicineDuration.getText().toString());
+        medicine.setRemark(binding.includeAddNewMedicineDialog.etRemark.getText().toString());
+
         binding.includeAddNewMedicineDialog.btnAddMedicineAdd.setEnabled(medicine.isValidMedicine());
         return medicine;
     }
@@ -279,10 +303,12 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         setupMedicines();
         setupRoutes();
         setupFrequency();
+        setupDurationUnits();
+        setFormArray();
+        setStrength();
         binding.includeAddNewMedicineDialog.etMedicineDosage.addTextChangedListener(listener);
-        binding.includeAddNewMedicineDialog.etMedicineDosageUnit.addTextChangedListener(listener);
-        binding.includeAddNewMedicineDialog.etMedicineStrength.addTextChangedListener(listener);
-        binding.includeAddNewMedicineDialog.etMedicineType.addTextChangedListener(listener);
+        binding.includeAddNewMedicineDialog.etMedicineDuration.addTextChangedListener(listener);
+        binding.includeAddNewMedicineDialog.etRemark.addTextChangedListener(listener);
     }
 
     private final TextChangeListener listener = new TextChangeListener() {
@@ -293,7 +319,15 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     };
 
     private void setupMedicines() {
-        String[] medicineItem = requireContext().getResources().getStringArray(R.array.medicines);
+        medicineDetailsList = new GetMedicineData().getMedicineDetails(getActivity());
+
+        String [] medicineItem = new String[medicineDetailsList.size()];
+        for(int i=0;i<medicineDetailsList.size();i++){
+            Medicine medicine = medicineDetailsList.get(i);
+            medicineItem[i] = medicine.getMedicineFullName();
+        }
+
+        //String[] medicineItem = requireContext().getResources().getStringArray(R.array.medicines);
         AutoCompleteTextView medicineDropDown = binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine;
         ArrayList<String> filteredItems = filterMedicines(medicineItem);
         if (filteredItems.size() > 0) {
@@ -331,7 +365,28 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
     private void setupAutoCompleteAdapter(String[] items, AutoCompleteTextView autoCompleteTextView) {
         LocationArrayAdapter adapter = new LocationArrayAdapter(requireContext(), Arrays.asList(items));
         autoCompleteTextView.setDropDownBackgroundResource(R.drawable.rounded_corner_white_with_gray_stroke);
+
+        autoCompleteTextView.setThreshold(0);
+        autoCompleteTextView.setOnClickListener(v -> {
+            autoCompleteTextView.requestFocus(); // Request focus to ensure the dropdown appears
+            autoCompleteTextView.showDropDown();
+        });
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            if (autoCompleteTextView.getId() == binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine.getId()) {
+                //autofill other fields
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                autoCompleteTextView.setSelection(selectedItem.length());
+
+                for (Medicine medicine : medicineDetailsList) {
+                    if (selectedItem.equalsIgnoreCase(medicine.getMedicineFullName())) {
+                        binding.includeAddNewMedicineDialog.autoCompleteOtherMedicine.setText(medicine.getName());
+                        binding.includeAddNewMedicineDialog.autoCompleteMedicineForm.setText(medicine.getForm());
+                        binding.includeAddNewMedicineDialog.autoCompleteMedicineStrength.setText(medicine.getStrength());
+                        binding.includeAddNewMedicineDialog.autoCompleteMedicineRoute.setText(medicine.getRoute());
+                        binding.includeAddNewMedicineDialog.autoCompleteMedicineDosageUnit.setText(medicine.getDosageUnit());
+                    }
+                }
+            }
             validateMedicineFormInput();
         });
         autoCompleteTextView.setAdapter(adapter);
@@ -372,4 +427,21 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         });
         binding.clAddNewMedicineRoot.startAnimation(bottomDown);
     }
+
+    private void setupDurationUnits() {
+        String[] durationUnitArray = requireContext().getResources().getStringArray(R.array.medicine_duration_units);
+        AutoCompleteTextView durationUnitDropdown = binding.includeAddNewMedicineDialog.autoCompleteMedicineDurationUnit;
+        setupAutoCompleteAdapter(durationUnitArray, durationUnitDropdown);
+    }
+    private void setFormArray() {
+        formArray = requireContext().getResources().getStringArray(R.array.medicine_form);
+        AutoCompleteTextView formDropdown = binding.includeAddNewMedicineDialog.autoCompleteMedicineForm;
+        setupAutoCompleteAdapter(formArray, formDropdown);
+    }
+    private void setStrength() {
+        String[] strengthArray = requireContext().getResources().getStringArray(R.array.medicine_strength);
+        AutoCompleteTextView strengthDropdown = binding.includeAddNewMedicineDialog.autoCompleteMedicineStrength;
+        setupAutoCompleteAdapter(strengthArray, strengthDropdown);
+    }
 }
+

@@ -140,4 +140,50 @@
         <item>@string/female</item>
         <item>@string/other</item>
     </string-array>
+
+    <string-array name="medicine_duration_units">
+        <item>Minute</item>
+        <item>Minutes</item>
+        <item>Hour</item>
+        <item>Hours</item>
+        <item>Day</item>
+        <item>Days</item>
+    </string-array>
+
+    <string-array name="medicine_strength">
+        <item>5 mg</item>
+        <item>10 mg</item>
+        <item>50 mg</item>
+        <item>75 mg</item>
+        <item>100 mg</item>
+        <item>500 mg</item>
+        <item>1000 mg</item>
+        <item>100 mg</item>
+        <item>150 mg</item>
+        <item>200 mg</item>
+        <item>250 mg</item>
+        <item>750 mg</item>
+        <item>-</item>
+        <item>2000 mg</item>
+        <item>5%</item>
+        <item>0.9%</item>
+        <item>10 IU/mL</item>
+        <item>5 IU/mL</item>
+        <item>25 mg/mL</item>
+        <item>30 mg/mL</item>
+        <item>125 ug</item>
+        <item>5 mg/mL</item>
+        <item>1 mg/mL</item>
+        <item>2%</item>
+        <item>4 mg/mL</item>
+        <item>100 mg/mL</item>
+        <item>500  mg/mL</item>
+        <item>500 mg/100 mL mg/mL</item>
+        <item>20 mg/mL</item>
+        <item>40 mg/mL</item>
+        <item>10 mg/mL</item>
+        <item>200 ug</item>
+        <item>400  mg</item>
+        <item>650  mg</item>
+    </string-array>
 </resources>

@@ -91,7 +91,7 @@
 
             <include
                 android:id="@+id/includeAddNewMedicineDialog"
-                layout="@layout/view_add_new_medicine"
+                layout="@layout/view_add_new_medicine_new"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"

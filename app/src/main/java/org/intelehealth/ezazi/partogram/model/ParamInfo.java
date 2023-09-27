@@ -230,6 +230,7 @@ public class ParamInfo implements Serializable {
     }
 
     public void convertToMedicine(String obsUuid, String value) {
+        Log.d("TAG", "convertToMedicine: value :: "+value);
         Medicine medicine = new Medicine();
         medicine.setObsUuid(obsUuid);
         medicine.dbFormatToMedicineObject(value);

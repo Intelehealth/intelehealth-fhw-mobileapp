@@ -1088,5 +1088,9 @@
     <string name="contraction_duration_range_toast_err">Please enter Duration of contraction in between %1$s and %2$s</string>
     <string name="contraction_duration_err">Please enter Duration of contraction in between %1$s and %2$s</string>
     <string name="temp_error_new">Please enter Temperature in between %1$s and %2$s</string>
+    <string name="form">Form*</string>
+    <string name="duration">Duration*</string>
+    <string name="duration_unit">Duration Unit*</string>
+    <string name="remark">Remark</string>
 
 </resources>
