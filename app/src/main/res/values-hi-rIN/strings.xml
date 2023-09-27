@@ -1170,5 +1170,7 @@
     <string name="ft">फीट</string>
     <string name="in">इंच</string>
     <string name="please_select_patient_height">Please select patient height!</string>
+    <string name="systolic_pressure_cannot_be_lower_than_diastolic_pressure">Systolic pressure cannot be lower than Diastolic pressure.</string>
+    <string name="enter_field">Enter field</string>
 
 </resources>
