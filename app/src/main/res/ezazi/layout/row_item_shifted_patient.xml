@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="patient"
+            type="org.intelehealth.ezazi.models.FamilyMemberRes" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/screen_container_padding">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivShiftedPatientIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_patient" />
+
+        <TextView
+            android:id="@+id/tvShiftedPatientName"
+            style="@style/Theme.EZazi.Heading1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:maxLines="1"
+            android:text="@{patient.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivShiftedPatientIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Patient Name" />
+
+        <TextView
+            android:id="@+id/tvShiftedPatientOpenMrsId"
+            style="@style/Theme.EZazi.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/list_container_padding"
+            android:maxLines="1"
+            android:text="@{patient.openMRSID}"
+            android:textColor="@color/blue_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivShiftedPatientIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvShiftedPatientName"
+            tools:text="10LAM-3" />
+
+        <View
+            android:id="@+id/tvShiftedPatientDivider"
+            style="@style/Theme.EZazi.Body"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/stage_stroke_size"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/screen_container_padding"
+            android:background="@color/colorSelectedListItem"
+            android:maxLines="1"
+            android:text="@{patient.openMRSID}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivShiftedPatientIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvShiftedPatientOpenMrsId"
+            tools:text="10LAM-3" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

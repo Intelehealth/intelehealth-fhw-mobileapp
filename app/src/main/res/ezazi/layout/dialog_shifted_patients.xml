@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/screen_container_padding">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvShiftingDialogTitle"
+            style="@style/Theme.EZazi.Screen.Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/screen_padding"
+            android:gravity="center"
+            android:text="@string/shifted_patient_to_you"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAssignorNurse" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvAssignorNurse"
+            style="@style/Theme.EZazi.Screen.Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/screen_container_padding"
+            android:gravity="center"
+            android:text="Mithun"
+            app:drawableTopCompat="@drawable/ic_nurse"
+            app:layout_constraintEnd_toStartOf="@id/imShiftingIcon"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvAssigneeNurse"
+            style="@style/Theme.EZazi.Screen.Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/screen_container_padding"
+            android:gravity="center"
+            android:text="@string/you"
+            app:drawableTopCompat="@drawable/ic_nurse_assignee"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/imShiftingIcon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imShiftingIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            app:layout_constraintBottom_toBottomOf="@id/tvAssignorNurse"
+            app:layout_constraintEnd_toStartOf="@id/tvAssigneeNurse"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/tvAssignorNurse"
+            app:layout_constraintTop_toTopOf="@id/tvAssignorNurse"
+            app:srcCompat="@drawable/ic_shifting" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvShiftedPatientList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/screen_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvShiftingDialogTitle"
+            tools:itemCount="3"
+            tools:listitem="@layout/row_item_shifted_patient" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

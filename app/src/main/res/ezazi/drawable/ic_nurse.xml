@@ -1,6 +1,6 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="100dp"
-    android:height="100dp"
+    android:width="@dimen/nurse_icon_size"
+    android:height="@dimen/nurse_icon_size"
     android:viewportWidth="408.48"
     android:viewportHeight="408.48">
     <path

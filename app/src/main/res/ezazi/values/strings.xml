@@ -106,5 +106,6 @@
     <string name="alert_delete_medicine">Are you sure you want to delete this medicine?</string>
     <string name="lbl_medicines">Medicines</string>
     <string name="mother_death">Mother Death</string>
+    <string name="shifted_patient_to_you">%1$s has shifted below patient to you</string>
 
 </resources>

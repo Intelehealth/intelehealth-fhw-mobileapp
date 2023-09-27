@@ -284,4 +284,5 @@
     <dimen name="tv_labour_margin_end">30dp</dimen>
     <dimen name="dropdown_max_height_dialog">140dp</dimen>
     <dimen name="list_item_icon_size">24dp</dimen>
+    <dimen name="nurse_icon_size">48dp</dimen>
 </resources>
