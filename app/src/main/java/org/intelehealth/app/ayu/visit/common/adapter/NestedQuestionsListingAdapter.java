@@ -681,7 +681,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         }
 
 
-        boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+//        boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
+        boolean havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
 
 
                 /*if (mItemList.get(index).isRequired()) {
