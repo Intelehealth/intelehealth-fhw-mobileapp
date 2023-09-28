@@ -1250,8 +1250,12 @@ public class VitalsActivity extends AppCompatActivity {
                 mTemperature.setError(getString(R.string.enter_field));
             }
 
+            Log.d(TAG, "emptyList: " + emptyList);
             emptyList = emptyList + "\n " + getString(R.string.do_you_still_want_to_continue);
             showVitalsPromptDialog(context, getString(R.string.following_fields_are_not_filled), emptyList);
+        }
+        else {
+            submitVitalsIntoDB();
         }
         // AEAT- 646 - END
 
