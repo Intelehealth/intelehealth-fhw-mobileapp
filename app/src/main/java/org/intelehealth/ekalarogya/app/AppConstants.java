@@ -58,8 +58,8 @@ public class AppConstants {
     public static final String MINIMUM_RESPIRATORY = "10";
     public static final String MAXIMUM_HEMOGLOBIN = "20";
     public static final String MINIMUM_HEMOGLOBIN = "1";
-    public static final String MAXIMUM_SUGAR = "600";
-    public static final String MINIMUM_SUGAR = "10";
+    public static final String MAXIMUM_SUGAR = "500";
+    public static final String MINIMUM_SUGAR = "60";
 
     // SYS - DIA -- Color codes - start
     public static final String SYS_GREEN_MIN = "89";
