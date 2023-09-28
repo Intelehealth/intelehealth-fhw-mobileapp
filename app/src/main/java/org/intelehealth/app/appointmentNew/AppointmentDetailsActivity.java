@@ -682,8 +682,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             //check for appointment but presc not given and visit not completed
             if (minutes > 0) {
                 isVisitStartsIn = true;
+                long hours = minutes / 60;
                 if (minutes >= 60) {
-                    long hours = minutes / 60;
                     if (hours > 12) {
                         timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
                         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
@@ -694,10 +694,21 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                             timeText = hours + " " + getResources().getString(R.string.hours) + " " + getResources().getString(R.string.in) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     }
                 } else {
-                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                        timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
-                    else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                        timeText = minutes + " " + getResources().getString(R.string.minutes_txt) + " " + getResources().getString(R.string.in) ;
+                    if (hours > 1) {
+                        if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                            timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                    minutes + " " + context.getString(R.string.minutes_txt) + ", " +
+                                    context.getString(R.string.at) + " " + slotTime;
+                        else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            timeText = hours + " " + context.getString(R.string.hours) + " " + minutes + " " + context.getString(R.string.minutes_txt) + " "
+                                    + context.getString(R.string.in) + " , " + slotTime + " " + context.getString(R.string.at);
+                    }
+                    else {
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                            timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
+                        else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                            timeText = minutes + " " + getResources().getString(R.string.minutes_txt) + " " + getResources().getString(R.string.in);
+                    }
 
                 }
             } else {

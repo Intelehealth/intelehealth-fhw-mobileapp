@@ -123,14 +123,11 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                             long hours = minutes / 60;
                             long mins = minutes % 60;
                             if (hours > 24) {
-
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
-
                               if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                     timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate()) + "," + context.getString(R.string.at) +" " + appointmentInfoModel.getSlotTime();
                                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                     timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(appointmentInfoModel.getSlotDate())) + ","  + " " + appointmentInfoModel.getSlotTime() + " " + context.getString(R.string.at);
-
                                 holder.tvDate.setText(timeText);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     holder.tvDate.setTextColor(context.getColor(R.color.iconTintGray));
