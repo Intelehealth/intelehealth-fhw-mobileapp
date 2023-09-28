@@ -148,8 +148,13 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
                 Log.v("startdate", "startDAte: " + startDate);
                 if (appLanguage.equalsIgnoreCase("ru")) {
-                    startDate = StringUtils.en__ru_dob(startDate);
+                    startDate = StringUtils.translateShortHandMonths(startDate);
+                    startDate = startDate.replace("at", "на");
                 }
+
+                String time = StringUtils.extractTimeFromString(startDate);
+                String convertedTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(time, "HH:mm a", "HH:mm");
+                startDate = startDate.replace(time, convertedTime);
                 holder.fu_date_txtview.setText(startDate);
             }
 
@@ -171,7 +176,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
-                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
                 intent.putExtra("dob", model.getDob());
@@ -203,8 +208,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
     public class Myholder extends RecyclerView.ViewHolder {
         private CardView fu_cardview_item;
-        private TextView name, fu_date_txtview, search_gender;
-        private ImageView profile_image, fu_priority_tag;
+        private TextView name, fu_date_txtview, search_gender, fu_priority_tag;
+        private ImageView profile_image;
         private LinearLayout shareicon;
         private FrameLayout fl_priority;
 
