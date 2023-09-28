@@ -153,7 +153,6 @@
                 android:id="@+id/you_can_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/visit_card_header"
                 android:gravity="top"
                 android:lineSpacingExtra="3sp"
                 android:text="@string/recent_visit"

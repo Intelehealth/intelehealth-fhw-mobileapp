@@ -610,4 +610,8 @@
             android:resource="@color/colorPrimary" />
     </application>
 
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
+
 </manifest>

@@ -240,7 +240,11 @@ public class DateRangeAchievementsFragment extends Fragment {
         requireActivity().runOnUiThread(() -> {
             String totalTimeSpent = "";
             if (overallUsageStats != null) {
-                totalTimeSpent = String.format(Locale.ENGLISH, DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(overallUsageStats.getTotalTimeInForeground()));
+                totalTimeSpent = String.format(Locale.ENGLISH, DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(
+                        overallUsageStats.getTotalTimeInForeground(),
+                        getString(R.string.achievements_hours),
+                        getString(R.string.achievements_minutes)
+                ));
             } else {
                 totalTimeSpent = "0h 0m";
             }

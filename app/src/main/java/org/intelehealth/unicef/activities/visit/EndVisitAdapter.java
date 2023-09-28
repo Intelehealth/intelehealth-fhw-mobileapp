@@ -45,6 +45,7 @@ import org.intelehealth.unicef.utilities.DownloadFilesUtils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
@@ -148,13 +149,15 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             // start date show
             if (!model.getVisit_start_date().equalsIgnoreCase("null") || !model.getVisit_start_date().isEmpty()) {
                 String startDate = model.getVisit_start_date();
-                startDate = DateAndTimeUtils.date_formatter(startDate,
-                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
-                Log.v("startdate", "startDAte: " + startDate);
+                startDate = DateAndTimeUtils.date_formatter(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm");    // IDA-1346
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    startDate = StringUtils.translateShortHandMonths(startDate);
+                    startDate = startDate.replace("at", "на");
+                }
+
                 holder.fu_date_txtview.setText(startDate);
             }
-
-            //    holder.fu_date_txtview.setText(model.getVisit_start_date());
 
             holder.end_visit_btn.setOnClickListener(v -> {
                 showConfirmDialog(model);

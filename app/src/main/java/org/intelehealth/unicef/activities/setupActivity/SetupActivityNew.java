@@ -112,7 +112,7 @@ public class SetupActivityNew extends BaseActivity {
     ArrayList<String> testingLocationsList = new ArrayList<>();
 
     private final String productionServerBaseURL = "tele.med.kg";
-    private final String testingServerBaseURL = "telemedui.intelehealth.org";
+    private final String testingServerBaseURL = "uniceftraining.intelehealth.org";
     // initialization
     private String finalBaseUrl = productionServerBaseURL;
     private final ArrayList<Location> productionServerLocationList = new ArrayList<>();
@@ -644,7 +644,7 @@ public class SetupActivityNew extends BaseActivity {
     private void getLocationFromTestingServer() {
         autotvLocations.setEnabled(false);
         isLocationFetched = false;
-        String BASE_URL = "https://telemedui.intelehealth.org/openmrs/ws/rest/v1/";
+        String BASE_URL = "https://uniceftraining.intelehealth.org/openmrs/ws/rest/v1/";
         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
             ApiClient.changeApiBaseUrl(BASE_URL);
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);

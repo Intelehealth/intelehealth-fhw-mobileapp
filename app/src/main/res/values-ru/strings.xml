@@ -466,7 +466,7 @@
     <string name="previous_visits">Предыдущие визиты</string>
     <string name="accept">Принять</string>
     <string name="reject">Отклонить</string>
-    <string name="next">Следующий</string>
+    <string name="next">Дальше</string>
     <string name="which_server_would_you_like_to_connect_to">К какому серверу вы хотите подключиться?</string>
     <string name="enter_url">Введите URL</string>
     <string name="choose_a_location_to_login">Выберите место для входа</string>
@@ -1540,5 +1540,13 @@
     <string name="prescription_consultation_details">Информация о консультации</string>
     <string name="presc_received">Рецепт получен</string>
     <string name="presc_pending">Ожидается рецепт</string>
+
+    <string name="achievements_hours">ч.</string>
+    <string name="achievements_minutes">мин.</string>
+    <string name="wait_for_the_doctor_message">Пожалуйста, дождитесь сообщения от врача!</string>
+    <string name="some_issue_with_mindmap">Возникла проблема с протоколом.</string>
+    <string name="no_follow_up_data">Нет данных о последующем наблюдении</string>
+    <string name="enter_mobile_no">введите номер мобильного телефона</string>
+    <string name="splash_desc">Оказывать качественную медицинскую помощь там, где нет врача</string>
 
 </resources>

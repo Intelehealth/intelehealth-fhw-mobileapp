@@ -3791,4 +3791,21 @@ public final class StringUtils {
         }
     }
 
+
+    public static String translateShortHandMonths(String monthName) {
+        if (monthName.contains("Jan")) monthName = monthName.replace("Jan", "янв.");
+        if (monthName.contains("Feb")) monthName = monthName.replace("Feb", "февр.");
+        if (monthName.contains("Mar")) monthName = monthName.replace("Mar", "март.");
+        if (monthName.contains("Apr")) monthName = monthName.replace("Apr", "апр.");
+        if (monthName.contains("May")) monthName = monthName.replace("May", "май.");
+        if (monthName.contains("Jun")) monthName = monthName.replace("Jun", "июнь");
+        if (monthName.contains("Jul")) monthName = monthName.replace("Jul", "июль");
+        if (monthName.contains("Aug")) monthName = monthName.replace("Aug", "авг.");
+        if (monthName.contains("Sep")) monthName = monthName.replace("Sep", "сент.");
+        if (monthName.contains("Oct")) monthName = monthName.replace("Oct", "окт.");
+        if (monthName.contains("Nov")) monthName = monthName.replace("Nov", "нояб.");
+        if (monthName.contains("Dec")) monthName = monthName.replace("Dec", "дек.");
+
+        return monthName;
+    }
 }

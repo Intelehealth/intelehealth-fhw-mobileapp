@@ -86,6 +86,7 @@ public class VisitPendingFragment extends Fragment {
     List<PrescriptionModel> olderList = new ArrayList<>();
     private SessionManager sessionManager;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class VisitPendingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
       //  db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        //   db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         defaultData();
         visitData();
     }
@@ -664,7 +666,6 @@ public class VisitPendingFragment extends Fragment {
 
         return olderList;
     }
-
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();

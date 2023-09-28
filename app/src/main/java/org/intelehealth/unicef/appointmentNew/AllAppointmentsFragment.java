@@ -47,6 +47,7 @@ import org.intelehealth.unicef.models.dto.VisitDTO;
 import org.intelehealth.unicef.ui2.calendarviewcustom.CustomCalendarViewUI2;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -163,7 +164,11 @@ public class AllAppointmentsFragment extends Fragment {
             Chip chip = (Chip) getLayoutInflater().inflate(R.layout.chip_custom_ui2, chipGroup, false);
 
             FilterOptionsModel filterOptionsModel = filtersList.get(index);
-            final String tagName = filterOptionsModel.getFilterValue();
+            String tagName = filterOptionsModel.getFilterValue();
+            if (new SessionManager(getActivity()).getAppLanguage().equalsIgnoreCase("ru")) {
+                tagName = StringUtils.translateShortHandMonths(tagName);
+            }
+
             int paddingDp = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 10,
                     getResources().getDisplayMetrics()
@@ -174,11 +179,12 @@ public class AllAppointmentsFragment extends Fragment {
 
             chipGroup.addView(chip);
 
+            String finalTagName = tagName;
             chip.setOnCloseIconClickListener(v -> {
                 filtersList.remove(filterOptionsModel);
                 chipGroup.removeView(chip);
 
-                if (tagName.contains("appointment")) {
+                if (finalTagName.contains("appointment")) {
                     manageUIAsPerChips("upcoming");
 
                 }
@@ -874,6 +880,9 @@ public class AllAppointmentsFragment extends Fragment {
             if (!whichDate.isEmpty() && whichDate.equals("fromdate")) {
                 fromDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(fromDate);
+                if (new SessionManager(getActivity()).getAppLanguage().equalsIgnoreCase("ru")) {
+                    dateToshow1 = StringUtils.translateShortHandMonths(dateToshow1);
+                }
                 if (!fromDate.isEmpty()) {
                     String[] splitedDate = fromDate.split("/");
                     tvFromDate.setText(dateToshow1 + ", " + splitedDate[2]);
@@ -887,6 +896,9 @@ public class AllAppointmentsFragment extends Fragment {
 
                 toDate = selectedDate;
                 String dateToshow1 = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(toDate);
+                if (new SessionManager(getActivity()).getAppLanguage().equalsIgnoreCase("ru")) {
+                    dateToshow1 = StringUtils.translateShortHandMonths(dateToshow1);
+                }
                 if (!toDate.isEmpty()) {
                     String[] splitedDate = toDate.split("/");
                     tvToDate.setText(dateToshow1 + ", " + splitedDate[2]);

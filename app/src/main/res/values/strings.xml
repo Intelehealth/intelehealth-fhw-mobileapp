@@ -2149,4 +2149,7 @@ Under no circumstances and under no legal theory, whether tort (including neglig
     <string name="presc_received">Prescription received</string>
     <string name="presc_pending">Prescription pending</string>
 
+    <string name="achievements_hours">h</string>
+    <string name="achievements_minutes">m</string>
+
 </resources>

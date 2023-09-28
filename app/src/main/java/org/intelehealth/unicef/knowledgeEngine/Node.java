@@ -495,12 +495,18 @@ public class Node implements Serializable {
         subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                node.setText(node.generateLanguage());
-                callingAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-                if (node.anySubSelected() && node.anySubPopUp()) {
-                    node.generatePopUp(context);
+                if (node.generateLanguage() == null) {
+                    node.toggleSelected();
+                    callingAdapter.refreshChildAdapter();
+                    callingAdapter.notifyDataSetChanged();
+                    dialog.cancel();
+                } else {
+                    node.setText(node.generateLanguage());
+                    callingAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                    if (node.anySubSelected() && node.anySubPopUp()) {
+                        node.generatePopUp(context);
+                    }
                 }
             }
         });

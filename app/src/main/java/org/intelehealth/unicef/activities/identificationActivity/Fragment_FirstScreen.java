@@ -131,6 +131,10 @@ public class Fragment_FirstScreen extends Fragment implements SendSelectedDateIn
         mCountryCodePicker.registerCarrierNumberEditText(mPhoneNumberEditText); // attaches the ccp spinner with the edittext
         mCountryCodePicker.setNumberAutoFormattingEnabled(false);
 
+        mCountryCodePicker.setDefaultCountryUsingNameCode("KG");
+        mCountryCodePicker.setAutoDetectedCountry(true);
+        mCountryCodePicker.setCcpClickable(false);
+
         if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
             mCountryCodePicker.changeDefaultLanguage(CountryCodePicker.Language.RUSSIAN);
         } else {

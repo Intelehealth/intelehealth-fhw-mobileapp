@@ -76,7 +76,7 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
 
-    private TextView tvSelectLanguage;
+    private TextView tvSelectLanguage, tvTitle;
     private Button btnNextToIntro;
     private Context context;
 
@@ -99,6 +99,7 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
         layoutParent = findViewById(R.id.layout_parent);
         layoutHeader = findViewById(R.id.layout_child1);
         tvSelectLanguage = findViewById(R.id.textView8);
+        tvTitle = findViewById(R.id.tv_title);
 
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
@@ -405,6 +406,7 @@ public class SplashScreenActivity extends BaseActivity implements SplashLanguage
         configuration.setLocale(new Locale(language));
         Context localizedContext = createConfigurationContext(configuration);
 
+        tvTitle.setText(localizedContext.getText(R.string.splash_desc));
         tvSelectLanguage.setText(localizedContext.getText(R.string.select_language));
         btnNextToIntro.setText(localizedContext.getText(R.string.next_new));
     }

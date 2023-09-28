@@ -6,6 +6,7 @@ public class FollowUpModel {
     String patientuuid;
     String openmrs_id;
     String first_name;
+    String middle_name;
     String last_name;
     String date_of_birth;
     String phone_number;
@@ -19,7 +20,7 @@ public class FollowUpModel {
     String chiefComplaint;
     String obsservermodifieddate = "";
 
-    public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name,
+    public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name, String middle_name,
                          String last_name, String date_of_birth, String phone_number, String gender,
                          String visit_start_date,
                          String visit_speciality, String followup_date, String sync,
@@ -28,6 +29,7 @@ public class FollowUpModel {
         this.patientuuid = patientuuid;
         this.openmrs_id = openmrs_id;
         this.first_name = first_name;
+        this.middle_name = middle_name;
         this.last_name = last_name;
         this.date_of_birth = date_of_birth;
         this.phone_number = phone_number;
@@ -77,6 +79,14 @@ public class FollowUpModel {
 
     public void setFirst_name(String first_name) {
         this.first_name = first_name;
+    }
+
+    public String getMiddle_name() {
+        return middle_name;
+    }
+
+    public void setMiddle_name(String middle_name) {
+        this.middle_name = middle_name;
     }
 
     public String getLast_name() {

@@ -129,7 +129,14 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                 // Followup Date section
                 if (!model.getFollowup_date().equalsIgnoreCase("null") && !model.getFollowup_date().isEmpty()) {
                     try {
-                        String followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                        String followupDateTimeRaw = "";
+
+                        try {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 26);
+                        } catch (Exception e) {
+                            followupDateTimeRaw = model.getFollowup_date().substring(0, 25);
+                        }
+
                         String followupDateTime = followupDateTimeRaw.replace(", Time:", "");
 
                         Date fDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(followupDateTime);
