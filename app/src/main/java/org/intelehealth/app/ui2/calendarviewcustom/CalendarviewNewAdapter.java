@@ -60,10 +60,20 @@ public class CalendarviewNewAdapter extends RecyclerView.Adapter<CalendarviewNew
         CalendarviewModel calendarModel = listOfDates.get(position);
         holder.tvDate.setText(calendarModel.getDate() + "");
         if (calendarModel.getSelectedYear() == currentYear && calendarModel.getSelectedMonth() == currentMonthNew && tag.equalsIgnoreCase("unclicked")) {
-            if (calendarModel.getDate() == currentDay && count == 0) {
+            if(calendarModel.getDate() == currentDay){
+                if (calendarModel.getDate() < 15 && count == 0) {
+                    selectedPos = position;
+                    todayDatePosition = position;
+                }
+                else if (calendarModel.getDate() > 24 && count == 1) {
+                    selectedPos = position;
+                    todayDatePosition = position;
+                }
+                else if(calendarModel.getDate() >= 15 && calendarModel.getDate() <= 24) {
+                    selectedPos = position;
+                    todayDatePosition = position;
+                }
                 count = 1;
-                selectedPos = position;
-                todayDatePosition = position;
             }
             calendarModel.setCurrentMonthCompletedDate(false);
         }
