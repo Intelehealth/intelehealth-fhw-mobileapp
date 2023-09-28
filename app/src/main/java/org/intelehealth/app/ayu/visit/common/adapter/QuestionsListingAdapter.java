@@ -23,7 +23,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +50,7 @@ import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
+import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
@@ -724,13 +724,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
-                    @Override
-                    public void onFinish() {
-                        mOnItemSelection.onAllAnswered(true);
+                AnswerResult answerResult = mItemList.get(position).checkAllRequiredAnsweredRootNode(mContext);
+                if (answerResult.result) {
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            mOnItemSelection.onAllAnswered(true);
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showCommonDialog(mContext, 0, mContext.getString(R.string.alert_label_txt), answerResult.requiredStrings, true, mContext.getResources().getString(R.string.generic_ok), mContext.getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
+                        @Override
+                        public void onDialogActionDone(int action) {
+
+                        }
+                    });
+                }
 
             }
         });
@@ -746,6 +757,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 for (int i = 0; i < mItemList.get(position).getOptionsList().size(); i++) {
                     if (mItemList.get(position).getOptionsList().get(i).isSelected() || node.getOptionsList().get(i).isNoSelected()) {
                         mItemList.get(position).setDataCaptured(true);
+                        mItemList.get(position).setSelected(true);
                         Log.v(TAG, "updated associate symptoms selected status");
                     }
                 }
@@ -871,7 +883,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder.skipButton.setVisibility(View.VISIBLE);
             }
             //if (isSuperNested) {
-            boolean havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
+            boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
             Log.v(TAG, "showOptionsDataV2 havingNestedQuestion - " + havingNestedQuestion);
 
                 /*//holder.superNestedContainerLinearLayout.removeAllViews();
@@ -990,11 +1002,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
 
             //if (havingNestedQuestion) {
-            if (Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()) {
+            if (havingNestedQuestion || Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()) {
                 holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
                 //questionTextView.setText(options.get(0).findDisplay());
                 holder.nestedQuestionsListingAdapter.clearItems();
-                if (selectedNode.isContainsTheQuestionBeforeOptions()) {
+
+               if (havingNestedQuestion || selectedNode.isContainsTheQuestionBeforeOptions()) {
 
 
                     if (mIsEditMode) {

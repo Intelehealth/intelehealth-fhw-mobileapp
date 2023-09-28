@@ -258,8 +258,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
     private void routeByType(GenericViewHolder genericViewHolder, Node parentNode, Node currentNode, int position, boolean isSuperNested) {
         String type = currentNode.getInputType();
-        Log.v(TAG, "onBindViewHolder Type - " + type);
-        Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(currentNode));
+
         genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
         genericViewHolder.tvQuestionDesc.setVisibility(View.GONE);
         genericViewHolder.submitButton.setVisibility(View.GONE);
@@ -272,6 +271,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             genericViewHolder.singleComponentContainer.setVisibility(View.GONE);
             genericViewHolder.tvQuestionDesc.setVisibility(View.VISIBLE);
         }
+
+        Log.v(TAG, "onBindViewHolder Type - " + type);
+        Log.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(currentNode));
         switch (type) {
             case "text":
                 genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
@@ -682,7 +684,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
 //        boolean havingNestedQuestion = selectedNode.isHavingNestedQuestion();
-        boolean havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
+        //boolean havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
 
 
                 /*if (mItemList.get(index).isRequired()) {
@@ -693,7 +695,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         //mNestedLevel= mNestedLevel + 1;
         Log.v(TAG, "NestedQuestionsListingAdapter node - " + new Gson().toJson(selectedNode));
         Log.v(TAG, "NestedQuestionsListingAdapter mNestedLevel - " + mNestedLevel);
-        if (havingNestedQuestion) {
+        if (selectedNode.isHavingNestedQuestion() || selectedNode.isHavingMoreNestedQuestion()) {
             //if (isSuperNested) {
             //if(mNestedLevel%2==0){
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -728,7 +730,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
                     boolean isLastNodeSubmit = holder.selectedNestedOptionIndex >= options.size() - 1;
 
-                    if (!selectedNode.isContainsTheQuestionBeforeOptions()) {
+                    if (!selectedNode.isHavingNestedQuestion() && !selectedNode.isContainsTheQuestionBeforeOptions()) {
                         mOnItemSelection.onSelect(node, index, isSkipped, selectedNode);
                     } else {
                         if (isLastNodeSubmit)

@@ -3342,11 +3342,14 @@ public class Node implements Serializable {
 
     public boolean isHavingMoreNestedQuestion() {
         Log.v(TAG, "isHavingMoreNestedQuestion - " + getText());
+        if(isHavingNestedQuestion()){
+            return true;
+        }
         boolean flag = true;
         if (getOptionsList() != null) {
             for (int i = 0; i < getOptionsList().size(); i++) {
                 Node _node = getOptionsList().get(i);
-                if(_node.getOptionsList()==null || _node.getOptionsList().size()==0){
+                if(_node.getOptionsList() == null || _node.getOptionsList().size() != 1){
                     flag = false;
                     break;
                 }

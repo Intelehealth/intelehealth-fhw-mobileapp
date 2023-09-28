@@ -58,7 +58,7 @@ public class PastMedicalHistoryFragment extends Fragment {
     public static PastMedicalHistoryFragment newInstance(Intent intent, boolean isEditMode, Node node) {
         PastMedicalHistoryFragment fragment = new PastMedicalHistoryFragment();
         fragment.mCurrentNode = node;
-        fragment.mIsEditMode = isEditMode;
+        //fragment.mIsEditMode = isEditMode;
         return fragment;
     }
 
