@@ -67,7 +67,7 @@ open class SocketManager @Inject constructor() {
 
     private fun emitter(event: String) = Emitter.Listener {
         val json: String? = Gson().toJson(it)
-        Timber.e { "$TAG => $event => $json" }
+//        Timber.e { "$TAG => $event => $json" }
         if (event == EVENT_CALL_TIME_UP) {
             isCallTimeUp = true
         }
