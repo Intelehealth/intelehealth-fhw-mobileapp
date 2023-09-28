@@ -44,17 +44,9 @@ public class SyncUtils {
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-
         syncDAO.pushDataApi();
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
-
-
-        //  imagesPushDAO.patientProfileImagesPush();
-        //ui2.0
         imagesPushDAO.loggedInUserProfileImagesPush();
-
-//        imagesPushDAO.obsImagesPush();
-
         /*
          * Looper.getMainLooper is used in background sync since the sync_background()
          * is called from the syncWorkManager.java class which executes the sync on the
@@ -73,11 +65,8 @@ public class SyncUtils {
         }, 4000);
 
         imagesPushDAO.deleteObsImage();
-
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
-
-        //Background Sync Fixes : Chaining of request in place of running background service
         WorkManager.getInstance()
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
                 .then(AppConstants.LAST_SYNC_WORK_REQUEST)

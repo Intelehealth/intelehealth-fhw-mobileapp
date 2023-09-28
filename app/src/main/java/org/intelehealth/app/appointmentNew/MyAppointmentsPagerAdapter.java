@@ -38,12 +38,6 @@ public class MyAppointmentsPagerAdapter extends FragmentPagerAdapter {
         return tabCount;
     }
 
-  /*  @Override
-    public int getItemPosition(Object object) {
-        // POSITION_NONE makes it possible to reload the PagerAdapter
-        return POSITION_NONE;
-    }*/
-
     @Override
     public Parcelable saveState() {
         return null;

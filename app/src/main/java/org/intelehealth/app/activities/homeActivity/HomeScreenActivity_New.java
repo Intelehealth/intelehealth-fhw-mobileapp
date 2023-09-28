@@ -1153,8 +1153,11 @@ public class HomeScreenActivity_New extends AppCompatActivity implements Network
     private void requestPermission() {
         Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
         if (!CallListenerBackgroundService.isInstanceCreated()) {
-            //CallListenerBackgroundService.getInstance().stopForegroundService();
-            context.startService(serviceIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
+            } else {
+                context.startService(serviceIntent);
+            }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {

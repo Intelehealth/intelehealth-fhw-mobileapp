@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -73,11 +74,9 @@ public class VisitPendingFragment extends Fragment {
     private ImageView closeButton;
     private ProgressBar progress;
     private VisitCountInterface mlistener;
-
     private int recentLimit = 15, olderLimit = 15;
     private int recentStart = 0, recentEnd = recentStart + recentLimit;
     private boolean isRecentFullyLoaded = false;
-
     private int olderStart = 0, olderEnd = olderStart + olderLimit;
     private boolean isolderFullyLoaded = false;
     NestedScrollView nestedscrollview;
@@ -313,23 +312,21 @@ public class VisitPendingFragment extends Fragment {
     }
 
     private void visitData() {
-//        visit_pending_card_header.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), EndVisitActivity.class);
-//            startActivity(intent);
-//        });
-
         // Total of End visits.
         new Thread(new Runnable() {
             @Override
             public void run() {
                 int total = getPendingPrescCount();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " "+ "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
-                        pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
-                    }
-                });
+                Activity activity = getActivity();
+                if (activity != null && isAdded()) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String htmlvalue = getResources().getString(R.string.doctor_yet_to_send_prescription) + " " + "<b>" + total + " " + getResources().getString(R.string.patients) + "</b>, " + getResources().getString(R.string.you_can_remind_doctor);
+                            pending_endvisit_no.setText(Html.fromHtml(htmlvalue));
+                        }
+                    });
+                }
             }
         }).start();
 

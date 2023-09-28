@@ -4,6 +4,7 @@ import static org.intelehealth.app.database.dao.VisitsDAO.getPendingPrescCount;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalCounts_EndVisit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -248,21 +249,20 @@ public class VisitReceivedFragment extends Fragment {
     }
 
     private void visitData() {
-
-        // Total no. of End visits.
-     //   int total = getTotalCounts_EndVisit();
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 int total = getPendingPrescCount();
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription) ;
-                        received_endvisit_no.setText(Html.fromHtml(htmlvalue));
-                    }
-                });
+                Activity activity = getActivity();
+                if (activity != null && isAdded()) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String htmlvalue = "<b>" + total + " " + getResources().getString(R.string.patients) + " " + "</b>" + getResources().getString(R.string.awaiting_their_prescription);
+                            received_endvisit_no.setText(Html.fromHtml(htmlvalue));
+                        }
+                    });
+                }
             }
         }).start();
 

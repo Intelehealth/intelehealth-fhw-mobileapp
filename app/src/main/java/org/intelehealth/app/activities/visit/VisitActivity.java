@@ -70,9 +70,7 @@ public class VisitActivity extends FragmentActivity implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.WHITE);
         }
-
         configureTabLayout();
-
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -125,8 +123,7 @@ public class VisitActivity extends FragmentActivity implements
     public void configureTabLayout() {
         tabLayout = findViewById(R.id.tablayout_appointments);
         viewPager = findViewById(R.id.pager_appointments);
-        VisitPagerAdapter adapter = new VisitPagerAdapter
-                (VisitActivity.this);
+        VisitPagerAdapter adapter = new VisitPagerAdapter(VisitActivity.this);
         viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager,
@@ -141,11 +138,6 @@ public class VisitActivity extends FragmentActivity implements
 
         int limit = (adapter.getItemCount() > 1 ? adapter.getItemCount() - 1 : 1);
         viewPager.setOffscreenPageLimit(limit);
-
-//        viewPager.addOnPageChangeListener(new
-//                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -205,20 +197,17 @@ public class VisitActivity extends FragmentActivity implements
     public void receivedCount(int count) {
         Log.v(TAG, "receivedCount: " + count);
         tabLayout.getTabAt(0).setText(getResources().getString(R.string.received));
-//        tabLayout.getTabAt(0).setText("Received /*(" + count + ")");
     }
 
     @Override
     public void pendingCount(int count) {
         Log.v(TAG, "pendingCount: " + count);
         tabLayout.getTabAt(1).setText(getResources().getString(R.string.pending));
-//        tabLayout.getTabAt(1).setText("Pending (" + count + ")");
     }
 
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
             new SyncUtils().syncBackground();
-            //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
             refresh.clearAnimation();
             syncAnimator.start();
         }
