@@ -22,6 +22,7 @@ import org.intelehealth.ezazi.activities.setupActivity.LocationArrayAdapter;
 import org.intelehealth.ezazi.databinding.MedicinesListBottomSheetDialogBinding;
 import org.intelehealth.ezazi.partogram.PartogramConstants;
 import org.intelehealth.ezazi.partogram.adapter.MedicineAdapter;
+import org.intelehealth.ezazi.partogram.behavior.LockableBottomSheetBehavior;
 import org.intelehealth.ezazi.partogram.model.GetMedicineData;
 import org.intelehealth.ezazi.partogram.model.Medicine;
 import org.intelehealth.ezazi.ui.dialog.ConfirmationDialogFragment;
@@ -88,6 +89,7 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         binding.clMedicineDialogRoot.setMinHeight(ScreenUtils.getInstance(requireContext()).getHeight());
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) binding.clMedicineDialogRoot.getParent());
         behavior.setPeekHeight(ScreenUtils.getInstance(requireContext()).getHeight());
+        behavior.addBottomSheetCallback(getCallback(behavior));
 
         setMedicinesAndItsDetails();
         setMedicineListView();
@@ -96,6 +98,22 @@ public class MedicineBottomSheetDialog extends BottomSheetDialogFragment
         buildAddNewMedicineDialog();
         validateMedicineFormInput();
         setupInputFilter();
+    }
+
+    private BottomSheetBehavior.BottomSheetCallback getCallback(BottomSheetBehavior<View> behavior) {
+        return new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        };
     }
 
     private void setMedicinesAndItsDetails() {

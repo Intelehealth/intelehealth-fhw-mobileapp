@@ -88,13 +88,13 @@
 
     <string-array name="dose_units">
         <item>mL</item>
-        <item>mg</item>
-        <item>ug</item>
-        <item>%</item>
-        <item>IU</item>
+<!--        <item>mg</item>-->
+<!--        <item>ug</item>-->
+<!--        <item>%</item>-->
+<!--        <item>IU</item>-->
         <item>Tab</item>
         <item>Cap</item>
-        <item>-</item>
+        <item>Drop</item>
     </string-array>
 
     <string-array name="medicine_form">
@@ -102,6 +102,13 @@
         <item>Tablet</item>
         <item>Injection</item>
         <item>IV Fluid</item>
+        <item>Liquid</item>
+        <item>Drop</item>
+        <item>Inhaler</item>
+        <item>Suppositorie</item>
+        <item>Topical</item>
+        <item>Implant</item>
+        <item>Patche</item>
     </string-array>
 
     <string-array name="medicine_frequencies">

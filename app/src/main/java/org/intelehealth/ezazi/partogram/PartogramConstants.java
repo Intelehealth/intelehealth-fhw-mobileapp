@@ -42,7 +42,7 @@ public class PartogramConstants {
             "Baby",
             "Woman",
             "Labour Progress",
-            "Medication",
+            "Medication Administration",
             "Shared Decision Making"
 //            ,
 //            "Initials"
