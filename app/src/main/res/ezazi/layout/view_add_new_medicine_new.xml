@@ -170,25 +170,25 @@
                 android:id="@+id/cardMedicineDosage"
                 style="@style/Theme.EZazi.Material.CardView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/std_8dp"
+                android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/list_container_padding"
                 android:contentDescription="@string/dosage"
+                app:layout_constraintBottom_toBottomOf="@id/cardMedicineDosageUnit"
                 app:layout_constraintEnd_toStartOf="@id/cardMedicineDosageUnit"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardMedicineStrength">
+                app:layout_constraintTop_toTopOf="@id/cardMedicineDosageUnit">
 
                 <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/tilMedicineDosage"
                     style="@style/Theme.EZazi.Input.Add.Patient"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="@string/dosage">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etMedicineDosage"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:digits="1234567890"
                         android:gravity="center_vertical"
                         android:imeOptions="actionNext"
@@ -250,7 +250,7 @@
                 android:contentDescription="@string/route"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardMedicineDosage">
+                app:layout_constraintTop_toBottomOf="@id/cardMedicineDosageUnit">
 
                 <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/tilMedicineFrequency"
@@ -325,13 +325,13 @@
                 android:id="@+id/cardMedicineDuration"
                 style="@style/Theme.EZazi.Material.CardView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/std_8dp"
+                android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/list_container_padding"
                 android:contentDescription="@string/dosage"
-                app:layout_constraintEnd_toStartOf="@id/cardMedicineDosageUnit"
+                app:layout_constraintBottom_toBottomOf="@id/cardMedicineDurationUnit"
+                app:layout_constraintEnd_toStartOf="@id/cardMedicineDurationUnit"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardMedicineRoute">
+                app:layout_constraintTop_toTopOf="@id/cardMedicineDurationUnit">
 
                 <org.intelehealth.ezazi.ui.custom.RightAlignErrorTextInputLayout
                     android:id="@+id/tilMedicineDuration"
@@ -344,7 +344,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etMedicineDuration"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:digits="1234567890"
                         android:gravity="center_vertical"
                         android:imeOptions="actionNext"
