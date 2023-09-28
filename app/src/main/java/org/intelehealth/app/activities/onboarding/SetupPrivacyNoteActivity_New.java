@@ -46,7 +46,6 @@ import java.util.Locale;
 
 public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
     private static final String TAG = "SetupPrivacyNoteActivit";
-    TextView tvTermsAndPrivacy;
     CustomDialog customDialog;
     private CardView cardNoteSnack;
 
@@ -54,10 +53,12 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_privacy_note_ui2);
-        tvTermsAndPrivacy = findViewById(R.id.tvAcceptTcandPPSetupAyuIntro);
-        termsAndPrivacyPolicy();
         Button btnSetup = findViewById(R.id.btnSetupAyuIntro);
         cardNoteSnack = findViewById(R.id.snackbarAcceptTCandPPSetupAyuIntro);
+        TextView tcTextView = (TextView) findViewById(R.id.tvAcceptTCandPPSetupAyuIntro2);
+        tcTextView.setPaintFlags(tcTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        TextView ppTextView = (TextView) findViewById(R.id.tvAcceptTCandPPSetupAyuIntro4);
+        ppTextView.setPaintFlags(ppTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         ImageView ivBack = findViewById(R.id.ivBackArrowSetupAyuIntro);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,23 +86,11 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
             }
         });
 
-
         if (chkBoxPrivacyPolicy.isChecked()) {
             btnSetup.getBackground().setAlpha(0);
-
         } else {
             btnSetup.getBackground().setAlpha(60);
-
         }
-
-       /* tvTermsAndPrivacy
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        termsAndPrivacyPolicy();
-
-                    }
-                });*/
 
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,59 +109,17 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
 
     }
 
-    public void termsAndPrivacyPolicy() {
-        SpannableString SpanString = new SpannableString(getResources().getString(R.string.agree_to_terms));
-        ClickableSpan termsAndCondition = new ClickableSpan() {
-            @Override
-            public void onClick(View textView) {
-
-                Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, TermsAndConditionsActivity_New.class);
-                mIntent.putExtra("isTermsAndCondition", true);
-                startActivity(mIntent);
-                //overridePendingTransition(R.anim.ui2_slide_in_right, R.anim.ui2_slide_bottom_down);
-
-
-            }
-        };
-        ClickableSpan privacy = new ClickableSpan() {
-            @Override
-            public void onClick(View textView) {
-                Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, PrivacyPolicyActivity_New.class);
-                mIntent.putExtra("intentType", "doNotNavigateFurther");
-                mIntent.putExtra("isPrivacyPolicy", true);
-                startActivity(mIntent);
-            }
-        };
-
-        int startingPositionTC = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.terms_and_conditions));
-        int endingPositionTC = startingPositionTC + getResources().getString(R.string.terms_and_conditions).length();
-        int startingPositionPP = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.privacy_policy));
-        int endingPositionPP = startingPositionPP + getResources().getString(R.string.privacy_policy).length();
-        SpanString.setSpan(termsAndCondition, startingPositionTC, endingPositionTC, 0);
-        SpanString.setSpan(privacy, startingPositionPP, endingPositionPP, 0);
-        /*SpanString.setSpan(new ForegroundColorSpan(Color.BLUE), 9, 27, 0);
-        SpanString.setSpan(new ForegroundColorSpan(Color.BLUE), 32, 46, 0);
-        SpanString.setSpan(new UnderlineSpan(), 9, 27, 0);
-        SpanString.setSpan(new UnderlineSpan(), 32, 46, 0);*/
-
-        tvTermsAndPrivacy.setMovementMethod(LinkMovementMethod.getInstance());
-        tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
-        tvTermsAndPrivacy.setSelected(true);
-        tvTermsAndPrivacy.setClickable(true);
-    }
-
     public void openPrivacyPolicy(View view) {
         Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, PrivacyPolicyActivity_New.class);
         mIntent.putExtra("isPrivacyPolicy", true);
-        mIntent.putExtra("IntentFrom", AppConstants.INTENT_FROM_AYU_FOR_SETUP);
-        mStartForResultTCPP.launch(mIntent);
+        mIntent.putExtra("intentType", "doNotNavigateFurther");
+        startActivity(mIntent);
     }
 
     public void openTermsConditions(View view) {
         Intent mIntent = new Intent(SetupPrivacyNoteActivity_New.this, TermsAndConditionsActivity_New.class);
         mIntent.putExtra("isTermsAndCondition", true);
-        mIntent.putExtra("IntentFrom", AppConstants.INTENT_FROM_AYU_FOR_SETUP);
-        mStartForResultTCPP.launch(mIntent);
+        startActivity(mIntent);
     }
 
     ActivityResultLauncher<Intent> mStartForResultTCPP = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

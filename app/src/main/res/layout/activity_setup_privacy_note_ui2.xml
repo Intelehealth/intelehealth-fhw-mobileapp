@@ -80,12 +80,43 @@
             android:layout_toEndOf="@+id/cbAcceptTCandPPSetupAyuIntro">
 
             <TextView
-                android:id="@+id/tvAcceptTcandPPSetupAyuIntro"
-                android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP TextView"
+                android:id="@+id/tvAcceptTCandPPSetupAyuIntro1"
+                android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP TextView 1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="@string/agree_to_terms"
+                android:text="@string/agree_to"
+                android:textSize="@dimen/terms_link_text_size" />
+
+            <TextView
+                android:id="@+id/tvAcceptTCandPPSetupAyuIntro2"
+                android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP TextView 2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@string/terms_conditions"
+                android:textColor="@color/ui2_link"
+                android:onClick="openTermsConditions"
+                android:textSize="@dimen/terms_link_text_size" />
+
+            <TextView
+                android:id="@+id/tvAcceptTCandPPSetupAyuIntro3"
+                android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP TextView 3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@string/and_setup"
+                android:textSize="@dimen/terms_link_text_size" />
+
+            <TextView
+                android:id="@+id/tvAcceptTCandPPSetupAyuIntro4"
+                android:contentDescription="Setup Ayu Intro Screen Accept TnC And PP TextView 4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:onClick="openPrivacyPolicy"
+                android:text="@string/privacy_policy_setup"
+                android:textColor="@color/ui2_link"
                 android:textSize="@dimen/terms_link_text_size" />
 
         </LinearLayout>

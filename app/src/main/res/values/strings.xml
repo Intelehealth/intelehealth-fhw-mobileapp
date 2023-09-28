@@ -1725,7 +1725,7 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="agree_to">"Agree to "</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="and_setup">" and "</string>
-    <string name="privacy_policy_setup">privacy policy</string>
+    <string name="privacy_policy_setup">Privacy Policy</string>
     <string name="splash_desc">Deliver quality healthcare where\nthere is no doctor</string>
     <string name="select_language">Select Language</string>
     <string name="my_visits">My Visits</string>

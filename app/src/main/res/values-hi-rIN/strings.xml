@@ -1334,8 +1334,8 @@
     <string name="referred_specialist">"विशेषज्ञ को रिफर किया गया "</string>
     <string name="no_follow_up_suggested">\u2022 किसी फॉलो अप की सलाह नहीं</string>
     <string name="clear">साफ करें</string>
-    <string name="agree_to">“से सहमत \"</string>
-    <string name="and_setup">“ और \"</string>
+    <string name="agree_to">"स्वीकार हैं "</string>
+    <string name="and_setup">" और "</string>
     <string name="privacy_policy_setup">गोपनीयता नीति</string>
     <string name="splash_desc">जहां डॉक्टर नहीं हैं वहां गुणवत्तापूर्ण \nस्वास्थ्य देखभाल प्रदान करें</string>
     <string name="select_language">भाषा चुनें</string>
