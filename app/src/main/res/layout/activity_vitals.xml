@@ -6,6 +6,7 @@
     android:id="@+id/cl_table"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_marginTop="-200dp"
     tools:context=".activities.vitalActivity.VitalsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -448,11 +449,10 @@
                                 android:hint="@string/table_sugar_level"
                                 android:imeOptions="actionUnspecified"
                                 android:includeFontPadding="false"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:digits="1234567890"
-                                android:maxLength="3"
+                                android:maxLength="5"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -482,8 +482,7 @@
                                         android:includeFontPadding="false"
                                         android:inputType="numberDecimal"
                                         android:maxLines="1"
-                                        android:digits="1234567890"
-                                        android:maxLength="3"
+                                        android:maxLength="5"
                                         android:singleLine="true"
                                         android:tag="@string/tag_optional"
                                         android:textSize="@dimen/card_content_sub_text_size" />
@@ -513,8 +512,7 @@
                                         android:includeFontPadding="false"
                                         android:inputType="numberDecimal"
                                         android:maxLines="1"
-                                        android:maxLength="3"
-                                        android:digits="1234567890"
+                                        android:maxLength="5"
                                         android:singleLine="true"
                                         android:tag="@string/tag_optional"
                                         android:textSize="@dimen/card_content_sub_text_size" />
