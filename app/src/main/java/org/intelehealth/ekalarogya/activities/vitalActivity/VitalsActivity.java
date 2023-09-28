@@ -3,6 +3,7 @@ package org.intelehealth.ekalarogya.activities.vitalActivity;
 import static org.intelehealth.ekalarogya.app.AppConstants.*;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -105,10 +106,11 @@ public class VitalsActivity extends AppCompatActivity {
     private long mLastClickTime = 0;
     Spinner mheightSpinner;
     ArrayAdapter<CharSequence> heightAdapter;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        context = VitalsActivity.this;
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -1216,11 +1218,46 @@ public class VitalsActivity extends AppCompatActivity {
 */
      //   }
 
-        if (cancel) {
-            // There was an error - focus the first form field with an error.
-            focusView.requestFocus();
-            return;
-        } else {
+        // AEAT- 646 (Temp, BP, Pulse validaton) - START
+        if (mBpSys.getText().toString().trim().isEmpty() || mBpDia.getText().toString().trim().isEmpty() ||
+                mPulse.getText().toString().trim().isEmpty() || mTemperature.getText().toString().trim().isEmpty()) {
+
+            String bpSysEmpty = "", bpDiaEmpty = "", pulseEmpty = "", tempEmpty = "";
+            String emptyList = "";
+
+            if (mBpSys.getText().toString().trim().isEmpty()) {
+                bpSysEmpty = getString(R.string.table_bpsys);
+                emptyList = emptyList + bpSysEmpty + "\n";
+                mBpSys.requestFocus();
+                mBpSys.setError(getString(R.string.enter_field));
+            }
+            if (mBpDia.getText().toString().trim().isEmpty()) {
+                bpDiaEmpty = getString(R.string.table_bpdia);
+                emptyList = emptyList + bpDiaEmpty + "\n";
+                mBpDia.requestFocus();
+                mBpDia.setError(getString(R.string.enter_field));
+            }
+            if (mPulse.getText().toString().trim().isEmpty()) {
+                pulseEmpty = getString(R.string.table_pulse);
+                emptyList = emptyList + pulseEmpty + "\n";
+                mPulse.requestFocus();
+                mPulse.setError(getString(R.string.enter_field));
+            }
+            if (mTemperature.getText().toString().trim().isEmpty()) {
+                tempEmpty = getString(R.string.temperature_f);
+                emptyList = emptyList + tempEmpty + "\n";
+                mTemperature.requestFocus();
+                mTemperature.setError(getString(R.string.enter_field));
+            }
+
+            emptyList = emptyList + "\n " + getString(R.string.do_you_still_want_to_continue);
+            showVitalsPromptDialog(context, getString(R.string.following_fields_are_not_filled), emptyList);
+        }
+        // AEAT- 646 - END
+
+    }
+
+    private void submitVitalsIntoDB() {
             try {
               //  if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
                 if (!heightvalue.equals("")) {
@@ -1284,8 +1321,7 @@ public class VitalsActivity extends AppCompatActivity {
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
-//
-        }
+
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
@@ -1731,6 +1767,32 @@ public class VitalsActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public void showVitalsPromptDialog(Context context, String title, String message) {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton(context.getResources().getString(R.string.yes),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // upon yes click move forward.
+                        submitVitalsIntoDB();
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.setNegativeButton(context.getResources().getString(R.string.no),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // upon No click do nothing.
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = alertDialog.show();
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     private void endVisit(String visitUuid, String patientUuid, String endTime) {
