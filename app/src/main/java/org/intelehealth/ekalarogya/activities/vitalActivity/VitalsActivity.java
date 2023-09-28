@@ -1,6 +1,7 @@
 package org.intelehealth.ekalarogya.activities.vitalActivity;
 
 import static org.intelehealth.ekalarogya.app.AppConstants.*;
+import static org.intelehealth.ekalarogya.utilities.EditTextUtils.decimalPlacesCount;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -107,6 +108,8 @@ public class VitalsActivity extends AppCompatActivity {
     Spinner mheightSpinner;
     ArrayAdapter<CharSequence> heightAdapter;
     private Context context;
+    public static final int BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT = 1;
+    public static final int BEFORE_DECIMAL_PLACE_MAX_COUNT = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -645,6 +648,17 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
 
                 }
+             //   decimalPlacesCount(mSugarRandom, s, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+
+                String str = mSugarRandom.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+
+                if (!str2.equals(str)) {
+                    mSugarRandom.setText(str2);
+                    mSugarRandom.setSelection(str2.length());
+                }
+
             }
         });
 
@@ -674,6 +688,15 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
 
                 }
+
+                String str = mSugarFasting.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+
+                if (!str2.equals(str)) {
+                    mSugarFasting.setText(str2);
+                    mSugarFasting.setSelection(str2.length());
+                }
             }
         });
 
@@ -702,6 +725,15 @@ public class VitalsActivity extends AppCompatActivity {
                     mSugarAfterMeal.setText("");
                 } else {
 
+                }
+
+                String str = mSugarAfterMeal.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+
+                if (!str2.equals(str)) {
+                    mSugarAfterMeal.setText(str2);
+                    mSugarAfterMeal.setSelection(str2.length());
                 }
             }
         });
@@ -981,7 +1013,7 @@ public class VitalsActivity extends AppCompatActivity {
         // Check to see if values were inputted.
      //   if (!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
 
-            // start
+            // Validations - START
             // 1. weight
             String w_value = mWeight.getText().toString().trim();
             if (w_value != null && !w_value.isEmpty()) {
@@ -1053,7 +1085,44 @@ public class VitalsActivity extends AppCompatActivity {
                 return;
             }
         }
-        // end
+
+        // Sugar - start
+        // Sugar - Random
+        String sugar_random_value = mSugarRandom.getText().toString().trim();
+        if (sugar_random_value != null && !sugar_random_value.isEmpty()) {
+            if ((Double.parseDouble(sugar_random_value) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) ||
+                    (Double.parseDouble(sugar_random_value) < Double.parseDouble(AppConstants.MINIMUM_SUGAR))) {
+                mSugarRandom.requestFocus();
+                mSugarRandom.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                return;
+            }
+        }
+
+        // Sugar - Fasting
+        String sugar_fasting_value = mSugarFasting.getText().toString().trim();
+        if (sugar_fasting_value != null && !sugar_fasting_value.isEmpty()) {
+            if ((Double.parseDouble(sugar_fasting_value) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) ||
+                    (Double.parseDouble(sugar_fasting_value) < Double.parseDouble(AppConstants.MINIMUM_SUGAR))) {
+                mSugarFasting.requestFocus();
+                mSugarFasting.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                return;
+            }
+        }
+
+         // Sugar - After Meal
+        String sugar_afterMeal_value = mSugarAfterMeal.getText().toString().trim();
+        if (sugar_afterMeal_value != null && !sugar_afterMeal_value.isEmpty()) {
+            if ((Double.parseDouble(sugar_afterMeal_value) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) ||
+                    (Double.parseDouble(sugar_afterMeal_value) < Double.parseDouble(AppConstants.MINIMUM_SUGAR))) {
+                mSugarAfterMeal.requestFocus();
+                mSugarAfterMeal.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                return;
+            }
+        }
+        // Sugar - end
+
+
+        // Validations - END
 
 
 
