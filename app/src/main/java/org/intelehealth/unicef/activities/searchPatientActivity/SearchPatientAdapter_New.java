@@ -116,7 +116,16 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 // checking visit uploaded or not - end
 
                 holder.fu_item_calendar.setVisibility(View.VISIBLE);
-                holder.search_date_relative.setText(model.getVisit_startdate());
+                String visitStartDate = model.getVisit_startdate();
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    visitStartDate = StringUtils.translateShortHandMonths(visitStartDate);
+                    visitStartDate = visitStartDate.replace("at", "на");
+                }
+
+                String time = StringUtils.extractTimeFromString(visitStartDate);
+                String convertedTime = DateAndTimeUtils.convert12HoursTimeTo24Hours(time, "HH:mm a", "HH:mm");
+                visitStartDate = visitStartDate.replace(time, convertedTime);
+                holder.search_date_relative.setText(visitStartDate);
             } else {
                 holder.presc_pendingCV.setVisibility(View.GONE);
                 holder.presc_receivingCV.setVisibility(View.GONE);
@@ -166,8 +175,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     }
 
     public class SearchHolderView extends RecyclerView.ViewHolder {
-        TextView search_gender, search_name, search_date_relative;
-        ImageView priority_tag_imgview, fu_item_calendar, profile_imgview;
+        TextView search_gender, search_name, search_date_relative, fu_priority_tag;
+        ImageView fu_item_calendar, profile_imgview;
         PatientDTO patientDTO;
         CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
         FrameLayout fl_priority;
@@ -178,7 +187,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             search_gender = itemView.findViewById(R.id.search_gender);
             search_name = itemView.findViewById(R.id.search_name);
             fl_priority = itemView.findViewById(R.id.fl_priority);
-            priority_tag_imgview = itemView.findViewById(R.id.priority_tag_imgview);
+            fu_priority_tag = itemView.findViewById(R.id.fu_priority_tag);
             fu_item_calendar = itemView.findViewById(R.id.fu_item_calendar);
             search_date_relative = itemView.findViewById(R.id.search_date_relative);
             profile_imgview = itemView.findViewById(R.id.profile_imgview);

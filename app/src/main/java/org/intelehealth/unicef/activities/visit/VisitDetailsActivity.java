@@ -463,9 +463,11 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         if (pres.getVisitUuid() != null) {
             endvisit_relative_block.setVisibility(View.VISIBLE);
             btn_end_visit.setOnClickListener(v -> {
-                String finalFollowUpDate = "";
+                String finalFollowUpDate = followupDate;
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    finalFollowUpDate = StringUtils.en__ru_dob(followupDate);
+                    if (followupDate != null && !followupDate.isEmpty()) {
+                        finalFollowUpDate = StringUtils.en__ru_dob(followupDate);
+                    }
                 }
 
                 VisitUtils.endVisit(VisitDetailsActivity.this, visitID, patientUuid, finalFollowUpDate,

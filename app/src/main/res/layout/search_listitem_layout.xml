@@ -75,17 +75,25 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginStart="@dimen/cal_margnin_start"
                             android:visibility="gone"
-                            tools:visibility="gone"
+                            tools:visibility="visible"
                             android:gravity="center_vertical">
 
-                            <ImageView
-                                android:id="@+id/priority_tag_imgview"
+                            <TextView
+                                android:id="@+id/fu_priority_tag"
                                 android:layout_width="@dimen/btn_prioirty_w_60dp"
                                 android:layout_height="@dimen/btn_prioirty_h_20dp"
+                                android:layout_alignParentEnd="true"
                                 android:layout_gravity="top"
+
+                                android:background="@drawable/drawable_priority_background"
+                                android:fontFamily="@font/lato_bold"
                                 android:gravity="center"
                                 android:lineSpacingExtra="0sp"
-                                android:src="@drawable/ui2_frame_priority" />
+                                android:text="@string/priority_uppercase"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                tools:visibility="visible" />
                         </FrameLayout>
 
                     </RelativeLayout>
