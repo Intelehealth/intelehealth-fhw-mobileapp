@@ -1459,6 +1459,7 @@ public class SetupActivity extends AppCompatActivity {
                                             }
 
                                             Log.i(TAG, "onPostExecute: Parse init");
+                                            progress.dismiss();
                                             Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                                             intent.putExtra("setup", true);
                                             if (r2.isChecked()) { // License protocol chosen
@@ -1474,7 +1475,7 @@ public class SetupActivity extends AppCompatActivity {
                                                 startActivity(intent);
                                                 finish();
                                             }
-                                            progress.dismiss();
+
                                         }
                                     }
 
