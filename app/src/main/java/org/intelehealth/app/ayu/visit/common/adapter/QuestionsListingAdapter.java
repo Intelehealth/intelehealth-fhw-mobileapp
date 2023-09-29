@@ -409,6 +409,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView submitTextView = view.findViewById(R.id.btn_submit);
 
         Button skipButton = view.findViewById(R.id.btn_skip);
+
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -726,6 +727,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View view) {
                 AnswerResult answerResult = mItemList.get(position).checkAllRequiredAnsweredRootNode(mContext);
                 if (answerResult.result) {
+                    node.setSkipped(false);
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
@@ -788,7 +790,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Log.v(TAG, "showOptionsDataV2 options - " + options.size());
         Log.v(TAG, "showOptionsDataV2 index - " + index);
         Log.v(TAG, "showOptionsDataV2 isSuperNested - " + isSuperNested);
-        if (!isSuperNested && options != null && options.size() == 1 && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
+        if (!isSuperNested && options != null && options.size() == 1 && options.get(0).getInputType() != null && !options.get(0).getInputType().isEmpty() && (options.get(0).getOptionsList() == null || options.get(0).getOptionsList().isEmpty())) {
             Log.v(TAG, "showOptionsDataV2 single option");
             /*if (isSuperNested)
                 holder.superNestedContainerLinearLayout.setVisibility(View.VISIBLE);
@@ -1821,6 +1823,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                node.setSkipped(false);
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
@@ -1898,17 +1901,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if (node.isDataCaptured()) {
+        if(node.isSkipped()){
+            skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+            skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+            AdapterUtils.setToDisable(submitButton);
+        }
+       /* if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
         } else {
             AdapterUtils.setToDefault(skipButton);
-        }
+        }*/
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         String oldDataNumber = "", oldDataType = "";
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                node.setSkipped(true);
+                AdapterUtils.setToDisable(submitButton);
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
@@ -2021,6 +2031,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 //notifyDataSetChanged();
                 AdapterUtils.setToDisable(skipButton);
+                node.setSkipped(false);
                 AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
@@ -2095,9 +2106,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         Button submitButton = view.findViewById(R.id.btn_submit);
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
         Button skipButton = view.findViewById(R.id.btn_skip);
+
+        if(node.isSkipped()){
+            skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+            skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+            AdapterUtils.setToDisable(submitButton);
+        }
 
         if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
             //  editText.setText(node.getLanguage());
@@ -2126,11 +2144,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
         });
-        if (node.isDataCaptured()) {
+        /*if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
         } else {
             AdapterUtils.setToDefault(skipButton);
-        }
+        }*/
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -2139,6 +2157,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 node.setSelected(false);
                 node.setDataCaptured(false);
                 //holder.node.setDataCaptured(true);
+                node.setSkipped(true);
+                AdapterUtils.setToDisable(submitButton);
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
@@ -2188,6 +2208,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     //notifyDataSetChanged();
                     AdapterUtils.setToDisable(skipButton);
+                    node.setSkipped(false);
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
@@ -2225,7 +2246,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
         String oldValue = editText.getText().toString().trim();
         Button skipButton = view.findViewById(R.id.btn_skip);
-
+        if(node.isSkipped()){
+            skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+            skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+            AdapterUtils.setToDisable(submitButton);
+        }
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -2245,11 +2270,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             }
         });
-        if (node.isDataCaptured()) {
+        /*if (node.isDataCaptured()) {
             AdapterUtils.setToDisable(skipButton);
         } else {
             AdapterUtils.setToDefault(skipButton);
-        }
+        }*/
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
@@ -2257,7 +2282,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View view) {
                 node.setSelected(false);
                 node.setDataCaptured(false);
-                AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
+                node.setSkipped(true);
+                AdapterUtils.setToDisable(submitButton);
+                AdapterUtils.buttonProgressAnimation(mContext, skipButton, true, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
                         mOnItemSelection.onSelect(node, index, true, null);
@@ -2304,6 +2331,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                     //notifyDataSetChanged();
                     AdapterUtils.setToDisable(skipButton);
+                    node.setSkipped(false);
+
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {
@@ -2341,6 +2370,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Button skipButton = view.findViewById(R.id.btn_skip);
+        if(node.isSkipped()){
+            skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+            skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+            AdapterUtils.setToDisable(submitButton);
+        }
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
@@ -2365,17 +2399,19 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         });
         holder.skipButton.setVisibility(View.GONE);
 
-        if (node.isDataCaptured()) {
-            AdapterUtils.setToDisable(skipButton);
-        } else {
-            AdapterUtils.setToDefault(skipButton);
-        }
+//        if (node.isDataCaptured()) {
+//            AdapterUtils.setToDisable(skipButton);
+//        } else {
+//            AdapterUtils.setToDefault(skipButton);
+//        }
 
         if (!holder.node.isRequired()) skipButton.setVisibility(View.VISIBLE);
         else skipButton.setVisibility(View.GONE);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                node.setSkipped(true);
+                AdapterUtils.setToDisable(submitButton);
                 AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                     @Override
                     public void onFinish() {
@@ -2521,6 +2557,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             mItemList.get(index).getOptionsList().get(i).setSelected(false);
                             mItemList.get(index).getOptionsList().get(i).setDataCaptured(false);
                         }
+                    mItemList.get(index).setSkipped(true);
+                    AdapterUtils.setToDisable(submitButton);
                     AdapterUtils.buttonProgressAnimation(mContext, skipButton, false, new AdapterUtils.OnFinishActionListener() {
                         @Override
                         public void onFinish() {

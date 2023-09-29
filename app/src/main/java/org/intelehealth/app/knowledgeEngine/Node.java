@@ -84,6 +84,7 @@ public class Node implements Serializable {
     private boolean isExclusiveOption;
     private boolean havingNestedQuestion;
     private boolean isDataCaptured;
+    private boolean isSkipped;
     private boolean isImageUploaded;
     private boolean optional;
     //telugu
@@ -3464,6 +3465,14 @@ public class Node implements Serializable {
 
 
         return mLanguage;
+    }
+
+    public boolean isSkipped() {
+        return isSkipped;
+    }
+
+    public void setSkipped(boolean skipped) {
+        isSkipped = skipped;
     }
     /*End*/
 }
