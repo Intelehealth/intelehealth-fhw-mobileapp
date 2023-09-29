@@ -151,7 +151,11 @@ public class Medicine implements Serializable {
 
         return form + " | " + name + " | " + strength + " | " +
                 dosage + "::" + dosageUnit + " | " + frequency + " | " +
-                route + " | " + duration + "::" + durationUnit + " | " + remark;
+                route + " | " + duration + "::" + durationUnit + getRemarkValue();
+    }
+
+    private String getRemarkValue() {
+        return remark != null && remark.length() > 0 ? " | " + remark : "";
     }
 
     public boolean isValidMedicine() {
@@ -183,7 +187,8 @@ public class Medicine implements Serializable {
             route = params[5].trim();
             duration = params[6].trim().split("::")[0];
             durationUnit = params[6].trim().split("::")[1];
-            remark = params[7].trim();
+            if (params.length > 7)
+                remark = params[7].trim();
 
         }
     }
@@ -192,7 +197,7 @@ public class Medicine implements Serializable {
         ObsDTO obs = new ObsDTO();
         obs.setUuid(obsUuid);
         obs.setConceptuuid(UuidDictionary.MEDICINE);
-        obs.setValue(toDBFormat());
+        obs.setValue(toDBFormat().trim());
         obs.setCreator(creator);
         obs.setEncounteruuid(encounterId);
         Log.e("Medicine", "toObs: " + new Gson().toJson(obs));

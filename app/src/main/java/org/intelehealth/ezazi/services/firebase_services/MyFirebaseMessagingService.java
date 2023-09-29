@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import org.intelehealth.ezazi.R;
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.activities.visitSummaryActivity.ShiftChangeData;
-import org.intelehealth.ezazi.activities.visitSummaryActivity.TimelineVisitSummaryActivity;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.database.dao.ProviderDAO;
@@ -42,9 +41,6 @@ import org.intelehealth.klivekit.model.ChatMessage;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
-import org.json.JSONObject;
-
-import java.util.Map;
 
 /**
  * Created by Dexter Barretto on 5/25/17.
@@ -59,7 +55,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        saveToken();
+        saveToken(s);
     }
 
     @Override
@@ -72,11 +68,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //Log.d(TAG, "From: " + remoteMessage.getFrom());
         //Log.d(TAG, "Notification Message Title: " + remoteMessage.getNotification().getTitle());
         //Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-        Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
-        //  {nurseId=28cea4ab-3188-434a-82f0-055133090a38, doctorName=doctor1, roomId=b60263f2-5716-4047-aaf5-7c13199b7f0c}
 
+        //  {nurseId=28cea4ab-3188-434a-82f0-055133090a38, doctorName=doctor1, roomId=b60263f2-5716-4047-aaf5-7c13199b7f0c}
+        if (remoteMessage.getData().isEmpty()) return;
         if (new SessionManager(this).isLogout()) return;
 
+        Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
 
         if (remoteMessage.getData().containsKey("actionType")) {
             if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
@@ -157,23 +154,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (remoteMessage.getData().get("actionType").equals("SHIFT_CHANGE")) {
+            } else if (remoteMessage.getData().containsKey("actionType")
+                    && remoteMessage.getData().get("actionType") != null
+                    && remoteMessage.getData().get("actionType").equals("SHIFT_CHANGE")) {
                 try {
 
                     Gson gson = new Gson();
                     ShiftChangeData shiftChangeData = gson.fromJson(gson.toJson(remoteMessage.getData()), ShiftChangeData.class);
-                    new SyncDAO().pullData_Background(this);
+                    if (shiftChangeData != null) {
+                        SessionManager sessionManager = new SessionManager(this);
+                        Log.d(TAG, "onMessageReceived:session ::" + sessionManager.getCreatorID());
+                        Log.d(TAG, "onMessageReceived: to HW ::" + shiftChangeData.getToHwUserUuid());
+                        if (sessionManager.getCreatorID().equals(shiftChangeData.getToHwUserUuid())) {
+                            new SyncDAO().pullData_Background(this);
 
-                    if (isAppInForeground()) {
-                        Intent shiftedPatientBroadcast = new Intent(AppConstants.getShiftedPatientReceiver());
-                        shiftedPatientBroadcast.putExtra(SHIFTED_DATA, shiftChangeData);
-                        sendBroadcast(shiftedPatientBroadcast);
-                    } else {
-                        new AppNotification.Builder(this)
-                                .title(shiftChangeData.getTitle())
-                                .body(shiftChangeData.getBody())
-                                .pendingIntent(HomeActivity.getPendingIntent(this, shiftChangeData))
-                                .send();
+                            if (isAppInForeground()) {
+                                Intent shiftedPatientBroadcast = new Intent(AppConstants.getShiftedPatientReceiver());
+                                shiftedPatientBroadcast.putExtra(SHIFTED_DATA, shiftChangeData);
+                                sendBroadcast(shiftedPatientBroadcast);
+                            } else {
+                                new AppNotification.Builder(this)
+                                        .title(shiftChangeData.getTitle())
+                                        .body(shiftChangeData.getBody())
+                                        .pendingIntent(HomeActivity.getPendingIntent(this, shiftChangeData))
+                                        .send();
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -255,13 +261,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    private void saveToken() {
+    private void saveToken(String token) {
         ProviderDAO providerDAO = new ProviderDAO();
         SessionManager sessionManager = new SessionManager(this);
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        IntelehealthApplication.getInstance().refreshedFCMTokenID = token;
         // save fcm reg. token for chat (Video)
         try {
-            FirebaseUtils.saveToken(this, providerDAO.getUserUuid(sessionManager.getProviderID()), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+            FirebaseUtils.saveToken(this, providerDAO.getUserUuid(sessionManager.getProviderID()),
+                    IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }

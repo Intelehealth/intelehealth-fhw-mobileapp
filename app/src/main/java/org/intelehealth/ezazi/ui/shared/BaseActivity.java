@@ -94,7 +94,7 @@ public class BaseActivity extends AppCompatActivity implements SocketManager.Not
                     .positiveButtonLabel(R.string.okay)
                     .hideNegativeButton(true)
                     .build();
-            dialogFragment.setWrapContentDialog(true);
+//            dialogFragment.setWrapContentDialog(true);
             dialogFragment.setListener(() -> new SyncDAO().pullData_Background(BaseActivity.this));
             dialogFragment.show(getSupportFragmentManager(), dialogFragment.getClass().getName());
         }

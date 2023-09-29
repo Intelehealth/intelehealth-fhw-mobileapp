@@ -929,15 +929,15 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseUuid, String assigneeNurseUserUuid, List<FamilyMemberRes> patientsList) {
+    private void assignNurseToPatient(List<String> visitUUIDList, String selectedNurseProviderUuid, String assigneeNurseUserUuid, List<FamilyMemberRes> patientsList) {
         PatientsDAO patientsDAO = new PatientsDAO();
-        Log.e(TAG, "assignNurseToPatient: " + selectedNurseUuid);
+        Log.e(TAG, "assignNurseToPatient: " + selectedNurseProviderUuid);
         Log.e(TAG, "assignNurseToPatient: assigneeNurseUserUuid check2 :: " + assigneeNurseUserUuid);
 
         VisitAttributeListDAO visitsAttrsDAO = new VisitAttributeListDAO();
         for (int j = 0; j < visitUUIDList.size(); j++) {
             try {
-                visitsAttrsDAO.updateVisitTypeAttributeUuid(visitUUIDList.get(j), selectedNurseUuid);
+                visitsAttrsDAO.updateVisitTypeAttributeUuid(visitUUIDList.get(j), selectedNurseProviderUuid);
                 new VisitsDAO().updateVisitSync(visitUUIDList.get(j), "0");
             } catch (DAOException e) {
                 throw new RuntimeException(e);
