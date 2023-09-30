@@ -448,7 +448,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:text="@string/visit_summary_sugarfast"
+                            android:text="@string/table_sugar_fasting"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView

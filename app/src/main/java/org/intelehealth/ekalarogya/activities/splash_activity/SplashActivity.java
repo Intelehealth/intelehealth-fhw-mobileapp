@@ -95,7 +95,10 @@ public class SplashActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Boolean> task) {
                 if (task.isSuccessful() && !isFinishing()) {
                     long force_update_version_code = instance.getLong("force_update_version_code");
-                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
+                    checkPerm(); // todo: remove this line later.
+
+                    // todo: uncomment this later.
+                  /*  if (force_update_version_code > BuildConfig.VERSION_CODE) {
                         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
                         alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
                         alertDialogBuilder.setCancelable(false);
@@ -114,7 +117,7 @@ public class SplashActivity extends AppCompatActivity {
                         alertDialogBuilder.show();
                     } else {
                         checkPerm();
-                    }
+                    }*/
                 } else {
                     checkPerm();
                 }
