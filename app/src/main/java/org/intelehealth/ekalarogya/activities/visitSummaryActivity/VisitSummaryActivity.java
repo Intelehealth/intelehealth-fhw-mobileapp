@@ -1305,10 +1305,11 @@ public class VisitSummaryActivity extends BaseActivity {
         }
 
         sugarRandomView.setText(sugarrandom.getValue());
-        if (sugarfasting.getValue() != null || sugaraftermeal.getValue() != null
-                && !sugarfasting.getValue().equalsIgnoreCase("null") && !sugaraftermeal.getValue().equalsIgnoreCase("null")) {
-            if (sugarfasting.getValue().trim().length() != 0 && sugaraftermeal.getValue().trim().length() != 0) {
-                sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
+        if (sugarfasting.getValue() != null /*|| sugaraftermeal.getValue() != null*/
+                && !sugarfasting.getValue().equalsIgnoreCase("null")/* && !sugaraftermeal.getValue().equalsIgnoreCase("null")*/) {
+            if (sugarfasting.getValue().trim().length() != 0/* && sugaraftermeal.getValue().trim().length() != 0*/) {
+             //   sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
+                sugarFastAndMealView.setText(sugarfasting.getValue() /*+ " | " + sugaraftermeal.getValue()*/);
             } else {
                 sugarFastAndMealView.setText("");
             }
