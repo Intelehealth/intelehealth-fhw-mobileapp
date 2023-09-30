@@ -2920,7 +2920,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     phoneNo.equalsIgnoreCase("0123456789") || phoneNo.equalsIgnoreCase("1234567890")) {
               //  mPhoneNum.setText("");
                 mPhoneNum.requestFocus();
-                mPhoneNum.setError(getString(R.string.enter_valid_mobile_number));
+                mPhoneNum.setError(getString(R.string.enter_valid_phone_number));
                 return;
             }
         }
