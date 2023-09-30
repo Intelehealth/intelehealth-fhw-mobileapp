@@ -593,10 +593,10 @@ public class VitalsActivity extends AppCompatActivity {
         mHemoglobin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] data = new String[]{"1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0",
+                String[] data = new String[]{/*"1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5",*/ "5.0",
                         "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0",
-                        "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0", "16.5", "17.0", "17.5", "18.0",
-                        "18.5", "19.0", "19.5", "20.0"};
+                        "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0", "16.5", "17.0"/*, "17.5", "18.0",
+                        "18.5", "19.0", "19.5", "20.0"*/};
 
                 setVitalInfoForHemoAndSugar(data, mHemoglobin, mHemoglobin.getText().toString().trim());
             }
@@ -1034,30 +1034,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
             // end
 
-            // pulse - start
-            String p_value = mPulse.getText().toString().trim();
-                if (p_value != null && !p_value.isEmpty() && (!p_value.equals("0.0"))) {
-                    if ((Double.parseDouble(p_value) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
-                            (Double.parseDouble(p_value) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
-                        mPulse.requestFocus();
-                        mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
-                        return;
-                    }
-                }
-            // pulse - end
-
-        // *. spo2
-        String spo2_value = mSpo2.getText().toString().trim();
-        if (spo2_value != null && !spo2_value.isEmpty()) {
-            if ((Double.parseDouble(spo2_value) < Double.parseDouble(AppConstants.MINIMUM_SPO2)) ||
-                    (Double.parseDouble(spo2_value) > Double.parseDouble(AppConstants.MAXIMUM_SPO2))) {
-                mSpo2.requestFocus();
-                mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
-                return;
-            }
-        }
-        // end
-
         // *. BP - Systolic
         String bp_sys_value = mBpSys.getText().toString().trim();
         if (bp_sys_value != null && !bp_sys_value.isEmpty()) {
@@ -1088,12 +1064,60 @@ public class VitalsActivity extends AppCompatActivity {
 
         if (bpsys_value != null && !bpsys_value.isEmpty() && bpdia_value != null && !bpdia_value.isEmpty()) {
             if (Double.parseDouble(bpsys_value) < Double.parseDouble(bpdia_value)) {
-              //  mBpSys.setText("");
+                //  mBpSys.setText("");
                 mBpSys.requestFocus();
                 mBpSys.setError(getString(R.string.systolic_pressure_cannot_be_lower_than_diastolic_pressure));
                 return;
             }
         }
+
+        // *. spo2
+        String spo2_value = mSpo2.getText().toString().trim();
+        if (spo2_value != null && !spo2_value.isEmpty()) {
+            if ((Double.parseDouble(spo2_value) < Double.parseDouble(AppConstants.MINIMUM_SPO2)) ||
+                    (Double.parseDouble(spo2_value) > Double.parseDouble(AppConstants.MAXIMUM_SPO2))) {
+                mSpo2.requestFocus();
+                mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                return;
+            }
+        }
+        // end
+
+            // pulse - start
+            String p_value = mPulse.getText().toString().trim();
+                if (p_value != null && !p_value.isEmpty() && (!p_value.equals("0.0"))) {
+                    if ((Double.parseDouble(p_value) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
+                            (Double.parseDouble(p_value) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
+                        mPulse.requestFocus();
+                        mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                        return;
+                    }
+                }
+            // pulse - end
+
+        // Temp F - START
+        String temp_value = mTemperature.getText().toString().trim();
+        if (temp_value != null && !temp_value.isEmpty() && !temp_value.startsWith(".")) {
+            if ((Double.parseDouble(temp_value) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
+                    (Double.parseDouble(temp_value) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
+                mTemperature.requestFocus();
+                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                return;
+            }
+        }
+        // Temp F - END
+
+        // *. BP - Diastolic
+        String hb_value = mHemoglobin.getText().toString().trim();
+        if (hb_value != null && !hb_value.isEmpty()) {
+            if ((Double.parseDouble(hb_value) > Double.parseDouble(AppConstants.MAXIMUM_HEMOGLOBIN)) ||
+                    (Double.parseDouble(hb_value) < Double.parseDouble(AppConstants.MINIMUM_HEMOGLOBIN))) {
+                mHemoglobin.requestFocus();
+                mHemoglobin.setError(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                return;
+            }
+        }
+        // end
 
         // Sugar - start
         // Sugar - Random
@@ -1130,17 +1154,6 @@ public class VitalsActivity extends AppCompatActivity {
         }
         // Sugar - end
         
-        // Temp F - START
-        String temp_value = mTemperature.getText().toString().trim();
-        if (temp_value != null && !temp_value.isEmpty() && !temp_value.startsWith(".")) {
-            if ((Double.parseDouble(temp_value) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
-                    (Double.parseDouble(temp_value) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
-                mTemperature.requestFocus();
-                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                return;
-            }
-        }
-        // Temp F - END
 
 
         // Validations - END
