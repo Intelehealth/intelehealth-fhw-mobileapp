@@ -56,8 +56,8 @@ public class AppConstants {
     public static final String MINIMUM_SPO2 = "85";
     public static final String MAXIMUM_RESPIRATORY = "30";
     public static final String MINIMUM_RESPIRATORY = "10";
-    public static final String MAXIMUM_HEMOGLOBIN = "20";
-    public static final String MINIMUM_HEMOGLOBIN = "1";
+    public static final String MAXIMUM_HEMOGLOBIN = "17";
+    public static final String MINIMUM_HEMOGLOBIN = "5";
     public static final String MAXIMUM_SUGAR = "500";
     public static final String MINIMUM_SUGAR = "60";
 
