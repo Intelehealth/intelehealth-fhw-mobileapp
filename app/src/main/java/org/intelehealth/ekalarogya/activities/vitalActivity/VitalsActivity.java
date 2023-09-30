@@ -108,8 +108,8 @@ public class VitalsActivity extends AppCompatActivity {
     Spinner mheightSpinner;
     ArrayAdapter<CharSequence> heightAdapter;
     private Context context;
-    public static final int BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT = 1;
     public static final int BEFORE_DECIMAL_PLACE_MAX_COUNT = 3;
+    public static final int AFTER_DECIMAL_PLACE_MAX_ONE_COUNT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -457,6 +457,15 @@ public class VitalsActivity extends AppCompatActivity {
 
                 }
 
+                String str = mTemperature.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
+
+                if (!str2.equals(str)) {
+                    mTemperature.setText(str2);
+                    mTemperature.setSelection(str2.length());
+                }
+
             }
         });
 
@@ -648,11 +657,11 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
 
                 }
-             //   decimalPlacesCount(mSugarRandom, s, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+             //   decimalPlacesCount(mSugarRandom, s, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
 
                 String str = mSugarRandom.getText().toString();
                 if (str.isEmpty()) return;
-                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
 
                 if (!str2.equals(str)) {
                     mSugarRandom.setText(str2);
@@ -691,7 +700,7 @@ public class VitalsActivity extends AppCompatActivity {
 
                 String str = mSugarFasting.getText().toString();
                 if (str.isEmpty()) return;
-                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
 
                 if (!str2.equals(str)) {
                     mSugarFasting.setText(str2);
@@ -729,7 +738,7 @@ public class VitalsActivity extends AppCompatActivity {
 
                 String str = mSugarAfterMeal.getText().toString();
                 if (str.isEmpty()) return;
-                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, BLOOD_SUGAR_DECIMAL_PLACE_MAX_COUNT);
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
 
                 if (!str2.equals(str)) {
                     mSugarAfterMeal.setText(str2);
@@ -1120,6 +1129,18 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
         // Sugar - end
+        
+        // Temp F - START
+        String temp_value = mTemperature.getText().toString().trim();
+        if (temp_value != null && !temp_value.isEmpty() && !temp_value.startsWith(".")) {
+            if ((Double.parseDouble(temp_value) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
+                    (Double.parseDouble(temp_value) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
+                mTemperature.requestFocus();
+                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                return;
+            }
+        }
+        // Temp F - END
 
 
         // Validations - END

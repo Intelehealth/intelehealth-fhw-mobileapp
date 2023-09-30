@@ -50,8 +50,8 @@ public class AppConstants {
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
-    public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";
-    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
+    public static final String MINIMUM_TEMPERATURE_FARHENIT = "95";
+    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "104";
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "85";
     public static final String MAXIMUM_RESPIRATORY = "30";
