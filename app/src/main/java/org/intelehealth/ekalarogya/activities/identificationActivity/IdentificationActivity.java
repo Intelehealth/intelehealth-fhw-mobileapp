@@ -2910,6 +2910,19 @@ public class IdentificationActivity extends AppCompatActivity implements
                 mPhoneNum.setError(getString(R.string.enter_10_digits));
                 return;
             }
+
+            String phoneNo = mPhoneNum.getText().toString().trim();
+            if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
+                    phoneNo.equalsIgnoreCase("2222222222") || phoneNo.equalsIgnoreCase("3333333333") ||
+                    phoneNo.equalsIgnoreCase("4444444444") || phoneNo.equalsIgnoreCase("5555555555") ||
+                    phoneNo.equalsIgnoreCase("6666666666") || phoneNo.equalsIgnoreCase("7777777777") ||
+                    phoneNo.equalsIgnoreCase("8888888888") || phoneNo.equalsIgnoreCase("9999999999") ||
+                    phoneNo.equalsIgnoreCase("0123456789") || phoneNo.equalsIgnoreCase("1234567890")) {
+              //  mPhoneNum.setText("");
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError(getString(R.string.enter_valid_mobile_number));
+                return;
+            }
         }
 
    /*     ArrayList<EditText> values = new ArrayList<>();
@@ -4428,6 +4441,10 @@ public class IdentificationActivity extends AppCompatActivity implements
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+    }
+
+    private void phoneNoCombinationsCheck() {
 
     }
 
