@@ -1,5 +1,6 @@
 package org.intelehealth.klivekit.model
 
+import android.content.Intent
 import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -39,10 +40,18 @@ data class RtcArgs(
     var actionType: String = RemoteActionType.TEXT_CHAT.name,
     var callEnded: Boolean = false,
     var timestamp: Long = 0,
+
+    // call arguments
     var callType: CallType = CallType.NONE,
     var callStatus: CallStatus = CallStatus.NONE,
     var callAction: CallAction = CallAction.NONE,
-    var callMode: CallMode = CallMode.NONE
+    var callMode: CallMode = CallMode.NONE,
+    var callIntent: Intent? = null,
+    var notificationChannelName: String? = null,
+    var notificationChannelId: String? = null,
+    var notificationId: Int = 0,
+    var notificationIcon: Int = 0,
+    var notificationTime:String? = null
 ) : Parcelable {
     fun toJson(): String = Gson().toJson(this)
 

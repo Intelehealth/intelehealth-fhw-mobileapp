@@ -1,30 +1,37 @@
 package org.intelehealth.klivekit.call.notification
 
-import android.R
-import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.AudioFocusRequest
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.media.AudioManager
-import android.media.AudioManager.OnAudioFocusChangeListener
-import android.media.MediaPlayer
-import android.net.Uri
+import android.media.RingtoneManager
 import android.os.Build
-import android.os.Bundle
-import android.os.Handler
+import android.os.CountDownTimer
 import android.os.IBinder
+import android.os.PowerManager
+import android.os.VibrationEffect
 import android.os.Vibrator
-import android.provider.Settings
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import java.util.Objects
-import java.util.concurrent.TimeUnit
+import androidx.annotation.RequiresApi
+import androidx.core.content.IntentCompat
+import org.intelehealth.klivekit.call.utils.CallAction
+import org.intelehealth.klivekit.call.utils.CallConstants
+import org.intelehealth.klivekit.call.utils.CallHandlerUtils
+import org.intelehealth.klivekit.call.utils.CallMode
+import org.intelehealth.klivekit.call.utils.CallStatus
+import org.intelehealth.klivekit.call.utils.NotificationHandlerUtils
+import org.intelehealth.klivekit.model.RtcArgs
+import org.intelehealth.klivekit.utils.RTC_ARGS
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlin.random.Random
 
 
 /**
@@ -32,270 +39,340 @@ import java.util.concurrent.TimeUnit
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class HeadsUpNotificationService : Service() {
-    private val CHANNEL_ID: String = "CallChannel"
-    private val CHANNEL_NAME: String ="Call Channel"
-    var mediaPlayer: MediaPlayer? = null
-    var mvibrator: Vibrator? = null
-    var audioManager: AudioManager? = null
-    var playbackAttributes: AudioAttributes? = null
-    private var handler: Handler? = null
-    var afChangeListener: OnAudioFocusChangeListener? = null
-    private var status = false
-    private var vstatus = false
-    override fun onBind(p0: Intent?): IBinder? {
-        TODO("Not yet implemented")
+class HeadsUpNotificationService : Service(), SensorEventListener {
+
+    private var sensor: Sensor? = null
+    private var normalStatus: Boolean = false
+    private var vibrateStatus: Boolean = false
+    private lateinit var vibrationEffect: VibrationEffect
+    private lateinit var countDownTimer: CountDownTimer
+    private var isTimerRunning = false
+    private var sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+    //[0] initial delay then subsequent vibrate & pause
+    private var vibratePattern: LongArray = longArrayOf(0, 100, 800, 100, 800, 100, 800, 100)
+    private var vibrationAmplitude = intArrayOf(0, 50, 0, 50, 0, 50, 0, 50)
+
+
+    private val audioManager by lazy {
+        getSystemService(Context.AUDIO_SERVICE) as AudioManager
     }
 
+    private val sensorManager by lazy {
+        getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    }
+
+    private val notificationManager by lazy {
+        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
+    private val vibratorService by lazy {
+        getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    }
+
+    private val powerManager by lazy {
+        getSystemService(Context.POWER_SERVICE) as PowerManager
+    }
+
+    private val ringtone by lazy {
+        val notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        RingtoneManager.getRingtone(this, notificationUri)
+    }
+
+    private val notificationId by lazy {
+        Random(System.currentTimeMillis()).nextInt(CallConstants.MAX_INT)
+    }
+
+    private val wakeLock: PowerManager.WakeLock by lazy {
+        powerManager.newWakeLock(
+            PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
+            "lock:proximity_screen_off"
+        )
+    }
+
+    override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        Timber.d("Service is created ***** ")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrationEffect = VibrationEffect.createWaveform(
+                vibratePattern, vibrationAmplitude, -1
+            )
+        }
+    }
+
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        var data: Bundle? = null
-        var name: String? = ""
-        var callType = ""
-        val NOTIFICATION_ID = 120
-        try {
-            audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-            if (audioManager != null) {
-                when (audioManager!!.ringerMode) {
-                    AudioManager.RINGER_MODE_NORMAL -> status = true
-                    AudioManager.RINGER_MODE_SILENT -> status = false
-                    AudioManager.RINGER_MODE_VIBRATE -> {
-                        status = false
-                        vstatus = true
-                        Log.e("Service!!", "vibrate mode")
-                    }
-                }
-            }
-            if (status) {
-                val delayedStopRunnable = Runnable { releaseMediaPlayer() }
-                afChangeListener = OnAudioFocusChangeListener { focusChange ->
-                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                        // Permanent loss of audio focus
-                        // Pause playback immediately
-                        //mediaController.getTransportControls().pause();
-                        if (mediaPlayer != null) {
-                            if (mediaPlayer!!.isPlaying) {
-                                mediaPlayer!!.pause()
-                            }
-                        }
-                        // Wait 30 seconds before stopping playback
-                        handler!!.postDelayed(
-                            delayedStopRunnable,
-                            TimeUnit.SECONDS.toMillis(30)
-                        )
-                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                        // Pause playback
-                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
-                        // Lower the volume, keep playing
-                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                        // Your app has been granted audio focus again
-                        // Raise volume to normal, restart playback if necessary
-                    }
-                }
-                val keyguardManager =
-                    getSystemService<Any>(Context.KEYGUARD_SERVICE) as KeyguardManager
-                mediaPlayer = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI)
-                mediaPlayer!!.isLooping = true
-                //mediaPlayer.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    handler = Handler()
-                    playbackAttributes = AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build()
-                    val focusRequest =
-                        AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
-                            .setAudioAttributes(playbackAttributes)
-                            .setAcceptsDelayedFocusGain(true)
-                            .setOnAudioFocusChangeListener(afChangeListener, handler)
-                            .build()
-                    val res = audioManager!!.requestAudioFocus(focusRequest)
-                    if (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                        if (!keyguardManager.isDeviceLocked) {
-                            mediaPlayer!!.start()
-                        }
-                    }
-                } else {
+        Timber.d("OnstartCommand is created ***** ")
+        intent?.let {
 
-                    // Request audio focus for playback
-                    val result = audioManager!!.requestAudioFocus(
-                        afChangeListener,  // Use the music stream.
-                        AudioManager.STREAM_MUSIC,  // Request permanent focus.
-                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
-                    )
-                    if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                        if (!keyguardManager.isDeviceLocked) {
-                            // Start playback
-                            mediaPlayer!!.start()
-                        }
-                    }
+            setVibrateorNormalRinger()
+            val messageBody = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
+            messageBody?.let {
+                messageBody.notificationId = notificationId
+                Timber.d("Message call type **** ${messageBody.callType}")
+                Timber.d("Message call mode **** ${messageBody.callMode}")
+                Timber.d("Message call status **** ${messageBody.callStatus}")
+                if (messageBody.isAcceptCall()) {
+                    showAcceptedCallNotification(messageBody)
+                } else if (messageBody.isIncomingCall()) {
+                    showIncomingCallNotification(messageBody)
+                } else if (messageBody.isOutGoingCall()) {
+                    showOutGoingNotification(this, messageBody)
                 }
-            } else if (vstatus) {
-                mvibrator = getSystemService<Any>(Context.VIBRATOR_SERVICE) as Vibrator
-                // Start without a delay
-                // Each element then alternates between vibrate, sleep, vibrate, sleep...
-                val pattern = longArrayOf(
-                    0, 250, 200, 250, 150, 150, 75,
-                    150, 75, 150
-                )
 
-                // The '-1' here means to vibrate once, as '-1' is out of bounds in the pattern array
-                mvibrator!!.vibrate(pattern, 0)
-                Log.e("Service!!", "vibrate mode start")
+
+//                if (messageBody.isAttendedCall()) {
+//                    initNotificationForCallAttended(messageBody)
+//                    callstatus = CALL_ATTENDED
+//                } else if (messageBody.isOutGoingCall()) {
+//                    countDownTimer(messageBody)
+//                    initOutGoingCallNotification(messageBody)
+//                    callstatus = OUTGOING_CALL
+//                } else if (messageBody.isIncomingCall()) {
+//                    Timber.d("Incoming call **** ${isCallOngoingPref.getValue()}")
+//                    messageBody.isOtherCallRunning = isCallOngoingPref.getValue()
+//                    if (isCallOngoingPref.getValue()) {
+//                        messageBody.messageType = CALL_BUSY
+//                        messageBody.action = CALL_ACTION_DECLINE
+//                        CallHandlerUtils.operateCallAction(messageBody, this)
+//                    } else {
+//                        initNotificationForIncomingCallBuilder(messageBody)
+//                        callstatus = INCOMING_CALL
+//                    }
+//                }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+
         }
 
-        if (intent != null && intent.extras != null) {
-            data = intent.extras
-            name = data!!.getString("inititator")
-            callType = if (AppController.getInstance().getCall_type()
-                    .equalsIgnoreCase(ApplicationRef.Constants.AUDIO_CALL)
-            ) {
-                "Audio"
+        return START_REDELIVER_INTENT
+    }
+
+
+    private fun setVibrateorNormalRinger() {
+
+        Timber.d("Audio manager mode ***** ${audioManager.ringerMode}")
+
+        when (audioManager.ringerMode) {
+
+            AudioManager.RINGER_MODE_NORMAL -> {
+                normalStatus = true
+            }
+
+            AudioManager.RINGER_MODE_SILENT -> {
+                normalStatus = false
+                vibrateStatus = false
+            }
+
+            AudioManager.RINGER_MODE_VIBRATE -> {
+                normalStatus = false
+                vibrateStatus = true
+            }
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getNotificationChannel(context: Context, priority: Int): NotificationChannel {
+        return NotificationHandlerUtils.getNotificationChannel(context, priority)
+    }
+
+    private fun showOutGoingNotification(context: Context, messageBody: RtcArgs) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(getNotificationChannel(context, 2))
+        }
+
+        val notificationCompatBuilder =
+            NotificationHandlerUtils.outGoingCallNotificationBuilder(messageBody, this)
+
+        notificationManager.notify(notificationId, notificationCompatBuilder.build())
+        startForeground(notificationId, notificationCompatBuilder.build())
+
+        playRingtoneInEarpiece(messageBody)
+
+        countDownTimer.start()
+        isTimerRunning = true
+
+        if (messageBody.isVideoCall().not()) {
+            sensor = CallHandlerUtils.initSensor(sensorManager, this)
+        }
+    }
+
+
+    private fun showAcceptedCallNotification(messageBody: RtcArgs) {
+        destroySetting()
+
+        messageBody.notificationId = notificationId
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(
+                NotificationHandlerUtils.getNotificationChannel(this, 2)
+            )
+        }
+
+
+        val notificationCompatBuilder =
+            NotificationHandlerUtils.getAttendedCallNotificationBuilder(this, messageBody)
+
+        notificationManager.notify(notificationId, notificationCompatBuilder.build())
+
+        if (messageBody.isVideoCall().not()) {
+            sensor = CallHandlerUtils.initSensor(sensorManager, this)
+        }
+    }
+
+
+    private fun showIncomingCallNotification(messageBody: RtcArgs) {
+        messageBody.notificationId = notificationId
+        messageBody.callMode = CallMode.INCOMING
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(
+                NotificationHandlerUtils.getNotificationChannel(this, 1)
+            )
+        }
+
+        val notificationCompatBuilder =
+            NotificationHandlerUtils.getIncomingNotificationBuilder(this, messageBody)
+
+        val notification: Notification = notificationCompatBuilder.build()
+        notification.flags = Notification.FLAG_INSISTENT
+
+        notificationManager.notify(notificationId, notification)
+        startForeground(notificationId, notification)
+
+        if (normalStatus) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ringtone.isLooping = true
+            }
+            ringtone.play()
+        } else if (vibrateStatus) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibratorService.vibrate(vibrationEffect)
             } else {
-                "Video"
+                vibratorService.vibrate(vibratePattern, 0)
             }
         }
-        try {
-            val receiveCallAction = Intent(
-                this,
-                CallReceiver::class.java
-            )
-            receiveCallAction.putExtra(
-                "ConstantApp.CALL_RESPONSE_ACTION_KEY",
-                "ConstantApp.CALL_RECEIVE_ACTION"
-            )
-            receiveCallAction.putExtra("ACTION_TYPE", "RECEIVE_CALL")
-            receiveCallAction.putExtra("NOTIFICATION_ID", NOTIFICATION_ID)
-            receiveCallAction.action = "RECEIVE_CALL"
-            val cancelCallAction = Intent(
-                this,
-                CallReceiver::class.java
-            )
-            cancelCallAction.putExtra(
-                "ConstantApp.CALL_RESPONSE_ACTION_KEY",
-                "ConstantApp.CALL_CANCEL_ACTION"
-            )
-            cancelCallAction.putExtra("ACTION_TYPE", "CANCEL_CALL")
-            cancelCallAction.putExtra("NOTIFICATION_ID", NOTIFICATION_ID)
-            cancelCallAction.action = "CANCEL_CALL"
-            val callDialogAction = Intent(
-                this,
-                CallReceiver::class.java
-            )
-            callDialogAction.putExtra("ACTION_TYPE", "DIALOG_CALL")
-            callDialogAction.putExtra("NOTIFICATION_ID", NOTIFICATION_ID)
-            callDialogAction.action = "DIALOG_CALL"
-            val receiveCallPendingIntent = PendingIntent.getBroadcast(
-                this,
-                1200,
-                receiveCallAction,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            val cancelCallPendingIntent = PendingIntent.getBroadcast(
-                this,
-                1201,
-                cancelCallAction,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            val callDialogPendingIntent = PendingIntent.getBroadcast(
-                this,
-                1202,
-                callDialogAction,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            createChannel()
-            var notificationBuilder: NotificationCompat.Builder? = null
-            if (data != null) {
-                // Uri ringUri= Settings.System.DEFAULT_RINGTONE_URI;
-                notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle(name)
-                    .setContentText("Incoming $callType Call")
-                    .setSmallIcon(R.drawable.ic_call_icon)
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .setCategory(NotificationCompat.CATEGORY_CALL)
-                    .addAction(
-                        R.drawable.ic_call_decline,
-                        getString(R.string.reject_call),
-                        cancelCallPendingIntent
-                    )
-                    .addAction(
-                        R.drawable.ic_call_accept,
-                        getString(R.string.answer_call),
-                        receiveCallPendingIntent
-                    )
-                    .setAutoCancel(true) //.setSound(ringUri)
-                    .setFullScreenIntent(callDialogPendingIntent, true)
-            }
-            var incomingCallNotification: Notification? = null
-            if (notificationBuilder != null) {
-                incomingCallNotification = notificationBuilder.build()
-            }
-            startForeground(NOTIFICATION_ID, incomingCallNotification)
-        } catch (e: Exception) {
-            e.printStackTrace()
+    }
+
+
+    private fun playRingtoneInEarpiece(messageBody: RtcArgs) {
+        CallHandlerUtils.playRingtoneInEarPiece(this, audioManager, messageBody)
+    }
+
+    private fun destroySetting() {
+        ringtone.stop()
+        vibratorService.cancel()
+
+        if (isTimerRunning) {
+            isTimerRunning = false
+            countDownTimer.cancel()
         }
 
-        return START_STICKY
+        CallHandlerUtils.stopMediaPlayer()
     }
 
     override fun onDestroy() {
-        super.onDestroy() // release your media player here audioManager.abandonAudioFocus(afChangeListener);
-        releaseMediaPlayer()
-        releaseVibration()
-    }
+        super.onDestroy()
+        Timber.d("Call service is destroyed ***** ")
+        destroySetting()
 
-    fun createChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            try {
-                val ringUri: Uri = Settings.System.DEFAULT_RINGTONE_URI
-                val channel = NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-                channel.description = "Call Notifications"
-                channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-                /* channel.setSound(ringUri,
-                    new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .setLegacyStreamType(AudioManager.STREAM_RING)
-                            .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION).build());*/Objects.requireNonNull(
-                    getSystemService(NotificationManager::class.java)
-                ).createNotificationChannel(channel)
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
+        wakeLock.let {
+            if (it.isHeld) {
+                it.release()
+                Timber.d("Wake lock is released ******* ")
+            } else {
+                Timber.d("Wake lock is not released **** ")
             }
         }
+        sensor?.let {
+            Timber.d("Sensor manager is released **** ")
+            sensorManager.unregisterListener(this, it)
+        } ?: Timber.d("The sensor is empty ****** ")
+
+        //leave channel
+        /* App.rtcEngine?.muteLocalAudioStream(false)
+         App.rtcEngine?.setEnableSpeakerphone(true)*/
+//        App.rtcEngine?.leaveChannel()
+//        RtcEngine.destroy()
+        NotificationHandlerUtils.cancelNotification(notificationId, this)
     }
 
-    fun releaseVibration() {
-        try {
-            if (mvibrator != null) {
-                if (mvibrator!!.hasVibrator()) {
-                    mvibrator!!.cancel()
+    override fun onSensorChanged(event: SensorEvent?) {
+
+        Timber.d("OnSensorChanged **** ")
+
+        event?.let {
+
+            if (event.sensor.type == Sensor.TYPE_PROXIMITY) {
+
+                if (event.values[0] < event.sensor.maximumRange) {
+
+                    Timber.d("OnSensorChanged - acquiring wakelock **** ")
+
+                    Timber.d("Power Manager is screen on **** ${powerManager.isInteractive}")
+
+                    if (powerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
+
+                        wakeLock?.let {
+
+                            if (it.isHeld) {
+                                Timber.d("Release then acquire ***** ")
+                                it.release()
+                            } else {
+                                Timber.d("Not held wake lock ***** ")
+                            }
+                            it.acquire(10 * 60 * 1000L)
+                        }
+                    } else {
+                        Timber.d("wake lock not supported ****** ")
+                    }
+                } else {
+                    Timber.d("OnSensorChanged - event value greater than sensor max range **** ")
                 }
-                mvibrator = null
             }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
         }
     }
 
-    private fun releaseMediaPlayer() {
-        try {
-            if (mediaPlayer != null) {
-                if (mediaPlayer!!.isPlaying) {
-                    mediaPlayer!!.stop()
-                    mediaPlayer!!.reset()
-                    mediaPlayer!!.release()
-                }
-                mediaPlayer = null
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        Timber.d("OnAccuracyChanged - **** $accuracy")
+    }
+
+
+    private fun countDownTimer(messageBody: RtcArgs) {
+
+        Timber.d("Counterdown ***** ")
+
+        countDownTimer = object : CountDownTimer(
+            Companion.MAX_TIMEOUT,
+            Companion.COUNT_DOWN_INTERVAL
+        ) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                Timber.d("Remaining time **** $millisUntilFinished")
             }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
+
+            override fun onFinish() {
+                isTimerRunning = false
+                sendCallTimedOutToBackend(messageBody)
+            }
         }
     }
 
-    fun onPrepared(mediaPlayer: MediaPlayer?) {}
+
+    //timeout
+    private fun sendCallTimedOutToBackend(messageBody: RtcArgs) {
+        messageBody.callMode = CallMode.OUTGOING
+        messageBody.callStatus = CallStatus.MISSED
+        messageBody.callAction = CallAction.HANG_UP
+        CallHandlerUtils.operateCallAction(messageBody, this)
+    }
+
+    companion object {
+        private const val MAX_TIMEOUT: Long = 30000
+        private const val COUNT_DOWN_INTERVAL: Long = 1000
+    }
 }

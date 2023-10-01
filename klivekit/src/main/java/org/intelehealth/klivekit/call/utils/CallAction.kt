@@ -6,5 +6,5 @@ package org.intelehealth.klivekit.call.utils
  * Mob   : +919727206702
  **/
 enum class CallAction {
-    ACCEPT, DECLINE, NONE
+    ACCEPT, DECLINE, HANG_UP, NONE
 }

@@ -1,7 +1,12 @@
 package org.intelehealth.klivekit.utils.extensions
 
+import android.content.Context
 import android.os.Build
+import android.text.SpannableString
 import android.text.format.DateUtils
+import android.text.style.ForegroundColorSpan
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.core.util.TimeUtils
 import org.intelehealth.klivekit.utils.DateTimeUtils
 import java.time.LocalDate
@@ -23,4 +28,12 @@ fun String.toLocalDateFormat(format: String): String {
     return if (DateTimeUtils.isToday(date)) "Today"
     else if (DateTimeUtils.isYesterday(date)) "Yesterday"
     else DateTimeUtils.formatIsdDate(this.toDate(DateTimeUtils.DB_FORMAT), format)
+}
+
+fun String.span(@ColorRes colorRes: Int, context: Context) = SpannableString(this).apply {
+    setSpan(
+        ForegroundColorSpan(
+            ContextCompat.getColor(context, colorRes)
+        ), 0, this.length, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
 }

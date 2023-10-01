@@ -1,15 +1,15 @@
 package org.intelehealth.klivekit.call.utils
 
 import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.torvis.pavo.chat.view.activity.ChatAgoraActivity
-import com.torvis.pavo.home.view.fragment.chat.model.ChatActivityIntent
-import com.torvis.pavo.home.view.fragment.chat.view.broadcastreceiver.ChatCallBroadCastReceiver
-import com.torvis.pavo.util.*
+import org.intelehealth.klivekit.call.notification.CallReceiver
 import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
+import org.intelehealth.klivekit.call.utils.CallConstants.MAX_INT
 import org.intelehealth.klivekit.model.RtcArgs
+import org.intelehealth.klivekit.ui.activity.VideoCallActivity
 import org.intelehealth.klivekit.utils.RTC_ARGS
 import kotlin.random.Random
 
@@ -18,6 +18,20 @@ import kotlin.random.Random
  * vaghela@codeglo.com
  */
 object IntentUtils {
+
+    const val REQUEST_CODE = 10001
+
+    /**
+     * @param context Context of current scope
+     * @param messageBody an instance of CallNotificationMessageBody to send with intent
+     * @return Intent ChatCallActivity intent to start
+     */
+    fun getCallActivityIntent(messageBody: RtcArgs, context: Context): Intent? {
+        return messageBody.callIntent?.let {
+            it.putExtra(RTC_ARGS, messageBody)
+            return@let it
+        }
+    }
 
     /**
      * @param context Context of current scope
@@ -40,10 +54,9 @@ object IntentUtils {
         context: Context
     ): Intent {
 
-        return Intent(context, ChatAgoraActivity::class.java).apply {
-            putExtra(CALL_MSG_BODY, messageBody)
-            putExtra(CHAT_ACT_INTENT_MODEL, getChatActivityModel(messageBody))
-        }
+        return messageBody.callIntent?.apply {
+            putExtra(RTC_ARGS, messageBody)
+        } ?: Intent(context, VideoCallActivity::class.java)
     }
 
     /**
@@ -51,12 +64,12 @@ object IntentUtils {
      * @param messageBody an instance of RtcArgs to send with intent
      * @return ChatCallBroadCastReceiver intent
      */
-    fun getChatBroadCastIntent(
+    fun getCallBroadcastIntent(
         messageBody: RtcArgs,
         context: Context
     ): Intent {
-        return Intent(context, ChatCallBroadCastReceiver::class.java).apply {
-            putExtra(CALL_MSG_BODY, messageBody)
+        return Intent(context, CallReceiver::class.java).apply {
+            putExtra(RTC_ARGS, messageBody)
         }
     }
 
@@ -72,8 +85,8 @@ object IntentUtils {
     ) = PendingIntent.getBroadcast(
         context,
         Random.nextInt(0, MAX_INT),
-        getChatBroadCastIntent(messageBody, context),
-        0
+        getCallBroadcastIntent(messageBody, context),
+        getPendingIntentFlag()
     )
 
     /**
@@ -124,29 +137,23 @@ object IntentUtils {
     ): PendingIntent = PendingIntent.getBroadcast(
         context,
         Random.nextInt(0, MAX_INT),
-        getChatBroadCastIntent(messageBody, context),
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
-
-
+        getCallBroadcastIntent(messageBody, context),
+        getPendingIntentFlag()
     )
 
 
     fun getPendingActivityIntent(
         context: Context,
         messageBody: RtcArgs
-    ): PendingIntent = PendingIntent.getActivity(
-        context, Random.nextInt(0, MAX_INT),
-        getCallActivityIntent(messageBody, context),
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
-    )
+    ): PendingIntent {
+        return getCallActivityIntent(messageBody, context)?.let {
+            return@let getPendingIntentWithParentStack(context, it)
+        } ?: PendingIntent.getActivity(
+            context, Random.nextInt(0, MAX_INT),
+            getCallActivityIntent(messageBody, context),
+            getPendingIntentFlag()
+        )
+    }
 
     fun getChatViewPendingActivityIntent(
         context: Context,
@@ -167,10 +174,10 @@ object IntentUtils {
     ): PendingIntent = PendingIntent.getActivity(
         context, Random.nextInt(0, MAX_INT),
         getCallActivityIntent(messageBody.apply {
-            callStatus = OUTGOING_CALL
-            val recId = receiverId
-            receiverId = msgFrom
-            msgFrom = recId
+//            callStatus = OUTGOING_CALL
+//            val recId = receiverId
+//            receiverId = msgFrom
+//            msgFrom = recId
 
         }, context),
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -187,15 +194,30 @@ object IntentUtils {
      *
      **/
 
-    fun getChatActivityModel(messageBody: RtcArgs) = ChatActivityIntent(
-        receiverId = messageBody.msgFrom ?: "",
-        name1 = "${messageBody.receiverId}-${messageBody.msgFrom}",
-        name2 = "${messageBody.msgFrom}-${messageBody.receiverId}",
-        receiverName = messageBody.username ?: "",
-        age = messageBody.age.toString(),
-        profilePicture = messageBody.profilePicture ?: "",
-        matchScreen = false,
-        searchScreen = false
-    )
+//    fun getChatActivityModel(messageBody: RtcArgs) = ChatActivityIntent(
+//        receiverId = messageBody.msgFrom ?: "",
+//        name1 = "${messageBody.receiverId}-${messageBody.msgFrom}",
+//        name2 = "${messageBody.msgFrom}-${messageBody.receiverId}",
+//        receiverName = messageBody.username ?: "",
+//        age = messageBody.age.toString(),
+//        profilePicture = messageBody.profilePicture ?: "",
+//        matchScreen = false,
+//        searchScreen = false
+//    )
 
+    fun getPendingIntentWithParentStack(context: Context, intent: Intent): PendingIntent {
+        val taskStackBuilder = TaskStackBuilder.create(context)
+        taskStackBuilder.addNextIntentWithParentStack(intent)
+
+        return taskStackBuilder.getPendingIntent(
+            REQUEST_CODE,
+            getPendingIntentFlag()
+        )
+    }
+
+    private fun getPendingIntentFlag() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        PendingIntent.FLAG_IMMUTABLE
+    } else {
+        PendingIntent.FLAG_UPDATE_CURRENT
+    }
 }

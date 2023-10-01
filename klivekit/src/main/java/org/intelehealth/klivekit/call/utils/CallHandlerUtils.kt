@@ -7,11 +7,15 @@ import android.hardware.SensorManager
 import android.media.AudioManager
 import android.media.MediaPlayer
 import androidx.core.content.ContextCompat
+import com.google.gson.Gson
 import org.intelehealth.klivekit.R
+import org.intelehealth.klivekit.call.model.CallArg
 import org.intelehealth.klivekit.call.notification.CallReceiver
+import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.socket.SocketManager
 import org.intelehealth.klivekit.utils.RTC_ARGS
+import org.intelehealth.klivekit.utils.extensions.fromJson
 import timber.log.Timber
 
 /**
@@ -29,25 +33,35 @@ object CallHandlerUtils {
      * @return PendingIntent type of CallActionHandlerReceiver intent
      */
     fun notifyCallNotification(callArgs: RtcArgs, context: Context) {
-        if (callArgs.isIncomingCall()) {
+        if (callArgs.isIncomingCall() or callArgs.isAcceptCall() or callArgs.isOutGoingCall()) {
             IntentUtils.getHeadsUpNotificationServiceIntent(callArgs, context).also {
                 ContextCompat.startForegroundService(context, it)
             }
-        } else if (callArgs.isAcceptCall()) {
-            // start video call
         } else if (callArgs.isCallDeclined()) {
             SocketManager.instance.emit(SocketManager.EVENT_CALL_REJECT_BY_HW)
-            // cancel notification
+            context.stopService(Intent(context, HeadsUpNotificationService::class.java))
         } else if (callArgs.isMissedCall()) {
-            // cancel notification
-            // generate missed call notification with call back action
+            context.stopService(Intent(context, HeadsUpNotificationService::class.java))
+            NotificationHandlerUtils.notifyMissedCall(context, callArgs)
         } else if (callArgs.isBusyCall()) {
             // cancel notification with busy message
         } else if (callArgs.isCallOnGoing()) {
-            // show on going call notification
+
         } else {
             // do nothing here
         }
+    }
+
+    /**
+     * Operate all incoming, outgoing and ongoing call action
+     * @param context Context of current scope
+     * @param messageBody an instance of RtcArgs to send with intent
+     * @return PendingIntent type of CallActionHandlerReceiver intent
+     */
+    fun operateIncomingCall(context: Context, callArgs: RtcArgs, clazz: Class<*>) {
+        callArgs.callMode = CallMode.INCOMING
+        callArgs.callIntent = Intent(context, clazz)
+        notifyCallNotification(callArgs, context)
     }
 
     /**
@@ -181,7 +195,7 @@ object CallHandlerUtils {
     }
 
 
-    fun initSensor(sensorManager: SensorManager, service: ChatCallingService): Sensor? {
+    fun initSensor(sensorManager: SensorManager, service: HeadsUpNotificationService): Sensor? {
 
         val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
         return if (sensor != null) {
