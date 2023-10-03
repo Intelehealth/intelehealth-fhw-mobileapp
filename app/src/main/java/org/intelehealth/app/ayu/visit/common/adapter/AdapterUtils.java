@@ -36,7 +36,36 @@ public class AdapterUtils {
                 else*/
                 button.setBackgroundResource(R.drawable.ui2_common_primary_bg);
                 //button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, isSubmitType ? R.drawable.ic_baseline_check_18_white : 0, 0);
-                button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white , 0);
+                button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
+                onFinishActionListener.onFinish();
+            }
+        }, 400);
+
+    }
+
+    /**
+     *
+     * @param context
+     * @param button
+     * @param onFinishActionListener
+     */
+    public static void buttonProgressAnimationAndChecked(Context context, Button button, OnFinishActionListener onFinishActionListener) {
+        ThreeBounce mWaveDrawable = new ThreeBounce();
+        mWaveDrawable.setBounds(0, 0, 100, 100);
+        mWaveDrawable.setColor(context.getResources().getColor(R.color.gray_4));
+        button.setCompoundDrawables(null, null, mWaveDrawable, null);
+        button.setBackgroundResource(R.drawable.ui2_chip_type_inactive_bg);
+        button.setTextColor(context.getColor(R.color.gray_4));
+        button.setEnabled(false);
+        mWaveDrawable.start();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                button.setEnabled(true);
+                button.setTextColor(context.getColor(R.color.white));
+                button.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+                button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
                 onFinishActionListener.onFinish();
             }
         }, 400);

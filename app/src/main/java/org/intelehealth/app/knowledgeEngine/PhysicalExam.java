@@ -255,6 +255,18 @@ public class PhysicalExam extends Node {
         return allAnswered;
     }
 
+    /**
+     *
+     * @param node
+     */
+    private void cleanUpTheImages(Node node){
+        if(!node.isDataCaptured()){
+            for (int i = 0; i < node.getImagePathList().size(); i++) {
+                String image = node.getImagePathList().get(i);
+                getImagePathList().remove(image);
+            }
+        }
+    }
     //TODO: Physical exam map needs to modified to make language generation easier.
     public String generateFindings() {
         String mLanguage = "";
@@ -270,7 +282,7 @@ public class PhysicalExam extends Node {
             String levelOne = split[0];
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
-
+                cleanUpTheImages(node);
                 if (checkSet)
                     stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
                 else stringsList.add(bullet + " " + node.getLanguage());
@@ -333,6 +345,7 @@ public class PhysicalExam extends Node {
             String levelOne = split[0];
             Log.v(TAG, "levelOne - " + levelOne);
             if ((node.isSelected() | node.anySubSelected())) {
+                cleanUpTheImages(node);
                 boolean checkSet = rootStrings.add(levelOne);
                 Log.i(TAG, "rootStrings: " + rootStrings);
                 if (checkSet)
