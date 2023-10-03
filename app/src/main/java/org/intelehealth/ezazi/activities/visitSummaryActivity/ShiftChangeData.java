@@ -124,7 +124,7 @@ public class ShiftChangeData implements Serializable {
             FamilyMemberRes patient = new FamilyMemberRes();
             patient.setName(names[i]);
             patient.setVisitUuid(visits[i]);
-            patient.setOpenMRSID(openMrsIds[0]);
+            patient.setOpenMRSID(openMrsIds[i]);
             patients.add(patient);
         }
         return patients;
