@@ -49,8 +49,9 @@
     <string name="url_invalid">Check your URL.</string>
     <string name="prefix_invalid">Select a different prefix!</string>
     <string name="error_invalid_email">This username is invalid</string>
+    <string name="error_password_not_exist">This password does not exist.</string>
     <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">please check username and password entered</string>
+    <string name="error_incorrect_password">Please check username and password entered</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
     <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>

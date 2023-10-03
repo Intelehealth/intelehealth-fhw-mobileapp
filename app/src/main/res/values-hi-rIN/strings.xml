@@ -48,6 +48,7 @@
     <string name="url_invalid" translatable="false">अपना यूआरएल चेक करें</string>
     <string name="prefix_invalid" translatable="false">विभिन्न उपसर्ग चुनते है!</string>
     <string name="error_invalid_email" translatable="false">यह उपयोगकर्ता अवैध हैं</string>
+    <string name="error_password_not_exist">यह पासवर्ड मौजूद नहीं है</string>
     <string name="error_invalid_password" translatable="false">यह पासवर्ड बहुत छोटा है</string>
     <string name="error_incorrect_password" translatable="false">कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
     <string name="error_field_required" translatable="false">यह फ़ील्ड आवश्यक है</string>
