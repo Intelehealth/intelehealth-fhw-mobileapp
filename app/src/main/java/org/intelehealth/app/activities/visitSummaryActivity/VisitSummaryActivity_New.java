@@ -1132,6 +1132,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
                 if (i != 0) {
                     Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
                     speciality_selected = adapterView.getItemAtPosition(i).toString();
+                    vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
                     Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
                 } else {
                     speciality_selected = "";
@@ -2622,6 +2623,7 @@ public class VisitSummaryActivity_New extends AppCompatActivity implements Adapt
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
+            vd_special_value.setText(" " + Node.bullet + "  " + speciality_selected);
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
             boolean isUpdateVisitDone = false;
             try {
