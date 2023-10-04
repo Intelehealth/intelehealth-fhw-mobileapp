@@ -255,7 +255,7 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
 
     private void catchFCMMessageData() {
         // get the chat notification click info
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("actionType")) {
             Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
             Bundle remoteMessage = getIntent().getExtras();
             try {
@@ -349,6 +349,8 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            getIntent().replaceExtras(new Bundle());
         } else {
             Log.d(TAG, "catchFCMMessageData: getintent null");
         }
@@ -1710,7 +1712,6 @@ public class HomeActivity extends BaseActivity implements SearchView.OnQueryText
     @Override
     protected void onResume() {
         super.onResume();
-        catchFCMMessageData();
         saveToken();
         //registerReceiver(reMyreceive, filter);
 //        checkAppVer();  //auto-update feature.

@@ -68,7 +68,7 @@ public class RealTimeDataChangedObserver {
         Intent intent = new Intent(context, CallRTCNotifyReceiver.class);
         intent.putExtras(bundle);
         intent.putExtra(RtcUtilsKt.RTC_ARGS, rtcArgs);
-        intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
+        intent.setAction(CallRTCNotifyReceiver.ACTION);
         context.sendBroadcast(intent);
 //        }
     }
@@ -169,13 +169,11 @@ public class RealTimeDataChangedObserver {
     }
 
     private void observeDataChange(@NonNull DataSnapshot snapshot) {
-        Log.e(TAG, "observeDataChange");
         // This method is called once with the initial value and again
         // whenever data at this location is updated.
         HashMap<?, ?> value = (HashMap<?, ?>) snapshot.getValue();
         Log.e(TAG, "observeDataChange: value " + value);
         if (value == null) return;
-        Log.e(TAG, "observeDataChange: value " + value.toString());
 
         Map<String, String> log = new HashMap<>();
         log.put(TAG, "RealTimeDataChangedObserver");
@@ -195,13 +193,6 @@ public class RealTimeDataChangedObserver {
         if (rtcArgs == null) return;
         if (isDuplicate(sessionManager, rtcArgs)) return;
         if (!isCurrentNurseCall(sessionManager, rtcArgs)) return;
-
-        boolean isOldNotification = false;
-
-        if (value.containsKey("timestamp")) {
-            String timestamp = String.valueOf(value.get("timestamp"));
-            isOldNotification = verifyTimestamp(timestamp);
-        }
 
         startReceiver(bundle, rtcArgs);
     }

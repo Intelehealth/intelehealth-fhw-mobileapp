@@ -96,10 +96,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     }
 
     private fun preventDuplicationData(newRtcData: RtcArgs) {
-        val oldRtcData: String? = preferenceHelper.get(RTC_DATA, null)
-        oldRtcData?.let {
-            val previouse = Gson().fromJson(it, RtcArgs::class.java)
-            previouse?.let {
+        val oldRtcData: String? = preferenceHelper.get(RTC_DATA)
+        Timber.d { "oldRtcData $oldRtcData" }
+        oldRtcData?.let { old ->
+            val previous = Gson().fromJson(old, RtcArgs::class.java)
+            previous?.let {
                 if (it.appToken.equals(newRtcData.appToken)) finish()
                 else preferenceHelper.save(RTC_DATA, Gson().toJson(newRtcData))
             }
@@ -129,7 +130,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         socketViewModel.eventCallCancelByDoctor.observe(this) {
             if (it) {
                 Timber.e { "Remain time up mil ${videoCallViewModel.remainTimeupMilliseconds}" }
-                sayBye("Call canceled by ${args.doctorName}")
+//                sayBye("Call canceled by ${args.doctorName}")
             }
         }
         videoCallViewModel.remoteCallDisconnectedReason.observe(this) {
