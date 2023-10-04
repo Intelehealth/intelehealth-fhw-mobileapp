@@ -48,6 +48,7 @@ import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
+import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
@@ -64,11 +65,8 @@ import retrofit2.Callback;
 public class ChangePasswordActivity_New extends AppCompatActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "ChangePasswordActivity_";
     TextInputEditText etCurrentPassword, etNewPassword, etNewPasswordConfirm;
-    String encoded = null;
     CustomProgressDialog cpd;
     Context context;
-    UrlModifiers urlModifiers = new UrlModifiers();
-    Base64Utils base64Utils = new Base64Utils();
     SessionManager sessionManager = null;
     TextView tvErrorCurrentPassword, tvErrorNewPassword, tvErrorConfirmPassword,tvGeneratePassword;
     RelativeLayout layoutParent;
@@ -79,6 +77,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
     private TextView customSnackBarText;
     private Button btnSave;
     private final SyncUtils syncUtils = new SyncUtils();
+    TooltipWindow tipWindow;
 
 
     @Override
@@ -107,6 +106,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         tvErrorNewPassword = findViewById(R.id.tv_error_new_password);
         tvErrorConfirmPassword = findViewById(R.id.tv_error_confirm_password);
         tvGeneratePassword = findViewById(R.id.textview_mobile_no_note);
+        tipWindow = new TooltipWindow(ChangePasswordActivity_New.this);
         tvGeneratePassword.setOnClickListener(v -> {
             randomString(8);
         });
@@ -115,6 +115,12 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
 
         ivIsInternet.setOnClickListener(v -> {
             SyncUtils.syncNow(ChangePasswordActivity_New.this, ivIsInternet, syncAnimator);
+        });
+
+        ImageView ivQuestionChangePassword = findViewById(R.id.ivQuestionChangePasswordScreen);
+        ivQuestionChangePassword.setOnClickListener(v -> {
+            if (!tipWindow.isTooltipShown())
+                tipWindow.showToolTip(ivQuestionChangePassword, getResources().getString(R.string.generate_password_tooltip_text));
         });
 
         btnSave.setOnClickListener(v -> {
@@ -168,9 +174,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         Observable<ResponseBody> loginModelObservable = apiService.CHANGE_PASSWORD_OBSERVABLE(inputModel, encoded);
         loginModelObservable.subscribe(new Observer<ResponseBody>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
-            }
+            public void onSubscribe(Disposable d) { }
 
             @Override
             public void onNext(ResponseBody test) {
@@ -206,23 +210,19 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         String currentPassword = etCurrentPassword.getText().toString();
         String newPassword = etNewPassword.getText().toString();
         String confirmPassword = etNewPasswordConfirm.getText().toString();
-
         if (TextUtils.isEmpty(currentPassword)) {
             result = false;
             tvErrorCurrentPassword.setVisibility(View.VISIBLE);
             tvErrorCurrentPassword.setText(getResources().getString(R.string.enter_current_password));
             etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
         } else if (TextUtils.isEmpty(newPassword)) {
             result = false;
             tvErrorNewPassword.setVisibility(View.VISIBLE);
             etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
         } else if (TextUtils.isEmpty(confirmPassword)) {
             result = false;
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
             etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
         } else if (newPassword.length() < 8) {
             if (!isValid(etNewPassword.getText().toString())) {
                 tvErrorNewPassword.setText(getString(R.string.password_validation));
@@ -240,7 +240,6 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             tvErrorConfirmPassword.setText(getString(R.string.password_match));
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
             etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
         } else if (currentPassword.equals(newPassword)) {
             result = false;
             etNewPassword.setText("");
@@ -248,19 +247,15 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
             tvErrorNewPassword.setText(getString(R.string.old_password_and_new_password_cannot_be_same));
             tvErrorNewPassword.setVisibility(View.VISIBLE);
             etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
             tvErrorConfirmPassword.setText(getString(R.string.old_password_and_new_password_cannot_be_same));
             tvErrorConfirmPassword.setVisibility(View.VISIBLE);
             etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
         } else {
             etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             etNewPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
             etNewPasswordConfirm.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-
             result = true;
         }
-
         return result;
     }
 
@@ -278,16 +273,13 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
                         tvErrorCurrentPassword.setVisibility(View.VISIBLE);
                         tvErrorCurrentPassword.setText(getResources().getString(R.string.enter_current_password));
                         etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
-
                         return;
                     } else {
                         tvErrorCurrentPassword.setVisibility(View.GONE);
                         tvErrorCurrentPassword.setText(getResources().getString(R.string.enter_current_password));
                         etCurrentPassword.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
-
                     }
                 }
-
             }
 
             @Override

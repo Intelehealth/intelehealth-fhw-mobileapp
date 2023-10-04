@@ -918,6 +918,7 @@
     <string name="achievements">Achievements</string>
     <string name="my_profile">My profile</string>
     <string name="setup_tooltip_text">Enter the credentials given \nby Intelehealth team.</string>
+    <string name="generate_password_tooltip_text">This will automatically \ngenerate new password.</string>
     <string name="no_network_tooltip">No network!</string>
     <string name="educational_videos">Educational videos</string>
     <string name="change_lang">Change language &amp; protocol</string>

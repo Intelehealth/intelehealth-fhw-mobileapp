@@ -1047,6 +1047,7 @@
     <string name="achievements">उपलब्धियां</string>
     <string name="my_profile">मेरी प्रोफ़ाइल</string>
     <string name="setup_tooltip_text">इंटेलिहेल्थ टीम द्वारा प्रदान किए गए क्रेडेंशियल एंटर करें।</string>
+    <string name="generate_password_tooltip_text">इससे स्वचालित रूप से नया पासवर्ड जनरेट हो जाएगा.</string>
     <string name="no_network_tooltip">नेटवर्क नहीं है!</string>
     <string name="educational_videos">शैक्षणिक वीडियो</string>
     <string name="change_lang">भाषा और प्रोटोकॉल बदलें</string>
