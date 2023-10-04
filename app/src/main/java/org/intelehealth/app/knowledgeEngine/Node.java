@@ -3343,14 +3343,14 @@ public class Node implements Serializable {
 
     public boolean isHavingMoreNestedQuestion() {
         Log.v(TAG, "isHavingMoreNestedQuestion - " + getText());
-        if(isHavingNestedQuestion()){
+        if (isHavingNestedQuestion()) {
             return true;
         }
         boolean flag = true;
         if (getOptionsList() != null) {
             for (int i = 0; i < getOptionsList().size(); i++) {
                 Node _node = getOptionsList().get(i);
-                if(_node.getOptionsList() == null || _node.getOptionsList().size() != 1){
+                if (_node.getOptionsList() == null || _node.getOptionsList().size() != 1) {
                     flag = false;
                     break;
                 }
@@ -3360,8 +3360,126 @@ public class Node implements Serializable {
         return flag;
     }
 
+    public boolean isSingleNodeWithNestedQA() {
+        Log.v(TAG, "isSingleNodeWithNestedQA - " + getText());
+        if (isHavingNestedQuestion()) {
+            return true;
+        }
+        boolean flag = true;
+        if (getOptionsList() != null && getOptionsList().size() == 1) {
+            Node _node = getOptionsList().get(0);
+            if (_node.getOptionsList() == null || _node.getOptionsList().size() >= 1) {
+                flag = false;
+
+            }
+
+        }
+        Log.v(TAG, "isSingleNodeWithNestedQA - " + flag);
+        return flag;
+    }
+
 
     public String formQuestionAnswerV2(int level) {
+        List<String> stringsList = new ArrayList<>();
+        List<String> stringsListNoSelected = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean flag = false;
+        boolean isAssociatedSymEmpty = false;
+
+        for (int i = 0; i < mOptions.size(); i++) {
+            //isSelected set from  thisNode.setUnselected(); method
+            if (mOptions.get(i).isSelected()) {
+                String question;
+                if (level == 0) {
+                    question = big_bullet + " " + mOptions.get(i).findDisplay();
+
+                } else {
+                    question = bullet + " " + mOptions.get(i).findDisplay();
+                }
+                String answer = mOptions.get(i).getLanguage();
+                if (mOptions.get(i).isTerminal()) {
+                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
+
+                        if (mOptions.get(i).getInputType().equals("camera")) {
+                        } else {
+                            if (!answer.isEmpty()) {
+                                if (answer.equals("%")) {
+                                } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                    stringsList.add(bullet_hollow + answer + next_line);
+                                } else if (answer.substring(0, 1).equals("%")) {
+                                    stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                                } else {
+                                    stringsList.add(bullet_hollow + answer + next_line);
+                                }
+                            }
+                        }
+                    } else {
+                        stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                    }
+                } else {
+
+                    stringsList.add(question + next_line);
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    Log.i(TAG, "ipt: stringsList " + stringsList);
+                }
+            } else if (mOptions.get(i).getText() != null &&
+                    ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
+
+                if (!mOptions.get(i).isTerminal()) {
+                    stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                }
+
+                if (mOptions.get(i).getOptionsList().size() > 0) {
+
+                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+
+                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+
+                            if (!mOptions.get(i).isTerminal()) {
+                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                            }
+                        }
+                    }
+                }
+            }
+
+            // to add Patient denies entry
+            if (mOptions.get(i).isNoSelected()) {
+                if (!flag) {
+                    flag = true;
+                    stringsListNoSelected.add("Patient denies -" + next_line);
+                }
+                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                Log.e(TAG, "ipt: " + stringsListNoSelected);
+            }
+        }
+
+
+        if (stringsListNoSelected.size() > 0) {
+            stringsList.addAll(stringsListNoSelected);
+        }
+
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+
+            if (!stringsList.get(i).isEmpty()) {
+                mLanguage = mLanguage.concat(stringsList.get(i));
+            }
+
+        }
+
+
+        return mLanguage;
+    }
+    public String formQuestionAnswerForAssociateSymptomsV2(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -3466,7 +3584,6 @@ public class Node implements Serializable {
 
         return mLanguage;
     }
-
     public boolean isSkipped() {
         return isSkipped;
     }

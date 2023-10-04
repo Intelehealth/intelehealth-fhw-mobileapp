@@ -1002,14 +1002,17 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
             // }
             holder.nestedQuestionsListingAdapter.setSuperNodeList(mItemList);
-
+            boolean isSingleNodeWithNestedQA = selectedNode.isSingleNodeWithNestedQA();
             //if (havingNestedQuestion) {
+            if (!havingNestedQuestion) {
+                havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
+            }
             if (havingNestedQuestion || Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()) {
                 holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
                 //questionTextView.setText(options.get(0).findDisplay());
                 holder.nestedQuestionsListingAdapter.clearItems();
 
-               if (havingNestedQuestion || selectedNode.isContainsTheQuestionBeforeOptions()) {
+                if (havingNestedQuestion || selectedNode.isContainsTheQuestionBeforeOptions()) {
 
 
                     if (mIsEditMode) {
@@ -1901,7 +1904,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
@@ -2111,7 +2114,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
         Button skipButton = view.findViewById(R.id.btn_skip);
 
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
@@ -2246,7 +2249,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
         String oldValue = editText.getText().toString().trim();
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
@@ -2370,7 +2373,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         final CalendarView calendarView = view.findViewById(R.id.cav_date);
         calendarView.setMaxDate(System.currentTimeMillis() + 1000);
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
