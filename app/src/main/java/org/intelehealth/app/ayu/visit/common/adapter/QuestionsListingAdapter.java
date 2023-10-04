@@ -83,10 +83,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private String engineVersion = "3.0";
 
     public String getEngineVersion() {
+        Log.v(TAG, "engineVersion - "+engineVersion);
         return engineVersion;
     }
 
     public void setEngineVersion(String engineVersion) {
+        Log.v(TAG, "setEngineVersion - "+engineVersion);
         if (engineVersion == null) return;
         this.engineVersion = engineVersion;
     }
@@ -166,11 +168,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     private JSONObject mThisScreenLanguageJsonObject = new JSONObject();
 
     public void addItem(Node node, String engineVersion) {
-        Log.v(TAG, "addItem()");
+        Log.v(TAG, "addItem() engineVersion - "+engineVersion);
         mItemList.add(node);
         int key = mItemList.size() - 1;
         if (!mIndexMappingHashMap.containsKey(key)) mIndexMappingHashMap.put(key, mRootIndex);
 
+        if(engineVersion==null || engineVersion.isEmpty()){
+            engineVersion = "3.0";
+        }
         if (!mMindMapVersionMappingHashMap.containsKey(key)) {
             setEngineVersion(engineVersion);
             mMindMapVersionMappingHashMap.put(key, engineVersion);

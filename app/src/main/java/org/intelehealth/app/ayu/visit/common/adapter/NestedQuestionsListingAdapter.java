@@ -80,10 +80,12 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private String engineVersion;
 
     public String getEngineVersion() {
+        Log.v(TAG, "engineVersion - "+engineVersion);
         return engineVersion;
     }
 
     public void setEngineVersion(String engineVersion) {
+        Log.v(TAG, "setEngineVersion - "+engineVersion);
         this.engineVersion = engineVersion;
     }
 
@@ -652,11 +654,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
      * @param isSuperNested
      */
     private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
-
+        Log.v(TAG, "showOptionsDataV2 - " + getEngineVersion());
         holder.singleComponentContainer.removeAllViews();
         holder.tvQuestionDesc.setVisibility(View.VISIBLE);
         holder.optionRecyclerView.setVisibility(View.VISIBLE);
-
+        Log.v(TAG, "showOptionsDataV2 isMultiChoice - " + selectedNode.isMultiChoice());
         if (selectedNode.isMultiChoice()) {
             holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
             holder.submitButton.setVisibility(View.VISIBLE);
@@ -675,6 +677,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 AdapterUtils.setToDefault(holder.skipButton);
             }
         }
+
+        Log.v(TAG, "showOptionsDataV2 tvQuestionDesc - " + holder.tvQuestionDesc.getText());
 
         if (selectedNode.isRequired()) {
             holder.skipButton.setVisibility(View.GONE);
@@ -776,6 +780,33 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
             holder.submitButton.setVisibility(View.GONE);
             holder.skipButton.setVisibility(View.GONE);
         } else {
+
+            if (selectedNode.isMultiChoice()) {
+                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_one_or_more));
+                holder.submitButton.setVisibility(View.VISIBLE);
+                holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+                if (selectedNode.isDataCaptured()) {
+                    AdapterUtils.setToDisable(holder.skipButton);
+                } else {
+                    AdapterUtils.setToDefault(holder.skipButton);
+                }
+            } else {
+                holder.tvQuestionDesc.setText(mContext.getString(R.string.select_any_one));
+                holder.submitButton.setVisibility(View.GONE);
+                if (selectedNode.isDataCaptured()) {
+                    AdapterUtils.setToDisable(holder.skipButton);
+                } else {
+                    AdapterUtils.setToDefault(holder.skipButton);
+                }
+            }
+
+            Log.v(TAG, "showOptionsDataV2 tvQuestionDesc - " + holder.tvQuestionDesc.getText());
+
+            if (selectedNode.isRequired()) {
+                holder.skipButton.setVisibility(View.GONE);
+            } else {
+                holder.skipButton.setVisibility(View.VISIBLE);
+            }
 
             holder.superNestedRecyclerView.setVisibility(View.GONE);
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(mContext);
@@ -1223,7 +1254,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
@@ -1441,7 +1472,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         final EditText editText = view.findViewById(R.id.actv_reasons);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
@@ -1581,7 +1612,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
         final EditText editText = view.findViewById(R.id.actv_reasons);
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
@@ -1732,7 +1763,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         Log.v(TAG, "addDateView - " + node.getLanguage());
         String langVal = node.getLanguage();
         Button skipButton = view.findViewById(R.id.btn_skip);
-        if(node.isSkipped()){
+        if (node.isSkipped()) {
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
