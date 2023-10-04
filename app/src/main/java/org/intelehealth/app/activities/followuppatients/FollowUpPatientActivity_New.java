@@ -211,9 +211,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
     }
 
     private void resetData() {
-        //  recent_older_visibility(todays_modelList, weeks_modelList, months_modelList);
-//        Log.d("TAG", "resetData followup: " + todays_modelList.size() + ", " + weeks_modelList.size() + ", " + months_modelList.size());
-
         adapter_new = new FollowUpPatientAdapter_New(todaysFollowUpDates, this);
         rv_today.setNestedScrollingEnabled(false);
         rv_today.setAdapter(adapter_new);
@@ -226,21 +223,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         rv_month.setNestedScrollingEnabled(false);
         rv_month.setAdapter(adapter_new);
     }
-
-/*
-    private void recent_older_visibility(List<FollowUpModel> todays, List<FollowUpModel> weeks, List<FollowUpModel> months) {
-
-        if (recent.size() == 0 || recent.size() < 0)
-            recent_nodata.setVisibility(View.VISIBLE);
-        else
-            recent_nodata.setVisibility(View.GONE);
-
-        if (older.size() == 0 || older.size() < 0)
-            older_nodata.setVisibility(View.VISIBLE);
-        else
-            older_nodata.setVisibility(View.GONE);
-    }
-*/
 
     private void allCountVisibility(int allCount) {
         if (allCount == 0 || allCount < 0) {
@@ -266,15 +248,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                List<FollowUpModel> todayList = getAllPatientsFromDB_Today();
-//                todayList = getChiefComplaint(todayList);
-//
-//                List<FollowUpModel> weekList = getAllPatientsFromDB_thisWeek();
-//                weekList = getChiefComplaint(weekList);
-//
-//                List<FollowUpModel> monthList = getAllPatientsFromDB_thisMonth();
-//                monthList = getChiefComplaint(monthList);
-
 
                 List<FollowUpModel> finalTodayList = todaysFollowUpDates;
                 List<FollowUpModel> finalWeekList = weeksFollowUpDates;
@@ -403,11 +376,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
     private void followup_data() {
         fetchAndSegregateData();
-
-//        todays_FollowupVisits();
-//        thisWeeks_FollowupVisits();
-//        thisMonths_FollowupVisits();
-//        totalCounts = totalCounts_today + totalCounts_week + totalCounts_month;
     }
 
     private void fetchAndSegregateData() {
@@ -416,21 +384,18 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             List<FollowUpModel> initialFollowUpPatients = getAllPatientsFromDB_thisMonth();
-
             if (initialFollowUpPatients.isEmpty()) {
+                commonLoadingDialog.dismiss();
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(true));
             } else {
                 finalMonthsFollowUpDates = initialFollowUpPatients;
                 runOnUiThread(() -> shouldShowNoDataTextViewForAllRecyclerViews(false));
                 getChiefComplaint(initialFollowUpPatients);
-
                 todaysFollowUpDates = getTodaysVisitsFromList(initialFollowUpPatients);
                 initialFollowUpPatients.removeAll(todaysFollowUpDates);
-
                 weeksFollowUpDates = getWeeksVisitsFromList(initialFollowUpPatients);
                 finalMonthsFollowUpDates.removeAll(todaysFollowUpDates);
                 finalMonthsFollowUpDates.removeAll(weeksFollowUpDates);
-
                 runOnUiThread(() -> {
                     setTodaysDatesInRecyclerView(todaysFollowUpDates);
                     setWeeksDatesInRecyclerView(weeksFollowUpDates);
@@ -476,7 +441,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
 
     private List<FollowUpModel> getWeeksVisitsFromList(List<FollowUpModel> followUpList) {
         List<FollowUpModel> weekFollowUpList = new ArrayList<>();
-
         for (FollowUpModel followUpModel : followUpList) {
             String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
             Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
@@ -484,14 +448,12 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 weekFollowUpList.add(followUpModel);
             }
         }
-
         return weekFollowUpList;
     }
 
     private List<FollowUpModel> getTodaysVisitsFromList(List<FollowUpModel> followUpList) {
         List<FollowUpModel> todaysFollowUpList = new ArrayList<>();
         Date todaysDate = DateAndTimeUtils.getCurrentDateWithoutTime();
-
         for (FollowUpModel followUpModel : followUpList) {
             String followUpDate = DateAndTimeUtils.extractDateFromString(followUpModel.getFollowup_date());
             Date followUpDateObject = DateAndTimeUtils.convertStringToDateObject(followUpDate, "yyyy-MM-dd", "en");
@@ -499,7 +461,6 @@ public class FollowUpPatientActivity_New extends AppCompatActivity {
                 todaysFollowUpList.add(followUpModel);
             }
         }
-
         return todaysFollowUpList;
     }
 
