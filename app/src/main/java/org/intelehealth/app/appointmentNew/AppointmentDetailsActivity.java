@@ -315,7 +315,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 Log.d(TAG, "initUI: chief_complaint_value : " + chief_complaint_value);
                 chief_complaint_value = chief_complaint_value.substring(first, last + 4);
                 tvChiefComplaintTxt.setText(Html.fromHtml(chief_complaint_value));
-            }else{
+            } else {
                 chief_complaint_value = chief_complaint_value.replaceAll("<.*?>", "");
                 System.out.println(chief_complaint_value);
                 Log.v(TAG, chief_complaint_value);
@@ -368,12 +368,12 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
 
 
             btnRescheduleAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment,patientName);
+                String subtitle = getResources().getString(R.string.sure_to_reschedule_appointment, patientName);
                 rescheduleAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.reschedule_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
             btnCancelAppointment.setOnClickListener(v -> {
-                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment,patientName);
+                String subtitle = getResources().getString(R.string.sure_to_cancel_appointment, patientName);
                 cancelAppointment(AppointmentDetailsActivity.this, getResources().getString(R.string.cancel_appointment_new), subtitle, getResources().getString(R.string.yes), getResources().getString(R.string.no));
 
             });
@@ -469,7 +469,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                 layoutPrescButtons.setVisibility(View.GONE); // show remind btn for presc to be given as its more than days.
             }
             String timeText1 = getResources().getString(R.string.pending_since) + " " + modifiedDate.replace("ago", "");
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 timeText1 = modifiedDate.replace("पहले", "") + "से पेंडिंग है";
             tvPrescStatus.setText(timeText1);
             tvPrescStatus.setTextColor(getResources().getColor(R.color.red));
@@ -537,7 +537,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             stateAppointmentPrescription.setVisibility(View.GONE);
 
             mScheduleAppointmentTextView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnCancelAppointment.setVisibility(View.VISIBLE);
             btnRescheduleAppointment.setVisibility(View.VISIBLE);
             mScheduleAppointmentTextView.setVisibility(View.GONE);
@@ -683,45 +683,41 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
             if (minutes > 0) {
                 isVisitStartsIn = true;
                 long hours = minutes / 60;
+                long mins = minutes % 60;
                 if (minutes >= 60) {
                     if (hours > 12) {
-                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + "," + getResources().getString(R.string.at) + " " + slotTime;
-                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        timeText = DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate) + ", " + getResources().getString(R.string.at) + " " + slotTime;
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     } else {
-                        timeText =  getResources().getString(R.string.in) + " " + hours + " " + getResources().getString(R.string.hours_at) + " " + slotTime;
-                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                            timeText = hours + " " + getResources().getString(R.string.hours) + " " + getResources().getString(R.string.in) + ", " + slotTime + " " + getResources().getString(R.string.at);
+                        if (hours > 1) {
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                                timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
+                                        mins + " " + context.getString(R.string.minutes_txt) + ", " +
+                                        context.getString(R.string.at) + " " + slotTime;
+                            else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                timeText = hours + " " + context.getString(R.string.hours) + " " + mins + " " + context.getString(R.string.minutes_txt) + " "
+                                        + context.getString(R.string.in) + " , " + slotTime + " " + context.getString(R.string.at);
+                        }
                     }
                 } else {
-                    if (hours > 1) {
-                        if(sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                            timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
-                                    minutes + " " + context.getString(R.string.minutes_txt) + ", " +
-                                    context.getString(R.string.at) + " " + slotTime;
-                        else  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                            timeText = hours + " " + context.getString(R.string.hours) + " " + minutes + " " + context.getString(R.string.minutes_txt) + " "
-                                    + context.getString(R.string.in) + " , " + slotTime + " " + context.getString(R.string.at);
-                    }
-                    else {
-                        if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
-                            timeText = getResources().getString(R.string.in) + " " + minutes + " " + getResources().getString(R.string.minutes_txt);
-                        else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                            timeText = minutes + " " + getResources().getString(R.string.minutes_txt) + " " + getResources().getString(R.string.in);
-                    }
-
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
+                        timeText = getResources().getString(R.string.in) + " " + mins + " " + getResources().getString(R.string.minutes_txt);
+                    else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        timeText = mins + " " + getResources().getString(R.string.minutes_txt) + " " + getResources().getString(R.string.in);
                 }
-            } else {
-                isVisitStartsIn = false;
+
             }
-
-
-        } catch (ParseException e) {
-            Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
-            e.printStackTrace();
+            else {
+            isVisitStartsIn = false;
         }
-        return timeText;
+    } catch(ParseException e)
+    {
+        Log.d(TAG, "onBindViewHolder: date exce : " + e.getLocalizedMessage());
+        e.printStackTrace();
     }
+        return timeText;
+}
 
 
     public void cancelAppointment(Context context, String title, String subTitle,
