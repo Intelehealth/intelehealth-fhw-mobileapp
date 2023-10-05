@@ -991,7 +991,7 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
         //Sugar Level vaidations
-        if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
+      /*  if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
                 !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
             if (mSugarFasting.getText().toString().isEmpty()) {
                 mSugarFasting.requestFocus();
@@ -1003,7 +1003,13 @@ public class VitalsActivity extends AppCompatActivity {
                 return;
             }
         }
+*/
+            if (mSugarFasting.getText().toString().isEmpty()) {
+                mSugarFasting.requestFocus();
+                mSugarFasting.setError(getString(R.string.enter_field));
+                return;
 
+        }
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
       //  values.add(mHeight);

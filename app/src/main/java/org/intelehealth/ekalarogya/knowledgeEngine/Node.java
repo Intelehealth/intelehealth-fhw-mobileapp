@@ -2043,9 +2043,9 @@ public class Node implements Serializable {
         endText.setVisibility(View.GONE);
         middleText.setText(" - ");
 
-        startPicker.setMinValue(0);
+        startPicker.setMinValue(1);
         startPicker.setMaxValue(100);
-        endPicker.setMinValue(0);
+        endPicker.setMinValue(1);
         endPicker.setMaxValue(100);
         rangeDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -2165,9 +2165,9 @@ public class Node implements Serializable {
                 context.getString(R.string.Years)}; //supports Hindi Translations as well...
 
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
-        unitPicker.setMinValue(0);
+        unitPicker.setMinValue(1);
         unitPicker.setMaxValue(4);
 
         EditText input = findInput(quantityPicker);
@@ -2751,9 +2751,9 @@ public class Node implements Serializable {
         endText.setVisibility(View.GONE);
         middleText.setText(" - ");
 
-        startPicker.setMinValue(0);
+        startPicker.setMinValue(1);
         startPicker.setMaxValue(100);
-        endPicker.setMinValue(0);
+        endPicker.setMinValue(1);
         endPicker.setMaxValue(100);
         rangeDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
