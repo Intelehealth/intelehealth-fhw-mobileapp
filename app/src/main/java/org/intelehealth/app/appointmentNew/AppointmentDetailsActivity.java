@@ -690,7 +690,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity implements Net
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             timeText = StringUtils.en_hi_dob_updated(DateAndTimeUtils.getDateWithDayAndMonthFromDDMMFormat(soltDate)) + ", " + slotTime + " " + getResources().getString(R.string.at);
                     } else {
-                        if (hours > 1) {
+                        if (hours >= 1) {
                             if (sessionManager.getAppLanguage().equalsIgnoreCase("en"))
                                 timeText = context.getString(R.string.in) + " " + hours + " " + context.getString(R.string.hours) + " " +
                                         mins + " " + context.getString(R.string.minutes_txt) + ", " +
