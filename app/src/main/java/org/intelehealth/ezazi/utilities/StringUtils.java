@@ -15,7 +15,12 @@
 package org.intelehealth.ezazi.utilities;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
+import android.text.style.ClickableSpan;
+import android.view.View;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.util.List;
@@ -3706,5 +3711,18 @@ public final class StringUtils {
             return val;
         }
         return val;
+    }
+
+    public static void setClickableSpan(SpannableStringBuilder builder, String clickableString, View.OnClickListener clickListener){
+        String originalString = builder.toString();
+        int startIdx = originalString.indexOf(clickableString);
+        int endIdx = startIdx + clickableString.length();
+        builder.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                clickListener.onClick(widget);
+//                Toast.makeText(PremiumActivity.this, link, Toast.LENGTH_SHORT).show();
+            }
+        },startIdx,endIdx,0);
     }
 }

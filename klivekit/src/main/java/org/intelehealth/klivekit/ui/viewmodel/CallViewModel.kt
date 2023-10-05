@@ -30,6 +30,7 @@ import io.livekit.android.room.track.LocalVideoTrack
 import io.livekit.android.room.track.LocalVideoTrackOptions
 import io.livekit.android.room.track.Track
 import io.livekit.android.room.track.VideoPreset169
+import io.livekit.android.room.track.VideoPreset43
 import io.livekit.android.room.track.VideoTrack
 import io.livekit.android.util.LoggingLevel
 import io.livekit.android.util.flow
@@ -57,24 +58,25 @@ open class CallViewModel(
 ) : ViewModel() {
 
     val options = RoomOptions(
-        audioTrackCaptureDefaults = LocalAudioTrackOptions(
-            noiseSuppression = true,
-            echoCancellation = true,
-            autoGainControl = true,
-            highPassFilter = true,
-            typingNoiseDetection = true,
-        ),
+//        audioTrackCaptureDefaults = LocalAudioTrackOptions(
+//            noiseSuppression = true,
+//            echoCancellation = true,
+//            autoGainControl = true,
+//            highPassFilter = true,
+//            typingNoiseDetection = true,
+//        ),
         videoTrackCaptureDefaults = LocalVideoTrackOptions(
             deviceId = "",
             position = CameraPosition.FRONT,
-            captureParams = VideoPreset169.QVGA.capture,
+            captureParams = VideoPreset43.FHD.capture,
         ),
         audioTrackPublishDefaults = AudioTrackPublishDefaults(
             audioBitrate = 20_000,
             dtx = true,
         ),
         videoTrackPublishDefaults = VideoTrackPublishDefaults(
-            videoEncoding = VideoPreset169.QVGA.encoding,
+            videoEncoding = VideoPreset169.VGA.encoding,
+//            videoCodec = VideoCodec.VP8.codecName
         ),
         adaptiveStream = true
     )
@@ -312,9 +314,9 @@ open class CallViewModel(
     private fun onParticipantDisconnected(participantDisconnected: RoomEvent.ParticipantDisconnected) {
         Timber.e { "onParticipantDisconnected => ${participantDisconnected.participant.sid}" }
         Timber.e { "onParticipantDisconnected => ${remoteParticipant?.sid ?: "null"}" }
-        remoteParticipant?.let {
-            mutableRemoteParticipantDisconnected.postValue(participantDisconnected.participant.sid == it.sid)
-        }
+//        remoteParticipant?.let {
+//            mutableRemoteParticipantDisconnected.postValue(participantDisconnected.participant.sid == it.sid)
+//        }
     }
 
     private fun onDisconnected(event: RoomEvent.Disconnected) {

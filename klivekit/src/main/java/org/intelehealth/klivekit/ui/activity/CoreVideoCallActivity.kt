@@ -130,7 +130,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         socketViewModel.eventCallCancelByDoctor.observe(this) {
             if (it) {
                 Timber.e { "Remain time up mil ${videoCallViewModel.remainTimeupMilliseconds}" }
-//                sayBye("Call canceled by ${args.doctorName}")
+                sayBye("Call canceled by ${args.doctorName}")
             }
         }
         videoCallViewModel.remoteCallDisconnectedReason.observe(this) {
