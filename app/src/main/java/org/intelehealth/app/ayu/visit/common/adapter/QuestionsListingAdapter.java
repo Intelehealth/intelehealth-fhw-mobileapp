@@ -349,6 +349,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "location":
                     //askLocation(questionNode, context, adapter);
+                    addTextEnterView(mItemList.get(position), genericViewHolder, position);
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
@@ -356,6 +357,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
+                    addTextEnterView(mItemList.get(position), genericViewHolder, position);
                     break;
                 case "duration":
                     // askDuration(questionNode, context, adapter);
@@ -380,7 +382,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     //if (mIsForPhysicalExam)
                     //    showOptionsData(genericViewHolder, mPhysicalExam.getExamNode(position).getOption(0).getOptionsList(), position);
                     //else
-                    showOptionsData(mItemList.get(position), genericViewHolder, mItemList.get(position).getOptionsList(), position, false);
+                    showOptionsData(mItemList.get(position), genericViewHolder, mItemList.get(position).getOptionsList(), position, false, true);
                     break;
             }
         }
@@ -807,7 +809,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         //recyclerView.scrollToPosition(0);
     }
 
-    private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isRootNodeQuestion) {
         //holder.nextRelativeLayout.setVisibility(View.GONE);
         holder.isParallelMultiNestedNode = false;
         holder.singleComponentContainer.removeAllViews();
@@ -845,6 +847,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "location":
                     //askLocation(questionNode, context, adapter);
+                    addTextEnterView(options.get(0), holder, index);
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
@@ -852,6 +855,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
+                    addTextEnterView(options.get(0), holder, index);
                     break;
                 case "duration":
                     // askDuration(questionNode, context, adapter);
@@ -1032,7 +1036,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (!havingNestedQuestion) {
                 havingNestedQuestion = selectedNode.isHavingMoreNestedQuestion();
             }
-            if (havingNestedQuestion || Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType()) {
+            if (!isRootNodeQuestion && (havingNestedQuestion || Node.CHILD_QUESTION == selectedNode.foundTheNestedQuestionType())) {
                 holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
                 //questionTextView.setText(options.get(0).findDisplay());
                 holder.nestedQuestionsListingAdapter.clearItems();
@@ -1249,7 +1253,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 addDateView(node, holder, index);
                                 break;
                             case "location":
-                                //askLocation(questionNode, context, adapter);
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askText(questionNode, context, adapter);
+                                addTextEnterView(node, holder, index);
                                 break;
                             case "number":
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1258,7 +1265,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 addNumberView(node, holder, index);
                                 break;
                             case "area":
-                                // askArea(questionNode, context, adapter);
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askText(questionNode, context, adapter);
+                                addTextEnterView(node, holder, index);
                                 break;
                             case "duration":
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1289,7 +1299,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             case "options":
                                 // openCamera(context, imagePath, imageName);
                                 //holder.superNestedContainerLinearLayout.removeAllViews();
-                                showOptionsData(node, holder, node.getOptionsList(), index, node.getOptionsList().size() > 1);
+                                showOptionsData(node, holder, node.getOptionsList(), index, node.getOptionsList().size() > 1, false);
                                 break;
                         }
                         //notifyDataSetChanged();
@@ -1311,9 +1321,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     }
 
-    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isRootNodeQuestion) {
         if (getEngineVersion().equalsIgnoreCase("3.0")) {
-            showOptionsDataV2(selectedNode, holder, options, index, isSuperNested);
+            showOptionsDataV2(selectedNode, holder, options, index, isSuperNested, isRootNodeQuestion);
             return;
         }
         //holder.nextRelativeLayout.setVisibility(View.GONE);
@@ -1353,6 +1363,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "location":
                     //askLocation(questionNode, context, adapter);
+                    addTextEnterView(options.get(0), holder, index);
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
@@ -1360,6 +1371,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
+                    addTextEnterView(options.get(0), holder, index);
                     break;
                 case "duration":
                     // askDuration(questionNode, context, adapter);
@@ -1754,6 +1766,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 break;
                             case "location":
                                 //askLocation(questionNode, context, adapter);
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askText(questionNode, context, adapter);
+                                addTextEnterView(node, holder, index);
                                 break;
                             case "number":
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1763,6 +1779,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 break;
                             case "area":
                                 // askArea(questionNode, context, adapter);
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askText(questionNode, context, adapter);
+                                addTextEnterView(node, holder, index);
                                 break;
                             case "duration":
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1793,7 +1813,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             case "options":
                                 // openCamera(context, imagePath, imageName);
                                 //holder.superNestedContainerLinearLayout.removeAllViews();
-                                showOptionsData(node, holder, node.getOptionsList(), index, true);
+                                showOptionsData(node, holder, node.getOptionsList(), index, true, false);
                                 break;
                         }
                         //notifyDataSetChanged();

@@ -3316,7 +3316,6 @@ public class Node implements Serializable {
 
 
     public int foundTheNestedQuestionType() {
-        Log.v(TAG, "nestedLeve - " + getText() + " - " + nestedLeve);
         int type = -1;
         if (getOptionsList() != null) {
             if (getOptionsList().size() == 1) {
@@ -3327,22 +3326,18 @@ public class Node implements Serializable {
                 type = CHILD_QUESTION;
             }
         }
-        Log.v(TAG, "type - " + type);
         return type;
     }
 
     public boolean isContainsTheQuestionBeforeOptions() {
-        Log.v(TAG, "isContainsTheQuestionBeforeOptions - " + getText());
         boolean flag = false;
         if (getOptionsList() != null) {
             flag = getOptionsList().size() == 1;
         }
-        Log.v(TAG, "isContainsTheQuestionBeforeOptions - " + flag);
         return flag;
     }
 
     public boolean isHavingMoreNestedQuestion() {
-        Log.v(TAG, "isHavingMoreNestedQuestion - " + getText());
         if (isHavingNestedQuestion()) {
             return true;
         }
@@ -3356,12 +3351,10 @@ public class Node implements Serializable {
                 }
             }
         }
-        Log.v(TAG, "isHavingMoreNestedQuestion - " + flag);
         return flag;
     }
 
     public boolean isSingleNodeWithNestedQA() {
-        Log.v(TAG, "isSingleNodeWithNestedQA - " + getText());
         if (isHavingNestedQuestion()) {
             return true;
         }
@@ -3374,7 +3367,6 @@ public class Node implements Serializable {
             }
 
         }
-        Log.v(TAG, "isSingleNodeWithNestedQA - " + flag);
         return flag;
     }
 
@@ -3419,7 +3411,7 @@ public class Node implements Serializable {
                 } else {
 
                     stringsList.add(question + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    stringsList.add(mOptions.get(i).formQuestionAnswerV2(level + 1));
                     Log.i(TAG, "ipt: stringsList " + stringsList);
                 }
             } else if (mOptions.get(i).getText() != null &&
@@ -3432,9 +3424,9 @@ public class Node implements Serializable {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                    stringsList.add(mOptions.get(i).formQuestionAnswerV2(level + 1));
                 }
-
+                String v = formQuestionAnswerForAssociateSymptomsV2(level);
                 if (mOptions.get(i).getOptionsList().size() > 0) {
 
                     for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
@@ -3444,7 +3436,7 @@ public class Node implements Serializable {
 
                             if (!mOptions.get(i).isTerminal()) {
                                 stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                                stringsList.add(mOptions.get(i).formQuestionAnswerV2(level + 1));
                             }
                         }
                     }

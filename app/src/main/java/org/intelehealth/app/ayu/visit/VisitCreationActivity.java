@@ -5,7 +5,6 @@ import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -59,7 +58,6 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -367,7 +365,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
                         showPastMedicalHistoryFragment(isEditMode);
                     } else if (caseNo == STEP_5_FAMILY_HISTORY) {
                         showFamilyHistoryFragment(isEditMode);
-                    }else if (caseNo == STEP_3_PHYSICAL_EXAMINATION){
+                    } else if (caseNo == STEP_3_PHYSICAL_EXAMINATION) {
                         mStep3ProgressBar.setProgress(100);
                         setTitle(getResources().getString(R.string._phy_examination));
                         mSummaryFrameLayout.setVisibility(View.GONE);
@@ -722,7 +720,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
 
     @Override
     public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
-        deleteImageFromDatabase(nodeIndex,imageIndex, image);
+        deleteImageFromDatabase(nodeIndex, imageIndex, image);
     }
 
     @Override
@@ -1015,6 +1013,8 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
         patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0);
+        if (mPastMedicalHistoryNode.getEngineVersion() != null && mPastMedicalHistoryNode.getEngineVersion().equals("4.0"))
+            patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswerV2(0);
         while (patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
@@ -1195,13 +1195,13 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     }
 
 
-    private void deleteImageFromDatabase(int nodeIndex,int imageIndex, String imageName) {
+    private void deleteImageFromDatabase(int nodeIndex, int imageIndex, String imageName) {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
             String obsUUID = imageName.substring(imageName.lastIndexOf("/") + 1).split("\\.")[0];
             imagesDAO.deleteImageFromDatabase(obsUUID);
-            imageUtilsListener.onImageReadyForDelete(nodeIndex,imageIndex, imageName);
+            imageUtilsListener.onImageReadyForDelete(nodeIndex, imageIndex, imageName);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1299,6 +1299,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private AlertDialog mImagePickerAlertDialog;
+
     private void selectImage() {
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
             @Override
@@ -1376,7 +1377,7 @@ public class VisitCreationActivity extends AppCompatActivity implements VisitCre
     public interface ImageUtilsListener {
         void onImageReady(Bundle bundle);
 
-        void onImageReadyForDelete(int nodeIndex,int imageIndex, String imageName);
+        void onImageReadyForDelete(int nodeIndex, int imageIndex, String imageName);
     }
 
     private ActivityResultLauncher<String> requestPermissionLauncher =

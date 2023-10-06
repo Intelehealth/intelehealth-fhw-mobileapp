@@ -308,12 +308,16 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 break;
             case "location":
                 //askLocation(questionNode, context, adapter);
+                genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
+                addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
                 break;
             case "number":
                 addNumberView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
                 break;
             case "area":
                 // askArea(questionNode, context, adapter);
+                genericViewHolder.singleComponentContainer.setVisibility(View.VISIBLE);
+                addTextEnterView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
                 break;
             case "duration":
                 addDurationView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
@@ -334,7 +338,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         (currentNode.getOptionsList().get(0).getOptionsList() == null || currentNode.getOptionsList().get(0).getOptionsList().isEmpty())) {
                     routeByType(genericViewHolder, currentNode, currentNode.getOptionsList().get(0), position, isSuperNested, false);
                 } else {
-                    showOptionsData(currentNode, genericViewHolder, currentNode.getOptionsList(), position, isSuperNested);
+                    showOptionsData(currentNode, genericViewHolder, currentNode.getOptionsList(), position, isSuperNested , isGotFromChipSelected);
                 }
                 break;
         }
@@ -675,7 +679,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
      * @param index
      * @param isSuperNested
      */
-    private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    private void showOptionsDataV2(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested, boolean isGotFromChipSelected) {
         Log.v(TAG, "showOptionsDataV2 - " + getEngineVersion());
         holder.singleComponentContainer.removeAllViews();
         holder.optionRecyclerView.setVisibility(View.VISIBLE);
@@ -683,7 +687,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         //mNestedLevel= mNestedLevel + 1;
         Log.v(TAG, "NestedQuestionsListingAdapter node - " + new Gson().toJson(selectedNode));
         Log.v(TAG, "NestedQuestionsListingAdapter mNestedLevel - " + mNestedLevel);
-        if (selectedNode.isHavingNestedQuestion() || selectedNode.isHavingMoreNestedQuestion()) {
+        if (!isGotFromChipSelected && (selectedNode.isHavingNestedQuestion() || selectedNode.isHavingMoreNestedQuestion())) {
             //if (isSuperNested) {
             //if(mNestedLevel%2==0){
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -883,9 +887,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
      * @param index
      * @param isSuperNested
      */
-    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested) {
+    private void showOptionsData(final Node selectedNode, final GenericViewHolder holder, List<Node> options, int index, boolean isSuperNested,boolean isGotFromChipSelected) {
         if (getEngineVersion().equalsIgnoreCase("3.0")) {
-            showOptionsDataV2(selectedNode, holder, options, index, isSuperNested);
+            showOptionsDataV2(selectedNode, holder, options, index, isSuperNested, isGotFromChipSelected);
             return;
         }
         Log.v(TAG, "showOptionsData");
