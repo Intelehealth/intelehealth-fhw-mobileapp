@@ -411,7 +411,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
         //rangeSlider.setLabelBehavior(LABEL_ALWAYS_VISIBLE); //Label always visible" nothing yet ?
         TextView rangeTextView = view.findViewById(R.id.btn_values);
-        TextView submitTextView = view.findViewById(R.id.btn_submit);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
 
         Button skipButton = view.findViewById(R.id.btn_skip);
 
@@ -421,20 +423,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 node.setSelected(false);
+                holder.node.setSelected(false);
+
+                node.setDataCaptured(false);
+                holder.node.setDataCaptured(false);
                 mOnItemSelection.onSelect(node, index, true, null);
             }
         });
 
-        if (node.getLanguage() != null && !node.getLanguage().isEmpty() && !node.getLanguage().equalsIgnoreCase("%")
-                && node.getLanguage().equalsIgnoreCase(" to ")) {
-            String[] vals = node.getLanguage().split(" to ");
-            rangeTextView.setText(vals[0] + " " + mContext.getString(R.string.to) + " " + vals[1]);
+        if (node.isSelected() && node.getLanguage() != null && node.isDataCaptured()) {
+            String[] vals = node.getLanguage().split("-");
+            rangeTextView.setText(vals[0].trim() + " " + mContext.getString(R.string.to) + " " + vals[1].trim());
             List<Float> list = new ArrayList<>();
             list.add(Float.valueOf(vals[0]));
             list.add(Float.valueOf(vals[1]));
             rangeSlider.setValues(list);
         }
-        submitTextView.setOnClickListener(new View.OnClickListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (rangeTextView.getText().toString().equalsIgnoreCase("---")) {
@@ -443,7 +448,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     List<Float> values = rangeSlider.getValues();
                     int x = values.get(0).intValue();
                     int y = values.get(1).intValue();
-                    String durationString = x + " " + mContext.getString(R.string.to) + " " + y;
+                    String durationString = x + " - " + y;
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", durationString));
                     } else {
@@ -451,9 +456,24 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                         node.setText(durationString);
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
+
                     node.setSelected(true);
-                    notifyItemChanged(index);
-                    mOnItemSelection.onSelect(node, index, false, null);
+                    holder.node.setSelected(true);
+
+                    node.setDataCaptured(true);
+                    holder.node.setDataCaptured(true);
+
+
+
+                    AdapterUtils.setToDisable(skipButton);
+                    node.setSkipped(false);
+                    AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, new AdapterUtils.OnFinishActionListener() {
+                        @Override
+                        public void onFinish() {
+                            notifyItemChanged(index);
+                            mOnItemSelection.onSelect(node, index, false, null);
+                        }
+                    });
                 }
             }
         });
@@ -2435,7 +2455,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View view) {
                 String d = (String) displayDateButton.getTag();
-                if (!d.contains("/")) {
+                if (d!=null && !d.contains("/")) {
                     Toast.makeText(mContext, mContext.getString(R.string.please_select_date), Toast.LENGTH_SHORT).show();
                 } else {
                     /*Calendar cal = Calendar.getInstance();
