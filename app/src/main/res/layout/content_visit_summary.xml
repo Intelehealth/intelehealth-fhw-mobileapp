@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
-    tools:showIn="@layout/activity_visit_summary">
+    tools:showIn="@layout/activity_visit_summary"
+    tools:layout_marginTop="-2500dp">
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
     <!--Split the screen into two columns of cards-->
@@ -1691,6 +1692,43 @@
         <!--android:textSize="@dimen/card_content_sub_text_size" />-->
         <!--</RelativeLayout>-->
         <!--</android.support.v7.widget.CardView>-->
+
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/padding_card"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:id="@+id/rl_med_aid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/medication_and_aid"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="5dp"
+                    app:srcCompat="@drawable/ic_cloud_upload">
+
+                </ImageView>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"

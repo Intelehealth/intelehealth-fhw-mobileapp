@@ -103,6 +103,7 @@ import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivi
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
+import org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
@@ -291,7 +292,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
 
-    RelativeLayout uploadButton;
+    RelativeLayout uploadButton, rl_med_aid;
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
 
@@ -954,6 +955,7 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
+        rl_med_aid = findViewById(R.id.rl_med_aid);
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
@@ -1015,6 +1017,12 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
                 }
             }
         });
+
+        rl_med_aid.setOnClickListener(v -> {
+            Intent i = new Intent(context, Medication_Aid_Activity.class);
+            startActivity(i);
+        });
+
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

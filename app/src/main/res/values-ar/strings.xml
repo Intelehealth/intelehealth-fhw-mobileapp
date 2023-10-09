@@ -1630,6 +1630,7 @@
     <string name="prescription_received">تم استلام الوصفة/أمر الصرف</string>
     <string name="deleted_by">حذف بواسطة</string>
     <string name="added_by">إضافة من</string>
+    <string name="medication_and_aid">Medication and Aid</string>
 
 
 </resources>

@@ -44,6 +44,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
+        <activity
+            android:name=".activities.medicationAidActivity.Medication_Aid_Activity"
+            android:label="@string/medication_and_aid"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.textprintactivity.TextPrintESCActivity"
@@ -77,7 +83,7 @@
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name="org.intelehealth.app.services.firebase_services.RTCMessageReceiver"
+            android:name=".services.firebase_services.RTCMessageReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -323,18 +329,17 @@
         <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
-
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     -->
+        <!--  Set custom default icon. This is used when no icon is set for incoming notification messages. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/sila_logo" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message.  -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" /> <!-- Firebase Realdb -->
@@ -365,8 +370,7 @@
         <service
             android:name=".services.firebase_services.CallListenerBackgroundService"
             android:enabled="true"
-            android:exported="true"
-             />
+            android:exported="true" />
     </application>
 
 </manifest>
