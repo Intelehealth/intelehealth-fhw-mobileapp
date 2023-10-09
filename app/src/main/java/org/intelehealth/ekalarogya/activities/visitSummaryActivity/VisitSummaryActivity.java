@@ -99,6 +99,7 @@ import org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMed
 import org.intelehealth.ekalarogya.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.ekalarogya.activities.vitalActivity.VitalsActivity;
+import org.intelehealth.ekalarogya.activities.vitalActivity.VitalsUtils;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.appointment.ScheduleListingActivity;
@@ -1251,7 +1252,8 @@ public class VisitSummaryActivity extends BaseActivity {
             if (height.getValue().trim().equals("0")) {
                 heightView.setText("-");
             } else {
-                heightView.setText(height.getValue());
+                if (height != null)
+                    heightView.setText(VitalsUtils.convertHeightIntoFeets(height.getValue(), VisitSummaryActivity.this));
             }
         }
 
@@ -1308,7 +1310,7 @@ public class VisitSummaryActivity extends BaseActivity {
         if (sugarfasting.getValue() != null /*|| sugaraftermeal.getValue() != null*/
                 && !sugarfasting.getValue().equalsIgnoreCase("null")/* && !sugaraftermeal.getValue().equalsIgnoreCase("null")*/) {
             if (sugarfasting.getValue().trim().length() != 0/* && sugaraftermeal.getValue().trim().length() != 0*/) {
-             //   sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
+                //   sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
                 sugarFastAndMealView.setText(sugarfasting.getValue() /*+ " | " + sugaraftermeal.getValue()*/);
             } else {
                 sugarFastAndMealView.setText("");
@@ -3468,6 +3470,7 @@ public class VisitSummaryActivity extends BaseActivity {
             }
             case UuidDictionary.HEIGHT: //Height
             {
+                Log.d(TAG, "parseData:value ::  " + value);
                 height.setValue(value);
                 break;
             }
