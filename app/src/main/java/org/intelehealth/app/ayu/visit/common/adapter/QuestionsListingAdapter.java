@@ -500,6 +500,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 int x = values.get(0).intValue();
                 int y = values.get(1).intValue();
                 rangeTextView.setText(String.format(x + " " + mContext.getString(R.string.to) + " " + y));
+                AdapterUtils.setToDefault(skipButton);
+                AdapterUtils.setToDefault(submitButton);
             }
         });
 
@@ -2422,6 +2424,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             skipButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_18_white, 0);
             skipButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
             AdapterUtils.setToDisable(submitButton);
+        }
+        if(node.isDataCaptured()){
+            String dateString = node.getLanguage();
+            displayDateButton.setText(dateString);
+            displayDateButton.setTag(dateString);
         }
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
