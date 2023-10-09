@@ -993,13 +993,7 @@ public class VitalsActivity extends AppCompatActivity {
 
 
         //Sugar Level vaidations
-        if (mSugarFasting.getText().toString().isEmpty()) {
-            mSugarFasting.requestFocus();
-            mSugarFasting.setError(getString(R.string.enter_field));
-            return;
-        }
-
-        /*if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
+      /*  if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
                 !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
             if (mSugarFasting.getText().toString().isEmpty()) {
                 mSugarFasting.requestFocus();
@@ -1010,8 +1004,14 @@ public class VitalsActivity extends AppCompatActivity {
                 mSugarAfterMeal.setError(getString(R.string.enter_field));
                 return;
             }
-        }*/
+        }
+*/
+            if (mSugarFasting.getText().toString().isEmpty()) {
+                mSugarFasting.requestFocus();
+                mSugarFasting.setError(getString(R.string.enter_field));
+                return;
 
+        }
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
       //  values.add(mHeight);
@@ -1161,7 +1161,17 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
         // Sugar - end
-        
+
+        //for respiratory rate
+        String respiratoryRate = mResp.getText().toString().trim();
+        if (!respiratoryRate.isEmpty()) {
+            if ((Double.parseDouble(respiratoryRate) > Double.parseDouble(MAXIMUM_RESPIRATORY)) ||
+                    (Double.parseDouble(respiratoryRate) < Double.parseDouble(MINIMUM_RESPIRATORY))) {
+                mResp.requestFocus();
+                mResp.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                return;
+            }
+        }
 
 
         // Validations - END
