@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
@@ -23,12 +25,27 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private MedicationAidAdapter med_adapter, aid_adapter;
     private Context context = Medication_Aid_Activity.this;
     private List<String> med_list, aid_list;
+    private TextView tvDispense, tvAdminister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication_aid);
 
+        initUI();
+
+        tvDispense.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AdministerDispenseActivity.class);
+            startActivity(intent);
+        });
+        tvAdminister.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AdministerDispenseActivity.class);
+            startActivity(intent);
+        });
+
+    }
+
+    private void initUI() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -36,12 +53,10 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        initUI();
-    }
-
-    private void initUI() {
         rv_medication = findViewById(R.id.rv_medication);
         rv_aid = findViewById(R.id.rv_aid);
+        tvDispense = findViewById(R.id.tvDispense);
+        tvAdminister = findViewById(R.id.tvAdminister);
 
         med_list = new ArrayList<>();
         med_list.add("Crocin");

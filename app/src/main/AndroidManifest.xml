@@ -45,12 +45,18 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
         <activity
-            android:name=".activities.medicationAidActivity.Medication_Aid_Activity"
-            android:label="@string/medication_and_aid"
+            android:name=".activities.medicationAidActivity.AdministerDispenseActivity"
             android:exported="false"
+            android:label="@string/administer_dispense"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activities.medicationAidActivity.Medication_Aid_Activity"
+            android:exported="false"
+            android:label="@string/medication_and_aid"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.textprintactivity.TextPrintESCActivity"
             android:exported="false"
@@ -329,7 +335,7 @@
         <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
-        <!--  Set custom default icon. This is used when no icon is set for incoming notification messages. -->
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/sila_logo" />

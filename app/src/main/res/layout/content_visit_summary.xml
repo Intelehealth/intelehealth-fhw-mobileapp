@@ -7,6 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary"
+    android:layout_marginTop="-1000dp"
     >
     <!-- TODO: Replace hard-coded strings with @string resources-->
 

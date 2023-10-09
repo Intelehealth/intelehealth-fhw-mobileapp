@@ -1637,5 +1637,6 @@
     <string name="deleted_by">Deleted By</string>
     <string name="added_by">Added By</string>
     <string name="medication_and_aid">Medication and Aid</string>
+    <string name="administer_dispense">Administer/Dispense</string>
 
 </resources>

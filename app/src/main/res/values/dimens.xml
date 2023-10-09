@@ -88,4 +88,7 @@
     <dimen name="common_padding">8dip</dimen>
     <dimen name="header_text_size">16sp</dimen>
     <dimen name="content_text_size">13sp</dimen>
+
+    <dimen name="find_patient_hint_size">14sp</dimen>
+
 </resources>
