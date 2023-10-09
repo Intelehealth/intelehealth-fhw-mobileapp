@@ -709,7 +709,8 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        mSugarAfterMeal.addTextChangedListener(new TextWatcher() {
+        //commenting this validation as this field is no longer required.
+        /* mSugarAfterMeal.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -745,7 +746,7 @@ public class VitalsActivity extends AppCompatActivity {
                     mSugarAfterMeal.setSelection(str2.length());
                 }
             }
-        });
+        });*/
 
         FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
@@ -990,8 +991,15 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
 
+
         //Sugar Level vaidations
-        if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
+        if (mSugarFasting.getText().toString().isEmpty()) {
+            mSugarFasting.requestFocus();
+            mSugarFasting.setError(getString(R.string.enter_field));
+            return;
+        }
+
+        /*if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
                 !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
             if (mSugarFasting.getText().toString().isEmpty()) {
                 mSugarFasting.requestFocus();
@@ -1002,7 +1010,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mSugarAfterMeal.setError(getString(R.string.enter_field));
                 return;
             }
-        }
+        }*/
 
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
