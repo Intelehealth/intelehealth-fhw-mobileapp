@@ -246,7 +246,8 @@ public class SetupActivity extends AppCompatActivity {
 //        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
 //        mAndroidIdTextView.setText(deviceID);
 
-        showConfirmationDialog(getString(R.string.generic_warning), R.string.setup_internet);
+        //temp commited thison09-10-2023
+       // showConfirmationDialog(getString(R.string.generic_warning), R.string.setup_internet);
 
 
         if (!setupUrl.trim().isEmpty() || !setupUrl.trim().equalsIgnoreCase("")) {

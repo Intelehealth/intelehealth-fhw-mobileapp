@@ -118,8 +118,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
                 // check for this enc any obs created if yes than show submitted...
                 obsDAO = new ObsDAO();
                 submitted = obsDAO.checkObsAddedOrNt(encounterDTOList.get(position).getUuid(), sessionManager.getCreatorID());
-                try {
-                    Date timeDateType = time.contains("T") && time.contains("+") ? longTimeFormat.parse(time) : longTimeFormat_.parse(time);
+
+                    try {
+                        Date timeDateType = null;
+                        if (time != null && !time.isEmpty()) {
+                            String[] splitDate = time.split("-");
+
+                            if (time.contains("T") && time.contains("+")) {
+                                timeDateType = longTimeFormat.parse(time);
+                            } else if (splitDate.length == 4) { //If accessed from US app crashed. because US date does not have + in it
+                                timeDateType = longTimeFormat.parse(time);
+                            } else {
+                                timeDateType = longTimeFormat_.parse(time);
+                            }
+                        }
+                        // Date timeDateType = time.contains("T") && time.contains("+") ? longTimeFormat.parse(time) : longTimeFormat_.parse(time);//commented because of crash
+
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(timeDateType);
                     encounterTimeCalendar.setTime(timeDateType);
