@@ -1161,7 +1161,17 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
         // Sugar - end
-        
+
+        //for respiratory rate
+        String respiratoryRate = mResp.getText().toString().trim();
+        if (!respiratoryRate.isEmpty()) {
+            if ((Double.parseDouble(respiratoryRate) > Double.parseDouble(MAXIMUM_RESPIRATORY)) ||
+                    (Double.parseDouble(respiratoryRate) < Double.parseDouble(MINIMUM_RESPIRATORY))) {
+                mResp.requestFocus();
+                mResp.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                return;
+            }
+        }
 
 
         // Validations - END

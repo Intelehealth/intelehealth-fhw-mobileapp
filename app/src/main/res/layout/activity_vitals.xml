@@ -326,7 +326,7 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
-                                android:maxLength="3"
+                                android:maxLength="2"
                                 android:digits="1234567890"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
