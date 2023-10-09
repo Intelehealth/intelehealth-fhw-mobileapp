@@ -165,6 +165,61 @@ public class DateAndTimeUtils {
         return age;
     }
 
+    public static int getAgeInYear(String s, Context context) {
+        if (s == null) return 0;
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try {
+            date = originalFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (date == null) return 0;    // crash fix: AEAT-440
+
+        String formattedDate = targetFormat.format(date);  // 20120821
+
+        String[] components = formattedDate.split("\\-");
+
+        int year = Integer.parseInt(components[2]);
+        int month = Integer.parseInt(components[1]);
+        int day = Integer.parseInt(components[0]);
+
+        //call to function to pass this year and month for age mindmaps questions...
+        //getAge_Year_Month(year, month, day);
+
+        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+        LocalDate now = new LocalDate();                    //Today's date
+        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+
+        String age = "";
+        String tyears = "", tmonth = "", tdays = "";
+        //String xyears = "", xmonths = "";
+
+        if (period.getYears() > 0) {
+            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
+            //xyears = String.valueOf(period.getYears());
+        }
+        if (period.getMonths() > 0) {
+            tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
+            //xmonths = String.valueOf(period.getMonths());
+        }
+        if (period.getDays() > 0)
+            tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
+
+        age = tyears + " " + tmonth + " " + tdays;
+
+        int roundOffAge = period.getYears();
+        if(period.getYears() == 2 && period.getMonths() == 0 && period.getDays() == 0)
+            roundOffAge = 2;
+        else if(period.getYears() == 2 && (period.getMonths() > 0 || period.getDays() > 0))
+            roundOffAge = 3;
+
+        return roundOffAge;
+    }
+
+
 
     public static String getAgeInYearMonth(String s) {
         if (s == null) return "";

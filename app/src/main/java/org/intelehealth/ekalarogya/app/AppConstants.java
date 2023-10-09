@@ -41,6 +41,8 @@ public class AppConstants {
 
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
+
+    public static final String MINIMUM_WEIGHT = "0.8";
     public static int APP_VERSION_CODE = 26;
     public static final String MINIMUM_BP_SYS = "70";
     public static final String MAXIMUM_BP_SYS = "220";
@@ -60,6 +62,17 @@ public class AppConstants {
     public static final String MINIMUM_HEMOGLOBIN = "5";
     public static final String MAXIMUM_SUGAR = "500";
     public static final String MINIMUM_SUGAR = "60";
+
+    // BMI -- Color codes - start - ticket AEAT - 679
+
+    public static final String BMI_ORANGE_MAX = "18.5";
+    public static final String BMI_GREEN_MIN = "18.5";
+    public static final String BMI_GREEN_MAX = "22.9";
+    public static final String BMI_YELLOW_MIN = "23.0";
+    public static final String BMI_YELLOW_MAX = "24.9";
+    public static final String BMI_LIGHT_RED_MIN = "25.0";
+    public static final String BMI_LIGHT_RED_MAX = "29.9";
+    public static final String BMI_DARK_RED_MIN = "30.0";
 
     // SYS - DIA -- Color codes - start
     public static final String SYS_GREEN_MIN = "89";

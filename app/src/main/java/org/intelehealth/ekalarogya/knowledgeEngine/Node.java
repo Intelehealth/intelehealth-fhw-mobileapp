@@ -1992,9 +1992,9 @@ public class Node implements Serializable {
         endText.setVisibility(View.GONE);
         middleText.setText("X");
 
-        widthPicker.setMinValue(0);
+        widthPicker.setMinValue(1);
         widthPicker.setMaxValue(100);
-        lengthPicker.setMinValue(0);
+        lengthPicker.setMinValue(1);
         lengthPicker.setMaxValue(100);
 
         areaDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -2113,9 +2113,9 @@ public class Node implements Serializable {
 
         final String[] doctorUnits = new String[]{"times per hour", "time per day", "times per week", "times per month", "times per year"};
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
-        unitPicker.setMinValue(0);
+        unitPicker.setMinValue(1);
         unitPicker.setMaxValue(4);
         frequencyDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -2273,9 +2273,9 @@ public class Node implements Serializable {
                 context.getString(R.string.Minute)}; //supports Hindi Translations as well...
 
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(60);
-        unitPicker.setMinValue(0);
+        unitPicker.setMinValue(1);
         //unitPicker.setMaxValue(4);
 
         EditText input = findInput(quantityPicker);
@@ -2702,9 +2702,9 @@ public class Node implements Serializable {
         endText.setVisibility(View.GONE);
         middleText.setText("X");
 
-        widthPicker.setMinValue(0);
+        widthPicker.setMinValue(1);
         widthPicker.setMaxValue(100);
-        lengthPicker.setMinValue(0);
+        lengthPicker.setMinValue(1);
         lengthPicker.setMaxValue(100);
 
         areaDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -2817,9 +2817,9 @@ public class Node implements Serializable {
 
         final String[] doctorUnits = context.getResources().getStringArray(R.array.doctor_units);
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
-        unitPicker.setMinValue(0);
+        unitPicker.setMinValue(1);
         unitPicker.setMaxValue(4);
         frequencyDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -2870,9 +2870,9 @@ public class Node implements Serializable {
                 context.getString(R.string.Years)}; //supports Hindi Translations as well...
 
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(100);
-        unitPicker.setMinValue(0);
+        unitPicker.setMinValue(1);
         unitPicker.setMaxValue(4);
 
         EditText input = findInput(quantityPicker);
@@ -2977,9 +2977,9 @@ public class Node implements Serializable {
                 context.getString(R.string.Minute)}; //supports Hindi Translations as well...
 
         unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
+        quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(60);
-        unitPicker.setMinValue(0);
+        unitPicker.setMinValue(1);
         //unitPicker.setMaxValue(4);
 
         EditText input = findInput(quantityPicker);

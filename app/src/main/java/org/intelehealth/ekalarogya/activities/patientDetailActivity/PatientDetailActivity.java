@@ -369,6 +369,7 @@ public class PatientDetailActivity extends BaseActivity {
         // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
         Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+        int age = DateAndTimeUtils.getAgeInYear(patient_new.getDate_of_birth(), context);
         String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         intent2.putExtra("patientUuid", patientUuid);
 
@@ -397,6 +398,7 @@ public class PatientDetailActivity extends BaseActivity {
         intent2.putExtra("encounterUuidAdultIntial", "");
         intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
         intent2.putExtra("name", fullName);
+        intent2.putExtra("age",age);
         intent2.putExtra("tag", "new");
         if (startNewAdviceBy.equalsIgnoreCase("Sevika")) {
             intent2.putExtra("advicefrom", "Sevika");

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.rosemaryapp.amazingspinner.AmazingSpinner;
 
@@ -28,6 +29,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
@@ -93,7 +95,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String visitUuid;
     private String encounterVitals;
     private float float_ageYear_Month;
-    int flag_height = 0, flag_weight = 0;
+    int flag_height = 0, flag_weight = 0, patientAge = 0;
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
@@ -102,6 +104,8 @@ public class VitalsActivity extends AppCompatActivity {
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
             mHemoglobin, mSugarRandom, mSugarFasting, mSugarAfterMeal;
+
+    TextInputLayout bmiTIL;
     Spinner mBlood_Spinner;
     ArrayAdapter<CharSequence> bloodAdapter;
     private long mLastClickTime = 0;
@@ -123,6 +127,7 @@ public class VitalsActivity extends AppCompatActivity {
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientAge = intent.getIntExtra("age", 0);
             intentTag = intent.getStringExtra("tag");
             intentAdviceFrom = intent.getStringExtra("advicefrom");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
@@ -138,7 +143,7 @@ public class VitalsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //change done under ticket AEAT - 657
 
         sessionManager = new SessionManager(this);
 //        Setting the title
@@ -155,11 +160,18 @@ public class VitalsActivity extends AppCompatActivity {
         mSpo2 = findViewById(R.id.table_spo2);
 
         mBMI = findViewById(R.id.table_bmi);
+        bmiTIL = findViewById(R.id.textInputLayout_bmi);
+        if(patientAge<=2)
+            bmiTIL.setVisibility(View.GONE);
+        else
+            bmiTIL.setVisibility(View.VISIBLE);
+
 //    Respiratory added by mahiti dev team
 
         mResp = findViewById(R.id.table_respiratory);
 
-        mBMI.setEnabled(false);
+        mBMI.setEnabled(true);
+        mBMI.setClickable(false);
         String heightStr = "height_" + sessionManager.getAppLanguage();
         int heightArray = getResources().getIdentifier(heightStr, "array", getApplicationContext().getPackageName());
         if (heightArray != 0) {
@@ -351,8 +363,9 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight = 1;
                     weightvalue = mWeight.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT)) {
-                        mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
+                    if (Double.valueOf(s.toString()) > Double.valueOf(MAXIMUM_WEIGHT) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(MINIMUM_WEIGHT)) {
+                        mWeight.setError(getString(R.string.weight_error, MINIMUM_WEIGHT, MAXIMUM_WEIGHT));
                     } else {
                         mWeight.setError(null);
                     }
@@ -369,9 +382,20 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mWeight.getText().toString().startsWith(".")) {
                     mWeight.setText("");
                 } else {
-
                 }
+
+                String str = mWeight.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
+
+                if (!str2.equals(str)) {
+                    mWeight.setText(str2);
+                    mWeight.setSelection(str2.length());
+                }
+
                 calculateBMI();
+
+
             }
         });
 
@@ -537,10 +561,17 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    String diaValue = "";
+                    if(mBpDia!=null)
+                        diaValue = mBpDia.getText().toString();
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
                         mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
-                    } else {
+                    }
+                    else if(!diaValue.trim().isEmpty() && Double.valueOf(s.toString()) <= Double.valueOf(diaValue) ){
+                        mBpSys.setError(getString(R.string.bpsys_not_less_error));
+                    }
+                    else {
                         mBpSys.setError(null);
                     }
                 }
@@ -551,6 +582,11 @@ public class VitalsActivity extends AppCompatActivity {
 
                 if (mBpSys.getText().toString().startsWith(".")) {
                     mBpSys.setText("");
+                    return;
+                }
+
+                if (mBpSys.getText().toString().isEmpty()) {
+                    mBpDia.setText("");
                     return;
                 }
 
@@ -569,10 +605,17 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    String sysValue = "";
+                    if(mBpSys!=null)
+                        sysValue = mBpSys.getText().toString();
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_DSYS) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_DSYS)) {
                         mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                    } else {
+                    }
+                    else if(!sysValue.trim().isEmpty() && Double.valueOf(s.toString()) >= Double.valueOf(sysValue) ){
+                        mBpDia.setError(getString(R.string.bpdia_not_more_error));
+                    }
+                    else {
                         mBpDia.setError(null);
                     }
                 }
@@ -590,17 +633,17 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        mHemoglobin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String[] data = new String[]{/*"1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5",*/ "5.0",
-                        "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0",
-                        "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0", "16.5", "17.0"/*, "17.5", "18.0",
-                        "18.5", "19.0", "19.5", "20.0"*/};
-
-                setVitalInfoForHemoAndSugar(data, mHemoglobin, mHemoglobin.getText().toString().trim());
-            }
-        });
+//        mHemoglobin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String[] data = new String[]{/*"1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5",*/ "5.0",
+//                        "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0",
+//                        "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0", "16.5", "17.0"/*, "17.5", "18.0",
+//                        "18.5", "19.0", "19.5", "20.0"*/};
+//
+//                setVitalInfoForHemoAndSugar(data, mHemoglobin, mHemoglobin.getText().toString().trim());
+//            }
+//        });
 
         mHemoglobin.addTextChangedListener(new TextWatcher() {
             @Override
@@ -628,6 +671,16 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
 
                 }
+
+                String str = mHemoglobin.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = decimalPlacesCount(str, BEFORE_DECIMAL_PLACE_MAX_COUNT, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
+
+                if (!str2.equals(str)) {
+                    mHemoglobin.setText(str2);
+                    mHemoglobin.setSelection(str2.length());
+                }
+
             }
         });
 
@@ -758,8 +811,49 @@ public class VitalsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void bmiColorCode(String bmiValue, String finalBmiValue) {
+        if (!bmiValue.isEmpty()) {
+            Double bmi = Double.valueOf(bmiValue);
+            if (bmi < Double.valueOf(BMI_ORANGE_MAX)) {   // red
+                mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.underweight) + ")");
+                mBMI.setTextColor(getResources().getColor(R.color.orange));
+            }
+            else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi > Double.valueOf(BMI_YELLOW_MIN)) {   // red
+                mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.overweight) + ")");
+                mBMI.setTextColor(getResources().getColor(R.color.dark_yellow));
+            }
+            else if (bmi > Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))){
+                mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.moderate_obesity) + ")");
+                    mBMI.setTextColor(getResources().getColor(R.color.lite_red));
+            }
+            else if (bmi > Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))){
+                mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.normal) + ")");
+                    mBMI.setTextColor(getResources().getColor(R.color.green));
+            }
+            else if (bmi > Double.valueOf(BMI_DARK_RED_MIN)) {   // red
+                mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.severe_obesity) + ")");
+                mBMI.setTextColor(getResources().getColor(R.color.dark_red));
+            }
+            else
+                mBMI.setTextColor(null);
+        }
+    }
+
+
     private void bpSysColorCode(String bpSysValue) {
-        if (!bpSysValue.isEmpty()) {
+        if (bpSysValue!=null && !bpSysValue.isEmpty()) {
             Double bpSys = Double.valueOf(bpSysValue);
 
             if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
@@ -779,7 +873,7 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     private void bpDiaColorCode(String bpDiaValue) {
-        if (!bpDiaValue.isEmpty()) {
+        if (bpDiaValue!=null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
 
             if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
@@ -798,41 +892,43 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     public void calculateBMI() {
-        if (flag_height == 1 && flag_weight == 1 ||
-                /*(mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/
-                (heightvalue.trim().length() > 0 && (mWeight.getText().toString().trim().length() > 0 &&
-                        !mWeight.getText().toString().startsWith(".")))) {
-            mBMI.getText().clear();
-            double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
-          //  double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
-            double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
-            double bmi_value = numerator / denominator;
-            //DecimalFormat df = new DecimalFormat("0.00");
-            //mBMI.setText(df.format(bmi_value));
-            mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-            Log.d("BMI", "BMI: " + mBMI.getText().toString());
-            //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-        } else if (flag_height == 0 || flag_weight == 0) {
-            // do nothing
-            mBMI.getText().clear();
-        } else {
-            mBMI.getText().clear();
+        if(mWeight!=null && heightvalue!=null) {
+            if (flag_height == 1 && flag_weight == 1 ||
+                    /*(mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/
+                    (heightvalue.trim().length() > 0 && (mWeight.getText().toString().trim().length() > 0 &&
+                            !mWeight.getText().toString().startsWith(".")))) {
+                mBMI.getText().clear();
+                double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
+                //  double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
+                double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
+                double bmi_value = numerator / denominator;
+                //DecimalFormat df = new DecimalFormat("0.00");
+                //mBMI.setText(df.format(bmi_value));
+                mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+                if(patientAge >= 19)
+                    bmiColorCode(String.format(Locale.ENGLISH, "%.1f", bmi_value),String.format(Locale.ENGLISH, "%.2f", bmi_value));
+                Log.d("BMI", "BMI: " + mBMI.getText().toString());
+                //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+            } else if (flag_height == 0 || flag_weight == 0) {
+                // do nothing
+                mBMI.getText().clear();
+            } else {
+                mBMI.getText().clear();
+            }
         }
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
         if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
                 weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
-
             mBMI.getText().clear();
             double numerator = Double.parseDouble(weight) * 10000;
             double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
             double bmi_value = numerator / denominator;
-            //DecimalFormat df = new DecimalFormat("0.00");
-            //mBMI.setText(df.format(bmi_value));
             mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+            if(patientAge >= 19)
+                bmiColorCode(String.format(Locale.ENGLISH, "%.1f", bmi_value),String.format(Locale.ENGLISH, "%.2f", bmi_value));
             Log.d("BMI", "BMI: " + mBMI.getText().toString());
-            //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else {
             // do nothing
             mBMI.getText().clear();
@@ -860,16 +956,12 @@ public class VitalsActivity extends AppCompatActivity {
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.HEIGHT: //Height
-              //  mHeight.setText(value);
+                //  mHeight.setText(value);
                 if (!value.equalsIgnoreCase("0")) {
                     heightvalue = value;
                     String height = ConvertHeightIntoFeets(value);
                     int pos = heightAdapter.getPosition(height);
-                  //  mheightSpinner.setHint(null);
-                  //  mheightSpinner.setError(null);
-
                     mheightSpinner.setSelection(pos);
-                 //   mheightSpinner.setText(mheightSpinner.getAdapter().getItem(pos).toString(), false);
                 }
                 break;
             case UuidDictionary.WEIGHT: //Weight

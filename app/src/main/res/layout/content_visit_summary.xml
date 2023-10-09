@@ -238,7 +238,8 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--BMI-->
-                    <TableRow>
+                    <TableRow
+                        android:id="@+id/bmi_tableRow">
 
                         <TextView
                             android:id="@+id/textView_bmi"
