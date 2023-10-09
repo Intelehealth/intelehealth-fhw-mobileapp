@@ -37,6 +37,12 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         String model = list.get(position);
         holder.tvMedAidName.setText(model);
+
+        if (model.contains("Type")) {
+            holder.cb_administer.setVisibility(View.GONE);
+        }
+        else
+            holder.cb_administer.setVisibility(View.VISIBLE);
     }
 
     @Override

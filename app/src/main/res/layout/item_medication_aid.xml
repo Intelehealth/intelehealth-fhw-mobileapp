@@ -15,7 +15,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:text="Medicines/Aid List" />
+            android:text="Medicines/Aid List"
+            android:textSize="@dimen/card_content_sub_text_size" />
 
         <LinearLayout
             android:layout_width="0dp"
