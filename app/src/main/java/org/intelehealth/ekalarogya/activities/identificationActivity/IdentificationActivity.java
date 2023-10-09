@@ -221,7 +221,7 @@ public class IdentificationActivity extends AppCompatActivity implements
     Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner, water_availability_spinner,
             toilet_facility_spinner, structure_of_house_spinner, hohRelationshipSpinner, maritalStatusSpinner,
             bpSpinner, sugarLevelSpinner, hbLevelSpinner, bmiLevelSpinner, unitsSpinner;
-  //  MaterialCheckBox time_water_checkbox;
+    //  MaterialCheckBox time_water_checkbox;
     EditText time_water_editText, no_of_member_edittext, no_of_staying_members_edittext, landOwnedEditText, occupation_edittext,
             toiletfacility_edittext, otherHohRelationshipEditText;
     CardView cardview_household, hohRelationshipCardView;
@@ -344,7 +344,7 @@ public class IdentificationActivity extends AppCompatActivity implements
         bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
         mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
         whatsapp_spinner = findViewById(R.id.whatsapp_spinner);
-      //  water_availability_spinner = findViewById(R.id.water_availability_spinner);
+        //  water_availability_spinner = findViewById(R.id.water_availability_spinner);
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
@@ -354,16 +354,16 @@ public class IdentificationActivity extends AppCompatActivity implements
         bpSpinner = findViewById(R.id.bp_spinner);
         sugarLevelSpinner = findViewById(R.id.sugar_level_spinner);
         hbLevelSpinner = findViewById(R.id.hb_level_spinner);
-    //    bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
+        //    bmiLevelSpinner = findViewById(R.id.bmi_level_spinner);
 
         //HOH - Checkbox
-    //    time_water_checkbox = findViewById(R.id.time_water_checkbox);
+        //    time_water_checkbox = findViewById(R.id.time_water_checkbox);
 
         // LinearLayout
         ll18 = findViewById(R.id.ll_18);
 
         //EditText
-   //     time_water_editText = findViewById(R.id.time_water_editText);
+        //     time_water_editText = findViewById(R.id.time_water_editText);
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
         otherHohRelationshipEditText = findViewById(R.id.other_hoh_relationship_editText);
@@ -942,8 +942,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
                     landOwnedEditText.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     landOwnedEditText.setVisibility(View.GONE);
                 }
 
@@ -1193,7 +1192,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String education = switch_or_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String education = switch_bn_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -1247,7 +1246,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String caste = switch_bn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String caste = switch_kn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
@@ -1302,7 +1301,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[ବର୍ଣ୍ଣନା କର]"));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[বর্ণনা]"));
-                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[ವಿವರಿಸಿ]"));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         occupation_spinner.setSelection(occupation_adapt.getPosition("[वर्णन करणे]"));
@@ -1336,7 +1335,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     bankacc_Transl = StringUtils.switch_or_bankaccount_edit(patient1.getBank_account());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     bankacc_Transl = StringUtils.switch_bn_bankaccount_edit(patient1.getBank_account());
-                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     bankacc_Transl = StringUtils.switch_kn_bankaccount_edit(patient1.getBank_account());
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     bankacc_Transl = StringUtils.switch_mr_bankaccount_edit(patient1.getBank_account());
@@ -1473,7 +1472,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                             spinner_vaccination.setSelection(spinner_position);
                         }
                     }
-                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
 
                     if (patient1.getVaccination().equalsIgnoreCase("No")) {
                         framelayout_vaccination.setVisibility(View.GONE);
@@ -1667,8 +1666,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                                 updatedContext, context, sessionManager.getAppLanguage()));
                         unitsSpinner.setSelection(spinnerPosition);
 
-                    }
-                    else {
+                    } else {
 //                        if (!splitString[0].equalsIgnoreCase("-") && !splitString[0].equalsIgnoreCase(""))
 //                            binding.landOwnedEditText.setText(splitString[0].trim());
                         int spinnerPosition = unitsAdapter.getPosition(getLandOwnedStrings(splitString[0],
@@ -1697,7 +1695,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String economic = switch_bn_economic_edit(patient1.getEconomic_status());
                         mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String economic = switch_kn_economic_edit(patient1.getEconomic_status());
                         mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
@@ -1873,7 +1871,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         toiletfacility_Transl = StringUtils.switch_or_toiletfacil_edit(patient1.getToilet_facility());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         toiletfacility_Transl = StringUtils.switch_bn_toiletfacil_edit(patient1.getToilet_facility());
-                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         toiletfacility_Transl = StringUtils.switch_kn_toiletfacil_edit(patient1.getToilet_facility());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         toiletfacility_Transl = StringUtils.switch_mr_toiletfacil_edit(patient1.getToilet_facility());
@@ -1929,7 +1927,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                         housestruct_Transl = StringUtils.switch_or_housestructure_edit(patient1.getStructure_house());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         housestruct_Transl = StringUtils.switch_bn_housestructure_edit(patient1.getStructure_house());
-                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         housestruct_Transl = StringUtils.switch_kn_housestructure_edit(patient1.getStructure_house());
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         housestruct_Transl = StringUtils.switch_mr_housestructure_edit(patient1.getStructure_house());
@@ -2918,7 +2916,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                     phoneNo.equalsIgnoreCase("6666666666") || phoneNo.equalsIgnoreCase("7777777777") ||
                     phoneNo.equalsIgnoreCase("8888888888") || phoneNo.equalsIgnoreCase("9999999999") ||
                     phoneNo.equalsIgnoreCase("0123456789") || phoneNo.equalsIgnoreCase("1234567890")) {
-              //  mPhoneNum.setText("");
+                //  mPhoneNum.setText("");
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_valid_phone_number));
                 return;
@@ -4499,7 +4497,13 @@ public class IdentificationActivity extends AppCompatActivity implements
                     phoneNo.equalsIgnoreCase("4444444444") || phoneNo.equalsIgnoreCase("5555555555") ||
                     phoneNo.equalsIgnoreCase("6666666666") || phoneNo.equalsIgnoreCase("7777777777") ||
                     phoneNo.equalsIgnoreCase("8888888888") || phoneNo.equalsIgnoreCase("9999999999") ||
-                    phoneNo.equalsIgnoreCase("0123456789") || phoneNo.equalsIgnoreCase("1234567890")) {
+                    phoneNo.equalsIgnoreCase("0123456789") || phoneNo.equalsIgnoreCase("1234567890") ||
+                    phoneNo.equalsIgnoreCase("0000011111") || phoneNo.equalsIgnoreCase("1111100000") ||
+                    phoneNo.equalsIgnoreCase("1111122222") || phoneNo.equalsIgnoreCase("1122334455") ||
+                    phoneNo.equalsIgnoreCase("1212121212") || phoneNo.equalsIgnoreCase("0101010101") ||
+                    phoneNo.equalsIgnoreCase("1234567891") || phoneNo.equalsIgnoreCase("1234512345") ||
+                    phoneNo.equalsIgnoreCase("0000088888") || phoneNo.equalsIgnoreCase("0909090909") ||
+                    phoneNo.equalsIgnoreCase("1123456789") || phoneNo.equalsIgnoreCase("1234567899")) {
                 //  mPhoneNum.setText("");
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_valid_phone_number));
@@ -5080,7 +5084,7 @@ public class IdentificationActivity extends AppCompatActivity implements
             }
             // water source within 30 mints
 
-             // Ekal process take up - New question added on 24th march 2023
+            // Ekal process take up - New question added on 24th march 2023
             if (ekalProcessRadioGroup.getCheckedRadioButtonId() == -1) {
                 Toast.makeText(this, getString(R.string.please_fill_up_all_required_fields), Toast.LENGTH_SHORT).show();
                 focusView = ekalProcessRadioGroup;
@@ -5097,8 +5101,7 @@ public class IdentificationActivity extends AppCompatActivity implements
                 try {   // AEAT-534 -> Point 6.
                     t.setError(getString(R.string.select));
                     t.setTextColor(Color.RED);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
                 focusView = binding.hohRelationshipSpinner;

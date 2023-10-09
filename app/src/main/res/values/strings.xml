@@ -383,11 +383,13 @@
 
     <!-- Vitals Screen Error-->
 
-    <string name="weight_error" translatable="false">Weight should be less than %1$s kg</string>
+    <string name="weight_error" translatable="false">Weight should be in between %1$s and %2$s kg</string>
     <string name="height_error" translatable="false">Height should be between 0 and %1$s cm</string>
     <string name="spo2_error" translatable="false">SpO2 should be in between %1$s and %2$s</string>
     <string name="pulse_error" translatable="false">Pulse should be in between %1$s and %2$s</string>
     <string name="bpsys_error" translatable="false">Systolic pressure should be in between %1$s and %2$s</string>
+    <string name="bpsys_not_less_error" translatable="false">Systolic pressure should not be less than or equal to Diastolic pressure.</string>
+    <string name="bpdia_not_more_error" translatable="false">Diastolic pressure should not be greater than or equal to Systolic pressure.</string>
     <string name="bpdia_error" translatable="false">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error" translatable="false">Respiratory rate should be in between %1$s and %2$s</string>
     <string name="temp_error" translatable="false">Temperature should be in between %1$s and %2$s</string>
@@ -780,6 +782,7 @@
     <string name="booked_txt">booked</string>
     <string name="cancelled_txt">cancelled</string>
     <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
+    <string name="appointment_booking_not_available">Appointment booking is not available for priority visits.</string>
     <string name="appointment_booked_successfully">Appointment booked successfully!</string>
     <string name="appointment_booked_failed">Appointment booked failed!</string>
     <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
@@ -1170,4 +1173,10 @@
     <string name="following_fields_are_not_filled">Following fields are not filled:</string>
     <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
     <string name="enter_valid_phone_number">Enter valid phone number.</string>
+
+    <string name="overweight">Overweight</string>
+    <string name="underweight">Underweight</string>
+    <string name="normal">Normal</string>
+    <string name="moderate_obesity">Moderate Obesity</string>
+    <string name="severe_obesity">Severe Obesity</string>
 </resources>

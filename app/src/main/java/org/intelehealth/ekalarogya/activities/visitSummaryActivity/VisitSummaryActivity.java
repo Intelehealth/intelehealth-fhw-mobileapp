@@ -1,6 +1,24 @@
 package org.intelehealth.ekalarogya.activities.visitSummaryActivity;
 
 
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_DARK_RED_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_GREEN_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_GREEN_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_LIGHT_RED_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_LIGHT_RED_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_ORANGE_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.BMI_YELLOW_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_GREEN_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_RED_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.DIA_YELLOW_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_GREEN_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_GREEN_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_RED_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_RED_MIN;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_YELLOW_MAX;
+import static org.intelehealth.ekalarogya.app.AppConstants.SYS_YELLOW_MIN;
 import static org.intelehealth.ekalarogya.utilities.StringUtils.fetchObsValue_REG;
 
 import android.annotation.SuppressLint;
@@ -63,6 +81,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -237,6 +256,8 @@ public class VisitSummaryActivity extends BaseActivity {
     TextView tempView;
     TextView spO2View, hemoglobinView, bloodView, sugarRandomView, sugarFastAndMealView;
     TextView bmiView;
+
+    TableRow bmiTR;
     TextView complaintView;
     TextView famHistView;
     TextView patHistView;
@@ -323,6 +344,8 @@ public class VisitSummaryActivity extends BaseActivity {
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
+
+    int patientAge = 0;
 
     private void collectChatConnectionInfoFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
@@ -643,6 +666,7 @@ public class VisitSummaryActivity extends BaseActivity {
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1235,6 +1259,13 @@ public class VisitSummaryActivity extends BaseActivity {
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
+        bmiTR = findViewById(R.id.bmi_tableRow);
+        if(patient!=null)
+            patientAge = DateAndTimeUtils.getAgeInYear(patient.getDate_of_birth(), context);
+        if(patientAge<=2)
+            bmiTR.setVisibility(View.GONE);
+        else
+            bmiTR.setVisibility(View.VISIBLE);
         complaintView = findViewById(R.id.textView_content_complaint);
         famHistView = findViewById(R.id.textView_content_famhist);
         patHistView = findViewById(R.id.textView_content_pathist);
@@ -1266,8 +1297,10 @@ public class VisitSummaryActivity extends BaseActivity {
         } else if (bpText.equalsIgnoreCase("null/null")) {
             //when we setup app and get data from other users, we get null/null from server...
             bpView.setText("");
-        } else {
-            bpView.setText(bpText);
+        }
+        else {
+            bpText = bpSysColorCode(bpSys.getValue()) + "/" + bpDiaColorCode(bpDias.getValue());
+            bpView.setText(Html.fromHtml(bpText));
         }
 
         Log.d(TAG, "onCreate: " + weight.getValue());
@@ -1285,6 +1318,8 @@ public class VisitSummaryActivity extends BaseActivity {
         //   patHistory_REG.setValue(medHistory_REG.replace("?<b>", Node.bullet_arrow));
 
         bmiView.setText(mBMI);
+        if(patientAge >= 19)
+            bmiColorCode(mBMI);
 
 //        tempView.setText(temperature.getValue());
         //    Respiratory added by mahiti dev team
@@ -1392,6 +1427,7 @@ public class VisitSummaryActivity extends BaseActivity {
                     intent1.putExtra("encounterUuidVitals", encounterVitals);
                     intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                     intent1.putExtra("name", patientName);
+                    intent1.putExtra("age", patientAge);
                     intent1.putExtra("tag", "edit");
                     intent1.putExtra("advicefrom", "");
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
@@ -1951,14 +1987,10 @@ public class VisitSummaryActivity extends BaseActivity {
             public void onClick(View v) {
                 doQuery();
                 speciality_selected = "General Physician"; // default one
-                /*if (speciality_selected == null
-                        || speciality_selected.isEmpty()
-                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
-                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
-                ) {
-                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
+                if (flag.isChecked()) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_booking_not_available), Toast.LENGTH_SHORT).show();
                     return;
-                }*/
+                }
                 if (isSynedFlag.equalsIgnoreCase("0")) {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
                     return;
@@ -1977,6 +2009,30 @@ public class VisitSummaryActivity extends BaseActivity {
         });
         getAppointmentDetails(visitUuid);
     }
+
+    private void bmiColorCode(String bmiValue) {
+        if (!bmiValue.isEmpty()) {
+            Double bmi = Double.valueOf(bmiValue);
+            if (bmi < Double.valueOf(BMI_ORANGE_MAX)) {   // red
+                bmiView.setTextColor(getResources().getColor(R.color.orange));
+            }
+            else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi > Double.valueOf(BMI_YELLOW_MIN)) {   // red
+                bmiView.setTextColor(getResources().getColor(R.color.dark_yellow));
+            }
+            else if (bmi > Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))){
+                bmiView.setTextColor(getResources().getColor(R.color.lite_red));
+            }
+            else if (bmi > Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))){
+                bmiView.setTextColor(getResources().getColor(R.color.green));
+            }
+            else if (bmi > Double.valueOf(BMI_DARK_RED_MIN)) {   // red
+                bmiView.setTextColor(getResources().getColor(R.color.dark_red));
+            }
+            else
+                bmiView.setTextColor(null);
+        }
+    }
+
 
 
 /*
@@ -2537,6 +2593,46 @@ public class VisitSummaryActivity extends BaseActivity {
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
         // to the PrintManager
         mWebView = webView;
+    }
+
+    private String bpSysColorCode(String bpSysValue) {
+        if (bpSysValue!=null && !bpSysValue.isEmpty()) {
+            Double bpSys = Double.valueOf(bpSysValue);
+            if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpSys +"</font>";
+            }
+            else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
+                if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
+                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpSys +"</font>";
+            }
+            else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
+                if (bpSys < Double.valueOf(SYS_GREEN_MAX))
+                    return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpSys +"</font>";
+            }
+            else
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpSys +"</font>";
+        }
+        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
+    }
+
+    private String bpDiaColorCode(String bpDiaValue) {
+        if (bpDiaValue!=null && !bpDiaValue.isEmpty()) {
+            Double bpDia = Double.valueOf(bpDiaValue);
+
+            if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
+                return "<font color='" + getResources().getColor(R.color.scale_1) + "'>" + bpDia +"</font>";
+            }
+            else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
+                if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
+                    return "<font color='" + getResources().getColor(R.color.dark_yellow) + "'>" + bpDia +"</font>";
+            }
+            else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+                return "<font color='" + getResources().getColor(R.color.green) + "'>" + bpDia +"</font>";
+            }
+            else
+                return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + bpDia +"</font>";
+        }
+        return "<font color='" + getResources().getColor(R.color.font_black_0) + "'>" + "" +"</font>";
     }
 
     //print button end
@@ -3669,6 +3765,12 @@ public class VisitSummaryActivity extends BaseActivity {
         if (objClsDoctorDetails != null) {
 
             frameLayout_doctor.setVisibility(View.VISIBLE);
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
 

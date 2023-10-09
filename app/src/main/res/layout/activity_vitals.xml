@@ -128,8 +128,7 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
-                                android:maxLength="3"
-                                android:digits="1234567890"
+                                android:maxLength="4"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -138,7 +137,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textInputLayout_bmi">
 
                             <EditText
                                 android:id="@+id/table_bmi"
@@ -152,6 +152,8 @@
                                 android:includeFontPadding="false"
                                 android:inputType="none"
                                 android:longClickable="false"
+                                android:clickable="false"
+                                android:cursorVisible="false"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
@@ -419,15 +421,10 @@
                                 android:hint="@string/table_hemoglobin"
                                 android:imeOptions="actionUnspecified"
                                 android:includeFontPadding="false"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:maxLines="1"
                                 android:maxLength="4"
-                                android:digits="1234567890"
                                 android:singleLine="true"
-                                android:clickable="false"
-                                android:cursorVisible="false"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
