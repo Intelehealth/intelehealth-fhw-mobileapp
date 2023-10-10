@@ -78,7 +78,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(getContext());
-        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0,new UpdateFragmentOnEvent() {
+        ((MyAppointmentActivity) getActivity()).initUpdateFragmentOnEvent(0, new UpdateFragmentOnEvent() {
             @Override
             public void onStart(int eventFlag) {
                 Log.v(TAG, "onStart");
@@ -315,92 +315,37 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         //recyclerview for upcoming appointments
         tvUpcomingAppointments.setText("0");
         tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming_0));
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
-        List<AppointmentInfo> upcomingAppointmentsList = new ArrayList<>();
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getUpcomingAppointmentsForToday(searchPatientText, currentDate);
 
-        try {
-            Log.v(TAG, "appointmentInfoList - " + appointmentInfoList.size());
-            if (appointmentInfoList.size() > 0) {
-                rvUpcomingApp.setVisibility(View.VISIBLE);
-                noDataFoundForUpcoming.setVisibility(View.GONE);
-
-                for (int i = 0; i < appointmentInfoList.size(); i++) {
-                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
-                    String currentDateTime = dateFormat.format(new Date());
-                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
-
-                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
-
-                    long second = diff / 1000;
-                    long minutes = second / 60;
-                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
-                    Log.v(TAG, new Gson().toJson(appointmentInfo));
-                    if (appointmentInfo.getStatus()!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked") && minutes >= 0) {
-                        upcomingAppointmentsList.add(appointmentInfo);
-                    }
-                }
-                totalUpcomingApps = upcomingAppointmentsList.size();
-
-                TodaysMyAppointmentsAdapter todaysUpcomingAppointmentsAdapter = new
-                        TodaysMyAppointmentsAdapter(getActivity(), upcomingAppointmentsList, "upcoming");
-                rvUpcomingApp.setAdapter(todaysUpcomingAppointmentsAdapter);
-            } else {
-                rvUpcomingApp.setVisibility(View.GONE);
-                noDataFoundForUpcoming.setVisibility(View.VISIBLE);
-            }
-            Log.d(TAG, "getUpcomingAppointments:upcomingAppointmentsList size :  " + upcomingAppointmentsList.size());
-            tvUpcomingAppointments.setText(upcomingAppointmentsList.size() + "");
-            tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming) + " (" + upcomingAppointmentsList.size() + ")");
-
-        } catch (
-                Exception e) {
-            e.printStackTrace();
+        if (appointmentInfoList.size() > 0) {
+            rvUpcomingApp.setVisibility(View.VISIBLE);
+            noDataFoundForUpcoming.setVisibility(View.GONE);
+            totalUpcomingApps = appointmentInfoList.size();
+            TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), appointmentInfoList, "upcoming");
+            rvUpcomingApp.setAdapter(todaysMyAppointmentsAdapter);
+        } else {
+            rvUpcomingApp.setVisibility(View.GONE);
+            noDataFoundForUpcoming.setVisibility(View.VISIBLE);
         }
 
-
+        tvUpcomingAppointments.setText(appointmentInfoList.size() + "");
+        tvUpcomingAppointmentsTitle.setText(getResources().getString(R.string.upcoming) + " (" + appointmentInfoList.size() + ")");
     }
 
     private void getCompletedAppointments() {
+        //recyclerview for completed appointments
         tvCompletedAppointments.setText("0");
         tvCompletedAppointmentsTitle.setText(getResources().getString(R.string.completed_0));
+        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCompletedAppointmentsForToday(searchPatientText, currentDate);
 
-        //recyclerview for completed appointments
-        List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointmentsWithFiltersForToday(searchPatientText, currentDate);
-        List<AppointmentInfo> completedAppointmentsList = new ArrayList<>();
-        try {
-            if (appointmentInfoList.size() > 0) {
-                rvCompletedApp.setVisibility(View.VISIBLE);
-                noDataFoundForCompleted.setVisibility(View.GONE);
-                for (int i = 0; i < appointmentInfoList.size(); i++) {
-                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
-                    String currentDateTime = dateFormat.format(new Date());
-                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
-
-                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
-
-                    long second = diff / 1000;
-                    long minutes = second / 60;
-                    //for appointment is completed/ appointment time has been passed
-                    if (appointmentInfo.getStatus().equalsIgnoreCase("visit closed")
-                            || ((appointmentInfo.getStatus().equals("booked") && minutes <= 0))) {
-                        completedAppointmentsList.add(appointmentInfo);
-                    }
-                }
-            }
-        } catch (Exception e) {
-
-        }
-        if (completedAppointmentsList.size() > 0) {
-
-            getDataForCompletedAppointments(completedAppointmentsList);
+        if (appointmentInfoList.size() > 0) {
+            rvCompletedApp.setVisibility(View.VISIBLE);
+            noDataFoundForCompleted.setVisibility(View.GONE);
+            getDataForCompletedAppointments(appointmentInfoList);
         } else {
             rvCompletedApp.setVisibility(View.GONE);
             noDataFoundForCompleted.setVisibility(View.VISIBLE);
         }
-
     }
 
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
