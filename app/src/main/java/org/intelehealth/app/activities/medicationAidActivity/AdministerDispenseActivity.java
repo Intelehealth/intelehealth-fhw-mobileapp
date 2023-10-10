@@ -31,8 +31,8 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         initUI();
 
-        tie_medNotes.setHint("Enter details here.");
-        tie_aidNotes.setHint("Enter details here.");
+        tie_medNotes.setHint(getString(R.string.enter_details_here));
+        tie_aidNotes.setHint(getString(R.string.enter_details_here));
 
         tie_medNotes.addTextChangedListener(new TextWatcher() {
             @Override
@@ -48,7 +48,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().equalsIgnoreCase(""))
-                    tie_medNotes.setHint("Enter details here.");
+                    tie_medNotes.setHint(getString(R.string.enter_details_here));
                 else
                     tie_medNotes.setHint("");
             }
@@ -68,7 +68,7 @@ public class AdministerDispenseActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().equalsIgnoreCase(""))
-                    tie_aidNotes.setHint("Enter details here.");
+                    tie_aidNotes.setHint(getString(R.string.enter_details_here));
                 else
                     tie_aidNotes.setHint("");
             }
@@ -90,11 +90,11 @@ public class AdministerDispenseActivity extends AppCompatActivity {
         Intent intent = getIntent();
         tag = intent.getStringExtra("tag");
         if (tag.equalsIgnoreCase("administer")) {
-            getSupportActionBar().setTitle("Administer Medication");
+            getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
         }
         else {
-            getSupportActionBar().setTitle("Dispense Medication and Aid");
+            getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
         }
 

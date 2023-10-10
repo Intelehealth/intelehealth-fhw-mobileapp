@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.medicationAidActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.prescription.PrescriptionActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Medication_Aid_Activity extends AppCompatActivity {
@@ -29,7 +31,7 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private Context context = Medication_Aid_Activity.this;
     private List<String> med_list, aid_list;
     private TextView tvDispense, tvAdminister, tvDispenseAdminister;
-    private String tag = "";
+    private String tag = "", medData = "", aidData = "";
     private FrameLayout fl_aid;
 
     @Override
@@ -62,40 +64,66 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         rv_medication = findViewById(R.id.rv_medication);
-        fl_aid = findViewById(R.id.fl_aid);
+      //  rv_medication.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
         rv_aid = findViewById(R.id.rv_aid);
+      //  rv_aid.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        fl_aid = findViewById(R.id.fl_aid);
         tvDispenseAdminister = findViewById(R.id.tvDispenseAdminister);
         tvDispense = findViewById(R.id.tvDispense);
         tvAdminister = findViewById(R.id.tvAdminister);
 
         Intent intent = getIntent();
         tag = intent.getStringExtra("tag");
+        medData = intent.getStringExtra("medicineData");
+        aidData = intent.getStringExtra("aidData");
+
         if (tag.equalsIgnoreCase("administer")) {
-            getSupportActionBar().setTitle("Administer Medication");
+            getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
             tvDispenseAdminister.setText(getString(R.string.administer));
         }
         else {
-            getSupportActionBar().setTitle("Dispense Medication and Aid");
+            getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
             tvDispenseAdminister.setText(getString(R.string.dispense));
         }
 
 
         med_list = new ArrayList<>();
-        med_list.add("Crocin");
+        aid_list = new ArrayList<>();
+
+        if (!medData.isEmpty()) {
+            ArrayList<String> list = new ArrayList<>(Arrays.asList(medData.split("\n")));
+            for (String med: list) {
+                if (!med.isEmpty())
+                    med_list.add(med);
+            }
+        }
+
+        if (aidData != null && !aidData.isEmpty()) {
+            ArrayList<String> list = new ArrayList<>(Arrays.asList(aidData.split("\n")));
+            for (String aid: list) {
+                if (!aid.isEmpty())
+                    aid_list.add(aid);
+            }
+
+        }
+
+       /* med_list.add("Crocin");
         med_list.add("Albendazol");
         med_list.add("Vicks");
         med_list.add("ABC");
         med_list.add("Cloptin");
         med_list.add("Mediocrin");
+*/
 
-        aid_list = new ArrayList<>();
-        aid_list.add("Type 1: Give 10,000 rs loan");
+        /*aid_list.add("Type 1: Give 10,000 rs loan");
         aid_list.add("Type 2: Give medicines for free");
         aid_list.add("Type 3: Cost of amount given.");
         aid_list.add("Type 4: Cover Surgical Expenses.");
-        aid_list.add("Type 5: Cash Assitance given.");
+        aid_list.add("Type 5: Cash Assitance given.");*/
 
         RecyclerView.LayoutManager med_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         rv_medication.setLayoutManager(med_LayoutManager);
@@ -103,11 +131,13 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         med_adapter = new MedicationAidAdapter(context, med_list);
         rv_medication.setAdapter(med_adapter);
 
-        RecyclerView.LayoutManager aid_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        rv_aid.setLayoutManager(aid_LayoutManager);
-        rv_aid.setNestedScrollingEnabled(false);
-        aid_adapter = new MedicationAidAdapter(context, aid_list);
-        rv_aid.setAdapter(aid_adapter);
+        if (tag.equalsIgnoreCase("dispense")) {
+            RecyclerView.LayoutManager aid_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+            rv_aid.setLayoutManager(aid_LayoutManager);
+            rv_aid.setNestedScrollingEnabled(false);
+            aid_adapter = new MedicationAidAdapter(context, aid_list);
+            rv_aid.setAdapter(aid_adapter);
+        }
     }
 
     @Override

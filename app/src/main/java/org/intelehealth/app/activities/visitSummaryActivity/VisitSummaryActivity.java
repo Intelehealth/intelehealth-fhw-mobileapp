@@ -1024,13 +1024,22 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         });
 
         tvDispense.setOnClickListener(v -> {
+            String med = getMedicationData();
+            String aid = getAidData();
+
             Intent i = new Intent(context, Medication_Aid_Activity.class);
             i.putExtra("tag", "dispense");
+            i.putExtra("medicineData", med);
+            i.putExtra("aidData", aid);
             startActivity(i);
         });
+
         tvAdminister.setOnClickListener(v -> {
+            String med = getMedicationData();
+
             Intent i = new Intent(context, Medication_Aid_Activity.class);
             i.putExtra("tag", "administer");
+            i.putExtra("medicineData", med);
             startActivity(i);
         });
 
@@ -5793,5 +5802,30 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             villageName = villageName.concat(" Health Unit");
         }
         return villageName;
+    }
+
+    public String getMedicationData() {
+        return rxReturned;
+    }
+
+    public String getAidData() {
+        String aid = "";
+
+        if (!newMedicalEquipLoanAidOrderPresc.isEmpty())
+            aid = aid + "\n" + newMedicalEquipLoanAidOrderPresc;
+
+        if (!newFreeMedicalEquipAidOrderPresc.isEmpty())
+            aid = aid + "\n" + newFreeMedicalEquipAidOrderPresc;
+
+        if (!newCoverMedicalExpenseAidOrderPresc.isEmpty())
+            aid = aid + "\n" + newCoverMedicalExpenseAidOrderPresc;
+
+        if (!newCoverSurgicalExpenseAidOrderPresc.isEmpty())
+            aid = aid + "\n" + newCoverSurgicalExpenseAidOrderPresc;
+
+        if (!newCashAssistanceExpenseAidOrderPresc.isEmpty())
+            aid = aid + "\n" + newCashAssistanceExpenseAidOrderPresc;
+
+        return aid;
     }
 }

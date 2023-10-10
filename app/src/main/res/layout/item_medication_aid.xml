@@ -11,8 +11,7 @@
         <TextView
             android:id="@+id/tvMedAidName"
             android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_marginStart="10dp"
+            android:layout_weight="3.6"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
@@ -23,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_weight="1">
+            android:layout_weight="0.4">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cb_dispense"
@@ -45,5 +44,13 @@
         </LinearLayout>
 -->
 
+
     </TableRow>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="10dp"
+        android:background="@color/gray_2"/>
+
 </TableLayout>

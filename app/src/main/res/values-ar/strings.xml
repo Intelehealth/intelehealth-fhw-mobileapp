@@ -1634,6 +1634,14 @@
     <string name="administer_dispense">Administer/Dispense</string>
     <string name="dispense">Dispense</string>
     <string name="administer">Administer</string>
+    <string name="upload_supporting_documents">Upload Supporting Documents</string>
+    <string name="covered_cost">Covered Cost</string>
+    <string name="pharmacy_discount">Pharmacy Discount</string>
+    <string name="total_cost">Total Cost</string>
+    <string name="aid">Aid</string>
+    <string name="enter_details_here">Enter details here.</string>
+    <string name="administer_medication">Administer Medication</string>
+    <string name="dispense_medication_and_aid">Dispense Medication and Aid</string>
 
 
 </resources>
