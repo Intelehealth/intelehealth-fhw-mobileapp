@@ -158,7 +158,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                     timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
                                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                     timeText = minutes + " " + context.getString(R.string.minutes_txt) + " " + context.getString(R.string.in) ;
-                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
+//                                holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                                 holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                                 holder.tvDate.setText(timeText);
@@ -172,7 +172,7 @@ public class TodaysMyAppointmentsAdapter extends RecyclerView.Adapter<TodaysMyAp
                                 timeText = context.getString(R.string.in) + " " + minutes + " " + context.getString(R.string.minutes_txt);
                             else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                                 timeText = minutes + " " + context.getString(R.string.minutes_txt) + " " + context.getString(R.string.in) ;
-                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
+//                            holder.ivTime.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary1), PorterDuff.Mode.SRC_IN);
                             holder.tvPatientName.setText(appointmentInfoModel.getPatientName());
 
                             holder.tvDate.setText(timeText);
