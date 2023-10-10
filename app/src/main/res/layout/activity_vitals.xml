@@ -128,7 +128,7 @@
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"
                                 android:maxLines="1"
-                                android:maxLength="4"
+                                android:maxLength="6"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
