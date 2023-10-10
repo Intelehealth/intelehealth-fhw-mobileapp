@@ -9,9 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.intelehealth.app.R;
@@ -25,7 +28,9 @@ public class Medication_Aid_Activity extends AppCompatActivity {
     private MedicationAidAdapter med_adapter, aid_adapter;
     private Context context = Medication_Aid_Activity.this;
     private List<String> med_list, aid_list;
-    private TextView tvDispense, tvAdminister;
+    private TextView tvDispense, tvAdminister, tvDispenseAdminister;
+    private String tag = "";
+    private FrameLayout fl_aid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +39,17 @@ public class Medication_Aid_Activity extends AppCompatActivity {
 
         initUI();
 
-        tvDispense.setOnClickListener(v -> {
+        tvDispenseAdminister.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AdministerDispenseActivity.class);
+            intent.putExtra("tag", tag);
+            startActivity(intent);
+            Log.d("TAG", " 1st screen: onCreate: " + tag);
+        });
+
+/*        tvAdminister.setOnClickListener(v -> {
             Intent intent = new Intent(context, AdministerDispenseActivity.class);
             startActivity(intent);
-        });
-        tvAdminister.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AdministerDispenseActivity.class);
-            startActivity(intent);
-        });
+        });*/
 
     }
 
@@ -54,9 +62,25 @@ public class Medication_Aid_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         rv_medication = findViewById(R.id.rv_medication);
+        fl_aid = findViewById(R.id.fl_aid);
         rv_aid = findViewById(R.id.rv_aid);
+        tvDispenseAdminister = findViewById(R.id.tvDispenseAdminister);
         tvDispense = findViewById(R.id.tvDispense);
         tvAdminister = findViewById(R.id.tvAdminister);
+
+        Intent intent = getIntent();
+        tag = intent.getStringExtra("tag");
+        if (tag.equalsIgnoreCase("administer")) {
+            getSupportActionBar().setTitle("Administer Medication");
+            fl_aid.setVisibility(View.GONE);
+            tvDispenseAdminister.setText(getString(R.string.administer));
+        }
+        else {
+            getSupportActionBar().setTitle("Dispense Medication and Aid");
+            fl_aid.setVisibility(View.VISIBLE);
+            tvDispenseAdminister.setText(getString(R.string.dispense));
+        }
+
 
         med_list = new ArrayList<>();
         med_list.add("Crocin");

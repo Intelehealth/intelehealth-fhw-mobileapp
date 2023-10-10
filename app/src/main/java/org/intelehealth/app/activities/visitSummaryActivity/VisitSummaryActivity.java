@@ -103,6 +103,7 @@ import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivi
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.householdSurvey.model.AnswerValue;
+import org.intelehealth.app.activities.medicationAidActivity.AdministerDispenseActivity;
 import org.intelehealth.app.activities.medicationAidActivity.Medication_Aid_Activity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
@@ -293,6 +294,8 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
     NotificationCompat.Builder mBuilder;
 
     RelativeLayout uploadButton, rl_med_aid;
+    private TextView tvDispense, tvAdminister;
+
     RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
 
@@ -955,7 +958,9 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
-        rl_med_aid = findViewById(R.id.rl_med_aid);
+      //  rl_med_aid = findViewById(R.id.rl_med_aid);
+          tvDispense = findViewById(R.id.tvDispense);
+        tvAdminister = findViewById(R.id.tvAdminister);
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
@@ -1018,10 +1023,23 @@ public class VisitSummaryActivity extends AppCompatActivity /*implements Printer
             }
         });
 
+        tvDispense.setOnClickListener(v -> {
+            Intent i = new Intent(context, Medication_Aid_Activity.class);
+            i.putExtra("tag", "dispense");
+            startActivity(i);
+        });
+        tvAdminister.setOnClickListener(v -> {
+            Intent i = new Intent(context, Medication_Aid_Activity.class);
+            i.putExtra("tag", "administer");
+            startActivity(i);
+        });
+
+/*
         rl_med_aid.setOnClickListener(v -> {
             Intent i = new Intent(context, Medication_Aid_Activity.class);
             startActivity(i);
         });
+*/
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override

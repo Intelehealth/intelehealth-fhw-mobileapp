@@ -38,11 +38,11 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
         String model = list.get(position);
         holder.tvMedAidName.setText(model);
 
-        if (model.contains("Type")) {
+       /* if (model.contains("Type")) {
             holder.cb_administer.setVisibility(View.GONE);
         }
         else
-            holder.cb_administer.setVisibility(View.VISIBLE);
+            holder.cb_administer.setVisibility(View.VISIBLE);*/
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MedicationAidAdapter extends RecyclerView.Adapter<MedicationAidAdap
 
             tvMedAidName = itemView.findViewById(R.id.tvMedAidName);
             cb_dispense = itemView.findViewById(R.id.cb_dispense);
-            cb_administer = itemView.findViewById(R.id.cb_administer);
+          //  cb_administer = itemView.findViewById(R.id.cb_administer);
         }
     }
 }

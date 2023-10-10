@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.medicationAidActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +11,8 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -17,6 +20,9 @@ import org.intelehealth.app.R;
 
 public class AdministerDispenseActivity extends AppCompatActivity {
     private TextInputEditText tie_medNotes, tie_aidNotes;
+    private String tag = "";
+    private FrameLayout fl_aid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,20 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tie_medNotes = findViewById(R.id.tie_medNotes);
         tie_aidNotes = findViewById(R.id.tie_aidNotes);
+        fl_aid = findViewById(R.id.fl_aid);
+
+        Intent intent = getIntent();
+        tag = intent.getStringExtra("tag");
+        if (tag.equalsIgnoreCase("administer")) {
+            getSupportActionBar().setTitle("Administer Medication");
+            fl_aid.setVisibility(View.GONE);
+        }
+        else {
+            getSupportActionBar().setTitle("Dispense Medication and Aid");
+            fl_aid.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     @Override

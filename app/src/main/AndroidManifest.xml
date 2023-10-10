@@ -47,14 +47,12 @@
         <activity
             android:name=".activities.medicationAidActivity.AdministerDispenseActivity"
             android:exported="false"
-            android:label="@string/administer_dispense"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".activities.medicationAidActivity.Medication_Aid_Activity"
             android:exported="false"
-            android:label="@string/medication_and_aid"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -1632,6 +1632,8 @@
     <string name="added_by">إضافة من</string>
     <string name="medication_and_aid">Medication and Aid</string>
     <string name="administer_dispense">Administer/Dispense</string>
+    <string name="dispense">Dispense</string>
+    <string name="administer">Administer</string>
 
 
 </resources>
