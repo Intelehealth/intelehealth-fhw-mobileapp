@@ -742,10 +742,15 @@ public class AppointmentDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         if (!searchPatientText.isEmpty()) {
-            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+            String selectQuery = "SELECT p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
                     + " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + " a.patient_id, a.created_at, "
-                    + "a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE "
-                    + "'%" + search + "%' and a.slot_date = '" + currentDate + "'";
+                    + "a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                    + "FROM tbl_patient p, tbl_appointments a "
+                    + "WHERE p.uuid = a.patient_id "
+                    + "AND patient_name_new LIKE '%" + search + "%' "
+                    + "AND a.slot_date = '" + currentDate + "'"
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date, 'utc') >= datetime('now', 'utc')";
 
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else {
@@ -808,10 +813,15 @@ public class AppointmentDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         if (!searchPatientText.isEmpty()) {
-            String selectQuery = "select p.patient_photo,p.first_name || ' ' || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
-                    + " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid," + " a.patient_id, a.created_at, "
-                    + "a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  from tbl_patient p, tbl_appointments a where p.uuid = a.patient_id and patient_name_new LIKE "
-                    + "'%" + search + "%' and a.slot_date = '" + currentDate + "'";
+            String selectQuery = "SELECT p.patient_photo,p.first_name || ' ' || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, a.appointment_id,"
+                    + " a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid,"
+                    + " a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  "
+                    + "FROM tbl_patient p, tbl_appointments a "
+                    + "WHERE p.uuid = a.patient_id "
+                    + "AND patient_name_new LIKE '%" + search + "%' "
+                    + "AND a.slot_date = '" + currentDate + "'"
+                    + "AND a.status = 'booked'"
+                    + "AND datetime(a.slot_js_date, 'utc') < datetime('now', 'utc')";
 
             idCursor = db.rawQuery(selectQuery, new String[]{});
         } else {

@@ -321,6 +321,12 @@ public class TodaysMyAppointmentsFragment extends Fragment {
             rvUpcomingApp.setVisibility(View.VISIBLE);
             noDataFoundForUpcoming.setVisibility(View.GONE);
             totalUpcomingApps = appointmentInfoList.size();
+
+            appointmentInfoList.forEach((appointmentInfo) -> {
+                String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+            });
+
             TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), appointmentInfoList, "upcoming");
             rvUpcomingApp.setAdapter(todaysMyAppointmentsAdapter);
         } else {
@@ -351,7 +357,7 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     private void getDataForCompletedAppointments(List<AppointmentInfo> appointmentsDaoList) {
         rvCompletedApp.setVisibility(View.VISIBLE);
         noDataFoundForCompleted.setVisibility(View.GONE);
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         //check if visit is present or not
         for (int i = 0; i < appointmentsDaoList.size(); i++) {
@@ -420,50 +426,26 @@ public class TodaysMyAppointmentsFragment extends Fragment {
         tvCancelledAppsCount.setText("0");
         tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled_0));
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getCancelledAppointmentsWithFiltersForToday(searchPatientText, currentDate);
-        List<AppointmentInfo> cancelledAppointmentsList = new ArrayList<>();
-        try {
-            if (appointmentInfoList.size() > 0) {
-                rvCancelledApp.setVisibility(View.VISIBLE);
-                noDataFoundForCancelled.setVisibility(View.GONE);
-                for (int i = 0; i < appointmentInfoList.size(); i++) {
-                    AppointmentInfo appointmentInfo = appointmentInfoList.get(i);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
-                    String currentDateTime = dateFormat.format(new Date());
-                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
 
-                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+        if (appointmentInfoList.size() > 0) {
+            rvCancelledApp.setVisibility(View.VISIBLE);
+            noDataFoundForCancelled.setVisibility(View.GONE);
+            totalCancelled = appointmentInfoList.size();
 
-                    long second = diff / 1000;
-                    long minutes = second / 60;
-                    cancelledAppointmentsList.add(appointmentInfo);
-                    String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
-                    appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+            appointmentInfoList.forEach(appointmentInfo -> {
+                String patientProfilePath = getPatientProfile(appointmentInfo.getPatientId());
+                appointmentInfo.setPatientProfilePhoto(patientProfilePath);
+            });
 
-                   /* if (minutes >= 0) {
-                        cancelledAppointmentsList.add(appointmentInfo);
-                    }*/
-                }
-
-                //recyclerview for cancelled appointments
-
-                totalCancelled = cancelledAppointmentsList.size();
-                TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new
-                        TodaysMyAppointmentsAdapter(getActivity(), cancelledAppointmentsList, "cancelled");
-                rvCancelledApp.setAdapter(todaysMyAppointmentsAdapter);
-
-            } else {
-
-                rvCancelledApp.setVisibility(View.GONE);
-                noDataFoundForCancelled.setVisibility(View.VISIBLE);
-            }
-
-            tvCancelledAppsCount.setText(cancelledAppointmentsList.size() + "");
-            tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + cancelledAppointmentsList.size() + ")");
-
-        } catch (Exception e) {
-            Log.d(TAG, "getCancelledAppointments: e : " + e.getLocalizedMessage());
+            TodaysMyAppointmentsAdapter todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), appointmentInfoList, "cancelled");
+            rvCancelledApp.setAdapter(todaysMyAppointmentsAdapter);
+        } else {
+            rvCancelledApp.setVisibility(View.GONE);
+            noDataFoundForCancelled.setVisibility(View.VISIBLE);
         }
 
+        tvCancelledAppsCount.setText(appointmentInfoList.size() + "");
+        tvCancelledAppsCountTitle.setText(getResources().getString(R.string.cancelled) + " (" + appointmentInfoList.size() + ")");
 
     }
 

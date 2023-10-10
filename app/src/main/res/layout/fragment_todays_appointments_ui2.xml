@@ -47,7 +47,8 @@
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ui2_ic_close_drawer"
                 android:visibility="gone"
-                app:tint="@color/colorPrimary" />
+                app:tint="@color/colorPrimary"
+                tools:visibility="visible"/>
 
 
         </RelativeLayout>
