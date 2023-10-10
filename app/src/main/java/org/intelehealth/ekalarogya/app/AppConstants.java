@@ -40,7 +40,7 @@ public class AppConstants {
     //App vitals constants
 
     public static final String MAXIMUM_HEIGHT = "272";
-    public static final String MAXIMUM_WEIGHT = "150";
+    public static final String MAXIMUM_WEIGHT = "500";
 
     public static final String MINIMUM_WEIGHT = "0.8";
     public static int APP_VERSION_CODE = 26;
