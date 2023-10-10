@@ -206,7 +206,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
-                            android:text="@string/visit_summary_height_heading"
+                            android:text="@string/height_ft"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView

@@ -1126,9 +1126,9 @@ public class VitalsActivity extends AppCompatActivity {
             // 1. weight
             String w_value = mWeight.getText().toString().trim();
             if (w_value != null && !w_value.isEmpty()) {
-                if (Double.parseDouble(w_value) > Double.parseDouble(AppConstants.MAXIMUM_WEIGHT)) {
-                    mWeight.requestFocus();
-                    mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
+                if (Double.valueOf(w_value.toString()) > Double.valueOf(MAXIMUM_WEIGHT) ||
+                        Double.valueOf(w_value.toString()) < Double.valueOf(MINIMUM_WEIGHT)) {
+                    mWeight.setError(getString(R.string.weight_error, MINIMUM_WEIGHT, MAXIMUM_WEIGHT));
                     return;
                 }
             }

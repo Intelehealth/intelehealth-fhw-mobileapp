@@ -1159,7 +1159,7 @@
     <string name="fetching_details_please_wait">Fetching details. Please wait...</string>
     <string name="prescription_is_not_yet_provided_by_doctor">Prescription is not yet provided by doctor.</string>
     <string name="download_prescription_first">Download prescription first.</string>
-    <string name="height_ft">Height(ft)</string>
+    <string name="height_ft">Height (ft)</string>
     <string name="ft">ft</string>
     <string name="in">in</string>
     <string name="please_select_patient_height">Please select patient height!</string>
