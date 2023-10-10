@@ -4505,6 +4505,8 @@ public class VisitSummaryActivity extends BaseActivity {
         });
 
         final TextView textView = dialog.findViewById(R.id.submitTV);
+        final TextView cancelTextView = dialog.findViewById(R.id.cancelTV);
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -4515,6 +4517,13 @@ public class VisitSummaryActivity extends BaseActivity {
                     return;
                 }
                 cancelAppointmentRequest(mEngReason.isEmpty() ? reason : mEngReason);
+            }
+        });
+
+        cancelTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
 

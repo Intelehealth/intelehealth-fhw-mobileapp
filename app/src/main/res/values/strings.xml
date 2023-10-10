@@ -1164,7 +1164,7 @@
     <string name="download_prescription_first">Download prescription first.</string>
     <string name="location_setup">Location Setup %1$s</string>
     <string name="app_version_string">User: %1$s, App Version: %2$s</string>
-    <string name="height_ft">Height(ft)</string>
+    <string name="height_ft">Height (ft)</string>
     <string name="ft">ft</string>
     <string name="in">in</string>
     <string name="please_select_patient_height">Please select patient height!</string>
@@ -1173,7 +1173,7 @@
     <string name="following_fields_are_not_filled">Following fields are not filled:</string>
     <string name="do_you_still_want_to_continue">Do you still want to continue?</string>
     <string name="enter_valid_phone_number">Enter valid phone number.</string>
-
+    <string name="enter_patient_phone_number">Enter patient\'s phone number.</string>
     <string name="overweight">Overweight</string>
     <string name="underweight">Underweight</string>
     <string name="normal">Normal</string>

@@ -2908,14 +2908,27 @@ public class IdentificationActivity extends AppCompatActivity implements
                 mPhoneNum.setError(getString(R.string.enter_10_digits));
                 return;
             }
-
+            String hwPhoneNum = sessionManager.getHwPhone();
+            String hwWhatsApp = sessionManager.getHwWhatsApp();
             String phoneNo = mPhoneNum.getText().toString().trim();
-            if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
+            if((!hwPhoneNum.isEmpty() && phoneNo.equalsIgnoreCase(hwPhoneNum)) || (!hwWhatsApp.isEmpty() && phoneNo.equalsIgnoreCase(hwWhatsApp)))
+            {
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError(getString(R.string.enter_patient_phone_number));
+                return;
+            }
+            else if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
                     phoneNo.equalsIgnoreCase("2222222222") || phoneNo.equalsIgnoreCase("3333333333") ||
                     phoneNo.equalsIgnoreCase("4444444444") || phoneNo.equalsIgnoreCase("5555555555") ||
                     phoneNo.equalsIgnoreCase("6666666666") || phoneNo.equalsIgnoreCase("7777777777") ||
                     phoneNo.equalsIgnoreCase("8888888888") || phoneNo.equalsIgnoreCase("9999999999") ||
-                    phoneNo.equalsIgnoreCase("0123456789") || phoneNo.equalsIgnoreCase("1234567890")) {
+                    phoneNo.equalsIgnoreCase("0123456789") || phoneNo.equalsIgnoreCase("1234567890") ||
+                    phoneNo.equalsIgnoreCase("0000011111") || phoneNo.equalsIgnoreCase("1111100000") ||
+                    phoneNo.equalsIgnoreCase("1111122222") || phoneNo.equalsIgnoreCase("1122334455") ||
+                    phoneNo.equalsIgnoreCase("1212121212") || phoneNo.equalsIgnoreCase("0101010101") ||
+                    phoneNo.equalsIgnoreCase("1234567891") || phoneNo.equalsIgnoreCase("1234512345") ||
+                    phoneNo.equalsIgnoreCase("0000088888") || phoneNo.equalsIgnoreCase("0909090909") ||
+                    phoneNo.equalsIgnoreCase("1123456789") || phoneNo.equalsIgnoreCase("1234567899")) {
                 //  mPhoneNum.setText("");
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_valid_phone_number));
@@ -4491,8 +4504,16 @@ public class IdentificationActivity extends AppCompatActivity implements
                 return;
             }
 
+            String hwPhoneNum = sessionManager.getHwPhone();
+            String hwWhatsApp = sessionManager.getHwWhatsApp();
             String phoneNo = mPhoneNum.getText().toString().trim();
-            if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
+            if((!hwPhoneNum.isEmpty() && phoneNo.equalsIgnoreCase(hwPhoneNum)) || (!hwWhatsApp.isEmpty() && phoneNo.equalsIgnoreCase(hwWhatsApp)))
+            {
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError(getString(R.string.enter_patient_phone_number));
+                return;
+            }
+            else if (phoneNo.equalsIgnoreCase("0000000000") || phoneNo.equalsIgnoreCase("1111111111") ||
                     phoneNo.equalsIgnoreCase("2222222222") || phoneNo.equalsIgnoreCase("3333333333") ||
                     phoneNo.equalsIgnoreCase("4444444444") || phoneNo.equalsIgnoreCase("5555555555") ||
                     phoneNo.equalsIgnoreCase("6666666666") || phoneNo.equalsIgnoreCase("7777777777") ||

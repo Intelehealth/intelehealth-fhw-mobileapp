@@ -1154,7 +1154,7 @@
     <string name="wash_before_cooking">Wash before cooking</string>
     <string name="wash_before_after_eating">Wash before and after eating</string>
     <string name="is_the_source_drinking_water_within_30_minutes">Is the source of drinking water within 30 minutes of round trip from the household?</string>
-    <string name="height_ft">Height(ft)</string>
+    <string name="height_ft">Height (ft)</string>
     <string name="ft">ft</string>
     <string name="in">in</string>
     <string name="please_select_patient_height">Please select patient height!</string>
