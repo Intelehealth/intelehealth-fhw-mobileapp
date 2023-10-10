@@ -2130,4 +2130,22 @@
         <item>10</item>
         <item>25</item>
     </array>
+
+    <string-array name="working_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="working_hi">
+        <item>Select</item>
+        <item>हाँ</item>
+        <item>नहीं</item>
+    </string-array>
+
+    <string-array name="economic_level_en">
+        <item>Select</item>
+        <item>&lt;5K</item>
+        <item>5-10K></item>
+        <item>10K</item>
+    </string-array>
 </resources>

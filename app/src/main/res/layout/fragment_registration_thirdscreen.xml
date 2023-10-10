@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/national_ID"
+                    android:text="@string/abha_number"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
                     android:textSize="@null" />
@@ -50,7 +50,7 @@
                     android:layout_marginTop="@dimen/common_edittext_margin_top"
                     android:background="@drawable/edittext_border"
                     android:gravity="center_vertical"
-                    android:hint="@string/enter_national_ID"
+                    android:hint="@string/enter_abha_no"
                     android:inputType="text"
                     android:maxLength="18"
                     android:maxLines="1"
@@ -139,12 +139,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/occupation"
+                    android:text="@string/working"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
                     android:textSize="@null" />
 
-                <EditText
+           <!--     <EditText
                     android:id="@+id/occupation_editText"
                     style="@style/edittext_textcolor"
                     android:layout_width="match_parent"
@@ -158,8 +158,24 @@
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
                     android:paddingBottom="@dimen/margin_10"
-                    android:textSize="@dimen/edittext_textsize_16sp" />
+                    android:textSize="@dimen/edittext_textsize_16sp" />-->
 
+                <Spinner
+                    android:id="@+id/spinner_working"
+                    style="@style/SpinnerTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/common_edittext_margin_top"
+                    android:dropDownVerticalOffset="50dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_working"
+                    android:paddingStart="@dimen/fu_margin_start"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_16dp"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:popupBackground="@drawable/spinner_popup"
+                    android:spinnerMode="dropdown"
+                    android:textSize="@dimen/edittext_textsize_16sp" />
                 <TextView
                     android:id="@+id/occupation_error"
                     android:layout_width="wrap_content"
@@ -181,6 +197,7 @@
                 android:id="@+id/linear_caste"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_below="@+id/linear_occupation"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
@@ -233,7 +250,7 @@
                 android:id="@+id/linear_education"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_caste"
+                android:layout_below="@+id/linear_occupation"
                 android:layout_marginTop="@dimen/margin_24"
                 android:orientation="vertical">
 
@@ -294,7 +311,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3sp"
-                    android:text="@string/economic_category"
+                    android:text="@string/income_level"
                     android:textAppearance="@style/blur_txtview"
                     android:textColor="@null"
                     android:textSize="@null" />
@@ -308,7 +325,7 @@
                     android:layout_marginBottom="@dimen/margin_10"
                     android:dropDownVerticalOffset="50dp"
                     android:gravity="center_vertical"
-                    android:hint="@string/select_economic_category"
+                    android:hint="@string/select_income_level"
                     android:paddingStart="@dimen/fu_margin_start"
                     android:paddingTop="@dimen/margin_10"
                     android:paddingEnd="@dimen/margin_16dp"
@@ -319,6 +336,72 @@
 
                 <TextView
                     android:id="@+id/economic_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:lineSpacingExtra="0sp"
+                    android:text="@string/this_field_is_mandatory"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <!--Gender-->
+            <LinearLayout
+                android:id="@+id/linear_gender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/linear_economicstatus"
+                android:layout_marginTop="@dimen/margin_24"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/are_you"
+                    android:textAppearance="@style/blur_txtview"
+                    android:textColor="@null"
+                    android:textSize="@null" />
+
+                <RadioGroup
+                    android:id="@+id/radio_veg_non_veg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <RadioButton
+                        android:id="@+id/rb_vegetarian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:text="@string/vegetarian"
+                        android:textSize="@dimen/select_language"
+                        android:theme="@style/RadioButtonStyleSelection" />
+
+                    <RadioButton
+                        android:id="@+id/rb_nonVegetarian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/gender_margin"
+                        android:layout_marginEnd="@dimen/gender_margin"
+                        android:layout_weight="1"
+                        android:text="@string/non_vegetarian"
+                        android:textSize="@dimen/select_language"
+                        android:theme="@style/RadioButtonStyleSelection" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/gender_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"

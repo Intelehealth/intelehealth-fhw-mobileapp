@@ -4131,5 +4131,19 @@ public final class StringUtils {
             genderView.setText(gender + " " + age);
         }
     }
+    public static String switch_hi_working_edit(String val) {
+        switch (val) {
+            case "Yes":
+                val = "हाँ";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
 
 }

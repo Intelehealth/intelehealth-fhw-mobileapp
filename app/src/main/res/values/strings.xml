@@ -1860,4 +1860,16 @@ The disclosure of personal information to third parties shall be only for identi
     <string name="you_are_offline_please_connect_to_the_internet_for_videos">You are offline! Please connect to the internet for videos.</string>
     <string name="follow_up_date_arrived">Your follow-up time has arrived. Please end the current visit to start your follow-up visit.</string>
 
+
+    <string name="select_working">Select Working</string>
+    <string name="working">Working</string>
+    <string name="select_income_level">Select Income Level</string>
+    <string name="income_level">Income level</string>
+    <string name="abha_number">ABHA number</string>
+    <string name="enter_abha_no">Enter ABHA number</string>
+    <string name="are_you">Are you</string>
+    <string name="vegetarian">Vegetarian</string>
+    <string name="non_vegetarian">Non Vegetarian</string>
+
+
 </resources>

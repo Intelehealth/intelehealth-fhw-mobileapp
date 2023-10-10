@@ -129,7 +129,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:drawablePadding="@dimen/margin_5"
-                        android:text="@string/national_ID_other_details"
+                        android:text="@string/abha_number"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -190,7 +190,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:drawablePadding="@dimen/margin_5"
-                        android:text="@string/occupation"
+                        android:text="@string/working"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -208,6 +208,7 @@
 
                 <!--Date of birth-->
                 <TableRow
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/margin_4"
@@ -283,7 +284,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/bullet_gray"
                         android:drawablePadding="@dimen/margin_5"
-                        android:text="@string/economic_category"
+                        android:text="@string/income_level"
                         android:textAppearance="@style/caption"
                         android:textColor="@color/hint_text_color"
                         android:textSize="14sp" />
@@ -298,6 +299,37 @@
                         android:textColor="@color/textview_color"
                         android:textSize="14sp" />
                 </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="@string/are_you"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/are_you_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vegetarian"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="14sp" />
+                </TableRow>
+
 
             </TableLayout>
 

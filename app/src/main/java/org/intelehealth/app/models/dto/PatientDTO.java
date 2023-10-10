@@ -79,6 +79,18 @@ public class PatientDTO implements Serializable {
 
     private VisitDTO visitDTO;
 
+    public String getAreYou() {
+        return areYou;
+    }
+
+    public void setAreYou(String areYou) {
+        this.areYou = areYou;
+    }
+
+    @SerializedName("areYou")
+    @Expose
+    private String areYou;
+
     public String getUuid() {
         return uuid;
     }
