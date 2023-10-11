@@ -2275,8 +2275,8 @@ public class Node implements Serializable {
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(1);
         quantityPicker.setMaxValue(60);
-        unitPicker.setMinValue(1);
-        //unitPicker.setMaxValue(4);
+        unitPicker.setMinValue(0);
+        unitPicker.setMaxValue(0);
 
         EditText input = findInput(quantityPicker);
         TextWatcher textWatcher = new TextWatcher() {
