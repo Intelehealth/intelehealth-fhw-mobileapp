@@ -74,6 +74,7 @@ import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UrlModifiers;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -405,7 +406,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
                 stage1Hr1_1_EncounterUuid = UUID.randomUUID().toString();
                 eDTO.setUuid(stage1Hr1_1_EncounterUuid);
                 eDTO.setVisituuid(uuid);
-                eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+                eDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 eDTO.setProvideruuid(sessionManager.getProviderID());
                 eDTO.setEncounterTypeUuid(eDAO.getEncounterTypeUuid("Stage1_Hour1_1"));
                 eDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
@@ -462,7 +463,7 @@ public class PatientDetailActivity extends BaseActionBarActivity {
 
         eDTO.setUuid(UUID.randomUUID().toString());
         eDTO.setVisituuid(uuid);
-        eDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        eDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
         eDTO.setProvideruuid(sessionManager.getProviderID());
         eDTO.setEncounterTypeUuid(eDAO.getEncounterTypeUuid(encounterTypeUUIDValue));
         eDTO.setSyncd(true); // so that this 23 encounters are just created but not pushed to the payload...

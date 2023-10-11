@@ -1,15 +1,14 @@
 package org.intelehealth.klivekit.utils;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.text.format.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Vaghela Mithun R. on 03-08-2023 - 19:38.
@@ -23,11 +22,13 @@ public class DateTimeUtils {
     public static final String TIME_ZONE_UTC = "UTC";
     public static final String TIME_ZONE_ISD = "Asia/Kolkata";
 
+    public static final String TIME_FORMAT = "HH:mm a";
+
     @SuppressLint("SimpleDateFormat")
-    public static SimpleDateFormat getSimpleDateFormat(String format, String timeZone) {
+    public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         if (timeZone != null)
-            sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
+            sdf.setTimeZone(timeZone);
         return sdf;
     }
 
@@ -35,35 +36,34 @@ public class DateTimeUtils {
 //
 //    }
 
-    public static String formatIsdDate(Date date, String format) {
-        SimpleDateFormat sdf = getSimpleDateFormat(format, TIME_ZONE_ISD);
+    public static String formatToLocalDate(Date date, String format) {
+        SimpleDateFormat sdf = getSimpleDateFormat(format, TimeZone.getDefault());
         return sdf.format(date);
     }
 
-    public static Date parseDate(String date, String format, String timeZone) {
+    public static Date parseDate(String date, String format, TimeZone timeZone) {
         SimpleDateFormat sdf = getSimpleDateFormat(format, timeZone);
         try {
             return sdf.parse(date);
         } catch (ParseException e) {
-            return getCurrentDate();
+            return getCurrentDate(getUTCTimeZone());
         }
     }
 
     public static Date parseUTCDate(String date, String format) {
-        return parseDate(date, format, TIME_ZONE_UTC);
+        return parseDate(date, format, getUTCTimeZone());
     }
 
-    public static Date getCurrentDate() {
+    public static Date getCurrentDate(TimeZone timeZone) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeZone(timeZone);
         return calendar.getTime();
     }
 
     public static String getCurrentDateWithDBFormat() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        SimpleDateFormat sdf = getSimpleDateFormat(DB_FORMAT, TIME_ZONE_UTC);
-        return sdf.format(calendar.getTime());
+        SimpleDateFormat sdf = getSimpleDateFormat(DB_FORMAT, getUTCTimeZone());
+        return sdf.format(getCurrentDate(getUTCTimeZone()));
     }
 
     public static boolean isToday(Date date) {
@@ -80,5 +80,40 @@ public class DateTimeUtils {
 //        } else {
         return DateUtils.isToday(date.getTime() + DateUtils.DAY_IN_MILLIS);
 //        }
+    }
+
+    public static String utcToLocalDate(String utcDate, String utcFormat, String localFormat) {
+        SimpleDateFormat localSdf = getSimpleDateFormat(localFormat, TimeZone.getDefault());
+        Date date = parseUTCDate(utcDate, utcFormat);
+        return localSdf.format(date);
+    }
+
+    public static String utcToLocalDate(Date utcDate, String localFormat) {
+        SimpleDateFormat localSdf = getSimpleDateFormat(localFormat, TimeZone.getDefault());
+        return localSdf.format(utcDate);
+    }
+
+    public static Date utcToLocalDate(String utcDate, String utcFormat) {
+        Date date = parseUTCDate(utcDate, utcFormat);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getDefault());
+        calendar.setTimeInMillis(date.getTime());
+        return calendar.getTime();
+    }
+
+    public static String getCurrentDateInUTC(String format) {
+        SimpleDateFormat sdf = getSimpleDateFormat(format, getUTCTimeZone());
+        return sdf.format(getCurrentDate(getUTCTimeZone()));
+    }
+
+    public static long getMinDiffWithCurrentDate(String date, String format) {
+        Date encounterDate = DateTimeUtils.parseUTCDate(date, format);
+        Date currentDate = DateTimeUtils.getCurrentDate(getUTCTimeZone());
+        long difference = currentDate.getTime() - encounterDate.getTime();
+        return TimeUnit.MILLISECONDS.toMinutes(difference);
+    }
+
+    public static TimeZone getUTCTimeZone() {
+        return TimeZone.getTimeZone(TIME_ZONE_UTC);
     }
 }

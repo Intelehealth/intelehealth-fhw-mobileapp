@@ -13,6 +13,7 @@ import android.util.Log;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.dto.EncounterDTO;
@@ -21,6 +22,7 @@ import org.intelehealth.ezazi.utilities.Logger;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class EncounterDAO {
@@ -65,7 +68,7 @@ public class EncounterDAO {
         values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
         values.put("provider_uuid", encounter.getProvideruuid());
         values.put("encounter_time", encounter.getEncounterTime());
-        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
         values.put("sync", encounter.getSyncd());
         values.put("voided", encounter.getVoided());
         values.put("privacynotice_value", encounter.getPrivacynotice_value());
@@ -117,7 +120,7 @@ public class EncounterDAO {
             values.put("encounter_time", encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("provider_uuid", encounter.getProvideruuid());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
@@ -163,7 +166,7 @@ public class EncounterDAO {
                 values.put("encounter_time", encounter.getEncounterTime());
                 values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
                 values.put("provider_uuid", encounter.getProvideruuid());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
                 values.put("sync", encounter.getSyncd());
                 values.put("voided", encounter.getVoided());
                 values.put("privacynotice_value", encounter.getPrivacynotice_value());
@@ -421,7 +424,7 @@ public class EncounterDAO {
             encounterDTO.setVisituuid(visitUuid);
             encounterDTO.setVoided(0);
             encounterDTO.setEncounterTypeUuid(emergency_uuid);
-            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
             Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
@@ -564,7 +567,7 @@ public class EncounterDAO {
 
 //        long FIVE_MINS_IN_MILLIS = 2 * 60 * 1000;
         long TWO_MINS_IN_MILLIS = 2 * 60 * 1000;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        DateFormat df = new SimpleDateFormat(AppConstants.UTC_FORMAT, Locale.getDefault());
         long time = df.parse(timeStamp).getTime();
 
         return df.format(new Date(time - TWO_MINS_IN_MILLIS));
@@ -578,7 +581,7 @@ public class EncounterDAO {
         try {
             values.put("uuid", encounteruuid);
             values.put("visituuid", visitUuid);
-            values.put("encounter_time", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));
+            values.put("encounter_time", (twoMinutesAgo(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT))));
             values.put("encounter_type_uuid", ENCOUNTER_VISIT_COMPLETE);
             values.put("provider_uuid", providerUUID);
 //            values.put("modified_date", (twoMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime())));

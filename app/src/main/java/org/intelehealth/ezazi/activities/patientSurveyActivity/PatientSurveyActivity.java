@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.intelehealth.ezazi.R;
@@ -37,6 +38,7 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 
 import org.intelehealth.ezazi.activities.homeActivity.HomeActivity;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 public class PatientSurveyActivity extends AppCompatActivity {
     private static final String TAG = PatientSurveyActivity.class.getSimpleName();
@@ -165,7 +167,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
         try {
-            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+            encounterDTO.setEncounterTime(fiveMinutesAgo(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT)));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -209,7 +211,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
         long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        DateFormat df = new SimpleDateFormat(AppConstants.UTC_FORMAT, Locale.getDefault());
         long time = df.parse(timeStamp).getTime();
 
         return df.format(new Date(time - FIVE_MINS_IN_MILLIS));

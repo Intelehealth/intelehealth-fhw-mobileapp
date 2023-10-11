@@ -13,15 +13,19 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.intelehealth.ezazi.R;
 
 
 public class DateAndTimeUtils {
     private static final String TAG = "DateAndTimeUtils";
+    public static final String FORMAT_UTC = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     public static String twoMinutesAgo(String timeStamp) throws ParseException {
         // NOTE: Since server error -> "The encounter datetime should be between the visit start and stop dates."
@@ -41,7 +45,7 @@ public class DateAndTimeUtils {
 
         if (date_of_birth == null) return 0;
 
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
@@ -81,8 +85,20 @@ public class DateAndTimeUtils {
     }
 
     public String currentDateTime() {
-        Locale.setDefault(Locale.ENGLISH);
+//        Locale.setDefault(Locale.getDefault());
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeZone(TimeZone.getDefault());
+        return date.format(calendar.getTime());
+    }
+
+    public static String currentDateTimeInUTC(String format) {
+//        Locale.setDefault(Locale.getDefault());
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        date.setTimeZone(TimeZone.getTimeZone("UTC"));
         //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Calendar calendar = Calendar.getInstance();
@@ -91,12 +107,13 @@ public class DateAndTimeUtils {
     }
 
     public String twoMinuteDelayTime() {
-        Locale.setDefault(Locale.ENGLISH);
+//        Locale.setDefault(Locale.getDefault());
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         //  DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeZone(TimeZone.getDefault());
         calendar.add(Calendar.MINUTE, 2);
         return date.format(calendar.getTime());
     }
@@ -108,8 +125,8 @@ public class DateAndTimeUtils {
         String language = sessionManager.getAppLanguage();
         Log.d("LANG", "LANG: " + sessionManager.getAppLanguage());
 
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = null;
         try {
             date = originalFormat.parse(s);
@@ -145,7 +162,7 @@ public class DateAndTimeUtils {
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
         if (s == null) return "";
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
@@ -191,7 +208,7 @@ public class DateAndTimeUtils {
     //calculate year, month, days from two date
     public static String getAgeInYearMonthNew(String s, Context context) {
         if (s == null) return "";
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
@@ -234,7 +251,7 @@ public class DateAndTimeUtils {
 
     public static String getAgeInYearMonth(String s) {
         if (s == null) return "";
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
@@ -273,7 +290,7 @@ public class DateAndTimeUtils {
 
     public static String getAgeInYears(String s, Context context) {
         if (s == null) return "";
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
@@ -312,8 +329,8 @@ public class DateAndTimeUtils {
 
     public static String getFormatedDateOfBirth(String oldformatteddate) {
 
-        DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);
@@ -322,7 +339,7 @@ public class DateAndTimeUtils {
         }
 
         if (date == null) {
-            originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             try {
                 date = originalFormat.parse(oldformatteddate);
             } catch (ParseException e) {
@@ -334,8 +351,8 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);
@@ -356,7 +373,7 @@ public class DateAndTimeUtils {
     }
 
     public String getcurrentDateTime() {
-        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
         Date todayDate = new Date();
         return date.format(todayDate);
     }
@@ -364,8 +381,8 @@ public class DateAndTimeUtils {
     public static String SimpleDatetoLongFollowupDate(String dateString) {
         String formattedDate = null;
         try {
-            DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
+            DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -377,8 +394,8 @@ public class DateAndTimeUtils {
     public static String SimpleDatetoLongDate(String dateString) {
         String formattedDate = null;
         try {
-            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -410,8 +427,8 @@ public class DateAndTimeUtils {
         SimpleDateFormat sdf1;
 
         try {
-            sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
-            sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
+            sdf = new SimpleDateFormat(sourceFormat, Locale.getDefault());
+            sdf1 = new SimpleDateFormat(anotherFormat, Locale.getDefault());
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -575,6 +592,10 @@ public class DateAndTimeUtils {
         Date cDate = new Date();
         String fDate = new SimpleDateFormat("dd/MM/yyyy").format(cDate);
         return fDate;
+    }
+
+    public static int getMinutesDifferentFromUTC(String date, String format) {
+        return 0;
     }
 
 }

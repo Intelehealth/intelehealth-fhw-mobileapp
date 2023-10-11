@@ -43,6 +43,7 @@ import org.intelehealth.ezazi.app.AppConstants;
 import org.intelehealth.ezazi.app.IntelehealthApplication;
 import org.intelehealth.ezazi.models.dto.ObsDTO;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 public class ObsDAO {
 
@@ -544,7 +545,7 @@ public class ObsDAO {
             values.put("conceptuuid", MISSED_ENCOUNTER); // Missed Encounter
             values.put("comment", "");
             values.put("value", "-");
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             values.put("voided", "0");
             values.put("sync", "false");
 
@@ -690,7 +691,7 @@ public class ObsDAO {
             values.put("conceptuuid", conceptId);
             values.put("comment", "");
             values.put("value", value);
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("modified_date", DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             values.put("voided", "0");
             values.put("sync", "0");
             db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);

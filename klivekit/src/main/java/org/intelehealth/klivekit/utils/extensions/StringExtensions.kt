@@ -1,11 +1,6 @@
 package org.intelehealth.klivekit.utils.extensions
 
-import android.os.Build
-import android.text.format.DateUtils
-import androidx.core.util.TimeUtils
 import org.intelehealth.klivekit.utils.DateTimeUtils
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.Date
 
 /**
@@ -22,5 +17,5 @@ fun String.toLocalDateFormat(format: String): String {
     val date = this.toDate(DateTimeUtils.DB_FORMAT)
     return if (DateTimeUtils.isToday(date)) "Today"
     else if (DateTimeUtils.isYesterday(date)) "Yesterday"
-    else DateTimeUtils.formatIsdDate(this.toDate(DateTimeUtils.DB_FORMAT), format)
+    else DateTimeUtils.formatInDefaultTimeZoneDate(this.toDate(DateTimeUtils.DB_FORMAT), format)
 }

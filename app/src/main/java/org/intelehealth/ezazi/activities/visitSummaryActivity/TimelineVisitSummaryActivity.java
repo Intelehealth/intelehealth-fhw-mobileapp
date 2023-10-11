@@ -75,6 +75,7 @@ import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.intelehealth.klivekit.socket.SocketManager;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -571,46 +572,46 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         button.setText(getString(label));
     }
 
-    private void showEndShiftDialog() {
-        final String[] stage1Options = {getString(R.string.move_to_stage2), getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
-        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
-        int count = 0;
-        for (String str : stage1Options) {
-            SingChoiceItem item = new SingChoiceItem();
-            item.setItem(str);
-            item.setItemIndex(count);
-            choiceItems.add(item);
-            count++;
-        }
-
-        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this).title(R.string.select_an_option).positiveButtonLabel(R.string.yes).content(choiceItems).build();
-
-        dialog.setListener(item -> manageStageSelection(item.getItemIndex(), item.getItem()));
-
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-
-    }
-
-    private void manageStageSelection(int position, String value) {
-        if (position == 0) cancelStage1ConfirmationDialog(); // cancel and start stage 2
-        else if (position == 1 || position == 2) // refer other hospital // call visit complete enc.
-            closeVisitFromStage1WithReferType(value);
-//            showReferToOtherHospitalConfirmationDialog(value);
-//        else if (position == 2) { // self discharge // call visit complete enc.
-////            showSelfDischargeConfirmationDialog(value);
-////            closeVisitFromStage1WithReferType(value);
+//    private void showEndShiftDialog() {
+//        final String[] stage1Options = {getString(R.string.move_to_stage2), getString(R.string.refer_to_other_hospital), getString(R.string.self_discharge_medical_advice)};
+//        ArrayList<SingChoiceItem> choiceItems = new ArrayList<>();
+//        int count = 0;
+//        for (String str : stage1Options) {
+//            SingChoiceItem item = new SingChoiceItem();
+//            item.setItem(str);
+//            item.setItemIndex(count);
+//            choiceItems.add(item);
+//            count++;
 //        }
-        else
-            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
-    }
+//
+//        SingleChoiceDialogFragment dialog = new SingleChoiceDialogFragment.Builder(this).title(R.string.select_an_option).positiveButtonLabel(R.string.yes).content(choiceItems).build();
+//
+//        dialog.setListener(item -> manageStageSelection(item.getItemIndex(), item.getItem()));
+//
+//        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//
+//    }
 
-    private void closeVisitFromStage1WithReferType(String value) {
-        ReferTypeHelper helper = new ReferTypeHelper(this, visitUuid);
-        helper.completeVisitWithReferType(value, CompletedVisitStatus.ReferType.conceptUuid(), () -> {
-            Toast.makeText(context, context.getString(R.string.refer_successfully, value), Toast.LENGTH_SHORT).show();
-            checkInternetAndUploadVisitEncounter(true);
-        });
-    }
+//    private void manageStageSelection(int position, String value) {
+//        if (position == 0) cancelStage1ConfirmationDialog(); // cancel and start stage 2
+//        else if (position == 1 || position == 2) // refer other hospital // call visit complete enc.
+//            closeVisitFromStage1WithReferType(value);
+////            showReferToOtherHospitalConfirmationDialog(value);
+////        else if (position == 2) { // self discharge // call visit complete enc.
+//////            showSelfDischargeConfirmationDialog(value);
+//////            closeVisitFromStage1WithReferType(value);
+////        }
+//        else
+//            Toast.makeText(context, context.getString(R.string.please_select_an_option), Toast.LENGTH_SHORT).show();
+//    }
+
+//    private void closeVisitFromStage1WithReferType(String value) {
+//        ReferTypeHelper helper = new ReferTypeHelper(this, visitUuid);
+//        helper.completeVisitWithReferType(value, CompletedVisitStatus.ReferType.conceptUuid(), () -> {
+//            Toast.makeText(context, context.getString(R.string.refer_successfully, value), Toast.LENGTH_SHORT).show();
+//            checkInternetAndUploadVisitEncounter(true);
+//        });
+//    }
 
 //    private void showReferToOtherHospitalConfirmationDialog(String value) {
 //        showConfirmationDialog(R.string.are_you_sure_want_to_refer_other, () -> {
@@ -649,48 +650,48 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
     }
 
-    private void showCustomViewDialog(@StringRes int title,
-                                      @StringRes int positiveLbl,
-                                      @StringRes int negLbl,
-                                      View view,
-                                      CustomViewDialogFragment.OnConfirmationActionListener listener) {
-        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this)
-                .title(title)
-                .positiveButtonLabel(positiveLbl)
-                .negativeButtonLabel(negLbl)
-                .view(view)
-                .build();
+//    private void showCustomViewDialog(@StringRes int title,
+//                                      @StringRes int positiveLbl,
+//                                      @StringRes int negLbl,
+//                                      View view,
+//                                      CustomViewDialogFragment.OnConfirmationActionListener listener) {
+//        CustomViewDialogFragment dialog = new CustomViewDialogFragment.Builder(this)
+//                .title(title)
+//                .positiveButtonLabel(positiveLbl)
+//                .negativeButtonLabel(negLbl)
+//                .view(view)
+//                .build();
+//
+//        dialog.setListener(listener);
+//
+//        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
+//    }
 
-        dialog.setListener(listener);
-
-        dialog.show(getSupportFragmentManager(), dialog.getClass().getCanonicalName());
-    }
-
-    private void referOtherHospitalDialog(String referType) {
-        DialogReferHospitalEzaziBinding binding = DialogReferHospitalEzaziBinding.inflate(getLayoutInflater(), null, false);
-
-        showCustomViewDialog(R.string.refer_section, R.string.yes, R.string.no, binding.getRoot(), () -> {
-            boolean isInserted = false;
-            String hospitalName = binding.referHospitalName.getText().toString(), doctorName = binding.referDoctorName.getText().toString(), note = binding.referNote.getText().toString();
-
-            // call visitcompleteenc and add obs for refer type and referal values entered...
-            try {
-                isInserted = insertVisitCompleteEncounterAndObsReferHospital(visitUuid, referType, hospitalName, doctorName, note);
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
-
-            if (isInserted) {
-                Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(context, HomeActivity.class);
-//                startActivity(intent);
-                checkInternetAndUploadVisitEncounter(true);
-            } else {
-                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
+//    private void referOtherHospitalDialog(String referType) {
+//        DialogReferHospitalEzaziBinding binding = DialogReferHospitalEzaziBinding.inflate(getLayoutInflater(), null, false);
+//
+//        showCustomViewDialog(R.string.refer_section, R.string.yes, R.string.no, binding.getRoot(), () -> {
+//            boolean isInserted = false;
+//            String hospitalName = binding.referHospitalName.getText().toString(), doctorName = binding.referDoctorName.getText().toString(), note = binding.referNote.getText().toString();
+//
+//            // call visitcompleteenc and add obs for refer type and referal values entered...
+//            try {
+//                isInserted = insertVisitCompleteEncounterAndObsReferHospital(visitUuid, referType, hospitalName, doctorName, note);
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (isInserted) {
+//                Toast.makeText(context, context.getString(R.string.refer_data_submitted_successfully), Toast.LENGTH_SHORT).show();
+////                Intent intent = new Intent(context, HomeActivity.class);
+////                startActivity(intent);
+//                checkInternetAndUploadVisitEncounter(true);
+//            } else {
+//                Toast.makeText(context, context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
 
 
     private final CountDownTimer mCountDownTimer = new CountDownTimer(24 * 60 * 60 * 1000, 60 * 1000) {
@@ -712,7 +713,7 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         if (typeUuid != null && typeUuid.length() > 0) {
             encounterDTO.setUuid(encounterUuid);
             encounterDTO.setVisituuid(visit_UUID);
-            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
             encounterDTO.setEncounterTypeUuid(typeUuid);
             encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
@@ -728,88 +729,88 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
     }
 
 
-    private boolean insertVisitCompleteEncounterAndObsReferHospital(String visitUuid, String referType, String hospitalName, String doctorName, String note) throws DAOException {
-        boolean isInserted = true;
-        String encounterUuid = "";
-        encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+//    private boolean insertVisitCompleteEncounterAndObsReferHospital(String visitUuid, String referType, String hospitalName, String doctorName, String note) throws DAOException {
+//        boolean isInserted = true;
+//        String encounterUuid = "";
+//        encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+//
+//        VisitsDAO visitsDAO = new VisitsDAO();
+//        visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+//        new VisitAttributeListDAO().markVisitAsRead(visitUuid);
+//
+//        ////
+//        // Now get this encounteruuid and create refer obs table.
+//        if (!encounterUuid.isEmpty()) {
+//            ObsDAO obsDAO = new ObsDAO();
+//            ObsDTO obsDTO;
+//            List<ObsDTO> obsDTOList = new ArrayList<>();
+//
+//            // 1. Refer Type
+//            obsDTO = new ObsDTO();
+//            obsDTO.setUuid(UUID.randomUUID().toString());
+//            obsDTO.setEncounteruuid(encounterUuid);
+//            obsDTO.setValue(referType);
+//            obsDTO.setConceptuuid(UuidDictionary.REFER_TYPE);
+//            obsDTOList.add(obsDTO);
+//
+//            // 2. Refer Hospital Name
+//            if (hospitalName != null && hospitalName.length() > 0) {
+//                obsDTO = new ObsDTO();
+//                obsDTO.setUuid(UUID.randomUUID().toString());
+//                obsDTO.setEncounteruuid(encounterUuid);
+//                obsDTO.setValue(hospitalName);
+//                obsDTO.setConceptuuid(UuidDictionary.REFER_HOSPITAL);
+//                obsDTOList.add(obsDTO);
+//            }
+//
+//            // 3. Refer Doctor Name
+//            if (doctorName != null && doctorName.length() > 0) {
+//                obsDTO = new ObsDTO();
+//                obsDTO.setUuid(UUID.randomUUID().toString());
+//                obsDTO.setEncounteruuid(encounterUuid);
+//                obsDTO.setValue(doctorName);
+//                obsDTO.setConceptuuid(UuidDictionary.REFER_DR_NAME);
+//                obsDTOList.add(obsDTO);
+//            }
+//
+//            // 4. Refer Note
+//            if (note != null && note.length() > 0) {
+//                obsDTO = new ObsDTO();
+//                obsDTO.setUuid(UUID.randomUUID().toString());
+//                obsDTO.setEncounteruuid(encounterUuid);
+//                obsDTO.setValue(note);
+//                obsDTO.setConceptuuid(UuidDictionary.REFER_NOTE);
+//                obsDTOList.add(obsDTO);
+//            }
+//
+//            isInserted = obsDAO.insertObsToDb(obsDTOList, TAG);
+//        }
+//
+//        return isInserted;
+//    }
 
-        VisitsDAO visitsDAO = new VisitsDAO();
-        visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
-        new VisitAttributeListDAO().markVisitAsRead(visitUuid);
 
-        ////
-        // Now get this encounteruuid and create refer obs table.
-        if (!encounterUuid.isEmpty()) {
-            ObsDAO obsDAO = new ObsDAO();
-            ObsDTO obsDTO;
-            List<ObsDTO> obsDTOList = new ArrayList<>();
-
-            // 1. Refer Type
-            obsDTO = new ObsDTO();
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUuid);
-            obsDTO.setValue(referType);
-            obsDTO.setConceptuuid(UuidDictionary.REFER_TYPE);
-            obsDTOList.add(obsDTO);
-
-            // 2. Refer Hospital Name
-            if (hospitalName != null && hospitalName.length() > 0) {
-                obsDTO = new ObsDTO();
-                obsDTO.setUuid(UUID.randomUUID().toString());
-                obsDTO.setEncounteruuid(encounterUuid);
-                obsDTO.setValue(hospitalName);
-                obsDTO.setConceptuuid(UuidDictionary.REFER_HOSPITAL);
-                obsDTOList.add(obsDTO);
-            }
-
-            // 3. Refer Doctor Name
-            if (doctorName != null && doctorName.length() > 0) {
-                obsDTO = new ObsDTO();
-                obsDTO.setUuid(UUID.randomUUID().toString());
-                obsDTO.setEncounteruuid(encounterUuid);
-                obsDTO.setValue(doctorName);
-                obsDTO.setConceptuuid(UuidDictionary.REFER_DR_NAME);
-                obsDTOList.add(obsDTO);
-            }
-
-            // 4. Refer Note
-            if (note != null && note.length() > 0) {
-                obsDTO = new ObsDTO();
-                obsDTO.setUuid(UUID.randomUUID().toString());
-                obsDTO.setEncounteruuid(encounterUuid);
-                obsDTO.setValue(note);
-                obsDTO.setConceptuuid(UuidDictionary.REFER_NOTE);
-                obsDTOList.add(obsDTO);
-            }
-
-            isInserted = obsDAO.insertObsToDb(obsDTOList, TAG);
-        }
-
-        return isInserted;
-    }
-
-
-    private boolean insertVisitCompleteObs(String visitUuid, String value, String conceptId) throws DAOException {
-        //  EncounterDAO encounterDAO = new EncounterDAO();
-        ObsDAO obsDAO = new ObsDAO();
-        boolean isInserted = false;
-        String encounterUuid = "";
-        encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
-
-        VisitsDAO visitsDAO = new VisitsDAO();
-        try {
-            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
-            new VisitAttributeListDAO().markVisitAsRead(visitUuid);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-        ////
-
-        // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
-        isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), value, conceptId);
-
-        return isInserted;
-    }
+//    private boolean insertVisitCompleteObs(String visitUuid, String value, String conceptId) throws DAOException {
+//        //  EncounterDAO encounterDAO = new EncounterDAO();
+//        ObsDAO obsDAO = new ObsDAO();
+//        boolean isInserted = false;
+//        String encounterUuid = "";
+//        encounterUuid = encounterDAO.insertVisitCompleteEncounterToDb(visitUuid, sessionManager.getProviderID());
+//
+//        VisitsDAO visitsDAO = new VisitsDAO();
+//        try {
+//            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+//            new VisitAttributeListDAO().markVisitAsRead(visitUuid);
+//        } catch (DAOException e) {
+//            FirebaseCrashlytics.getInstance().recordException(e);
+//        }
+//        ////
+//
+//        // Now get this encounteruuid and create BIRTH_OUTCOME in obs table.
+//        isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), value, conceptId);
+//
+//        return isInserted;
+//    }
 
     public void checkInternetAndUploadVisitEncounter(boolean isCompleteVisitCall) {
         isVisitCompleted = isCompleteVisitCall;
@@ -845,15 +846,15 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         pendingIntent.cancel();
     }
 
-    private void cancelStage1_Alarm() { // visituuid : 2 - 7
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag());
-        // to set different alarms for different patients.
-        alarmManager.cancel(pendingIntent);
-        pendingIntent.cancel();
-    }
+//    private void cancelStage1_Alarm() { // visituuid : 2 - 7
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        Intent intent = new Intent(context, NotificationReceiver.class);
+//        Log.v("timeline", "visituuid_int " + visitUuid.replaceAll("[^\\d]", ""));
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(2, 7)), intent, NotificationUtils.getPendingIntentFlag());
+//        // to set different alarms for different patients.
+//        alarmManager.cancel(pendingIntent);
+//        pendingIntent.cancel();
+//    }
 
     // fetch all encounters from encounter tbl local db for this particular visit and show on timeline...
     private void fetchAllEncountersFromVisitForTimelineScreen(String visitUuid) {
@@ -872,31 +873,31 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void triggerAlarm_Stage2_every15mins(String visitUuid) { // TODO: change 1min to 15mins..... // visituuid : 0 - 5
-        Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
-        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
-        //  calendar.add(Calendar.MINUTE, 1); // Testing
-
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        intent.putExtra("patientNameTimeline", patientName);
-        intent.putExtra("timeTag", 15);
-        intent.putExtra("patientUuid", patientUuid);
-        intent.putExtra("visitUuid", visitUuid);
-        intent.putExtra("providerID", providerID);
-        intent.putExtra("Stage2_Hour1_1", "Stage1_Hour1_1");
-//        intent.putExtra("Stage2_Hour1_1","Stage2_Hour1_1");
-
-        Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
-        Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
-        // to set different alarams for different patients.
-
-        /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-        }*/
-    }
+//    private void triggerAlarm_Stage2_every15mins(String visitUuid) { // TODO: change 1min to 15mins..... // visituuid : 0 - 5
+//        Calendar calendar = Calendar.getInstance(); // current time and from there evey 15mins notifi will be triggered...
+//        calendar.add(Calendar.MINUTE, 15); // So that after 15mins this notifi is triggered and scheduled...
+//        //  calendar.add(Calendar.MINUTE, 1); // Testing
+//
+//        Intent intent = new Intent(context, NotificationReceiver.class);
+//        intent.putExtra("patientNameTimeline", patientName);
+//        intent.putExtra("timeTag", 15);
+//        intent.putExtra("patientUuid", patientUuid);
+//        intent.putExtra("visitUuid", visitUuid);
+//        intent.putExtra("providerID", providerID);
+//        intent.putExtra("Stage2_Hour1_1", "Stage1_Hour1_1");
+////        intent.putExtra("Stage2_Hour1_1","Stage2_Hour1_1");
+//
+//        Log.v("timeline", "patientname_3 " + patientName + " " + patientUuid + " " + visitUuid);
+//        Log.v("timeline", "visituuid_int_15min " + visitUuid.replaceAll("[^\\d]", ""));
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(visitUuid.replaceAll("[^\\d]", "").substring(0, 5)), intent, NotificationUtils.getPendingIntentFlag());
+//        // to set different alarams for different patients.
+//
+//        /*AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        if (alarmManager != null) {
+//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+//                    AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+//        }*/
+//    }
 
     private void triggerAlarm_Stage1_every30mins() { // TODO: change 1min to 15mins..... // visituuid : 2 - 7
         Calendar calendar = Calendar.getInstance(); // current time and from there evey 30mins notifi will be triggered...
@@ -983,20 +984,20 @@ public class TimelineVisitSummaryActivity extends BaseActionBarActivity {
         checkInternetAndUploadVisitEncounter(true);*/
     }
 
-    public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
-        Intent shiftChangeIntent = new Intent(context, HomeActivity.class);
-        shiftChangeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        shiftChangeIntent.putExtra("shiftChangeNotification", true);
+//    public static PendingIntent getPendingIntent(Context context, RtcArgs args) {
+//        Intent shiftChangeIntent = new Intent(context, HomeActivity.class);
+//        shiftChangeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        shiftChangeIntent.putExtra("shiftChangeNotification", true);
+//
+//        return PendingIntent.getActivity(context, 0, buildExtra(shiftChangeIntent, args),
+//                NotificationUtils.getPendingIntentFlag());
+//    }
 
-        return PendingIntent.getActivity(context, 0, buildExtra(shiftChangeIntent, args),
-                NotificationUtils.getPendingIntentFlag());
-    }
-
-    private static Intent buildExtra(Intent shiftIntent, RtcArgs args) {
-        shiftIntent.putExtra("patientNameTimeline", args.getPatientNameTimeline());
-        shiftIntent.putExtra("patientUuid", args.getPatientUuid());
-        shiftIntent.putExtra("visitUuid", args.getVisitUuid());
-        shiftIntent.putExtra("providerID", args.getProviderID());
-        return shiftIntent;
-    }
+//    private static Intent buildExtra(Intent shiftIntent, RtcArgs args) {
+//        shiftIntent.putExtra("patientNameTimeline", args.getPatientNameTimeline());
+//        shiftIntent.putExtra("patientUuid", args.getPatientUuid());
+//        shiftIntent.putExtra("visitUuid", args.getVisitUuid());
+//        shiftIntent.putExtra("providerID", args.getProviderID());
+//        return shiftIntent;
+//    }
 }

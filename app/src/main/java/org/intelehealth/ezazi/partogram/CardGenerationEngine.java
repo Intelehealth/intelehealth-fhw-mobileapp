@@ -31,10 +31,12 @@ import org.intelehealth.ezazi.models.dto.VisitDTO;
 import org.intelehealth.ezazi.services.firebase_services.FirebaseRealTimeDBUtils;
 import org.intelehealth.ezazi.syncModule.SyncUtils;
 import org.intelehealth.ezazi.ui.visit.model.CompletedVisitStatus;
+import org.intelehealth.ezazi.utilities.DateAndTimeUtils;
 import org.intelehealth.ezazi.utilities.NotificationUtils;
 import org.intelehealth.ezazi.utilities.SessionManager;
 import org.intelehealth.ezazi.utilities.UuidDictionary;
 import org.intelehealth.ezazi.utilities.exception.DAOException;
+import org.intelehealth.klivekit.utils.DateTimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,99 +56,104 @@ public class CardGenerationEngine {
     private static ArrayList<ObsDTO> observations;
 
     public static void scanForNewCardEligibility() {
-        try {
-            encounters = new ArrayList<>();
-            observations = new ArrayList<>();
-            // all active visit list
-            VisitsDAO visitsDAO = new VisitsDAO();
-            EncounterDAO encounterDAO = new EncounterDAO();
-            List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitByProviderId(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
-            Log.v(TAG, "visitDTOList count - " + visitDTOList.size());
+        encounters = new ArrayList<>();
+        observations = new ArrayList<>();
+        // all active visit list
+        VisitsDAO visitsDAO = new VisitsDAO();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        List<VisitDTO> visitDTOList = visitsDAO.getAllActiveVisitByProviderId(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
+        Log.v(TAG, "visitDTOList count - " + visitDTOList.size());
 
 
-            for (int i = 0; i < visitDTOList.size(); i++) {
-                String visitUid = visitDTOList.get(i).getUuid();
-                Log.v(TAG, "visitUid - " + new Gson().toJson(visitDTOList.get(i)));
-                Log.v(TAG, "visitUid - " + visitUid);
-                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUid);
-                if (encounterDTO != null && encounterDTO.getVisituuid().equals(visitUid)) {
-                    String latestEncounterTime = encounterDTO.getEncounterTime(); //eg. 2022-06-30T19:58:05.935+0530
-                    if (latestEncounterTime == null) continue;
-                    String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid()); //eg. Stage1_Hour1_1
-                    Log.v(TAG, "latestEncounterTime - " + latestEncounterTime);
-                    Log.v(TAG, "latestEncounterName - " + latestEncounterName);
-                    if (latestEncounterName != null && latestEncounterName.length() > 0) {
-                        SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-                        SimpleDateFormat f3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                        Date latestEncounterDate = latestEncounterTime.contains("T") || latestEncounterTime.contains("+") ? f2.parse(latestEncounterTime) : f3.parse(latestEncounterTime);
+        for (int i = 0; i < visitDTOList.size(); i++) {
+            String visitUid = visitDTOList.get(i).getUuid();
+            Log.v(TAG, "visitUid - " + new Gson().toJson(visitDTOList.get(i)));
+            Log.v(TAG, "visitUid - " + visitUid);
+            EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUIDLimit1(visitUid);
+            if (encounterDTO != null && encounterDTO.getVisituuid().equals(visitUid)) {
+                String latestEncounterTime = encounterDTO.getEncounterTime(); //eg. 2022-06-30T19:58:05.935+0530
+                if (latestEncounterTime == null) continue;
+                String latestEncounterName = encounterDAO.getEncounterTypeNameByUUID(encounterDTO.getEncounterTypeUuid()); //eg. Stage1_Hour1_1
+                Log.v(TAG, "latestEncounterTime - " + latestEncounterTime);
+                Log.v(TAG, "latestEncounterName - " + latestEncounterName);
+                if (latestEncounterName != null && latestEncounterName.length() > 0) {
+//                    Date encounterDate = DateTimeUtils.parseUTCDate(latestEncounterTime, DateAndTimeUtils.FORMAT_UTC);
+//                    Date currentDate = DateTimeUtils.getCurrentDate(DateTimeUtils.getUTCTimeZone());
 
-                        Calendar c2 = Calendar.getInstance();
-                        c2.setTime(latestEncounterDate);
-                        c2.set(Calendar.SECOND, 0);
-                        c2.set(Calendar.MILLISECOND, 0);
-                        Calendar now = Calendar.getInstance();
-                        now.setTime(new Date());
-                        now.set(Calendar.SECOND, 0);
-                        now.set(Calendar.MILLISECOND, 0);
+//                        SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+//                        SimpleDateFormat f3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+//                        Date latestEncounterDate = latestEncounterTime.contains("T") || latestEncounterTime.contains("+") ? f2.parse(latestEncounterTime) : f3.parse(latestEncounterTime);
+//
+//                        Calendar c2 = Calendar.getInstance();
+//                        c2.setTime(latestEncounterDate);
+//                        c2.set(Calendar.SECOND, 0);
+//                        c2.set(Calendar.MILLISECOND, 0);
+//                        Calendar now = Calendar.getInstance();
+//                        now.setTime(new Date());
+//                        now.set(Calendar.SECOND, 0);
+//                        now.set(Calendar.MILLISECOND, 0);
 
-                        long diff = now.getTimeInMillis() - c2.getTimeInMillis();//as given
+//                    long diff = currentDate.getTime() - encounterDate.getTime();//as given
 
-                        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-                        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-                        Log.v(TAG, "minutes - " + minutes);
-                        Log.v(TAG, "seconds - " + seconds);
+//                    long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+                    long minutes = DateTimeUtils.getMinDiffWithCurrentDate(latestEncounterTime, AppConstants.UTC_FORMAT);
+                    Log.v(TAG, "minutes - " + minutes);
+//                    Log.v(TAG, "seconds - " + seconds);
 
-                        Map<String, String> log = new HashMap<>();
-                        log.put("TAG", TAG);
-                        log.put("action", "scanForNewCardEligibility");
-                        log.put("visitUid", visitUid);
-                        log.put("latestEncounterTime", latestEncounterTime);
-                        log.put("latestEncounterName", latestEncounterName);
-                        log.put("minutes", String.valueOf(minutes));
-                        FirebaseRealTimeDBUtils.logData(log);
+                    Map<String, String> log = new HashMap<>();
+                    log.put("TAG", TAG);
+                    log.put("action", "scanForNewCardEligibility");
+                    log.put("visitUid", visitUid);
+                    log.put("latestEncounterTime", latestEncounterTime);
+                    log.put("latestEncounterName", latestEncounterName);
+                    log.put("minutes", String.valueOf(minutes));
+                    FirebaseRealTimeDBUtils.logData(log);
 
-                        if (latestEncounterName.toLowerCase().contains("stage1")) {
-                            if (minutes >= 30) {
+                    if (latestEncounterName.toLowerCase().contains("stage1")) {
+                        if (minutes >= 30) {
+                            // get next encounter name
+                            String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
+                            if (nextEncounterTypeName != null) {
+                                Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
+                                createNewEncounter(visitUid, nextEncounterTypeName);
+                            }
+                        } else if (minutes == 29) {
+                            SyncUtils syncUtils = new SyncUtils();
+                            syncUtils.syncBackground();
+                        }
+                    } else if (latestEncounterName.toLowerCase().contains("stage2")) {
+                        if (minutes >= 15) {
+                            if (checkVisitEncounterReachToLimit(latestEncounterName)) {
+                                closeReachToLimitVisit(visitUid);
+                            } else {
                                 // get next encounter name
                                 String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
                                 if (nextEncounterTypeName != null) {
                                     Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
                                     createNewEncounter(visitUid, nextEncounterTypeName);
                                 }
-                            } else if (minutes == 29) {
-                                SyncUtils syncUtils = new SyncUtils();
-                                syncUtils.syncBackground();
                             }
-                        } else if (latestEncounterName.toLowerCase().contains("stage2")) {
-                            if (minutes >= 15) {
-                                if (checkVisitEncounterReachToLimit(latestEncounterName)) {
-                                    closeReachToLimitVisit(visitUid);
-                                } else {
-                                    // get next encounter name
-                                    String nextEncounterTypeName = getNextEncounterTypeName(latestEncounterName);
-                                    if (nextEncounterTypeName != null) {
-                                        Log.v(TAG, "nextEncounterTypeName - " + nextEncounterTypeName);
-                                        createNewEncounter(visitUid, nextEncounterTypeName);
-                                    }
-                                }
-                            } else if (minutes == 14) {
-                                SyncUtils syncUtils = new SyncUtils();
-                                syncUtils.syncBackground();
-                            }
+                        } else if (minutes == 14) {
+                            SyncUtils syncUtils = new SyncUtils();
+                            syncUtils.syncBackground();
                         }
                     }
                 }
             }
+        }
 
-            boolean isInserted = insertEncounters();
-            if (isInserted) {
+        boolean isInserted = false;
+
+        try {
+            isInserted = insertEncounters();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (isInserted) {
 //                SyncUtils syncUtils = new SyncUtils();
 //                syncUtils.syncBackground();
-                alertToCollectHistoryData();
-            }
-
-        } catch (ParseException | DAOException e) {
-            e.printStackTrace();
+            alertToCollectHistoryData();
         }
     }
 
@@ -180,7 +187,7 @@ public class CardGenerationEngine {
         if (encounterTypeUuid != null && encounterTypeUuid.length() > 0) {
             encounterDTO.setUuid(UUID.randomUUID().toString());
             encounterDTO.setVisituuid(visit_UUID);
-            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setEncounterTime(DateTimeUtils.getCurrentDateInUTC(AppConstants.UTC_FORMAT));
             encounterDTO.setProvideruuid(new SessionManager(IntelehealthApplication.getAppContext()).getProviderID());
             encounterDTO.setEncounterTypeUuid(encounterTypeUuid);
             encounterDTO.setSyncd(false); // false as this is the one that is started and would be pushed in the payload...
@@ -246,9 +253,7 @@ public class CardGenerationEngine {
         try {
             String encounterUuid = new EncounterDAO().insertVisitCompleteEncounterToDb(visitId, sessionManager.getProviderID());
             if (encounterUuid != null && encounterUuid.length() > 0) {
-                boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(),
-                        CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value(),
-                        CompletedVisitStatus.OutOfTime.OUT_OF_TIME.uuid());
+                boolean isInserted = obsDAO.insert_Obs(encounterUuid, sessionManager.getCreatorID(), CompletedVisitStatus.OutOfTime.OUT_OF_TIME.value(), CompletedVisitStatus.OutOfTime.OUT_OF_TIME.uuid());
                 if (isInserted) {
                     VisitsDAO visitsDAO = new VisitsDAO();
                     visitsDAO.updateVisitEnddate(visitId, AppConstants.dateAndTimeUtils.currentDateTime());
@@ -299,22 +304,15 @@ public class CardGenerationEngine {
         if (pendingIntent == null) {
             Intent intent = new Intent(IntelehealthApplication.getAppContext(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            pendingIntent = PendingIntent.getActivity(IntelehealthApplication.getAppContext(), 0, intent,
-                    NotificationUtils.getPendingIntentFlag());
+            pendingIntent = PendingIntent.getActivity(IntelehealthApplication.getAppContext(), 0, intent, NotificationUtils.getPendingIntentFlag());
         }
         String channelId = "CHANNEL_ID_1";
 
         //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-                + "://" + IntelehealthApplication.getAppContext().getPackageName() + "/" + R.raw.al_1);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(IntelehealthApplication.getAppContext(), channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
+        Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + IntelehealthApplication.getAppContext().getPackageName() + "/" + R.raw.al_1);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(IntelehealthApplication.getAppContext(), channelId).setSmallIcon(R.mipmap.ic_launcher)
                 //.setContentTitle("Firebase Push Notification")
-                .setContentTitle(title)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setContentTitle(title).setContentText(message).setAutoCancel(true).setContentIntent(pendingIntent).setPriority(NotificationCompat.PRIORITY_HIGH);
 
         /*NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);*/
