@@ -13,15 +13,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.MedicationAidModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdministerDispenseActivity extends AppCompatActivity {
     private TextInputEditText tie_medNotes, tie_aidNotes;
+    private TextView tv_medData, tv_aidData;
     private String tag = "";
     private FrameLayout fl_aid;
+    private List<MedicationAidModel> medList, aidList;
 
 
     @Override
@@ -85,17 +93,40 @@ public class AdministerDispenseActivity extends AppCompatActivity {
 
         tie_medNotes = findViewById(R.id.tie_medNotes);
         tie_aidNotes = findViewById(R.id.tie_aidNotes);
+        tv_medData = findViewById(R.id.tv_medData);
+        tv_aidData = findViewById(R.id.tv_aidData);
         fl_aid = findViewById(R.id.fl_aid);
+        medList = new ArrayList<>();
+        aidList = new ArrayList<>();
 
         Intent intent = getIntent();
         tag = intent.getStringExtra("tag");
+        medList = (List<MedicationAidModel>) intent.getSerializableExtra("med");
+        aidList = (List<MedicationAidModel>) intent.getSerializableExtra("aid");    // null on empty.
+
         if (tag.equalsIgnoreCase("administer")) {
             getSupportActionBar().setTitle(getString(R.string.administer_medication));
             fl_aid.setVisibility(View.GONE);
         }
-        else {
+        else {  // ie. dispense
             getSupportActionBar().setTitle(getString(R.string.dispense_medication_and_aid));
             fl_aid.setVisibility(View.VISIBLE);
+
+            if (medList != null && medList.size() > 0) {
+                String medData = "";
+                for (MedicationAidModel med : medList) {
+                    medData = medData + (Node.bullet + " " + med.getValue()) + "\n\n";
+                }
+                tv_medData.setText(medData.substring(0, medData.length() - 2));
+            }
+
+            if (aidList != null && aidList.size() > 0) {
+                String aidData = "";
+                for (MedicationAidModel aid : aidList) {
+                    aidData = aidData + (Node.bullet + " " + aid.getValue()) + "\n\n";
+                }
+                tv_aidData.setText(aidData.substring(0, aidData.length() - 2));
+            }
         }
 
 

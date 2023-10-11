@@ -46,20 +46,20 @@ public class Medication_Aid_Activity extends AppCompatActivity {
 
         tvDispenseAdminister.setOnClickListener(v -> {
 
-                if (tag.equalsIgnoreCase("dispense")) {
-                    if (med_adapter != null && med_adapter.getFinalList().size() < 1 &&
-                            aid_adapter != null && aid_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
-                        Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            if (tag.equalsIgnoreCase("dispense")) {
+                if (med_adapter != null && med_adapter.getFinalList().size() < 1 &&
+                        aid_adapter != null && aid_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
+                    Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
 
-                 if (tag.equalsIgnoreCase("administer")) {
-                    if (med_adapter != null && med_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
-                        Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            if (tag.equalsIgnoreCase("administer")) {
+                if (med_adapter != null && med_adapter.getFinalList().size() < 1) {   // ie. 0 or < 0
+                    Toast.makeText(context, getString(R.string.select_at_least_one_item_to_proceed), Toast.LENGTH_SHORT).show();
+                    return;
                 }
+            }
 
             List<MedicationAidModel> medCheckedList = new ArrayList<>();
             List<MedicationAidModel> aidCheckedList = new ArrayList<>();
