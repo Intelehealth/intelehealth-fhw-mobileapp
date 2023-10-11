@@ -2016,16 +2016,16 @@ public class VisitSummaryActivity extends BaseActivity {
             if (bmi < Double.valueOf(BMI_ORANGE_MAX)) {   // red
                 bmiView.setTextColor(getResources().getColor(R.color.orange));
             }
-            else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi > Double.valueOf(BMI_YELLOW_MIN)) {   // red
+            else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi >= Double.valueOf(BMI_YELLOW_MIN)) {   // red
                 bmiView.setTextColor(getResources().getColor(R.color.dark_yellow));
             }
-            else if (bmi > Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))){
+            else if (bmi >= Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))){
                 bmiView.setTextColor(getResources().getColor(R.color.lite_red));
             }
-            else if (bmi > Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))){
+            else if (bmi >= Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))){
                 bmiView.setTextColor(getResources().getColor(R.color.green));
             }
-            else if (bmi > Double.valueOf(BMI_DARK_RED_MIN)) {   // red
+            else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
                 bmiView.setTextColor(getResources().getColor(R.color.dark_red));
             }
             else

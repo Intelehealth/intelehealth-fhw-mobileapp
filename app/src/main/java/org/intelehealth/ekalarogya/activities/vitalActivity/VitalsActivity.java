@@ -144,12 +144,9 @@ public class VitalsActivity extends AppCompatActivity {
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //change done under ticket AEAT - 657
-
         sessionManager = new SessionManager(this);
-//        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
         setTitle(patientName + ": " + getTitle());
-
         mHeight = findViewById(R.id.table_height);
         mheightSpinner = findViewById(R.id.heightSpinner);
         mWeight = findViewById(R.id.table_weight);
@@ -158,10 +155,9 @@ public class VitalsActivity extends AppCompatActivity {
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
-
         mBMI = findViewById(R.id.table_bmi);
         bmiTIL = findViewById(R.id.textInputLayout_bmi);
-        if(patientAge<=2)
+        if (patientAge <= 2)
             bmiTIL.setVisibility(View.GONE);
         else
             bmiTIL.setVisibility(View.VISIBLE);
@@ -178,7 +174,7 @@ public class VitalsActivity extends AppCompatActivity {
             heightAdapter = ArrayAdapter.createFromResource(this, heightArray, android.R.layout.simple_spinner_dropdown_item);
         }
         mheightSpinner.setAdapter(heightAdapter);
-      //  mheightSpinner.setHint(R.string.height_ft);
+        //  mheightSpinner.setHint(R.string.height_ft);
 
         mHemoglobin = findViewById(R.id.table_hemoglobin);
         mSugarRandom = findViewById(R.id.table_sugar_level);
@@ -218,10 +214,10 @@ public class VitalsActivity extends AppCompatActivity {
             }//Load the config file
             //Display the fields on the Vitals screen as per the config file
             if (obj.getBoolean("mHeight")) {
-              //  mHeight.setVisibility(View.VISIBLE);
+                //  mHeight.setVisibility(View.VISIBLE);
                 mheightSpinner.setVisibility(View.VISIBLE);
             } else {
-              //  mHeight.setVisibility(View.GONE);
+                //  mHeight.setVisibility(View.GONE);
                 mheightSpinner.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mWeight")) {
@@ -323,8 +319,7 @@ public class VitalsActivity extends AppCompatActivity {
                     flag_height = 1;
                     ConvertHeightIntoCm(heightAdapter.getItem(position).toString());
                     calculateBMI();
-                }
-                else {
+                } else {
                     flag_height = 0;
                 }
             }
@@ -562,16 +557,14 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     String diaValue = "";
-                    if(mBpDia!=null)
+                    if (mBpDia != null)
                         diaValue = mBpDia.getText().toString();
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
                         mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
-                    }
-                    else if(!diaValue.trim().isEmpty() && Double.valueOf(s.toString()) <= Double.valueOf(diaValue) ){
+                    } else if (!diaValue.trim().isEmpty() && Double.valueOf(s.toString()) <= Double.valueOf(diaValue)) {
                         mBpSys.setError(getString(R.string.bpsys_not_less_error));
-                    }
-                    else {
+                    } else {
                         mBpSys.setError(null);
                     }
                 }
@@ -606,16 +599,14 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     String sysValue = "";
-                    if(mBpSys!=null)
+                    if (mBpSys != null)
                         sysValue = mBpSys.getText().toString();
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_DSYS) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_DSYS)) {
                         mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                    }
-                    else if(!sysValue.trim().isEmpty() && Double.valueOf(s.toString()) >= Double.valueOf(sysValue) ){
+                    } else if (!sysValue.trim().isEmpty() && Double.valueOf(s.toString()) >= Double.valueOf(sysValue)) {
                         mBpDia.setError(getString(R.string.bpdia_not_more_error));
-                    }
-                    else {
+                    } else {
                         mBpDia.setError(null);
                     }
                 }
@@ -710,7 +701,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
 
                 }
-             //   decimalPlacesCount(mSugarRandom, s, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
+                //   decimalPlacesCount(mSugarRandom, s, AFTER_DECIMAL_PLACE_MAX_ONE_COUNT);
 
                 String str = mSugarRandom.getText().toString();
                 if (str.isEmpty()) return;
@@ -823,76 +814,65 @@ public class VitalsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void bmiColorCode(String bmiValue, String finalBmiValue) {
-        if (!bmiValue.isEmpty()) {
-            Double bmi = Double.valueOf(bmiValue);
+    private void bmiColorCode(String finalBmiValue) {
+        if (!finalBmiValue.isEmpty() && mBMI != null) {
+            Double bmi = Double.valueOf(finalBmiValue);
             if (bmi < Double.valueOf(BMI_ORANGE_MAX)) {   // red
                 mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.underweight) + ")");
                 mBMI.setTextColor(getResources().getColor(R.color.orange));
-            }
-            else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi > Double.valueOf(BMI_YELLOW_MIN)) {   // red
+            } else if (bmi < Double.valueOf(BMI_YELLOW_MAX) && bmi >= Double.valueOf(BMI_YELLOW_MIN)) {   // red
                 mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.overweight) + ")");
                 mBMI.setTextColor(getResources().getColor(R.color.dark_yellow));
-            }
-            else if (bmi > Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))){
+            } else if (bmi >= Double.valueOf(BMI_LIGHT_RED_MIN) && (bmi < Double.valueOf(BMI_LIGHT_RED_MAX))) {
                 mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.moderate_obesity) + ")");
-                    mBMI.setTextColor(getResources().getColor(R.color.lite_red));
-            }
-            else if (bmi > Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))){
+                mBMI.setTextColor(getResources().getColor(R.color.lite_red));
+            } else if (bmi >= Double.valueOf(BMI_GREEN_MIN) && (bmi < Double.valueOf(BMI_GREEN_MAX))) {
                 mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.normal) + ")");
-                    mBMI.setTextColor(getResources().getColor(R.color.green));
-            }
-            else if (bmi > Double.valueOf(BMI_DARK_RED_MIN)) {   // red
+                mBMI.setTextColor(getResources().getColor(R.color.green));
+            } else if (bmi >= Double.valueOf(BMI_DARK_RED_MIN)) {   // red
                 mBMI.setText(finalBmiValue + " (" + getResources().getString(R.string.severe_obesity) + ")");
                 mBMI.setTextColor(getResources().getColor(R.color.dark_red));
             }
-            else
-                mBMI.setTextColor(null);
+            else mBMI.setTextColor(null);
         }
     }
 
 
     private void bpSysColorCode(String bpSysValue) {
-        if (bpSysValue!=null && !bpSysValue.isEmpty()) {
+        if (bpSysValue != null && !bpSysValue.isEmpty()) {
             Double bpSys = Double.valueOf(bpSysValue);
 
             if (bpSys < Double.valueOf(SYS_RED_MIN) || bpSys > Double.valueOf(SYS_RED_MAX)) {   // red
                 mBpSys.setTextColor(getResources().getColor(R.color.scale_1));
-            }
-            else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
+            } else if (bpSys > Double.valueOf(SYS_YELLOW_MIN)) {  // yellow
                 if (bpSys < Double.valueOf(SYS_YELLOW_MAX))
                     mBpSys.setTextColor(getResources().getColor(R.color.dark_yellow));
-            }
-            else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
+            } else if (bpSys > Double.valueOf(SYS_GREEN_MIN)) {   //green
                 if (bpSys < Double.valueOf(SYS_GREEN_MAX))
                     mBpSys.setTextColor(getResources().getColor(R.color.green));
-            }
-            else
+            } else
                 mBpSys.setTextColor(null);
         }
     }
 
     private void bpDiaColorCode(String bpDiaValue) {
-        if (bpDiaValue!=null && !bpDiaValue.isEmpty()) {
+        if (bpDiaValue != null && !bpDiaValue.isEmpty()) {
             Double bpDia = Double.valueOf(bpDiaValue);
 
             if (bpDia > Double.valueOf(DIA_RED_MAX)) {  // red
                 mBpDia.setTextColor(getResources().getColor(R.color.scale_1));
-            }
-            else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
+            } else if (bpDia > Double.valueOf(DIA_YELLOW_MIN)) {  // yellow
                 if (bpDia < Double.valueOf(DIA_YELLOW_MAX))
                     mBpDia.setTextColor(getResources().getColor(R.color.dark_yellow));
-            }
-            else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
+            } else if (bpDia < Double.valueOf(DIA_GREEN_MIN)) {   // green
                 mBpDia.setTextColor(getResources().getColor(R.color.green));
-            }
-            else
+            } else
                 mBpDia.setTextColor(null);
         }
     }
 
     public void calculateBMI() {
-        if(mWeight!=null && heightvalue!=null) {
+        if (mWeight != null && heightvalue != null) {
             if (flag_height == 1 && flag_weight == 1 ||
                     /*(mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".")*/
                     (heightvalue.trim().length() > 0 && (mWeight.getText().toString().trim().length() > 0 &&
@@ -905,8 +885,8 @@ public class VitalsActivity extends AppCompatActivity {
                 //DecimalFormat df = new DecimalFormat("0.00");
                 //mBMI.setText(df.format(bmi_value));
                 mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-                if(patientAge >= 19)
-                    bmiColorCode(String.format(Locale.ENGLISH, "%.1f", bmi_value),String.format(Locale.ENGLISH, "%.2f", bmi_value));
+                if (patientAge >= 19)
+                    bmiColorCode(String.format(Locale.ENGLISH, "%.2f", bmi_value));
                 Log.d("BMI", "BMI: " + mBMI.getText().toString());
                 //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
             } else if (flag_height == 0 || flag_weight == 0) {
@@ -926,8 +906,8 @@ public class VitalsActivity extends AppCompatActivity {
             double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
             double bmi_value = numerator / denominator;
             mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-            if(patientAge >= 19)
-                bmiColorCode(String.format(Locale.ENGLISH, "%.1f", bmi_value),String.format(Locale.ENGLISH, "%.2f", bmi_value));
+            if (patientAge >= 19)
+                bmiColorCode(String.format(Locale.ENGLISH, "%.2f", bmi_value));
             Log.d("BMI", "BMI: " + mBMI.getText().toString());
         } else {
             // do nothing
@@ -1098,15 +1078,15 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
 */
-            if (mSugarFasting.getText().toString().isEmpty()) {
-                mSugarFasting.requestFocus();
-                mSugarFasting.setError(getString(R.string.enter_field));
-                return;
+        if (mSugarFasting.getText().toString().isEmpty()) {
+            mSugarFasting.requestFocus();
+            mSugarFasting.setError(getString(R.string.enter_field));
+            return;
 
         }
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
-      //  values.add(mHeight);
+        //  values.add(mHeight);
         values.add(mWeight);
         values.add(mPulse);
         values.add(mBpSys);
@@ -1120,33 +1100,32 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mSugarAfterMeal);
 
         // Check to see if values were inputted.
-     //   if (!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
+        //   if (!intentAdviceFrom.equalsIgnoreCase("Sevika")) {
 
-            // Validations - START
-            // 1. weight
-            String w_value = mWeight.getText().toString().trim();
-            if (w_value != null && !w_value.isEmpty()) {
-                if (Double.valueOf(w_value.toString()) > Double.valueOf(MAXIMUM_WEIGHT) ||
-                        Double.valueOf(w_value.toString()) < Double.valueOf(MINIMUM_WEIGHT)) {
-                    mWeight.setError(getString(R.string.weight_error, MINIMUM_WEIGHT, MAXIMUM_WEIGHT));
-                    return;
-                }
+        // Validations - START
+        // 1. weight
+        String w_value = mWeight.getText().toString().trim();
+        if (w_value != null && !w_value.isEmpty()) {
+            if (Double.valueOf(w_value.toString()) > Double.valueOf(MAXIMUM_WEIGHT) ||
+                    Double.valueOf(w_value.toString()) < Double.valueOf(MINIMUM_WEIGHT)) {
+                mWeight.setError(getString(R.string.weight_error, MINIMUM_WEIGHT, MAXIMUM_WEIGHT));
+                return;
             }
-            // end
+        }
+        // end
 
         // *. BP - Systolic
         String bp_sys_value = mBpSys.getText().toString().trim();
         if (bp_sys_value != null && !bp_sys_value.isEmpty()) {
             String diaValue = "";
-            if(mBpDia!=null)
+            if (mBpDia != null)
                 diaValue = mBpDia.getText().toString();
             if ((Double.parseDouble(bp_sys_value) < Double.parseDouble(AppConstants.MINIMUM_BP_SYS)) ||
                     (Double.parseDouble(bp_sys_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_SYS))) {
                 mBpSys.requestFocus();
                 mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
                 return;
-            }
-            else if(!diaValue.trim().isEmpty() && Double.valueOf(bp_sys_value) <= Double.valueOf(diaValue) ){
+            } else if (!diaValue.trim().isEmpty() && Double.valueOf(bp_sys_value) <= Double.valueOf(diaValue)) {
                 mBpSys.requestFocus();
                 mBpSys.setError(getString(R.string.bpsys_not_less_error));
                 return;
@@ -1158,15 +1137,14 @@ public class VitalsActivity extends AppCompatActivity {
         String bp_dia_value = mBpDia.getText().toString().trim();
         if (bp_dia_value != null && !bp_dia_value.isEmpty()) {
             String sysValue = "";
-            if(mBpSys!=null)
+            if (mBpSys != null)
                 sysValue = mBpSys.getText().toString();
             if ((Double.parseDouble(bp_dia_value) < Double.parseDouble(AppConstants.MINIMUM_BP_DSYS)) ||
                     (Double.parseDouble(bp_dia_value) > Double.parseDouble(AppConstants.MAXIMUM_BP_DSYS))) {
                 mBpDia.requestFocus();
                 mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
                 return;
-            }
-            else if(!sysValue.trim().isEmpty() && Double.valueOf(bp_dia_value) >= Double.valueOf(sysValue) ){
+            } else if (!sysValue.trim().isEmpty() && Double.valueOf(bp_dia_value) >= Double.valueOf(sysValue)) {
                 mBpDia.requestFocus();
                 mBpDia.setError(getString(R.string.bpdia_not_more_error));
                 return;
@@ -1187,17 +1165,17 @@ public class VitalsActivity extends AppCompatActivity {
         }
         // end
 
-            // pulse - start
-            String p_value = mPulse.getText().toString().trim();
-                if (p_value != null && !p_value.isEmpty() && (!p_value.equals("0.0"))) {
-                    if ((Double.parseDouble(p_value) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
-                            (Double.parseDouble(p_value) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
-                        mPulse.requestFocus();
-                        mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
-                        return;
-                    }
-                }
-            // pulse - end
+        // pulse - start
+        String p_value = mPulse.getText().toString().trim();
+        if (p_value != null && !p_value.isEmpty() && (!p_value.equals("0.0"))) {
+            if ((Double.parseDouble(p_value) > Double.parseDouble(AppConstants.MAXIMUM_PULSE)) ||
+                    (Double.parseDouble(p_value) < Double.parseDouble(AppConstants.MINIMUM_PULSE))) {
+                mPulse.requestFocus();
+                mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                return;
+            }
+        }
+        // pulse - end
 
         // Temp F - START
         String temp_value = mTemperature.getText().toString().trim();
@@ -1246,7 +1224,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         }
 
-         // Sugar - After Meal
+        // Sugar - After Meal
         String sugar_afterMeal_value = mSugarAfterMeal.getText().toString().trim();
         if (sugar_afterMeal_value != null && !sugar_afterMeal_value.isEmpty()) {
             if ((Double.parseDouble(sugar_afterMeal_value) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) ||
@@ -1273,9 +1251,7 @@ public class VitalsActivity extends AppCompatActivity {
         // Validations - END
 
 
-
-
-       //     }
+        //     }
 
 
 /*
@@ -1433,7 +1409,7 @@ public class VitalsActivity extends AppCompatActivity {
                 }
             }
 */
-     //   }
+        //   }
 
         // AEAT- 646 (Temp, BP, Pulse validaton) - START
         if (mBpSys.getText().toString().trim().isEmpty() || mBpDia.getText().toString().trim().isEmpty() ||
@@ -1470,8 +1446,7 @@ public class VitalsActivity extends AppCompatActivity {
             Log.d(TAG, "emptyList: " + emptyList);
             emptyList = emptyList + "\n " + getString(R.string.do_you_still_want_to_continue);
             showVitalsPromptDialog(context, getString(R.string.following_fields_are_not_filled), emptyList);
-        }
-        else {
+        } else {
             submitVitalsIntoDB();
         }
         // AEAT- 646 - END
@@ -1479,69 +1454,69 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     private void submitVitalsIntoDB() {
-            try {
-              //  if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
-                if (!heightvalue.equals("")) {
-                    results.setHeight(heightvalue/*(mHeight.getText().toString())*/);
-                } else if (/*mHeight.getText().toString()*/heightvalue.equals("")) {
-                    results.setHeight("0");
-                }
-                if (mWeight.getText() != null) {
-                    results.setWeight((mWeight.getText().toString()));
-                }
-                if (mPulse.getText() != null) {
-                    results.setPulse((mPulse.getText().toString()));
-                }
-                if (mBpDia.getText() != null) {
-                    results.setBpdia((mBpDia.getText().toString()));
-                }
-                if (mBpSys.getText() != null) {
-                    results.setBpsys((mBpSys.getText().toString()));
-                }
-                if (mTemperature.getText() != null) {
-
-                    if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
-                        //Converting Fahrenheit to Celsius
-//                        results.setTemperature((mTemperature.getText().toString()));
-                        results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
-                    } else {
-                        results.setTemperature((mTemperature.getText().toString()));
-                    }
-
-                }
-                if (mResp.getText() != null) {
-                    results.setResp((mResp.getText().toString()));
-                }
-                if (mSpo2.getText() != null) {
-                    results.setSpo2((mSpo2.getText().toString()));
-                }
-
-                if (mHemoglobin.getText() != null) {
-                    results.setHsb((mHemoglobin.getText().toString()));
-                }
-
-                if (mSugarRandom.getText() != null) {
-                    results.setSugarrandom(mSugarRandom.getText().toString());
-                }
-
-                if (mSugarFasting.getText() != null) {
-                    results.setSugarfasting(mSugarFasting.getText().toString());
-                }
-
-                if (mSugarAfterMeal.getText() != null) {
-                    results.setSugaraftermeal(mSugarAfterMeal.getText().toString());
-                }
-
-                if (mBlood_Spinner.getSelectedItemPosition() != 0) {
-                    String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
-                    results.setBlood((blood_Array[mBlood_Spinner.getSelectedItemPosition()]));
-                    //results.setBlood((mBlood_Spinner.getSelectedItem().toString()));
-                } else {
-                    results.setBlood("");
-                }
-            } catch (NumberFormatException e) {
-                Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        try {
+            //  if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
+            if (!heightvalue.equals("")) {
+                results.setHeight(heightvalue/*(mHeight.getText().toString())*/);
+            } else if (/*mHeight.getText().toString()*/heightvalue.equals("")) {
+                results.setHeight("0");
             }
+            if (mWeight.getText() != null) {
+                results.setWeight((mWeight.getText().toString()));
+            }
+            if (mPulse.getText() != null) {
+                results.setPulse((mPulse.getText().toString()));
+            }
+            if (mBpDia.getText() != null) {
+                results.setBpdia((mBpDia.getText().toString()));
+            }
+            if (mBpSys.getText() != null) {
+                results.setBpsys((mBpSys.getText().toString()));
+            }
+            if (mTemperature.getText() != null) {
+
+                if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
+                    //Converting Fahrenheit to Celsius
+//                        results.setTemperature((mTemperature.getText().toString()));
+                    results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
+                } else {
+                    results.setTemperature((mTemperature.getText().toString()));
+                }
+
+            }
+            if (mResp.getText() != null) {
+                results.setResp((mResp.getText().toString()));
+            }
+            if (mSpo2.getText() != null) {
+                results.setSpo2((mSpo2.getText().toString()));
+            }
+
+            if (mHemoglobin.getText() != null) {
+                results.setHsb((mHemoglobin.getText().toString()));
+            }
+
+            if (mSugarRandom.getText() != null) {
+                results.setSugarrandom(mSugarRandom.getText().toString());
+            }
+
+            if (mSugarFasting.getText() != null) {
+                results.setSugarfasting(mSugarFasting.getText().toString());
+            }
+
+            if (mSugarAfterMeal.getText() != null) {
+                results.setSugaraftermeal(mSugarAfterMeal.getText().toString());
+            }
+
+            if (mBlood_Spinner.getSelectedItemPosition() != 0) {
+                String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
+                results.setBlood((blood_Array[mBlood_Spinner.getSelectedItemPosition()]));
+                //results.setBlood((mBlood_Spinner.getSelectedItem().toString()));
+            } else {
+                results.setBlood("");
+            }
+        } catch (NumberFormatException e) {
+            Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        }
 
 
         ObsDAO obsDAO = new ObsDAO();
@@ -1937,7 +1912,7 @@ public class VitalsActivity extends AppCompatActivity {
                             VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                             try {
                                 // avoiding multi-click by checking if click is within 1000ms than avoid it.
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
@@ -1970,7 +1945,7 @@ public class VitalsActivity extends AppCompatActivity {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     try {
                         // avoiding multi-click by checking if click is within 1000ms than avoid it.
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();

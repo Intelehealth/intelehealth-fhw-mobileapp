@@ -67,11 +67,11 @@ public class AppConstants {
 
     public static final String BMI_ORANGE_MAX = "18.5";
     public static final String BMI_GREEN_MIN = "18.5";
-    public static final String BMI_GREEN_MAX = "22.9";
+    public static final String BMI_GREEN_MAX = "23.0";
     public static final String BMI_YELLOW_MIN = "23.0";
-    public static final String BMI_YELLOW_MAX = "24.9";
+    public static final String BMI_YELLOW_MAX = "25.0";
     public static final String BMI_LIGHT_RED_MIN = "25.0";
-    public static final String BMI_LIGHT_RED_MAX = "29.9";
+    public static final String BMI_LIGHT_RED_MAX = "30.0";
     public static final String BMI_DARK_RED_MIN = "30.0";
 
     // SYS - DIA -- Color codes - start
